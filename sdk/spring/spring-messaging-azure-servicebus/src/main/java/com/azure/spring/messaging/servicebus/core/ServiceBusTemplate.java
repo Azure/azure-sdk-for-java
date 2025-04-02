@@ -56,6 +56,7 @@ public class ServiceBusTemplate implements SendOperation {
      * Create an instance using the supplied producer factory, processor factory, it supports request-reply pattern.
      * @param producerFactory the producer factory.
      * @param consumerFactory the consumer factory.
+     * @since 5.22.0
      */
     public ServiceBusTemplate(@NonNull ServiceBusProducerFactory producerFactory,
                               ServiceBusConsumerFactory consumerFactory) {

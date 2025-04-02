@@ -12,6 +12,7 @@ import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties
 /**
  * A merger used to merge a {@link ConsumerProperties} with its parent {@link NamespaceProperties}. When a property is
  * set in the child, it will be kept. For those properties not set in the child, it will use the value in the parent.
+ * @since 5.22.0
  */
 public class ConsumerPropertiesParentMerger implements PropertiesMerger<ConsumerProperties, NamespaceProperties> {
 
