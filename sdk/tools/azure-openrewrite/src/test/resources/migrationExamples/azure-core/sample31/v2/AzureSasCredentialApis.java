@@ -1,6 +1,4 @@
-import com.azure.core.credential.AzureSasCredential;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.rest.RequestOptions;
+import com.azure.v2.core.credentials.AzureSasCredential;
 
 public class AzureSasCredentialApis {
     public static void main(String... args) {

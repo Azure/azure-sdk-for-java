@@ -1,3 +1,4 @@
+import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.RequestOptions;
 
 public class RequestOptionsUse {
@@ -5,7 +6,7 @@ public class RequestOptionsUse {
 
         // Sample 2: Adding headers
         RequestOptions options2 = new RequestOptions()
-            .addHeader("Custom-Header", "HeaderValue");
+            .setHeader(HttpHeaderName.fromString("Custom-Header"), "HeaderValue");
 
     }
 }

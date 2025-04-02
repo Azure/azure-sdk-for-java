@@ -8,7 +8,7 @@ public class HttpResponseApis {
     public static void main(String... args) {
 
         // Sample 1: Basic usage with GET method
-        HttpResponse response;
+        HttpResponse response = null; // Assume this is initialized
 
         int statusCode = response.getStatusCode();
 
@@ -22,7 +22,7 @@ public class HttpResponseApis {
         // skipping getBodyAsString(Charset) since it returns a Reactor API
         // skipping getBodyAsInputStream() since it returns a Reactor API
         HttpRequest request = response.getRequest();
-        HttpResponse bufferedResponse = response.buffer();
+        // deprioritized: buffer()
         // skipping writeBodyToAsync() since it returns a Reactor API
         // deprioritized: writeBodyTo(java.nio.channels.WritableByteChannel)
 

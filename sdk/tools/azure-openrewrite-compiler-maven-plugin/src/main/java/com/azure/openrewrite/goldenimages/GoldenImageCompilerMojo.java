@@ -105,6 +105,16 @@ public class GoldenImageCompilerMojo extends AbstractMojo {
         return null;
     }
 
+    private boolean hasEqualFileContents(File file1, File file2) throws IOException {
+        if (file1.length() != file2.length()) {
+            return false;
+        }
+        try (Stream<String> lines1 = Files.lines(file1.toPath());
+             Stream<String> lines2 = Files.lines(file2.toPath())) {
+            return lines1.collect(Collectors.toList()).equals(lines2.collect(Collectors.toList()));
+        }
+    }
+
     private boolean hasChanges(File profileDir, File previousProfileDir) throws MojoExecutionException {
         getLog().info("Comparing files in " + profileDir.getAbsolutePath() + " with " + previousProfileDir.getAbsolutePath());
 
@@ -118,7 +128,7 @@ public class GoldenImageCompilerMojo extends AbstractMojo {
                 Path relativePath = profileDir.toPath().relativize(profileFile);
                 Path previousFile = previousProfileDir.toPath().resolve(relativePath);
 
-                if (!Files.exists(previousFile) || !Files.isSameFile(profileFile, previousFile)) {
+                if (!Files.exists(previousFile) || !hasEqualFileContents(profileFile.toFile(), previousFile.toFile())) {
                     return true;
                 }
             }

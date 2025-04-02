@@ -1,3 +1,4 @@
+import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.RequestOptions;
 
 public class RequestOptionsUse {
@@ -5,7 +6,7 @@ public class RequestOptionsUse {
 
         // Sample 7: Adding multiple headers and query parameters
         RequestOptions options7 = new RequestOptions()
-            .setHeader("Header1", "Value1");
+            .setHeader(HttpHeaderName.fromString("Header1"), "Value1");
 
 
     }

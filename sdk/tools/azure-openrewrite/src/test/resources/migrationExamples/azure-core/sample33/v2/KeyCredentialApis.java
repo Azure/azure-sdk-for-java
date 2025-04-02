@@ -1,4 +1,4 @@
-import com.azure.core.credential.KeyCredential;
+import io.clientcore.core.credentials.KeyCredential;
 
 public class KeyCredentialApis {
     public static void main(String... args) {

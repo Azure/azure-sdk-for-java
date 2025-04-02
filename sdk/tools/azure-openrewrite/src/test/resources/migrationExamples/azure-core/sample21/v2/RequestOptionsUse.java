@@ -8,7 +8,7 @@ public class RequestOptionsUse {
         // Sample 6: Using POST method with body
         RequestOptions options6 = new RequestOptions()
             .addRequestCallback( request -> {;
-                request.setHttpMethod(HttpMethod.POST);
+                request.setMethod(HttpMethod.POST);
                 request.setBody(BinaryData.fromString("Sample body"));
             });
 

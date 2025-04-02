@@ -1,9 +1,9 @@
-import com.azure.core.credential.AzureKeyCredential;
+import io.clientcore.core.credentials.KeyCredential;
 
 public class AzureKeyCredentialApis {
     public static void main(String... args) {
 
-        AzureKeyCredential keyCredential = new AzureKeyCredential("key");
+        KeyCredential keyCredential = new KeyCredential("key");
 
         keyCredential = keyCredential.update("newKey");
     }

@@ -5,7 +5,7 @@ import io.clientcore.core.http.models.Response;
 public class ResponseApis {
     public static void main(String... args) {
 
-        Response<String> response;
+        Response<String> response = null; // Assume this is initialized
 
         int statusCode = response.getStatusCode();
         HttpHeaders headers = response.getHeaders();

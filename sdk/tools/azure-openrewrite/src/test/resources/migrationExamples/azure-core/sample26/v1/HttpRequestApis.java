@@ -2,10 +2,8 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
-import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 
-import java.net.MalformedURLException;
 import java.net.URL;
 
 public class HttpRequestApis {
@@ -27,7 +25,7 @@ public class HttpRequestApis {
         request2 = request2.setHeaders(new HttpHeaders(5));
         request1
             .setHeader("key", "value")
-            .setHeader(HttpHeaderName.ACCEPT.getValue(), "application/json");
+            .setHeader(HttpHeaderName.ACCEPT, "application/json");
 
         BinaryData body = request2.getBodyAsBinaryData();
         request3 = request3.setBody("new Body");

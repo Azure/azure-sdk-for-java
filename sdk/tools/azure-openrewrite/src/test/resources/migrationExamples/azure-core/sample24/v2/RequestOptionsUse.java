@@ -6,6 +6,6 @@ public class RequestOptionsUse {
 
         // Sample 1: Basic usage with GET method
         RequestOptions options1 = new RequestOptions()
-            .addHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
+            .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
     }
 }

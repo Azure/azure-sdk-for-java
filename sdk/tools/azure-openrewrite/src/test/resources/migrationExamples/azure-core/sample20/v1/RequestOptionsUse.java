@@ -6,6 +6,6 @@ public class RequestOptionsUse {
 
         // Sample 5: Adding context
         RequestOptions options5 = new RequestOptions()
-            .setContext(new Context("key", "value"));
+            .setContext(Context.NONE);
     }
 }
