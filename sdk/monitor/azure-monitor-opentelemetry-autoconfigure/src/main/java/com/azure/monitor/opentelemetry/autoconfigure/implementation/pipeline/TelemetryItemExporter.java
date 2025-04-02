@@ -131,11 +131,13 @@ public class TelemetryItemExporter {
     // serialize an array of TelemetryItems to an array of byte buffers
     private static List<ByteBuffer> serialize(List<TelemetryItem> telemetryItems) {
         try {
+            /*
             if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
                 String json = toJson(telemetryItems);
                 String jsonWithoutIKeys = maskIKeys(telemetryItems, json);
                 logger.verbose("sending telemetry to ingestion service:{}{}", System.lineSeparator(), jsonWithoutIKeys);
             }
+            */
 
             ByteBufferOutputStream out = writeTelemetryItemsAsByteBufferOutputStream(telemetryItems);
             out.close(); // closing ByteBufferOutputStream is a no-op, but this line makes LGTM happy

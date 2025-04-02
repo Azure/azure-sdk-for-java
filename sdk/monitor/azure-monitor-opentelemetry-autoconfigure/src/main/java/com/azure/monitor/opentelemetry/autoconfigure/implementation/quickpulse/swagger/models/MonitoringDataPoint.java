@@ -98,7 +98,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
 
     /**
      * Get the version property: Application Insights SDK version.
-     * 
+     *
      * @return the version value.
      */
     public String getVersion() {
@@ -107,7 +107,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
 
     /**
      * Set the version property: Application Insights SDK version.
-     * 
+     *
      * @param version the version value to set.
      * @return the MonitoringDataPoint object itself.
      */
@@ -119,7 +119,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
     /**
      * Get the invariantVersion property: Version/generation of the data contract (MonitoringDataPoint) between SDK and
      * Live Metrics.
-     * 
+     *
      * @return the invariantVersion value.
      */
     public int getInvariantVersion() {
@@ -129,7 +129,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
     /**
      * Set the invariantVersion property: Version/generation of the data contract (MonitoringDataPoint) between SDK and
      * Live Metrics.
-     * 
+     *
      * @param invariantVersion the invariantVersion value to set.
      * @return the MonitoringDataPoint object itself.
      */
@@ -140,7 +140,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
 
     /**
      * Get the instance property: Service instance name where Application Insights SDK lives.
-     * 
+     *
      * @return the instance value.
      */
     public String getInstance() {
@@ -149,7 +149,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
 
     /**
      * Set the instance property: Service instance name where Application Insights SDK lives.
-     * 
+     *
      * @param instance the instance value to set.
      * @return the MonitoringDataPoint object itself.
      */
@@ -160,7 +160,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
 
     /**
      * Get the roleName property: Service role name.
-     * 
+     *
      * @return the roleName value.
      */
     public String getRoleName() {
@@ -169,7 +169,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
 
     /**
      * Set the roleName property: Service role name.
-     * 
+     *
      * @param roleName the roleName value to set.
      * @return the MonitoringDataPoint object itself.
      */
@@ -180,7 +180,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
 
     /**
      * Get the machineName property: Computer name where Application Insights SDK lives.
-     * 
+     *
      * @return the machineName value.
      */
     public String getMachineName() {
@@ -189,7 +189,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
 
     /**
      * Set the machineName property: Computer name where Application Insights SDK lives.
-     * 
+     *
      * @param machineName the machineName value to set.
      * @return the MonitoringDataPoint object itself.
      */
@@ -201,7 +201,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
     /**
      * Get the streamId property: Identifies an Application Insights SDK as a trusted agent to report metrics and
      * documents.
-     * 
+     *
      * @return the streamId value.
      */
     public String getStreamId() {
@@ -211,7 +211,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
     /**
      * Set the streamId property: Identifies an Application Insights SDK as a trusted agent to report metrics and
      * documents.
-     * 
+     *
      * @param streamId the streamId value to set.
      * @return the MonitoringDataPoint object itself.
      */
@@ -222,7 +222,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
 
     /**
      * Get the timestamp property: Data point generation timestamp.
-     * 
+     *
      * @return the timestamp value.
      */
     public OffsetDateTime getTimestamp() {
@@ -231,7 +231,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
 
     /**
      * Set the timestamp property: Data point generation timestamp.
-     * 
+     *
      * @param timestamp the timestamp value to set.
      * @return the MonitoringDataPoint object itself.
      */
@@ -242,7 +242,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
 
     /**
      * Get the transmissionTime property: Timestamp when the client transmits the metrics and documents to Live Metrics.
-     * 
+     *
      * @return the transmissionTime value.
      */
     public OffsetDateTime getTransmissionTime() {
@@ -251,7 +251,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
 
     /**
      * Set the transmissionTime property: Timestamp when the client transmits the metrics and documents to Live Metrics.
-     * 
+     *
      * @param transmissionTime the transmissionTime value to set.
      * @return the MonitoringDataPoint object itself.
      */
@@ -262,7 +262,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
 
     /**
      * Get the isWebApp property: True if the current application is an Azure Web App.
-     * 
+     *
      * @return the isWebApp value.
      */
     public boolean isWebApp() {
@@ -271,7 +271,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
 
     /**
      * Set the isWebApp property: True if the current application is an Azure Web App.
-     * 
+     *
      * @param isWebApp the isWebApp value to set.
      * @return the MonitoringDataPoint object itself.
      */
@@ -282,7 +282,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
 
     /**
      * Get the performanceCollectionSupported property: True if performance counters collection is supported.
-     * 
+     *
      * @return the performanceCollectionSupported value.
      */
     public boolean isPerformanceCollectionSupported() {
@@ -291,7 +291,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
 
     /**
      * Set the performanceCollectionSupported property: True if performance counters collection is supported.
-     * 
+     *
      * @param performanceCollectionSupported the performanceCollectionSupported value to set.
      * @return the MonitoringDataPoint object itself.
      */
@@ -302,7 +302,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
 
     /**
      * Get the metrics property: An array of metric data points.
-     * 
+     *
      * @return the metrics value.
      */
     public List<MetricPoint> getMetrics() {
@@ -311,7 +311,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
 
     /**
      * Set the metrics property: An array of metric data points.
-     * 
+     *
      * @param metrics the metrics value to set.
      * @return the MonitoringDataPoint object itself.
      */
@@ -323,7 +323,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
     /**
      * Get the documents property: An array of documents of a specific type {Request}, {RemoteDependency}, {Exception},
      * {Event}, or {Trace}.
-     * 
+     *
      * @return the documents value.
      */
     public List<DocumentIngress> getDocuments() {
@@ -333,7 +333,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
     /**
      * Set the documents property: An array of documents of a specific type {Request}, {RemoteDependency}, {Exception},
      * {Event}, or {Trace}.
-     * 
+     *
      * @param documents the documents value to set.
      * @return the MonitoringDataPoint object itself.
      */
@@ -344,7 +344,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
 
     /**
      * Get the topCpuProcesses property: An array of top cpu consumption data point.
-     * 
+     *
      * @return the topCpuProcesses value.
      */
     public List<ProcessCpuData> getTopCpuProcesses() {
@@ -353,7 +353,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
 
     /**
      * Set the topCpuProcesses property: An array of top cpu consumption data point.
-     * 
+     *
      * @param topCpuProcesses the topCpuProcesses value to set.
      * @return the MonitoringDataPoint object itself.
      */
@@ -365,7 +365,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
     /**
      * Get the collectionConfigurationErrors property: An array of error while SDK parses and applies the
      * {CollectionConfigurationInfo} provided by Live Metrics.
-     * 
+     *
      * @return the collectionConfigurationErrors value.
      */
     public List<CollectionConfigurationError> getCollectionConfigurationErrors() {
@@ -375,7 +375,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
     /**
      * Set the collectionConfigurationErrors property: An array of error while SDK parses and applies the
      * {CollectionConfigurationInfo} provided by Live Metrics.
-     * 
+     *
      * @param collectionConfigurationErrors the collectionConfigurationErrors value to set.
      * @return the MonitoringDataPoint object itself.
      */
@@ -416,7 +416,7 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
 
     /**
      * Reads an instance of MonitoringDataPoint from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of MonitoringDataPoint if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
@@ -473,5 +473,25 @@ public final class MonitoringDataPoint implements JsonSerializable<MonitoringDat
 
             return deserializedMonitoringDataPoint;
         });
+    }
+
+    @Override
+    public String toString() {
+        return "MonitoringDataPoint{" +
+            "version='" + version + '\'' +
+            ", invariantVersion=" + invariantVersion +
+            ", instance='" + instance + '\'' +
+            ", roleName='" + roleName + '\'' +
+            ", machineName='" + machineName + '\'' +
+            ", streamId='" + streamId + '\'' +
+            ", timestamp=" + timestamp +
+            ", transmissionTime=" + transmissionTime +
+            ", isWebApp=" + isWebApp +
+            ", performanceCollectionSupported=" + performanceCollectionSupported +
+            ", metrics=" + metrics +
+            ", documents=" + documents +
+            ", topCpuProcesses=" + topCpuProcesses +
+            ", collectionConfigurationErrors=" + collectionConfigurationErrors +
+            '}';
     }
 }

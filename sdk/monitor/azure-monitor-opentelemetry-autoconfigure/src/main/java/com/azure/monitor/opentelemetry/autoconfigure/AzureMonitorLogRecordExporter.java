@@ -63,7 +63,7 @@ class AzureMonitorLogRecordExporter implements LogRecordExporter {
             if (log.getInstrumentationScopeInfo().getName().startsWith(EXPORTER_LOGGER_PREFIX)) {
                 continue;
             }
-            LOGGER.verbose("exporting log: {}", log);
+            //LOGGER.verbose("exporting log: {}", log);
             try {
                 String stack = log.getAttributes().get(SemanticAttributes.EXCEPTION_STACKTRACE);
                 TelemetryItem telemetryItem = mapper.map(log, stack, null);

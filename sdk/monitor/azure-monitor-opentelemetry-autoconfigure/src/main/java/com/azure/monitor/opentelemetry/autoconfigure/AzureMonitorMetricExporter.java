@@ -63,7 +63,7 @@ class AzureMonitorMetricExporter implements MetricExporter {
 
         List<TelemetryItem> telemetryItems = new ArrayList<>();
         for (MetricData metricData : metrics) {
-            LOGGER.verbose("exporting metric: {}", metricData);
+            //LOGGER.verbose("exporting metric: {}", metricData);
             try {
                 mapper.map(metricData, telemetryItems::add);
                 OPERATION_LOGGER.recordSuccess();

@@ -53,7 +53,7 @@ final class AzureMonitorTraceExporter implements SpanExporter {
         List<TelemetryItem> telemetryItems = new ArrayList<>();
 
         for (SpanData span : spans) {
-            LOGGER.verbose("exporting span: {}", span);
+            //LOGGER.verbose("exporting span: {}", span);
             FeatureStatsbeat instrumentationStatsbeat = statsbeatModule.getInstrumentationStatsbeat();
             instrumentationStatsbeat.addInstrumentation(span);
             try {

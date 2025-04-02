@@ -103,12 +103,14 @@ final class QuickPulseCoordinator implements Runnable {
                     : waitBetweenPingsInMillis;
 
             case QP_IS_ON:
+                logger.verbose("Switching to on mode");
                 return waitBetweenPostsInMillis;
         }
 
         try (MDC.MDCCloseable ignored = QUICK_PULSE_SEND_ERROR.makeActive()) {
             logger.error("Critical error while sending QP data: unknown status, aborting");
         }
+        System.out.println("Disable collector");
         collector.disable();
         stopped = true;
         return 0;
@@ -118,6 +120,7 @@ final class QuickPulseCoordinator implements Runnable {
     private long ping() {
         IsSubscribedHeaders pingResult = pingSender.ping(qpsServiceRedirectedEndpoint);
         QuickPulseStatus qpStatus = this.handleReceivedPingHeaders(pingResult);
+        System.out.println("qpStatus = " + qpStatus);
         collector.setQuickPulseStatus(qpStatus);
         switch (qpStatus) {
             case ERROR:
@@ -137,6 +140,7 @@ final class QuickPulseCoordinator implements Runnable {
                 return waitBetweenPostsInMillis;
 
             case QP_IS_OFF:
+                logger.verbose("Switching to off mode");
                 return qpsServicePollingIntervalHintMillis > 0
                     ? qpsServicePollingIntervalHintMillis
                     : waitBetweenPingsInMillis;
@@ -145,6 +149,7 @@ final class QuickPulseCoordinator implements Runnable {
         try (MDC.MDCCloseable ignored = QUICK_PULSE_PING_ERROR.makeActive()) {
             logger.error("Critical error while ping QP: unknown status, aborting");
         }
+        System.out.println("Disable collector");
         collector.disable();
         stopped = true;
         return 0;

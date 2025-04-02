@@ -3,6 +3,7 @@
 
 package com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse;
 
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.Response;
 
 import com.azure.core.util.logging.ClientLogger;
@@ -83,7 +84,13 @@ class QuickPulseDataSender implements Runnable {
             dataPointList.add(point);
             Date currentDate = new Date();
             long transmissionTimeInTicks = currentDate.getTime() * 10000 + TICKS_AT_EPOCH;
+            System.out.println("transmissionTimeInTicks = " + transmissionTimeInTicks);
             String etag = configuration.get().getETag();
+            System.out.println("etag = " + etag);
+
+            System.out.println("endpointPrefix = " + endpointPrefix);
+
+            System.out.println("dataPointList = " + dataPointList);
 
             if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
                 logger.verbose("Attempting to send data points to quickpulse with etag {}: {}", etag,
@@ -101,9 +108,14 @@ class QuickPulseDataSender implements Runnable {
                     // this shouldn't happen, the mono should complete with a response or a failure
                     throw new AssertionError("http response mono returned empty");
                 }
+
+                int statusCode = responseMono.getStatusCode();
+                System.out.println("statusCode = " + statusCode);
+
                 // If we reach this point the api returned http 200
                 PublishHeaders headers = new PublishHeaders(responseMono.getHeaders());
                 String isSubscribed = headers.getXMsQpsSubscribed();
+                System.out.println("isSubscribed = " + isSubscribed);
 
                 // it is unlikely that we would get a null/empty subscribed header on an http 200
                 // but treating that like a not subscribed just in case
