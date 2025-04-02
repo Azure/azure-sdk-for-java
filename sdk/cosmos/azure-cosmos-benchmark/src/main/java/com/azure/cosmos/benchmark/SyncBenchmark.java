@@ -133,7 +133,7 @@ abstract class SyncBenchmark<T> {
                     + "}");
         }
 
-        boolean isManagedIdentityRequired = evaluateManagedIdentityUsability(configuration.isManagedIdentityRequired());
+        boolean isManagedIdentityRequired = configuration.isManagedIdentityRequired();
 
         CosmosClientBuilder benchmarkSpecificClientBuilder = isManagedIdentityRequired ?
                 new CosmosClientBuilder()
@@ -478,17 +478,5 @@ abstract class SyncBenchmark<T> {
 
     PojoizedJson toPojoizedJson(CosmosItemResponse<PojoizedJson> resp) throws Exception {
         return resp.getItem();
-    }
-
-    private static boolean evaluateManagedIdentityUsability(boolean isManagedIdentityRequired) {
-
-        if (!isManagedIdentityRequired) {
-            return false;
-        }
-
-        String aadTenantId = Configuration.getAadTenantId();
-        String aadManagedIdentityId = Configuration.getAadManagedIdentityId();
-
-        return aadTenantId != null && aadManagedIdentityId != null;
     }
 }

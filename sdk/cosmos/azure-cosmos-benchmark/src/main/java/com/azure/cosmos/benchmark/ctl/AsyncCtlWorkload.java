@@ -99,7 +99,7 @@ public class AsyncCtlWorkload {
             .build();
 
     public AsyncCtlWorkload(Configuration cfg) {
-        CosmosClientBuilder cosmosClientBuilder = evaluateManagedIdentityUsability(cfg.isManagedIdentityRequired()) ?
+        CosmosClientBuilder cosmosClientBuilder = cfg.isManagedIdentityRequired() ?
                 new CosmosClientBuilder().credential(CREDENTIAL) :
                 new CosmosClientBuilder().key(cfg.getMasterKey());
 
@@ -386,17 +386,5 @@ public class AsyncCtlWorkload {
                 }
             }
         }
-    }
-
-    private static boolean evaluateManagedIdentityUsability(boolean isManagedIdentityRequired) {
-
-        if (!isManagedIdentityRequired) {
-            return false;
-        }
-
-        String aadTenantId = Configuration.getAadTenantId();
-        String aadManagedIdentityId = Configuration.getAadManagedIdentityId();
-
-        return aadTenantId != null && aadManagedIdentityId != null;
     }
 }
