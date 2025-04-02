@@ -3,21 +3,28 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
+import com.azure.core.credential.TokenCredential;
+import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.servicebus.properties.AzureServiceBusProperties;
+import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
+import com.azure.spring.cloud.core.implementation.credential.resolver.AzureTokenCredentialResolver;
 import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.messaging.implementation.converter.ObjectMapperHolder;
+import com.azure.spring.messaging.servicebus.core.DefaultServiceBusNamespaceConsumerFactory;
 import com.azure.spring.messaging.servicebus.core.DefaultServiceBusNamespaceProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.DefaultServiceBusNamespaceProducerFactory;
+import com.azure.spring.messaging.servicebus.core.ServiceBusConsumerFactory;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProcessorFactory;
 import com.azure.spring.messaging.servicebus.core.ServiceBusProducerFactory;
 import com.azure.spring.messaging.servicebus.core.ServiceBusTemplate;
+import com.azure.spring.messaging.servicebus.core.properties.ConsumerProperties;
 import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.messaging.servicebus.core.properties.ProcessorProperties;
 import com.azure.spring.messaging.servicebus.core.properties.ProducerProperties;
@@ -95,6 +102,25 @@ public class AzureServiceBusMessagingAutoConfiguration {
             NamespaceProperties properties,
             ObjectProvider<PropertiesSupplier<ConsumerIdentifier, ProcessorProperties>> suppliers) {
             return new DefaultServiceBusNamespaceProcessorFactory(properties, suppliers.getIfAvailable());
+        }
+    }
+
+    @Configuration(proxyBeanMethods = false)
+    static class ConsumerContainerConfiguration {
+
+        @Bean
+        @ConditionalOnMissingBean
+        ServiceBusConsumerFactory defaultServiceBusNamespaceConsumerFactory(
+            NamespaceProperties properties,
+            ObjectProvider<PropertiesSupplier<ConsumerIdentifier, ConsumerProperties>> suppliers,
+            ObjectProvider<AzureTokenCredentialResolver> tokenCredentialResolvers,
+            ObjectProvider<TokenCredential> defaultTokenCredentials,
+            ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder>> sessionReceiverCustomizers) {
+            DefaultServiceBusNamespaceConsumerFactory factory = new DefaultServiceBusNamespaceConsumerFactory(properties, suppliers.getIfAvailable());
+            factory.setDefaultCredential(defaultTokenCredentials.getIfAvailable());
+            factory.setTokenCredentialResolver(tokenCredentialResolvers.getIfAvailable());
+            sessionReceiverCustomizers.orderedStream().forEach(factory::addSessionReceiverCustomizer);
+            return factory;
         }
     }
 
