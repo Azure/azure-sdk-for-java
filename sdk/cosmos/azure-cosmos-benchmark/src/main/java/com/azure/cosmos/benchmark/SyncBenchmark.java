@@ -72,6 +72,7 @@ abstract class SyncBenchmark<T> {
 
     final Logger logger;
     final CosmosClient benchmarkWorkloadClient;
+    final CosmosClient resultUploaderClient;
     CosmosContainer cosmosContainer;
     CosmosDatabase cosmosDatabase;
 
@@ -194,10 +195,10 @@ abstract class SyncBenchmark<T> {
         }
 
         benchmarkWorkloadClient = benchmarkSpecificClientBuilder.buildClient();
-        try (CosmosClient syncClient = resultUploadClientBuilder
+        this.resultUploaderClient = resultUploadClientBuilder
                 .endpoint(StringUtils.isNotEmpty(configuration.getServiceEndpointForRunResultsUploadAccount()) ? configuration.getServiceEndpointForRunResultsUploadAccount() : configuration.getServiceEndpoint())
                 .key(StringUtils.isNotEmpty(configuration.getMasterKeyForRunResultsUploadAccount()) ? configuration.getMasterKeyForRunResultsUploadAccount() : configuration.getMasterKey())
-                .buildClient()) {
+                .buildClient();
 
             try {
                 cosmosDatabase = benchmarkWorkloadClient.getDatabase(this.configuration.getDatabaseId());
@@ -310,14 +311,14 @@ abstract class SyncBenchmark<T> {
                 resultReporter = CosmosTotalResultReporter
                         .forRegistry(
                                 metricsRegistry,
-                                syncClient.getDatabase(configuration.getResultUploadDatabase()).getContainer(configuration.getResultUploadContainer()),
+                                this.resultUploaderClient.getDatabase(configuration.getResultUploadDatabase()).getContainer(configuration.getResultUploadContainer()),
                                 configuration)
                         .convertRatesTo(TimeUnit.SECONDS)
                         .convertDurationsTo(TimeUnit.MILLISECONDS).build();
             } else {
                 resultReporter = null;
             }
-        }
+
 
         MeterRegistry registry = configuration.getAzureMonitorMeterRegistry();
 
@@ -349,6 +350,7 @@ abstract class SyncBenchmark<T> {
             logger.info("Deleted temporary collection {} created for this test", this.configuration.getCollectionId());
         }
 
+        resultUploaderClient.close();
         benchmarkWorkloadClient.close();
         executorService.shutdown();
     }
