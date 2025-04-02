@@ -143,6 +143,7 @@ final class QuickPulseDataCollector {
     }
 
     boolean isEnabled() {
+        System.out.println("Collector is enabled");
         return quickPulseStatus == QuickPulseStatus.QP_IS_ON;
     }
 

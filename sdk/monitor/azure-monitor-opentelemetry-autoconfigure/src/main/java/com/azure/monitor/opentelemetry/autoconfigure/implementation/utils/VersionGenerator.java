@@ -19,21 +19,6 @@ public final class VersionGenerator {
         String componentName = null;
         String componentVersion = null;
 
-        Map<String, String> springDistroProperties
-            = CoreUtils.getProperties("azure-spring-cloud-azure-starter-monitor.properties");
-        String springDistroVersion = springDistroProperties.get("version");
-        if (springDistroVersion != null) {
-            componentName = "dss";
-            componentVersion = springDistroVersion;
-        }
-
-        Map<String, String> quarkusProperties = CoreUtils.getProperties("quarkus-exporter.properties");
-        String quarkusVersion = quarkusProperties.get("version");
-        if (quarkusVersion != null) {
-            componentName = "dsq";
-            componentVersion = quarkusVersion;
-        }
-
         if (componentName == null) {
             componentName = "ext";
             Map<String, String> otelAutoconfigureProperties

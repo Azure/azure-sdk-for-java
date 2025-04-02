@@ -64,6 +64,7 @@ public class QuickPulse {
 
     public boolean isEnabled() {
         if (collector == null) {
+            System.out.println("Collector is null");
             // Because QuickPulse is initialized with a 5 s delay
             return false;
         }

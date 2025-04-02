@@ -30,7 +30,12 @@ public class LiveMetricsSpanProcessor implements SpanProcessor {
 
     @Override
     public void onEnd(ReadableSpan readableSpan) {
+
+        if (quickPulse != null) {
+            System.out.println("LiveMetricsSpanProcessor - quickPulse.isEnabled(): " + quickPulse.isEnabled());
+        }
         if (quickPulse != null && quickPulse.isEnabled()) {
+            System.out.println("Live metrid added to span processor");
             // TODO (trask) can we do anything better here in terms of double conversion?
             quickPulse.add(mapper.map(readableSpan.toSpanData()));
         }

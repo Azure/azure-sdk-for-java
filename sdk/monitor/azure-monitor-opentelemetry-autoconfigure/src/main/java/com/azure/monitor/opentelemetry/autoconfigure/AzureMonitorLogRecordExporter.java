@@ -14,6 +14,7 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.AzureM
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.logs.data.LogRecordData;
 import io.opentelemetry.sdk.logs.export.LogRecordExporter;
+import org.slf4j.ILoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,7 +27,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 class AzureMonitorLogRecordExporter implements LogRecordExporter {
 
-    private static final String EXPORTER_LOGGER_PREFIX = "com.azure.monitor.opentelemetry.exporter";
+    private static final String EXPORTER_LOGGER_PREFIX = "com.azure.monitor.opentelemetry.autoconfigure";
     private static final ClientLogger LOGGER = new ClientLogger(AzureMonitorLogRecordExporter.class);
     private static final OperationLogger OPERATION_LOGGER
         = new OperationLogger(AzureMonitorLogRecordExporter.class, "Exporting log");
@@ -67,7 +68,12 @@ class AzureMonitorLogRecordExporter implements LogRecordExporter {
                 String stack = log.getAttributes().get(SemanticAttributes.EXCEPTION_STACKTRACE);
                 TelemetryItem telemetryItem = mapper.map(log, stack, null);
                 telemetryItems.add(telemetryItem);
+                LOGGER.verbose("AzureMonitorLogRecordExporter - quickPulse: " + quickPulse);
+                if (quickPulse != null) {
+                    LOGGER.verbose("AzureMonitorLogRecordExporter - quickPulse.isEnabled(): " + quickPulse.isEnabled());
+                }
                 if (quickPulse != null && quickPulse.isEnabled()) {
+                    LOGGER.verbose("Logg added to QuickPulse");
                     quickPulse.add(telemetryItem);
                 }
                 OPERATION_LOGGER.recordSuccess();
