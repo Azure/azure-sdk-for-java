@@ -2133,9 +2133,9 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
             transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.JSON);
 
             StepVerifier.create(client.getAudioTranscriptionAsResponseObject(deploymentName, transcriptionOptions))
-                .assertNext(translation -> {
-                    assertNotNull(translation);
-                    assertEquals(BATMAN_TRANSCRIPTION, translation.getText());
+                .assertNext(transcription -> {
+                    assertNotNull(transcription);
+                    assertEquals(BATMAN_TRANSCRIPTION, transcription.getText());
                 })
                 .verifyComplete();
         });
