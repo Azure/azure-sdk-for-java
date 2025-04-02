@@ -29,7 +29,7 @@ public final class VectorSearchVectorizerKind extends ExpandableStringEnum<Vecto
     public static final VectorSearchVectorizerKind AISERVICES_VISION = fromString("aiServicesVision");
 
     /**
-     * Generate embeddings using an Azure Machine Learning endpoint deployed via the Azure AI Studio Model Catalog at
+     * Generate embeddings using an Azure Machine Learning endpoint deployed via the Azure AI Foundry Model Catalog at
      * query time.
      */
     public static final VectorSearchVectorizerKind AML = fromString("aml");
