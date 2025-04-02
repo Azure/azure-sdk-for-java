@@ -4,6 +4,7 @@
 package com.azure.storage.blob.nio;
 
 import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.test.utils.MockTokenCredential;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.common.sas.AccountSasPermission;
 import com.azure.storage.common.sas.AccountSasResourceType;
@@ -89,6 +90,21 @@ public class AzureFileSystemTests extends BlobNioTestBase {
 
         assertThrows(IllegalArgumentException.class,
             () -> new AzureFileSystem(new AzureFileSystemProvider(), ENV.getPrimaryAccount().getName(), config));
+    }
+
+    @Test
+    public void createWithTokenCredential() throws IOException {
+        String containerName = generateContainerName();
+        config.put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, containerName);
+        config.put(AzureFileSystem.AZURE_STORAGE_TOKEN_CREDENTIAL, new MockTokenCredential());
+        AzureFileSystem azureFileSystem
+            = new AzureFileSystem(new AzureFileSystemProvider(), ENV.getPrimaryAccount().getBlobEndpoint(), config);
+
+        List<String> actualContainerNames = new ArrayList<>();
+        azureFileSystem.getFileStores().forEach(fs -> actualContainerNames.add(fs.name()));
+
+        assertEquals(1, actualContainerNames.size());
+        assertTrue(actualContainerNames.contains(containerName));
     }
 
     @Test
