@@ -150,6 +150,9 @@ public class Configuration {
     @Parameter(names = "-isManagedIdentityRequired", description = "A flag to denote whether benchmark-specific CosmosClient instance should use Managed Identity to authenticate.")
     private String isManagedIdentityRequired = String.valueOf(false);
 
+    @Parameter(names = "-isPerPartitionAutomaticFailoverRequired", description = "A flag to denote whether per-partition automatic failover is required.")
+    private String isPerPartitionAutomaticFailoverRequired = String.valueOf(true);
+
     @Parameter(names = "-operation", description = "Type of Workload:\n"
         + "\tReadThroughput- run a READ workload that prints only throughput *\n"
         + "\tReadThroughputWithMultipleClients - run a READ workload that prints throughput and latency for multiple client read.*\n"
@@ -185,6 +188,10 @@ public class Configuration {
 
     public Boolean isManagedIdentityRequired() {
         return Boolean.parseBoolean(this.isManagedIdentityRequired);
+    }
+
+    public Boolean isPerPartitionAutomaticFailoverRequired() {
+        return Boolean.parseBoolean(this.isPerPartitionAutomaticFailoverRequired);
     }
 
     static class DurationConverter implements IStringConverter<Duration> {
