@@ -29,7 +29,6 @@ import java.util.stream.Stream;
 import static io.clientcore.core.instrumentation.logging.InstrumentationTestUtils.createInvalidInstrumentationContext;
 import static io.clientcore.core.instrumentation.logging.InstrumentationTestUtils.createRandomInstrumentationContext;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -659,11 +658,11 @@ public class ClientLoggerTests {
         String exceptionMessage = "An exception message";
         RuntimeException runtimeException = createIllegalStateException(exceptionMessage);
 
-        assertSame(runtimeException,
-            logger.atWarning()
-                .addKeyValue("connectionId", "foo")
-                .addKeyValue("linkName", "bar")
-                .logThrowable(runtimeException));
+        logger.atWarning()
+            .addKeyValue("connectionId", "foo")
+            .addKeyValue("linkName", "bar")
+            .setThrowable(runtimeException)
+            .log();
 
         Map<String, Object> expectedMessage = new HashMap<>();
         expectedMessage.put("connectionId", "foo");
@@ -689,11 +688,11 @@ public class ClientLoggerTests {
         String exceptionMessage = "An exception message";
         IOException ioException = createIOException(exceptionMessage);
 
-        assertSame(ioException,
-            logger.atWarning()
-                .addKeyValue("connectionId", "foo")
-                .addKeyValue("linkName", "bar")
-                .logThrowable(ioException));
+        logger.atWarning()
+            .addKeyValue("connectionId", "foo")
+            .addKeyValue("linkName", "bar")
+            .setThrowable(ioException)
+            .log();
 
         Map<String, Object> expectedMessage = new HashMap<>();
         expectedMessage.put("connectionId", "foo");

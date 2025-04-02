@@ -81,7 +81,7 @@ public class ClientLoggerJavaDocCodeSnippets {
         try {
             upload(resource);
         } catch (IOException ex) {
-            throw logger.atError().logThrowable(ex);
+            throw logger.logThrowableAsError(ex);
         }
         // END: io.clientcore.core.util.logging.clientlogger.error
 
@@ -91,7 +91,10 @@ public class ClientLoggerJavaDocCodeSnippets {
         } catch (IOException ex) {
             logger.atError()
                 .addKeyValue("hello", name)
-                .logThrowable(ex);
+                .setThrowable(ex)
+                .log();
+
+            throw ex;
         }
         // END: io.clientcore.core.util.logging.clientlogger.error#string-object
 
@@ -123,9 +126,12 @@ public class ClientLoggerJavaDocCodeSnippets {
         try {
             upload(resource);
         } catch (IOException ex) {
-            throw logger.atError()
+            logger.atError()
                 .addKeyValue("key", () -> "Expensive to calculate value")
-                .logThrowable(ex);
+                .setThrowable(ex)
+                .log();
+
+            throw ex;
         }
         // END: io.clientcore.core.util.logging.clientlogger.atError#deffered-value
 

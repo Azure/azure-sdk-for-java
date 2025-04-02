@@ -109,7 +109,8 @@ public class ClientLogger {
      * @throws NullPointerException If {@code throwable} is {@code null}.
      */
     public <T extends Throwable> T logThrowableAsWarning(T throwable) {
-        return LoggingEvent.create(logger, LogLevel.WARNING, globalContext).logThrowable(throwable);
+        LoggingEvent.create(logger, LogLevel.WARNING, globalContext).setThrowable(throwable).log();
+        return throwable;
     }
 
     /**
@@ -123,7 +124,8 @@ public class ClientLogger {
      * @throws NullPointerException If {@code throwable} is {@code null}.
      */
     public <T extends Throwable> T logThrowableAsError(T throwable) {
-        return LoggingEvent.create(logger, LogLevel.ERROR, globalContext).logThrowable(throwable);
+        LoggingEvent.create(logger, LogLevel.ERROR, globalContext).setThrowable(throwable).log();
+        return throwable;
     }
 
     /**
