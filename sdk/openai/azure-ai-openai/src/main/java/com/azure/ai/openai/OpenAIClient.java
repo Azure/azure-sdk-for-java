@@ -2277,34 +2277,6 @@ public final class OpenAIClient {
      *
      * @param file The file data (not filename) to upload.
      * @param purpose The intended purpose of the file.
-     * @param filename A filename to associate with the uploaded data.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an assistant that can call the model and use tools.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private OpenAIFile uploadFile(FileDetails file, FilePurpose purpose, String filename) {
-        RequestOptions requestOptions = new RequestOptions();
-        UploadFileRequest uploadFileRequestObj = new UploadFileRequest(file, purpose).setFilename(filename);
-        BinaryData uploadFileRequest = new MultipartFormDataHelper(requestOptions)
-            .serializeFileField("file", uploadFileRequestObj.getFile().getContent(),
-                uploadFileRequestObj.getFile().getContentType(), uploadFileRequestObj.getFile().getFilename())
-            .serializeTextField("purpose", Objects.toString(uploadFileRequestObj.getPurpose()))
-            .serializeTextField("filename", uploadFileRequestObj.getFilename())
-            .end()
-            .getRequestBody();
-        return uploadFileWithResponse(uploadFileRequest, requestOptions).getValue();
-    }
-
-    /**
-     * Uploads a file for use by other operations.
-     *
-     * @param file The file data (not filename) to upload.
-     * @param purpose The intended purpose of the file.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
