@@ -15,7 +15,6 @@ import io.clientcore.core.utils.UriBuilder;
 import io.clientcore.http.netty.NettyHttpClientBuilder;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Response;
-import org.eclipse.jetty.util.Callback;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -72,18 +71,15 @@ public final class MockProxyServer implements Closeable {
                 } else if (hasRequiredAuthentication(req)) {
                     isAuthenticated.add(req.getRemoteInetSocketAddress());
                     resp.setStatus(200);
-                    resp.getHttpOutput().flush();
-                    resp.getHttpOutput().complete(Callback.NOOP);
+                    resp.flushBuffer();
                 } else {
                     resp.setStatus(407);
                     resp.setHeader(HttpHeaderName.PROXY_AUTHENTICATE.getCaseSensitiveName(), "basic");
-                    resp.getHttpOutput().flush();
-                    resp.getHttpOutput().complete(Callback.NOOP);
+                    resp.flushBuffer();
                 }
             } else {
                 resp.setStatus(200);
-                resp.getHttpOutput().flush();
-                resp.getHttpOutput().complete(Callback.NOOP);
+                resp.flushBuffer();
             }
         });
         this.proxyServer.start();
@@ -137,8 +133,7 @@ public final class MockProxyServer implements Closeable {
             resp.setContentLength(body.length);
             resp.setContentType("application/octet-stream");
             resp.getHttpOutput().write(body);
-            resp.getHttpOutput().flush();
-            resp.getHttpOutput().complete(Callback.NOOP);
+            resp.flushBuffer();
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
         }

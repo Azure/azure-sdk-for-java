@@ -45,13 +45,13 @@ public final class SimpleBasicAuthHttpProxyServer {
             if (proxyAuthorization == null) {
                 resp.setStatus(407);
                 resp.setHeader("Proxy-Authenticate", "Basic");
-
+                resp.flushBuffer();
                 return;
             }
 
             if (!proxyAuthorization.startsWith("Basic")) {
                 resp.setStatus(401);
-
+                resp.flushBuffer();
                 return;
             }
 
@@ -63,6 +63,7 @@ public final class SimpleBasicAuthHttpProxyServer {
             if (!new String(decodedCred).equals(userName + ":" + password)) {
                 resp.setStatus(401);
             }
+            resp.flushBuffer();
         });
 
         this.proxyServer.start();

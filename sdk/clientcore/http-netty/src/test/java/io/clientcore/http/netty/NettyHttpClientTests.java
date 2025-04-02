@@ -19,7 +19,6 @@ import io.clientcore.core.utils.ProgressReporter;
 import io.clientcore.core.utils.SharedExecutorService;
 import io.clientcore.http.netty.implementation.MockProxyServer;
 import io.clientcore.http.netty.implementation.NettyHttpClientLocalTestServer;
-import io.clientcore.http.netty.implementation.NettyResponse;
 import io.netty.handler.proxy.ProxyConnectException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -40,7 +39,6 @@ import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -48,7 +46,6 @@ import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -346,15 +343,15 @@ public class NettyHttpClientTests {
         return Stream.of(Arguments.of(null, NULL_REPLACEMENT), Arguments.of("", ""), Arguments.of("aValue", "aValue"));
     }
 
-    private static NettyResponse getResponse(String path) {
+    private static Response<BinaryData> getResponse(String path) {
         HttpClient client = new NettyHttpClientProvider().getSharedInstance();
         return getResponse(client, path);
     }
 
-    private static NettyResponse getResponse(HttpClient client, String path) {
+    private static Response<BinaryData> getResponse(HttpClient client, String path) {
         HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(path));
         try {
-            return (NettyResponse) client.send(request);
+            return client.send(request);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

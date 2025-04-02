@@ -3,6 +3,8 @@
 
 package io.clientcore.http.netty.implementation;
 
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LogLevel;
 import io.clientcore.core.instrumentation.logging.LoggingEvent;
@@ -20,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * Helper class containing utility methods.
@@ -41,6 +44,44 @@ public final class NettyUtility {
 
     // Netty artifact that should match the 'netty-tcnative.version' property in the pom.xml file.
     private static final String NETTY_TCNATIVE_VERSION_ARTIFACT = "netty-tcnative-boringssl-static";
+
+    /**
+     * Converts Netty HttpHeaders to ClientCore HttpHeaders.
+     * <p>
+     * Most Netty requests should store headers in {@link WrappedHttpHeaders}, but if that doesn't happen this method
+     * can be used to convert the Netty headers to ClientCore headers.
+     *
+     * @param nettyHeaders Netty HttpHeaders.
+     * @return Converted ClientCore HttpHeaders.
+     */
+    public static HttpHeaders convertHeaders(io.netty.handler.codec.http.HttpHeaders nettyHeaders) {
+        int initialSize = (int) (nettyHeaders.size() / 0.75f);
+        HttpHeaders coreHeaders = new HttpHeaders(initialSize);
+
+        // Use Netty's iteratorAsString() to get the headers as a iterator of key-value pairs.
+        // This is preferred over using Netty's names() and getAll(String) methods as those result in multiple scans
+        // over the Netty headers.
+        // This does result in more calls to HttpHeaderName.fromString(String) though, but in most cases this is
+        // preferable as it is rare to have two headers with the same name, which is the only case where we'd see more
+        // calls than necessary.
+        nettyHeaders.iteratorAsString()
+            .forEachRemaining(entry -> coreHeaders.add(HttpHeaderName.fromString(entry.getKey()), entry.getValue()));
+        return coreHeaders;
+    }
+
+    /**
+     * Awaits for the passed {@link CountDownLatch} to reach zero.
+     *
+     * @param latch The latch to wait for.
+     */
+    static void awaitLatch(CountDownLatch latch) {
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            throw new RuntimeException("Interrupted while waiting for latch", e);
+        }
+    }
 
     /**
      * Deep copies the passed {@link ByteBuf} into a {@link ByteBuffer}.

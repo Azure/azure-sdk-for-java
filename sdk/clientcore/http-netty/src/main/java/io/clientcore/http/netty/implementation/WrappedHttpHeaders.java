@@ -44,6 +44,15 @@ public final class WrappedHttpHeaders extends HttpHeaders {
         this.coreHeaders = Objects.requireNonNull(coreHeaders, "'coreHeaders' cannot be null.");
     }
 
+    /**
+     * Get the underlying {@link io.clientcore.core.http.models.HttpHeaders} instance.
+     *
+     * @return The underlying {@link io.clientcore.core.http.models.HttpHeaders} instance.
+     */
+    public io.clientcore.core.http.models.HttpHeaders getCoreHeaders() {
+        return coreHeaders;
+    }
+
     @Override
     public String get(String name) {
         // Per Javadoc on super type, if there are multiple header values for the same name this will return the first

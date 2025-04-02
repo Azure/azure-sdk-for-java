@@ -4,7 +4,6 @@ package io.clientcore.http.netty.implementation;
 
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.shared.LocalTestServer;
-import org.eclipse.jetty.util.Callback;
 
 import javax.servlet.ServletException;
 import java.nio.ByteBuffer;
@@ -75,10 +74,10 @@ public final class NettyHttpClientLocalTestServer {
                 resp.setContentLength(LONG_BODY.length);
                 resp.setContentType("application/octet-stream");
                 resp.getHttpOutput().write(LONG_BODY);
-                resp.getHttpOutput().flush();
-                resp.getHttpOutput().complete(Callback.NOOP);
+                resp.flushBuffer();
             } else if (get && DEFAULT_PATH.equals(path)) {
                 resp.setStatus(200);
+                resp.flushBuffer();
             } else if (get && PREBUILT_CLIENT_PATH.equals(path)) {
                 boolean hasCookie = req.getCookies() != null
                     && Arrays.stream(req.getCookies())
@@ -88,28 +87,27 @@ public final class NettyHttpClientLocalTestServer {
                 if (!hasCookie) {
                     throw new ServletException("Unexpected request: " + req.getMethod() + " " + path);
                 }
+                resp.flushBuffer();
             } else if (get && SHORT_BODY_PATH.equals(path)) {
                 resp.setContentType("application/octet-stream");
                 resp.setContentLength(SHORT_BODY.length);
                 resp.getHttpOutput().write(SHORT_BODY);
-                resp.getHttpOutput().flush();
-                resp.getHttpOutput().complete(Callback.NOOP);
+                resp.flushBuffer();
             } else if (get && ERROR_BODY_PATH.equals(path)) {
                 resp.setStatus(500);
                 resp.setContentLength(5);
                 resp.getHttpOutput().write("error".getBytes(StandardCharsets.UTF_8));
-                resp.getHttpOutput().flush();
-                resp.getHttpOutput().complete(Callback.NOOP);
+                resp.flushBuffer();
             } else if (post && SHORT_POST_BODY_PATH.equals(path)) {
                 resp.setContentType("application/octet-stream");
                 resp.setContentLength(SHORT_BODY.length);
                 resp.getHttpOutput().write(SHORT_BODY);
-                resp.getHttpOutput().flush();
-                resp.getHttpOutput().complete(Callback.NOOP);
+                resp.flushBuffer();
             } else if (post && SHORT_POST_BODY_WITH_VALIDATION_PATH.equals(path)) {
                 if (!Objects.equals(ByteBuffer.wrap(LONG_BODY, 1, 42), ByteBuffer.wrap(requestBody))) {
                     resp.sendError(400, "Request body does not match expected value");
                 }
+                resp.flushBuffer();
             } else if (post && HTTP_HEADERS_PATH.equals(path)) {
                 String headerNameString = TEST_HEADER.getCaseInsensitiveName();
                 String responseTestHeaderValue = req.getHeader(headerNameString);
@@ -118,10 +116,12 @@ public final class NettyHttpClientLocalTestServer {
                 }
 
                 resp.setHeader(headerNameString, responseTestHeaderValue);
+                resp.flushBuffer();
             } else if (get && NO_DOUBLE_UA_PATH.equals(path)) {
                 if (!EXPECTED_HEADER.equals(req.getHeader("User-Agent"))) {
                     resp.setStatus(400);
                 }
+                resp.flushBuffer();
             } else if (get && IO_EXCEPTION_PATH.equals(path)) {
                 resp.getHttpChannel().getConnection().close();
             } else if (get && RETURN_HEADERS_AS_IS_PATH.equals(path)) {
@@ -130,18 +130,17 @@ public final class NettyHttpClientLocalTestServer {
                     List<String> headerValues = Collections.list(req.getHeaders(headerName));
                     headerValues.forEach(headerValue -> resp.addHeader(headerName, headerValue));
                 });
+                resp.flushBuffer();
             } else if (get && PROXY_TO_ADDRESS.equals(path)) {
                 resp.setStatus(418);
                 resp.getHttpOutput().write("I'm a teapot".getBytes(StandardCharsets.UTF_8));
-                resp.getHttpOutput().flush();
-                resp.getHttpOutput().complete(Callback.NOOP);
+                resp.flushBuffer();
             } else if (get && TIMEOUT.equals(path)) {
                 try {
                     Thread.sleep(5000);
                     resp.setStatus(200);
                     resp.getHttpOutput().write(SHORT_BODY);
-                    resp.getHttpOutput().flush();
-                    resp.getHttpOutput().complete(Callback.NOOP);
+                    resp.flushBuffer();
                 } catch (InterruptedException e) {
                     throw new ServletException(e);
                 }

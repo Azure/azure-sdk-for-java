@@ -15,7 +15,6 @@ import io.clientcore.core.models.binarydata.InputStreamBinaryData;
 import io.clientcore.core.utils.ProgressReporter;
 import io.clientcore.http.netty.implementation.CoreProgressAndTimeoutHandler;
 import io.clientcore.http.netty.implementation.CoreResponseHandler;
-import io.clientcore.http.netty.implementation.NettyResponse;
 import io.clientcore.http.netty.implementation.WrappedHttpHeaders;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
@@ -23,14 +22,12 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.DefaultHttpRequest;
-import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpClientCodec;
 import io.netty.handler.codec.http.HttpDecoderConfig;
 import io.netty.handler.codec.http.HttpHeaderNames;
@@ -38,6 +35,7 @@ import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpHeadersFactory;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpVersion;
+import io.netty.handler.flow.FlowControlHandler;
 import io.netty.handler.proxy.HttpProxyHandler;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
@@ -54,7 +52,6 @@ import java.nio.file.StandardOpenOption;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
-import static io.clientcore.core.http.models.HttpMethod.HEAD;
 import static io.netty.handler.codec.http.DefaultHttpHeadersFactory.trailersFactory;
 
 /**
@@ -95,6 +92,8 @@ class NettyHttpClient implements HttpClient {
         String host = uri.getHost();
         int port = uri.getPort() == -1 ? ("https".equalsIgnoreCase(uri.getScheme()) ? 443 : 80) : uri.getPort();
 
+        // Disable auto-read as we want to control when and how data is read from the channel.
+        bootstrap.option(ChannelOption.AUTO_READ, false);
         bootstrap.handler(new ChannelInitializer<Channel>() {
             @Override
             protected void initChannel(Channel ch) throws Exception {
@@ -120,8 +119,8 @@ class NettyHttpClient implements HttpClient {
                     pipeline.addLast(ssl.newHandler(ch.alloc(), host, port));
                 }
 
-                pipeline
-                    .addLast(new HttpClientCodec(new HttpDecoderConfig().setHeadersFactory(new HttpHeadersFactory() {
+                HttpClientCodec httpClientCodec
+                    = new HttpClientCodec(new HttpDecoderConfig().setHeadersFactory(new HttpHeadersFactory() {
                         @Override
                         public HttpHeaders newHeaders() {
                             return new WrappedHttpHeaders(new io.clientcore.core.http.models.HttpHeaders());
@@ -132,9 +131,11 @@ class NettyHttpClient implements HttpClient {
                             return new WrappedHttpHeaders(new io.clientcore.core.http.models.HttpHeaders());
                         }
                     }), HttpClientCodec.DEFAULT_PARSE_HTTP_AFTER_CONNECT_REQUEST,
-                        HttpClientCodec.DEFAULT_FAIL_ON_MISSING_RESPONSE));
+                        HttpClientCodec.DEFAULT_FAIL_ON_MISSING_RESPONSE);
+                httpClientCodec.setSingleDecode(true);
 
-                pipeline.addLast(new CoreResponseHandler());
+                pipeline.addLast(httpClientCodec);
+                pipeline.addLast(new FlowControlHandler());
 
                 ProgressReporter progressReporter
                     = (request.getRequestOptions() == null) ? null : request.getRequestOptions().getProgressReporter();
@@ -150,17 +151,21 @@ class NettyHttpClient implements HttpClient {
         try {
             Channel channel = bootstrap.connect(host, port).sync().channel();
 
+            CoreResponseHandler responseHandler = new CoreResponseHandler(request, responseReference, latch);
+            channel.pipeline().addLast(responseHandler);
+
             sendRequest(request, channel).addListener((ChannelFutureListener) future -> {
                 if (!future.isSuccess()) {
                     LOGGER.atLevel(LogLevel.ERROR).log("Failed to send request", future.cause());
                     future.channel().pipeline().fireExceptionCaught(future.cause());
                     errorReference.set(future.cause());
                     latch.countDown();
+                } else {
+                    future.channel().read();
                 }
             });
 
             latch.await();
-            channel.close();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw LOGGER.logThrowableAsError(new IOException("Request interrupted", e));
