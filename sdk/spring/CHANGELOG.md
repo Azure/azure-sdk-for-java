@@ -6,7 +6,7 @@
 This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Features Added
-- Registers a new bean `ServiceBusConsumerFactory` to support request-reply pattern of `ServiceBusTemplate`.
+- Register a new bean `ServiceBusConsumerFactory` to support request-reply pattern of `ServiceBusTemplate`.
 
 ### Spring Messaging Azure Service Bus
 This section includes changes in the `spring-messaging-azure-servicebus` module.
