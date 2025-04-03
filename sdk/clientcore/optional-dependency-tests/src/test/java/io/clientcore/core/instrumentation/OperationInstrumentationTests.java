@@ -54,7 +54,7 @@ public class OperationInstrumentationTests {
 
     private InstrumentationOptions otelOptions;
     private SdkInstrumentationOptions sdkInstrumentationOptions
-        = new SdkInstrumentationOptions("test-lib").setLibraryVersion("1.0.0")
+        = new SdkInstrumentationOptions("test-lib").setSdkVersion("1.0.0")
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
     @BeforeEach
@@ -199,9 +199,9 @@ public class OperationInstrumentationTests {
 
     @Test
     public void testNestedOperations() {
-        SdkInstrumentationOptions sdkOptions1 = new SdkInstrumentationOptions("test-lib1").setLibraryVersion("1.0.0")
+        SdkInstrumentationOptions sdkOptions1 = new SdkInstrumentationOptions("test-lib1").setSdkVersion("1.0.0")
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
-        SdkInstrumentationOptions sdkOptions2 = new SdkInstrumentationOptions("test-lib2").setLibraryVersion("2.0.0")
+        SdkInstrumentationOptions sdkOptions2 = new SdkInstrumentationOptions("test-lib2").setSdkVersion("2.0.0")
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
         Instrumentation instrumentation1 = Instrumentation.create(otelOptions, sdkOptions1);
         Instrumentation instrumentation2 = Instrumentation.create(otelOptions, sdkOptions2);

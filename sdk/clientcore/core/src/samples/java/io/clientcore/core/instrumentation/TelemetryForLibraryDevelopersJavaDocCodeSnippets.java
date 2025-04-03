@@ -45,7 +45,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
         // BEGIN: io.clientcore.core.instrumentation.gettracer
 
         SdkInstrumentationOptions sdkOptions = new SdkInstrumentationOptions("sample")
-            .setLibraryVersion("1.0.0")
+            .setSdkVersion("1.0.0")
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
         InstrumentationOptions instrumentationOptions = new InstrumentationOptions();
@@ -60,7 +60,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
         // BEGIN: io.clientcore.core.instrumentation.getmeter
 
         SdkInstrumentationOptions sdkOptions = new SdkInstrumentationOptions("sample")
-            .setLibraryVersion("1.0.0")
+            .setSdkVersion("1.0.0")
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
         InstrumentationOptions instrumentationOptions = new InstrumentationOptions();
@@ -72,7 +72,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
 
     public void histogram() {
         SdkInstrumentationOptions sdkOptions = new SdkInstrumentationOptions("sample")
-            .setLibraryVersion("1.0.0")
+            .setSdkVersion("1.0.0")
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
         InstrumentationOptions instrumentationOptions = new InstrumentationOptions();
@@ -111,7 +111,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
 
     public void counter() {
         SdkInstrumentationOptions sdkOptions = new SdkInstrumentationOptions("sample")
-            .setLibraryVersion("1.0.0")
+            .setSdkVersion("1.0.0")
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
         InstrumentationOptions instrumentationOptions = new InstrumentationOptions();
@@ -146,7 +146,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
 
     public void upDownCounter() {
         SdkInstrumentationOptions sdkOptions = new SdkInstrumentationOptions("sample")
-            .setLibraryVersion("1.0.0")
+            .setSdkVersion("1.0.0")
             .setEndpoint("https://example.com")
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
@@ -173,7 +173,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
     public void createAttributes() {
         // BEGIN: io.clientcore.core.instrumentation.createattributes
         SdkInstrumentationOptions sdkOptions = new SdkInstrumentationOptions("sample")
-            .setLibraryVersion("1.0.0")
+            .setSdkVersion("1.0.0")
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
         InstrumentationOptions instrumentationOptions = new InstrumentationOptions();
@@ -191,7 +191,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
     @SuppressWarnings("try")
     public void traceCall() throws IOException {
         SdkInstrumentationOptions sdkOptions = new SdkInstrumentationOptions("sample")
-            .setLibraryVersion("1.0.0")
+            .setSdkVersion("1.0.0")
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0")
             .setEndpoint("https://example.com");
 
@@ -235,7 +235,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
      */
     public void instrumentCallWithMetricsAndTraces() {
         SdkInstrumentationOptions sdkOptions = new SdkInstrumentationOptions("sample")
-            .setLibraryVersion("1.0.0")
+            .setSdkVersion("1.0.0")
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0")
             .setEndpoint("https://example.com");
         Instrumentation instrumentation = Instrumentation.create(null, sdkOptions);
@@ -255,7 +255,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
      */
     public void enrichOperationInstrumentation() {
         SdkInstrumentationOptions sdkOptions = new SdkInstrumentationOptions("sample")
-            .setLibraryVersion("1.0.0")
+            .setSdkVersion("1.0.0")
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0")
             .setEndpoint("https://example.com");
 
@@ -288,7 +288,7 @@ public class TelemetryForLibraryDevelopersJavaDocCodeSnippets {
     @SuppressWarnings("try")
     public void traceWithAttributes() throws IOException {
         SdkInstrumentationOptions sdkOptions = new SdkInstrumentationOptions("sample")
-            .setLibraryVersion("1.0.0")
+            .setSdkVersion("1.0.0")
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0")
             .setEndpoint("https://example.com");
 

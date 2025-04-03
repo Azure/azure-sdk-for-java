@@ -35,7 +35,7 @@ public interface Instrumentation {
      * <pre>
      *
      * SdkInstrumentationOptions sdkOptions = new SdkInstrumentationOptions&#40;&quot;sample&quot;&#41;
-     *     .setLibraryVersion&#40;&quot;1.0.0&quot;&#41;
+     *     .setSdkVersion&#40;&quot;1.0.0&quot;&#41;
      *     .setSchemaUrl&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.29.0&quot;&#41;;
      *
      * InstrumentationOptions instrumentationOptions = new InstrumentationOptions&#40;&#41;;
@@ -62,7 +62,7 @@ public interface Instrumentation {
      * <pre>
      *
      * SdkInstrumentationOptions sdkOptions = new SdkInstrumentationOptions&#40;&quot;sample&quot;&#41;
-     *     .setLibraryVersion&#40;&quot;1.0.0&quot;&#41;
+     *     .setSdkVersion&#40;&quot;1.0.0&quot;&#41;
      *     .setSchemaUrl&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.29.0&quot;&#41;;
      *
      * InstrumentationOptions instrumentationOptions = new InstrumentationOptions&#40;&#41;;
@@ -85,7 +85,7 @@ public interface Instrumentation {
      * <!-- src_embed io.clientcore.core.instrumentation.createattributes -->
      * <pre>
      * SdkInstrumentationOptions sdkOptions = new SdkInstrumentationOptions&#40;&quot;sample&quot;&#41;
-     *     .setLibraryVersion&#40;&quot;1.0.0&quot;&#41;
+     *     .setSdkVersion&#40;&quot;1.0.0&quot;&#41;
      *     .setSchemaUrl&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.29.0&quot;&#41;;
      *
      * InstrumentationOptions instrumentationOptions = new InstrumentationOptions&#40;&#41;;

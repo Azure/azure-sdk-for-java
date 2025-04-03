@@ -59,7 +59,7 @@ public class TracingShimBenchmarks {
             .setTracerProvider(SdkTracerProvider.builder().addSpanProcessor(new NoopProcessor()).build())
             .build();
 
-        sdkInstrumentationOptions = new SdkInstrumentationOptions("test").setLibraryVersion("https://localhost:8080");
+        sdkInstrumentationOptions = new SdkInstrumentationOptions("test").setSdkVersion("https://localhost:8080");
 
         otelTracer = openTelemetry.getTracer("test");
         otelTracerDisabled = TracerProvider.noop().get("test");

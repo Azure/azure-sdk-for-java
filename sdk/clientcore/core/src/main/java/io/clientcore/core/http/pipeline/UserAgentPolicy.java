@@ -86,8 +86,6 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
         return HttpPipelinePosition.BEFORE_REDIRECT;
     }
 
-    private static final String INVALID_APPLICATION_ID_SPACE = "'application.id' cannot contain spaces.";
-
     /**
      * Default {@code UserAgent} header.
      */
@@ -107,7 +105,7 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
 
         if (!CoreUtils.isNullOrEmpty(applicationId)) {
             if (applicationId.contains(" ")) {
-                throw new IllegalArgumentException(INVALID_APPLICATION_ID_SPACE);
+                throw new IllegalArgumentException("'applicationid' cannot contain spaces.");
             } else {
                 userAgentBuilder.append(applicationId).append(" ");
             }

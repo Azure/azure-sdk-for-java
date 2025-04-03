@@ -147,9 +147,8 @@ public class InstrumentationTests {
         try (AutoCloseable otel
             = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).buildAndRegisterGlobal()) {
 
-            SdkInstrumentationOptions sdkOptions
-                = new SdkInstrumentationOptions("test-library").setLibraryVersion("1.0.0")
-                    .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
+            SdkInstrumentationOptions sdkOptions = new SdkInstrumentationOptions("test-library").setSdkVersion("1.0.0")
+                .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
             Tracer tracer = Instrumentation.create(null, sdkOptions).getTracer();
             assertTrue(tracer.isEnabled());

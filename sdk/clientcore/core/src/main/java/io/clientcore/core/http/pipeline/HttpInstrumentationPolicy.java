@@ -155,7 +155,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         Map<String, String> properties = getProperties("core.properties");
         SDK_NAME = properties.getOrDefault("name", "unknown");
         SDK_VERSION = properties.getOrDefault("version", "unknown");
-        SdkInstrumentationOptions sdkOptions = new SdkInstrumentationOptions(SDK_NAME).setLibraryVersion(SDK_VERSION)
+        SdkInstrumentationOptions sdkOptions = new SdkInstrumentationOptions(SDK_NAME).setSdkVersion(SDK_VERSION)
             .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
         // HTTP tracing is special - we suppress nested public API spans, but

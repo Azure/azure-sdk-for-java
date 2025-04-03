@@ -16,13 +16,13 @@ public final class UserAgentOptions {
     private String applicationId;
 
     /**
-     * Creates a {@link UserAgentOptions} with the specified SDK name and version.
+     * Creates a new instance of {@link UserAgentOptions}.
      */
     public UserAgentOptions() {
     }
 
     /**
-     * Sets the SDK name for the user agent.
+     * Sets the SDK name to be used in the user agent.
      *
      * @param sdkName The SDK name to set.
      * @return The updated {@link UserAgentOptions} instance.
@@ -33,7 +33,7 @@ public final class UserAgentOptions {
     }
 
     /**
-     * Sets the SDK version for the user agent.
+     * Sets the SDK version to be used in the user agent.
      *
      * @param sdkVersion The SDK version to set.
      * @return The updated {@link UserAgentOptions} instance.
@@ -44,7 +44,7 @@ public final class UserAgentOptions {
     }
 
     /**
-     * Sets the application ID for the user agent.
+     * Sets the application ID to be used in the user agent.
      *
      * @param applicationId The application ID to set.
      * @return The updated {@link UserAgentOptions} instance.

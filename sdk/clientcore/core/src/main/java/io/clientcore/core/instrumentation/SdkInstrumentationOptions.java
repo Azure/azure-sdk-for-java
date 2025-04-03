@@ -63,7 +63,7 @@ public final class SdkInstrumentationOptions {
      * @param sdkVersion The client library version.
      * @return The updated {@link SdkInstrumentationOptions} object.
      */
-    public SdkInstrumentationOptions setLibraryVersion(String sdkVersion) {
+    public SdkInstrumentationOptions setSdkVersion(String sdkVersion) {
         this.sdkVersion = sdkVersion;
         return this;
     }
