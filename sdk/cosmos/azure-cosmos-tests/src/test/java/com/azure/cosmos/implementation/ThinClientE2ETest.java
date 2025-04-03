@@ -1,9 +1,12 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -11,12 +14,14 @@ import org.testng.annotations.Test;
 
 import java.util.UUID;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+
 public class ThinClientE2ETest {
     @Test
     public void testThinclientHttp2() {
         try {
-            System.setProperty(Configs.THINCLIENT_ENABLED, "true");
-            System.setProperty(Configs.HTTP2_ENABLED, "true");
+            System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
+            System.setProperty("COSMOS.HTTP2_ENABLED", "true");
 
             CosmosAsyncClient client  = new CosmosClientBuilder()
                 .key(TestConfigurations.MASTER_KEY)
@@ -31,12 +36,19 @@ public class ThinClientE2ETest {
             String idValue = UUID.randomUUID().toString();
             doc.put("id", idValue);
             doc.put("pk", idValue);
-            container.createItem(doc).block();
-            container.readItem(idValue, new PartitionKey(idValue), ObjectNode.class).block();
-            container.deleteItem(idValue, new PartitionKey(idValue)).block();
+            CosmosItemResponse<ObjectNode> createResponse = container.createItem(doc).block();
+            assertThat(createResponse.getStatusCode()).isBetween(199, 300);
+            assertThat(createResponse.getRequestCharge()).isGreaterThan(0.0);
+            CosmosItemResponse<ObjectNode> readResponse = container.readItem(idValue, new PartitionKey(idValue), ObjectNode.class).block();
+            assertThat(readResponse.getRequestCharge()).isGreaterThan(0.0);
+            assertThat(readResponse.getStatusCode()).isBetween(199, 300);
+            CosmosItemResponse<Object> deleteResponse = container.deleteItem(idValue, new PartitionKey(idValue)).block();
+            assertThat(deleteResponse.getRequestCharge()).isGreaterThan(0.0);
+            assertThat(deleteResponse.getStatusCode()).isBetween(199, 300);
+            client.close();
         } finally {
-            System.clearProperty(Configs.THINCLIENT_ENABLED);
-            System.clearProperty(Configs.HTTP2_ENABLED);
+            System.clearProperty("COSMOS.THINCLIENT_ENABLED");
+            System.clearProperty("COSMOS.HTTP2_ENABLED");
         }
 
     }

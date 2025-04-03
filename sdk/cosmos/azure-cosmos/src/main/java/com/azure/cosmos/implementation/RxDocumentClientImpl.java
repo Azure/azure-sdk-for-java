@@ -262,7 +262,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final boolean isRegionScopedSessionCapturingEnabledOnClientOrSystemConfig;
     private List<CosmosOperationPolicy> operationPolicies;
     private AtomicReference<CosmosAsyncClient> cachedCosmosAsyncClientSnapshot;
-    private final boolean isThinClientEnabled;
 
     public RxDocumentClientImpl(URI serviceEndpoint,
                                 String masterKeyOrResourceToken,
@@ -524,8 +523,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             } else {
                 this.connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
             }
-
-            this.isThinClientEnabled = Configs.isThinClientEnabled() && this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY;
 
             this.diagnosticsClientConfig.withConnectionMode(this.getConnectionPolicy().getConnectionMode());
             this.diagnosticsClientConfig.withConnectionPolicy(this.connectionPolicy);
@@ -2060,11 +2057,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
      * @return Mono, which on subscription will populate the headers in the request passed in the argument.
      */
     public Mono<RxDocumentServiceRequest> populateHeadersAsync(RxDocumentServiceRequest request, RequestVerb httpMethod) {
-        // if thin client enabled, populate thin client header so we can get thin client read and writeable locations
-        if (this.isThinClientEnabled) {
-            request.getHeaders().put(HttpConstants.HttpHeaders.THINCLIENT_OPT_IN, "true");
-        }
-
         request.getHeaders().put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
         if (this.masterKeyOrResourceToken != null || this.resourceTokensMap != null
             || this.cosmosAuthorizationTokenResolver != null || this.credential != null) {
@@ -5728,6 +5720,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return Flux.defer(() -> {
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
                 OperationType.Read, ResourceType.DatabaseAccount, "", null, (Object) null);
+            // if thin client enabled, populate thin client header so we can get thin client read and writeable locations
+            if (useThinClient(request)) {
+                request.getHeaders().put(HttpConstants.HttpHeaders.THINCLIENT_OPT_IN, "true");
+            }
             return this.populateHeadersAsync(request, RequestVerb.GET)
                 .flatMap(requestPopulated -> {
 
@@ -5753,11 +5749,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
      * @return RxStoreModel
      */
     private RxStoreModel getStoreProxy(RxDocumentServiceRequest request) {
-        if (request.isMetadataRequest()) {
+        if (request.isMetadataRequest() || request.isChangeFeedRequest()) {
             return this.gatewayProxy;
         }
 
-        if (this.isThinClientEnabled) {
+        if (useThinClient(request)) {
             return this.thinProxy;
         }
 
@@ -6790,6 +6786,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.globalPartitionEndpointManagerForCircuitBreaker
                 .handleLocationExceptionForPartitionKeyRange(failedRequest, firstContactedLocationEndpoint);
         }
+    }
+
+    private boolean useThinClient(RxDocumentServiceRequest request) {
+        List<OperationType> thinClientSupportedOperations = Arrays.asList(
+            OperationType.Read,
+            OperationType.Create,
+            OperationType.Delete);
+
+        return Configs.isThinClientEnabled()
+            && this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY
+            && thinClientSupportedOperations.contains(request.getOperationType());
     }
 
     @FunctionalInterface

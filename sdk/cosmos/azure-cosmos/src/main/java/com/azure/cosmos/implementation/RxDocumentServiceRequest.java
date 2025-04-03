@@ -950,7 +950,7 @@ public class RxDocumentServiceRequest implements Cloneable {
     }
 
     public boolean isChangeFeedRequest() {
-        return this.headers.containsKey(HttpConstants.HttpHeaders.A_IM);
+        return operationType == OperationType.ReadFeed;
     }
 
     public boolean isWritingToMaster() {

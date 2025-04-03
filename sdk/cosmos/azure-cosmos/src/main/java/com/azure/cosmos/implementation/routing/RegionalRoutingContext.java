@@ -41,8 +41,12 @@ public class RegionalRoutingContext {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RegionalRoutingContext that = (RegionalRoutingContext) o;
-        return this.gatewayRegionalEndpoint.equals(that.gatewayRegionalEndpoint) &&
-            this.thinclientRegionalEndpoint.equals(that.thinclientRegionalEndpoint);
+        if (this.thinclientRegionalEndpoint != null) {
+            return this.gatewayRegionalEndpoint.equals(that.gatewayRegionalEndpoint) &&
+                this.thinclientRegionalEndpoint.equals(that.thinclientRegionalEndpoint);
+        } else {
+            return this.gatewayRegionalEndpoint.equals(that.gatewayRegionalEndpoint);
+        }
     }
 
     @Override

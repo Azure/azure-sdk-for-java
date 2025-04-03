@@ -32,6 +32,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public class ThinClientStoreModel extends RxGatewayStoreModel {
 
+    private String globalDatabaseAccountName;
+
     public ThinClientStoreModel(
         DiagnosticsClientContext clientContext,
         ISessionContainer sessionContainer,
@@ -75,7 +77,6 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         // Since the Thin client proxy also needs to set the user-agent header to a different value
         // it is not added to the rntbd headers - just http-headers in the SDK
         defaultHeaders.put(HttpConstants.HttpHeaders.USER_AGENT, userAgentContainer.getUserAgent());
-        defaultHeaders.put(HttpConstants.HttpHeaders.ACTIVITY_ID, "000000-0000-0000-00000-000000000001");
 
         return defaultHeaders;
     }
@@ -112,13 +113,14 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
 
     @Override
     public HttpRequest wrapInHttpRequest(RxDocumentServiceRequest request, URI requestUri) throws Exception {
-
-        String globalDatabaseAccountName = this.globalEndpointManager.getLatestDatabaseAccount().getId();
+        if (this.globalDatabaseAccountName == null) {
+            this.globalDatabaseAccountName = this.globalEndpointManager.getLatestDatabaseAccount().getId();
+        }
         // todo - neharao1 - validate b/w name() v/s toString()
         request.setThinclientHeaders(
             request.getOperationType().name(),
             request.getResourceType().name(),
-            globalDatabaseAccountName,
+            this.globalDatabaseAccountName,
             request.getResourceId());
 
         byte[] epk = request.getPartitionKeyInternal().getEffectivePartitionKeyBytes(request.getPartitionKeyInternal(), request.getPartitionKeyDefinition());
@@ -132,6 +134,7 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         // todo - neharao1: validate what HTTP headers are needed - for now have put default ThinClient HTTP headers
         // todo - based on fabianm comment - thinClient also takes op type and resource type headers as HTTP headers
         HttpHeaders headers = this.getHttpHeaders();
+        headers.set(HttpConstants.HttpHeaders.ACTIVITY_ID, request.getActivityId().toString());
 
         RntbdRequest rntbdRequest = RntbdRequest.from(rntbdRequestArgs);
         rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.EffectivePartitionKey, epk);
