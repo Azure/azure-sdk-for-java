@@ -2331,11 +2331,16 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
 
         getCompletionsRunner((deploymentId, prompt) -> {
-            StepVerifier.create(client.getCompletionsStream(deploymentId, new CompletionsOptions(prompt),
-                new ChatCompletionStreamOptions())).thenConsumeWhile(completions -> {
-                    assertNotNull(completions);
+            StepVerifier
+                .create(client.getCompletionsStream(deploymentId, new CompletionsOptions(prompt),
+                    new ChatCompletionStreamOptions().setIncludeUsage(true)))
+                .recordWith(ArrayList::new)
+                .thenConsumeWhile(completion -> {
+                    assertNotNull(completion);
                     return true;
-                }).verifyComplete();
+                })
+                .consumeRecordedWith(messageList -> assertFalse(messageList.isEmpty()))
+                .verifyComplete();
         });
     }
 
@@ -2345,11 +2350,16 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
 
         getChatCompletionsRunner((deploymentId, prompt) -> {
-            StepVerifier.create(client.getChatCompletionsStream(deploymentId, new ChatCompletionsOptions(prompt),
-                new ChatCompletionStreamOptions())).thenConsumeWhile(chatCompletions -> {
-                    assertNotNull(chatCompletions);
+            StepVerifier
+                .create(client.getChatCompletionsStream(deploymentId, new ChatCompletionsOptions(prompt),
+                    new ChatCompletionStreamOptions().setIncludeUsage(true)))
+                .recordWith(ArrayList::new)
+                .thenConsumeWhile(chatCompletion -> {
+                    assertNotNull(chatCompletion);
                     return true;
-                }).verifyComplete();
+                })
+                .consumeRecordedWith(messageList -> assertFalse(messageList.isEmpty()))
+                .verifyComplete();
         });
     }
 }
