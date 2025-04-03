@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.v2.security.keyvault.keys.implementation;
 
-import io.clientcore.core.http.exceptions.HttpResponseException;
+import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonReader;
@@ -18,7 +18,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-import static io.clientcore.core.utils.AuthUtils.isNullOrEmpty;
+import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
 /**
  * Utility class for KeyVault Keys.

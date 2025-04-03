@@ -1112,13 +1112,13 @@ public class JsonWebKey implements JsonSerializable<JsonWebKey> {
             return null;
         }
 
-        if (curveName == KeyCurveName.P256) {
+        if (curveName == KeyCurveName.P_256) {
             return "secp256r1";
-        } else if (curveName == KeyCurveName.P384) {
+        } else if (curveName == KeyCurveName.P_384) {
             return "secp384r1";
-        } else if (curveName == KeyCurveName.P521) {
+        } else if (curveName == KeyCurveName.P_512) {
             return "secp521r1";
-        } else if (curveName == KeyCurveName.P256_K) {
+        } else if (curveName == KeyCurveName.P_256K) {
             return "secp256k1";
         } else {
             return null;
@@ -1126,7 +1126,7 @@ public class JsonWebKey implements JsonSerializable<JsonWebKey> {
     }
 
     private static final List<KeyCurveName> KNOWN_CURVE_NAMES =
-        Arrays.asList(KeyCurveName.P256, KeyCurveName.P384, KeyCurveName.P521, KeyCurveName.P256_K);
+        Arrays.asList(KeyCurveName.P_256, KeyCurveName.P_384, KeyCurveName.P_512, KeyCurveName.P_256K);
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
