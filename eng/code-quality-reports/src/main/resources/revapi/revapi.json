@@ -589,26 +589,6 @@
           "justification": "Additional schema formats are supported by Schema Registry."
         },
         {
-          "regex": true,
-          "code": "java\\.annotation\\.(attributeRemoved|attributeAdded|removed)",
-          "old": ".*? com\\.azure\\.resourcemanager\\..*\\.models.*",
-          "justification": "Migration to azure-json."
-        },
-        {
-          "regex": true,
-          "code": "java.class.nowFinal",
-          "old": "class com.azure.resourcemanager.(eventhubs|servicebus).models.Identity",
-          "new": "class com.azure.resourcemanager.(eventhubs|servicebus).models.Identity",
-          "justification": "Class is now final."
-        },
-        {
-          "regex": true,
-          "code": "java.class.nowFinal",
-          "old": "class com.azure.resourcemanager.(eventhubs|servicebus).models.UserAssignedIdentity",
-          "new": "class com.azure.resourcemanager.(eventhubs|servicebus).models.UserAssignedIdentity",
-          "justification": "Class is now final."
-        },
-        {
           "code": "java.method.returnTypeErasureChanged",
           "old": "method T com.azure.identity.AadCredentialBuilderBase<T extends com.azure.identity.AadCredentialBuilderBase<T>>::clientId(java.lang.String) @ com.azure.identity.InteractiveBrowserCredentialBuilder",
           "new": "method com.azure.identity.InteractiveBrowserCredentialBuilder com.azure.identity.InteractiveBrowserCredentialBuilder::clientId(java.lang.String)",
@@ -622,133 +602,165 @@
         },
         {
           "ignore": true,
-          "code": "java.method.returnTypeChanged",
-          "old": "method java.lang.Float com.azure.resourcemanager.appservice.models.FunctionsAlwaysReadyConfig::instanceCount()",
-          "new": "method java.lang.Integer com.azure.resourcemanager.appservice.models.FunctionsAlwaysReadyConfig::instanceCount()",
-          "justification": "Service bug fix."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.parameterTypeChanged",
-          "old": "parameter com.azure.resourcemanager.appservice.models.FunctionsAlwaysReadyConfig com.azure.resourcemanager.appservice.models.FunctionsAlwaysReadyConfig::withInstanceCount(===java.lang.Float===)",
-          "new": "parameter com.azure.resourcemanager.appservice.models.FunctionsAlwaysReadyConfig com.azure.resourcemanager.appservice.models.FunctionsAlwaysReadyConfig::withInstanceCount(===java.lang.Integer===)",
-          "parameterIndex": "0",
-          "justification": "Service bug fix."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.returnTypeChanged",
-          "old": "method java.lang.Float com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::instanceMemoryMB()",
-          "new": "method java.lang.Integer com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::instanceMemoryMB()",
-          "justification": "Service bug fix."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.returnTypeChanged",
-          "old": "method java.lang.Float com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::maximumInstanceCount()",
-          "new": "method java.lang.Integer com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::maximumInstanceCount()",
-          "justification": "Service bug fix."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.parameterTypeChanged",
-          "old": "parameter com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::withInstanceMemoryMB(===java.lang.Float===)",
-          "new": "parameter com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::withInstanceMemoryMB(===java.lang.Integer===)",
-          "parameterIndex": "0",
-          "justification": "Service bug fix."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.parameterTypeChanged",
-          "old": "parameter com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::withMaximumInstanceCount(===java.lang.Float===)",
-          "new": "parameter com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrency::withMaximumInstanceCount(===java.lang.Integer===)",
-          "parameterIndex": "0",
-          "justification": "Service bug fix."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.returnTypeChanged",
-          "old": "method java.lang.Float com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp::perInstanceConcurrency()",
-          "new": "method java.lang.Integer com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp::perInstanceConcurrency()",
-          "justification": "Service bug fix."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.parameterTypeChanged",
-          "old": "parameter com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp::withPerInstanceConcurrency(===java.lang.Float===)",
-          "new": "parameter com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp com.azure.resourcemanager.appservice.models.FunctionsScaleAndConcurrencyTriggersHttp::withPerInstanceConcurrency(===java.lang.Integer===)",
-          "parameterIndex": "0",
-          "justification": "Service bug fix."
-        },
-        {
-          "ignore": true,
-          "code": "java.class.nowFinal",
-          "old": "class com.azure.resourcemanager.sql.models.DatabaseIdentity",
-          "new": "class com.azure.resourcemanager.sql.models.DatabaseIdentity",
-          "justification": "Customer unlikely to subclass this class."
-        },
-        {
-          "ignore": true,
-          "code": "java.class.nowFinal",
-          "old": "class com.azure.resourcemanager.sql.models.DatabaseUserIdentity",
-          "new": "class com.azure.resourcemanager.sql.models.DatabaseUserIdentity",
-          "justification": "Customer unlikely to subclass this class."
-        },
-        {
-          "ignore": true,
-          "code": "java.class.nowFinal",
-          "old": "class com.azure.resourcemanager.sql.models.ResourceIdentity",
-          "new": "class com.azure.resourcemanager.sql.models.ResourceIdentity",
-          "justification": "Customer unlikely to subclass this class."
-        },
-        {
-          "ignore": true,
-          "code": "java.class.nowFinal",
-          "old": "class com.azure.resourcemanager.sql.models.UserIdentity",
-          "new": "class com.azure.resourcemanager.sql.models.UserIdentity",
-          "justification": "Customer unlikely to subclass this class."
-        },
-        {
-          "ignore": true,
-          "code": "java.method.removed",
-          "old": "method com.azure.resourcemanager.compute.models.WindowsConfiguration com.azure.resourcemanager.compute.models.WindowsConfiguration::withEnableVMAgentPlatformUpdates(java.lang.Boolean)",
-          "justification": "Service changed the property to readOnly."
-        },
-        {
-          "ignore": true,
-          "code" : "java.method.removed",
-          "old" : "method com.azure.resourcemanager.cosmos.models.DatabaseAccountCreateUpdateParameters com.azure.resourcemanager.cosmos.models.DatabaseAccountCreateUpdateParameters::withDatabaseAccountOfferType(java.lang.String)",
-          "justification": "The property is a constant, which should not be changed."
-        },
-        {
-          "ignore": true,
-          "code" : "java.method.removed",
-          "old" : "method com.azure.resourcemanager.storage.models.StorageAccountCheckNameAvailabilityParameters com.azure.resourcemanager.storage.models.StorageAccountCheckNameAvailabilityParameters::withType(java.lang.String)",
-          "justification": "The property is a constant, which should not be changed."
-        },
-        {
-          "ignore": true,
           "code": "java.field.addedStaticField",
           "new": "field com.azure.messaging.webpubsub.models.WebPubSubClientProtocol.SOCKETIO",
           "justification": "Additional protocols are supported by Web PubSub."
         },
         {
           "ignore": true,
-          "code" : "java.method.removed",
-          "old" : "method com.azure.resourcemanager.keyvault.models.VaultCheckNameAvailabilityParameters com.azure.resourcemanager.keyvault.models.VaultCheckNameAvailabilityParameters::withType(java.lang.String)",
-          "justification": "The property is a constant, which should not be changed."
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.appservice.models.ActiveRevisionsMode",
+          "justification": "Service removed containerapps resource type."
         },
         {
           "ignore": true,
-          "code" : "java.method.removed",
-          "old" : "method com.azure.resourcemanager.containerservice.models.ManagedClusterLoadBalancerProfile com.azure.resourcemanager.containerservice.models.ManagedClusterLoadBalancerProfile::withEffectiveOutboundIPs(java.util.List<com.azure.resourcemanager.containerservice.models.ResourceReference>)",
-          "justification": "The effectiveOutboundIPs was never a client-side modifiable property."
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.appservice.models.Configuration",
+          "justification": "Service removed containerapps resource type."
         },
         {
           "ignore": true,
-          "code" : "java.method.removed",
-          "old" : "method com.azure.resourcemanager.containerservice.models.ManagedClusterNatGatewayProfile com.azure.resourcemanager.containerservice.models.ManagedClusterNatGatewayProfile::withEffectiveOutboundIPs(java.util.List<com.azure.resourcemanager.containerservice.models.ResourceReference>)",
-          "justification": "The effectiveOutboundIPs was never a client-side modifiable property."
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.appservice.models.Container",
+          "justification": "Service removed containerapps resource type."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.appservice.models.ContainerAppCollection",
+          "justification": "Service removed containerapps resource type."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.appservice.models.ContainerAppProvisioningState",
+          "justification": "Service removed containerapps resource type."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.appservice.models.ContainerAppSecret",
+          "justification": "Service removed containerapps resource type."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.appservice.models.ContainerResources",
+          "justification": "Service removed containerapps resource type."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.appservice.models.CustomScaleRule",
+          "justification": "Service removed containerapps resource type."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.appservice.models.Dapr",
+          "justification": "Service removed containerapps resource type."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.appservice.models.DaprComponent",
+          "justification": "Service removed containerapps resource type."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.appservice.models.DaprMetadata",
+          "justification": "Service removed containerapps resource type."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.appservice.models.EnvironmentVar",
+          "justification": "Service removed containerapps resource type."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.appservice.models.HttpScaleRule",
+          "justification": "Service removed containerapps resource type."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.appservice.models.Ingress",
+          "justification": "Service removed containerapps resource type."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.appservice.models.IngressTransportMethod",
+          "justification": "Service removed containerapps resource type."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.appservice.models.QueueScaleRule",
+          "justification": "Service removed containerapps resource type."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.appservice.models.RegistryCredentials",
+          "justification": "Service removed containerapps resource type."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.appservice.models.RevisionCollection",
+          "justification": "Service removed containerapps resource type."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.appservice.models.RevisionHealthState",
+          "justification": "Service removed containerapps resource type."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.appservice.models.RevisionProvisioningState",
+          "justification": "Service removed containerapps resource type."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.appservice.models.Scale",
+          "justification": "Service removed containerapps resource type."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.appservice.models.ScaleRule",
+          "justification": "Service removed containerapps resource type."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.appservice.models.ScaleRuleAuth",
+          "justification": "Service removed containerapps resource type."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.appservice.models.Secret",
+          "justification": "Service removed containerapps resource type."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.appservice.models.Template",
+          "justification": "Service removed containerapps resource type."
+        },
+        {
+          "ignore": true,
+          "code": "java.class.removed",
+          "old": "class com.azure.resourcemanager.appservice.models.TrafficWeight",
+          "justification": "Service removed containerapps resource type."
         }
       ]
     }
