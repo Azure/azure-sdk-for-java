@@ -214,12 +214,18 @@ public final class TestUtils {
     public static HttpClient getFaultInjectingHttpClient(HttpClient clientToWrap, boolean useHttps, int successRate,
         int partialRate, int failureRate) {
         if (successRate + partialRate + failureRate != 100 || successRate < 0 || partialRate < 0 || failureRate < 0) {
-            throw LOGGER.atError()
+            IllegalArgumentException error = new IllegalArgumentException(
+                String.format("successRate: %d, partialRate: %d, failureRate: %d must add up to 100 and be >= 0",
+                    successRate, partialRate, failureRate));
+
+            LOGGER.atError()
                 .addKeyValue("successRate", successRate)
                 .addKeyValue("partialRage", partialRate)
                 .addKeyValue("failureRate", failureRate)
-                .log("", new IllegalStateException(
-                    "'successRate', 'partialRate', and 'failureRate' must add to 100 and no values can be negative."));
+                .setThrowable(error)
+                .log();
+
+            throw error;
         }
 
         return new HttpFaultInjectingHttpClient(clientToWrap, useHttps, successRate, partialRate);

@@ -53,6 +53,7 @@ public final class LoggingEvent {
     private Map<String, Object> keyValuePairs;
     private String eventName;
     private InstrumentationContext context = null;
+    private Throwable throwable = null;
 
     /**
      * Creates {@code LoggingEvent} for provided level and  {@link ClientLogger}.
@@ -207,6 +208,17 @@ public final class LoggingEvent {
     }
 
     /**
+     * Sets the throwable for the current log event.
+     *
+     * @param throwable The throwable to be logged.
+     * @return The updated {@code LoggingEvent} object.
+     */
+    public LoggingEvent setThrowable(Throwable throwable) {
+        this.throwable = throwable;
+        return this;
+    }
+
+    /**
      * Sets the event name for the current log event. The event name is used to query all logs
      * that describe the same event. It must not contain any dynamic parts.
      *
@@ -232,9 +244,7 @@ public final class LoggingEvent {
      * @param message log message.
      */
     public void log(String message) {
-        if (this.isEnabled) {
-            logger.performLogging(level, getMessageWithContext(message), null);
-        }
+        performLogging(message);
     }
 
     /**
@@ -251,44 +261,15 @@ public final class LoggingEvent {
      */
     public void log(Supplier<String> message) {
         if (this.isEnabled) {
-            logger.performLogging(level, getMessageWithContext(message.get()), null);
+            performLogging(message.get());
         }
     }
 
-    /**
-     * Logs throwable annotated with context.
-     *
-     * @param throwable {@link Throwable} for the message.
-     * @param <T> Type of the Throwable being logged.
-     * @return The passed {@link Throwable}.
-     */
-    public <T extends Throwable> T log(T throwable) {
-        return log(null, throwable);
-    }
-
-    /**
-     * Logs message annotated with context.
-     *
-     * @param message log message.
-     * @param throwable {@link Throwable} for the message.
-     * @param <T> Type of the Throwable being logged.
-     * @return The passed {@link Throwable}.
-     */
-    public <T extends Throwable> T log(String message, T throwable) {
+    private void performLogging(String message) {
         if (this.isEnabled) {
-            boolean isDebugEnabled = logger.canLogAtLevel(LogLevel.VERBOSE);
-            if (throwable != null) {
-                addKeyValueInternal(EXCEPTION_TYPE_KEY, throwable.getClass().getCanonicalName());
-                addKeyValueInternal(EXCEPTION_MESSAGE_KEY, throwable.getMessage());
-                if (isDebugEnabled) {
-                    StringBuilder stackTrace = new StringBuilder();
-                    DefaultLogger.appendThrowable(stackTrace, throwable);
-                    addKeyValue(EXCEPTION_STACKTRACE_KEY, stackTrace.toString());
-                }
-            }
-            logger.performLogging(level, getMessageWithContext(message), isDebugEnabled ? throwable : null);
+            logger.performLogging(level, getMessageWithContext(message),
+                logger.canLogAtLevel(LogLevel.VERBOSE) ? throwable : null);
         }
-        return throwable;
     }
 
     private String getMessageWithContext(String message) {
@@ -299,6 +280,16 @@ public final class LoggingEvent {
 
             addKeyValue(TRACE_ID_KEY, context.getTraceId());
             addKeyValue(SPAN_ID_KEY, context.getSpanId());
+        }
+
+        if (throwable != null) {
+            addKeyValueInternal(EXCEPTION_TYPE_KEY, throwable.getClass().getCanonicalName());
+            addKeyValueInternal(EXCEPTION_MESSAGE_KEY, throwable.getMessage());
+            if (logger.canLogAtLevel(LogLevel.VERBOSE)) {
+                StringBuilder stackTrace = new StringBuilder();
+                DefaultLogger.appendThrowable(stackTrace, throwable);
+                addKeyValue(EXCEPTION_STACKTRACE_KEY, stackTrace.toString());
+            }
         }
 
         int pairsCount

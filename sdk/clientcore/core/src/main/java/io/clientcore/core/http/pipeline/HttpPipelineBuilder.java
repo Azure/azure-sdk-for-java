@@ -152,9 +152,10 @@ public class HttpPipelineBuilder {
 
         HttpPipelinePosition order = policy.getPipelinePosition();
         if (order == null) {
-            throw LOGGER.atError()
-                .addKeyValue("policyType", policy.getClass())
-                .log("Policy order cannot be null.", new IllegalArgumentException("Policy order cannot be null."));
+            String exceptionMessage
+                = String.format("%s policy has invalid pipeline position - position cannot be null.",
+                    policy.getClass().getCanonicalName());
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException(exceptionMessage));
         }
 
         if (order == HttpPipelinePosition.BEFORE_REDIRECT) {
@@ -168,10 +169,9 @@ public class HttpPipelineBuilder {
         } else if (order == HttpPipelinePosition.AFTER_INSTRUMENTATION) {
             afterInstrumentation.add(policy);
         } else {
-            throw LOGGER.atError()
-                .addKeyValue("policyType", policy.getClass())
-                .addKeyValue("order", order)
-                .log("Unknown policy order.", new IllegalArgumentException("Unknown policy order."));
+            String exceptionMessage
+                = String.format("%s policy has unexpected position '%s'.", policy.getClass().getCanonicalName(), order);
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException(exceptionMessage));
         }
 
         return this;
