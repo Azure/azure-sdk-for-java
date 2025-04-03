@@ -52,7 +52,7 @@ public class PhoneNumberCost implements JsonSerializable<PhoneNumberCost> {
      * @param amount the amount value to set.
      * @return the PhoneNumberCost object itself.
      */
-    PhoneNumberCost setAmount(double amount) {
+    protected PhoneNumberCost setAmount(double amount) {
         this.amount = amount;
         return this;
     }
@@ -72,7 +72,7 @@ public class PhoneNumberCost implements JsonSerializable<PhoneNumberCost> {
      * @param currencyCode the currencyCode value to set.
      * @return the PhoneNumberCost object itself.
      */
-    PhoneNumberCost setCurrencyCode(String currencyCode) {
+    protected PhoneNumberCost setCurrencyCode(String currencyCode) {
         this.currencyCode = currencyCode;
         return this;
     }
@@ -92,7 +92,7 @@ public class PhoneNumberCost implements JsonSerializable<PhoneNumberCost> {
      * @param billingFrequency the billingFrequency value to set.
      * @return the PhoneNumberCost object itself.
      */
-    PhoneNumberCost setBillingFrequency(BillingFrequency billingFrequency) {
+    protected PhoneNumberCost setBillingFrequency(BillingFrequency billingFrequency) {
         this.billingFrequency = billingFrequency;
         return this;
     }

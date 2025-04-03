@@ -32,7 +32,13 @@ import com.azure.communication.phonenumbers.models.PhoneNumberOperationStatus;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
+import com.azure.communication.phonenumbers.models.PhoneNumbersBrowseRequest;
+import com.azure.communication.phonenumbers.models.PhoneNumbersBrowseResult;
+import com.azure.communication.phonenumbers.models.PhoneNumbersPurchaseReservationResponse;
+import com.azure.communication.phonenumbers.models.PhoneNumbersReservation;
+import com.azure.communication.phonenumbers.models.PhoneNumbersReservationPurchaseRequest;
 import com.azure.communication.phonenumbers.models.PurchasePhoneNumbersResult;
+import com.azure.communication.phonenumbers.models.PurchaseReservationResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -50,6 +56,7 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -166,6 +173,36 @@ public final class PhoneNumbersAsyncClient {
     }
 
     /**
+     * Gets a reservation by its ID.
+     * 
+     * Retrieves the reservation with the given ID, including all of the phone numbers associated with it.
+     * 
+     * @param reservationId The id of the reservation.
+     * @return represents a reservation for phone numbers on successful completion of {@link Mono}.
+     * @throws NullPointerException if {@code reservationId} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PhoneNumbersReservation> getReservationAsync(UUID reservationId) {
+        Objects.requireNonNull(reservationId, "'reservationId' cannot be null.");
+        return client.getReservationAsync(reservationId);
+    }
+
+    /**
+     * Gets a reservation by its ID.
+     * 
+     * Retrieves the reservation with the given ID, including all of the phone numbers associated with it.
+     * 
+     * @param reservationId The id of the reservation.
+     * @return represents a reservation for phone numbers on successful completion of {@link Mono}.
+     * @throws NullPointerException if {@code reservationId} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PhoneNumbersReservation> getReservationAsync(UUID reservationId, Context context) {
+        Objects.requireNonNull(reservationId, "'reservationId' cannot be null.");
+        return client.getReservationAsync(reservationId, context);
+    }
+
+    /**
      * Gets the list of the purchased phone numbers.
      *
      * <p>
@@ -194,6 +231,40 @@ public final class PhoneNumbersAsyncClient {
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> monoError(logger, ex));
         }
+    }
+
+    /**
+     * Browses for available phone numbers to purchase.
+     * 
+     * Browses for available phone numbers to purchase. The response will be a randomized list of phone numbers
+     * available to purchase matching the browsing criteria. This operation is not paginated. Since the results are
+     * randomized, repeating the same request will not guarantee the same results.
+     * 
+     * @param countryCode The ISO 3166-2 country code, e.g. US.
+     * @param phoneNumbersBrowseRequest An object defining the criteria to browse for available phone numbers.
+     * @return the result of a phone number browse operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PhoneNumbersBrowseResult> browseAvailableNumbersAsync(String countryCode,
+        PhoneNumbersBrowseRequest phoneNumbersBrowseRequest) {
+        return client.browseAvailableNumbersAsync(countryCode, phoneNumbersBrowseRequest);
+    }
+
+    /**
+     * Browses for available phone numbers to purchase.
+     * 
+     * Browses for available phone numbers to purchase. The response will be a randomized list of phone numbers
+     * available to purchase matching the browsing criteria. This operation is not paginated. Since the results are
+     * randomized, repeating the same request will not guarantee the same results.
+     * 
+     * @param countryCode The ISO 3166-2 country code, e.g. US.
+     * @param phoneNumbersBrowseRequest An object defining the criteria to browse for available phone numbers.
+     * @return the result of a phone number browse operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PhoneNumbersBrowseResult> browseAvailableNumbersAsync(String countryCode,
+        PhoneNumbersBrowseRequest phoneNumbersBrowseRequest, Context context) {
+        return client.browseAvailableNumbersAsync(countryCode, phoneNumbersBrowseRequest, context);
     }
 
     /**
@@ -429,15 +500,62 @@ public final class PhoneNumbersAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId) {
-        return beginPurchasePhoneNumbers(searchId, null);
+        return beginPurchasePhoneNumbers(searchId, false, null);
+    }
+
+    /**
+    * Starts the purchase of the phone number(s) in the search result associated
+    * with a given id.
+    *
+    * @param searchId ID of the search.
+    * @param context A {@link Context} representing the request context.
+    * @return A {@link PollerFlux} object.
+    * @throws NullPointerException if {@code searchId} is null.
+    * @throws RuntimeException if purchase operation fails.
+    */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId,
+        Context context) {
+        return beginPurchasePhoneNumbers(searchId, false, context);
+    }
+
+    /**
+     * Starts the purchase of the phone number(s) in the search result associated
+     * with a given id.
+     *
+     * <p>
+     * <strong>Code Samples</strong>
+     * </p>
+     *
+     * <!-- src_embed com.azure.communication.phonenumbers.asyncclient.beginPurchase
+     * -->
+     *
+     * <pre>
+     * AsyncPollResponse&lt;PhoneNumberOperation, PurchasePhoneNumbersResult&gt; purchaseResponse = phoneNumberAsyncClient
+     *         .beginPurchasePhoneNumbers&#40;searchId&#41;.blockFirst&#40;&#41;;
+     * System.out.println&#40;&quot;Purchase phone numbers is complete: &quot; + purchaseResponse.getStatus&#40;&#41;&#41;;
+     * </pre>
+     *
+     * <!-- end com.azure.communication.phonenumbers.asyncclient.beginPurchase -->
+     *
+     * @param searchId ID of the search.
+     * @param agreeToNotResell Parameter indicating agreement to not resell the phone numbers.
+     * @return A {@link PollerFlux} object.
+     * @throws NullPointerException if {@code searchId} is null.
+     * @throws RuntimeException if purchase operation fails.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId,
+        Boolean agreeToNotResell) {
+        return beginPurchasePhoneNumbers(searchId, agreeToNotResell, null);
     }
 
     PollerFlux<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId,
-        Context context) {
+        Boolean agreeToNotResell, Context context) {
         try {
             Objects.requireNonNull(searchId, "'searchId' cannot be null.");
-            return new PollerFlux<>(defaultPollInterval, purchaseNumbersInitOperation(searchId, context),
-                pollOperation(),
+            return new PollerFlux<>(defaultPollInterval,
+                purchaseNumbersInitOperation(searchId, agreeToNotResell, context), pollOperation(),
                 (pollingContext, firstResponse) -> Mono
                     .error(logger.logExceptionAsError(new RuntimeException("Cancellation is not supported"))),
                 (pollingContext) -> Mono.just(new PurchasePhoneNumbersResult()));
@@ -447,17 +565,109 @@ public final class PhoneNumbersAsyncClient {
     }
 
     private Function<PollingContext<PhoneNumberOperation>, Mono<PhoneNumberOperation>>
-        purchaseNumbersInitOperation(String searchId, Context context) {
+        purchaseNumbersInitOperation(String searchId, Boolean agreeToNotResell, Context context) {
         return (pollingContext) -> {
             return withContext(contextValue -> {
                 if (context != null) {
                     contextValue = context;
                 }
                 return client
-                    .purchasePhoneNumbersWithResponseAsync(new PhoneNumberPurchaseRequest().setSearchId(searchId),
+                    .purchasePhoneNumbersWithResponseAsync(
+                        new PhoneNumberPurchaseRequest().setSearchId(searchId).setAgreeToNotResell(agreeToNotResell),
                         contextValue)
                     .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
                     .flatMap((PhoneNumbersPurchasePhoneNumbersResponse response) -> {
+                        pollingContext.setData("operationId", response.getDeserializedHeaders().getOperationId());
+                        return getOperation(pollingContext.getData("operationId"));
+                    });
+            });
+        };
+    }
+
+    /**
+     * Starts the purchase of all phone numbers in the reservation.
+     * 
+     * Starts a long running operation to purchase all of the phone numbers in the reservation. Purchase can only be
+     * started for active reservations that at least one phone number. If any of the phone numbers in the reservation is
+     * from a country where reselling is not permitted, do not resell agreement is required. The response will include
+     * an 'Operation-Location' header that can be used to query the status of the operation.
+     * 
+     * @param reservationId The id of the reservation.
+     * @param reservationPurchaseRequest The phone number search purchase request.
+     * @throws NullPointerException if {@code reservationId} is null.
+     * @throws RuntimeException if purchase operation fails.
+     * @return A {@link PollerFlux} object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PhoneNumberOperation, PurchaseReservationResult> beginPurchaseReservation(UUID reservationId) {
+        return beginPurchaseReservation(reservationId, false, null);
+    }
+
+    /**
+     * Starts the purchase of all phone numbers in the reservation.
+     * 
+     * Starts a long running operation to purchase all of the phone numbers in the reservation. Purchase can only be
+     * started for active reservations that at least one phone number. If any of the phone numbers in the reservation is
+     * from a country where reselling is not permitted, do not resell agreement is required. The response will include
+     * an 'Operation-Location' header that can be used to query the status of the operation.
+     * 
+     * @param reservationId The id of the reservation.
+     * @param agreeToNotResell Parameter indicating agreement to not resell the phone numbers.
+     * @throws NullPointerException if {@code reservationId} is null.
+     * @throws RuntimeException if purchase operation fails.
+     * @return A {@link PollerFlux} object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PhoneNumberOperation, PurchaseReservationResult> beginPurchaseReservation(UUID reservationId,
+        Boolean agreeToNotResell) {
+        return beginPurchaseReservation(reservationId, agreeToNotResell, null);
+    }
+
+    /**
+     * Starts the purchase of all phone numbers in the reservation.
+     * 
+     * Starts a long running operation to purchase all of the phone numbers in the reservation. Purchase can only be
+     * started for active reservations that at least one phone number. If any of the phone numbers in the reservation is
+     * from a country where reselling is not permitted, do not resell agreement is required. The response will include
+     * an 'Operation-Location' header that can be used to query the status of the operation.
+     * 
+     * @param reservationId The id of the reservation.
+     * @param context A {@link Context} representing the request context.
+     * @throws NullPointerException if {@code reservationId} is null.
+     * @throws RuntimeException if purchase operation fails.
+     * @return A {@link PollerFlux} object.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<PhoneNumberOperation, PurchaseReservationResult> beginPurchaseReservation(UUID reservationId,
+        Context context) {
+        return beginPurchaseReservation(reservationId, false, context);
+    }
+
+    PollerFlux<PhoneNumberOperation, PurchaseReservationResult> beginPurchaseReservation(UUID reservationId,
+        Boolean agreeToNotResell, Context context) {
+        try {
+            Objects.requireNonNull(reservationId, "'reservationId' cannot be null.");
+            return new PollerFlux<>(defaultPollInterval,
+                purchaseReservationInitOperation(reservationId, agreeToNotResell, context), pollOperation(),
+                (pollingContext, firstResponse) -> Mono
+                    .error(logger.logExceptionAsError(new RuntimeException("Cancellation is not supported"))),
+                (pollingContext) -> Mono.just(new PurchaseReservationResult()));
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(ex);
+        }
+    }
+
+    private Function<PollingContext<PhoneNumberOperation>, Mono<PhoneNumberOperation>>
+        purchaseReservationInitOperation(UUID reservationId, Boolean agreeToNotResell, Context context) {
+        return (pollingContext) -> {
+            return withContext(contextValue -> {
+                if (context != null) {
+                    contextValue = context;
+                }
+                return client.purchaseReservationWithResponseAsync(reservationId,
+                    new PhoneNumbersReservationPurchaseRequest().setAgreeToNotResell(agreeToNotResell), contextValue)
+                    .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e))
+                    .flatMap((PhoneNumbersPurchaseReservationResponse response) -> {
                         pollingContext.setData("operationId", response.getDeserializedHeaders().getOperationId());
                         return getOperation(pollingContext.getData("operationId"));
                     });
@@ -721,6 +931,39 @@ public final class PhoneNumbersAsyncClient {
     }
 
     /**
+     * Lists all reservations.
+     * 
+     * Retrieves a paginated list of all phone number reservations. Note that the reservations will not be populated
+     * with the phone numbers associated with them.
+     * 
+     * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
+     * value is 100.
+     * @return A {@link PagedFlux} of {@link PhoneNumbersReservation} instances
+     *         representing phone number reservations.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PhoneNumbersReservation> listReservationsAsync(Integer maxPageSize) {
+        return client.listReservationsAsync(maxPageSize);
+    }
+
+    /**
+     * Lists all reservations.
+     * 
+     * Retrieves a paginated list of all phone number reservations. Note that the reservations will not be populated
+     * with the phone numbers associated with them.
+     * 
+     * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
+     * value is 100.
+     * @param context A {@link Context} representing the request context.
+     * @return A {@link PagedFlux} of {@link PhoneNumbersReservation} instances
+     *         representing phone number reservations.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PhoneNumbersReservation> listReservationsAsync(Integer maxPageSize, Context context) {
+        return client.listReservationsAsync(maxPageSize, context);
+    }
+
+    /**
      * Searches for operator information for a given list of phone numbers.
      *
      * @param phoneNumbers The phone number(s) whose operator information should be searched.
@@ -753,6 +996,77 @@ public final class PhoneNumbersAsyncClient {
         request.setOptions(requestOptions);
         return client.operatorInformationSearchWithResponseAsync(request)
             .onErrorMap(CommunicationErrorResponseException.class, e -> translateException(e));
+    }
+
+    /**
+     * Creates or updates a reservation by its ID.
+     * 
+     * Adds and removes phone numbers from the reservation with the given ID. The response will be the updated state of
+     * the reservation. Phone numbers can be reserved by including them in the payload. If a number is already in the
+     * reservation, it will be ignored. To remove a phone number, set it explicitly to null in the request payload. This
+     * operation is idempotent. If a reservation with the same ID already exists, it will be updated, otherwise a new
+     * one is created. Only reservations with 'active' status can be updated. Updating a reservation will extend the
+     * expiration time of the reservation to 15 minutes after the last change, up to a maximum of 2 hours from creation
+     * time. Partial success is possible, in which case the response will have a 207 status code.
+     * 
+     * @param reservationId The id of the reservation.
+     * @param reservation A representation of the desired state of the reservation.}
+     * @return represents a reservation for phone numbers on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PhoneNumbersReservation> createOrUpdateReservationAsync(UUID reservationId,
+        PhoneNumbersReservation reservation) {
+        return client.createOrUpdateReservationAsync(reservationId, reservation);
+    }
+
+    /**
+     * Creates or updates a reservation by its ID.
+     * 
+     * Adds and removes phone numbers from the reservation with the given ID. The response will be the updated state of
+     * the reservation. Phone numbers can be reserved by including them in the payload. If a number is already in the
+     * reservation, it will be ignored. To remove a phone number, set it explicitly to null in the request payload. This
+     * operation is idempotent. If a reservation with the same ID already exists, it will be updated, otherwise a new
+     * one is created. Only reservations with 'active' status can be updated. Updating a reservation will extend the
+     * expiration time of the reservation to 15 minutes after the last change, up to a maximum of 2 hours from creation
+     * time. Partial success is possible, in which case the response will have a 207 status code.
+     * 
+     * @param reservationId The id of the reservation.
+     * @param reservation A representation of the desired state of the reservation.
+     * @param context The context to associate with this operation.
+     * @return represents a reservation for phone numbers on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PhoneNumbersReservation> createOrUpdateReservationAsync(UUID reservationId,
+        PhoneNumbersReservation reservation, Context context) {
+        return client.createOrUpdateReservationAsync(reservationId, reservation, context);
+    }
+
+    /**
+     * Deletes a reservation by its ID.
+     * 
+     * Deletes the reservation with the given ID. Any phone number in the reservation will be released and made
+     * available for others to purchase. Only reservations with 'active' status can be deleted.
+     * 
+     * @param reservationId The id of the reservation that's going to be deleted.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteReservationAsync(UUID reservationId) {
+        return client.deleteReservationAsync(reservationId);
+    }
+
+    /**
+     * Deletes a reservation by its ID.
+     *
+     * Deletes the reservation with the given ID. Any phone number in the reservation will be released and made
+     * available for others to purchase. Only reservations with 'active' status can be deleted.
+     * 
+     * @param reservationId The id of the reservation that's going to be deleted.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> deleteReservationAsync(UUID reservationId, Context context) {
+        return client.deleteReservationAsync(reservationId, context);
     }
 
     private Mono<PhoneNumberOperation> getOperation(String operationId) {
