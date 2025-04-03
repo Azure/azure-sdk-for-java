@@ -4,6 +4,9 @@
 
 package com.azure.ai.openai.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Defines values for AzureSearchChatDataSourceParametersIncludeContext.
  */
@@ -38,6 +41,7 @@ public enum AzureSearchChatDataSourceParametersIncludeContext {
      * @param value the serialized value to parse.
      * @return the parsed AzureSearchChatDataSourceParametersIncludeContext object, or null if unable to parse.
      */
+    @JsonCreator
     public static AzureSearchChatDataSourceParametersIncludeContext fromString(String value) {
         if (value == null) {
             return null;
@@ -55,6 +59,7 @@ public enum AzureSearchChatDataSourceParametersIncludeContext {
     /**
      * {@inheritDoc}
      */
+    @JsonValue
     @Override
     public String toString() {
         return this.value;

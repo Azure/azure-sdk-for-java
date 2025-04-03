@@ -4,6 +4,9 @@
 
 package com.azure.ai.openai.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Defines values for AzureChatCompletionStreamResponseDeltaRole.
  */
@@ -48,6 +51,7 @@ public enum AzureChatCompletionStreamResponseDeltaRole {
      * @param value the serialized value to parse.
      * @return the parsed AzureChatCompletionStreamResponseDeltaRole object, or null if unable to parse.
      */
+    @JsonCreator
     public static AzureChatCompletionStreamResponseDeltaRole fromString(String value) {
         if (value == null) {
             return null;
@@ -64,6 +68,7 @@ public enum AzureChatCompletionStreamResponseDeltaRole {
     /**
      * {@inheritDoc}
      */
+    @JsonValue
     @Override
     public String toString() {
         return this.value;

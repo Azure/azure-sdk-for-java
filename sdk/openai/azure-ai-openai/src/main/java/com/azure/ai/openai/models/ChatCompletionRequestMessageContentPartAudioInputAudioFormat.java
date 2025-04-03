@@ -4,6 +4,9 @@
 
 package com.azure.ai.openai.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Defines values for ChatCompletionRequestMessageContentPartAudioInputAudioFormat.
  */
@@ -34,6 +37,7 @@ public enum ChatCompletionRequestMessageContentPartAudioInputAudioFormat {
      * @return the parsed ChatCompletionRequestMessageContentPartAudioInputAudioFormat object, or null if unable to
      * parse.
      */
+    @JsonCreator
     public static ChatCompletionRequestMessageContentPartAudioInputAudioFormat fromString(String value) {
         if (value == null) {
             return null;
@@ -51,6 +55,7 @@ public enum ChatCompletionRequestMessageContentPartAudioInputAudioFormat {
     /**
      * {@inheritDoc}
      */
+    @JsonValue
     @Override
     public String toString() {
         return this.value;

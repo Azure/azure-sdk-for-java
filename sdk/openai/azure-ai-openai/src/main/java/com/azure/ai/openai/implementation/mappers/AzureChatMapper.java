@@ -179,13 +179,15 @@ public class AzureChatMapper {
 
 //        JsonNode node = mapper.valueToTree(request.getDataSources());
 //        additionalBodyProperties.put("data_sources", JsonValue.from(dataSourceJsonValue));
-        BinaryData dataSourcesBinaryData = BinaryData.fromObject(request.getDataSources());
-        try {
-            JsonValue  dataSourceJsonValue = mapper.readValue(dataSourcesBinaryData.toStream(), new TypeReference<>() {});
-            additionalBodyProperties.put("data_sources", dataSourceJsonValue);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+//        BinaryData dataSourcesBinaryData = BinaryData.fromObject(request.getDataSources());
+//        try {
+//            JsonValue  dataSourceJsonValue = mapper.readValue(dataSourcesBinaryData.toStream(), new TypeReference<>() {});
+//            additionalBodyProperties.put("data_sources", dataSourceJsonValue);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+
+        additionalBodyProperties.put("data_sources", JsonValue.from(request.getDataSources()));
 
         builder.additionalBodyProperties(additionalBodyProperties);
 
