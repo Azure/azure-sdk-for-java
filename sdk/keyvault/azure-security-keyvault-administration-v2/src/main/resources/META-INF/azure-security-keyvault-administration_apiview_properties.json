@@ -1,20 +1,15 @@
 {
   "flavor": "azurev2", 
   "CrossLanguageDefinitionId": {
-    "com.azure.v2.security.keyvault.administration.KeyVaultClient": "KeyVault",
-    "com.azure.v2.security.keyvault.administration.KeyVaultClientBuilder": "KeyVault",
+    "com.azure.v2.security.keyvault.administration.KeyVaultAdministrationClient": "KeyVault",
+    "com.azure.v2.security.keyvault.administration.KeyVaultAdministrationClientBuilder": "KeyVault",
     "com.azure.v2.security.keyvault.administration.RoleAssignmentsClient": "KeyVault.RoleAssignments",
     "com.azure.v2.security.keyvault.administration.RoleDefinitionsClient": "KeyVault.RoleDefinitions",
     "com.azure.v2.security.keyvault.administration.implementation.implementation.models.RoleAssignmentListResult": "KeyVault.RoleAssignmentListResult",
     "com.azure.v2.security.keyvault.administration.implementation.implementation.models.RoleDefinitionListResult": "KeyVault.RoleDefinitionListResult",
     "com.azure.v2.security.keyvault.administration.implementation.models.FullBackupOperation": "KeyVault.FullBackupOperation",
     "com.azure.v2.security.keyvault.administration.implementation.models.FullBackupOperationError": "KeyVault.FullBackupOperation.error.anonymous",
-    "com.azure.v2.security.keyvault.administration.implementation.models.KeyVaultDataAction": "KeyVault.DataAction",
     "com.azure.v2.security.keyvault.administration.implementation.models.KeyVaultError": "KeyVaultError",
-    "com.azure.v2.security.keyvault.administration.implementation.models.KeyVaultRoleDefinitionType": "KeyVault.RoleDefinitionType",
-    "com.azure.v2.security.keyvault.administration.implementation.models.KeyVaultRoleScope": "KeyVault.RoleScope",
-    "com.azure.v2.security.keyvault.administration.implementation.models.KeyVaultRoleType": "KeyVault.RoleType",
-    "com.azure.v2.security.keyvault.administration.implementation.models.KeyVaultSettingType": "KeyVault.SettingTypeEnum",
     "com.azure.v2.security.keyvault.administration.implementation.models.OperationStatus": "KeyVault.OperationStatus",
     "com.azure.v2.security.keyvault.administration.implementation.models.Permission": "KeyVault.Permission",
     "com.azure.v2.security.keyvault.administration.implementation.models.RestoreOperation": "KeyVault.RestoreOperation",
@@ -31,6 +26,11 @@
     "com.azure.v2.security.keyvault.administration.implementation.models.SelectiveKeyRestoreOperationParameters": "KeyVault.SelectiveKeyRestoreOperationParameters",
     "com.azure.v2.security.keyvault.administration.implementation.models.Setting": "KeyVault.Setting",
     "com.azure.v2.security.keyvault.administration.implementation.models.SettingsListResult": "KeyVault.SettingsListResult",
-    "com.azure.v2.security.keyvault.administration.implementation.models.UpdateSettingRequest": "KeyVault.UpdateSettingRequest"
+    "com.azure.v2.security.keyvault.administration.implementation.models.UpdateSettingRequest": "KeyVault.UpdateSettingRequest",
+    "com.azure.v2.security.keyvault.administration.models.KeyVaultDataAction": "KeyVault.DataAction",
+    "com.azure.v2.security.keyvault.administration.models.KeyVaultRoleDefinitionType": "KeyVault.RoleDefinitionType",
+    "com.azure.v2.security.keyvault.administration.models.KeyVaultRoleScope": "KeyVault.RoleScope",
+    "com.azure.v2.security.keyvault.administration.models.KeyVaultRoleType": "KeyVault.RoleType",
+    "com.azure.v2.security.keyvault.administration.models.KeyVaultSettingType": "KeyVault.SettingTypeEnum"
   }
 }

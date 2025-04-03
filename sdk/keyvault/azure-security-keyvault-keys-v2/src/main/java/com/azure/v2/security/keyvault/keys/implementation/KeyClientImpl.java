@@ -45,7 +45,6 @@ import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.utils.Context;
-
 import java.lang.reflect.InvocationTargetException;
 
 /**

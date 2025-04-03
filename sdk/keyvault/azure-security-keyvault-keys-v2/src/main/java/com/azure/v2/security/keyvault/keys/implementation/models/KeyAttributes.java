@@ -10,7 +10,6 @@ import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
-
 import java.io.IOException;
 import java.time.Instant;
 import java.time.OffsetDateTime;
