@@ -15,11 +15,15 @@ import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.util.concurrent.DefaultEventExecutor;
 import io.netty.util.concurrent.EventExecutor;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
+
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Timeout(value = 1, unit = TimeUnit.MINUTES)
 public class CoreProgressAndTimeoutHandlerTests {
     @Test
     public void readNoTimeoutDoesNotAddWatcher() {

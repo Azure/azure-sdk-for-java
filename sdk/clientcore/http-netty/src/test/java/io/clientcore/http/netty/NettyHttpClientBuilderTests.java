@@ -13,6 +13,7 @@ import io.clientcore.core.utils.configuration.Configuration;
 import io.clientcore.http.netty.implementation.NettyHttpClientLocalTestServer;
 import io.netty.channel.nio.NioEventLoopGroup;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -37,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 /**
  * Tests {@link NettyHttpClientBuilder}.
  */
-@Execution(ExecutionMode.SAME_THREAD)
+@Timeout(value = 1, unit = TimeUnit.MINUTES)
 public class NettyHttpClientBuilderTests {
 
     private static final String JAVA_SYSTEM_PROXY_PREREQUISITE = "java.net.useSystemProxies";
@@ -127,7 +128,13 @@ public class NettyHttpClientBuilderTests {
         if (expected != null) {
             assertNotNull(nettyClient.getProxyOptions());
             assertEquals(expected.getType(), nettyClient.getProxyOptions().getType());
-            assertEquals(expected.getAddress(), nettyClient.getProxyOptions().getAddress());
+
+            InetSocketAddress actualAddress = nettyClient.getProxyOptions().getAddress();
+            if (actualAddress.isUnresolved()) {
+                actualAddress = new InetSocketAddress(actualAddress.getHostName(), actualAddress.getPort());
+            }
+            assertEquals(expected.getAddress(), actualAddress);
+
             assertEquals(expected.getUsername(), nettyClient.getProxyOptions().getUsername());
             assertEquals(expected.getPassword(), nettyClient.getProxyOptions().getPassword());
             assertEquals(expected.getNonProxyHosts(), nettyClient.getProxyOptions().getNonProxyHosts());
@@ -146,7 +153,13 @@ public class NettyHttpClientBuilderTests {
         if (expected != null) {
             assertNotNull(nettyClient.getProxyOptions());
             assertEquals(expected.getType(), nettyClient.getProxyOptions().getType());
-            assertEquals(expected.getAddress(), nettyClient.getProxyOptions().getAddress());
+
+            InetSocketAddress actualAddress = nettyClient.getProxyOptions().getAddress();
+            if (actualAddress.isUnresolved()) {
+                actualAddress = new InetSocketAddress(actualAddress.getHostName(), actualAddress.getPort());
+            }
+            assertEquals(expected.getAddress(), actualAddress);
+
             assertEquals(expected.getUsername(), nettyClient.getProxyOptions().getUsername());
             assertEquals(expected.getPassword(), nettyClient.getProxyOptions().getPassword());
             assertEquals(expected.getNonProxyHosts(), nettyClient.getProxyOptions().getNonProxyHosts());

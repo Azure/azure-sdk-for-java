@@ -6,13 +6,9 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.json.JsonWriter;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufHolder;
 import io.netty.channel.Channel;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.handler.codec.http.HttpClientCodec;
-import io.netty.handler.codec.http.LastHttpContent;
+import io.netty.handler.codec.http.HttpContent;
+import io.netty.util.ReferenceCountUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -33,12 +29,14 @@ final class NettyChannelBinaryData extends BinaryData {
     private static final String TOO_LARGE_FOR_BYTE_ARRAY
         = "The content length is too large for a byte array. Content length is: ";
 
+    private final HttpContent firstContent;
     private final Channel channel;
     private final Long length;
 
     private volatile byte[] bytes;
 
-    NettyChannelBinaryData(Channel channel, Long length) {
+    NettyChannelBinaryData(HttpContent firstContent, Channel channel, Long length) {
+        this.firstContent = firstContent;
         this.channel = channel;
         this.length = length;
     }
@@ -52,6 +50,20 @@ final class NettyChannelBinaryData extends BinaryData {
         if (bytes == null) {
             CountDownLatch latch = new CountDownLatch(1);
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            if (firstContent != null && firstContent.content() != null) {
+                // If the first content is not null, we need to add it to the output stream.
+                try {
+                    firstContent.content().readBytes(outputStream, firstContent.content().readableBytes());
+                } catch (IOException ex) {
+                    ReferenceCountUtil.release(firstContent);
+                    throw new UncheckedIOException(ex);
+                }
+            }
+
+            if (firstContent != null) {
+                ReferenceCountUtil.release(firstContent);
+            }
+
             channel.pipeline().addLast(new EagerConsumeNetworkResponseHandler(latch, buf -> {
                 try {
                     buf.readBytes(outputStream, buf.readableBytes());

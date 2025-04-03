@@ -4,8 +4,10 @@ package io.clientcore.http.netty.implementation;
 
 import io.clientcore.core.utils.CoreUtils;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import static io.clientcore.http.netty.implementation.NettyUtility.NETTY_TCNATIVE_VERSION_PROPERTY;
 import static io.clientcore.http.netty.implementation.NettyUtility.NETTY_VERSION_PROPERTY;
@@ -13,6 +15,7 @@ import static io.clientcore.http.netty.implementation.NettyUtility.PROPERTIES_FI
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Timeout(value = 1, unit = TimeUnit.MINUTES)
 public class NettyUtilityTests {
     @Test
     public void validateNettyVersionsWithWhatThePomSpecifies() {

@@ -6,6 +6,9 @@ package io.clientcore.http.netty;
 import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.utils.configuration.Configuration;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
+
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -16,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 /**
  * Tests {@link NettyHttpClientProvider}.
  */
+@Timeout(value = 1, unit = TimeUnit.MINUTES)
 public class NettyHttpClientProviderTests {
     @Test
     public void testGetSharedClient() {

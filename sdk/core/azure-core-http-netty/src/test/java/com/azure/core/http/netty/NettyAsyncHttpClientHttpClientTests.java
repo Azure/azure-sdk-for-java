@@ -75,4 +75,18 @@ public class NettyAsyncHttpClientHttpClientTests extends HttpClientTests {
             assertArrayEquals(expectedResponseBody, response.getBodyAsBinaryData().toBytes());
         }
     }
+
+    @Timeout(value = 1, unit = TimeUnit.MINUTES)
+    @Test
+    public void canSendTinyBinaryDataDebugging() throws IOException {
+        byte[] expectedResponseBody = new byte[512];
+        ThreadLocalRandom.current().nextBytes(expectedResponseBody);
+
+        HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE))
+            .setBody(BinaryData.fromBytes(expectedResponseBody));
+
+        try (HttpResponse response = createHttpClient().sendSync(request, Context.NONE)) {
+            assertArrayEquals(expectedResponseBody, response.getBodyAsBinaryData().toBytes());
+        }
+    }
 }

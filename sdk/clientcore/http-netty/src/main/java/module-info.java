@@ -16,6 +16,7 @@ module io.clientcore.http.netty {
     requires io.netty.codec;
     requires io.netty.resolver;
     requires io.netty.codec.http2;
+    requires java.sql;
 
     exports io.clientcore.http.netty;
 

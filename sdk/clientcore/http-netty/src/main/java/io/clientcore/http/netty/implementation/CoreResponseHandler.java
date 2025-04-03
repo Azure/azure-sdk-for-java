@@ -4,17 +4,20 @@ package io.clientcore.http.netty.implementation;
 
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
-import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.CoreUtils;
-import io.netty.channel.Channel;
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandler;
 import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.handler.codec.http.HttpClientCodec;
+import io.netty.handler.codec.http.HttpContent;
 import io.netty.handler.codec.http.HttpResponse;
+import io.netty.handler.codec.http.LastHttpContent;
+import io.netty.util.ReferenceCountUtil;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -23,6 +26,7 @@ import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static io.clientcore.core.http.models.HttpMethod.HEAD;
 import static io.clientcore.http.netty.implementation.NettyUtility.awaitLatch;
 
 /**
@@ -36,6 +40,13 @@ public final class CoreResponseHandler extends ChannelInboundHandlerAdapter {
     private final HttpRequest request;
     private final AtomicReference<Response<BinaryData>> responseReference;
     private final CountDownLatch latch;
+
+    private int statusCode;
+    private HttpHeaders headers;
+
+    private boolean started;
+    private HttpContent firstContent;
+    private boolean complete;
 
     /**
      * Creates an instance of {@link CoreResponseHandler}.
@@ -62,62 +73,175 @@ public final class CoreResponseHandler extends ChannelInboundHandlerAdapter {
     }
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
-        if (msg instanceof HttpResponse) {
-            HttpResponse response = (HttpResponse) msg;
-            HttpHeaders headers = (response.headers() instanceof WrappedHttpHeaders)
-                ? ((WrappedHttpHeaders) response.headers()).getCoreHeaders()
-                : NettyUtility.convertHeaders(response.headers());
-            responseReference.set(createResponse(request, response.status().code(), headers, ctx.channel()));
-            ctx.pipeline().remove(this);
-            latch.countDown();
-        }
-
-        ctx.fireChannelRead(msg);
+    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        latch.countDown();
+        ctx.fireExceptionCaught(cause);
     }
 
-    private static Response<BinaryData> createResponse(HttpRequest request, int statusCode, HttpHeaders headers,
-        Channel channel) {
-        if (request.getHttpMethod() == HttpMethod.HEAD) {
-            // HEAD requests should not have a response body. Drain the channel and close it.
-            CountDownLatch latch = new CountDownLatch(1);
-            // Do we need to watch the channelRead() events and release the messages sent? Or does that happen in the
-            // channel reading loop? Add a test to verify this behavior, we don't want to leak memory.
-            channel.pipeline().addLast(new EagerConsumeNetworkResponseHandler(latch, ignored -> {
-            }));
-            awaitLatch(latch);
-            return new Response<>(request, statusCode, headers, BinaryData.empty());
+    @Override
+    public void channelRead(ChannelHandlerContext ctx, Object msg) {
+        // http-netty creates all Channels AUTO_READ=false, meaning that Netty will wait to read the response until a
+        // 'Channel.read()' is called or 'Channel.config().setAutoRead(true)' is set. Our logic is that when the request
+        // is successfully sent we'll call 'Channel.read()' to read the first chunk of data from the network. When that
+        // happens one of three success states will occur:
+        //
+        // 1. The response has HTTP headers and no response body. This will result in an 'HttpResponse' object being
+        // passed through 'channelRead'. Capture the headers and status code then check if the 'HttpResponse' is an
+        // instance of 'LastHttpContent'. If it is then the response is complete, update the 'complete' flag and wait
+        // for 'channelReadComplete()' to be called, which will set the response reference and drain anything remaining
+        // in the network connection.
+        //
+        // 2. The response has HTTP headers and a response body that fit into a single 'ByteBuf' chunk read. This will
+        // result in an 'HttpResponse' object being passed through 'channelRead' followed by a 'LastHttpContent' object.
+        // Retain the content of the 'LastHttpContent' and handle it in the following way when creating the response in
+        // 'channelReadComplete()':
+        //     a. If the request was a HEAD request release the content and set the response body to an empty, as HEAD
+        //     requests should not have a response body.
+        //     b. Otherwise, copy the content into a 'BinaryData' and release it, then set that as the response body.
+        //
+        // 3. The response has HTTP headers and a response body that is larger than a single 'ByteBuf' chunk read. This
+        // will result in an 'HttpResponse' object being passed through 'channelRead' followed by a 'HttpContent' object
+        // that is the first bytes of the network response body. Handle this in the following ways once
+        // 'channelReadComplete()' is called:
+        //     a. If the request was a HEAD request release the captured content and drain the channel, then set the
+        //     response body to an empty, as HEAD requests should not have a response body.
+        //     b. If the response is being buffered, copy the captured content into the aggregator and request the
+        //     remaining content of the network response to aggregate, then set the response body to the aggregated
+        //     content.
+        //     c. If the response is being streamed, retain the reference of the captured content and once the response
+        //     body is being consumed send the captured content as the initial payload and stream the remaining content
+        //     from the network connection.
+
+        if (msg instanceof HttpResponse) {
+            started = true;
+            HttpResponse response = (HttpResponse) msg;
+            this.statusCode = response.status().code();
+            this.headers = (response.headers() instanceof WrappedHttpHeaders)
+                ? ((WrappedHttpHeaders) response.headers()).getCoreHeaders()
+                : NettyUtility.convertHeaders(response.headers());
+
+            if (msg instanceof FullHttpResponse) {
+                complete = true;
+                // Need to call retain here as this will be released in HttpClientCodec. We'll need to make sure to
+                // release this when consuming it later.
+                firstContent = ((HttpContent) msg).retain();
+            }
+
+            return;
         }
 
-        // Check the Content-Type header to determine how the response body should be handled.
-        String contentType = headers.getValue(HttpHeaderName.CONTENT_TYPE);
-        if ("application/octet-stream".equalsIgnoreCase(contentType)) {
-            // Stream the response body for application/octet-stream content types.
-            // autoRead should have been disabled already but lets make sure that it is.
-            channel.config().setAutoRead(false);
-            String contentLength = headers.getValue(HttpHeaderName.CONTENT_LENGTH);
-            Long length = null;
-            if (!CoreUtils.isNullOrEmpty(contentLength)) {
-                try {
-                    length = Long.parseLong(contentLength);
-                } catch (NumberFormatException ignored) {
-                    // Ignore, we'll just read until the channel is closed.
-                }
-            }
-            return new Response<>(request, statusCode, headers, new NettyChannelBinaryData(channel, length));
-        } else {
-            // For other content types, buffer the response body.
-            CountDownLatch latch = new CountDownLatch(1);
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            channel.pipeline().addLast(new EagerConsumeNetworkResponseHandler(latch, buf -> {
-                try {
-                    buf.readBytes(outputStream, buf.readableBytes());
-                } catch (IOException ex) {
-                    throw new UncheckedIOException(ex);
-                }
-            }));
-            awaitLatch(latch);
-            return new Response<>(request, statusCode, headers, BinaryData.fromBytes(outputStream.toByteArray()));
+        if (msg instanceof LastHttpContent) {
+            complete = true;
+            // Same reason as above.
+            firstContent = ((HttpContent) msg).retain();
+            return;
         }
+
+        if (!started) {
+            // Haven't received the HttpResponse, discard this message.
+            return;
+        }
+
+        firstContent = (HttpContent) msg;
+    }
+
+    @Override
+    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+        ctx.pipeline().remove(this);
+        ctx.fireChannelReadComplete();
+        BodyHandling bodyHandling = getBodyHandling(request, headers);
+        if (complete) {
+            // The network response is already complete, handle creating our Response based on the request method and
+            // response headers.
+            BinaryData body = BinaryData.empty();
+            if (bodyHandling != BodyHandling.IGNORE && firstContent != null && firstContent.content() != null) {
+                // Set the response body as the first HttpContent received if the request wasn't a HEAD request and
+                // there was body content.
+                ByteBuf byteBuf = firstContent.content();
+                byte[] bodyBytes = new byte[byteBuf.readableBytes()];
+                byteBuf.readBytes(bodyBytes);
+
+                body = BinaryData.fromBytes(bodyBytes);
+            }
+
+            if (firstContent != null) {
+                // Release the first HttpContent as we're done with it.
+                ReferenceCountUtil.safeRelease(firstContent);
+            }
+
+            responseReference.set(new Response<>(request, statusCode, headers, body));
+
+            // Close the Channel as we're done with it.
+            ctx.close();
+            latch.countDown();
+        } else {
+            // Otherwise we aren't finished, handle the remaining content according to the documentation in
+            // 'channelRead()'.
+            BinaryData body = BinaryData.empty();
+            if (bodyHandling == BodyHandling.IGNORE) {
+                // We're ignoring the response content.
+                CountDownLatch latch = new CountDownLatch(1);
+                ctx.pipeline().addLast(new EagerConsumeNetworkResponseHandler(latch, ignored -> {
+                }));
+                awaitLatch(latch);
+            } else if (bodyHandling == BodyHandling.STREAM) {
+                // Body streaming uses a special BinaryData that tracks the firstContent read and the Channel it came
+                // from so it can be consumed when the BinaryData is being used.
+                // autoRead should have been disabled already but lets make sure that it is.
+                ctx.channel().config().setAutoRead(false);
+                String contentLength = headers.getValue(HttpHeaderName.CONTENT_LENGTH);
+                Long length = null;
+                if (!CoreUtils.isNullOrEmpty(contentLength)) {
+                    try {
+                        length = Long.parseLong(contentLength);
+                    } catch (NumberFormatException ignored) {
+                        // Ignore, we'll just read until the channel is closed.
+                    }
+                }
+
+                body = new NettyChannelBinaryData(firstContent, ctx.channel(), length);
+            } else {
+                // All cases otherwise assume BUFFER.
+                CountDownLatch latch = new CountDownLatch(1);
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                if (firstContent != null && firstContent.content() != null) {
+                    firstContent.content().readBytes(outputStream, firstContent.content().readableBytes());
+                }
+                ctx.pipeline().addLast(new EagerConsumeNetworkResponseHandler(latch, buf -> {
+                    try {
+                        buf.readBytes(outputStream, buf.readableBytes());
+                    } catch (IOException ex) {
+                        throw new UncheckedIOException(ex);
+                    }
+                }));
+                awaitLatch(latch);
+
+                body = BinaryData.fromBytes(outputStream.toByteArray());
+            }
+
+            if (firstContent != null && bodyHandling != BodyHandling.STREAM) {
+                // Release the first HttpContent as we're done with it.
+                ReferenceCountUtil.release(firstContent);
+            }
+
+            responseReference.set(new Response<>(request, statusCode, headers, body));
+            latch.countDown();
+        }
+    }
+
+    private BodyHandling getBodyHandling(HttpRequest request, HttpHeaders responseHeaders) {
+        String contentType = responseHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
+
+        if (request.getHttpMethod() == HEAD) {
+            return BodyHandling.IGNORE;
+        } else if ("application/octet-stream".equalsIgnoreCase(contentType)) {
+            return BodyHandling.STREAM;
+        } else {
+            return BodyHandling.BUFFER;
+        }
+    }
+
+    private enum BodyHandling {
+        IGNORE, STREAM, BUFFER
     }
 }

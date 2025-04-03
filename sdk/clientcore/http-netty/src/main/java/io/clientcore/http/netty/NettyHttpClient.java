@@ -35,7 +35,6 @@ import io.netty.handler.codec.http.HttpHeaders;
 import io.netty.handler.codec.http.HttpHeadersFactory;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpVersion;
-import io.netty.handler.flow.FlowControlHandler;
 import io.netty.handler.proxy.HttpProxyHandler;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
@@ -132,10 +131,8 @@ class NettyHttpClient implements HttpClient {
                         }
                     }), HttpClientCodec.DEFAULT_PARSE_HTTP_AFTER_CONNECT_REQUEST,
                         HttpClientCodec.DEFAULT_FAIL_ON_MISSING_RESPONSE);
-                httpClientCodec.setSingleDecode(true);
 
                 pipeline.addLast(httpClientCodec);
-                pipeline.addLast(new FlowControlHandler());
 
                 ProgressReporter progressReporter
                     = (request.getRequestOptions() == null) ? null : request.getRequestOptions().getProgressReporter();

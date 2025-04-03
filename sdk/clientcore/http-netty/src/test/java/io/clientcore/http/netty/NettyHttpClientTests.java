@@ -70,7 +70,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Execution(ExecutionMode.SAME_THREAD)
+@Timeout(value = 1, unit = TimeUnit.MINUTES)
 public class NettyHttpClientTests {
     private static final String SERVER_HTTP_URI = NettyHttpClientLocalTestServer.getServer().getHttpUri();
 

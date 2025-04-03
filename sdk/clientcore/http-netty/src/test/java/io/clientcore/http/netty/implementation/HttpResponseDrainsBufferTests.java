@@ -17,6 +17,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
@@ -31,6 +32,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -45,6 +47,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * These tests are isolated from other {@link Response} tests as they require running the garbage collector to force
  * the JVM to destroy buffers that no longer have pointers to them.
  */
+@Timeout(value = 1, unit = TimeUnit.MINUTES)
 @Isolated
 @Execution(ExecutionMode.SAME_THREAD)
 public class HttpResponseDrainsBufferTests {

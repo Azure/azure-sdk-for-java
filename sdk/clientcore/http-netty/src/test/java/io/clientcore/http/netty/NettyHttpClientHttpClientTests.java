@@ -34,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 /**
  * Reactor Netty {@link HttpClientTests}.
  */
-@Execution(ExecutionMode.SAME_THREAD)
+@Timeout(value = 1, unit = TimeUnit.MINUTES)
 public class NettyHttpClientHttpClientTests extends HttpClientTests {
     private static LocalTestServer server;
 
@@ -71,6 +71,21 @@ public class NettyHttpClientHttpClientTests extends HttpClientTests {
     @Test
     public void canSendBinaryDataDebugging() throws IOException {
         byte[] expectedResponseBody = new byte[4 * 1024 * 1024];
+        ThreadLocalRandom.current().nextBytes(expectedResponseBody);
+
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.PUT)
+            .setUri(getRequestUri(ECHO_RESPONSE))
+            .setBody(BinaryData.fromBytes(expectedResponseBody));
+
+        try (Response<BinaryData> response = getHttpClient().send(request)) {
+            assertArrayEquals(expectedResponseBody, response.getValue().toBytes());
+        }
+    }
+
+    @Timeout(value = 1, unit = TimeUnit.MINUTES)
+    @Test
+    public void canSendTinyBinaryDataDebugging() throws IOException {
+        byte[] expectedResponseBody = new byte[512];
         ThreadLocalRandom.current().nextBytes(expectedResponseBody);
 
         HttpRequest request = new HttpRequest().setMethod(HttpMethod.PUT)

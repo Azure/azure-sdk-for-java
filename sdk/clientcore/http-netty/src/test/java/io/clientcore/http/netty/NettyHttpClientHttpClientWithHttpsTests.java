@@ -12,16 +12,18 @@ import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 
 import javax.net.ssl.SSLException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Reactor Netty {@link HttpClientTests} with https.
  * Some request logic branches out if it's https like file uploads.
  */
-@Execution(ExecutionMode.SAME_THREAD)
+@Timeout(value = 1, unit = TimeUnit.MINUTES)
 public class NettyHttpClientHttpClientWithHttpsTests extends HttpClientTests {
     private static LocalTestServer server;
 

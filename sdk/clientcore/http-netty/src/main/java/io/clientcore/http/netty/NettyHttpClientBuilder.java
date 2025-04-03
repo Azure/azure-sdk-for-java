@@ -8,6 +8,7 @@ import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.utils.configuration.Configuration;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
@@ -150,11 +151,9 @@ public class NettyHttpClientBuilder {
         EventLoopGroup group
             = eventLoopGroup != null ? eventLoopGroup : new NioEventLoopGroup(new DefaultThreadFactory("netty-client"));
         Class<? extends Channel> channelClass = this.channelClass == null ? NioSocketChannel.class : this.channelClass;
-        Bootstrap bootstrap = new Bootstrap().group(group).channel(channelClass);
-
-        if (connectTimeout != null) {
-            bootstrap.option(io.netty.channel.ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) connectTimeout.toMillis());
-        }
+        Bootstrap bootstrap = new Bootstrap().group(group)
+            .channel(channelClass)
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) getTimeoutMillis(connectTimeout, 10_000));
 
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
@@ -167,8 +166,12 @@ public class NettyHttpClientBuilder {
     }
 
     static long getTimeoutMillis(Duration duration) {
+        return getTimeoutMillis(duration, 60_000);
+    }
+
+    static long getTimeoutMillis(Duration duration, long defaultTimeout) {
         if (duration == null) {
-            return 60_000;
+            return defaultTimeout;
         }
 
         if (duration.isNegative() || duration.isZero()) {

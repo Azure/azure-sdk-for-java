@@ -6,7 +6,6 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufHolder;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
-import io.netty.handler.codec.http.HttpClientCodec;
 import io.netty.handler.codec.http.LastHttpContent;
 
 import java.util.concurrent.CountDownLatch;
@@ -35,15 +34,7 @@ public final class EagerConsumeNetworkResponseHandler extends ChannelInboundHand
 
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-        // We're going to eagerly read the remaining data from the network now, enable autoRead.
-        HttpClientCodec codec = ctx.pipeline().get(HttpClientCodec.class);
-        if (codec != null) {
-            // Disable singleDecode if the HttpClientCodec exists to allow it to read the entire response.
-            codec.setSingleDecode(false);
-        }
-        ctx.channel().read();
         ctx.channel().config().setAutoRead(true);
-        super.handlerAdded(ctx);
     }
 
     @Override
@@ -78,6 +69,7 @@ public final class EagerConsumeNetworkResponseHandler extends ChannelInboundHand
         ctx.fireExceptionCaught(cause);
     }
 
+    // TODO (alzimmer): Are the latch countdowns needed for unregistering and inactivity?
     @Override
     public void channelUnregistered(ChannelHandlerContext ctx) {
         latch.countDown();
@@ -88,10 +80,5 @@ public final class EagerConsumeNetworkResponseHandler extends ChannelInboundHand
     public void channelInactive(ChannelHandlerContext ctx) {
         latch.countDown();
         ctx.fireChannelInactive();
-    }
-
-    @Override
-    public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
-        super.handlerRemoved(ctx);
     }
 }
