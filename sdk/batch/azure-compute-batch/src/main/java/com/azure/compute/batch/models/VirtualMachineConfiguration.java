@@ -50,8 +50,9 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
      * disk is empty. When the Compute Node is removed from the Pool, the disk and all data associated with it is also
      * deleted. The disk is not formatted after being attached, it must be formatted before use - for more information
      * see
-     * https://docs.microsoft.com/azure/virtual-machines/linux/classic/attach-disk#initialize-a-new-data-disk-in-linux
-     * and https://docs.microsoft.com/azure/virtual-machines/windows/attach-disk-ps#add-an-empty-data-disk-to-a-virtual-
+     * https://learn.microsoft.com/azure/virtual-machines/linux/classic/attach-disk#initialize-a-new-data-disk-in-linux
+     * and
+     * https://learn.microsoft.com/azure/virtual-machines/windows/attach-disk-ps#add-an-empty-data-disk-to-a-virtual-
      * machine.
      */
     @Generated
@@ -104,6 +105,21 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
      */
     @Generated
     private OSDisk osDisk;
+
+    /*
+     * Specifies the security profile settings for the virtual machine or virtual machine scale set.
+     */
+    @Generated
+    private SecurityProfile securityProfile;
+
+    /*
+     * Specifies the service artifact reference id used to set same image version for all virtual machines in the scale
+     * set when using 'latest' image version. The service artifact reference id in the form of
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName
+     * }/serviceArtifacts/{serviceArtifactName}/vmArtifactsProfiles/{vmArtifactsProfilesName}
+     */
+    @Generated
+    private ServiceArtifactReference serviceArtifactReference;
 
     /**
      * Creates an instance of VirtualMachineConfiguration class.
@@ -174,9 +190,9 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
      * attached, each attached disk is empty. When the Compute Node is removed from the Pool, the disk and all data
      * associated with it is also deleted. The disk is not formatted after being attached, it must be formatted before
      * use - for more information see
-     * https://docs.microsoft.com/azure/virtual-machines/linux/classic/attach-disk#initialize-a-new-data-disk-in-linux
+     * https://learn.microsoft.com/azure/virtual-machines/linux/classic/attach-disk#initialize-a-new-data-disk-in-linux
      * and
-     * https://docs.microsoft.com/azure/virtual-machines/windows/attach-disk-ps#add-an-empty-data-disk-to-a-virtual-machine.
+     * https://learn.microsoft.com/azure/virtual-machines/windows/attach-disk-ps#add-an-empty-data-disk-to-a-virtual-machine.
      *
      * @return the dataDisks value.
      */
@@ -192,9 +208,9 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
      * attached, each attached disk is empty. When the Compute Node is removed from the Pool, the disk and all data
      * associated with it is also deleted. The disk is not formatted after being attached, it must be formatted before
      * use - for more information see
-     * https://docs.microsoft.com/azure/virtual-machines/linux/classic/attach-disk#initialize-a-new-data-disk-in-linux
+     * https://learn.microsoft.com/azure/virtual-machines/linux/classic/attach-disk#initialize-a-new-data-disk-in-linux
      * and
-     * https://docs.microsoft.com/azure/virtual-machines/windows/attach-disk-ps#add-an-empty-data-disk-to-a-virtual-machine.
+     * https://learn.microsoft.com/azure/virtual-machines/windows/attach-disk-ps#add-an-empty-data-disk-to-a-virtual-machine.
      *
      * @param dataDisks the dataDisks value to set.
      * @return the VirtualMachineConfiguration object itself.
@@ -362,21 +378,6 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
         this.osDisk = osDisk;
         return this;
     }
-
-    /*
-     * Specifies the security profile settings for the virtual machine or virtual machine scale set.
-     */
-    @Generated
-    private SecurityProfile securityProfile;
-
-    /*
-     * Specifies the service artifact reference id used to set same image version for all virtual machines in the scale
-     * set when using 'latest' image version. The service artifact reference id in the form of
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName
-     * }/serviceArtifacts/{serviceArtifactName}/vmArtifactsProfiles/{vmArtifactsProfilesName}
-     */
-    @Generated
-    private ServiceArtifactReference serviceArtifactReference;
 
     /**
      * Get the securityProfile property: Specifies the security profile settings for the virtual machine or virtual

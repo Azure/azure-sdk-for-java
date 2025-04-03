@@ -42,7 +42,12 @@ public interface HttpClient {
 
         ConnectionProvider.Builder fixedConnectionProviderBuilder = ConnectionProvider
             .builder(httpClientConfig.getConnectionPoolName());
+
         fixedConnectionProviderBuilder.maxConnections(httpClientConfig.getMaxPoolSize());
+        Integer customPendingAcquireMaxCount = httpClientConfig.getPendingAcquireMaxCount();
+        if (customPendingAcquireMaxCount != null) {
+            fixedConnectionProviderBuilder.pendingAcquireMaxCount(customPendingAcquireMaxCount);
+        }
         fixedConnectionProviderBuilder.pendingAcquireTimeout(httpClientConfig.getConnectionAcquireTimeout());
         fixedConnectionProviderBuilder.maxIdleTime(httpClientConfig.getMaxIdleConnectionTimeout());
 

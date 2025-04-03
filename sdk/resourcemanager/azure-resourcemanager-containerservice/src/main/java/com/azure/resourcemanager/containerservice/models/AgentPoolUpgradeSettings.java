@@ -19,7 +19,7 @@ public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoo
     /*
      * This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a percentage is specified, it is
      * the percentage of the total agent pool size at the time of the upgrade. For percentages, fractional nodes are
-     * rounded up. If not specified, the default is 1. For more information, including best practices, see:
+     * rounded up. If not specified, the default is 10%. For more information, including best practices, see:
      * https://docs.microsoft.com/azure/aks/upgrade-cluster#customize-node-surge-upgrade
      */
     private String maxSurge;
@@ -46,8 +46,8 @@ public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoo
     /**
      * Get the maxSurge property: This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a
      * percentage is specified, it is the percentage of the total agent pool size at the time of the upgrade. For
-     * percentages, fractional nodes are rounded up. If not specified, the default is 1. For more information, including
-     * best practices, see: https://docs.microsoft.com/azure/aks/upgrade-cluster#customize-node-surge-upgrade.
+     * percentages, fractional nodes are rounded up. If not specified, the default is 10%. For more information,
+     * including best practices, see: https://docs.microsoft.com/azure/aks/upgrade-cluster#customize-node-surge-upgrade.
      * 
      * @return the maxSurge value.
      */
@@ -58,8 +58,8 @@ public final class AgentPoolUpgradeSettings implements JsonSerializable<AgentPoo
     /**
      * Set the maxSurge property: This can either be set to an integer (e.g. '5') or a percentage (e.g. '50%'). If a
      * percentage is specified, it is the percentage of the total agent pool size at the time of the upgrade. For
-     * percentages, fractional nodes are rounded up. If not specified, the default is 1. For more information, including
-     * best practices, see: https://docs.microsoft.com/azure/aks/upgrade-cluster#customize-node-surge-upgrade.
+     * percentages, fractional nodes are rounded up. If not specified, the default is 10%. For more information,
+     * including best practices, see: https://docs.microsoft.com/azure/aks/upgrade-cluster#customize-node-surge-upgrade.
      * 
      * @param maxSurge the maxSurge value to set.
      * @return the AgentPoolUpgradeSettings object itself.

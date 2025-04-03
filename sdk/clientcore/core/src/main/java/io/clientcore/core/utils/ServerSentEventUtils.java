@@ -3,12 +3,13 @@
 
 package io.clientcore.core.utils;
 
-import io.clientcore.core.http.models.ContentType;
+import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.ServerSentEvent;
 import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.implementation.utils.ServerSentEventHelper;
+import io.clientcore.core.models.ServerSentResult;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,12 +27,6 @@ import java.util.Objects;
 public final class ServerSentEventUtils {
     private static final String DEFAULT_EVENT = "message";
     private static final HttpHeaderName LAST_EVENT_ID = HttpHeaderName.fromString("Last-Event-Id");
-
-    /**
-     * Error message for when no {@link ServerSentEventListener} is attached to the {@link HttpRequest}.
-     */
-    public static final String NO_LISTENER_ERROR_MESSAGE
-        = "No ServerSentEventListener attached to HttpRequest to handle the text/event-stream response";
 
     private ServerSentEventUtils() {
     }

@@ -6,10 +6,7 @@ package io.clientcore.core.instrumentation.logging;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.instrumentation.DefaultLogger;
 import io.clientcore.core.instrumentation.InstrumentationContext;
-import io.clientcore.core.serialization.json.JsonOptions;
-import io.clientcore.core.serialization.json.JsonProviders;
 import io.clientcore.core.serialization.json.JsonReader;
-import io.clientcore.core.instrumentation.logging.ClientLogger.LogLevel;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -250,13 +247,13 @@ public class ClientLoggerTests {
     public void logWithNullSupplier(LogLevel logLevel) {
         ClientLogger logger = setupLogLevelAndGetLogger(logLevel);
         if (logLevel.equals(LogLevel.ERROR)) {
-            logger.atError().log(null);
+            logger.atError().log();
         } else if (logLevel.equals(LogLevel.WARNING)) {
-            logger.atWarning().log(null);
+            logger.atWarning().log();
         } else if (logLevel.equals(LogLevel.INFORMATIONAL)) {
-            logger.atInfo().log(null);
+            logger.atInfo().log();
         } else if (logLevel.equals(LogLevel.VERBOSE)) {
-            logger.atVerbose().log(null);
+            logger.atVerbose().log();
         } else {
             throw new IllegalArgumentException("Unknown log level: " + logLevel);
         }
@@ -440,7 +437,7 @@ public class ClientLoggerTests {
     public void logWithContextNullMessage() {
         ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE);
 
-        logger.atVerbose().addKeyValue("connectionId", "foo").addKeyValue("linkName", true).log(null);
+        logger.atVerbose().addKeyValue("connectionId", "foo").addKeyValue("linkName", true).log();
 
         Map<String, Object> expectedMessage = new HashMap<>();
         expectedMessage.put("connectionId", "foo");
@@ -503,7 +500,7 @@ public class ClientLoggerTests {
     public void logWithContextNullSupplier() {
         ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL);
 
-        logger.atError().addKeyValue("connectionId", "foo").addKeyValue("linkName", (String) null).log(null);
+        logger.atError().addKeyValue("connectionId", "foo").addKeyValue("linkName", (String) null).log();
 
         Map<String, Object> expectedMessage = new HashMap<>();
         expectedMessage.put("connectionId", "foo");
@@ -1111,7 +1108,7 @@ public class ClientLoggerTests {
     }
 
     private Map<String, Object> fromJson(String str) {
-        try (JsonReader reader = JsonProviders.createReader(str, new JsonOptions())) {
+        try (JsonReader reader = JsonReader.fromString(str)) {
             return reader.readMap(JsonReader::readUntyped);
         } catch (IOException e) {
             throw new UncheckedIOException(e);

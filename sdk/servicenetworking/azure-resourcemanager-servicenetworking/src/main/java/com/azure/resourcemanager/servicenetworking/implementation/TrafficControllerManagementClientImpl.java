@@ -214,7 +214,7 @@ public final class TrafficControllerManagementClientImpl implements TrafficContr
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2025-01-01";
+        this.apiVersion = "2025-03-01-preview";
         this.associationsInterfaces = new AssociationsInterfacesClientImpl(this);
         this.frontendsInterfaces = new FrontendsInterfacesClientImpl(this);
         this.securityPoliciesInterfaces = new SecurityPoliciesInterfacesClientImpl(this);

@@ -96,6 +96,7 @@
     <Or>
       <Class name="com.azure.ai.openai.implementation.accesshelpers.ChatCompletionsOptionsAccessHelper" />
       <Class name="com.azure.ai.openai.implementation.accesshelpers.CompletionsOptionsAccessHelper" />
+      <Class name="com.azure.ai.openai.responses.implementation.accesshelpers.CreateResponsesRequestAccessHelper" />
     </Or>
   </Match>
   <Match>
@@ -110,6 +111,9 @@
       <Class name="com.azure.ai.openai.models.OpenAIFile" />
       <Class name="com.azure.ai.openai.models.PageableList" />
       <Class name="com.azure.ai.openai.models.UploadPart" />
+      <Class name="com.azure.ai.openai.responses.models.DeleteResponseResponse" />
+      <Class name="com.azure.ai.openai.responses.models.ResponsesInputItemList" />
+      <Class name="com.azure.ai.openai.responses.models.ResponsesResponse" />
     </Or>
   </Match>
   <Match>

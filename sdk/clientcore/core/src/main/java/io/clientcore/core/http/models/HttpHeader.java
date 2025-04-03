@@ -3,14 +3,17 @@
 
 package io.clientcore.core.http.models;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
+import io.clientcore.core.utils.CoreUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
-import static io.clientcore.core.implementation.utils.ImplUtils.isNullOrEmpty;
-import static io.clientcore.core.implementation.utils.ImplUtils.stringJoin;
+import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
 /**
  * Represents a single header to be set on a request.
@@ -18,7 +21,8 @@ import static io.clientcore.core.implementation.utils.ImplUtils.stringJoin;
  * If multiple header values are added to a request with the same name (case-insensitive), then the values will be
  * appended at the end of the same {@link HttpHeader} with commas separating them.
  */
-public class HttpHeader {
+@Metadata(properties = MetadataProperties.FLUENT)
+public final class HttpHeader {
     private static final String[] EMPTY_HEADER_ARRAY = new String[0];
 
     private final HttpHeaderName name;
@@ -160,29 +164,6 @@ public class HttpHeader {
     }
 
     /**
-     * Add a new value to the end of the Header.
-     *
-     * @param values the value to add
-     */
-    public void addValues(List<String> values) {
-        if (isNullOrEmpty(values)) {
-            return;
-        }
-
-        if (this.value == null && this.values == null) {
-            this.values = new ArrayList<>(values);
-            return;
-        } else if (this.values == null) {
-            this.values = new ArrayList<>(values.size() + 1);
-            values.add(this.value);
-            this.value = null;
-        }
-
-        this.values.addAll(values);
-        CACHED_STRING_VALUE_UPDATER.set(this, null);
-    }
-
-    /**
      * Gets the String representation of the header.
      *
      * @return the String representation of this Header.
@@ -200,6 +181,6 @@ public class HttpHeader {
     }
 
     private void checkCachedStringValue() {
-        CACHED_STRING_VALUE_UPDATER.compareAndSet(this, null, stringJoin(",", values));
+        CACHED_STRING_VALUE_UPDATER.compareAndSet(this, null, CoreUtils.stringJoin(",", values));
     }
 }

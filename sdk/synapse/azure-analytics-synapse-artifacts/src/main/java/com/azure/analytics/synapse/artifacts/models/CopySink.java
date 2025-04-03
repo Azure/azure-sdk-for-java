@@ -251,6 +251,8 @@ public class CopySink implements JsonSerializable<CopySink> {
                     return OrcSink.fromJson(readerToUse.reset());
                 } else if ("RestSink".equals(discriminatorValue)) {
                     return RestSink.fromJson(readerToUse.reset());
+                } else if ("TeradataSink".equals(discriminatorValue)) {
+                    return TeradataSink.fromJson(readerToUse.reset());
                 } else if ("AzurePostgreSqlSink".equals(discriminatorValue)) {
                     return AzurePostgreSqlSink.fromJson(readerToUse.reset());
                 } else if ("AzureMySqlSink".equals(discriminatorValue)) {
@@ -271,6 +273,8 @@ public class CopySink implements JsonSerializable<CopySink> {
                     return ParquetSink.fromJson(readerToUse.reset());
                 } else if ("BinarySink".equals(discriminatorValue)) {
                     return BinarySink.fromJson(readerToUse.reset());
+                } else if ("IcebergSink".equals(discriminatorValue)) {
+                    return IcebergSink.fromJson(readerToUse.reset());
                 } else if ("BlobSink".equals(discriminatorValue)) {
                     return BlobSink.fromJson(readerToUse.reset());
                 } else if ("FileSystemSink".equals(discriminatorValue)) {

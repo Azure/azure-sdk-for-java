@@ -286,6 +286,8 @@ public class HttpConstants {
         // Thinclient headers
         public static final String THINCLIENT_PROXY_OPERATION_TYPE = "x-ms-thinclient-proxy-operation-type";
         public static final String THINCLIENT_PROXY_RESOURCE_TYPE = "x-ms-thinclient-proxy-resource-type";
+
+        public static final String GLOBAL_DATABASE_ACCOUNT_NAME = "GlobalDatabaseAccountName";
     }
 
     public static class A_IMHeaderValues {

@@ -316,6 +316,8 @@ public class Dataset implements JsonSerializable<Dataset> {
                     return OrcDataset.fromJson(readerToUse.reset());
                 } else if ("Binary".equals(discriminatorValue)) {
                     return BinaryDataset.fromJson(readerToUse.reset());
+                } else if ("Iceberg".equals(discriminatorValue)) {
+                    return IcebergDataset.fromJson(readerToUse.reset());
                 } else if ("AzureBlob".equals(discriminatorValue)) {
                     return AzureBlobDataset.fromJson(readerToUse.reset());
                 } else if ("AzureTable".equals(discriminatorValue)) {
@@ -496,7 +498,7 @@ public class Dataset implements JsonSerializable<Dataset> {
                     return SharePointOnlineListResourceDataset.fromJson(readerToUse.reset());
                 } else if ("AzureDatabricksDeltaLakeDataset".equals(discriminatorValue)) {
                     return AzureDatabricksDeltaLakeDataset.fromJson(readerToUse.reset());
-                } else if ("LakeHouseTable".equals(discriminatorValue)) {
+                } else if ("LakehouseTable".equals(discriminatorValue)) {
                     return LakeHouseTableDataset.fromJson(readerToUse.reset());
                 } else if ("SalesforceV2Object".equals(discriminatorValue)) {
                     return SalesforceV2ObjectDataset.fromJson(readerToUse.reset());

@@ -6,6 +6,7 @@ package io.clientcore.core.implementation.instrumentation.fallback;
 import io.clientcore.core.instrumentation.InstrumentationAttributes;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.instrumentation.logging.LoggingEvent;
 import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.SpanBuilder;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
@@ -18,7 +19,7 @@ import static io.clientcore.core.implementation.instrumentation.AttributeKeys.SP
 
 final class FallbackSpanBuilder implements SpanBuilder {
     static final FallbackSpanBuilder NOOP = new FallbackSpanBuilder();
-    private final ClientLogger.LoggingEvent log;
+    private final LoggingEvent log;
     private final FallbackSpanContext parentSpanContext;
     private final SpanKind spanKind;
 

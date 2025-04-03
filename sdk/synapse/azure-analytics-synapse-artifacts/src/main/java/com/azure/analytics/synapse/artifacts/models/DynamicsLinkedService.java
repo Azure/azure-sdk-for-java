@@ -56,10 +56,16 @@ public class DynamicsLinkedService extends LinkedService {
 
     /*
      * The authentication type to connect to Dynamics server. 'Office365' for online scenario, 'Ifd' for on-premises
-     * with Ifd scenario, 'AADServicePrincipal' for Server-To-Server authentication in online scenario. Type: string (or
-     * Expression with resultType string).
+     * with Ifd scenario, 'AADServicePrincipal' for Server-To-Server authentication in online scenario, 'Active
+     * Directory' for Dynamics on-premises with IFD. Type: string (or Expression with resultType string).
      */
     private Object authenticationType;
+
+    /*
+     * The Active Directory domain that will verify user credentials. Type: string (or Expression with resultType
+     * string).
+     */
+    private Object domain;
 
     /*
      * User name to access the Dynamics instance. Type: string (or Expression with resultType string).
@@ -233,7 +239,8 @@ public class DynamicsLinkedService extends LinkedService {
     /**
      * Get the authenticationType property: The authentication type to connect to Dynamics server. 'Office365' for
      * online scenario, 'Ifd' for on-premises with Ifd scenario, 'AADServicePrincipal' for Server-To-Server
-     * authentication in online scenario. Type: string (or Expression with resultType string).
+     * authentication in online scenario, 'Active Directory' for Dynamics on-premises with IFD. Type: string (or
+     * Expression with resultType string).
      * 
      * @return the authenticationType value.
      */
@@ -244,13 +251,36 @@ public class DynamicsLinkedService extends LinkedService {
     /**
      * Set the authenticationType property: The authentication type to connect to Dynamics server. 'Office365' for
      * online scenario, 'Ifd' for on-premises with Ifd scenario, 'AADServicePrincipal' for Server-To-Server
-     * authentication in online scenario. Type: string (or Expression with resultType string).
+     * authentication in online scenario, 'Active Directory' for Dynamics on-premises with IFD. Type: string (or
+     * Expression with resultType string).
      * 
      * @param authenticationType the authenticationType value to set.
      * @return the DynamicsLinkedService object itself.
      */
     public DynamicsLinkedService setAuthenticationType(Object authenticationType) {
         this.authenticationType = authenticationType;
+        return this;
+    }
+
+    /**
+     * Get the domain property: The Active Directory domain that will verify user credentials. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @return the domain value.
+     */
+    public Object getDomain() {
+        return this.domain;
+    }
+
+    /**
+     * Set the domain property: The Active Directory domain that will verify user credentials. Type: string (or
+     * Expression with resultType string).
+     * 
+     * @param domain the domain value to set.
+     * @return the DynamicsLinkedService object itself.
+     */
+    public DynamicsLinkedService setDomain(Object domain) {
+        this.domain = domain;
         return this;
     }
 
@@ -414,6 +444,15 @@ public class DynamicsLinkedService extends LinkedService {
      * {@inheritDoc}
      */
     @Override
+    public DynamicsLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public DynamicsLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
@@ -452,6 +491,7 @@ public class DynamicsLinkedService extends LinkedService {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -463,6 +503,7 @@ public class DynamicsLinkedService extends LinkedService {
             || serviceUri != null
             || organizationName != null
             || authenticationType != null
+            || domain != null
             || username != null
             || password != null
             || servicePrincipalId != null
@@ -477,6 +518,7 @@ public class DynamicsLinkedService extends LinkedService {
             jsonWriter.writeUntypedField("serviceUri", this.serviceUri);
             jsonWriter.writeUntypedField("organizationName", this.organizationName);
             jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
+            jsonWriter.writeUntypedField("domain", this.domain);
             jsonWriter.writeUntypedField("username", this.username);
             jsonWriter.writeJsonField("password", this.password);
             jsonWriter.writeUntypedField("servicePrincipalId", this.servicePrincipalId);
@@ -511,7 +553,9 @@ public class DynamicsLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedDynamicsLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedDynamicsLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedDynamicsLinkedService.setDescription(reader.getString());
@@ -541,6 +585,8 @@ public class DynamicsLinkedService extends LinkedService {
                             deserializedDynamicsLinkedService.organizationName = reader.readUntyped();
                         } else if ("authenticationType".equals(fieldName)) {
                             deserializedDynamicsLinkedService.authenticationType = reader.readUntyped();
+                        } else if ("domain".equals(fieldName)) {
+                            deserializedDynamicsLinkedService.domain = reader.readUntyped();
                         } else if ("username".equals(fieldName)) {
                             deserializedDynamicsLinkedService.username = reader.readUntyped();
                         } else if ("password".equals(fieldName)) {

@@ -17,6 +17,7 @@ import com.azure.resourcemanager.containerservice.models.AgentPoolUpgradeSetting
 import com.azure.resourcemanager.containerservice.models.AgentPoolWindowsProfile;
 import com.azure.resourcemanager.containerservice.models.CreationData;
 import com.azure.resourcemanager.containerservice.models.GpuInstanceProfile;
+import com.azure.resourcemanager.containerservice.models.GpuProfile;
 import com.azure.resourcemanager.containerservice.models.KubeletConfig;
 import com.azure.resourcemanager.containerservice.models.KubeletDiskType;
 import com.azure.resourcemanager.containerservice.models.LinuxOSConfig;
@@ -257,6 +258,33 @@ public final class AgentPoolInner extends SubResource {
             this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
         }
         this.innerProperties().withWorkloadRuntime(workloadRuntime);
+        return this;
+    }
+
+    /**
+     * Get the messageOfTheDay property: A base64-encoded string which will be written to /etc/motd after decoding. This
+     * allows customization of the message of the day for Linux nodes. It must not be specified for Windows nodes. It
+     * must be a static string (i.e., will be printed raw and not be executed as a script).
+     * 
+     * @return the messageOfTheDay value.
+     */
+    public String messageOfTheDay() {
+        return this.innerProperties() == null ? null : this.innerProperties().messageOfTheDay();
+    }
+
+    /**
+     * Set the messageOfTheDay property: A base64-encoded string which will be written to /etc/motd after decoding. This
+     * allows customization of the message of the day for Linux nodes. It must not be specified for Windows nodes. It
+     * must be a static string (i.e., will be printed raw and not be executed as a script).
+     * 
+     * @param messageOfTheDay the messageOfTheDay value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withMessageOfTheDay(String messageOfTheDay) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
+        }
+        this.innerProperties().withMessageOfTheDay(messageOfTheDay);
         return this;
     }
 
@@ -1194,6 +1222,29 @@ public final class AgentPoolInner extends SubResource {
             this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
         }
         this.innerProperties().withSecurityProfile(securityProfile);
+        return this;
+    }
+
+    /**
+     * Get the gpuProfile property: GPU settings for the Agent Pool.
+     * 
+     * @return the gpuProfile value.
+     */
+    public GpuProfile gpuProfile() {
+        return this.innerProperties() == null ? null : this.innerProperties().gpuProfile();
+    }
+
+    /**
+     * Set the gpuProfile property: GPU settings for the Agent Pool.
+     * 
+     * @param gpuProfile the gpuProfile value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withGpuProfile(GpuProfile gpuProfile) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
+        }
+        this.innerProperties().withGpuProfile(gpuProfile);
         return this;
     }
 
