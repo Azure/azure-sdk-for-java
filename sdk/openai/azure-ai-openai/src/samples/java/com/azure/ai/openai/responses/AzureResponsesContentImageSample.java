@@ -24,7 +24,6 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Base64;
 
-import static java.lang.System.exit;
 
 /**
  * This sample demonstrates how to use the Responses Input Content Image  to generate text using the Azure OpenAI service.
@@ -48,10 +47,9 @@ public class AzureResponsesContentImageSample {
         try {
             String fileName = "ms_logo.png";
             byte[] imageBytes = Files.readAllBytes(Paths.get("src/samples/java/com/azure/ai/openai/resources/" + fileName));
-            base64Image= Base64.getEncoder().encodeToString(imageBytes);
+            base64Image = Base64.getEncoder().encodeToString(imageBytes);
         } catch (IOException e) {
-            System.out.println("Exception: " + e);
-            exit(-1);
+            return;
         }
 
         // Create a request
