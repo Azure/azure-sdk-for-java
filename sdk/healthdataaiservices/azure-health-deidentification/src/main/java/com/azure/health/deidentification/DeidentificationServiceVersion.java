@@ -7,17 +7,17 @@ package com.azure.health.deidentification;
 import com.azure.core.util.ServiceVersion;
 
 /**
- * Service version of DeidServicesClient.
+ * Service version of DeidentificationClient.
  */
-public enum DeidServicesServiceVersion implements ServiceVersion {
+public enum DeidentificationServiceVersion implements ServiceVersion {
     /**
-     * Enum value 2024-07-12-preview.
+     * Enum value 2024-11-15.
      */
-    V2024_07_12_PREVIEW("2024-07-12-preview");
+    V2024_11_15("2024-11-15");
 
     private final String version;
 
-    DeidServicesServiceVersion(String version) {
+    DeidentificationServiceVersion(String version) {
         this.version = version;
     }
 
@@ -32,9 +32,9 @@ public enum DeidServicesServiceVersion implements ServiceVersion {
     /**
      * Gets the latest service version supported by this client library.
      * 
-     * @return The latest {@link DeidServicesServiceVersion}.
+     * @return The latest {@link DeidentificationServiceVersion}.
      */
-    public static DeidServicesServiceVersion getLatest() {
-        return V2024_07_12_PREVIEW;
+    public static DeidentificationServiceVersion getLatest() {
+        return V2024_11_15;
     }
 }
