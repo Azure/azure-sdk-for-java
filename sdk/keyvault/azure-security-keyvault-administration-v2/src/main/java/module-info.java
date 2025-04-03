@@ -7,7 +7,8 @@ module com.azure.v2.security.keyvault.administration {
     requires transitive com.azure.v2.core;
 
     exports com.azure.v2.security.keyvault.administration;
+    exports com.azure.v2.security.keyvault.administration.models;
 
-    opens com.azure.v2.security.keyvault.administration.implementation.implementation.models to io.clientcore.core;
+    opens com.azure.v2.security.keyvault.administration.models to io.clientcore.core;
     opens com.azure.v2.security.keyvault.administration.implementation.models to io.clientcore.core;
 }
