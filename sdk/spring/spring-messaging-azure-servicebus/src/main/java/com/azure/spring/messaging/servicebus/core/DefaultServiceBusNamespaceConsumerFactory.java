@@ -38,8 +38,6 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public final class DefaultServiceBusNamespaceConsumerFactory implements ServiceBusConsumerFactory, DisposableBean {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultServiceBusNamespaceConsumerFactory.class);
-    private static final String LOG_IGNORE_NULL_CUSTOMIZER = "The provided '{}' customizer is null, will ignore it.";
-    private static final String LOG_IGNORE_NULL_DEDICATED_CUSTOMIZER = "The provided '{}' dedicated customizer is null, will ignore it.";
     private final List<Listener> listeners = new ArrayList<>();
     private final NamespaceProperties namespaceProperties;
     private final PropertiesSupplier<ConsumerIdentifier, ConsumerProperties> propertiesSupplier;
@@ -163,7 +161,8 @@ public final class DefaultServiceBusNamespaceConsumerFactory implements ServiceB
      */
     public void addSessionReceiverCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder> customizer) {
         if (customizer == null) {
-            LOGGER.debug(LOG_IGNORE_NULL_CUSTOMIZER, ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder.class.getName());
+            LOGGER.debug("The provided '{}' customizer is null, will ignore it.",
+                ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder.class.getName());
             return;
         }
         this.sessionReceiverCustomizers.add(customizer);
@@ -179,7 +178,8 @@ public final class DefaultServiceBusNamespaceConsumerFactory implements ServiceB
     public void addDedicatedSessionReceiverCustomizer(String entityName,
                                                AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder> customizer) {
         if (customizer == null) {
-            LOGGER.debug(LOG_IGNORE_NULL_DEDICATED_CUSTOMIZER, ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder.class.getName());
+            LOGGER.debug("The provided '{}' dedicated customizer is null, will ignore it.",
+                ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder.class.getName());
         } else {
             this.dedicatedSessionReceiverCustomizers
                 .computeIfAbsent(entityName, key -> new ArrayList<>())
