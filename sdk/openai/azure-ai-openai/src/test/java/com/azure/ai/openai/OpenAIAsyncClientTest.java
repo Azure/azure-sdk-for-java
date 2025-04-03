@@ -63,7 +63,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.ai.openai.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
@@ -2330,9 +2329,13 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetCompletionsStreamEmitsValues(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
+
         getCompletionsRunner((deploymentId, prompt) -> {
             StepVerifier.create(client.getCompletionsStream(deploymentId, new CompletionsOptions(prompt),
-                new ChatCompletionStreamOptions())).expectNextMatches(Objects::nonNull).thenCancel().verify();
+                new ChatCompletionStreamOptions())).thenConsumeWhile(completions -> {
+                    assertNotNull(completions);
+                    return true;
+                }).verifyComplete();
         });
     }
 
@@ -2340,9 +2343,13 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGetChatCompletionsStreamEmitsValues(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
+
         getChatCompletionsRunner((deploymentId, prompt) -> {
             StepVerifier.create(client.getChatCompletionsStream(deploymentId, new ChatCompletionsOptions(prompt),
-                new ChatCompletionStreamOptions())).expectNextMatches(Objects::nonNull).thenCancel().verify();
+                new ChatCompletionStreamOptions())).thenConsumeWhile(chatCompletions -> {
+                    assertNotNull(chatCompletions);
+                    return true;
+                }).verifyComplete();
         });
     }
 }
