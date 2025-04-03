@@ -16,13 +16,15 @@ import com.azure.storage.blob.models.ListBlobsOptions;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
 public class SimpleBlobClientUsage {
-    private static final ClientLogger logger = new ClientLogger(AzureStorageBlobExample.class);
+    private static final ClientLogger logger = new ClientLogger(SimpleBlobClientUsage.class);
 
     public static void main(String[] args) {
         String sasToken = "your-sas-token";
@@ -59,7 +61,7 @@ public class SimpleBlobClientUsage {
         ListBlobsOptions options = new ListBlobsOptions().setPrefix("sample");
         List<String> blobNames = new ArrayList<>();
         blobServiceClient.getBlobContainerClient(containerName)
-            .listBlobs(options, Context.NONE)
+            .listBlobs(options, null)
             .forEach(blobItem -> blobNames.add(blobItem.getName()));
 
         logger.info("Blobs in container:");
@@ -67,9 +69,9 @@ public class SimpleBlobClientUsage {
 
         // Download the blob
         try {
-            byte[] downloadedContent = new byte[(int) blobClient.getProperties().getBlobSize()];
-            blobClient.download(downloadedContent, Context.NONE);
-            logger.info("Downloaded blob content: " + new String(downloadedContent, StandardCharsets.UTF_8));
+            ByteArrayOutputStream downloadedContent = new ByteArrayOutputStream((int) blobClient.getProperties().getBlobSize());
+            blobClient.download(downloadedContent);
+            logger.info("Downloaded blob content: " + new String(downloadedContent.toByteArray(), StandardCharsets.UTF_8));
         } catch (BlobStorageException e) {
             logger.error("Failed to download blob.", e);
         }
