@@ -240,7 +240,7 @@ public final class KeyClient {
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.createKey#CreateKeyOptions -->
      *
      * @param createKeyOptions The {@link CreateKeyOptions options object} containing information about the key being
-     * created.
+     * created. It is required and cannot be {@code null}.
      * @return The newly created key.
      *
      * @throws HttpResponseException If {@code createKeyOptions} is malformed.
@@ -250,9 +250,7 @@ public final class KeyClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultKey createKey(CreateKeyOptions createKeyOptions) {
         try {
-            if (createKeyOptions == null) {
-                throw new NullPointerException("'createKeyOptions' cannot be null.");
-            }
+            Objects.requireNonNull(createKeyOptions, "'createKeyOptions' cannot be null.");
 
             if (isNullOrEmpty(createKeyOptions.getName())) {
                 throw new IllegalArgumentException("'createKeyOptions.getName()' cannot be null or empty.");
@@ -291,7 +289,7 @@ public final class KeyClient {
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.createKeyWithResponse#CreateKeyOptions-RequestOptions -->
      *
      * @param createKeyOptions The {@link CreateKeyOptions options object} containing information about the key being
-     * created.
+     * created. It is required and cannot be {@code null}.
      * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
      * @return A response object whose {@link Response#getValue() value} contains the newly created key.
      *
@@ -304,9 +302,7 @@ public final class KeyClient {
         RequestOptions requestOptions) {
 
         try {
-            if (createKeyOptions == null) {
-                throw new NullPointerException("'createKeyOptions' cannot be null.");
-            }
+            Objects.requireNonNull(createKeyOptions, "'createKeyOptions' cannot be null.");
 
             if (isNullOrEmpty(createKeyOptions.getName())) {
                 throw new IllegalArgumentException("'createKeyOptions.getName()' cannot be null or empty.");
@@ -347,7 +343,7 @@ public final class KeyClient {
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.createRsaKey#CreateRsaKeyOptions -->
      *
      * @param createRsaKeyOptions The {@link CreateRsaKeyOptions options object} containing information about the RSA
-     * key being created.
+     * key being created. It is required and cannot be {@code null}.
      * @return The newly created RSA key.
      *
      * @throws HttpResponseException If {@code createRsaKeyOptions} is malformed.
@@ -398,22 +394,20 @@ public final class KeyClient {
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.createRsaKeyWithResponse#CreateRsaKeyOptions-RequestOptions -->
      *
      * @param createRsaKeyOptions The {@link CreateRsaKeyOptions options object} containing information about the RSA
-     * key being created.
+     * key being created. It is required and cannot be {@code null}.
      * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
      * @return A response object whose {@link Response#getValue() value} contains the newly created RSA key.
      *
      * @throws HttpResponseException If {@code createRsaKeyOptions} is malformed.
      * @throws IllegalArgumentException If {@link CreateRsaKeyOptions#getName()} is {@code null} or an empty string.
-     * @throws NullPointerException If either of {@code createRsaKeyOptions} is {@code null}.
+     * @throws NullPointerException If {@code createRsaKeyOptions} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> createRsaKeyWithResponse(CreateRsaKeyOptions createRsaKeyOptions,
         RequestOptions requestOptions) {
 
         try {
-            if (createRsaKeyOptions == null) {
-                throw new NullPointerException("'createRsaKeyOptions' cannot be null.");
-            }
+            Objects.requireNonNull(createRsaKeyOptions, "'createRsaKeyOptions' cannot be null.");
 
             if (isNullOrEmpty(createRsaKeyOptions.getName())) {
                 throw new IllegalArgumentException("'createRsaKeyOptions.getName()' cannot be null or empty.");
@@ -456,12 +450,12 @@ public final class KeyClient {
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.createEcKey#CreateOctKeyOptions -->
      *
      * @param createEcKeyOptions The {@link CreateEcKeyOptions options object} containing information about the EC key
-     * being created.
+     * being created. It is required and cannot be {@code null}.
      * @return The newly created EC key.
      *
      * @throws HttpResponseException If {@code createEcKeyOptions} is malformed.
      * @throws IllegalArgumentException If {@link CreateEcKeyOptions#getName()} is {@code null} or an empty string.
-     * @throws NullPointerException If either of {@code createEcKeyOptions} is {@code null}.
+     * @throws NullPointerException If {@code createEcKeyOptions} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultKey createEcKey(CreateEcKeyOptions createEcKeyOptions) {
@@ -506,14 +500,13 @@ public final class KeyClient {
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.createEcKeyWithResponse#CreateEcKeyOptions-RequestOptions -->
      *
      * @param createEcKeyOptions The {@link CreateEcKeyOptions options object} containing information about the EC key
-     * being created.
+     * being created. It is required and cannot be {@code null}.
      * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
      * @return A response object whose {@link Response#getValue() value} contains the newly created EC key.
      *
-     * @throws HttpResponseException If {@code createEcKeyOptions} is malformed or if
-     * {@link CreateEcKeyOptions#getName()} is an empty string.
-     * @throws NullPointerException If either of {@code createEcKeyOptions} or {@link CreateEcKeyOptions#getName()} is
-     * {@code null}.
+     * @throws HttpResponseException If {@code createEcKeyOptions} is malformed
+     * @throws IllegalArgumentException If {@link CreateEcKeyOptions#getName()} is {@code null} or an empty string.
+     * @throws NullPointerException If {@code createEcKeyOptions} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> createEcKeyWithResponse(CreateEcKeyOptions createEcKeyOptions,
@@ -560,12 +553,12 @@ public final class KeyClient {
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.createOctKey#CreateOctKeyOptions -->
      *
      * @param createOctKeyOptions The {@link CreateOctKeyOptions options object} containing information about the
-     * symmetric key being created.
+     * symmetric key being created. It is required and cannot be {@code null}.
      * @return The newly created symmetric key.
      *
      * @throws HttpResponseException If {@code createOctKeyOptions} is malformed.
      * @throws IllegalArgumentException If {@link CreateOctKeyOptions#getName()} is {@code null} or an empty string.
-     * @throws NullPointerException If either of {@code createOctKeyOptions} is {@code null}.
+     * @throws NullPointerException If {@code createOctKeyOptions} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultKey createOctKey(CreateOctKeyOptions createOctKeyOptions) {
@@ -608,13 +601,13 @@ public final class KeyClient {
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.createOctKey#CreateOctKeyOptions-RequestOptions -->
      *
      * @param createOctKeyOptions The {@link CreateOctKeyOptions options object} containing information about the
-     * symmetric key being created.
+     * symmetric key being created. It is required and cannot be {@code null}.
      * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
      * @return The newly created symmetric key.
      *
      * @throws HttpResponseException If {@code createOctKeyOptions} is malformed.
      * @throws IllegalArgumentException If {@link CreateOctKeyOptions#getName()} is {@code null} or an empty string.
-     * @throws NullPointerException If either of {@code createOctKeyOptions} is {@code null}.
+     * @throws NullPointerException If {@code createOctKeyOptions} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> createOctKeyWithResponse(CreateOctKeyOptions createOctKeyOptions,
@@ -652,8 +645,8 @@ public final class KeyClient {
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.importKey#String-JsonWebKey -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.importKey#String-JsonWebKey -->
      *
-     * @param name The name for the key to be imported.
-     * @param keyMaterial The {@link JsonWebKey} being imported.
+     * @param name The name for the key to be imported. It is required and cannot be {@code null} or empty.
+     * @param keyMaterial The {@link JsonWebKey} being imported. It is required and cannot be {@code null}.
      * @return The imported key as a {@link KeyVaultKey}.
      *
      * @throws IllegalArgumentException If the provided {@code name} is {@code null} or an empty string.
@@ -692,9 +685,10 @@ public final class KeyClient {
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.importKey#ImportKeyOptions -->
      *
      * @param importKeyOptions The {@link ImportKeyOptions options object} containing information about the
-     * {@link JsonWebKey} being imported.
+     * {@link JsonWebKey} being imported. It is required and cannot be {@code null}.
      * @return The imported key as a {@link KeyVaultKey}.
      *
+     * @throws HttpResponseException If {@code importKeyOptions} is malformed.
      * @throws IllegalArgumentException If the provided {@link ImportKeyOptions#getName()} is {@code null} or an empty
      * string.
      * @throws NullPointerException If either of the provided {@code importKeyOptions} or
@@ -741,11 +735,12 @@ public final class KeyClient {
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.importKeyWithResponse#ImportKeyOptions-RequestOptions -->
      *
      * @param importKeyOptions The {@link ImportKeyOptions options object} containing information about the
-     * {@link JsonWebKey} being imported.
+     * {@link JsonWebKey} being imported. It is required and cannot be {@code null}.
      * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
      * @return A response object whose {@link Response#getValue() value} contains the imported key as a
      * {@link KeyVaultKey}.
      *
+     * @throws HttpResponseException If {@code importKeyOptions} is malformed.
      * @throws IllegalArgumentException If the provided {@link ImportKeyOptions#getName()} is {@code null} or an empty
      * string.
      * @throws NullPointerException If either of the provided {@code importKeyOptions} or
@@ -867,16 +862,20 @@ public final class KeyClient {
      * in the key vault of a given key. Key attributes that are not specified in the request are left unchanged. This
      * operation requires the {@code keys/set} permission.
      *
+     * <p>The {@code keyProperties} parameter and its {@link KeyProperties#getName() name} value are required.</p>
+     *
      * <p><strong>Code Sample</strong></p>
      * <p>Gets the latest version of a key and updates its expiry time and operations in the key vault, then prints out
      * the updated key's details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.updateKeyProperties#KeyProperties-KeyOperation -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.updateKeyProperties#KeyProperties-KeyOperation -->
      *
-     * @param keyProperties The key properties to update.
+     * @param keyProperties The key properties to update. It is required and cannot be {@code null}.
      * @param keyOperations The key operations to associate with the key.
      * @return The updated key.
      *
+     * @throws HttpResponseException If a key with the given {@link KeyProperties#getName() name} and
+     * {@link KeyProperties#getVersion() version} doesn't exist in the key vault.
      * @throws IllegalArgumentException If {@link KeyProperties#getName()} is {@code null} or an empty string.
      * @throws NullPointerException If {@code keyProperties} is {@code null}.
      */
@@ -906,18 +905,21 @@ public final class KeyClient {
      * in the key vault of a given key. Key attributes that are not specified in the request are left unchanged. This
      * operation requires the {@code keys/set} permission.
      *
+     * <p>The {@code keyProperties} parameter and its {@link KeyProperties#getName() name} value are required.</p>
+     *
      * <p><strong>Code Sample</strong></p>
      * <p>Gets the latest version of a key and updates its expiry time and operations, then prints out details of the
-     * response returned by the service and the updated key.
-     * </p>
+     * response returned by the service and the updated key.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.updateKeyPropertiesWithResponse#KeyProperties-RequestOptions-KeyOperation -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.updateKeyPropertiesWithResponse#KeyProperties-RequestOptions-KeyOperation -->
      *
-     * @param keyProperties The key properties to update.
+     * @param keyProperties The key properties to update. It is required and cannot be {@code null}.
      * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
      * @param keyOperations The key operations to associate with the key.
      * @return A response object whose {@link Response#getValue() value} contains the updated key.
      *
+     * @throws HttpResponseException If a key with the given {@link KeyProperties#getName() name} and
+     * {@link KeyProperties#getVersion() version} doesn't exist in the key vault.
      * @throws IllegalArgumentException If {@link KeyProperties#getName()} is {@code null} or an empty string.
      * @throws NullPointerException If {@code keyProperties} is {@code null}.
      */
@@ -947,10 +949,10 @@ public final class KeyClient {
     /**
      * Deletes a key of any type from the key vault. If soft-delete is enabled on the key vault then the key is placed
      * in the deleted state and requires to be purged for permanent deletion. Otherwise, the key is permanently deleted.
-     * The delete operation applies to any key, but it cannot be applied to an individual version of a key. This
-     * operation removes the cryptographic material associated with the key, which means the key is not usable for
-     * {@code Sign/Verify}, {@code Wrap/Unwrap} or {@code Encrypt/Decrypt} operations. This operation requires the
-     * {@code keys/delete} permission.
+     * All versions of a key are deleted. This cannot be applied to individual versions of a key. This operation removes
+     * the cryptographic material associated with the key, which means the key is not usable for {@code Sign/Verify},
+     * {@code Wrap/Unwrap} or {@code Encrypt/Decrypt} operations. This operation requires the {@code keys/delete}
+     * permission.
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Deletes a key from the key vault and prints out its recovery id.</p>
@@ -967,10 +969,14 @@ public final class KeyClient {
     /*@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<DeletedKey, Void> beginDeleteKey(String name) {
         try {
+            if (isNullOrEmpty(name)) {
+                throw new IllegalArgumentException("'name' cannot be null or empty.");
+            }
+
             return Poller.createPoller(Duration.ofSeconds(1),
                 pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                     createDeletedKey(clientImpl.deleteKey(name))),
-                deletePollOperation(name),
+                pollingContext -> deletePollOperation(name, pollingContext),
                 (pollingContext, firstResponse) -> null,
                 pollingContext -> null);
         } catch (RuntimeException e) {
@@ -978,35 +984,33 @@ public final class KeyClient {
         }
     }*/
 
-    private Function<PollingContext<DeletedKey>, PollResponse<DeletedKey>> deletePollOperation(String name) {
-        return pollingContext -> {
-            try {
-                return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                    createDeletedKey(clientImpl.getDeletedKey(name)));
-            } catch (HttpResponseException e) {
-                if (e.getResponse().getStatusCode() == 404) {
-                    return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
-                        pollingContext.getLatestResponse().getValue());
-                } else {
-                    // This means either vault has soft-delete disabled or permission is not granted for the get deleted key
-                    // operation. In both cases deletion operation was successful when activation operation succeeded before
-                    // reaching here.
-                    return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                        pollingContext.getLatestResponse().getValue());
-                }
-            } catch (RuntimeException e) {
+    private PollResponse<DeletedKey> deletePollOperation(String name, PollingContext<DeletedKey> pollingContext) {
+        try {
+            return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                createDeletedKey(clientImpl.getDeletedKey(name)));
+        } catch (HttpResponseException e) {
+            if (e.getResponse().getStatusCode() == 404) {
+                return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+                    pollingContext.getLatestResponse().getValue());
+            } else {
                 // This means either vault has soft-delete disabled or permission is not granted for the get deleted key
                 // operation. In both cases deletion operation was successful when activation operation succeeded before
                 // reaching here.
                 return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                     pollingContext.getLatestResponse().getValue());
             }
-        };
+        } catch (RuntimeException e) {
+            // This means either vault has soft-delete disabled or permission is not granted for the get deleted key
+            // operation. In both cases deletion operation was successful when activation operation succeeded before
+            // reaching here.
+            return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                pollingContext.getLatestResponse().getValue());
+        }
     }
 
     /**
-     * Gets the public part of a deleted key. The get deleted Key operation is only applicable for soft-delete enabled
-     * vaults. This operation requires the {@code keys/get} permission.
+     * Gets information about a deleted key. This operation is only applicable for soft-delete enabled vaults and
+     * requires the {@code keys/get} permission.
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Gets a deleted key from the key vault enabled for soft-delete and prints out its details.</p>
@@ -1064,8 +1068,8 @@ public final class KeyClient {
     }
 
     /**
-     * Permanently deletes the specified key without the possibility of recovery. The purge deleted key operation is
-     * only applicable for soft-delete enabled vaults. This operation requires the {@code keys/purge} permission.
+     * Permanently removes a deleted key without the possibility of recovery. This operation can only be performed on a
+     * key vault <b>enabled for soft-delete</b> and requires the {@code keys/purge} permission.
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Purges a deleted key from a key vault enabled for soft-delete.</p>
@@ -1091,8 +1095,8 @@ public final class KeyClient {
     }
 
     /**
-     * Permanently deletes the specified key without the possibility of recovery. The purge deleted key operation is
-     * only applicable for soft-delete enabled vaults. This operation requires the {@code keys/purge} permission.
+     * Permanently removes a deleted key without the possibility of recovery. This operation can only be performed on a
+     * key vault <b>enabled for soft-delete</b> and requires the {@code keys/purge} permission.
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Purges a deleted key from a key vault enabled for soft-delete and prints out details of the response returned
@@ -1141,11 +1145,15 @@ public final class KeyClient {
     /*@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<KeyVaultKey, Void> beginRecoverDeletedKey(String name) {
         try {
+            if (isNullOrEmpty(name)) {
+                throw new IllegalArgumentException("'name' cannot be null or empty.");
+            }
+
             return Poller.createPoller(
                 Duration.ofSeconds(1),
                 pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                     createKeyVaultKey(clientImpl.recoverDeletedKey(name))),
-                recoverPollOperation(name),
+                pollingContext -> recoverPollOperation(name, pollingContext),
                 (pollingContext, firstResponse) -> null,
                 pollingContext -> null);
         } catch (RuntimeException e) {
@@ -1153,33 +1161,30 @@ public final class KeyClient {
         }
     }*/
 
-    private Function<PollingContext<KeyVaultKey>, PollResponse<KeyVaultKey>> recoverPollOperation(String keyName) {
-        return pollingContext -> {
-            try {
-                return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                    createKeyVaultKey(clientImpl.getKey(keyName, "")));
-            } catch (HttpResponseException e) {
-                if (e.getResponse().getStatusCode() == 404) {
-                    return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
-                        pollingContext.getLatestResponse().getValue());
-                } else {
-                    // This means permission is not granted for the get key operation. In both cases recovery operation
-                    // was successful when activation operation succeeded before reaching here.
-                    return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
-                        pollingContext.getLatestResponse().getValue());
-                }
-            } catch (RuntimeException e) {
-                // This means permission is not granted for the get deleted key operation. In both cases deletion
-                // operation was successful when activation operation succeeded before reaching here.
+    private PollResponse<KeyVaultKey> recoverPollOperation(String keyName, PollingContext<KeyVaultKey> pollingContext) {
+        try {
+            return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                createKeyVaultKey(clientImpl.getKey(keyName, "")));
+        } catch (HttpResponseException e) {
+            if (e.getResponse().getStatusCode() == 404) {
+                return new PollResponse<>(LongRunningOperationStatus.IN_PROGRESS,
+                    pollingContext.getLatestResponse().getValue());
+            } else {
+                // This means permission is not granted for the get key operation. In both cases recovery operation
+                // was successful when activation operation succeeded before reaching here.
                 return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
                     pollingContext.getLatestResponse().getValue());
             }
-        };
+        } catch (RuntimeException e) {
+            // This means permission is not granted for the get deleted key operation. In both cases deletion
+            // operation was successful when activation operation succeeded before reaching here.
+            return new PollResponse<>(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED,
+                pollingContext.getLatestResponse().getValue());
+        }
     }
 
     /**
-     * Requests a backup of the specified key be downloaded to the client. The key backup operation exports a key from
-     * the key vault in a protected form. Note that this operation does not return key material in a form that can be
+     * Requests a backup of the specified key   that this operation does not return key material in a form that can be
      * used outside the Azure Key Vault or Managed HSM system, as the returned key material is either protected to an
      * Azure Key Vault HSM or to Azure Key Vault itself. The intent of this operation is to allow a client to generate a
      * key in a key vault instance, backup the key, and then restore it into another key vault instance. The backup
@@ -1267,7 +1272,7 @@ public final class KeyClient {
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.restoreKeyBackup#byte -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.restoreKeyBackup#byte -->
      *
-     * @param backup The backup blob associated with the key.
+     * @param backup The backup blob associated with the key. It is required and cannot be {@code null}.
      * @return The restored key.
      *
      * @throws HttpResponseException If the {@code backup} blob is malformed.
@@ -1301,7 +1306,7 @@ public final class KeyClient {
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.restoreKeyBackupWithResponse#byte-RequestOptions -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.restoreKeyBackupWithResponse#byte-RequestOptions -->
      *
-     * @param backup The backup blob associated with the key.
+     * @param backup The backup blob associated with the key. It is required and cannot be {@code null}.
      * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
      * @return A response object whose {@link Response#getValue() value} contains the restored key.
      *
@@ -1321,9 +1326,9 @@ public final class KeyClient {
     }
 
     /**
-     * List keys in the key vault. The list operation is applicable to all key types and each element in the list is
-     * represented by a properties object containing the key identifier, attributes, and tags. The key material and
-     * individual key versions are not listed in the response. This operation requires the {@code keys/list} permission.
+     * List all keys in the key vault. Each key is represented by a properties object containing the key identifier,
+     * attributes, and tags. The key material and individual key versions are not included in the response. This
+     * operation requires the {@code keys/list} permission.
      *
      * <p><strong>Iterate through keys</strong></p>
      * <p>Lists the keys in the key vault and gets the key material for each one's latest version by looping though the
@@ -1346,15 +1351,21 @@ public final class KeyClient {
     }
 
     /**
-     * List keys in the key vault. The list operation is applicable to all key types and each element in the list is
-     * represented by a properties object containing the key identifier, attributes, and tags. The key material and
-     * individual key versions are not listed in the response. This operation requires the {@code keys/list} permission.
+     * List all keys in the key vault. Each key is represented by a properties object containing the key identifier,
+     * attributes, and tags. The key material and individual key versions are not included in the response. This
+     * operation requires the {@code keys/list} permission.
      *
-     * <p><strong>Code Sample</strong></p>
+     * <p><strong>Iterate through keys</strong></p>
      * <p>Lists the keys in the key vault and gets the key material for each one's latest version by looping though the
      * properties objects and calling {@link KeyClient#getKey(String)}.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.listPropertiesOfKeys#RequestOptions -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.listPropertiesOfKeys#RequestOptions -->
+     *
+     * <p><strong>Iterate through keys by page</strong></p>
+     * <p>Iterates through the keys in the key vault by page and gets the key material for each one's latest version by
+     * looping though the properties objects and calling {@link KeyClient#getKey(String)}.</p>
+     * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.listPropertiesOfKeys.iterableByPage#RequestOptions -->
+     * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.listPropertiesOfKeys.iterableByPage#RequestOptions -->
      *
      * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
      * @return A {@link PagedIterable} of properties objects of all the keys in the vault. A properties object contains
@@ -1378,8 +1389,8 @@ public final class KeyClient {
     }
 
     /**
-     * Lists deleted keys in the key vault. The list deleted keys operation is applicable for key vaults enabled for
-     * soft-delete. This operation requires the {@code keys/list} permission.
+     * Lists all deleted keys in the key vault currently available for recovery. This operation is applicable for key
+     * vaults <b>enabled for soft-delete</b> and requires the {@code keys/list} permission.
      *
      * <p><strong>Iterate through deleted keys</strong></p>
      * <p>Lists the deleted keys in a key vault enabled for soft-delete and prints out each one's recovery id.</p>
@@ -1399,13 +1410,18 @@ public final class KeyClient {
     }
 
     /**
-     * Lists deleted keys in the key vault. The list deleted keys operation is applicable for key vaults enabled for
-     * soft-delete. This operation requires the {@code keys/list} permission.
+     * Lists all deleted keys in the key vault currently available for recovery. This operation is applicable for key
+     * vaults <b>enabled for soft-delete</b> and requires the {@code keys/list} permission.
      *
-     * <p><strong>Code Sample</strong></p>
+     * <p><strong>Iterate through deleted keys</strong></p>
      * <p>Lists the deleted keys in a key vault enabled for soft-delete and prints out each one's recovery id.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.listDeletedKeys#RequestOptions -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.listDeletedKeys#RequestOptions -->
+     *
+     * <p><strong>Iterate through deleted keys by page</strong></p>
+     * <p>Iterates through the deleted keys in the key vault by page and prints out each one's recovery id.</p>
+     * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.listDeletedKeys.iterableByPage#RequestOptions -->
+     * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.listDeletedKeys.iterableByPage#RequestOptions -->
      *
      * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
      * @return A {@link PagedIterable} of the deleted keys in the vault.
@@ -1429,9 +1445,9 @@ public final class KeyClient {
     }
 
     /**
-     * List all versions of the specified key. Each element in the list is represented by a properties object containing
-     * the key identifier, attributes, and tags. The key material is not included. This operation requires the
-     * {@code keys/list} permission.
+     * Lists all versions of the specified key in the key vault. Each key version is represented by a properties object
+     * containing the key identifier, attributes, and tags. The key material and individual key versions are not
+     * included in the response. This operation requires the {@code keys/list} permission.
      *
      * <p><strong>Iterate through keys versions</strong></p>
      * <p>Lists the versions of a key in the key vault and gets each one's key material by looping though the properties
@@ -1442,12 +1458,13 @@ public final class KeyClient {
      * <p><strong>Iterate through keys versions by page</strong></p>
      * <p>Iterates through the versions of a key in the key vault by page and gets each one's key material by looping
      * through the properties objects and calling {@link KeyClient#getKey(String, String)}.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.listPropertiesOfKeyVersions.iterableByPage -->
-     * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.listPropertiesOfKeyVersions.iterableByPage -->
+     * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.listPropertiesOfKeyVersions.iterableByPage#String -->
+     * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.listPropertiesOfKeyVersions.iterableByPage#String -->
      *
-     * @param name The name of the key.
-     * @return A {@link PagedIterable} of properties objects of all the key versions. A properties object contains
-     * all the information about the key version, except its key material.
+     * @param name The name of the key. It is required and cannot be {@code null} or empty.
+     * @return {@link PagedIterable} of properties objects of all the versions of the specified key in the vault. A
+     * properties object contains all the information about the key, except its key material. The {@link PagedIterable}
+     * will be empty if no key with the given {@code name} exists in key vault.
      *
      * @throws IllegalArgumentException If the provided {@code name} is {@code null} or an empty string.
      */
@@ -1457,20 +1474,27 @@ public final class KeyClient {
     }
 
     /**
-     * List all versions of the specified key. Each element in the list is represented by a properties object containing
-     * the key identifier, attributes, and tags. The key material is not included. This operation requires the
-     * {@code keys/list} permission.
+     * Lists all versions of the specified key in the key vault. Each key version is represented by a properties object
+     * containing the key identifier, attributes, and tags. The key material and individual key versions are not
+     * included in the response. This operation requires the {@code keys/list} permission.
      *
-     * <p><strong>Code Sample</strong></p>
+     * <p><strong>Iterate through keys versions</strong></p>
      * <p>Lists the versions of a key in the key vault and gets each one's key material by looping though the properties
      * objects and calling {@link KeyClient#getKey(String, String)}.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.listPropertiesOfKeyVersions#String-RequestOptions -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.listPropertiesOfKeyVersions#String-RequestOptions -->
      *
-     * @param name The name of the key.
+     * <p><strong>Iterate through keys versions by page</strong></p>
+     * <p>Iterates through the versions of a key in the key vault by page and gets each one's key material by looping
+     * through the properties objects and calling {@link KeyClient#getKey(String, String)}.</p>
+     * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.listPropertiesOfKeyVersions.iterableByPage#String-RequestOptions -->
+     * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.listPropertiesOfKeyVersions.iterableByPage#String-RequestOptions -->
+     *
+     * @param name The name of the key. It is required and cannot be {@code null} or empty.
      * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
-     * @return A {@link PagedIterable} of properties objects of all the key versions. A properties object contains
-     * all the information about the key version, except its key material.
+     * @return {@link PagedIterable} of properties objects of all the versions of the specified key in the vault. A
+     * properties object contains all the information about the key, except its key material. The {@link PagedIterable}
+     * will be empty if no key with the given {@code name} exists in key vault.
      *
      * @throws IllegalArgumentException If the provided {@code name} is {@code null} or an empty string.
      */
