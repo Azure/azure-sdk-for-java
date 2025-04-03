@@ -245,10 +245,11 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
         testRunner.accept(base64Image);
     }
 
-    static void assertImageResponseForAzure(ResponsesResponse response) {
-        ResponsesAssistantMessage assistantMessage = (ResponsesAssistantMessage) response.getOutput().get(0);
-        ResponsesOutputContentText outputContent = (ResponsesOutputContentText) assistantMessage.getContent().get(0);
+    static void assertAssistantMessage(ResponsesAssistantMessage assistantMessage) {
         assertNotNull(assistantMessage);
+    }
+
+    static void assertOutputContentText(ResponsesOutputContentText outputContent) {
         assertNotNull(outputContent);
         assertNotNull(outputContent.getText());
     }
