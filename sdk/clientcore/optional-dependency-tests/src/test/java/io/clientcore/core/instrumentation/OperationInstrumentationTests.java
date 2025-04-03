@@ -127,7 +127,8 @@ public class OperationInstrumentationTests {
     @Test
     public void noEndpoint() {
         Instrumentation instrumentation = Instrumentation.create(otelOptions, sdkInstrumentationOptions);
-        instrumentation.instrument("call", RequestContext.none(), __ -> { });
+        instrumentation.instrument("call", RequestContext.none(), __ -> {
+        });
 
         assertEquals(1, exporter.getFinishedSpanItems().size());
         SpanData spanData = exporter.getFinishedSpanItems().get(0);
@@ -142,7 +143,8 @@ public class OperationInstrumentationTests {
     public void testEndpoints(String endpoint) {
         Instrumentation instrumentation
             = Instrumentation.create(otelOptions, sdkInstrumentationOptions.setEndpoint(endpoint));
-        instrumentation.instrument("Call", RequestContext.none(), __ -> { });
+        instrumentation.instrument("Call", RequestContext.none(), __ -> {
+        });
 
         assertEquals(1, exporter.getFinishedSpanItems().size());
         SpanData spanData = exporter.getFinishedSpanItems().get(0);
