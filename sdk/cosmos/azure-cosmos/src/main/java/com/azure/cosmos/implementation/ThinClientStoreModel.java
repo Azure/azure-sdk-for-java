@@ -3,19 +3,31 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
+import com.azure.cosmos.implementation.directconnectivity.WFConstants;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConstants;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdFramer;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequest;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestArgs;
+import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdResponse;
 import com.azure.cosmos.implementation.http.HttpClient;
 import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
+import com.azure.cosmos.implementation.routing.HexConvert;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.handler.codec.http.HttpMethod;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.net.URI;
+import java.time.Instant;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -27,6 +39,8 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * Used internally to provide functionality to communicate and process response from THINCLIENT in the Azure Cosmos DB database service.
  */
 public class ThinClientStoreModel extends RxGatewayStoreModel {
+
+    private static final Logger logger = LoggerFactory.getLogger(ThinClientStoreModel.class);
 
     public ThinClientStoreModel(
         DiagnosticsClientContext clientContext,
@@ -71,41 +85,94 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
         // Since the Thin client proxy also needs to set the user-agent header to a different value
         // it is not added to the rntbd headers - just http-headers in the SDK
         defaultHeaders.put(HttpConstants.HttpHeaders.USER_AGENT, userAgentContainer.getUserAgent());
+        defaultHeaders.put(HttpConstants.HttpHeaders.ACTIVITY_ID, "000000-0000-0000-00000-000000000001");
 
         return defaultHeaders;
     }
 
     @Override
+    public URI getRootUri(RxDocumentServiceRequest request) {
+        // need to have thin client endpoint here
+        return this.globalEndpointManager.resolveServiceEndpoint(request).getThinclientRegionalEndpoint();
+    }
+
+    @Override
+    public StoreResponse unwrapToStoreResponse(RxDocumentServiceRequest request, int statusCode, HttpHeaders headers, ByteBuf content) {
+        if (content == null || content.readableBytes() == 0) {
+            return super.unwrapToStoreResponse(request, statusCode, headers, Unpooled.EMPTY_BUFFER);
+        }
+
+        Instant decodeStartTime = Instant.now();
+
+        if (RntbdFramer.canDecodeHead(content)) {
+
+            final RntbdResponse response = RntbdResponse.decode(content);
+
+            if (response != null) {
+                response.setDecodeEndTime(Instant.now());
+                response.setDecodeStartTime(decodeStartTime);
+
+                return super.unwrapToStoreResponse(
+                    request,
+                    response.getStatus().code(),
+                    new HttpHeaders(response.getHeaders().asMap(request.getActivityId())),
+                    response.getContent()
+                );
+            }
+
+            return super.unwrapToStoreResponse(request, statusCode, headers, null);
+        }
+
+        throw new IllegalStateException("Invalid rntbd response");
+    }
+
+    @Override
     public HttpRequest wrapInHttpRequest(RxDocumentServiceRequest request, URI requestUri) throws Exception {
 
-        // todo - neharao1 - validate b/w name() v/s toString()
-        request.setThinclientHeaders(request.getOperationType().name(), request.getResourceType().name());
+        String globalDatabaseAccountName = this.globalEndpointManager.getLatestDatabaseAccount().getId();
+        request.setThinclientHeaders(
+            request.getOperationType().name(),
+            request.getResourceType().name(),
+            globalDatabaseAccountName,
+            request.getResourceId());
 
-        // todo - neharao1: no concept of a replica / service endpoint that can be passed
+        byte[] epk = request.getPartitionKeyInternal().getEffectivePartitionKeyBytes(request.getPartitionKeyInternal(), request.getPartitionKeyDefinition());
+        if (request.properties == null) {
+            request.properties = new HashMap<>();
+        }
+
         RntbdRequestArgs rntbdRequestArgs = new RntbdRequestArgs(request);
 
-        // todo - neharao1: validate what HTTP headers are needed - for now have put default ThinClient HTTP headers
-        // todo - based on fabianm comment - thinClient also takes op type and resource type headers as HTTP headers
         HttpHeaders headers = this.getHttpHeaders();
 
         RntbdRequest rntbdRequest = RntbdRequest.from(rntbdRequestArgs);
+        boolean success = rntbdRequest.setHeaderValue(
+            RntbdConstants.RntbdRequestHeader.EffectivePartitionKey,
+            epk);
+        if (!success) {
+            logger.error("Failed to update EPK to value {}", HexConvert.bytesToHex(epk));
+        } else {
+            logger.error("Updated EPK to value {}", HexConvert.bytesToHex(epk));
+        }
 
         // todo: neharao1 - validate whether Java heap buffer is okay v/s Direct buffer
         // todo: eventually need to use pooled buffer
         ByteBuf byteBuf = Unpooled.buffer();
 
-        // todo: comment can be removed - RntbdRequestEncoder does the same - a type of ChannelHandler in ChannelPipeline (a Netty concept)
         // todo: lifting the logic from there to encode the RntbdRequest instance into a ByteBuf (ByteBuf is a network compatible format)
         // todo: double-check with fabianm to see if RntbdRequest across RNTBD over TCP (Direct connectivity mode) is same as that when using ThinClient proxy
         // todo: need to conditionally add some headers (userAgent, replicaId/endpoint, etc)
         rntbdRequest.encode(byteBuf, true);
+
+        byte[] contentAsByteArray = new byte[byteBuf.writerIndex()];
+        byteBuf.getBytes(0, contentAsByteArray, 0, byteBuf.writerIndex());
 
         return new HttpRequest(
             HttpMethod.POST,
             requestUri,
             requestUri.getPort(),
             headers,
-            Flux.just(byteBuf.array()));
+            Flux.just(contentAsByteArray));
     }
 
     private HttpHeaders getHttpHeaders() {
@@ -117,7 +184,6 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
             httpHeaders.set(header.getKey(), header.getValue());
         }
 
-        // todo: add thin client resourcetype/operationtype headers
         return httpHeaders;
     }
 }

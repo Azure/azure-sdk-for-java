@@ -7,6 +7,7 @@ import java.util.UUID;
 
 public class TestItem {
     private String id;
+    private String pk;
     private String mypk;
     private String prop;
 
@@ -15,6 +16,7 @@ public class TestItem {
 
     public TestItem(String id, String mypk, String prop) {
         this.id = id;
+        this.pk = mypk;
         this.mypk = mypk;
         this.prop = prop;
     }
@@ -30,6 +32,8 @@ public class TestItem {
     public void setId(String id) {
         this.id = id;
     }
+
+    public String getPk() { return pk; }
 
     public String getMypk() {
         return mypk;
