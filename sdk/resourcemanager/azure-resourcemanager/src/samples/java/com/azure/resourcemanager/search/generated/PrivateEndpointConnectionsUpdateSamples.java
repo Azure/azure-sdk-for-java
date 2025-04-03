@@ -14,9 +14,8 @@ import com.azure.resourcemanager.search.models.PrivateLinkServiceConnectionStatu
  */
 public final class PrivateEndpointConnectionsUpdateSamples {
     /*
-     * x-ms-original-file:
-     * specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/UpdatePrivateEndpointConnection
-     * .json
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/preview/2025-02-01-preview/examples/
+     * UpdatePrivateEndpointConnection.json
      */
     /**
      * Sample code: PrivateEndpointConnectionUpdate.
@@ -33,7 +32,7 @@ public final class PrivateEndpointConnectionsUpdateSamples {
                     .withProperties(new PrivateEndpointConnectionProperties().withPrivateLinkServiceConnectionState(
                         new PrivateEndpointConnectionPropertiesPrivateLinkServiceConnectionState()
                             .withStatus(PrivateLinkServiceConnectionStatus.REJECTED)
-                            .withDescription("Rejected for some reason"))),
+                            .withDescription("Rejected for some reason."))),
                 null, com.azure.core.util.Context.NONE);
     }
 }

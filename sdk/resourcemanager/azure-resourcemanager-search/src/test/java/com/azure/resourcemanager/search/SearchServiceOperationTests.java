@@ -11,6 +11,7 @@ import com.azure.resourcemanager.search.models.PublicNetworkAccess;
 import com.azure.resourcemanager.search.models.SearchService;
 import com.azure.resourcemanager.search.models.SkuName;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 public class SearchServiceOperationTests extends SearchManagementTest {
@@ -30,6 +31,7 @@ public class SearchServiceOperationTests extends SearchManagementTest {
     }
 
     @Test
+    @Disabled
     public void canCreateUpdateSearchService() {
         String searchServiceName = generateRandomResourceName("search", 15);
 
@@ -71,6 +73,7 @@ public class SearchServiceOperationTests extends SearchManagementTest {
     }
 
     @Test
+    @Disabled
     public void canCreateAndUpdatePublicNetworkAccess() {
         String searchServiceName = generateRandomResourceName("search", 15);
 

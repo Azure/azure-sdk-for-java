@@ -14,12 +14,12 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Response containing the query API keys for a given search service.
+ * Response containing the query API keys for a given Azure AI Search service.
  */
 @Immutable
 public final class ListQueryKeysResult implements JsonSerializable<ListQueryKeysResult> {
     /*
-     * The query keys for the search service.
+     * The query keys for the Azure AI Search service.
      */
     private List<QueryKeyInner> value;
 
@@ -36,7 +36,7 @@ public final class ListQueryKeysResult implements JsonSerializable<ListQueryKeys
     }
 
     /**
-     * Get the value property: The query keys for the search service.
+     * Get the value property: The query keys for the Azure AI Search service.
      * 
      * @return the value value.
      */

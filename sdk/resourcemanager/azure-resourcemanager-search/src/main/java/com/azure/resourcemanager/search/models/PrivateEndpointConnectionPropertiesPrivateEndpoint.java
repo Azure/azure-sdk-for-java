@@ -18,7 +18,7 @@ import java.io.IOException;
 public final class PrivateEndpointConnectionPropertiesPrivateEndpoint
     implements JsonSerializable<PrivateEndpointConnectionPropertiesPrivateEndpoint> {
     /*
-     * The resource id of the private endpoint resource from Microsoft.Network provider.
+     * The resource ID of the private endpoint resource from Microsoft.Network provider.
      */
     private String id;
 
@@ -29,7 +29,7 @@ public final class PrivateEndpointConnectionPropertiesPrivateEndpoint
     }
 
     /**
-     * Get the id property: The resource id of the private endpoint resource from Microsoft.Network provider.
+     * Get the id property: The resource ID of the private endpoint resource from Microsoft.Network provider.
      * 
      * @return the id value.
      */
@@ -38,7 +38,7 @@ public final class PrivateEndpointConnectionPropertiesPrivateEndpoint
     }
 
     /**
-     * Set the id property: The resource id of the private endpoint resource from Microsoft.Network provider.
+     * Set the id property: The resource ID of the private endpoint resource from Microsoft.Network provider.
      * 
      * @param id the id value to set.
      * @return the PrivateEndpointConnectionPropertiesPrivateEndpoint object itself.
