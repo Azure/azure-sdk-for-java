@@ -31,7 +31,7 @@ public class TestUtils {
     }
 
     private static boolean supportsResponses(AzureResponsesServiceVersion serviceVersion) {
-        return AzureResponsesServiceVersion.V2024_12_01_PREVIEW.equals(serviceVersion);
+        return AzureResponsesServiceVersion.V2025_03_01_PREVIEW.equals(serviceVersion);
     }
 
     /**
