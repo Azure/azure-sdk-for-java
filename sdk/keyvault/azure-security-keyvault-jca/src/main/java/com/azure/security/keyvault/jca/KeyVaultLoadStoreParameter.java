@@ -36,6 +36,11 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      */
     private final String managedIdentity;
 
+    /*
+     * Stores the access token which can be obtained using powershell command: ( az account get-access-token --scope https://vault.azure.net/.default | ConvertFrom-Json ).accessToken
+     */
+    private final String accessToken;
+
     /**
      * Stores a flag indicating if challenge resource verification shall be disabled.
      */
@@ -83,12 +88,28 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      */
     public KeyVaultLoadStoreParameter(String keyVaultUri, String tenantId, String clientId, String clientSecret,
         String managedIdentity) {
+        this(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity, null);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param keyVaultUri The Azure Key Vault URI.
+     * @param tenantId The tenant id.
+     * @param clientId The client id.
+     * @param clientSecret The client secret.
+     * @param managedIdentity The managed identity.
+     * @param accessToken The access token.
+     */
+    public KeyVaultLoadStoreParameter(String keyVaultUri, String tenantId, String clientId, String clientSecret,
+        String managedIdentity, String accessToken) {
 
         this.keyVaultUri = keyVaultUri;
         this.tenantId = tenantId;
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.managedIdentity = managedIdentity;
+        this.accessToken = accessToken;
     }
 
     /**
@@ -144,6 +165,15 @@ public final class KeyVaultLoadStoreParameter implements KeyStore.LoadStoreParam
      */
     public String getUri() {
         return keyVaultUri;
+    }
+
+    /**
+     * Get the access token which can be obtained using powershell command: ( az account get-access-token --scope https://vault.azure.net/.default | ConvertFrom-Json ).accessToken
+     * 
+     * @return The access token.
+     */
+    public String getAccessToken() {
+        return accessToken;
     }
 
     /**

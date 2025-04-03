@@ -61,7 +61,7 @@ public class KeyVaultClientTest {
 
             utilities.when(() -> HttpUtil.get(notNull(), anyMap())).thenReturn(certificateListResultString);
 
-            KeyVaultClient keyVaultClient = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, null);
+            KeyVaultClient keyVaultClient = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, (String) null);
             List<String> result = keyVaultClient.getAliases();
 
             assertEquals(result.size(), 1);
@@ -101,7 +101,7 @@ public class KeyVaultClientTest {
             utilities.when(() -> HttpUtil.get(eq("fakeNextLint"), anyMap()))
                 .thenReturn(certificateListResultStringNext);
 
-            KeyVaultClient keyVaultClient = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, null);
+            KeyVaultClient keyVaultClient = new KeyVaultClient(KEY_VAULT_TEST_URI_GLOBAL, (String) null);
             List<String> result = keyVaultClient.getAliases();
 
             assertEquals(result.size(), 3);
@@ -138,7 +138,7 @@ public class KeyVaultClientTest {
         boolean disableChallengeResourceVerification
             = Boolean.parseBoolean(System.getProperty("azure.keyvault.disable-challenge-resource-verification"));
 
-        return new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, null,
+        return new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, null, null,
             disableChallengeResourceVerification);
     }
 

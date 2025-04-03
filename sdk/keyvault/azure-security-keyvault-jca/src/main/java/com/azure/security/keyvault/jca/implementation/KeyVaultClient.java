@@ -84,6 +84,11 @@ public class KeyVaultClient {
      */
     private final String clientSecret;
 
+    /*
+     * Stores the access token as it was passed as parameter to this class
+     */
+    private final AccessToken configuredAccessToken;
+
     /**
      * Stores the managed identity (either the user-assigned managed identity object ID or null if system-assigned).
      */
@@ -106,7 +111,17 @@ public class KeyVaultClient {
      * @param managedIdentity The user-assigned managed identity object ID.
      */
     KeyVaultClient(String keyVaultUri, String managedIdentity) {
-        this(keyVaultUri, null, null, null, managedIdentity, false);
+        this(keyVaultUri, null, null, null, managedIdentity, null, false);
+    }
+
+    /**
+     * Constructor for authentication with user-assigned managed identity.
+     *
+     * @param keyVaultUri The Azure Key Vault URI.
+     * @param accessToken The access token to use.
+     */
+    KeyVaultClient(String keyVaultUri, AccessToken accessToken) {
+        this(keyVaultUri, null, null, null, null, accessToken, false);
     }
 
     /**
@@ -118,7 +133,7 @@ public class KeyVaultClient {
      * @param clientSecret The client secret.
      */
     public KeyVaultClient(String keyVaultUri, String tenantId, String clientId, String clientSecret) {
-        this(keyVaultUri, tenantId, clientId, clientSecret, null, false);
+        this(keyVaultUri, tenantId, clientId, clientSecret, null, null, false);
     }
 
     /**
@@ -129,10 +144,11 @@ public class KeyVaultClient {
      * @param clientId The client ID.
      * @param clientSecret The client secret.
      * @param managedIdentity The user-assigned managed identity object ID.
+     * @param accessToken The access token to use.
      * @param disableChallengeResourceVerification Indicates if the challenge resource verification should be disabled.
      */
     public KeyVaultClient(String keyVaultUri, String tenantId, String clientId, String clientSecret,
-        String managedIdentity, boolean disableChallengeResourceVerification) {
+        String managedIdentity, AccessToken accessToken, boolean disableChallengeResourceVerification) {
 
         LOGGER.log(INFO, "Using Azure Key Vault: {0}", keyVaultUri);
 
@@ -147,6 +163,7 @@ public class KeyVaultClient {
         this.clientId = clientId;
         this.clientSecret = clientSecret;
         this.managedIdentity = managedIdentity;
+        this.configuredAccessToken = accessToken;
         this.disableChallengeResourceVerification = disableChallengeResourceVerification;
     }
 
@@ -156,10 +173,19 @@ public class KeyVaultClient {
         String clientId = System.getProperty("azure.keyvault.client-id");
         String clientSecret = System.getProperty("azure.keyvault.client-secret");
         String managedIdentity = System.getProperty("azure.keyvault.managed-identity");
+        String accessTokenAsString = System.getProperty("azure.keyvault.access-token");
         boolean disableChallengeResourceVerification
             = Boolean.parseBoolean(System.getProperty("azure.keyvault.disable-challenge-resource-verification"));
 
-        return new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity,
+        AccessToken accessToken = null;
+
+        if (accessTokenAsString != null && !accessTokenAsString.isEmpty()) {
+            accessToken = new AccessToken();
+            accessToken.setAccessToken(accessTokenAsString);
+            accessToken.setExpiresIn(240);
+        }
+
+        return new KeyVaultClient(keyVaultUri, tenantId, clientId, clientSecret, managedIdentity, accessToken,
             disableChallengeResourceVerification);
     }
 
@@ -200,6 +226,8 @@ public class KeyVaultClient {
                     disableChallengeResourceVerification);
                 accessToken
                     = AccessTokenUtil.getAccessToken(resource, aadAuthenticationUri, tenantId, clientId, clientSecret);
+            } else if (configuredAccessToken != null) {
+                accessToken = configuredAccessToken;
             } else {
                 accessToken = AccessTokenUtil.getAccessToken(resource, managedIdentity);
             }
