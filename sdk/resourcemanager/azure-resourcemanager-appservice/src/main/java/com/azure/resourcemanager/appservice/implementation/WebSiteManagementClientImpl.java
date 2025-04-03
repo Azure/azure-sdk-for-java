@@ -14,8 +14,6 @@ import com.azure.resourcemanager.appservice.fluent.AppServicePlansClient;
 import com.azure.resourcemanager.appservice.fluent.CertificateOrdersDiagnosticsClient;
 import com.azure.resourcemanager.appservice.fluent.CertificateRegistrationProvidersClient;
 import com.azure.resourcemanager.appservice.fluent.CertificatesClient;
-import com.azure.resourcemanager.appservice.fluent.ContainerAppsClient;
-import com.azure.resourcemanager.appservice.fluent.ContainerAppsRevisionsClient;
 import com.azure.resourcemanager.appservice.fluent.DeletedWebAppsClient;
 import com.azure.resourcemanager.appservice.fluent.DiagnosticsClient;
 import com.azure.resourcemanager.appservice.fluent.DomainRegistrationProvidersClient;
@@ -256,34 +254,6 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
      */
     public CertificatesClient getCertificates() {
         return this.certificates;
-    }
-
-    /**
-     * The ContainerAppsClient object to access its operations.
-     */
-    private final ContainerAppsClient containerApps;
-
-    /**
-     * Gets the ContainerAppsClient object to access its operations.
-     * 
-     * @return the ContainerAppsClient object.
-     */
-    public ContainerAppsClient getContainerApps() {
-        return this.containerApps;
-    }
-
-    /**
-     * The ContainerAppsRevisionsClient object to access its operations.
-     */
-    private final ContainerAppsRevisionsClient containerAppsRevisions;
-
-    /**
-     * Gets the ContainerAppsRevisionsClient object to access its operations.
-     * 
-     * @return the ContainerAppsRevisionsClient object.
-     */
-    public ContainerAppsRevisionsClient getContainerAppsRevisions() {
-        return this.containerAppsRevisions;
     }
 
     /**
@@ -595,8 +565,6 @@ public final class WebSiteManagementClientImpl extends AzureServiceClient implem
         this.appServiceEnvironments = new AppServiceEnvironmentsClientImpl(this);
         this.appServicePlans = new AppServicePlansClientImpl(this);
         this.certificates = new CertificatesClientImpl(this);
-        this.containerApps = new ContainerAppsClientImpl(this);
-        this.containerAppsRevisions = new ContainerAppsRevisionsClientImpl(this);
         this.deletedWebApps = new DeletedWebAppsClientImpl(this);
         this.diagnostics = new DiagnosticsClientImpl(this);
         this.globals = new GlobalsClientImpl(this);
