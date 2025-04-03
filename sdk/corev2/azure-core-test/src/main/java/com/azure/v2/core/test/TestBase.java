@@ -154,9 +154,11 @@ public abstract class TestBase {
         try {
             interceptorManager = new InterceptorManager(testContextManager);
         } catch (UncheckedIOException e) {
-            fail(logger.atError()
+            logger.atError()
                 .addKeyValue("testName", testContextManager.getTestName())
-                .log("Could not create interceptor.", e));
+                .setThrowable(e)
+                .log("Could not create interceptor.");
+            fail(e);
         }
 
         interceptorManager.setHttpClient(getTestProxyHttpClient());
@@ -257,7 +259,7 @@ public abstract class TestBase {
                     httpClientsToTest.add(httpClientProvider.getSharedInstance());
                 }
             } catch (ServiceConfigurationError | LinkageError error) {
-                LOGGER.atWarning().log("Skipping HttpClientProvider due to LinkageError.", error);
+                LOGGER.atWarning().setThrowable(error).log("Skipping HttpClientProvider due to LinkageError.");
             }
         }
 
