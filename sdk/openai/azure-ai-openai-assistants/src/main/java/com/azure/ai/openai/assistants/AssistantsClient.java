@@ -46,6 +46,7 @@ import com.azure.ai.openai.assistants.models.ThreadRun;
 import com.azure.ai.openai.assistants.models.ToolOutput;
 import com.azure.ai.openai.assistants.models.UpdateAssistantOptions;
 import com.azure.ai.openai.assistants.models.UpdateAssistantThreadOptions;
+import com.azure.ai.openai.assistants.models.UploadFileRequest;
 import com.azure.ai.openai.assistants.models.VectorStore;
 import com.azure.ai.openai.assistants.models.VectorStoreChunkingStrategyRequest;
 import com.azure.ai.openai.assistants.models.VectorStoreDeletionStatus;

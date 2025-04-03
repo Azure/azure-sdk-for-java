@@ -403,8 +403,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> uploadFile(@HostParam("endpoint") String endpoint,
             @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("multipart/form-data") BinaryData uploadFileRequest, RequestOptions requestOptions,
-            Context context);
+            @BodyParam("multipart/form-data") BinaryData file, RequestOptions requestOptions, Context context);
 
         // @Multipart not supported by RestProxy
         @Post("/files")
@@ -415,8 +414,7 @@ public final class OpenAIClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> uploadFileSync(@HostParam("endpoint") String endpoint,
             @HeaderParam("content-type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("multipart/form-data") BinaryData uploadFileRequest, RequestOptions requestOptions,
-            Context context);
+            @BodyParam("multipart/form-data") BinaryData file, RequestOptions requestOptions, Context context);
 
         @Delete("/files/{fileId}")
         @ExpectedResponses({ 200 })
@@ -2473,7 +2471,7 @@ public final class OpenAIClientImpl {
      * }
      * </pre>
      * 
-     * @param uploadFileRequest The uploadFileRequest parameter.
+     * @param file The file and its purpose to upload.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2483,12 +2481,11 @@ public final class OpenAIClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> uploadFileWithResponseAsync(BinaryData uploadFileRequest,
-        RequestOptions requestOptions) {
+    public Mono<Response<BinaryData>> uploadFileWithResponseAsync(BinaryData file, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.uploadFile(this.getEndpoint(), contentType, accept,
-            uploadFileRequest, requestOptions, context));
+        return FluxUtil.withContext(
+            context -> service.uploadFile(this.getEndpoint(), contentType, accept, file, requestOptions, context));
     }
 
     /**
@@ -2510,7 +2507,7 @@ public final class OpenAIClientImpl {
      * }
      * </pre>
      * 
-     * @param uploadFileRequest The uploadFileRequest parameter.
+     * @param file The file and its purpose to upload.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2519,11 +2516,10 @@ public final class OpenAIClientImpl {
      * @return represents an assistant that can call the model and use tools along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> uploadFileWithResponse(BinaryData uploadFileRequest, RequestOptions requestOptions) {
+    public Response<BinaryData> uploadFileWithResponse(BinaryData file, RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
-        return service.uploadFileSync(this.getEndpoint(), contentType, accept, uploadFileRequest, requestOptions,
-            Context.NONE);
+        return service.uploadFileSync(this.getEndpoint(), contentType, accept, file, requestOptions, Context.NONE);
     }
 
     /**

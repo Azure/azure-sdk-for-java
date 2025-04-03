@@ -380,7 +380,7 @@ public final class RadiologyInsightsClientImpl {
      *             verbose: Boolean (Optional)
      *             includeEvidence: Boolean (Optional)
      *             inferenceTypes (Optional): [
-     *                 String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Optional)
+     *                 String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure/scoringAndAssessment/guidance/qualityMeasure) (Optional)
      *             ]
      *             inferenceOptions (Optional): {
      *                 followupRecommendationOptions (Optional): {
@@ -390,6 +390,14 @@ public final class RadiologyInsightsClientImpl {
      *                 }
      *                 findingOptions (Optional): {
      *                     provideFocusedSentenceEvidence: Boolean (Optional)
+     *                 }
+     *                 guidanceOptions (Optional): {
+     *                     showGuidanceInHistory: boolean (Required)
+     *                 }
+     *                 qualityMeasureOptions (Optional): {
+     *                     measureTypes (Required): [
+     *                         String(mips76/mips147/mips195/mips360/mips364/mips405/mips406/mips436/mips145/acrad36/acrad37/acrad38/acrad39/acrad40/acrad41/acrad42/mednax55/msn13/msn15/qmm26/qmm17/qmm18/qmm19) (Required)
+     *                     ]
      *                 }
      *             }
      *             locale: String (Optional)
@@ -401,7 +409,7 @@ public final class RadiologyInsightsClientImpl {
      *                 patientId: String (Required)
      *                 inferences (Required): [
      *                      (Required){
-     *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Required)
+     *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure/scoringAndAssessment/guidance/qualityMeasure) (Required)
      *                         extension (Optional): [
      *                             (recursive schema, see above)
      *                         ]
@@ -617,7 +625,7 @@ public final class RadiologyInsightsClientImpl {
      *             verbose: Boolean (Optional)
      *             includeEvidence: Boolean (Optional)
      *             inferenceTypes (Optional): [
-     *                 String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Optional)
+     *                 String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure/scoringAndAssessment/guidance/qualityMeasure) (Optional)
      *             ]
      *             inferenceOptions (Optional): {
      *                 followupRecommendationOptions (Optional): {
@@ -627,6 +635,14 @@ public final class RadiologyInsightsClientImpl {
      *                 }
      *                 findingOptions (Optional): {
      *                     provideFocusedSentenceEvidence: Boolean (Optional)
+     *                 }
+     *                 guidanceOptions (Optional): {
+     *                     showGuidanceInHistory: boolean (Required)
+     *                 }
+     *                 qualityMeasureOptions (Optional): {
+     *                     measureTypes (Required): [
+     *                         String(mips76/mips147/mips195/mips360/mips364/mips405/mips406/mips436/mips145/acrad36/acrad37/acrad38/acrad39/acrad40/acrad41/acrad42/mednax55/msn13/msn15/qmm26/qmm17/qmm18/qmm19) (Required)
+     *                     ]
      *                 }
      *             }
      *             locale: String (Optional)
@@ -638,7 +654,7 @@ public final class RadiologyInsightsClientImpl {
      *                 patientId: String (Required)
      *                 inferences (Required): [
      *                      (Required){
-     *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Required)
+     *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure/scoringAndAssessment/guidance/qualityMeasure) (Required)
      *                         extension (Optional): [
      *                             (recursive schema, see above)
      *                         ]
@@ -885,7 +901,7 @@ public final class RadiologyInsightsClientImpl {
      *             verbose: Boolean (Optional)
      *             includeEvidence: Boolean (Optional)
      *             inferenceTypes (Optional): [
-     *                 String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Optional)
+     *                 String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure/scoringAndAssessment/guidance/qualityMeasure) (Optional)
      *             ]
      *             inferenceOptions (Optional): {
      *                 followupRecommendationOptions (Optional): {
@@ -895,6 +911,14 @@ public final class RadiologyInsightsClientImpl {
      *                 }
      *                 findingOptions (Optional): {
      *                     provideFocusedSentenceEvidence: Boolean (Optional)
+     *                 }
+     *                 guidanceOptions (Optional): {
+     *                     showGuidanceInHistory: boolean (Required)
+     *                 }
+     *                 qualityMeasureOptions (Optional): {
+     *                     measureTypes (Required): [
+     *                         String(mips76/mips147/mips195/mips360/mips364/mips405/mips406/mips436/mips145/acrad36/acrad37/acrad38/acrad39/acrad40/acrad41/acrad42/mednax55/msn13/msn15/qmm26/qmm17/qmm18/qmm19) (Required)
+     *                     ]
      *                 }
      *             }
      *             locale: String (Optional)
@@ -906,7 +930,7 @@ public final class RadiologyInsightsClientImpl {
      *                 patientId: String (Required)
      *                 inferences (Required): [
      *                      (Required){
-     *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Required)
+     *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure/scoringAndAssessment/guidance/qualityMeasure) (Required)
      *                         extension (Optional): [
      *                             (recursive schema, see above)
      *                         ]
@@ -1122,7 +1146,7 @@ public final class RadiologyInsightsClientImpl {
      *             verbose: Boolean (Optional)
      *             includeEvidence: Boolean (Optional)
      *             inferenceTypes (Optional): [
-     *                 String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Optional)
+     *                 String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure/scoringAndAssessment/guidance/qualityMeasure) (Optional)
      *             ]
      *             inferenceOptions (Optional): {
      *                 followupRecommendationOptions (Optional): {
@@ -1132,6 +1156,14 @@ public final class RadiologyInsightsClientImpl {
      *                 }
      *                 findingOptions (Optional): {
      *                     provideFocusedSentenceEvidence: Boolean (Optional)
+     *                 }
+     *                 guidanceOptions (Optional): {
+     *                     showGuidanceInHistory: boolean (Required)
+     *                 }
+     *                 qualityMeasureOptions (Optional): {
+     *                     measureTypes (Required): [
+     *                         String(mips76/mips147/mips195/mips360/mips364/mips405/mips406/mips436/mips145/acrad36/acrad37/acrad38/acrad39/acrad40/acrad41/acrad42/mednax55/msn13/msn15/qmm26/qmm17/qmm18/qmm19) (Required)
+     *                     ]
      *                 }
      *             }
      *             locale: String (Optional)
@@ -1143,7 +1175,7 @@ public final class RadiologyInsightsClientImpl {
      *                 patientId: String (Required)
      *                 inferences (Required): [
      *                      (Required){
-     *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Required)
+     *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure/scoringAndAssessment/guidance/qualityMeasure) (Required)
      *                         extension (Optional): [
      *                             (recursive schema, see above)
      *                         ]
@@ -1389,7 +1421,7 @@ public final class RadiologyInsightsClientImpl {
      *             verbose: Boolean (Optional)
      *             includeEvidence: Boolean (Optional)
      *             inferenceTypes (Optional): [
-     *                 String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Optional)
+     *                 String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure/scoringAndAssessment/guidance/qualityMeasure) (Optional)
      *             ]
      *             inferenceOptions (Optional): {
      *                 followupRecommendationOptions (Optional): {
@@ -1399,6 +1431,14 @@ public final class RadiologyInsightsClientImpl {
      *                 }
      *                 findingOptions (Optional): {
      *                     provideFocusedSentenceEvidence: Boolean (Optional)
+     *                 }
+     *                 guidanceOptions (Optional): {
+     *                     showGuidanceInHistory: boolean (Required)
+     *                 }
+     *                 qualityMeasureOptions (Optional): {
+     *                     measureTypes (Required): [
+     *                         String(mips76/mips147/mips195/mips360/mips364/mips405/mips406/mips436/mips145/acrad36/acrad37/acrad38/acrad39/acrad40/acrad41/acrad42/mednax55/msn13/msn15/qmm26/qmm17/qmm18/qmm19) (Required)
+     *                     ]
      *                 }
      *             }
      *             locale: String (Optional)
@@ -1410,7 +1450,7 @@ public final class RadiologyInsightsClientImpl {
      *                 patientId: String (Required)
      *                 inferences (Required): [
      *                      (Required){
-     *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Required)
+     *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure/scoringAndAssessment/guidance/qualityMeasure) (Required)
      *                         extension (Optional): [
      *                             (recursive schema, see above)
      *                         ]
@@ -1626,7 +1666,7 @@ public final class RadiologyInsightsClientImpl {
      *             verbose: Boolean (Optional)
      *             includeEvidence: Boolean (Optional)
      *             inferenceTypes (Optional): [
-     *                 String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Optional)
+     *                 String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure/scoringAndAssessment/guidance/qualityMeasure) (Optional)
      *             ]
      *             inferenceOptions (Optional): {
      *                 followupRecommendationOptions (Optional): {
@@ -1636,6 +1676,14 @@ public final class RadiologyInsightsClientImpl {
      *                 }
      *                 findingOptions (Optional): {
      *                     provideFocusedSentenceEvidence: Boolean (Optional)
+     *                 }
+     *                 guidanceOptions (Optional): {
+     *                     showGuidanceInHistory: boolean (Required)
+     *                 }
+     *                 qualityMeasureOptions (Optional): {
+     *                     measureTypes (Required): [
+     *                         String(mips76/mips147/mips195/mips360/mips364/mips405/mips406/mips436/mips145/acrad36/acrad37/acrad38/acrad39/acrad40/acrad41/acrad42/mednax55/msn13/msn15/qmm26/qmm17/qmm18/qmm19) (Required)
+     *                     ]
      *                 }
      *             }
      *             locale: String (Optional)
@@ -1647,7 +1695,7 @@ public final class RadiologyInsightsClientImpl {
      *                 patientId: String (Required)
      *                 inferences (Required): [
      *                      (Required){
-     *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Required)
+     *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure/scoringAndAssessment/guidance/qualityMeasure) (Required)
      *                         extension (Optional): [
      *                             (recursive schema, see above)
      *                         ]
@@ -1900,7 +1948,7 @@ public final class RadiologyInsightsClientImpl {
      *             verbose: Boolean (Optional)
      *             includeEvidence: Boolean (Optional)
      *             inferenceTypes (Optional): [
-     *                 String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Optional)
+     *                 String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure/scoringAndAssessment/guidance/qualityMeasure) (Optional)
      *             ]
      *             inferenceOptions (Optional): {
      *                 followupRecommendationOptions (Optional): {
@@ -1910,6 +1958,14 @@ public final class RadiologyInsightsClientImpl {
      *                 }
      *                 findingOptions (Optional): {
      *                     provideFocusedSentenceEvidence: Boolean (Optional)
+     *                 }
+     *                 guidanceOptions (Optional): {
+     *                     showGuidanceInHistory: boolean (Required)
+     *                 }
+     *                 qualityMeasureOptions (Optional): {
+     *                     measureTypes (Required): [
+     *                         String(mips76/mips147/mips195/mips360/mips364/mips405/mips406/mips436/mips145/acrad36/acrad37/acrad38/acrad39/acrad40/acrad41/acrad42/mednax55/msn13/msn15/qmm26/qmm17/qmm18/qmm19) (Required)
+     *                     ]
      *                 }
      *             }
      *             locale: String (Optional)
@@ -1921,7 +1977,7 @@ public final class RadiologyInsightsClientImpl {
      *                 patientId: String (Required)
      *                 inferences (Required): [
      *                      (Required){
-     *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Required)
+     *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure/scoringAndAssessment/guidance/qualityMeasure) (Required)
      *                         extension (Optional): [
      *                             (recursive schema, see above)
      *                         ]
@@ -2137,7 +2193,7 @@ public final class RadiologyInsightsClientImpl {
      *             verbose: Boolean (Optional)
      *             includeEvidence: Boolean (Optional)
      *             inferenceTypes (Optional): [
-     *                 String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Optional)
+     *                 String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure/scoringAndAssessment/guidance/qualityMeasure) (Optional)
      *             ]
      *             inferenceOptions (Optional): {
      *                 followupRecommendationOptions (Optional): {
@@ -2147,6 +2203,14 @@ public final class RadiologyInsightsClientImpl {
      *                 }
      *                 findingOptions (Optional): {
      *                     provideFocusedSentenceEvidence: Boolean (Optional)
+     *                 }
+     *                 guidanceOptions (Optional): {
+     *                     showGuidanceInHistory: boolean (Required)
+     *                 }
+     *                 qualityMeasureOptions (Optional): {
+     *                     measureTypes (Required): [
+     *                         String(mips76/mips147/mips195/mips360/mips364/mips405/mips406/mips436/mips145/acrad36/acrad37/acrad38/acrad39/acrad40/acrad41/acrad42/mednax55/msn13/msn15/qmm26/qmm17/qmm18/qmm19) (Required)
+     *                     ]
      *                 }
      *             }
      *             locale: String (Optional)
@@ -2158,7 +2222,7 @@ public final class RadiologyInsightsClientImpl {
      *                 patientId: String (Required)
      *                 inferences (Required): [
      *                      (Required){
-     *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Required)
+     *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure/scoringAndAssessment/guidance/qualityMeasure) (Required)
      *                         extension (Optional): [
      *                             (recursive schema, see above)
      *                         ]
@@ -2411,7 +2475,7 @@ public final class RadiologyInsightsClientImpl {
      *             verbose: Boolean (Optional)
      *             includeEvidence: Boolean (Optional)
      *             inferenceTypes (Optional): [
-     *                 String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Optional)
+     *                 String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure/scoringAndAssessment/guidance/qualityMeasure) (Optional)
      *             ]
      *             inferenceOptions (Optional): {
      *                 followupRecommendationOptions (Optional): {
@@ -2421,6 +2485,14 @@ public final class RadiologyInsightsClientImpl {
      *                 }
      *                 findingOptions (Optional): {
      *                     provideFocusedSentenceEvidence: Boolean (Optional)
+     *                 }
+     *                 guidanceOptions (Optional): {
+     *                     showGuidanceInHistory: boolean (Required)
+     *                 }
+     *                 qualityMeasureOptions (Optional): {
+     *                     measureTypes (Required): [
+     *                         String(mips76/mips147/mips195/mips360/mips364/mips405/mips406/mips436/mips145/acrad36/acrad37/acrad38/acrad39/acrad40/acrad41/acrad42/mednax55/msn13/msn15/qmm26/qmm17/qmm18/qmm19) (Required)
+     *                     ]
      *                 }
      *             }
      *             locale: String (Optional)
@@ -2432,7 +2504,7 @@ public final class RadiologyInsightsClientImpl {
      *                 patientId: String (Required)
      *                 inferences (Required): [
      *                      (Required){
-     *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Required)
+     *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure/scoringAndAssessment/guidance/qualityMeasure) (Required)
      *                         extension (Optional): [
      *                             (recursive schema, see above)
      *                         ]
@@ -2648,7 +2720,7 @@ public final class RadiologyInsightsClientImpl {
      *             verbose: Boolean (Optional)
      *             includeEvidence: Boolean (Optional)
      *             inferenceTypes (Optional): [
-     *                 String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Optional)
+     *                 String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure/scoringAndAssessment/guidance/qualityMeasure) (Optional)
      *             ]
      *             inferenceOptions (Optional): {
      *                 followupRecommendationOptions (Optional): {
@@ -2658,6 +2730,14 @@ public final class RadiologyInsightsClientImpl {
      *                 }
      *                 findingOptions (Optional): {
      *                     provideFocusedSentenceEvidence: Boolean (Optional)
+     *                 }
+     *                 guidanceOptions (Optional): {
+     *                     showGuidanceInHistory: boolean (Required)
+     *                 }
+     *                 qualityMeasureOptions (Optional): {
+     *                     measureTypes (Required): [
+     *                         String(mips76/mips147/mips195/mips360/mips364/mips405/mips406/mips436/mips145/acrad36/acrad37/acrad38/acrad39/acrad40/acrad41/acrad42/mednax55/msn13/msn15/qmm26/qmm17/qmm18/qmm19) (Required)
+     *                     ]
      *                 }
      *             }
      *             locale: String (Optional)
@@ -2669,7 +2749,7 @@ public final class RadiologyInsightsClientImpl {
      *                 patientId: String (Required)
      *                 inferences (Required): [
      *                      (Required){
-     *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Required)
+     *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure/scoringAndAssessment/guidance/qualityMeasure) (Required)
      *                         extension (Optional): [
      *                             (recursive schema, see above)
      *                         ]
@@ -2923,7 +3003,7 @@ public final class RadiologyInsightsClientImpl {
      *             verbose: Boolean (Optional)
      *             includeEvidence: Boolean (Optional)
      *             inferenceTypes (Optional): [
-     *                 String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Optional)
+     *                 String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure/scoringAndAssessment/guidance/qualityMeasure) (Optional)
      *             ]
      *             inferenceOptions (Optional): {
      *                 followupRecommendationOptions (Optional): {
@@ -2933,6 +3013,14 @@ public final class RadiologyInsightsClientImpl {
      *                 }
      *                 findingOptions (Optional): {
      *                     provideFocusedSentenceEvidence: Boolean (Optional)
+     *                 }
+     *                 guidanceOptions (Optional): {
+     *                     showGuidanceInHistory: boolean (Required)
+     *                 }
+     *                 qualityMeasureOptions (Optional): {
+     *                     measureTypes (Required): [
+     *                         String(mips76/mips147/mips195/mips360/mips364/mips405/mips406/mips436/mips145/acrad36/acrad37/acrad38/acrad39/acrad40/acrad41/acrad42/mednax55/msn13/msn15/qmm26/qmm17/qmm18/qmm19) (Required)
+     *                     ]
      *                 }
      *             }
      *             locale: String (Optional)
@@ -2944,7 +3032,7 @@ public final class RadiologyInsightsClientImpl {
      *                 patientId: String (Required)
      *                 inferences (Required): [
      *                      (Required){
-     *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Required)
+     *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure/scoringAndAssessment/guidance/qualityMeasure) (Required)
      *                         extension (Optional): [
      *                             (recursive schema, see above)
      *                         ]
@@ -3160,7 +3248,7 @@ public final class RadiologyInsightsClientImpl {
      *             verbose: Boolean (Optional)
      *             includeEvidence: Boolean (Optional)
      *             inferenceTypes (Optional): [
-     *                 String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Optional)
+     *                 String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure/scoringAndAssessment/guidance/qualityMeasure) (Optional)
      *             ]
      *             inferenceOptions (Optional): {
      *                 followupRecommendationOptions (Optional): {
@@ -3170,6 +3258,14 @@ public final class RadiologyInsightsClientImpl {
      *                 }
      *                 findingOptions (Optional): {
      *                     provideFocusedSentenceEvidence: Boolean (Optional)
+     *                 }
+     *                 guidanceOptions (Optional): {
+     *                     showGuidanceInHistory: boolean (Required)
+     *                 }
+     *                 qualityMeasureOptions (Optional): {
+     *                     measureTypes (Required): [
+     *                         String(mips76/mips147/mips195/mips360/mips364/mips405/mips406/mips436/mips145/acrad36/acrad37/acrad38/acrad39/acrad40/acrad41/acrad42/mednax55/msn13/msn15/qmm26/qmm17/qmm18/qmm19) (Required)
+     *                     ]
      *                 }
      *             }
      *             locale: String (Optional)
@@ -3181,7 +3277,7 @@ public final class RadiologyInsightsClientImpl {
      *                 patientId: String (Required)
      *                 inferences (Required): [
      *                      (Required){
-     *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure) (Required)
+     *                         kind: String(ageMismatch/lateralityDiscrepancy/sexMismatch/completeOrderDiscrepancy/limitedOrderDiscrepancy/finding/criticalResult/followupRecommendation/followupCommunication/radiologyProcedure/scoringAndAssessment/guidance/qualityMeasure) (Required)
      *                         extension (Optional): [
      *                             (recursive schema, see above)
      *                         ]

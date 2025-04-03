@@ -90,6 +90,8 @@ public final class RadiologyInsightsInferenceOptions implements JsonSerializable
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("followupRecommendationOptions", this.followupRecommendationOptions);
         jsonWriter.writeJsonField("findingOptions", this.findingOptions);
+        jsonWriter.writeJsonField("guidanceOptions", this.guidanceOptions);
+        jsonWriter.writeJsonField("qualityMeasureOptions", this.qualityMeasureOptions);
         return jsonWriter.writeEndObject();
     }
 
@@ -114,11 +116,72 @@ public final class RadiologyInsightsInferenceOptions implements JsonSerializable
                         = FollowupRecommendationOptions.fromJson(reader);
                 } else if ("findingOptions".equals(fieldName)) {
                     deserializedRadiologyInsightsInferenceOptions.findingOptions = FindingOptions.fromJson(reader);
+                } else if ("guidanceOptions".equals(fieldName)) {
+                    deserializedRadiologyInsightsInferenceOptions.guidanceOptions = GuidanceOptions.fromJson(reader);
+                } else if ("qualityMeasureOptions".equals(fieldName)) {
+                    deserializedRadiologyInsightsInferenceOptions.qualityMeasureOptions
+                        = QualityMeasureOptions.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedRadiologyInsightsInferenceOptions;
         });
+    }
+
+    /*
+     * Guidance options.
+     */
+    @Generated
+    private GuidanceOptions guidanceOptions;
+
+    /*
+     * QualityMeasureOptions.
+     */
+    @Generated
+    private QualityMeasureOptions qualityMeasureOptions;
+
+    /**
+     * Get the guidanceOptions property: Guidance options.
+     *
+     * @return the guidanceOptions value.
+     */
+    @Generated
+    public GuidanceOptions getGuidanceOptions() {
+        return this.guidanceOptions;
+    }
+
+    /**
+     * Set the guidanceOptions property: Guidance options.
+     *
+     * @param guidanceOptions the guidanceOptions value to set.
+     * @return the RadiologyInsightsInferenceOptions object itself.
+     */
+    @Generated
+    public RadiologyInsightsInferenceOptions setGuidanceOptions(GuidanceOptions guidanceOptions) {
+        this.guidanceOptions = guidanceOptions;
+        return this;
+    }
+
+    /**
+     * Get the qualityMeasureOptions property: QualityMeasureOptions.
+     *
+     * @return the qualityMeasureOptions value.
+     */
+    @Generated
+    public QualityMeasureOptions getQualityMeasureOptions() {
+        return this.qualityMeasureOptions;
+    }
+
+    /**
+     * Set the qualityMeasureOptions property: QualityMeasureOptions.
+     *
+     * @param qualityMeasureOptions the qualityMeasureOptions value to set.
+     * @return the RadiologyInsightsInferenceOptions object itself.
+     */
+    @Generated
+    public RadiologyInsightsInferenceOptions setQualityMeasureOptions(QualityMeasureOptions qualityMeasureOptions) {
+        this.qualityMeasureOptions = qualityMeasureOptions;
+        return this;
     }
 }

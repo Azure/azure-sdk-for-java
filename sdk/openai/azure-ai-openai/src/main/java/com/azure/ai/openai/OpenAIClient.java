@@ -48,6 +48,7 @@ import com.azure.ai.openai.models.OpenAIFile;
 import com.azure.ai.openai.models.PageableList;
 import com.azure.ai.openai.models.SpeechGenerationOptions;
 import com.azure.ai.openai.models.Upload;
+import com.azure.ai.openai.models.UploadFileRequest;
 import com.azure.ai.openai.models.UploadPart;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;

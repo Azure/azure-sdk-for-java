@@ -10,10 +10,11 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.neonpostgres.models.models.ProjectProperties;
 import java.io.IOException;
 
 /**
- * Properties specific to Data Organization resource.
+ * Properties specific to Neon Organization resource.
  */
 @Fluent
 public final class OrganizationProperties implements JsonSerializable<OrganizationProperties> {
@@ -38,9 +39,14 @@ public final class OrganizationProperties implements JsonSerializable<Organizati
     private ResourceProvisioningState provisioningState;
 
     /*
-     * Organization properties
+     * Neon Organization properties
      */
     private PartnerOrganizationProperties partnerOrganizationProperties;
+
+    /*
+     * Neon Project Properties
+     */
+    private ProjectProperties projectProperties;
 
     /**
      * Creates an instance of OrganizationProperties class.
@@ -118,7 +124,7 @@ public final class OrganizationProperties implements JsonSerializable<Organizati
     }
 
     /**
-     * Get the partnerOrganizationProperties property: Organization properties.
+     * Get the partnerOrganizationProperties property: Neon Organization properties.
      * 
      * @return the partnerOrganizationProperties value.
      */
@@ -127,7 +133,7 @@ public final class OrganizationProperties implements JsonSerializable<Organizati
     }
 
     /**
-     * Set the partnerOrganizationProperties property: Organization properties.
+     * Set the partnerOrganizationProperties property: Neon Organization properties.
      * 
      * @param partnerOrganizationProperties the partnerOrganizationProperties value to set.
      * @return the OrganizationProperties object itself.
@@ -135,6 +141,26 @@ public final class OrganizationProperties implements JsonSerializable<Organizati
     public OrganizationProperties
         withPartnerOrganizationProperties(PartnerOrganizationProperties partnerOrganizationProperties) {
         this.partnerOrganizationProperties = partnerOrganizationProperties;
+        return this;
+    }
+
+    /**
+     * Get the projectProperties property: Neon Project Properties.
+     * 
+     * @return the projectProperties value.
+     */
+    public ProjectProperties projectProperties() {
+        return this.projectProperties;
+    }
+
+    /**
+     * Set the projectProperties property: Neon Project Properties.
+     * 
+     * @param projectProperties the projectProperties value to set.
+     * @return the OrganizationProperties object itself.
+     */
+    public OrganizationProperties withProjectProperties(ProjectProperties projectProperties) {
+        this.projectProperties = projectProperties;
         return this;
     }
 
@@ -168,6 +194,9 @@ public final class OrganizationProperties implements JsonSerializable<Organizati
         if (partnerOrganizationProperties() != null) {
             partnerOrganizationProperties().validate();
         }
+        if (projectProperties() != null) {
+            projectProperties().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(OrganizationProperties.class);
@@ -182,6 +211,7 @@ public final class OrganizationProperties implements JsonSerializable<Organizati
         jsonWriter.writeJsonField("userDetails", this.userDetails);
         jsonWriter.writeJsonField("companyDetails", this.companyDetails);
         jsonWriter.writeJsonField("partnerOrganizationProperties", this.partnerOrganizationProperties);
+        jsonWriter.writeJsonField("projectProperties", this.projectProperties);
         return jsonWriter.writeEndObject();
     }
 
@@ -213,6 +243,8 @@ public final class OrganizationProperties implements JsonSerializable<Organizati
                 } else if ("partnerOrganizationProperties".equals(fieldName)) {
                     deserializedOrganizationProperties.partnerOrganizationProperties
                         = PartnerOrganizationProperties.fromJson(reader);
+                } else if ("projectProperties".equals(fieldName)) {
+                    deserializedOrganizationProperties.projectProperties = ProjectProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

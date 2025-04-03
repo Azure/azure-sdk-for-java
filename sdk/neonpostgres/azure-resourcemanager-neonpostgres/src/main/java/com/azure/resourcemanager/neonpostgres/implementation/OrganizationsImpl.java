@@ -13,6 +13,8 @@ import com.azure.resourcemanager.neonpostgres.fluent.OrganizationsClient;
 import com.azure.resourcemanager.neonpostgres.fluent.models.OrganizationResourceInner;
 import com.azure.resourcemanager.neonpostgres.models.OrganizationResource;
 import com.azure.resourcemanager.neonpostgres.models.Organizations;
+import com.azure.resourcemanager.neonpostgres.models.fluent.models.PgVersionsResultInner;
+import com.azure.resourcemanager.neonpostgres.models.models.PgVersion;
 
 public final class OrganizationsImpl implements Organizations {
     private static final ClientLogger LOGGER = new ClientLogger(OrganizationsImpl.class);
@@ -75,6 +77,15 @@ public final class OrganizationsImpl implements Organizations {
     public PagedIterable<OrganizationResource> list(Context context) {
         PagedIterable<OrganizationResourceInner> inner = this.serviceClient().list(context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new OrganizationResourceImpl(inner1, this.manager()));
+    }
+
+    public Response<PgVersionsResultInner> getPostgresVersionsWithResponse(String resourceGroupName,
+        PgVersion parameters, Context context) {
+        return this.serviceClient().getPostgresVersionsWithResponse(resourceGroupName, parameters, context);
+    }
+
+    public PgVersionsResultInner getPostgresVersions(String resourceGroupName) {
+        return this.serviceClient().getPostgresVersions(resourceGroupName);
     }
 
     public OrganizationResource getById(String id) {

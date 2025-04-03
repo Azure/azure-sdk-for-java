@@ -1,4 +1,4 @@
 directory: specification/durabletask/DurableTask.Management
-commit: 631fafee30edfd6275cc01ee61d1a128f2c2cfdd
+commit: 324bec9812c45197ad9d65174af0f3ee87325ce4
 repo: Azure/azure-rest-api-specs
 additionalDirectories: 

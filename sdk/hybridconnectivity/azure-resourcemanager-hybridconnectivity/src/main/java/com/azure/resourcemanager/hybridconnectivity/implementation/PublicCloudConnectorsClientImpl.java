@@ -37,6 +37,7 @@ import com.azure.resourcemanager.hybridconnectivity.fluent.PublicCloudConnectors
 import com.azure.resourcemanager.hybridconnectivity.fluent.models.OperationStatusResultInner;
 import com.azure.resourcemanager.hybridconnectivity.fluent.models.PublicCloudConnectorInner;
 import com.azure.resourcemanager.hybridconnectivity.implementation.models.PublicCloudConnectorListResult;
+import com.azure.resourcemanager.hybridconnectivity.models.PublicCloudConnectorUpdate;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -101,7 +102,7 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("publicCloudConnector") String publicCloudConnector,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") PublicCloudConnectorInner properties, Context context);
+            @BodyParam("application/json") PublicCloudConnectorUpdate properties, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HybridConnectivity/publicCloudConnectors/{publicCloudConnector}")
@@ -530,7 +531,7 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PublicCloudConnectorInner>> updateWithResponseAsync(String resourceGroupName,
-        String publicCloudConnector, PublicCloudConnectorInner properties) {
+        String publicCloudConnector, PublicCloudConnectorUpdate properties) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -575,7 +576,7 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<PublicCloudConnectorInner>> updateWithResponseAsync(String resourceGroupName,
-        String publicCloudConnector, PublicCloudConnectorInner properties, Context context) {
+        String publicCloudConnector, PublicCloudConnectorUpdate properties, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -617,7 +618,7 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PublicCloudConnectorInner> updateAsync(String resourceGroupName, String publicCloudConnector,
-        PublicCloudConnectorInner properties) {
+        PublicCloudConnectorUpdate properties) {
         return updateWithResponseAsync(resourceGroupName, publicCloudConnector, properties)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -636,7 +637,7 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PublicCloudConnectorInner> updateWithResponse(String resourceGroupName, String publicCloudConnector,
-        PublicCloudConnectorInner properties, Context context) {
+        PublicCloudConnectorUpdate properties, Context context) {
         return updateWithResponseAsync(resourceGroupName, publicCloudConnector, properties, context).block();
     }
 
@@ -653,7 +654,7 @@ public final class PublicCloudConnectorsClientImpl implements PublicCloudConnect
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PublicCloudConnectorInner update(String resourceGroupName, String publicCloudConnector,
-        PublicCloudConnectorInner properties) {
+        PublicCloudConnectorUpdate properties) {
         return updateWithResponse(resourceGroupName, publicCloudConnector, properties, Context.NONE).getValue();
     }
 

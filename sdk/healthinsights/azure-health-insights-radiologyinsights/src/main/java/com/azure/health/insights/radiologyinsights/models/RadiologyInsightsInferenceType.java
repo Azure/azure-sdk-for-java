@@ -104,4 +104,22 @@ public final class RadiologyInsightsInferenceType extends ExpandableStringEnum<R
     public static Collection<RadiologyInsightsInferenceType> values() {
         return values(RadiologyInsightsInferenceType.class);
     }
+
+    /**
+     * Scoring and assessment inference type.
+     */
+    @Generated
+    public static final RadiologyInsightsInferenceType SCORING_AND_ASSESSMENT = fromString("scoringAndAssessment");
+
+    /**
+     * Guidance inference type.
+     */
+    @Generated
+    public static final RadiologyInsightsInferenceType GUIDANCE = fromString("guidance");
+
+    /**
+     * Guidance measure inference type.
+     */
+    @Generated
+    public static final RadiologyInsightsInferenceType QUALITY_MEASURE = fromString("qualityMeasure");
 }
