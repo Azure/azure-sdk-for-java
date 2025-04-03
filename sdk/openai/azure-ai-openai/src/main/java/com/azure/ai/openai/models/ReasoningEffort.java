@@ -4,6 +4,9 @@
 
 package com.azure.ai.openai.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * **o-series models only**
  * 
@@ -44,6 +47,7 @@ public enum ReasoningEffort {
      * @param value the serialized value to parse.
      * @return the parsed ReasoningEffort object, or null if unable to parse.
      */
+    @JsonCreator
     public static ReasoningEffort fromString(String value) {
         if (value == null) {
             return null;
@@ -60,6 +64,7 @@ public enum ReasoningEffort {
     /**
      * {@inheritDoc}
      */
+    @JsonValue
     @Override
     public String toString() {
         return this.value;

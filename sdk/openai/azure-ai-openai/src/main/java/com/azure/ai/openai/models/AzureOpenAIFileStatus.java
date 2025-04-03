@@ -4,6 +4,9 @@
 
 package com.azure.ai.openai.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Defines values for AzureOpenAIFileStatus.
  */
@@ -58,6 +61,7 @@ public enum AzureOpenAIFileStatus {
      * @param value the serialized value to parse.
      * @return the parsed AzureOpenAIFileStatus object, or null if unable to parse.
      */
+    @JsonCreator
     public static AzureOpenAIFileStatus fromString(String value) {
         if (value == null) {
             return null;
@@ -74,6 +78,7 @@ public enum AzureOpenAIFileStatus {
     /**
      * {@inheritDoc}
      */
+    @JsonValue
     @Override
     public String toString() {
         return this.value;

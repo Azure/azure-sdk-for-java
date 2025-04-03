@@ -8,7 +8,6 @@ import com.azure.ai.openai.implementation.mappers.AzureChatMapper;
 import com.azure.ai.openai.models.AzureCreateChatCompletionRequest;
 import com.azure.ai.openai.models.AzureCreateChatCompletionResponse;
 import com.azure.ai.openai.models.AzureOpenAIChatErrorResponse;
-import com.azure.ai.openai.models.ChatCompletionResponseMessage;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -22,13 +21,10 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.openai.client.OpenAIClientAsync;
-import com.openai.core.http.HttpResponseFor;
-import com.openai.models.chat.completions.ChatCompletion;
 import com.openai.models.chat.completions.ChatCompletionCreateParams;
+import java.io.IOException;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
-
-import java.io.IOException;
 
 /**
  * Initializes a new instance of the asynchronous AzureCompanionClient type.
@@ -46,7 +42,7 @@ public final class AzureCompanionAsyncClient {
      *
      * @param serviceClient the service client implementation.
      */
-    @Generated
+//    @Generated
     AzureCompanionAsyncClient(AzureCompanionClientImpl serviceClient) {
         this.openAIClientAsync = null;
         this.serviceClient = serviceClient;
@@ -60,7 +56,7 @@ public final class AzureCompanionAsyncClient {
     /**
      * Creates a completion for the chat message.
      * <p><strong>Request Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -153,9 +149,9 @@ public final class AzureCompanionAsyncClient {
      * }
      * }
      * </pre>
-     * 
+     *
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -216,8 +212,8 @@ public final class AzureCompanionAsyncClient {
      * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<BinaryData>> createResponseWithResponse(String deploymentId, String accept, BinaryData request,
-        RequestOptions requestOptions) {
+    private Mono<Response<BinaryData>> createResponseWithResponse(String deploymentId, String accept,
+        BinaryData request, RequestOptions requestOptions) {
         return this.serviceClient.createResponseWithResponseAsync(deploymentId, accept, request, requestOptions);
     }
 
@@ -248,17 +244,17 @@ public final class AzureCompanionAsyncClient {
 
     // TODO: Map ChatCompletion to AzureCreateChatCompletionResponse
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AzureCreateChatCompletionResponse> createResponse(String deploymentId, AzureCreateChatCompletionRequest request) {
+    public Mono<AzureCreateChatCompletionResponse> createResponse(String deploymentId,
+        AzureCreateChatCompletionRequest request) {
         ChatCompletionCreateParams azureRequest = AzureChatMapper.from(request, deploymentId);
         return Mono.fromFuture(openAIClientAsync.chat().completions().withRawResponse().create(azureRequest))
-                .map(httpResponse -> {
-                    try {
-                        return httpResponse.body().readAllBytes();
-                    } catch (IOException e) {
-                        throw Exceptions.propagate(e);
-                    }
-                }).map(jsonBytes ->
-                        BinaryData.fromBytes(jsonBytes)
-                                .toObject(AzureCreateChatCompletionResponse.class));
+            .map(httpResponse -> {
+                try {
+                    return httpResponse.body().readAllBytes();
+                } catch (IOException e) {
+                    throw Exceptions.propagate(e);
+                }
+            })
+            .map(jsonBytes -> BinaryData.fromBytes(jsonBytes).toObject(AzureCreateChatCompletionResponse.class));
     }
 }

@@ -4,6 +4,9 @@
 
 package com.azure.ai.openai.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Defines values for AzureOpenAIErrorInnerErrorCode1.
  */
@@ -28,6 +31,7 @@ public enum AzureOpenAIErrorInnerErrorCode1 {
      * @param value the serialized value to parse.
      * @return the parsed AzureOpenAIErrorInnerErrorCode1 object, or null if unable to parse.
      */
+    @JsonCreator
     public static AzureOpenAIErrorInnerErrorCode1 fromString(String value) {
         if (value == null) {
             return null;
@@ -44,6 +48,7 @@ public enum AzureOpenAIErrorInnerErrorCode1 {
     /**
      * {@inheritDoc}
      */
+    @JsonValue
     @Override
     public String toString() {
         return this.value;

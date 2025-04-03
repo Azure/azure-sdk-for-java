@@ -4,6 +4,9 @@
 
 package com.azure.ai.openai.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Defines values for ChatCompletionMessageToolCallType3.
  */
@@ -28,6 +31,7 @@ public enum ChatCompletionMessageToolCallType3 {
      * @param value the serialized value to parse.
      * @return the parsed ChatCompletionMessageToolCallType3 object, or null if unable to parse.
      */
+    @JsonCreator
     public static ChatCompletionMessageToolCallType3 fromString(String value) {
         if (value == null) {
             return null;
@@ -44,6 +48,7 @@ public enum ChatCompletionMessageToolCallType3 {
     /**
      * {@inheritDoc}
      */
+    @JsonValue
     @Override
     public String toString() {
         return this.value;

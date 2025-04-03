@@ -4,6 +4,9 @@
 
 package com.azure.ai.openai.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Defines values for AzureCreateChatCompletionRequestModality.
  */
@@ -33,6 +36,7 @@ public enum AzureCreateChatCompletionRequestModality {
      * @param value the serialized value to parse.
      * @return the parsed AzureCreateChatCompletionRequestModality object, or null if unable to parse.
      */
+    @JsonCreator
     public static AzureCreateChatCompletionRequestModality fromString(String value) {
         if (value == null) {
             return null;
@@ -49,6 +53,7 @@ public enum AzureCreateChatCompletionRequestModality {
     /**
      * {@inheritDoc}
      */
+    @JsonValue
     @Override
     public String toString() {
         return this.value;

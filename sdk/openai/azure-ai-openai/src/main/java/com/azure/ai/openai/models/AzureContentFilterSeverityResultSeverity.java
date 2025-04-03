@@ -4,6 +4,9 @@
 
 package com.azure.ai.openai.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * Defines values for AzureContentFilterSeverityResultSeverity.
  */
@@ -43,6 +46,7 @@ public enum AzureContentFilterSeverityResultSeverity {
      * @param value the serialized value to parse.
      * @return the parsed AzureContentFilterSeverityResultSeverity object, or null if unable to parse.
      */
+    @JsonCreator
     public static AzureContentFilterSeverityResultSeverity fromString(String value) {
         if (value == null) {
             return null;
@@ -59,6 +63,7 @@ public enum AzureContentFilterSeverityResultSeverity {
     /**
      * {@inheritDoc}
      */
+    @JsonValue
     @Override
     public String toString() {
         return this.value;

@@ -4,6 +4,9 @@
 
 package com.azure.ai.openai.models;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonValue;
+
 /**
  * High level guidance for the amount of context window space to use for the
  * search. One of `low`, `medium`, or `high`. `medium` is the default.
@@ -39,6 +42,7 @@ public enum WebSearchContextSize {
      * @param value the serialized value to parse.
      * @return the parsed WebSearchContextSize object, or null if unable to parse.
      */
+    @JsonCreator
     public static WebSearchContextSize fromString(String value) {
         if (value == null) {
             return null;
@@ -55,6 +59,7 @@ public enum WebSearchContextSize {
     /**
      * {@inheritDoc}
      */
+    @JsonValue
     @Override
     public String toString() {
         return this.value;
