@@ -2331,16 +2331,11 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
 
         getCompletionsRunner((deploymentId, prompt) -> {
-            StepVerifier
-                .create(client.getCompletionsStream(deploymentId, new CompletionsOptions(prompt),
-                    new ChatCompletionStreamOptions().setIncludeUsage(true)))
-                .recordWith(ArrayList::new)
-                .thenConsumeWhile(completion -> {
+            StepVerifier.create(client.getCompletionsStream(deploymentId, new CompletionsOptions(prompt),
+                new ChatCompletionStreamOptions())).recordWith(ArrayList::new).thenConsumeWhile(completion -> {
                     assertNotNull(completion);
                     return true;
-                })
-                .consumeRecordedWith(messageList -> assertFalse(messageList.isEmpty()))
-                .verifyComplete();
+                }).consumeRecordedWith(messageList -> assertFalse(messageList.isEmpty())).verifyComplete();
         });
     }
 
@@ -2350,16 +2345,11 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
 
         getChatCompletionsRunner((deploymentId, prompt) -> {
-            StepVerifier
-                .create(client.getChatCompletionsStream(deploymentId, new ChatCompletionsOptions(prompt),
-                    new ChatCompletionStreamOptions().setIncludeUsage(true)))
-                .recordWith(ArrayList::new)
-                .thenConsumeWhile(chatCompletion -> {
+            StepVerifier.create(client.getChatCompletionsStream(deploymentId, new ChatCompletionsOptions(prompt),
+                new ChatCompletionStreamOptions())).recordWith(ArrayList::new).thenConsumeWhile(chatCompletion -> {
                     assertNotNull(chatCompletion);
                     return true;
-                })
-                .consumeRecordedWith(messageList -> assertFalse(messageList.isEmpty()))
-                .verifyComplete();
+                }).consumeRecordedWith(messageList -> assertFalse(messageList.isEmpty())).verifyComplete();
         });
     }
 }
