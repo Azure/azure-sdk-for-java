@@ -3560,11 +3560,6 @@ public class DirectoryApiTests extends DataLakeTestBase {
     }
 
     @Test
-    /*
-    list of headers I have manually determined will not appear when using this API:
-    Accept-Ranges, Cache-Control, Content-Disposition, Content-Encoding, Content-Language, Content-Type, Content-MD5,
-    x-ms-acl, x-ms-meta
-     */
     public void pathGetSystemPropertiesDirectory() {
         // setup
         FileSystemEncryptionScopeOptions encryptionScope
@@ -3613,7 +3608,7 @@ public class DirectoryApiTests extends DataLakeTestBase {
         assertEquals(PathPermissions.parseSymbolic("rwxr-x---").toString(), value.getPermissions().toString());
 
         // should not be present in the response
-        validateHeadersNotPresent(response);
+        validateUserDefinedHeadersNotPresent(response);
     }
 
     @Test

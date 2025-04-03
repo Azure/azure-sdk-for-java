@@ -515,7 +515,10 @@ public class DataLakeTestBase extends TestProxyTestBase {
         assertArraysEqual(contentMD5, response.getValue().getContentMd5());
     }
 
-    protected void validateHeadersNotPresent(Response<PathSystemProperties> response) {
+    /*
+    This assertation contains headers I have manually determined will not appear when using this API
+     */
+    protected void validateUserDefinedHeadersNotPresent(Response<PathSystemProperties> response) {
         assertNull(response.getHeaders().get(ACCEPT_RANGES));
         assertNull(response.getHeaders().get(CACHE_CONTROL));
         assertNull(response.getHeaders().get(CONTENT_DISPOSITION));

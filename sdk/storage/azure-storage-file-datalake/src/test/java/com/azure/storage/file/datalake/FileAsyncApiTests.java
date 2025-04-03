@@ -4337,11 +4337,6 @@ public class FileAsyncApiTests extends DataLakeTestBase {
     }
 
     @Test
-    /*
-    list of headers I have manually determined will not appear when using this API:
-    Accept-Ranges, Cache-Control, Content-Disposition, Content-Encoding, Content-Language, Content-Type, Content-MD5,
-    x-ms-acl, x-ms-lease-duration, x-ms-lease-state, x-ms-lease-status, x-ms-meta
-     */
     public void pathGetSystemPropertiesFile() {
         // setup
         FileSystemEncryptionScopeOptions encryptionScope
@@ -4396,7 +4391,7 @@ public class FileAsyncApiTests extends DataLakeTestBase {
                 assertEquals(PathPermissions.parseSymbolic("rwxr-x---").toString(), value.getPermissions().toString());
 
                 // should not be present in the response
-                validateHeadersNotPresent(r);
+                validateUserDefinedHeadersNotPresent(r);
             })
             .verifyComplete();
     }

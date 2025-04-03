@@ -11,10 +11,12 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.storage.common.implementation.Constants;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Builder for a policy to do validation of general response behavior.
@@ -52,14 +54,22 @@ public class ResponseValidationPolicyBuilder {
      * @deprecated Use {@link  #addOptionalEcho(HttpHeaderName)} instead.
      */
     @Deprecated
+    @SuppressWarnings("unchecked")
     public ResponseValidationPolicyBuilder addOptionalEcho(String headerName) {
         assertions.add((httpResponse, logger, context) -> {
             HttpHeaderName httpHeaderName = HttpHeaderName.fromString(headerName);
             String requestHeaderValue = httpResponse.getRequest().getHeaders().getValue(httpHeaderName);
             String responseHeaderValue = httpResponse.getHeaders().getValue(httpHeaderName);
+
+            List<HttpHeaderName> headersToSkip = new ArrayList<>();
+            Optional<Object> contextAdjustment = context.getData(Constants.SKIP_ECHO_VALIDATION_KEY);
+            if (contextAdjustment.isPresent()) {
+                headersToSkip = (List<HttpHeaderName>) contextAdjustment.get();
+            }
+
             if (responseHeaderValue != null
                 && !responseHeaderValue.equals(requestHeaderValue)
-                && !context.getValues().containsKey(headerName)) {
+                && !headersToSkip.contains(httpHeaderName)) {
                 throw logger.logExceptionAsError(new RuntimeException(
                     String.format("Unexpected header value. Expected response to echo `%s: %s`. Got value `%s`.",
                         headerName, requestHeaderValue, responseHeaderValue)));
@@ -76,13 +86,21 @@ public class ResponseValidationPolicyBuilder {
      * @param headerName The header to validate.
      * @return This policy.
      */
+    @SuppressWarnings("unchecked")
     public ResponseValidationPolicyBuilder addOptionalEcho(HttpHeaderName headerName) {
         assertions.add((httpResponse, logger, context) -> {
             String requestHeaderValue = httpResponse.getRequest().getHeaders().getValue(headerName);
             String responseHeaderValue = httpResponse.getHeaders().getValue(headerName);
+
+            List<HttpHeaderName> headersToSkip = new ArrayList<>();
+            Optional<Object> contextAdjustment = context.getData(Constants.SKIP_ECHO_VALIDATION_KEY);
+            if (contextAdjustment.isPresent()) {
+                headersToSkip = (List<HttpHeaderName>) contextAdjustment.get();
+            }
+
             if (responseHeaderValue != null
                 && !responseHeaderValue.equals(requestHeaderValue)
-                && !context.getValues().containsKey(headerName)) {
+                && !headersToSkip.contains(headerName)) {
                 throw logger.logExceptionAsError(new RuntimeException(
                     String.format("Unexpected header value. Expected response to echo `%s: %s`. Got value `%s`.",
                         headerName, requestHeaderValue, responseHeaderValue)));
