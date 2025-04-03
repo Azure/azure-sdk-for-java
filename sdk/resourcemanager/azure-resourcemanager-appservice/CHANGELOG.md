@@ -6,6 +6,8 @@
 
 ### Breaking Changes
 
+- Removed `ContainerApp` resource APIs.
+
 ### Bugs Fixed
 
 ### Other Changes
