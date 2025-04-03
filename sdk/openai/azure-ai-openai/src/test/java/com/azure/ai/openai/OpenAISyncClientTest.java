@@ -1981,4 +1981,27 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         assertEquals(400, exception.getResponse().getStatusCode());
         assertNotNull(exception.getMessage());
     }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetCompletionsEmitsValues(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+
+        getCompletionsRunner((deploymentId, prompt) -> {
+            Completions completions = client.getCompletions(deploymentId, new CompletionsOptions(prompt));
+            assertNotNull(completions);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsEmitsValues(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+
+        getChatCompletionsRunner((deploymentId, prompt) -> {
+            ChatCompletions chatCompletions
+                = client.getChatCompletions(deploymentId, new ChatCompletionsOptions(prompt));
+            assertNotNull(chatCompletions);
+        });
+    }
 }
