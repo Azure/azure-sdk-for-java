@@ -3,12 +3,12 @@
 
 package com.azure.v2.security.keyvault.certificates.models;
 
-import com.azure.core.util.logging.ClientLogger;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonWriter;
 import com.azure.v2.security.keyvault.certificates.implementation.IssuerPropertiesHelper;
 import com.azure.v2.security.keyvault.certificates.implementation.models.CertificateIssuerItem;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.serialization.json.JsonReader;
+import io.clientcore.core.serialization.json.JsonSerializable;
+import io.clientcore.core.serialization.json.JsonWriter;
 
 import java.io.IOException;
 
