@@ -16,8 +16,8 @@ import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.GenericMessage;
 import reactor.core.publisher.Mono;
 
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -65,6 +65,7 @@ public class ServiceBusTemplateSendTests extends SendOperationTests<ServiceBusTe
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testSendAndReceive() {
         when(mockReceiverClient.receiveMessages(1)).thenReturn(mock());
         final ServiceBusReceivedMessage replyMessage = this.sendOperation.sendAndReceive(destination, null, message);
@@ -76,8 +77,9 @@ public class ServiceBusTemplateSendTests extends SendOperationTests<ServiceBusTe
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testSendAndReceiveReturnNull() {
-        when(mockReceiverClient.receiveMessages(1)).thenReturn(new IterableStream<>(List.of()));
+        when(mockReceiverClient.receiveMessages(1)).thenReturn(new IterableStream<ServiceBusReceivedMessage>(Collections.EMPTY_LIST));
         assertNull(this.sendOperation.sendAndReceive(destination, null, message));
     }
 
