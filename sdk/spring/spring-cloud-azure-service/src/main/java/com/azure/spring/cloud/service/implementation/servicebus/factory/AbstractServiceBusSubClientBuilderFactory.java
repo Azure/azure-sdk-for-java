@@ -55,7 +55,7 @@ abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBus
             this.serviceBusClientBuilder = serviceBusClientBuilder;
             this.shareServiceBusClientBuilder = true;
         } else {
-            this.serviceBusClientBuilder = new ServiceBusClientBuilder();
+            this.serviceBusClientBuilder = new ServiceBusClientBuilderFactory(properties).build();
             this.shareServiceBusClientBuilder = false;
         }
     }

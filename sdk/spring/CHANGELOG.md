@@ -10,6 +10,13 @@ This section includes changes in `spring-cloud-azure-autoconfigure` module.
 
 #### Features Added
 - Enable annotation `@EnableAzureMessaging` automatically.
+- Register a new bean `ServiceBusConsumerFactory` to support request-reply pattern of `ServiceBusTemplate`.
+
+### Spring Messaging Azure Service Bus
+This section includes changes in the `spring-messaging-azure-servicebus` module.
+
+#### Features Added
+- `ServiceBusTemplate` supports request-reply pattern.
 
 ## 4.19.0 (2024-06-03)
 - This release is compatible with Spring Boot 2.5.0-2.5.15, 2.6.0-2.6.15, 2.7.0-2.7.18. (Note: 2.5.x (x>15), 2.6.y (y>15) and 2.7.z (z>18) should be supported, but they aren't tested with this release.)
