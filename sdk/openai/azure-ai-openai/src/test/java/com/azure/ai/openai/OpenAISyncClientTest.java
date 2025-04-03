@@ -21,6 +21,7 @@ import com.azure.ai.openai.models.ChatCompletionsFunctionToolCall;
 import com.azure.ai.openai.models.ChatCompletionsFunctionToolSelection;
 import com.azure.ai.openai.models.ChatCompletionsNamedFunctionToolSelection;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
+import com.azure.ai.openai.models.ChatCompletionStreamOptions;
 import com.azure.ai.openai.models.ChatCompletionsToolCall;
 import com.azure.ai.openai.models.ChatCompletionsToolSelection;
 import com.azure.ai.openai.models.ChatCompletionsToolSelectionPreset;
@@ -56,6 +57,7 @@ import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -1984,12 +1986,14 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testGetCompletionsEmitsValues(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+    public void testGetCompletionsStreamEmitsValues(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
 
         getCompletionsRunner((deploymentId, prompt) -> {
-            Completions completions = client.getCompletions(deploymentId, new CompletionsOptions(prompt));
-            assertNotNull(completions);
+            IterableStream<Completions> completionsList = client.getCompletionsStream(deploymentId,
+                new CompletionsOptions(prompt), new ChatCompletionStreamOptions());
+
+            completionsList.forEach(Assertions::assertNotNull);
         });
     }
 
@@ -1999,9 +2003,10 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         client = getOpenAIClient(httpClient, serviceVersion);
 
         getChatCompletionsRunner((deploymentId, prompt) -> {
-            ChatCompletions chatCompletions
-                = client.getChatCompletions(deploymentId, new ChatCompletionsOptions(prompt));
-            assertNotNull(chatCompletions);
+            IterableStream<ChatCompletions> chatCompletionsList = client.getChatCompletionsStream(deploymentId,
+                new ChatCompletionsOptions(prompt), new ChatCompletionStreamOptions());
+
+            chatCompletionsList.forEach(Assertions::assertNotNull);
         });
     }
 }
