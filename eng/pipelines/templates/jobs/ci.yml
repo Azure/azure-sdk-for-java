@@ -52,9 +52,6 @@ parameters:
   - name: JavaBuildVersion
     type: string
     default: $(JavaBuildVersion)
-  - name: IgnoreVerifyTypeSpecCodeGenerationError
-    type: boolean
-    default: false
   - name: TimeoutInMinutes
     type: number
     default: 60
@@ -406,7 +403,6 @@ jobs:
 
       - task: PowerShell@2
         displayName: Verify TypeSpec Code Generation
-        continueOnError: ${{ eq(parameters.IgnoreVerifyTypeSpecCodeGenerationError, 'true') }}
         inputs:
           pwsh: true
           filePath: $(Build.SourcesDirectory)/eng/scripts/TypeSpec-Compare-CurrentToCodegeneration.ps1
