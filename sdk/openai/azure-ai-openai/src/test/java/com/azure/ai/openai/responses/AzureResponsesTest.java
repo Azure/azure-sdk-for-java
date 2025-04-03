@@ -16,6 +16,9 @@ import com.azure.ai.openai.responses.models.ResponsesStreamEventCompleted;
 import com.azure.ai.openai.responses.models.ResponsesUserMessage;
 import com.azure.ai.openai.responses.models.ResponsesSystemMessage;
 import com.azure.ai.openai.responses.models.ResponsesInputContentImage;
+import com.azure.ai.openai.responses.models.ResponsesAssistantMessage;
+import com.azure.ai.openai.responses.models.ResponsesOutputContentText;
+
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
@@ -149,27 +152,25 @@ public class AzureResponsesTest extends AzureResponsesTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.responses.TestUtils#getTestParametersResponses")
-    public void testResponsesInputContentImageBase64(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
+    public void testResponsesInputContentImageBase64(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion)
+        throws IOException {
         ResponsesClient client = getAzureResponseClient(httpClient, serviceVersion);
+        openImageFileBase64Runner((base64Image) -> {
+            CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.GPT_4O_MINI,
+                Arrays.asList(
+                    new ResponsesSystemMessage(Arrays
+                        .asList(new ResponsesInputContentText("You are a helpful assistant that describes images"))),
+                    new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Please describe this image"),
+                        new ResponsesInputContentImage().setImageUrl("data:image/jpeg;base64," + base64Image)))));
 
-        try {
-            openImageFileBase64Runner((base64Image) -> {
-                CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.GPT_4O_MINI,
-                    Arrays.asList(
-                        new ResponsesSystemMessage(Arrays.asList(new ResponsesInputContentText(
-                            "You are a helpful assistant that describes images"))),
-                        new ResponsesUserMessage(Arrays.asList(
-                            new ResponsesInputContentText("Please describe this image"),
-                            new ResponsesInputContentImage().setImageUrl(
-                                "data:image/jpeg;base64," + base64Image)))));
+            ResponsesResponse response = client.createResponse(request);
+            ResponsesAssistantMessage assistantMessage = (ResponsesAssistantMessage) response.getOutput().get(0);
+            ResponsesOutputContentText outputContent
+                = (ResponsesOutputContentText) assistantMessage.getContent().get(0);
 
-                ResponsesResponse response = client.createResponse(request);
-                assertImageResponseForAzure(response);
-
-            });
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+            assertAssistantMessage(assistantMessage);
+            assertOutputContentText(outputContent);
+        });
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -179,14 +180,18 @@ public class AzureResponsesTest extends AzureResponsesTestBase {
 
         CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.GPT_4O_MINI,
             Arrays.asList(
-                new ResponsesSystemMessage(Arrays.asList(new ResponsesInputContentText(
-                    "You are a helpful assistant that describes images"))),
-                new ResponsesUserMessage(Arrays.asList(
-                    new ResponsesInputContentText("Please describe this image"),
-                    new ResponsesInputContentImage().setImageUrl("https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/512px-Microsoft_logo.svg.png")))));
+                new ResponsesSystemMessage(
+                    Arrays.asList(new ResponsesInputContentText("You are a helpful assistant that describes images"))),
+                new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Please describe this image"),
+                    new ResponsesInputContentImage().setImageUrl(
+                        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/512px-Microsoft_logo.svg.png")))));
 
         ResponsesResponse response = client.createResponse(request);
-        assertImageResponseForAzure(response);
+        ResponsesAssistantMessage assistantMessage = (ResponsesAssistantMessage) response.getOutput().get(0);
+        ResponsesOutputContentText outputContent = (ResponsesOutputContentText) assistantMessage.getContent().get(0);
+
+        assertAssistantMessage(assistantMessage);
+        assertOutputContentText(outputContent);
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
