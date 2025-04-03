@@ -33,7 +33,6 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.utils.Context;
 import java.lang.reflect.InvocationTargetException;
 
@@ -110,8 +109,8 @@ public final class SecretClientImpl {
             try {
                 Class<?> clazz
                     = Class.forName("com.azure.v2.security.keyvault.secrets.implementation.SecretClientServiceImpl");
-                return (SecretClientService) clazz.getMethod("getNewInstance", HttpPipeline.class, ObjectSerializer.class)
-                    .invoke(null, pipeline, null);
+                return (SecretClientService) clazz.getMethod("getNewInstance", HttpPipeline.class)
+                    .invoke(null, pipeline);
             } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
                 | InvocationTargetException e) {
                 throw new RuntimeException(e);
