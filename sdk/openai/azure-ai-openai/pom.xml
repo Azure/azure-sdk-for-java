@@ -57,7 +57,7 @@
     <dependency>
       <groupId>com.openai</groupId>
       <artifactId>openai-java</artifactId>
-      <version>0.37.0</version> <!-- {x-version-update;com.openai:openai-java;external_dependency} -->
+      <version>0.43.0</version> <!-- {x-version-update;com.openai:openai-java;external_dependency} -->
     </dependency>
 
     <!-- provided scope -->
