@@ -3,6 +3,7 @@
 
 package io.clientcore.core.implementation.instrumentation.fallback;
 
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.instrumentation.InstrumentationAttributes;
@@ -19,7 +20,6 @@ import io.clientcore.core.instrumentation.tracing.TraceContextGetter;
 import io.clientcore.core.instrumentation.tracing.TraceContextPropagator;
 import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.instrumentation.tracing.TracingScope;
-import io.clientcore.core.utils.Context;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -706,30 +706,8 @@ public class FallbackInstrumentationTests {
         assertEquals("value4", attrs.get("string"));
     }
 
-    /*@Test
-    public void testSuppression() {
-        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_LIB_OPTIONS, null);
-        assertTrue(instrumentation.shouldInstrument(CLIENT, null));
-    
-        Tracer tracer = instrumentation.getTracer();
-        Span span = tracer.spanBuilder("test", CLIENT, null).startSpan();
-    
-        assertFalse(instrumentation.shouldInstrument(CLIENT, span.getInstrumentationContext()));
-        assertTrue(instrumentation.shouldInstrument(INTERNAL, span.getInstrumentationContext()));
-        assertTrue(instrumentation.shouldInstrument(CONSUMER, span.getInstrumentationContext()));
-        assertTrue(instrumentation.shouldInstrument(PRODUCER, span.getInstrumentationContext()));
-        assertTrue(instrumentation.shouldInstrument(SERVER, span.getInstrumentationContext()));
-    }
-    
-    @Test
-    public void testSuppressionTracingDisabled() {
-        InstrumentationOptions options = new InstrumentationOptions().setTracingEnabled(false);
-    
-        assertFalse(Instrumentation.create(options, DEFAULT_LIB_OPTIONS, null).shouldInstrument(CLIENT, null));
-    }*/
-
     public static Stream<Object> notSupportedContexts() {
-        return Stream.of(null, new Object(), "this is not a valid context", Context.none(), Context.of("key", "value"));
+        return Stream.of(null, new Object(), "this is not a valid context", RequestContext.none());
     }
 
     private static void assertValidSpan(Span span, boolean isRecording) {

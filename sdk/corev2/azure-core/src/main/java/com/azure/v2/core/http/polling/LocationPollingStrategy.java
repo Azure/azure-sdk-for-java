@@ -10,14 +10,13 @@ import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.json.JsonSerializer;
-import io.clientcore.core.utils.Context;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.UriBuilder;
 
@@ -44,7 +43,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
     private final String endpoint;
     private final HttpPipeline httpPipeline;
     private final ObjectSerializer serializer;
-    private final Context context;
+    private final RequestContext requestContext;
     private final String serviceVersion;
 
     /**
@@ -54,7 +53,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
      * @throws NullPointerException If {@code httpPipeline} is null.
      */
     public LocationPollingStrategy(HttpPipeline httpPipeline) {
-        this(httpPipeline, JsonSerializer.getInstance(), Context.none());
+        this(httpPipeline, JsonSerializer.getInstance(), RequestContext.none());
     }
 
     /**
@@ -65,7 +64,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
      * @throws NullPointerException If {@code httpPipeline} is null.
      */
     public LocationPollingStrategy(HttpPipeline httpPipeline, ObjectSerializer serializer) {
-        this(httpPipeline, serializer, Context.none());
+        this(httpPipeline, serializer, RequestContext.none());
     }
 
     /**
@@ -73,11 +72,12 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
      *
      * @param httpPipeline an instance of {@link HttpPipeline} to send requests with
      * @param serializer a custom serializer for serializing and deserializing polling responses
-     * @param context an instance of {@link Context}
+     * @param requestContext an instance of {@link RequestContext}
      * @throws NullPointerException If {@code httpPipeline} is null.
      */
-    public LocationPollingStrategy(HttpPipeline httpPipeline, ObjectSerializer serializer, Context context) {
-        this(httpPipeline, null, serializer, context);
+    public LocationPollingStrategy(HttpPipeline httpPipeline, ObjectSerializer serializer,
+        RequestContext requestContext) {
+        this(httpPipeline, null, serializer, requestContext);
     }
 
     /**
@@ -86,14 +86,14 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
      * @param httpPipeline an instance of {@link HttpPipeline} to send requests with
      * @param endpoint an endpoint for creating an absolute path when the path itself is relative.
      * @param serializer a custom serializer for serializing and deserializing polling responses
-     * @param context an instance of {@link Context}
+     * @param requestContext an instance of {@link RequestContext}
      * @throws NullPointerException If {@code httpPipeline} is null.
      */
     public LocationPollingStrategy(HttpPipeline httpPipeline, String endpoint, ObjectSerializer serializer,
-        Context context) {
+        RequestContext requestContext) {
         this(new PollingStrategyOptions(httpPipeline).setEndpoint(endpoint)
             .setSerializer(serializer)
-            .setContext(context));
+            .setRequestContext(requestContext));
     }
 
     /**
@@ -110,8 +110,9 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
             ? JsonSerializer.getInstance()
             : pollingStrategyOptions.getSerializer();
         this.serviceVersion = pollingStrategyOptions.getServiceVersion();
-        this.context
-            = pollingStrategyOptions.getContext() == null ? Context.none() : pollingStrategyOptions.getContext();
+        this.requestContext = pollingStrategyOptions.getRequestContext() == null
+            ? RequestContext.none()
+            : pollingStrategyOptions.getRequestContext();
     }
 
     @Override
@@ -148,9 +149,7 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
     public PollResponse<T> poll(PollingContext<T> pollingContext, Type pollResponseType) {
         String uri = pollingContext.getData(PollingConstants.LOCATION);
         uri = setServiceVersionQueryParam(uri);
-        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET)
-            .setUri(uri)
-            .setRequestOptions(new RequestOptions().setContext(context));
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri).setContext(requestContext);
 
         try (Response<BinaryData> response = httpPipeline.send(request)) {
             HttpHeader locationHeader = response.getHeaders().get(HttpHeaderName.LOCATION);
@@ -204,9 +203,8 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
         }
 
         finalGetUrl = setServiceVersionQueryParam(finalGetUrl);
-        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET)
-            .setUri(finalGetUrl)
-            .setRequestOptions(new RequestOptions().setContext(context));
+        HttpRequest request
+            = new HttpRequest().setMethod(HttpMethod.GET).setUri(finalGetUrl).setContext(requestContext);
 
         try (Response<BinaryData> response = httpPipeline.send(request)) {
             BinaryData responseBody = response.getValue();
