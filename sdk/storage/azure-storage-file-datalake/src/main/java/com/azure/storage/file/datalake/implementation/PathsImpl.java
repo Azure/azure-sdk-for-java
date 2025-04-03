@@ -1060,13 +1060,13 @@ public final class PathsImpl {
      * Create or rename a file or directory. By default, the destination is overwritten and if the destination already
      * exists and has a lease the lease is broken. This operation supports conditional HTTP requests. For more
      * information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      * To fail if the destination already exists, use a conditional request with If-None-Match: "*".
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param resource Required only for Create File and Create Directory. The value must be "file" or "directory".
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
@@ -1142,13 +1142,13 @@ public final class PathsImpl {
      * Create or rename a file or directory. By default, the destination is overwritten and if the destination already
      * exists and has a lease the lease is broken. This operation supports conditional HTTP requests. For more
      * information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      * To fail if the destination already exists, use a conditional request with If-None-Match: "*".
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param resource Required only for Create File and Create Directory. The value must be "file" or "directory".
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
@@ -1322,13 +1322,13 @@ public final class PathsImpl {
      * Create or rename a file or directory. By default, the destination is overwritten and if the destination already
      * exists and has a lease the lease is broken. This operation supports conditional HTTP requests. For more
      * information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      * To fail if the destination already exists, use a conditional request with If-None-Match: "*".
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param resource Required only for Create File and Create Directory. The value must be "file" or "directory".
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
@@ -1403,13 +1403,13 @@ public final class PathsImpl {
      * Create or rename a file or directory. By default, the destination is overwritten and if the destination already
      * exists and has a lease the lease is broken. This operation supports conditional HTTP requests. For more
      * information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      * To fail if the destination already exists, use a conditional request with If-None-Match: "*".
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param resource Required only for Create File and Create Directory. The value must be "file" or "directory".
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
@@ -1485,13 +1485,13 @@ public final class PathsImpl {
      * Create or rename a file or directory. By default, the destination is overwritten and if the destination already
      * exists and has a lease the lease is broken. This operation supports conditional HTTP requests. For more
      * information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      * To fail if the destination already exists, use a conditional request with If-None-Match: "*".
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param resource Required only for Create File and Create Directory. The value must be "file" or "directory".
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
@@ -1567,13 +1567,13 @@ public final class PathsImpl {
      * Create or rename a file or directory. By default, the destination is overwritten and if the destination already
      * exists and has a lease the lease is broken. This operation supports conditional HTTP requests. For more
      * information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      * To fail if the destination already exists, use a conditional request with If-None-Match: "*".
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param resource Required only for Create File and Create Directory. The value must be "file" or "directory".
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
@@ -1747,13 +1747,13 @@ public final class PathsImpl {
      * Create or rename a file or directory. By default, the destination is overwritten and if the destination already
      * exists and has a lease the lease is broken. This operation supports conditional HTTP requests. For more
      * information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      * To fail if the destination already exists, use a conditional request with If-None-Match: "*".
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param resource Required only for Create File and Create Directory. The value must be "file" or "directory".
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
@@ -1929,13 +1929,13 @@ public final class PathsImpl {
      * Create or rename a file or directory. By default, the destination is overwritten and if the destination already
      * exists and has a lease the lease is broken. This operation supports conditional HTTP requests. For more
      * information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      * To fail if the destination already exists, use a conditional request with If-None-Match: "*".
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param resource Required only for Create File and Create Directory. The value must be "file" or "directory".
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
@@ -2007,13 +2007,13 @@ public final class PathsImpl {
      * Create or rename a file or directory. By default, the destination is overwritten and if the destination already
      * exists and has a lease the lease is broken. This operation supports conditional HTTP requests. For more
      * information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      * To fail if the destination already exists, use a conditional request with If-None-Match: "*".
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param resource Required only for Create File and Create Directory. The value must be "file" or "directory".
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
@@ -2190,7 +2190,7 @@ public final class PathsImpl {
      * file or directory, or sets access control for a file or directory. Data can only be appended to a file.
      * Concurrent writes to the same file using multiple clients are not supported. This operation supports conditional
      * HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param action The action must be "append" to upload data to be appended to a file, "flush" to flush previously
      * uploaded data to a file, "setProperties" to set the properties of a file or directory, "setAccessControl" to set
@@ -2205,7 +2205,7 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param maxRecords Optional. Valid for "SetAccessControlRecursive" operation. It specifies the maximum number of
      * files or directories on which the acl change will be applied. If omitted or greater than 2,000, the request will
@@ -2288,7 +2288,7 @@ public final class PathsImpl {
      * file or directory, or sets access control for a file or directory. Data can only be appended to a file.
      * Concurrent writes to the same file using multiple clients are not supported. This operation supports conditional
      * HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param action The action must be "append" to upload data to be appended to a file, "flush" to flush previously
      * uploaded data to a file, "setProperties" to set the properties of a file or directory, "setAccessControl" to set
@@ -2303,7 +2303,7 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param maxRecords Optional. Valid for "SetAccessControlRecursive" operation. It specifies the maximum number of
      * files or directories on which the acl change will be applied. If omitted or greater than 2,000, the request will
@@ -2450,7 +2450,7 @@ public final class PathsImpl {
      * file or directory, or sets access control for a file or directory. Data can only be appended to a file.
      * Concurrent writes to the same file using multiple clients are not supported. This operation supports conditional
      * HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param action The action must be "append" to upload data to be appended to a file, "flush" to flush previously
      * uploaded data to a file, "setProperties" to set the properties of a file or directory, "setAccessControl" to set
@@ -2465,7 +2465,7 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param maxRecords Optional. Valid for "SetAccessControlRecursive" operation. It specifies the maximum number of
      * files or directories on which the acl change will be applied. If omitted or greater than 2,000, the request will
@@ -2547,7 +2547,7 @@ public final class PathsImpl {
      * file or directory, or sets access control for a file or directory. Data can only be appended to a file.
      * Concurrent writes to the same file using multiple clients are not supported. This operation supports conditional
      * HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param action The action must be "append" to upload data to be appended to a file, "flush" to flush previously
      * uploaded data to a file, "setProperties" to set the properties of a file or directory, "setAccessControl" to set
@@ -2562,7 +2562,7 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param maxRecords Optional. Valid for "SetAccessControlRecursive" operation. It specifies the maximum number of
      * files or directories on which the acl change will be applied. If omitted or greater than 2,000, the request will
@@ -2646,7 +2646,7 @@ public final class PathsImpl {
      * file or directory, or sets access control for a file or directory. Data can only be appended to a file.
      * Concurrent writes to the same file using multiple clients are not supported. This operation supports conditional
      * HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param action The action must be "append" to upload data to be appended to a file, "flush" to flush previously
      * uploaded data to a file, "setProperties" to set the properties of a file or directory, "setAccessControl" to set
@@ -2661,7 +2661,7 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param maxRecords Optional. Valid for "SetAccessControlRecursive" operation. It specifies the maximum number of
      * files or directories on which the acl change will be applied. If omitted or greater than 2,000, the request will
@@ -2744,7 +2744,7 @@ public final class PathsImpl {
      * file or directory, or sets access control for a file or directory. Data can only be appended to a file.
      * Concurrent writes to the same file using multiple clients are not supported. This operation supports conditional
      * HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param action The action must be "append" to upload data to be appended to a file, "flush" to flush previously
      * uploaded data to a file, "setProperties" to set the properties of a file or directory, "setAccessControl" to set
@@ -2759,7 +2759,7 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param maxRecords Optional. Valid for "SetAccessControlRecursive" operation. It specifies the maximum number of
      * files or directories on which the acl change will be applied. If omitted or greater than 2,000, the request will
@@ -2906,7 +2906,7 @@ public final class PathsImpl {
      * file or directory, or sets access control for a file or directory. Data can only be appended to a file.
      * Concurrent writes to the same file using multiple clients are not supported. This operation supports conditional
      * HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param action The action must be "append" to upload data to be appended to a file, "flush" to flush previously
      * uploaded data to a file, "setProperties" to set the properties of a file or directory, "setAccessControl" to set
@@ -2921,7 +2921,7 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param maxRecords Optional. Valid for "SetAccessControlRecursive" operation. It specifies the maximum number of
      * files or directories on which the acl change will be applied. If omitted or greater than 2,000, the request will
@@ -3004,7 +3004,7 @@ public final class PathsImpl {
      * file or directory, or sets access control for a file or directory. Data can only be appended to a file.
      * Concurrent writes to the same file using multiple clients are not supported. This operation supports conditional
      * HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param action The action must be "append" to upload data to be appended to a file, "flush" to flush previously
      * uploaded data to a file, "setProperties" to set the properties of a file or directory, "setAccessControl" to set
@@ -3019,7 +3019,7 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param maxRecords Optional. Valid for "SetAccessControlRecursive" operation. It specifies the maximum number of
      * files or directories on which the acl change will be applied. If omitted or greater than 2,000, the request will
@@ -3166,7 +3166,7 @@ public final class PathsImpl {
      * file or directory, or sets access control for a file or directory. Data can only be appended to a file.
      * Concurrent writes to the same file using multiple clients are not supported. This operation supports conditional
      * HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param action The action must be "append" to upload data to be appended to a file, "flush" to flush previously
      * uploaded data to a file, "setProperties" to set the properties of a file or directory, "setAccessControl" to set
@@ -3181,7 +3181,7 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param maxRecords Optional. Valid for "SetAccessControlRecursive" operation. It specifies the maximum number of
      * files or directories on which the acl change will be applied. If omitted or greater than 2,000, the request will
@@ -3263,7 +3263,7 @@ public final class PathsImpl {
      * file or directory, or sets access control for a file or directory. Data can only be appended to a file.
      * Concurrent writes to the same file using multiple clients are not supported. This operation supports conditional
      * HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param action The action must be "append" to upload data to be appended to a file, "flush" to flush previously
      * uploaded data to a file, "setProperties" to set the properties of a file or directory, "setAccessControl" to set
@@ -3278,7 +3278,7 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param maxRecords Optional. Valid for "SetAccessControlRecursive" operation. It specifies the maximum number of
      * files or directories on which the acl change will be applied. If omitted or greater than 2,000, the request will
@@ -3362,7 +3362,7 @@ public final class PathsImpl {
      * file or directory, or sets access control for a file or directory. Data can only be appended to a file.
      * Concurrent writes to the same file using multiple clients are not supported. This operation supports conditional
      * HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param action The action must be "append" to upload data to be appended to a file, "flush" to flush previously
      * uploaded data to a file, "setProperties" to set the properties of a file or directory, "setAccessControl" to set
@@ -3377,7 +3377,7 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param maxRecords Optional. Valid for "SetAccessControlRecursive" operation. It specifies the maximum number of
      * files or directories on which the acl change will be applied. If omitted or greater than 2,000, the request will
@@ -3460,7 +3460,7 @@ public final class PathsImpl {
      * file or directory, or sets access control for a file or directory. Data can only be appended to a file.
      * Concurrent writes to the same file using multiple clients are not supported. This operation supports conditional
      * HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param action The action must be "append" to upload data to be appended to a file, "flush" to flush previously
      * uploaded data to a file, "setProperties" to set the properties of a file or directory, "setAccessControl" to set
@@ -3475,7 +3475,7 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param maxRecords Optional. Valid for "SetAccessControlRecursive" operation. It specifies the maximum number of
      * files or directories on which the acl change will be applied. If omitted or greater than 2,000, the request will
@@ -3622,7 +3622,7 @@ public final class PathsImpl {
      * file or directory, or sets access control for a file or directory. Data can only be appended to a file.
      * Concurrent writes to the same file using multiple clients are not supported. This operation supports conditional
      * HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param action The action must be "append" to upload data to be appended to a file, "flush" to flush previously
      * uploaded data to a file, "setProperties" to set the properties of a file or directory, "setAccessControl" to set
@@ -3637,7 +3637,7 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param maxRecords Optional. Valid for "SetAccessControlRecursive" operation. It specifies the maximum number of
      * files or directories on which the acl change will be applied. If omitted or greater than 2,000, the request will
@@ -3786,7 +3786,7 @@ public final class PathsImpl {
      * file or directory, or sets access control for a file or directory. Data can only be appended to a file.
      * Concurrent writes to the same file using multiple clients are not supported. This operation supports conditional
      * HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param action The action must be "append" to upload data to be appended to a file, "flush" to flush previously
      * uploaded data to a file, "setProperties" to set the properties of a file or directory, "setAccessControl" to set
@@ -3801,7 +3801,7 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param maxRecords Optional. Valid for "SetAccessControlRecursive" operation. It specifies the maximum number of
      * files or directories on which the acl change will be applied. If omitted or greater than 2,000, the request will
@@ -3885,7 +3885,7 @@ public final class PathsImpl {
      * file or directory, or sets access control for a file or directory. Data can only be appended to a file.
      * Concurrent writes to the same file using multiple clients are not supported. This operation supports conditional
      * HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param action The action must be "append" to upload data to be appended to a file, "flush" to flush previously
      * uploaded data to a file, "setProperties" to set the properties of a file or directory, "setAccessControl" to set
@@ -3900,7 +3900,7 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param maxRecords Optional. Valid for "SetAccessControlRecursive" operation. It specifies the maximum number of
      * files or directories on which the acl change will be applied. If omitted or greater than 2,000, the request will
@@ -4047,7 +4047,7 @@ public final class PathsImpl {
      *
      * Create and manage a lease to restrict write and delete access to the path. This operation supports conditional
      * HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param xMsLeaseAction There are five lease actions: "acquire", "break", "change", "renew", and "release". Use
      * "acquire" and specify the "x-ms-proposed-lease-id" and "x-ms-lease-duration" to acquire a new lease. Use "break"
@@ -4060,7 +4060,7 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param xMsLeaseBreakPeriod The lease break period duration is optional to break a lease, and specifies the break
      * period of the lease in seconds. The lease break duration must be between 0 and 60 seconds.
@@ -4089,7 +4089,7 @@ public final class PathsImpl {
      *
      * Create and manage a lease to restrict write and delete access to the path. This operation supports conditional
      * HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param xMsLeaseAction There are five lease actions: "acquire", "break", "change", "renew", and "release". Use
      * "acquire" and specify the "x-ms-proposed-lease-id" and "x-ms-lease-duration" to acquire a new lease. Use "break"
@@ -4102,7 +4102,7 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param xMsLeaseBreakPeriod The lease break period duration is optional to break a lease, and specifies the break
      * period of the lease in seconds. The lease break duration must be between 0 and 60 seconds.
@@ -4165,7 +4165,7 @@ public final class PathsImpl {
      *
      * Create and manage a lease to restrict write and delete access to the path. This operation supports conditional
      * HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param xMsLeaseAction There are five lease actions: "acquire", "break", "change", "renew", and "release". Use
      * "acquire" and specify the "x-ms-proposed-lease-id" and "x-ms-lease-duration" to acquire a new lease. Use "break"
@@ -4178,7 +4178,7 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param xMsLeaseBreakPeriod The lease break period duration is optional to break a lease, and specifies the break
      * period of the lease in seconds. The lease break duration must be between 0 and 60 seconds.
@@ -4207,7 +4207,7 @@ public final class PathsImpl {
      *
      * Create and manage a lease to restrict write and delete access to the path. This operation supports conditional
      * HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param xMsLeaseAction There are five lease actions: "acquire", "break", "change", "renew", and "release". Use
      * "acquire" and specify the "x-ms-proposed-lease-id" and "x-ms-lease-duration" to acquire a new lease. Use "break"
@@ -4220,7 +4220,7 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param xMsLeaseBreakPeriod The lease break period duration is optional to break a lease, and specifies the break
      * period of the lease in seconds. The lease break duration must be between 0 and 60 seconds.
@@ -4250,7 +4250,7 @@ public final class PathsImpl {
      *
      * Create and manage a lease to restrict write and delete access to the path. This operation supports conditional
      * HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param xMsLeaseAction There are five lease actions: "acquire", "break", "change", "renew", and "release". Use
      * "acquire" and specify the "x-ms-proposed-lease-id" and "x-ms-lease-duration" to acquire a new lease. Use "break"
@@ -4263,7 +4263,7 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param xMsLeaseBreakPeriod The lease break period duration is optional to break a lease, and specifies the break
      * period of the lease in seconds. The lease break duration must be between 0 and 60 seconds.
@@ -4292,7 +4292,7 @@ public final class PathsImpl {
      *
      * Create and manage a lease to restrict write and delete access to the path. This operation supports conditional
      * HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param xMsLeaseAction There are five lease actions: "acquire", "break", "change", "renew", and "release". Use
      * "acquire" and specify the "x-ms-proposed-lease-id" and "x-ms-lease-duration" to acquire a new lease. Use "break"
@@ -4305,7 +4305,7 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param xMsLeaseBreakPeriod The lease break period duration is optional to break a lease, and specifies the break
      * period of the lease in seconds. The lease break duration must be between 0 and 60 seconds.
@@ -4368,7 +4368,7 @@ public final class PathsImpl {
      *
      * Create and manage a lease to restrict write and delete access to the path. This operation supports conditional
      * HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param xMsLeaseAction There are five lease actions: "acquire", "break", "change", "renew", and "release". Use
      * "acquire" and specify the "x-ms-proposed-lease-id" and "x-ms-lease-duration" to acquire a new lease. Use "break"
@@ -4381,7 +4381,7 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param xMsLeaseBreakPeriod The lease break period duration is optional to break a lease, and specifies the break
      * period of the lease in seconds. The lease break duration must be between 0 and 60 seconds.
@@ -4446,7 +4446,7 @@ public final class PathsImpl {
      *
      * Create and manage a lease to restrict write and delete access to the path. This operation supports conditional
      * HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param xMsLeaseAction There are five lease actions: "acquire", "break", "change", "renew", and "release". Use
      * "acquire" and specify the "x-ms-proposed-lease-id" and "x-ms-lease-duration" to acquire a new lease. Use "break"
@@ -4459,7 +4459,7 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param xMsLeaseBreakPeriod The lease break period duration is optional to break a lease, and specifies the break
      * period of the lease in seconds. The lease break duration must be between 0 and 60 seconds.
@@ -4485,7 +4485,7 @@ public final class PathsImpl {
      *
      * Create and manage a lease to restrict write and delete access to the path. This operation supports conditional
      * HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param xMsLeaseAction There are five lease actions: "acquire", "break", "change", "renew", and "release". Use
      * "acquire" and specify the "x-ms-proposed-lease-id" and "x-ms-lease-duration" to acquire a new lease. Use "break"
@@ -4498,7 +4498,7 @@ public final class PathsImpl {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param xMsLeaseBreakPeriod The lease break period duration is optional to break a lease, and specifies the break
      * period of the lease in seconds. The lease break duration must be between 0 and 60 seconds.
@@ -4563,12 +4563,12 @@ public final class PathsImpl {
      *
      * Read the contents of a file. For read operations, range requests are supported. This operation supports
      * conditional HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param range The HTTP Range request header specifies one or more byte ranges of the resource to be retrieved.
      * @param xMsRangeGetContentMd5 Optional. When this header is set to "true" and specified together with the Range
@@ -4599,12 +4599,12 @@ public final class PathsImpl {
      *
      * Read the contents of a file. For read operations, range requests are supported. This operation supports
      * conditional HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param range The HTTP Range request header specifies one or more byte ranges of the resource to be retrieved.
      * @param xMsRangeGetContentMd5 Optional. When this header is set to "true" and specified together with the Range
@@ -4683,12 +4683,12 @@ public final class PathsImpl {
      *
      * Read the contents of a file. For read operations, range requests are supported. This operation supports
      * conditional HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param range The HTTP Range request header specifies one or more byte ranges of the resource to be retrieved.
      * @param xMsRangeGetContentMd5 Optional. When this header is set to "true" and specified together with the Range
@@ -4719,12 +4719,12 @@ public final class PathsImpl {
      *
      * Read the contents of a file. For read operations, range requests are supported. This operation supports
      * conditional HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param range The HTTP Range request header specifies one or more byte ranges of the resource to be retrieved.
      * @param xMsRangeGetContentMd5 Optional. When this header is set to "true" and specified together with the Range
@@ -4756,12 +4756,12 @@ public final class PathsImpl {
      *
      * Read the contents of a file. For read operations, range requests are supported. This operation supports
      * conditional HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param range The HTTP Range request header specifies one or more byte ranges of the resource to be retrieved.
      * @param xMsRangeGetContentMd5 Optional. When this header is set to "true" and specified together with the Range
@@ -4792,12 +4792,12 @@ public final class PathsImpl {
      *
      * Read the contents of a file. For read operations, range requests are supported. This operation supports
      * conditional HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param range The HTTP Range request header specifies one or more byte ranges of the resource to be retrieved.
      * @param xMsRangeGetContentMd5 Optional. When this header is set to "true" and specified together with the Range
@@ -4876,12 +4876,12 @@ public final class PathsImpl {
      *
      * Read the contents of a file. For read operations, range requests are supported. This operation supports
      * conditional HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param range The HTTP Range request header specifies one or more byte ranges of the resource to be retrieved.
      * @param xMsRangeGetContentMd5 Optional. When this header is set to "true" and specified together with the Range
@@ -4962,12 +4962,12 @@ public final class PathsImpl {
      *
      * Read the contents of a file. For read operations, range requests are supported. This operation supports
      * conditional HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param range The HTTP Range request header specifies one or more byte ranges of the resource to be retrieved.
      * @param xMsRangeGetContentMd5 Optional. When this header is set to "true" and specified together with the Range
@@ -5000,12 +5000,12 @@ public final class PathsImpl {
      *
      * Read the contents of a file. For read operations, range requests are supported. This operation supports
      * conditional HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param range The HTTP Range request header specifies one or more byte ranges of the resource to be retrieved.
      * @param xMsRangeGetContentMd5 Optional. When this header is set to "true" and specified together with the Range
@@ -5087,12 +5087,12 @@ public final class PathsImpl {
      * Get Properties returns all system and user defined properties for a path. Get Status returns all system defined
      * properties for a path. Get Access Control List returns the access control list for a path. This operation
      * supports conditional HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param action Optional. If the value is "getStatus" only the system defined properties for the path are returned.
      * If the value is "getAccessControl" the access control list is returned in the response headers (Hierarchical
@@ -5126,12 +5126,12 @@ public final class PathsImpl {
      * Get Properties returns all system and user defined properties for a path. Get Status returns all system defined
      * properties for a path. Get Access Control List returns the access control list for a path. This operation
      * supports conditional HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param action Optional. If the value is "getStatus" only the system defined properties for the path are returned.
      * If the value is "getAccessControl" the access control list is returned in the response headers (Hierarchical
@@ -5197,12 +5197,12 @@ public final class PathsImpl {
      * Get Properties returns all system and user defined properties for a path. Get Status returns all system defined
      * properties for a path. Get Access Control List returns the access control list for a path. This operation
      * supports conditional HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param action Optional. If the value is "getStatus" only the system defined properties for the path are returned.
      * If the value is "getAccessControl" the access control list is returned in the response headers (Hierarchical
@@ -5235,12 +5235,12 @@ public final class PathsImpl {
      * Get Properties returns all system and user defined properties for a path. Get Status returns all system defined
      * properties for a path. Get Access Control List returns the access control list for a path. This operation
      * supports conditional HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param action Optional. If the value is "getStatus" only the system defined properties for the path are returned.
      * If the value is "getAccessControl" the access control list is returned in the response headers (Hierarchical
@@ -5275,12 +5275,12 @@ public final class PathsImpl {
      * Get Properties returns all system and user defined properties for a path. Get Status returns all system defined
      * properties for a path. Get Access Control List returns the access control list for a path. This operation
      * supports conditional HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param action Optional. If the value is "getStatus" only the system defined properties for the path are returned.
      * If the value is "getAccessControl" the access control list is returned in the response headers (Hierarchical
@@ -5314,12 +5314,12 @@ public final class PathsImpl {
      * Get Properties returns all system and user defined properties for a path. Get Status returns all system defined
      * properties for a path. Get Access Control List returns the access control list for a path. This operation
      * supports conditional HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param action Optional. If the value is "getStatus" only the system defined properties for the path are returned.
      * If the value is "getAccessControl" the access control list is returned in the response headers (Hierarchical
@@ -5385,12 +5385,12 @@ public final class PathsImpl {
      * Get Properties returns all system and user defined properties for a path. Get Status returns all system defined
      * properties for a path. Get Access Control List returns the access control list for a path. This operation
      * supports conditional HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param action Optional. If the value is "getStatus" only the system defined properties for the path are returned.
      * If the value is "getAccessControl" the access control list is returned in the response headers (Hierarchical
@@ -5457,12 +5457,12 @@ public final class PathsImpl {
      * Get Properties returns all system and user defined properties for a path. Get Status returns all system defined
      * properties for a path. Get Access Control List returns the access control list for a path. This operation
      * supports conditional HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param action Optional. If the value is "getStatus" only the system defined properties for the path are returned.
      * If the value is "getAccessControl" the access control list is returned in the response headers (Hierarchical
@@ -5491,12 +5491,12 @@ public final class PathsImpl {
      * Get Properties returns all system and user defined properties for a path. Get Status returns all system defined
      * properties for a path. Get Access Control List returns the access control list for a path. This operation
      * supports conditional HTTP requests. For more information, see [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param action Optional. If the value is "getStatus" only the system defined properties for the path are returned.
      * If the value is "getAccessControl" the access control list is returned in the response headers (Hierarchical
@@ -5562,12 +5562,12 @@ public final class PathsImpl {
      *
      * Delete the file or directory. This operation supports conditional HTTP requests. For more information, see
      * [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param recursive Required.
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
@@ -5600,12 +5600,12 @@ public final class PathsImpl {
      *
      * Delete the file or directory. This operation supports conditional HTTP requests. For more information, see
      * [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param recursive Required.
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
@@ -5670,12 +5670,12 @@ public final class PathsImpl {
      *
      * Delete the file or directory. This operation supports conditional HTTP requests. For more information, see
      * [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param recursive Required.
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
@@ -5708,12 +5708,12 @@ public final class PathsImpl {
      *
      * Delete the file or directory. This operation supports conditional HTTP requests. For more information, see
      * [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param recursive Required.
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
@@ -5747,12 +5747,12 @@ public final class PathsImpl {
      *
      * Delete the file or directory. This operation supports conditional HTTP requests. For more information, see
      * [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param recursive Required.
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
@@ -5785,12 +5785,12 @@ public final class PathsImpl {
      *
      * Delete the file or directory. This operation supports conditional HTTP requests. For more information, see
      * [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param recursive Required.
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
@@ -5855,12 +5855,12 @@ public final class PathsImpl {
      *
      * Delete the file or directory. This operation supports conditional HTTP requests. For more information, see
      * [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param recursive Required.
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
@@ -5927,12 +5927,12 @@ public final class PathsImpl {
      *
      * Delete the file or directory. This operation supports conditional HTTP requests. For more information, see
      * [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param recursive Required.
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
@@ -5961,12 +5961,12 @@ public final class PathsImpl {
      *
      * Delete the file or directory. This operation supports conditional HTTP requests. For more information, see
      * [Specifying Conditional Headers for Blob Service
-     * Operations](https://docs.microsoft.com/en-us/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
+     * Operations](https://learn.microsoft.com/rest/api/storageservices/specifying-conditional-headers-for-blob-service-operations).
      *
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param recursive Required.
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
@@ -6032,7 +6032,7 @@ public final class PathsImpl {
      * Set the owner, group, permissions, or access control list for a path.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param owner Optional. The owner of the blob or directory.
      * @param group Optional. The owning group of the blob or directory.
@@ -6066,7 +6066,7 @@ public final class PathsImpl {
      * Set the owner, group, permissions, or access control list for a path.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param owner Optional. The owner of the blob or directory.
      * @param group Optional. The owning group of the blob or directory.
@@ -6134,7 +6134,7 @@ public final class PathsImpl {
      * Set the owner, group, permissions, or access control list for a path.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param owner Optional. The owner of the blob or directory.
      * @param group Optional. The owning group of the blob or directory.
@@ -6168,7 +6168,7 @@ public final class PathsImpl {
      * Set the owner, group, permissions, or access control list for a path.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param owner Optional. The owner of the blob or directory.
      * @param group Optional. The owning group of the blob or directory.
@@ -6203,7 +6203,7 @@ public final class PathsImpl {
      * Set the owner, group, permissions, or access control list for a path.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param owner Optional. The owner of the blob or directory.
      * @param group Optional. The owning group of the blob or directory.
@@ -6237,7 +6237,7 @@ public final class PathsImpl {
      * Set the owner, group, permissions, or access control list for a path.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param owner Optional. The owner of the blob or directory.
      * @param group Optional. The owning group of the blob or directory.
@@ -6303,7 +6303,7 @@ public final class PathsImpl {
      * Set the owner, group, permissions, or access control list for a path.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param owner Optional. The owner of the blob or directory.
      * @param group Optional. The owning group of the blob or directory.
@@ -6373,7 +6373,7 @@ public final class PathsImpl {
      * Set the owner, group, permissions, or access control list for a path.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param owner Optional. The owner of the blob or directory.
      * @param group Optional. The owning group of the blob or directory.
@@ -6404,7 +6404,7 @@ public final class PathsImpl {
      * Set the owner, group, permissions, or access control list for a path.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param owner Optional. The owner of the blob or directory.
      * @param group Optional. The owning group of the blob or directory.
@@ -6477,7 +6477,7 @@ public final class PathsImpl {
      * POSIX access control rights that pre-exist on files and directories, "remove" removes one or more POSIX access
      * control rights that were present earlier on files and directories.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
      * invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is returned
@@ -6516,7 +6516,7 @@ public final class PathsImpl {
      * POSIX access control rights that pre-exist on files and directories, "remove" removes one or more POSIX access
      * control rights that were present earlier on files and directories.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
      * invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is returned
@@ -6559,7 +6559,7 @@ public final class PathsImpl {
      * POSIX access control rights that pre-exist on files and directories, "remove" removes one or more POSIX access
      * control rights that were present earlier on files and directories.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
      * invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is returned
@@ -6597,7 +6597,7 @@ public final class PathsImpl {
      * POSIX access control rights that pre-exist on files and directories, "remove" removes one or more POSIX access
      * control rights that were present earlier on files and directories.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
      * invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is returned
@@ -6637,7 +6637,7 @@ public final class PathsImpl {
      * POSIX access control rights that pre-exist on files and directories, "remove" removes one or more POSIX access
      * control rights that were present earlier on files and directories.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
      * invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is returned
@@ -6676,7 +6676,7 @@ public final class PathsImpl {
      * POSIX access control rights that pre-exist on files and directories, "remove" removes one or more POSIX access
      * control rights that were present earlier on files and directories.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
      * invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is returned
@@ -6719,7 +6719,7 @@ public final class PathsImpl {
      * POSIX access control rights that pre-exist on files and directories, "remove" removes one or more POSIX access
      * control rights that were present earlier on files and directories.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
      * invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is returned
@@ -6764,7 +6764,7 @@ public final class PathsImpl {
      * POSIX access control rights that pre-exist on files and directories, "remove" removes one or more POSIX access
      * control rights that were present earlier on files and directories.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
      * invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is returned
@@ -6804,7 +6804,7 @@ public final class PathsImpl {
      * POSIX access control rights that pre-exist on files and directories, "remove" removes one or more POSIX access
      * control rights that were present earlier on files and directories.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param continuation Optional. When deleting a directory, the number of paths that are deleted with each
      * invocation is limited. If the number of paths to be deleted exceeds this limit, a continuation token is returned
@@ -6846,7 +6846,7 @@ public final class PathsImpl {
      * Set the owner, group, permissions, or access control list for a path.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param position This parameter allows the caller to upload data in parallel and control the order in which it is
      * appended to the file. It is required when uploading data to be appended to the file and when flushing previously
@@ -6904,7 +6904,7 @@ public final class PathsImpl {
      * Set the owner, group, permissions, or access control list for a path.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param position This parameter allows the caller to upload data in parallel and control the order in which it is
      * appended to the file. It is required when uploading data to be appended to the file and when flushing previously
@@ -7042,7 +7042,7 @@ public final class PathsImpl {
      * Set the owner, group, permissions, or access control list for a path.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param position This parameter allows the caller to upload data in parallel and control the order in which it is
      * appended to the file. It is required when uploading data to be appended to the file and when flushing previously
@@ -7098,7 +7098,7 @@ public final class PathsImpl {
      * Set the owner, group, permissions, or access control list for a path.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param position This parameter allows the caller to upload data in parallel and control the order in which it is
      * appended to the file. It is required when uploading data to be appended to the file and when flushing previously
@@ -7156,7 +7156,7 @@ public final class PathsImpl {
      * Set the owner, group, permissions, or access control list for a path.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param position This parameter allows the caller to upload data in parallel and control the order in which it is
      * appended to the file. It is required when uploading data to be appended to the file and when flushing previously
@@ -7214,7 +7214,7 @@ public final class PathsImpl {
      * Set the owner, group, permissions, or access control list for a path.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param position This parameter allows the caller to upload data in parallel and control the order in which it is
      * appended to the file. It is required when uploading data to be appended to the file and when flushing previously
@@ -7353,7 +7353,7 @@ public final class PathsImpl {
      * Set the owner, group, permissions, or access control list for a path.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param position This parameter allows the caller to upload data in parallel and control the order in which it is
      * appended to the file. It is required when uploading data to be appended to the file and when flushing previously
@@ -7494,7 +7494,7 @@ public final class PathsImpl {
      * Set the owner, group, permissions, or access control list for a path.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param position This parameter allows the caller to upload data in parallel and control the order in which it is
      * appended to the file. It is required when uploading data to be appended to the file and when flushing previously
@@ -7548,7 +7548,7 @@ public final class PathsImpl {
      * Set the owner, group, permissions, or access control list for a path.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param position This parameter allows the caller to upload data in parallel and control the order in which it is
      * appended to the file. It is required when uploading data to be appended to the file and when flushing previously
@@ -7696,7 +7696,7 @@ public final class PathsImpl {
      * position parameter must be specified and equal to the length of the file after all data has been written, and
      * there must not be a request entity body included with the request.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param contentLength Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length
      * of the request content in bytes for "Append Data".
@@ -7748,7 +7748,7 @@ public final class PathsImpl {
      * position parameter must be specified and equal to the length of the file after all data has been written, and
      * there must not be a request entity body included with the request.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param contentLength Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length
      * of the request content in bytes for "Append Data".
@@ -7832,7 +7832,7 @@ public final class PathsImpl {
      * position parameter must be specified and equal to the length of the file after all data has been written, and
      * there must not be a request entity body included with the request.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param contentLength Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length
      * of the request content in bytes for "Append Data".
@@ -7883,7 +7883,7 @@ public final class PathsImpl {
      * position parameter must be specified and equal to the length of the file after all data has been written, and
      * there must not be a request entity body included with the request.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param contentLength Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length
      * of the request content in bytes for "Append Data".
@@ -7936,7 +7936,7 @@ public final class PathsImpl {
      * position parameter must be specified and equal to the length of the file after all data has been written, and
      * there must not be a request entity body included with the request.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param contentLength Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length
      * of the request content in bytes for "Append Data".
@@ -7988,7 +7988,7 @@ public final class PathsImpl {
      * position parameter must be specified and equal to the length of the file after all data has been written, and
      * there must not be a request entity body included with the request.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param contentLength Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length
      * of the request content in bytes for "Append Data".
@@ -8072,7 +8072,7 @@ public final class PathsImpl {
      * position parameter must be specified and equal to the length of the file after all data has been written, and
      * there must not be a request entity body included with the request.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param contentLength Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length
      * of the request content in bytes for "Append Data".
@@ -8124,7 +8124,7 @@ public final class PathsImpl {
      * position parameter must be specified and equal to the length of the file after all data has been written, and
      * there must not be a request entity body included with the request.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param contentLength Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length
      * of the request content in bytes for "Append Data".
@@ -8208,7 +8208,7 @@ public final class PathsImpl {
      * position parameter must be specified and equal to the length of the file after all data has been written, and
      * there must not be a request entity body included with the request.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param contentLength Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length
      * of the request content in bytes for "Append Data".
@@ -8259,7 +8259,7 @@ public final class PathsImpl {
      * position parameter must be specified and equal to the length of the file after all data has been written, and
      * there must not be a request entity body included with the request.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param contentLength Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length
      * of the request content in bytes for "Append Data".
@@ -8312,7 +8312,7 @@ public final class PathsImpl {
      * position parameter must be specified and equal to the length of the file after all data has been written, and
      * there must not be a request entity body included with the request.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param contentLength Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length
      * of the request content in bytes for "Append Data".
@@ -8364,7 +8364,7 @@ public final class PathsImpl {
      * position parameter must be specified and equal to the length of the file after all data has been written, and
      * there must not be a request entity body included with the request.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param contentLength Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length
      * of the request content in bytes for "Append Data".
@@ -8448,7 +8448,7 @@ public final class PathsImpl {
      * position parameter must be specified and equal to the length of the file after all data has been written, and
      * there must not be a request entity body included with the request.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param contentLength Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length
      * of the request content in bytes for "Append Data".
@@ -8534,7 +8534,7 @@ public final class PathsImpl {
      * position parameter must be specified and equal to the length of the file after all data has been written, and
      * there must not be a request entity body included with the request.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param contentLength Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length
      * of the request content in bytes for "Append Data".
@@ -8582,7 +8582,7 @@ public final class PathsImpl {
      * position parameter must be specified and equal to the length of the file after all data has been written, and
      * there must not be a request entity body included with the request.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param contentLength Required for "Append Data" and "Flush Data". Must be 0 for "Flush Data". Must be the length
      * of the request content in bytes for "Append Data".
@@ -8662,7 +8662,7 @@ public final class PathsImpl {
      *
      * @param expiryOptions Required. Indicates mode of the expiry time.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -8685,7 +8685,7 @@ public final class PathsImpl {
      *
      * @param expiryOptions Required. Indicates mode of the expiry time.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -8712,7 +8712,7 @@ public final class PathsImpl {
      *
      * @param expiryOptions Required. Indicates mode of the expiry time.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -8735,7 +8735,7 @@ public final class PathsImpl {
      *
      * @param expiryOptions Required. Indicates mode of the expiry time.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -8759,7 +8759,7 @@ public final class PathsImpl {
      *
      * @param expiryOptions Required. Indicates mode of the expiry time.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -8782,7 +8782,7 @@ public final class PathsImpl {
      *
      * @param expiryOptions Required. Indicates mode of the expiry time.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -8809,7 +8809,7 @@ public final class PathsImpl {
      *
      * @param expiryOptions Required. Indicates mode of the expiry time.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -8838,7 +8838,7 @@ public final class PathsImpl {
      *
      * @param expiryOptions Required. Indicates mode of the expiry time.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -8857,7 +8857,7 @@ public final class PathsImpl {
      *
      * @param expiryOptions Required. Indicates mode of the expiry time.
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the
      * analytics logs when storage analytics logging is enabled.
@@ -8886,7 +8886,7 @@ public final class PathsImpl {
      * Undelete a path that was previously soft deleted.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param undeleteSource Only for hierarchical namespace enabled accounts. Optional. The path of the soft deleted
      * blob to undelete.
@@ -8908,7 +8908,7 @@ public final class PathsImpl {
      * Undelete a path that was previously soft deleted.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param undeleteSource Only for hierarchical namespace enabled accounts. Optional. The path of the soft deleted
      * blob to undelete.
@@ -8935,7 +8935,7 @@ public final class PathsImpl {
      * Undelete a path that was previously soft deleted.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param undeleteSource Only for hierarchical namespace enabled accounts. Optional. The path of the soft deleted
      * blob to undelete.
@@ -8957,7 +8957,7 @@ public final class PathsImpl {
      * Undelete a path that was previously soft deleted.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param undeleteSource Only for hierarchical namespace enabled accounts. Optional. The path of the soft deleted
      * blob to undelete.
@@ -8980,7 +8980,7 @@ public final class PathsImpl {
      * Undelete a path that was previously soft deleted.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param undeleteSource Only for hierarchical namespace enabled accounts. Optional. The path of the soft deleted
      * blob to undelete.
@@ -9004,7 +9004,7 @@ public final class PathsImpl {
      * Undelete a path that was previously soft deleted.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param undeleteSource Only for hierarchical namespace enabled accounts. Optional. The path of the soft deleted
      * blob to undelete.
@@ -9031,7 +9031,7 @@ public final class PathsImpl {
      * Undelete a path that was previously soft deleted.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param undeleteSource Only for hierarchical namespace enabled accounts. Optional. The path of the soft deleted
      * blob to undelete.
@@ -9060,7 +9060,7 @@ public final class PathsImpl {
      * Undelete a path that was previously soft deleted.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param undeleteSource Only for hierarchical namespace enabled accounts. Optional. The path of the soft deleted
      * blob to undelete.
@@ -9079,7 +9079,7 @@ public final class PathsImpl {
      * Undelete a path that was previously soft deleted.
      *
      * @param timeout The timeout parameter is expressed in seconds. For more information, see &lt;a
-     * href="https://docs.microsoft.com/en-us/rest/api/storageservices/fileservices/setting-timeouts-for-blob-service-operations"&gt;Setting
+     * href="https://learn.microsoft.com/rest/api/storageservices/setting-timeouts-for-blob-service-operations"&gt;Setting
      * Timeouts for Blob Service Operations.&lt;/a&gt;.
      * @param undeleteSource Only for hierarchical namespace enabled accounts. Optional. The path of the soft deleted
      * blob to undelete.
