@@ -4,11 +4,11 @@
 
 package com.azure.v2.security.keyvault.administration.implementation;
 
-import com.azure.v2.security.keyvault.administration.KeyVaultServiceVersion;
-import com.azure.v2.security.keyvault.administration.implementation.implementation.models.RoleAssignmentListResult;
+import com.azure.v2.security.keyvault.administration.KeyVaultAdministrationServiceVersion;
 import com.azure.v2.security.keyvault.administration.implementation.models.KeyVaultError;
 import com.azure.v2.security.keyvault.administration.implementation.models.RoleAssignment;
 import com.azure.v2.security.keyvault.administration.implementation.models.RoleAssignmentCreateParameters;
+import com.azure.v2.security.keyvault.administration.implementation.models.RoleAssignmentListResult;
 import io.clientcore.core.annotations.ReturnType;
 import io.clientcore.core.annotations.ServiceInterface;
 import io.clientcore.core.annotations.ServiceMethod;
@@ -41,14 +41,14 @@ public final class RoleAssignmentsImpl {
     /**
      * The service client containing this operation class.
      */
-    private final KeyVaultClientImpl client;
+    private final KeyVaultAdministrationClientImpl client;
 
     /**
      * Initializes an instance of RoleAssignmentsImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    RoleAssignmentsImpl(KeyVaultClientImpl client) {
+    RoleAssignmentsImpl(KeyVaultAdministrationClientImpl client) {
         this.service = RoleAssignmentsService.getNewInstance(client.getHttpPipeline());
         this.client = client;
     }
@@ -58,15 +58,15 @@ public final class RoleAssignmentsImpl {
      * 
      * @return the serviceVersion value.
      */
-    public KeyVaultServiceVersion getServiceVersion() {
+    public KeyVaultAdministrationServiceVersion getServiceVersion() {
         return client.getServiceVersion();
     }
 
     /**
-     * The interface defining all the services for KeyVaultClientRoleAssignments to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for KeyVaultAdministrationClientRoleAssignments to be used by the proxy
+     * service to perform REST calls.
      */
-    @ServiceInterface(name = "KeyVaultClientRoleAs", host = "{vaultBaseUrl}")
+    @ServiceInterface(name = "KeyVaultAdministrati", host = "{vaultBaseUrl}")
     public interface RoleAssignmentsService {
         static RoleAssignmentsService getNewInstance(HttpPipeline pipeline) {
             try {

@@ -4,7 +4,7 @@
 
 package com.azure.v2.security.keyvault.administration.implementation;
 
-import com.azure.v2.security.keyvault.administration.KeyVaultServiceVersion;
+import com.azure.v2.security.keyvault.administration.KeyVaultAdministrationServiceVersion;
 import com.azure.v2.security.keyvault.administration.implementation.models.FullBackupOperation;
 import com.azure.v2.security.keyvault.administration.implementation.models.KeyVaultError;
 import com.azure.v2.security.keyvault.administration.implementation.models.RestoreOperation;
@@ -33,13 +33,13 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import java.lang.reflect.InvocationTargetException;
 
 /**
- * Initializes a new instance of the KeyVaultClient type.
+ * Initializes a new instance of the KeyVaultAdministrationClient type.
  */
-public final class KeyVaultClientImpl {
+public final class KeyVaultAdministrationClientImpl {
     /**
      * The proxy service used to perform REST calls.
      */
-    private final KeyVaultClientService service;
+    private final KeyVaultAdministrationClientService service;
 
     /**
      */
@@ -57,14 +57,14 @@ public final class KeyVaultClientImpl {
     /**
      * Service version.
      */
-    private final KeyVaultServiceVersion serviceVersion;
+    private final KeyVaultAdministrationServiceVersion serviceVersion;
 
     /**
      * Gets Service version.
      * 
      * @return the serviceVersion value.
      */
-    public KeyVaultServiceVersion getServiceVersion() {
+    public KeyVaultAdministrationServiceVersion getServiceVersion() {
         return this.serviceVersion;
     }
 
@@ -111,31 +111,33 @@ public final class KeyVaultClientImpl {
     }
 
     /**
-     * Initializes an instance of KeyVaultClient client.
+     * Initializes an instance of KeyVaultAdministrationClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param vaultBaseUrl
      * @param serviceVersion Service version.
      */
-    public KeyVaultClientImpl(HttpPipeline httpPipeline, String vaultBaseUrl, KeyVaultServiceVersion serviceVersion) {
+    public KeyVaultAdministrationClientImpl(HttpPipeline httpPipeline, String vaultBaseUrl,
+        KeyVaultAdministrationServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.vaultBaseUrl = vaultBaseUrl;
         this.serviceVersion = serviceVersion;
         this.roleDefinitions = new RoleDefinitionsImpl(this);
         this.roleAssignments = new RoleAssignmentsImpl(this);
-        this.service = KeyVaultClientService.getNewInstance(this.httpPipeline);
+        this.service = KeyVaultAdministrationClientService.getNewInstance(this.httpPipeline);
     }
 
     /**
-     * The interface defining all the services for KeyVaultClient to be used by the proxy service to perform REST calls.
+     * The interface defining all the services for KeyVaultAdministrationClient to be used by the proxy service to
+     * perform REST calls.
      */
-    @ServiceInterface(name = "KeyVaultClient", host = "{vaultBaseUrl}")
-    public interface KeyVaultClientService {
-        static KeyVaultClientService getNewInstance(HttpPipeline pipeline) {
+    @ServiceInterface(name = "KeyVaultAdministrati", host = "{vaultBaseUrl}")
+    public interface KeyVaultAdministrationClientService {
+        static KeyVaultAdministrationClientService getNewInstance(HttpPipeline pipeline) {
             try {
-                Class<?> clazz = Class
-                    .forName("com.azure.v2.security.keyvault.administration.implementation.KeyVaultClientServiceImpl");
-                return (KeyVaultClientService) clazz.getMethod("getNewInstance", HttpPipeline.class)
+                Class<?> clazz = Class.forName(
+                    "com.azure.v2.security.keyvault.administration.implementation.KeyVaultAdministrationClientServiceImpl");
+                return (KeyVaultAdministrationClientService) clazz.getMethod("getNewInstance", HttpPipeline.class)
                     .invoke(null, pipeline);
             } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
                 | InvocationTargetException e) {

@@ -4,6 +4,8 @@
 
 package com.azure.v2.security.keyvault.administration.implementation.models;
 
+import com.azure.v2.security.keyvault.administration.models.KeyVaultRoleScope;
+import com.azure.v2.security.keyvault.administration.models.KeyVaultRoleType;
 import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.serialization.json.JsonReader;
