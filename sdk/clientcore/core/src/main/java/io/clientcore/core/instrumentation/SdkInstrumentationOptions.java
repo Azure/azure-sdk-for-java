@@ -5,7 +5,7 @@ package io.clientcore.core.instrumentation;
 
 import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.MetadataProperties;
-import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
+import io.clientcore.core.implementation.instrumentation.SdkInstrumentationOptionsAccessHelper;
 
 import java.util.Objects;
 
@@ -22,49 +22,49 @@ import java.util.Objects;
  * these properties SHOULD follow specific version of <a href="https://github.com/open-telemetry/semantic-conventions">OpenTelemetry Semantic Conventions</a>
  * and provide the corresponding schema URI.
  * <p>
- * The {@link LibraryInstrumentationOptions} are usually static and shared across all instances of the client.
+ * The {@link SdkInstrumentationOptions} are usually static and shared across all instances of the client.
  * Application developers are not expected to change them.
  */
 @Metadata(properties = MetadataProperties.FLUENT)
-public final class LibraryInstrumentationOptions {
-    private final String libraryName;
-    private String libraryVersion;
+public final class SdkInstrumentationOptions {
+    private final String sdkName;
+    private String sdkVersion;
     private String schemaUrl;
     private boolean disableSpanSuppression;
     private String serviceEndpoint;
 
     static {
-        LibraryInstrumentationOptionsAccessHelper
-            .setAccessor(new LibraryInstrumentationOptionsAccessHelper.LibraryInstrumentationOptionsAccessor() {
+        SdkInstrumentationOptionsAccessHelper
+            .setAccessor(new SdkInstrumentationOptionsAccessHelper.SdkInstrumentationOptionsAccessor() {
                 @Override
-                public LibraryInstrumentationOptions disableSpanSuppression(LibraryInstrumentationOptions options) {
+                public SdkInstrumentationOptions disableSpanSuppression(SdkInstrumentationOptions options) {
                     return options.disableSpanSuppression(true);
                 }
 
                 @Override
-                public boolean isSpanSuppressionDisabled(LibraryInstrumentationOptions options) {
+                public boolean isSpanSuppressionDisabled(SdkInstrumentationOptions options) {
                     return options.isSpanSuppressionDisabled();
                 }
             });
     }
 
     /**
-     * Creates an instance of {@link LibraryInstrumentationOptions}.
+     * Creates an instance of {@link SdkInstrumentationOptions}.
      *
-     * @param libraryName The client library name.
+     * @param sdkName The client library name.
      */
-    public LibraryInstrumentationOptions(String libraryName) {
-        this.libraryName = Objects.requireNonNull(libraryName, "'libraryName' cannot be null.");
+    public SdkInstrumentationOptions(String sdkName) {
+        this.sdkName = Objects.requireNonNull(sdkName, "'sdkName' cannot be null.");
     }
 
     /**
      * Sets the client library version.
      *
-     * @param libraryVersion The client library version.
-     * @return The updated {@link LibraryInstrumentationOptions} object.
+     * @param sdkVersion The client library version.
+     * @return The updated {@link SdkInstrumentationOptions} object.
      */
-    public LibraryInstrumentationOptions setLibraryVersion(String libraryVersion) {
-        this.libraryVersion = libraryVersion;
+    public SdkInstrumentationOptions setSdkVersion(String sdkVersion) {
+        this.sdkVersion = sdkVersion;
         return this;
     }
 
@@ -73,9 +73,9 @@ public final class LibraryInstrumentationOptions {
      * the library emits.
      *
      * @param schemaUrl The schema URL.
-     * @return The updated {@link LibraryInstrumentationOptions} object.
+     * @return The updated {@link SdkInstrumentationOptions} object.
      */
-    public LibraryInstrumentationOptions setSchemaUrl(String schemaUrl) {
+    public SdkInstrumentationOptions setSchemaUrl(String schemaUrl) {
         this.schemaUrl = schemaUrl;
         return this;
     }
@@ -84,9 +84,9 @@ public final class LibraryInstrumentationOptions {
      * Sets the service endpoint.
      *
      * @param endpoint The service endpoint.
-     * @return The updated {@link LibraryInstrumentationOptions} object.
+     * @return The updated {@link SdkInstrumentationOptions} object.
      */
-    public LibraryInstrumentationOptions setEndpoint(String endpoint) {
+    public SdkInstrumentationOptions setEndpoint(String endpoint) {
         this.serviceEndpoint = endpoint;
         return this;
     }
@@ -96,8 +96,8 @@ public final class LibraryInstrumentationOptions {
      *
      * @return The client library name.
      */
-    public String getLibraryName() {
-        return libraryName;
+    public String getSdkName() {
+        return sdkName;
     }
 
     /**
@@ -105,8 +105,8 @@ public final class LibraryInstrumentationOptions {
      *
      * @return The client library version.
      */
-    public String getLibraryVersion() {
-        return libraryVersion;
+    public String getSdkVersion() {
+        return sdkVersion;
     }
 
     /**
@@ -128,7 +128,7 @@ public final class LibraryInstrumentationOptions {
         return serviceEndpoint;
     }
 
-    LibraryInstrumentationOptions disableSpanSuppression(boolean disableSpanSuppression) {
+    SdkInstrumentationOptions disableSpanSuppression(boolean disableSpanSuppression) {
         this.disableSpanSuppression = disableSpanSuppression;
         return this;
     }

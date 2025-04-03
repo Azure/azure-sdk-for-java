@@ -10,10 +10,10 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
-import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
+import io.clientcore.core.implementation.instrumentation.SdkInstrumentationOptionsAccessHelper;
 import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.instrumentation.InstrumentationContext;
-import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
+import io.clientcore.core.instrumentation.SdkInstrumentationOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LogLevel;
 import io.clientcore.core.instrumentation.logging.LoggingEvent;
@@ -145,26 +145,25 @@ import static io.clientcore.core.instrumentation.tracing.SpanKind.CLIENT;
 public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(HttpInstrumentationPolicy.class);
     private static final HttpInstrumentationOptions DEFAULT_OPTIONS = new HttpInstrumentationOptions();
-    private static final String LIBRARY_NAME;
-    private static final String LIBRARY_VERSION;
-    private static final LibraryInstrumentationOptions LIBRARY_OPTIONS;
+    private static final String SDK_NAME;
+    private static final String SDK_VERSION;
+    private static final SdkInstrumentationOptions SDK_OPTIONS;
     private static final TraceContextSetter<HttpHeaders> SETTER
         = (headers, name, value) -> headers.set(HttpHeaderName.fromString(name), value);
 
     static {
         Map<String, String> properties = getProperties("core.properties");
-        LIBRARY_NAME = properties.getOrDefault("name", "unknown");
-        LIBRARY_VERSION = properties.getOrDefault("version", "unknown");
-        LibraryInstrumentationOptions libOptions
-            = new LibraryInstrumentationOptions(LIBRARY_NAME).setLibraryVersion(LIBRARY_VERSION)
-                .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
+        SDK_NAME = properties.getOrDefault("name", "unknown");
+        SDK_VERSION = properties.getOrDefault("version", "unknown");
+        SdkInstrumentationOptions sdkOptions = new SdkInstrumentationOptions(SDK_NAME).setSdkVersion(SDK_VERSION)
+            .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
         // HTTP tracing is special - we suppress nested public API spans, but
         // preserve nested HTTP ones.
         // We might want to make it configurable for other cases, but let's hide the API for now.
-        LibraryInstrumentationOptionsAccessHelper.disableSpanSuppression(libOptions);
+        SdkInstrumentationOptionsAccessHelper.disableSpanSuppression(sdkOptions);
 
-        LIBRARY_OPTIONS = libOptions;
+        SDK_OPTIONS = sdkOptions;
     }
 
     private static final int MAX_BODY_LOG_SIZE = 1024 * 16;
@@ -203,7 +202,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
      * @param instrumentationOptions Application telemetry options.
      */
     public HttpInstrumentationPolicy(HttpInstrumentationOptions instrumentationOptions) {
-        this.instrumentation = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS);
+        this.instrumentation = Instrumentation.create(instrumentationOptions, SDK_OPTIONS);
         this.tracer = instrumentation.getTracer();
         this.meter = instrumentation.getMeter();
         this.httpRequestDuration = meter.createDoubleHistogram(REQUEST_DURATION_METRIC_NAME,

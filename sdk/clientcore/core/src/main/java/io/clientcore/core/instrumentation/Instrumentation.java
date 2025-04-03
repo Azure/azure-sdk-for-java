@@ -34,12 +34,12 @@ public interface Instrumentation {
      * <!-- src_embed io.clientcore.core.instrumentation.gettracer -->
      * <pre>
      *
-     * LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions&#40;&quot;sample&quot;&#41;
-     *     .setLibraryVersion&#40;&quot;1.0.0&quot;&#41;
+     * SdkInstrumentationOptions sdkOptions = new SdkInstrumentationOptions&#40;&quot;sample&quot;&#41;
+     *     .setSdkVersion&#40;&quot;1.0.0&quot;&#41;
      *     .setSchemaUrl&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.29.0&quot;&#41;;
      *
      * InstrumentationOptions instrumentationOptions = new InstrumentationOptions&#40;&#41;;
-     * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, libraryOptions&#41;;
+     * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, sdkOptions&#41;;
      *
      * Tracer tracer = instrumentation.getTracer&#40;&#41;;
      *
@@ -61,12 +61,12 @@ public interface Instrumentation {
      * <!-- src_embed io.clientcore.core.instrumentation.getmeter -->
      * <pre>
      *
-     * LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions&#40;&quot;sample&quot;&#41;
-     *     .setLibraryVersion&#40;&quot;1.0.0&quot;&#41;
+     * SdkInstrumentationOptions sdkOptions = new SdkInstrumentationOptions&#40;&quot;sample&quot;&#41;
+     *     .setSdkVersion&#40;&quot;1.0.0&quot;&#41;
      *     .setSchemaUrl&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.29.0&quot;&#41;;
      *
      * InstrumentationOptions instrumentationOptions = new InstrumentationOptions&#40;&#41;;
-     * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, libraryOptions&#41;;
+     * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, sdkOptions&#41;;
      * Meter meter = instrumentation.getMeter&#40;&#41;;
      *
      * </pre>
@@ -84,13 +84,13 @@ public interface Instrumentation {
      * should use OpenTelemetry API directly</strong></p>
      * <!-- src_embed io.clientcore.core.instrumentation.createattributes -->
      * <pre>
-     * LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions&#40;&quot;sample&quot;&#41;
-     *     .setLibraryVersion&#40;&quot;1.0.0&quot;&#41;
+     * SdkInstrumentationOptions sdkOptions = new SdkInstrumentationOptions&#40;&quot;sample&quot;&#41;
+     *     .setSdkVersion&#40;&quot;1.0.0&quot;&#41;
      *     .setSchemaUrl&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.29.0&quot;&#41;;
      *
      * InstrumentationOptions instrumentationOptions = new InstrumentationOptions&#40;&#41;;
      *
-     * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, libraryOptions&#41;;
+     * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, sdkOptions&#41;;
      * InstrumentationAttributes attributes = instrumentation
      *     .createAttributes&#40;Collections.singletonMap&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
      *
@@ -165,25 +165,24 @@ public interface Instrumentation {
      * should use OpenTelemetry API directly</strong></p>
      *
      * @param applicationOptions Telemetry collection options provided by the application.
-     * @param libraryOptions Library-specific telemetry collection options.
+     * @param sdkOptions Library-specific instrumentation options.
      * @return The instance of telemetry provider implementation.
      */
-    static Instrumentation create(InstrumentationOptions applicationOptions,
-        LibraryInstrumentationOptions libraryOptions) {
-        Objects.requireNonNull(libraryOptions, "'libraryOptions' cannot be null");
+    static Instrumentation create(InstrumentationOptions applicationOptions, SdkInstrumentationOptions sdkOptions) {
+        Objects.requireNonNull(sdkOptions, "'sdkOptions' cannot be null");
 
         String host = null;
         int port = -1;
-        if (libraryOptions.getEndpoint() != null) {
-            URI uri = URI.create(libraryOptions.getEndpoint());
+        if (sdkOptions.getEndpoint() != null) {
+            URI uri = URI.create(sdkOptions.getEndpoint());
             host = uri.getHost();
             port = getServerPort(uri);
         }
 
         if (OTelInitializer.isInitialized()) {
-            return new OTelInstrumentation(applicationOptions, libraryOptions, host, port);
+            return new OTelInstrumentation(applicationOptions, sdkOptions, host, port);
         } else {
-            return new FallbackInstrumentation(applicationOptions, libraryOptions, host, port);
+            return new FallbackInstrumentation(applicationOptions, sdkOptions, host, port);
         }
     }
 

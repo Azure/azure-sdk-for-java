@@ -4,13 +4,13 @@
 package io.clientcore.core.implementation.instrumentation.fallback;
 
 import io.clientcore.core.http.models.RequestContext;
-import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
 import io.clientcore.core.implementation.instrumentation.NoopMeter;
+import io.clientcore.core.implementation.instrumentation.SdkInstrumentationOptionsAccessHelper;
 import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.instrumentation.InstrumentationAttributes;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.InstrumentationOptions;
-import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
+import io.clientcore.core.instrumentation.SdkInstrumentationOptions;
 import io.clientcore.core.instrumentation.metrics.Meter;
 import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.SpanBuilder;
@@ -44,16 +44,16 @@ public class FallbackInstrumentation implements Instrumentation {
     /**
      * Creates a new instance of {@link FallbackInstrumentation}.
      * @param instrumentationOptions the application instrumentation options
-     * @param libraryOptions the library instrumentation options
+     * @param sdkOptions the library instrumentation options
      * @param host the service host
      * @param port the service port
      */
-    public FallbackInstrumentation(InstrumentationOptions instrumentationOptions,
-        LibraryInstrumentationOptions libraryOptions, String host, int port) {
-        this.allowNestedSpans = libraryOptions != null
-            && LibraryInstrumentationOptionsAccessHelper.isSpanSuppressionDisabled(libraryOptions);
+    public FallbackInstrumentation(InstrumentationOptions instrumentationOptions, SdkInstrumentationOptions sdkOptions,
+        String host, int port) {
+        this.allowNestedSpans
+            = sdkOptions != null && SdkInstrumentationOptionsAccessHelper.isSpanSuppressionDisabled(sdkOptions);
         this.isTracingEnabled = instrumentationOptions == null || instrumentationOptions.isTracingEnabled();
-        this.tracer = new FallbackTracer(instrumentationOptions, libraryOptions);
+        this.tracer = new FallbackTracer(instrumentationOptions, sdkOptions);
         this.serviceHost = host;
         this.servicePort = port;
     }
