@@ -75,8 +75,7 @@ This guide is intended to assist customers in migrating to the new Java SDK pack
     - [GetRemoteLoginSettings](#getremoteloginsettings)
     - [UploadNodeLogs](#uploadnodelogs)
   - [Certificate Operations](#certificate-operations)
-    - [CreateCertificateFromCer](#createcertificatefromcer)
-    - [CreateCertificateFromPfx](#createcertificatefrompfx)
+    - [CreateCertificate](#createcertificate)
     - [GetCertificate](#getcertificate)
     - [ListCertificates](#listcertificates)
     - [DeleteCertificate](#deletecertificate)
@@ -610,7 +609,7 @@ BatchTaskCountsResult counts = batchClient.getJobTaskCounts("jobId");
 Track 1
 
 ```java
-batchClient.jobOperations().terminateJob(jobId, "myreason");
+batchClient.jobOperations().terminateJob("jobId");
 ```
 
 Track 2
@@ -802,7 +801,7 @@ batchClient.taskOperations().createTask(jobId, taskToAdd);
 List<TaskAddParameter> tasksToAdd = new ArrayList<>();
 for (int i=0; i<TASK_COUNT; i++) {
     TaskAddParameter addParameter = new TaskAddParameter();
-    addParameter.withId(String.format("mytask%d", i)).withCommandLine(String.format("cmd /c echo hello %d",i));
+    addParameter.withId(String.format("taskId%d", i)).withCommandLine(String.format("cmd /c echo hello %d",i));
     tasksToAdd.add(addParameter);
 }
 BatchClientParallelOptions option = new BatchClientParallelOptions(10);
