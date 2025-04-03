@@ -64,7 +64,7 @@ Always cite the specific sections of documentation you've referenced in your res
 ### Java Version Compatibility
 
 - Code should be compatible with Java 8 as the baseline
-- Testing and forward support should work up to the latest Java LTS release (currently Java 17)
+- Testing and forward support should work up to the latest Java LTS release (currently Java 21)
 
 ### Documentation Requirements
 
@@ -85,7 +85,7 @@ Azure client libraries for Java should adhere strictly to these guidelines.
 Core Principles:
 
 - Be idiomatic, consistent, approachable, diagnosable, and dependable.
-- Use natural Java patterns and follow modern Java practices (try-with-resources, CompletableFuture, Streams, Optional).
+- Use natural Java patterns and follow modern Java practices (try-with-resources, Streams, Optional).
 
 API Design:
 
@@ -141,5 +141,6 @@ When possible, refer to the Azure SDK for Java Design Guidelines for specific ex
 
 When facing issues, direct users to:
 
+- [Support for Azure SDK for Java](https://github.com/Azure/azure-sdk-for-java/blob/main/SUPPORT.md)
 - [GitHub Issues](https://github.com/Azure/azure-sdk-for-java/issues/new/choose)
 - [Stack Overflow with azure-java-sdk tag](https://stackoverflow.com/questions/tagged/azure-java-sdk)
