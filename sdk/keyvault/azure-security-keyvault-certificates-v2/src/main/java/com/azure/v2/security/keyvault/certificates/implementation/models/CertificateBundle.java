@@ -10,6 +10,8 @@ import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
+import io.clientcore.core.utils.Base64Uri;
+
 import java.io.IOException;
 import java.util.Map;
 
@@ -40,7 +42,7 @@ public final class CertificateBundle implements JsonSerializable<CertificateBund
      * Thumbprint of the certificate.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    private String x509Thumbprint;
+    private Base64Uri x509Thumbprint;
 
     /*
      * The management policy.
