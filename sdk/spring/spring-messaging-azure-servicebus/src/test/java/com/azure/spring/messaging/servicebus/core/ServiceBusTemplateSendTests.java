@@ -67,7 +67,7 @@ public class ServiceBusTemplateSendTests extends SendOperationTests<ServiceBusTe
     @Test
     @SuppressWarnings("unchecked")
     public void testSendAndReceive() {
-        when(mockReceiverClient.receiveMessages(1)).thenReturn(mock());
+        when(mockReceiverClient.receiveMessages(1)).thenReturn(mock(IterableStream.class));
         final ServiceBusReceivedMessage replyMessage = this.sendOperation.sendAndReceive(destination, null, message);
 
         assertNull(replyMessage);
