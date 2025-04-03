@@ -3,7 +3,13 @@
 
 package com.azure.ai.openai.responses;
 
-import com.azure.ai.openai.responses.models.*;
+import com.azure.ai.openai.responses.models.CreateResponsesRequest;
+import com.azure.ai.openai.responses.models.CreateResponsesRequestModel;
+import com.azure.ai.openai.responses.models.ResponsesInputContentText;
+import com.azure.ai.openai.responses.models.ResponsesAssistantMessage;
+import com.azure.ai.openai.responses.models.ResponsesUserMessage;
+import com.azure.ai.openai.responses.models.ResponsesResponse;
+import com.azure.ai.openai.responses.models.ResponsesOutputContentText;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
