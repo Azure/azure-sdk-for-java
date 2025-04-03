@@ -4,7 +4,7 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -16,7 +16,7 @@ import java.util.List;
 /**
  * The result of a phone number search operation.
  */
-@Immutable
+@Fluent
 public final class PhoneNumberSearchResult implements JsonSerializable<PhoneNumberSearchResult> {
     /*
      * The search id.
@@ -52,6 +52,21 @@ public final class PhoneNumberSearchResult implements JsonSerializable<PhoneNumb
      * The date that this search result expires and phone numbers are no longer on hold. A search result expires in less than 15min, e.g. 2020-11-19T16:31:49.048Z.
      */
     private OffsetDateTime searchExpiresBy;
+
+    /*
+     * Indicates if do not resell agreement is required. If true, the phone numbers cannot be acquired unless the customer provides explicit agreement to not resell them.
+     */
+    private Boolean isAgreementToNotResellRequired;
+
+    /*
+     * The error code of the search.
+     */
+    private Integer errorCode;
+
+    /*
+     * Mapping Error Messages to Codes
+     */
+    private PhoneNumberSearchResultError error;
 
     /**
      * Creates an instance of PhoneNumberSearchResult class.
@@ -125,11 +140,52 @@ public final class PhoneNumberSearchResult implements JsonSerializable<PhoneNumb
     }
 
     /**
+     * Get the isAgreementToNotResellRequired property: Indicates if do not resell agreement is required. If true, the
+     * phone numbers cannot be acquired unless the customer provides explicit agreement to not resell them.
+     * 
+     * @return the isAgreementToNotResellRequired value.
+     */
+    public Boolean isAgreementToNotResellRequired() {
+        return this.isAgreementToNotResellRequired;
+    }
+
+    /**
+     * Set the isAgreementToNotResellRequired property: Indicates if do not resell agreement is required. If true, the
+     * phone numbers cannot be acquired unless the customer provides explicit agreement to not resell them.
+     * 
+     * @param isAgreementToNotResellRequired the isAgreementToNotResellRequired value to set.
+     * @return the PhoneNumberSearchResult object itself.
+     */
+    public PhoneNumberSearchResult setIsAgreementToNotResellRequired(Boolean isAgreementToNotResellRequired) {
+        this.isAgreementToNotResellRequired = isAgreementToNotResellRequired;
+        return this;
+    }
+
+    /**
+     * Get the errorCode property: The error code of the search.
+     * 
+     * @return the errorCode value.
+     */
+    public Integer getErrorCode() {
+        return this.errorCode;
+    }
+
+    /**
+     * Get the error property: Mapping Error Messages to Codes.
+     * 
+     * @return the error value.
+     */
+    public PhoneNumberSearchResultError getError() {
+        return this.error;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeBooleanField("isAgreementToNotResellRequired", this.isAgreementToNotResellRequired);
         return jsonWriter.writeEndObject();
     }
 
@@ -167,6 +223,14 @@ public final class PhoneNumberSearchResult implements JsonSerializable<PhoneNumb
                 } else if ("searchExpiresBy".equals(fieldName)) {
                     deserializedPhoneNumberSearchResult.searchExpiresBy
                         = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("isAgreementToNotResellRequired".equals(fieldName)) {
+                    deserializedPhoneNumberSearchResult.isAgreementToNotResellRequired
+                        = reader.getNullable(JsonReader::getBoolean);
+                } else if ("errorCode".equals(fieldName)) {
+                    deserializedPhoneNumberSearchResult.errorCode = reader.getNullable(JsonReader::getInt);
+                } else if ("error".equals(fieldName)) {
+                    deserializedPhoneNumberSearchResult.error
+                        = PhoneNumberSearchResultError.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
