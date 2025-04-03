@@ -41,7 +41,7 @@ public class ChainingResponsesSample {
             CreateResponsesRequestModel.GPT_4O_MINI,
             Arrays.asList(
                 new ResponsesUserMessage(Arrays.asList(
-                    new ResponsesInputContentText(    "Define and explain the concept of catastrophic forgetting?")))));
+                    new ResponsesInputContentText("Define and explain the concept of catastrophic forgetting?")))));
         ResponsesResponse firstResponse = client.createResponse(firstRequest);
 
         // Second response
@@ -49,7 +49,7 @@ public class ChainingResponsesSample {
             CreateResponsesRequestModel.GPT_4O_MINI,
             Arrays.asList(
                 new ResponsesUserMessage(Arrays.asList(
-                    new ResponsesInputContentText(    "Explain this at a level that could be understood by a college freshman")))));
+                    new ResponsesInputContentText("Explain this at a level that could be understood by a college freshman")))));
         secondRequest.setPreviousResponseId(firstResponse.getId());
         ResponsesResponse secondResponse = client.createResponse(secondRequest);
 

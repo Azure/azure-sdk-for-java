@@ -49,7 +49,7 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
     private static final String MS_LOGO_PNG = "ms_logo.png";
 
     private ResponsesClientBuilder getBuilderForTests(HttpClient httpClient,
-                                                      AzureResponsesServiceVersion serviceVersion) {
+        AzureResponsesServiceVersion serviceVersion) {
         ResponsesClientBuilder builder = new ResponsesClientBuilder()
             .httpClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient);
         if (serviceVersion != null) {
@@ -111,7 +111,7 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
     }
 
     ResponsesAsyncClient getAzureResponseAsyncClient(HttpClient httpClient,
-                                                     AzureResponsesServiceVersion serviceVersion) {
+        AzureResponsesServiceVersion serviceVersion) {
         ResponsesClientBuilder builder = getBuilderForTests(httpClient, serviceVersion).addPolicy(
             new AddHeadersPolicy(new HttpHeaders().add(HttpHeaderName.fromString("x-ms-enable-preview"), "true")));
 
@@ -187,7 +187,7 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
             = new ResponsesComputerTool(1024, 768, ResponsesComputerToolEnvironment.WINDOWS);
         CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.COMPUTER_USE_PREVIEW,
             Arrays.asList(new ResponsesDeveloperMessage(Arrays.asList(new ResponsesInputContentText(
-                    "Call tools when the user asks to perform computer-related tasks like clicking interface elements."))),
+                "Call tools when the user asks to perform computer-related tasks like clicking interface elements."))),
                 new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Click on the OK button")))));
         request.setTools(Arrays.asList(computerTool));
         request.setTruncation(ResponseTruncation.AUTO);
