@@ -511,11 +511,11 @@ public class LocationCacheTest {
             request.requestContext.setExcludeRegions(excludedRegionsOnRequest);
 
             if (request.isReadOnlyRequest()) {
-                List<RegionalRoutingContext> applicableReadEndpoints = cache.getApplicableReadEndpoints(request);
+                List<RegionalRoutingContext> applicableReadEndpoints = cache.getApplicableReadRegionRoutingContexts(request);
                 assertThat(applicableReadEndpoints.size()).isEqualTo(expectedApplicableEndpoints.size());
                 expectedApplicableEndpoints.forEach(endpoint -> assertThat(expectedApplicableEndpoints.contains(endpoint)).isTrue());
             } else {
-                List<RegionalRoutingContext> applicableWriteEndpoints = cache.getApplicableWriteEndpoints(request);
+                List<RegionalRoutingContext> applicableWriteEndpoints = cache.getApplicableWriteRegionRoutingContexts(request);
                 assertThat(applicableWriteEndpoints.size()).isEqualTo(expectedApplicableEndpoints.size());
                 expectedApplicableEndpoints.forEach(endpoint -> assertThat(expectedApplicableEndpoints.contains(endpoint)).isTrue());
             }
@@ -531,8 +531,8 @@ public class LocationCacheTest {
         boolean isDefaultEndpointAlsoRegionalEndpoint) {
 
         this.initialize(true, true, isPreferredLocationsListEmpty, isDefaultEndpointAlsoRegionalEndpoint);
-        List<RegionalRoutingContext> applicableReadEndpoints = cache.getApplicableReadEndpoints(request);
-        List<RegionalRoutingContext> applicableWriteEndpoints = cache.getApplicableWriteEndpoints(request);
+        List<RegionalRoutingContext> applicableReadEndpoints = cache.getApplicableReadRegionRoutingContexts(request);
+        List<RegionalRoutingContext> applicableWriteEndpoints = cache.getApplicableWriteRegionRoutingContexts(request);
 
         if (request.isReadOnlyRequest()) {
             assertThat(applicableReadEndpoints.size()).isEqualTo(expectedApplicableReadEndpoints.size());
@@ -932,6 +932,7 @@ public class LocationCacheTest {
             return RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, isMasterResourceType ? ResourceType.Database : ResourceType.Document);
         }
     }
+
     private static URI createUrl(String url) {
         try {
             return new URI(url);

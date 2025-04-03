@@ -41,6 +41,7 @@ import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -71,6 +72,7 @@ abstract class SyncBenchmark<T> {
 
     final Logger logger;
     final CosmosClient benchmarkWorkloadClient;
+    final CosmosClient resultUploaderClient;
     CosmosContainer cosmosContainer;
     CosmosDatabase cosmosDatabase;
 
@@ -79,6 +81,16 @@ abstract class SyncBenchmark<T> {
     final List<PojoizedJson> docsToRead;
     final Semaphore concurrencyControlSemaphore;
     Timer latency;
+
+    private static final List<String> CONFIGURED_HIGH_AVAILABILITY_SYSTEM_PROPERTIES = Arrays.asList(
+        "COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED",
+        "COSMOS.IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED",
+        "COSMOS.E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF",
+        "COSMOS.E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF",
+        "COSMOS.STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS",
+        "COSMOS.ALLOWED_PARTITION_UNAVAILABILITY_DURATION_IN_SECONDS",
+        "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG" // Implicitly set when COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED is set to true
+    );
 
     private static final TokenCredential CREDENTIAL = new DefaultAzureCredentialBuilder()
             .managedIdentityClientId(Configuration.getAadManagedIdentityId())
@@ -131,6 +143,17 @@ abstract class SyncBenchmark<T> {
                     + "\"consecutiveExceptionCountToleratedForReads\": 10,"
                     + "\"consecutiveExceptionCountToleratedForWrites\": 5,"
                     + "}");
+
+            System.setProperty("COSMOS.STALE_PARTITION_UNAVAILABILITY_REFRESH_INTERVAL_IN_SECONDS", "60");
+            System.setProperty("COSMOS.ALLOWED_PARTITION_UNAVAILABILITY_DURATION_IN_SECONDS", "30");
+        }
+
+        if (configuration.isPerPartitionAutomaticFailoverRequired()) {
+            System.setProperty(
+                "COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED", "true");
+            System.setProperty("COSMOS.IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED", "true");
+            System.setProperty("COSMOS.E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF", "5");
+            System.setProperty("COSMOS.E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF", "120");
         }
 
         boolean isManagedIdentityRequired = configuration.isManagedIdentityRequired();
@@ -172,10 +195,10 @@ abstract class SyncBenchmark<T> {
         }
 
         benchmarkWorkloadClient = benchmarkSpecificClientBuilder.buildClient();
-        try (CosmosClient syncClient = resultUploadClientBuilder
+        this.resultUploaderClient = resultUploadClientBuilder
                 .endpoint(StringUtils.isNotEmpty(configuration.getServiceEndpointForRunResultsUploadAccount()) ? configuration.getServiceEndpointForRunResultsUploadAccount() : configuration.getServiceEndpoint())
                 .key(StringUtils.isNotEmpty(configuration.getMasterKeyForRunResultsUploadAccount()) ? configuration.getMasterKeyForRunResultsUploadAccount() : configuration.getMasterKey())
-                .buildClient()) {
+                .buildClient();
 
             try {
                 cosmosDatabase = benchmarkWorkloadClient.getDatabase(this.configuration.getDatabaseId());
@@ -288,14 +311,14 @@ abstract class SyncBenchmark<T> {
                 resultReporter = CosmosTotalResultReporter
                         .forRegistry(
                                 metricsRegistry,
-                                syncClient.getDatabase(configuration.getResultUploadDatabase()).getContainer(configuration.getResultUploadContainer()),
+                                this.resultUploaderClient.getDatabase(configuration.getResultUploadDatabase()).getContainer(configuration.getResultUploadContainer()),
                                 configuration)
                         .convertRatesTo(TimeUnit.SECONDS)
                         .convertDurationsTo(TimeUnit.MILLISECONDS).build();
             } else {
                 resultReporter = null;
             }
-        }
+
 
         MeterRegistry registry = configuration.getAzureMonitorMeterRegistry();
 
@@ -314,6 +337,11 @@ abstract class SyncBenchmark<T> {
     }
 
     void shutdown() {
+
+        for (String key : CONFIGURED_HIGH_AVAILABILITY_SYSTEM_PROPERTIES) {
+            System.clearProperty(key);
+        }
+
         if (this.databaseCreated) {
             cosmosDatabase.delete();
             logger.info("Deleted temporary database {} created for this test", this.configuration.getDatabaseId());
@@ -322,6 +350,7 @@ abstract class SyncBenchmark<T> {
             logger.info("Deleted temporary collection {} created for this test", this.configuration.getCollectionId());
         }
 
+        resultUploaderClient.close();
         benchmarkWorkloadClient.close();
         executorService.shutdown();
     }
