@@ -359,14 +359,16 @@ jobs:
             }
             Write-Host "changedServicesString='$changedServicesString'"
             Write-Host "##vso[task.setvariable variable=PRServiceDirectories;]$changedServicesString"
-          displayName: Get samples service directories from PR diff
-        - template: /eng/common/pipelines/templates/steps/verify-samples.yml
-          parameters:
-            ServiceDirectories: $(PRServiceDirectories)
+          displayName: Set PRServiceDirectories from PR diff
       - ${{ else }}:
-        - template: /eng/common/pipelines/templates/steps/verify-samples.yml
-          parameters:
-            ServiceDirectory: ${{ parameters.ServiceDirectory }}
+        - pwsh: |
+            Write-Host "changedServicesString='${{ parameters.ServiceDirectory }}'"
+            Write-Host "##vso[task.setvariable variable=PRServiceDirectories;]$changedServicesString"
+          displayName: Set PRServiceDirectories to ServiceDirectory parameter
+
+      - template: /eng/common/pipelines/templates/steps/verify-samples.yml
+        parameters:
+          ServiceDirectories: $(PRServiceDirectories)
 
       # Use BasePathLength of 38 instead of the default 49 as some released files fail when the number is higher.
       - template: /eng/common/pipelines/templates/steps/verify-path-length.yml
@@ -394,41 +396,22 @@ jobs:
         parameters:
           JdkVersion: ${{ parameters.JavaBuildVersion }}
 
-      - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
-        - task: PowerShell@2
-          displayName: Verify Code Generation for Pull Request
-          inputs:
-            pwsh: true
-            filePath: $(Build.SourcesDirectory)/eng/scripts/Compare-CurrentToCodegeneration.ps1
-            arguments: >
-              -ServiceDirectories '$(PRServiceDirectories)'
-      - ${{ else }}:
-        - task: PowerShell@2
-          displayName: Verify Code Generation
-          inputs:
-            pwsh: true
-            filePath: $(Build.SourcesDirectory)/eng/scripts/Compare-CurrentToCodegeneration.ps1
-            arguments: >
-              -ServiceDirectories '${{ parameters.ServiceDirectory }}'
+      - task: PowerShell@2
+        displayName: Verify Code Generation for Pull Request
+        inputs:
+          pwsh: true
+          filePath: $(Build.SourcesDirectory)/eng/scripts/Compare-CurrentToCodegeneration.ps1
+          arguments: >
+            -ServiceDirectories '$(PRServiceDirectories)'
 
-      - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
-        - task: PowerShell@2
-          displayName: Verify TypeSpec Code Generation
-          continueOnError: ${{ eq(parameters.IgnoreVerifyTypeSpecCodeGenerationError, 'true') }}
-          inputs:
-            pwsh: true
-            filePath: $(Build.SourcesDirectory)/eng/scripts/TypeSpec-Compare-CurrentToCodegeneration.ps1
-            arguments: >
-              -ServiceDirectories '$(PRServiceDirectories)'
-      - ${{ else }}:
-        - task: PowerShell@2
-          displayName: Verify TypeSpec Code Generation
-          continueOnError: ${{ eq(parameters.IgnoreVerifyTypeSpecCodeGenerationError, 'true') }}
-          inputs:
-            pwsh: true
-            filePath: $(Build.SourcesDirectory)/eng/scripts/TypeSpec-Compare-CurrentToCodegeneration.ps1
-            arguments: >
-              -ServiceDirectories '${{ parameters.ServiceDirectory }}'
+      - task: PowerShell@2
+        displayName: Verify TypeSpec Code Generation
+        continueOnError: ${{ eq(parameters.IgnoreVerifyTypeSpecCodeGenerationError, 'true') }}
+        inputs:
+          pwsh: true
+          filePath: $(Build.SourcesDirectory)/eng/scripts/TypeSpec-Compare-CurrentToCodegeneration.ps1
+          arguments: >
+            -ServiceDirectories '$(PRServiceDirectories)'
 
       - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
         parameters:
