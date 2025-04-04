@@ -445,9 +445,9 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
     @Test
     public void stageBlockFromUrlSourceErrorAndStatusCode() {
         BlockBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-
+    
         String blockID = getBlockID();
-
+    
         StepVerifier.create(destBlob.stageBlockFromUrl(blockID, blockBlobAsyncClient.getBlobUrl(), new BlobRange(0, (long) PageBlobClient.PAGE_BYTES)))
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
@@ -2404,7 +2404,7 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
     @Test
     public void uploadFromUrlSourceErrorAndStatusCode() {
         BlockBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
-
+    
         StepVerifier.create(destBlob.uploadFromUrl(blockBlobAsyncClient.getBlobUrl()))
             .verifyErrorSatisfies(r -> {
                 BlobStorageException e = assertInstanceOf(BlobStorageException.class, r);
@@ -2710,7 +2710,8 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
         BlobContainerAsyncClient containerAsyncClient
             = blobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
 
-        ShareServiceAsyncClient shareServiceAsyncClient = getOAuthShareServiceAsyncClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareServiceAsyncClient shareServiceAsyncClient = getOAuthShareServiceAsyncClient(
+            new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
         String shareName = generateShareName();
         ShareAsyncClient shareAsyncClient = shareServiceAsyncClient.getShareAsyncClient(shareName);
 
@@ -2752,7 +2753,8 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
         BlobContainerAsyncClient containerAsyncClient
             = blobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
 
-        ShareServiceAsyncClient shareServiceAsyncClient = getOAuthShareServiceAsyncClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
+        ShareServiceAsyncClient shareServiceAsyncClient = getOAuthShareServiceAsyncClient(
+            new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
         String shareName = generateShareName();
         ShareAsyncClient shareAsyncClient = shareServiceAsyncClient.getShareAsyncClient(shareName);
 
@@ -2765,9 +2767,9 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
         BlockBlobAsyncClient destBlob
             = containerAsyncClient.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
 
-        BlobUploadFromUrlOptions options
-            = new BlobUploadFromUrlOptions(fileAsyncClient.getFileUrl()).setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()))
-                .setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
+        BlobUploadFromUrlOptions options = new BlobUploadFromUrlOptions(fileAsyncClient.getFileUrl())
+            .setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()))
+            .setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
 
         StepVerifier
             .create(containerAsyncClient.create()

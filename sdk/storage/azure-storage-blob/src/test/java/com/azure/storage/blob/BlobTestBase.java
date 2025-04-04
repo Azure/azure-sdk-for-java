@@ -4,11 +4,17 @@
 package com.azure.storage.blob;
 
 import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
+import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
@@ -16,9 +22,22 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
+import com.azure.core.test.utils.MockTokenCredential;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.identity.AzureCliCredentialBuilder;
+import com.azure.identity.AzureDeveloperCliCredentialBuilder;
+import com.azure.identity.AzurePipelinesCredentialBuilder;
+import com.azure.identity.AzurePowerShellCredentialBuilder;
+import com.azure.identity.ChainedTokenCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.EnvironmentCredentialBuilder;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonWriter;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobErrorCode;
 import com.azure.storage.blob.models.BlobProperties;
@@ -28,6 +47,7 @@ import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.ListBlobContainersOptions;
 import com.azure.storage.blob.models.PublicAccessType;
 import com.azure.storage.blob.options.BlobBreakLeaseOptions;
+import com.azure.storage.blob.specialized.AppendBlobApiTests;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.blob.specialized.BlobLeaseAsyncClient;
@@ -50,9 +70,11 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -873,5 +895,141 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected String generateShareName() {
         return generateResourceName(entityNo++);
+    }
+
+    protected void setupFileShareResourcesWithoutDependency() throws IOException {
+        //overall setup
+        //todo: potentially make these final and use them in immutablestoragewithversioning
+        String accountName = ENVIRONMENT.getPrimaryAccount().getName();
+        String resourceGroup = ENVIRONMENT.getResourceGroupName();
+        String subscriptionId = ENVIRONMENT.getSubscriptionId();
+        String apiVersion = "2024-01-01";
+        TokenCredential credential = getTokenCredential(ENVIRONMENT.getTestMode());
+        BearerTokenAuthenticationPolicy credentialPolicyManagementPlane
+            = new BearerTokenAuthenticationPolicy(credential, "https://management.azure.com/.default");
+        BearerTokenAuthenticationPolicy credentialPolicyDataPlane
+            = new BearerTokenAuthenticationPolicy(credential, Constants.STORAGE_SCOPE);
+        //share setup
+        String shareName = generateContainerName();
+        String id = String.format("/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Storage/storageAccounts/"
+            + "%s/fileServices/default/shares/%s", subscriptionId, resourceGroup, accountName, shareName);
+        String shareURL = "https://management.azure.com" + id + "?api-version=" + apiVersion;
+        String shareType = "Microsoft.Storage/storageAccounts/fileServices/shares";
+
+        Body shareBody = new Body();
+        shareBody.setId(id);
+        shareBody.setName(shareName);
+        shareBody.setType(shareType);
+
+        ByteArrayOutputStream shareJson = new ByteArrayOutputStream();
+        try (JsonWriter jsonWriter = JsonProviders.createWriter(shareJson)) {
+            shareBody.toJson(jsonWriter);
+        }
+
+        //create share
+        HttpPipeline managementPlanePipeline
+            = new HttpPipelineBuilder().policies(credentialPolicyManagementPlane).build();
+        HttpResponse shareCreateResponse = managementPlanePipeline.send(new HttpRequest(HttpMethod.PUT,
+            new URL(shareURL), new HttpHeaders(), Flux.just(ByteBuffer.wrap(shareJson.toByteArray())))).block();
+        assertEquals(201, shareCreateResponse.getStatusCode());
+
+        //directory setup
+        String directoryName = generateBlobName();
+        String directoryUrl = String.format("https://%s.file.core.windows.net/%s/%s?restype=directory", accountName,
+            shareName, directoryName);
+        HttpHeaders headers = new HttpHeaders().set("x-ms-version", "2025-07-05")
+            .set("Accept", "application/xml")
+            .set("content-length", "0")
+            .set("Date", DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()))
+            .set("host", accountName + ".file.core.windows.net")
+            .set("User-Agent", "azsdk-java-azure-storage-file-share/12.26.0-beta.1 (17.0.12; Windows 11; 10.0)")
+            .set("x-ms-file-request-intent", "backup")
+            .set("x-ms-client-request-id", CoreUtils.randomUuid().toString());
+
+        //create directory
+        HttpPipeline dataPlanePipeline = new HttpPipelineBuilder().policies(credentialPolicyDataPlane).build();
+        HttpResponse directoryCreateResponse
+            = dataPlanePipeline.send(new HttpRequest(HttpMethod.PUT, new URL(directoryUrl), headers)).block();
+        assertEquals(201, directoryCreateResponse.getStatusCode());
+
+        //todo: create file
+        //todo: upload data to file
+        //todo: return source url
+    }
+
+    //todo: potentially move immutable storage body here too?
+    public static final class Body implements JsonSerializable<Body> {
+        private String id;
+        private String name;
+        private String type;
+
+        public String getId() {
+            return id;
+        }
+
+        public void setId(String id) {
+            this.id = id;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public String getType() {
+            return type;
+        }
+
+        public void setType(String type) {
+            this.type = type;
+        }
+
+        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+            jsonWriter.writeStartObject()
+                .writeStringField("id", this.id)
+                .writeStringField("name", this.name)
+                .writeStringField("type", this.type);
+
+            return jsonWriter.writeEndObject();
+        }
+    }
+
+    protected static TokenCredential getTokenCredential(TestMode testMode) {
+        if (testMode == TestMode.RECORD) {
+            return new DefaultAzureCredentialBuilder().build();
+        } else if (testMode == TestMode.LIVE) {
+            Configuration config = Configuration.getGlobalConfiguration();
+
+            ChainedTokenCredentialBuilder builder
+                = new ChainedTokenCredentialBuilder().addLast(new EnvironmentCredentialBuilder().build())
+                    .addLast(new AzureCliCredentialBuilder().build())
+                    .addLast(new AzureDeveloperCliCredentialBuilder().build());
+
+            String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
+            String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
+            String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
+            String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
+
+            if (!CoreUtils.isNullOrEmpty(serviceConnectionId)
+                && !CoreUtils.isNullOrEmpty(clientId)
+                && !CoreUtils.isNullOrEmpty(tenantId)
+                && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
+
+                builder.addLast(new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
+                    .clientId(clientId)
+                    .tenantId(tenantId)
+                    .serviceConnectionId(serviceConnectionId)
+                    .build());
+            }
+
+            builder.addLast(new AzurePowerShellCredentialBuilder().build());
+
+            return builder.build();
+        } else { //playback or not set
+            return new MockTokenCredential();
+        }
     }
 }

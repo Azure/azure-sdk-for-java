@@ -3,11 +3,9 @@
 
 package com.azure.storage.blob.specialized;
 
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpAuthorization;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.TestMode;
 import com.azure.core.test.utils.TestUtils;
 import com.azure.core.util.Context;
 import com.azure.storage.blob.BlobContainerClient;
@@ -32,7 +30,6 @@ import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
@@ -57,7 +54,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.time.OffsetDateTime;
 import java.util.Base64;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -540,9 +536,9 @@ public class AppendBlobApiTests extends BlobTestBase {
     public void appendBlockFromURLSourceErrorAndStatusCodeNewTest() {
         AppendBlobClient destBlob = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
         destBlob.createIfNotExists();
-
+    
         BlobStorageException e = assertThrows(BlobStorageException.class, () -> destBlob.appendBlockFromUrl(bc.getBlobUrl(), new BlobRange(0, (long) PageBlobClient.PAGE_BYTES)));
-
+    
         assertTrue(e.getStatusCode() == 409);
         assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
         assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
@@ -948,5 +944,10 @@ public class AppendBlobApiTests extends BlobTestBase {
         // Clean up resources
         shareClient.delete();
 
+    }
+
+    @Test
+    public void getFileHTTPRequests() throws IOException {
+        setupFileShareResourcesWithoutDependency();
     }
 }
