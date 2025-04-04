@@ -108,8 +108,11 @@ import java.util.List;
  *
  * <!-- src_embed io.clientcore.core.util.BinaryData.fromFile -->
  * <pre>
- * BinaryData binaryData = BinaryData.fromFile&#40;new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;&#41;;
- * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
+ * try &#40;BinaryData binaryData = BinaryData.fromFile&#40;new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;&#41;&#41; &#123;
+ *     System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
+ * &#125; catch &#40;ClientCoreException ex&#41; &#123;
+ *     System.out.println&#40;&quot;Error reading file: &quot; + ex&#41;;
+ * &#125;
  * </pre>
  * <!-- end io.clientcore.core.util.BinaryData.fromFile -->
  *
@@ -372,8 +375,11 @@ public abstract class BinaryData implements Closeable {
      *
      * <!-- src_embed io.clientcore.core.util.BinaryData.fromFile -->
      * <pre>
-     * BinaryData binaryData = BinaryData.fromFile&#40;new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;&#41;;
-     * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
+     * try &#40;BinaryData binaryData = BinaryData.fromFile&#40;new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;&#41;&#41; &#123;
+     *     System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
+     * &#125; catch &#40;ClientCoreException ex&#41; &#123;
+     *     System.out.println&#40;&quot;Error reading file: &quot; + ex&#41;;
+     * &#125;
      * </pre>
      * <!-- end io.clientcore.core.util.BinaryData.fromFile -->
      *
@@ -394,8 +400,11 @@ public abstract class BinaryData implements Closeable {
      *
      * <!-- src_embed io.clientcore.core.util.BinaryData.fromFile#Path-int -->
      * <pre>
-     * BinaryData binaryData = BinaryData.fromFile&#40;new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;, 8092&#41;;
-     * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
+     * try &#40;BinaryData binaryData = BinaryData.fromFile&#40;new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;, 8092&#41;&#41; &#123;
+     *     System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
+     * &#125; catch &#40;ClientCoreException ex&#41; &#123;
+     *     System.out.println&#40;&quot;Error reading file: &quot; + ex&#41;;
+     * &#125;
      * </pre>
      * <!-- end io.clientcore.core.util.BinaryData.fromFile#Path-int -->
      *
@@ -424,9 +433,13 @@ public abstract class BinaryData implements Closeable {
      * <pre>
      * long position = 1024;
      * long length = 100 * 1048;
-     * BinaryData binaryData = BinaryData.fromFile&#40;
-     *     new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;, position, length&#41;;
-     * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
+     *
+     * try &#40;BinaryData binaryData = BinaryData.fromFile&#40;new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;, position, length&#41;&#41; &#123;
+     *     System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
+     * &#125; catch &#40;ClientCoreException ex&#41; &#123;
+     *     System.out.println&#40;&quot;Error reading file: &quot; + ex&#41;;
+     * &#125;
+     *
      * </pre>
      * <!-- end io.clientcore.core.util.BinaryData.fromFile#Path-Long-Long -->
      *
@@ -455,9 +468,13 @@ public abstract class BinaryData implements Closeable {
      * long position = 1024;
      * long length = 100 * 1048;
      * int chunkSize = 8092;
-     * BinaryData binaryData = BinaryData.fromFile&#40;
-     *     new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;, position, length, chunkSize&#41;;
-     * System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
+     * try &#40;BinaryData binaryData = BinaryData.fromFile&#40;
+     *     new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;, position, length, chunkSize&#41;&#41; &#123;
+     *     System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
+     * &#125; catch &#40;ClientCoreException ex&#41; &#123;
+     *     System.out.println&#40;&quot;Error reading file: &quot; + ex&#41;;
+     * &#125;
+     *
      * </pre>
      * <!-- end io.clientcore.core.util.BinaryData.fromFile#Path-Long-Long-int -->
      *
@@ -528,10 +545,13 @@ public abstract class BinaryData implements Closeable {
      * &#47;&#47; Ensure your classpath have the Serializer to serialize the object which implement implement
      * &#47;&#47; io.clientcore.core.serializer.util.JsonSerializer interface.
      * &#47;&#47; Or use the provided libraries for this.
-     * BinaryData binaryData = BinaryData.fromObject&#40;data&#41;;
      *
-     * Person person = binaryData.toObject&#40;Person.class&#41;;
-     * System.out.println&#40;person.getName&#40;&#41;&#41;;
+     * try &#40;BinaryData binaryData = BinaryData.fromObject&#40;data&#41;&#41; &#123;
+     *     Person person = binaryData.toObject&#40;Person.class&#41;;
+     *     System.out.println&#40;person.getName&#40;&#41;&#41;;
+     * &#125; catch &#40;ClientCoreException e&#41; &#123;
+     *     System.out.println&#40;&quot;Error reading content or deserializing object: &quot; + e&#41;;
+     * &#125;
      * </pre>
      * <!-- end io.clientcore.core.util.BinaryData.toObject#Type -->
      *
@@ -549,27 +569,30 @@ public abstract class BinaryData implements Closeable {
      * &#47;&#47; Ensure your classpath have the Serializer to serialize the object which implement implement
      * &#47;&#47; io.clientcore.core.serializer.util.JsonSerializer interface.
      * &#47;&#47; Or use the provided libraries for this.
-     * BinaryData binaryData = BinaryData.fromObject&#40;personList&#41;;
+     * try &#40;BinaryData binaryData = BinaryData.fromObject&#40;personList&#41;&#41; &#123;
      *
-     * &#47;&#47; Creation of the ParameterizedType could be replaced with a utility method that returns a Type based on the
-     * &#47;&#47; type arguments and raw type passed.
-     * List&lt;Person&gt; persons = binaryData.toObject&#40;new ParameterizedType&#40;&#41; &#123;
-     *     &#64;Override
-     *     public Type[] getActualTypeArguments&#40;&#41; &#123;
-     *         return new Type[] &#123; Person.class &#125;;
-     *     &#125;
+     *     &#47;&#47; Creation of the ParameterizedType could be replaced with a utility method that returns a Type based on the
+     *     &#47;&#47; type arguments and raw type passed.
+     *     List&lt;Person&gt; persons = binaryData.toObject&#40;new ParameterizedType&#40;&#41; &#123;
+     *         &#64;Override
+     *         public Type[] getActualTypeArguments&#40;&#41; &#123;
+     *             return new Type[]&#123;Person.class&#125;;
+     *         &#125;
      *
-     *     &#64;Override
-     *     public Type getRawType&#40;&#41; &#123;
-     *         return List.class;
-     *     &#125;
+     *         &#64;Override
+     *         public Type getRawType&#40;&#41; &#123;
+     *             return List.class;
+     *         &#125;
      *
-     *     &#64;Override
-     *     public Type getOwnerType&#40;&#41; &#123;
-     *         return null;
-     *     &#125;
-     * &#125;&#41;;
-     * persons.forEach&#40;person -&gt; System.out.println&#40;person.getName&#40;&#41;&#41;&#41;;
+     *         &#64;Override
+     *         public Type getOwnerType&#40;&#41; &#123;
+     *             return null;
+     *         &#125;
+     *     &#125;&#41;;
+     *     persons.forEach&#40;person -&gt; System.out.println&#40;person.getName&#40;&#41;&#41;&#41;;
+     * &#125; catch &#40;ClientCoreException e&#41; &#123;
+     *     System.out.println&#40;&quot;Error reading content or deserializing object: &quot; + e&#41;;
+     * &#125;
      * </pre>
      * <!-- end io.clientcore.core.util.BinaryData.toObject#Type-generic -->
      *
@@ -666,11 +689,16 @@ public abstract class BinaryData implements Closeable {
      * <!-- src_embed io.clientcore.core.util.BinaryData.toStream -->
      * <pre>
      * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
-     * BinaryData binaryData = BinaryData.fromStream&#40;new ByteArrayInputStream&#40;data&#41;, &#40;long&#41; data.length&#41;;
-     * final byte[] bytes = new byte[data.length];
-     * try &#40;InputStream inputStream = binaryData.toStream&#40;&#41;&#41; &#123;
-     *     inputStream.read&#40;bytes, 0, data.length&#41;;
-     *     System.out.println&#40;new String&#40;bytes&#41;&#41;;
+     * try &#40;BinaryData binaryData = BinaryData.fromStream&#40;new ByteArrayInputStream&#40;data&#41;, &#40;long&#41; data.length&#41;&#41; &#123;
+     *     final byte[] bytes = new byte[data.length];
+     *     try &#40;InputStream inputStream = binaryData.toStream&#40;&#41;&#41; &#123;
+     *         inputStream.read&#40;bytes, 0, data.length&#41;;
+     *         System.out.println&#40;new String&#40;bytes&#41;&#41;;
+     *     &#125;
+     * &#125; catch &#40;ClientCoreException ex&#41; &#123;
+     *     System.out.println&#40;&quot;Error reading BinaryData content&quot;&#41;;
+     * &#125; catch &#40;IOException e&#41; &#123;
+     *     System.out.println&#40;&quot;Error reading from content stream&quot;&#41;;
      * &#125;
      * </pre>
      * <!-- end io.clientcore.core.util.BinaryData.toStream -->
@@ -749,10 +777,15 @@ public abstract class BinaryData implements Closeable {
      * <!-- src_embed io.clientcore.coreutil.BinaryData.toByteBuffer -->
      * <pre>
      * final byte[] data = &quot;Some Data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;;
-     * BinaryData binaryData = BinaryData.fromBytes&#40;data&#41;;
-     * final byte[] bytes = new byte[data.length];
-     * binaryData.toByteBuffer&#40;&#41;.get&#40;bytes, 0, data.length&#41;;
-     * System.out.println&#40;new String&#40;bytes&#41;&#41;;
+     * final ByteArrayInputStream inputStream = new ByteArrayInputStream&#40;data&#41;;
+     *
+     * try &#40;BinaryData binaryData = BinaryData.fromStream&#40;inputStream&#41;&#41; &#123;
+     *     final byte[] bytes = new byte[data.length];
+     *     binaryData.toByteBuffer&#40;&#41;.get&#40;bytes, 0, data.length&#41;;
+     *     System.out.println&#40;new String&#40;bytes&#41;&#41;;
+     * &#125; catch &#40;ClientCoreException ex&#41; &#123;
+     *     System.out.println&#40;&quot;Error reading BinaryData content&quot;&#41;;
+     * &#125;
      * </pre>
      * <!-- end io.clientcore.coreutil.BinaryData.toByteBuffer -->
      *
@@ -779,13 +812,19 @@ public abstract class BinaryData implements Closeable {
      * <!-- src_embed io.clientcore.coreutil.BinaryData.replayability -->
      * <pre>
      * BinaryData binaryData = binaryDataProducer&#40;&#41;;
+     * try &#123;
      *
-     * if &#40;!binaryData.isReplayable&#40;&#41;&#41; &#123;
-     *     binaryData = binaryData.toReplayableBinaryData&#40;&#41;;
+     *     if &#40;!binaryData.isReplayable&#40;&#41;&#41; &#123;
+     *         binaryData = binaryData.toReplayableBinaryData&#40;&#41;;
+     *     &#125;
+     *
+     *     streamConsumer&#40;binaryData.toStream&#40;&#41;&#41;;
+     *     streamConsumer&#40;binaryData.toStream&#40;&#41;&#41;;
+     * &#125; catch &#40;ClientCoreException ex&#41; &#123;
+     *     System.out.println&#40;&quot;Error reading BinaryData content&quot;&#41;;
+     * &#125; finally &#123;
+     *     binaryData.close&#40;&#41;;
      * &#125;
-     *
-     * streamConsumer&#40;binaryData.toStream&#40;&#41;&#41;;
-     * streamConsumer&#40;binaryData.toStream&#40;&#41;&#41;;
      * </pre>
      * <!-- end io.clientcore.coreutil.BinaryData.replayability -->
      *
@@ -806,13 +845,19 @@ public abstract class BinaryData implements Closeable {
      * <!-- src_embed io.clientcore.coreutil.BinaryData.replayability -->
      * <pre>
      * BinaryData binaryData = binaryDataProducer&#40;&#41;;
+     * try &#123;
      *
-     * if &#40;!binaryData.isReplayable&#40;&#41;&#41; &#123;
-     *     binaryData = binaryData.toReplayableBinaryData&#40;&#41;;
+     *     if &#40;!binaryData.isReplayable&#40;&#41;&#41; &#123;
+     *         binaryData = binaryData.toReplayableBinaryData&#40;&#41;;
+     *     &#125;
+     *
+     *     streamConsumer&#40;binaryData.toStream&#40;&#41;&#41;;
+     *     streamConsumer&#40;binaryData.toStream&#40;&#41;&#41;;
+     * &#125; catch &#40;ClientCoreException ex&#41; &#123;
+     *     System.out.println&#40;&quot;Error reading BinaryData content&quot;&#41;;
+     * &#125; finally &#123;
+     *     binaryData.close&#40;&#41;;
      * &#125;
-     *
-     * streamConsumer&#40;binaryData.toStream&#40;&#41;&#41;;
-     * streamConsumer&#40;binaryData.toStream&#40;&#41;&#41;;
      * </pre>
      * <!-- end io.clientcore.coreutil.BinaryData.replayability -->
      *

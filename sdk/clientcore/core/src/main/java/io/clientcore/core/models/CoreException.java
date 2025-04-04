@@ -68,9 +68,9 @@ public class CoreException extends RuntimeException {
 
             return new CoreException(message, e.getCause(), isRetryable);
         } else if (cause instanceof UncheckedIOException) {
-            return new CoreException(message, cause.getCause(), isRetryable);
+            return new CoreException(message == null ? cause.getMessage() : message, cause.getCause(), isRetryable);
         }
-        return new CoreException(null, cause, isRetryable);
+        return new CoreException(message, cause, isRetryable);
     }
 
     /**
