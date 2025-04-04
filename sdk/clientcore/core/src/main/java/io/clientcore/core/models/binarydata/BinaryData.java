@@ -5,6 +5,8 @@ package io.clientcore.core.models.binarydata;
 
 import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.MetadataProperties;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.json.JsonWriter;
@@ -13,7 +15,6 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UncheckedIOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -118,6 +119,7 @@ import java.util.List;
 @Metadata(properties = MetadataProperties.IMMUTABLE)
 public abstract class BinaryData implements Closeable {
     private static final BinaryData EMPTY = BinaryData.fromBytes(new byte[0]);
+    private static final ClientLogger LOGGER = new ClientLogger(BinaryData.class);
 
     static final ObjectSerializer SERIALIZER = new JsonSerializer();
     static final int STREAM_READ_SIZE = 8192;
@@ -151,7 +153,8 @@ public abstract class BinaryData implements Closeable {
      *
      * @param inputStream The {@link InputStream} that {@link BinaryData} will represent.
      * @return A {@link BinaryData} representing the {@link InputStream}.
-     * @throws UncheckedIOException If any error happens while reading the {@link InputStream}.
+     *
+     * @throws CoreException If any error happens while reading the {@link InputStream}.
      * @throws NullPointerException If {@code inputStream} is null.
      */
     public static BinaryData fromStream(InputStream inputStream) {
@@ -180,7 +183,8 @@ public abstract class BinaryData implements Closeable {
      * @param inputStream The {@link InputStream} that {@link BinaryData} will represent.
      * @param length The length of {@code data} in bytes.
      * @return A {@link BinaryData} representing the {@link InputStream}.
-     * @throws UncheckedIOException If any error happens while reading the {@link InputStream}.
+     *
+     * @throws CoreException If any error happens while reading the {@link InputStream}.
      * @throws NullPointerException If {@code inputStream} is null.
      */
     public static BinaryData fromStream(InputStream inputStream, Long length) {
@@ -315,6 +319,7 @@ public abstract class BinaryData implements Closeable {
      * @param data The object that will be JSON serialized that {@link BinaryData} will represent.
      * @return A {@link BinaryData} representing the JSON serialized object.
      * @throws NullPointerException If {@code data} is null.
+     * @throws CoreException If any error happens while serializing the {@link Object}.
      * @see ObjectSerializer
      */
     public static BinaryData fromObject(Object data) {
@@ -347,6 +352,8 @@ public abstract class BinaryData implements Closeable {
      * @param serializer The {@link ObjectSerializer} used to serialize object.
      * @return A {@link BinaryData} representing the serialized object.
      * @throws NullPointerException If {@code serializer} is null.
+     * @throws CoreException If any error happens while serializing the {@link Object}.
+     *
      * @see ObjectSerializer
      * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
      */
@@ -398,7 +405,7 @@ public abstract class BinaryData implements Closeable {
      * @throws NullPointerException If {@code file} is null.
      * @throws IllegalArgumentException If {@code offset} or {@code length} are negative or {@code offset} plus
      * {@code length} is greater than the file size or {@code chunkSize} is less than or equal to 0.
-     * @throws UncheckedIOException if the file does not exist.
+     * @throws CoreException if the file does not exist.
      */
     public static BinaryData fromFile(Path file, int chunkSize) {
         return new FileBinaryData(file, chunkSize, null, null);
@@ -430,7 +437,7 @@ public abstract class BinaryData implements Closeable {
      * @throws NullPointerException If {@code file} is null.
      * @throws IllegalArgumentException If {@code offset} or {@code length} are negative or {@code offset} plus
      * {@code length} is greater than the file size or {@code chunkSize} is less than or equal to 0.
-     * @throws UncheckedIOException if the file does not exist.
+     * @throws CoreException if the file does not exist.
      */
     public static BinaryData fromFile(Path file, Long position, Long length) {
         return new FileBinaryData(file, STREAM_READ_SIZE, position, length);
@@ -462,7 +469,7 @@ public abstract class BinaryData implements Closeable {
      * @throws NullPointerException If {@code file} is null.
      * @throws IllegalArgumentException If {@code offset} or {@code length} are negative or {@code offset} plus
      * {@code length} is greater than the file size or {@code chunkSize} is less than or equal to 0.
-     * @throws UncheckedIOException if the file does not exist.
+     * @throws CoreException if the file does not exist.
      */
     public static BinaryData fromFile(Path file, Long position, Long length, int chunkSize) {
         return new FileBinaryData(file, chunkSize, position, length);
@@ -482,6 +489,7 @@ public abstract class BinaryData implements Closeable {
      * @return A byte array representing this {@link BinaryData}.
      * @throws IllegalStateException If the {@link BinaryData} is larger than the maximum size allowed for a
      * {@code byte[]}.
+     * @throws CoreException If reading content fails.
      */
     public abstract byte[] toBytes();
 
@@ -495,6 +503,7 @@ public abstract class BinaryData implements Closeable {
      * @return A {@link String} representing this {@link BinaryData}.
      * @throws IllegalStateException If the {@link BinaryData} is larger than the maximum size allowed for a
      * {@link String}.
+     * @throws CoreException If reading content fails.
      */
     public abstract String toString();
 
@@ -568,10 +577,10 @@ public abstract class BinaryData implements Closeable {
      * @param <T> Type of the deserialized Object.
      * @return An {@link Object} representing the JSON deserialized {@link BinaryData}.
      * @throws NullPointerException If {@code type} is null.
-     * @throws IOException If deserialization fails.
+     * @throws CoreException If reading or deserialization of the content fails.
      * @see ObjectSerializer
      */
-    public <T> T toObject(Type type) throws IOException {
+    public <T> T toObject(Type type) {
         return toObject(type, SERIALIZER);
     }
 
@@ -643,11 +652,11 @@ public abstract class BinaryData implements Closeable {
      * @param <T> Type of the deserialized Object.
      * @return An {@link Object} representing the deserialized {@link BinaryData}.
      * @throws NullPointerException If {@code type} or {@code serializer} is null.
-     * @throws IOException If deserialization fails.
+     * @throws CoreException If reading or deserialization of the content fails.
      * @see ObjectSerializer
      * @see <a href="https://aka.ms/azsdk/java/docs/serialization" target="_blank">More about serialization</a>
      */
-    public abstract <T> T toObject(Type type, ObjectSerializer serializer) throws IOException;
+    public abstract <T> T toObject(Type type, ObjectSerializer serializer);
 
     /**
      * Returns an {@link InputStream} representation of this {@link BinaryData}.
@@ -681,10 +690,14 @@ public abstract class BinaryData implements Closeable {
      *
      * @param outputStream The {@link OutputStream} to write the contents of this {@link BinaryData} to.
      * @throws NullPointerException If {@code outputStream} is null.
-     * @throws IOException If an I/O error occurs.
+     * @throws CoreException If an error occurs during reading the content or writing it to the stream.
      */
-    public void writeTo(OutputStream outputStream) throws IOException {
-        outputStream.write(toBytes());
+    public void writeTo(OutputStream outputStream) {
+        try {
+            outputStream.write(toBytes());
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(CoreException.from(e));
+        }
     }
 
     /**
@@ -698,12 +711,16 @@ public abstract class BinaryData implements Closeable {
      *
      * @param channel The {@link WritableByteChannel} to write the contents of this {@link BinaryData} to.
      * @throws NullPointerException If {@code outputStream} is null.
-     * @throws IOException If an I/O error occurs.
+     * @throws CoreException If an error occurs during reading the content or writing it to the channel.
      */
-    public void writeTo(WritableByteChannel channel) throws IOException {
-        ByteBuffer buffer = toByteBuffer().duplicate();
-        while (buffer.hasRemaining()) {
-            channel.write(buffer);
+    public void writeTo(WritableByteChannel channel) {
+        try {
+            ByteBuffer buffer = toByteBuffer().duplicate();
+            while (buffer.hasRemaining()) {
+                channel.write(buffer);
+            }
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(CoreException.from(e));
         }
     }
 
@@ -718,9 +735,9 @@ public abstract class BinaryData implements Closeable {
      *
      * @param jsonWriter The {@link JsonWriter} to write the contents of this {@link BinaryData} to.
      * @throws NullPointerException If {@code jsonWriter} is null.
-     * @throws IOException If an I/O error occurs during writing.
+     * @throws CoreException If an error occurs during reading or writing the content.
      */
-    public abstract void writeTo(JsonWriter jsonWriter) throws IOException;
+    public abstract void writeTo(JsonWriter jsonWriter);
 
     /**
      * Returns a read-only {@link ByteBuffer} representation of this {@link BinaryData}.
@@ -739,6 +756,7 @@ public abstract class BinaryData implements Closeable {
      * </pre>
      * <!-- end io.clientcore.coreutil.BinaryData.toByteBuffer -->
      *
+     * @throws CoreException If reading content fails.
      * @return A read-only {@link ByteBuffer} representing the {@link BinaryData}.
      */
     public abstract ByteBuffer toByteBuffer();
@@ -747,7 +765,7 @@ public abstract class BinaryData implements Closeable {
      * Returns the length of the content, if it is known. The length can be {@code null} if the source did not specify
      * the length or the length cannot be determined without reading the whole content.
      *
-     * @return The length of the content, if it is known.
+     * @return The length of the content, if it is known, {@code null} otherwise.
      */
     public abstract Long getLength();
 
@@ -798,6 +816,7 @@ public abstract class BinaryData implements Closeable {
      * </pre>
      * <!-- end io.clientcore.coreutil.BinaryData.replayability -->
      *
+     * @throws CoreException If reading content fails.
      * @return A replayable {@link BinaryData}.
      */
     public abstract BinaryData toReplayableBinaryData();
@@ -810,5 +829,10 @@ public abstract class BinaryData implements Closeable {
      */
     public static BinaryData empty() {
         return BinaryData.EMPTY;
+    }
+
+    @Override
+    public void close() {
+        // No-op
     }
 }

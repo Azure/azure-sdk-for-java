@@ -5,6 +5,7 @@ package io.clientcore.core.http.models;
 
 import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.MetadataProperties;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 
 /**
@@ -12,7 +13,7 @@ import io.clientcore.core.models.binarydata.BinaryData;
  * {@code 5XX}) from the service request.
  */
 @Metadata(properties = MetadataProperties.IMMUTABLE)
-public class HttpResponseException extends RuntimeException {
+public class HttpResponseException extends CoreException {
     /**
      * The HTTP response value.
      */
@@ -31,7 +32,8 @@ public class HttpResponseException extends RuntimeException {
      * @param value The deserialized response value.
      */
     public HttpResponseException(final String message, final Response<BinaryData> response, final Object value) {
-        super(message);
+        // TODO: retryable classification based on code?
+        super(message, null, isRetryable(response.getStatusCode()));
 
         this.value = value;
         this.response = response;
@@ -45,7 +47,8 @@ public class HttpResponseException extends RuntimeException {
      * @param cause The {@link Throwable} which caused the creation of this exception.
      */
     public HttpResponseException(final String message, final Response<BinaryData> response, final Throwable cause) {
-        super(message, cause);
+        // TODO: retryable classification based on code?
+        super(message, cause, isRetryable(response.getStatusCode()));
 
         this.value = null;
         this.response = response;
@@ -67,5 +70,10 @@ public class HttpResponseException extends RuntimeException {
      */
     public Object getValue() {
         return value;
+    }
+
+    private static boolean isRetryable(int code) {
+        // TODO: Add more specific definitely non-retryable codes
+        return (code != 401);
     }
 }
