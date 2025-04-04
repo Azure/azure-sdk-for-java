@@ -30,8 +30,8 @@ parameters:
     displayName: 'core'
     type: boolean
     default: true
-  - name: release_httpnetty
-    displayName: 'http-netty'
+  - name: release_httpnetty4
+    displayName: 'http-netty4'
     type: boolean
     default: false
   - name: release_httpokhttp3
@@ -56,10 +56,10 @@ extends:
         releaseInBatch: ${{ parameters.release_core }}
         triggeringPaths:
         - /sdk/parents/clientcore-parent
-      - name: http-netty
+      - name: http-netty4
         groupId: io.clientcore
-        safeName: httpnetty
-        releaseInBatch: ${{ parameters.release_httpnetty }}
+        safeName: httpnetty4
+        releaseInBatch: ${{ parameters.release_httpnetty4 }}
       - name: http-okhttp3
         groupId: io.clientcore
         safeName: httpokhttp3
