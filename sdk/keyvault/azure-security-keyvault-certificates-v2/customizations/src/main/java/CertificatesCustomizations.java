@@ -21,18 +21,12 @@ public class CertificatesCustomizations extends Customization {
             .getClass("KeyVaultServiceVersion")
             .rename("CertificateServiceVersion");
 
-        // Move *ListResult files.
         moveListResultFiles(libraryCustomization);
-
         customizeError(libraryCustomization);
-
-        // Customize the module-info.java file.
         customizeModuleInfo(libraryCustomization.getRawEditor());
     }
 
     private static void removeFiles(Editor editor) {
-        // Remove the next line in favor of renaming to CertificateServiceVersion once the TSP spec includes all service
-        // versions.
         editor.removeFile("src/main/java/com/azure/v2/security/keyvault/certificates/CertificateClient.java");
         editor.removeFile("src/main/java/com/azure/v2/security/keyvault/certificates/CertificateClientBuilder.java");
         editor.removeFile("src/main/java/com/azure/v2/security/keyvault/certificates/implementation/implementation/models/package-info.java");
@@ -124,54 +118,6 @@ public class CertificatesCustomizations extends Customization {
         replaceInFile(classCustomization, implModelsDirectory + "KeyVaultError.java",
             new String[] { oldClassName },
             new String[] { newClassName });
-    }
-
-    private static void customizeError2(LibraryCustomization libraryCustomization) {
-        // Rename error class.
-        ClassCustomization classCustomization = libraryCustomization
-            .getPackage("com.azure.v2.security.keyvault.certificates.implementation.models")
-            .getClass("KeyVaultErrorError")
-            .rename("CertificateOperationError")
-            .customizeAst(ast ->
-                ast.getPackageDeclaration().ifPresent(packageDeclaration ->
-                    packageDeclaration.setName("com.azure.v2.security.keyvault.certificates.models")));
-
-        String classPath =
-            "src/main/java/com/azure/v2/security/keyvault/certificates/implementation/models/CertificateOperationError.java";
-
-        replaceInFile(classCustomization, classPath,
-            new String[] { "KeyVaultErrorError" },
-            new String[] { "CertificateOperationError" });
-
-        // Move it to public package.
-        libraryCustomization
-            .getRawEditor()
-            .renameFile(classPath,
-                "src/main/java/com/azure/v2/security/keyvault/certificates/models/CertificateOperationError.java");
-
-        // Replace instances in impl CertificateOperationError and add import statement.
-        classCustomization = libraryCustomization
-            .getPackage("com.azure.v2.security.keyvault.certificates.implementation.models")
-            .getClass("CertificateOperation")
-            .addImports("com.azure.v2.security.keyvault.certificates.models.CertificateOperationError");
-        classPath =
-            "src/main/java/com/azure/v2/security/keyvault/certificates/implementation/models/CertificateOperation.java";
-
-        replaceInFile(classCustomization, classPath,
-            new String[] { "KeyVaultErrorError" },
-            new String[] { "CertificateOperationError" });
-
-        // Replace instances in impl CertificateOperationError and add import statement.
-        classCustomization = libraryCustomization
-            .getPackage("com.azure.v2.security.keyvault.certificates.implementation.models")
-            .getClass("KeyVaultError")
-            .addImports("com.azure.v2.security.keyvault.certificates.models.CertificateOperationError");
-        classPath =
-            "src/main/java/com/azure/v2/security/keyvault/certificates/implementation/models/KeyVaultError.java";
-
-        replaceInFile(classCustomization, classPath,
-            new String[] { "KeyVaultErrorError" },
-            new String[] { "CertificateOperationError" });
     }
 
     private static void replaceInFile(ClassCustomization classCustomization, String classPath,
