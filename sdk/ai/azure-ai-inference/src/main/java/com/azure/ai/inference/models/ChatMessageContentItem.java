@@ -81,6 +81,10 @@ public class ChatMessageContentItem implements JsonSerializable<ChatMessageConte
                     return ChatMessageTextContentItem.fromJson(readerToUse.reset());
                 } else if ("image_url".equals(discriminatorValue)) {
                     return ChatMessageImageContentItem.fromJson(readerToUse.reset());
+                } else if ("audio_url".equals(discriminatorValue)) {
+                    return ChatMessageAudioUrlContentItem.fromJson(readerToUse.reset());
+                } else if ("input_audio".equals(discriminatorValue)) {
+                    return ChatMessageAudioDataContentItem.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

@@ -57,29 +57,6 @@ public final class ChatCompletions implements JsonSerializable<ChatCompletions> 
     private final List<ChatChoice> choices;
 
     /**
-     * Creates an instance of ChatCompletions class.
-     *
-     * @param id the id value to set.
-     * @param created the created value to set.
-     * @param model the model value to set.
-     * @param usage the usage value to set.
-     * @param choices the choices value to set.
-     */
-    @Generated
-    private ChatCompletions(String id, OffsetDateTime created, String model, CompletionsUsage usage,
-        List<ChatChoice> choices) {
-        this.id = id;
-        if (created == null) {
-            this.created = 0L;
-        } else {
-            this.created = created.toEpochSecond();
-        }
-        this.model = model;
-        this.usage = usage;
-        this.choices = choices;
-    }
-
-    /**
      * Get the id property: A unique identifier associated with this chat completions response.
      *
      * @return the id value.
@@ -152,8 +129,8 @@ public final class ChatCompletions implements JsonSerializable<ChatCompletions> 
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeLongField("created", this.created);
         jsonWriter.writeStringField("model", this.model);
-        jsonWriter.writeJsonField("usage", this.usage);
         jsonWriter.writeArrayField("choices", this.choices, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("usage", this.usage);
         return jsonWriter.writeEndObject();
     }
 
@@ -172,8 +149,8 @@ public final class ChatCompletions implements JsonSerializable<ChatCompletions> 
             String id = null;
             OffsetDateTime created = null;
             String model = null;
-            CompletionsUsage usage = null;
             List<ChatChoice> choices = null;
+            CompletionsUsage usage = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -183,15 +160,38 @@ public final class ChatCompletions implements JsonSerializable<ChatCompletions> 
                     created = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
                 } else if ("model".equals(fieldName)) {
                     model = reader.getString();
-                } else if ("usage".equals(fieldName)) {
-                    usage = CompletionsUsage.fromJson(reader);
                 } else if ("choices".equals(fieldName)) {
                     choices = reader.readArray(reader1 -> ChatChoice.fromJson(reader1));
+                } else if ("usage".equals(fieldName)) {
+                    usage = CompletionsUsage.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new ChatCompletions(id, created, model, usage, choices);
+            return new ChatCompletions(id, created, model, choices, usage);
         });
+    }
+
+    /**
+     * Creates an instance of ChatCompletions class.
+     *
+     * @param id the id value to set.
+     * @param created the created value to set.
+     * @param model the model value to set.
+     * @param choices the choices value to set.
+     * @param usage the usage value to set.
+     */
+    @Generated
+    private ChatCompletions(String id, OffsetDateTime created, String model, List<ChatChoice> choices,
+        CompletionsUsage usage) {
+        this.id = id;
+        if (created == null) {
+            this.created = 0L;
+        } else {
+            this.created = created.toEpochSecond();
+        }
+        this.model = model;
+        this.choices = choices;
+        this.usage = usage;
     }
 }

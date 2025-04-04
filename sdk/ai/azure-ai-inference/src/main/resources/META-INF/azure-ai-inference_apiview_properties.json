@@ -34,8 +34,9 @@
     "com.azure.ai.inference.ImageEmbeddingsClient.getModelInfo": "Customizations.Client3.getModelInfo",
     "com.azure.ai.inference.ImageEmbeddingsClient.getModelInfoWithResponse": "Customizations.Client3.getModelInfo",
     "com.azure.ai.inference.ImageEmbeddingsClientBuilder": "Customizations.Client3",
-    "com.azure.ai.inference.implementation.models.EmbedRequest": "Customizations.embed.Request.anonymous",
-    "com.azure.ai.inference.implementation.models.EmbedRequest1": "Customizations.embed.Request.anonymous",
+    "com.azure.ai.inference.implementation.models.EmbeddingsOptions": "AI.Model.EmbeddingsOptions",
+    "com.azure.ai.inference.implementation.models.ImageEmbeddingsOptions": "AI.Model.ImageEmbeddingsOptions",
+    "com.azure.ai.inference.models.AudioContentFormat": "AI.Model.AudioContentFormat",
     "com.azure.ai.inference.models.ChatChoice": "AI.Model.ChatChoice",
     "com.azure.ai.inference.models.ChatCompletions": "AI.Model.ChatCompletions",
     "com.azure.ai.inference.models.ChatCompletionsNamedToolChoice": "AI.Model.ChatCompletionsNamedToolChoice",
@@ -49,10 +50,14 @@
     "com.azure.ai.inference.models.ChatCompletionsToolCall": "AI.Model.ChatCompletionsToolCall",
     "com.azure.ai.inference.models.ChatCompletionsToolChoicePreset": "AI.Model.ChatCompletionsToolChoicePreset",
     "com.azure.ai.inference.models.ChatCompletionsToolDefinition": "AI.Model.ChatCompletionsToolDefinition",
+    "com.azure.ai.inference.models.ChatMessageAudioDataContentItem": "AI.Model.ChatMessageAudioDataContentItem",
+    "com.azure.ai.inference.models.ChatMessageAudioUrlContentItem": "AI.Model.ChatMessageAudioUrlContentItem",
     "com.azure.ai.inference.models.ChatMessageContentItem": "AI.Model.ChatMessageContentItem",
     "com.azure.ai.inference.models.ChatMessageImageContentItem": "AI.Model.ChatMessageImageContentItem",
     "com.azure.ai.inference.models.ChatMessageImageDetailLevel": "AI.Model.ChatMessageImageDetailLevel",
     "com.azure.ai.inference.models.ChatMessageImageUrl": "AI.Model.ChatMessageImageUrl",
+    "com.azure.ai.inference.models.ChatMessageInputAudio": "AI.Model.ChatMessageInputAudio",
+    "com.azure.ai.inference.models.ChatMessageInputAudioUrl": "AI.Model.ChatMessageInputAudioUrl",
     "com.azure.ai.inference.models.ChatMessageTextContentItem": "AI.Model.ChatMessageTextContentItem",
     "com.azure.ai.inference.models.ChatRequestAssistantMessage": "AI.Model.ChatRequestAssistantMessage",
     "com.azure.ai.inference.models.ChatRequestDeveloperMessage": "AI.Model.ChatRequestDeveloperMessage",
@@ -74,6 +79,10 @@
     "com.azure.ai.inference.models.FunctionDefinition": "AI.Model.FunctionDefinition",
     "com.azure.ai.inference.models.ImageEmbeddingInput": "AI.Model.ImageEmbeddingInput",
     "com.azure.ai.inference.models.ModelInfo": "AI.Model.ModelInfo",
-    "com.azure.ai.inference.models.ModelType": "AI.Model.ModelType"
+    "com.azure.ai.inference.models.ModelType": "AI.Model.ModelType",
+    "com.azure.ai.inference.models.StreamingChatChoiceUpdate": "AI.Model.StreamingChatChoiceUpdate",
+    "com.azure.ai.inference.models.StreamingChatCompletionsUpdate": "AI.Model.StreamingChatCompletionsUpdate",
+    "com.azure.ai.inference.models.StreamingChatResponseMessageUpdate": "AI.Model.StreamingChatResponseMessageUpdate",
+    "com.azure.ai.inference.models.StreamingChatResponseToolCallUpdate": "AI.Model.StreamingChatResponseToolCallUpdate"
   }
 }
