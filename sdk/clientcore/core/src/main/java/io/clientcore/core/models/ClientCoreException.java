@@ -68,9 +68,10 @@ public class ClientCoreException extends RuntimeException {
 
             return new ClientCoreException(message, e.getCause(), isRetryable);
         } else if (cause instanceof UncheckedIOException) {
-            return new ClientCoreException(message, cause.getCause(), isRetryable);
+            return new ClientCoreException(message == null ? cause.getMessage() : message, cause.getCause(),
+                isRetryable);
         }
-        return new ClientCoreException(null, cause, isRetryable);
+        return new ClientCoreException(message, cause, isRetryable);
     }
 
     /**
