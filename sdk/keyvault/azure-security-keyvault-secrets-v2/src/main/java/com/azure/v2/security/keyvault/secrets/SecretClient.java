@@ -59,7 +59,7 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  * their corresponding credential types in the
  * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">Azure Identity documentation"</a>.</p>
  *
- * <p><strong>Sample: Construct SecretClient</strong></p>
+ * <p><strong>Sample: Construct Secret Client</strong></p>
  *
  * <p>The following code sample demonstrates the creation of a {@link SecretClient}, using a {@link SecretClientBuilder}
  * to configure it.</p>
@@ -111,26 +111,14 @@ public final class SecretClient {
     private static final ClientLogger LOGGER = new ClientLogger(SecretClient.class);
 
     private final SecretClientImpl clientImpl;
-    private final String endpoint;
-
-    /**
-     * Gets the vault endpoint to which service requests are sent to.
-     *
-     * @return The vault endpoint.
-     */
-    public String getEndpoint() {
-        return endpoint;
-    }
 
     /**
      * Creates an instance of {@link SecretClient} that sends requests to the given endpoint.
      *
      * @param clientImpl The implementation client.
-     * @param endpoint The vault endpoint.
      */
-    SecretClient(SecretClientImpl clientImpl, String endpoint) {
+    SecretClient(SecretClientImpl clientImpl) {
         this.clientImpl = clientImpl;
-        this.endpoint = endpoint;
     }
 
     /**

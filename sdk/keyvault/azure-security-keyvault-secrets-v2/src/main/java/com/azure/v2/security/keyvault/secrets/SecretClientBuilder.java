@@ -47,8 +47,8 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  * {@link KeyVaultSecret secrets}. The client also supports listing {@link DeletedSecret deleted secrets} for a
  * soft-delete enabled key vault.</p>
  *
- * <p>The minimal configuration options required by {@link SecretClientBuilder secretClientBuilder} to build a
- * {@link SecretClient} are an {@link String endpoint} and {@link TokenCredential credential}.</p>
+ * <p>The minimal configuration options required by {@link SecretClientBuilder} to build a {@link SecretClient} are an
+ * {@link String endpoint} and {@link TokenCredential credential}.</p>
  *
  * <!-- src_embed com.v2.azure.security.keyvault.SecretClient.instantiation -->
  * <!-- end com.azure.v2.security.keyvault.SecretClient.instantiation -->
@@ -116,7 +116,7 @@ public final class SecretClientBuilder
      * {@link SecretClientBuilder#httpPipeline(HttpPipeline) pipeline} were not provided.
      */
     public SecretClient buildClient() {
-        return new SecretClient(buildImplClient(), endpoint);
+        return new SecretClient(buildImplClient());
     }
 
     private SecretClientImpl buildImplClient() {
