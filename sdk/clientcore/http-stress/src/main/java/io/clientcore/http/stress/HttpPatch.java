@@ -20,7 +20,6 @@ import io.clientcore.http.okhttp3.OkHttpHttpClientProvider;
 import io.clientcore.http.stress.util.TelemetryHelper;
 import reactor.core.publisher.Mono;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
@@ -64,8 +63,6 @@ public class HttpPatch extends ScenarioBase<StressOptions> {
             int responseCode = response.getStatusCode();
             assert responseCode == 200 : "Unexpected response code: " + responseCode;
             response.getValue().close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
         }
     }
 

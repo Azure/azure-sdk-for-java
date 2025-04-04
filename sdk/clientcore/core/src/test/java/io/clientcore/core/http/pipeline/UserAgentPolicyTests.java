@@ -9,6 +9,7 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.models.ClientCoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.configuration.Configuration;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -135,10 +136,10 @@ public class UserAgentPolicyTests {
         }
 
         @Override
-        public Response<BinaryData> send(HttpRequest request) throws IOException {
+        public Response<BinaryData> send(HttpRequest request) {
             if (retryCount < 5) {
                 retryCount++;
-                throw new IOException("Activating retry policy");
+                throw ClientCoreException.from(new IOException("Activating retry policy"));
             }
 
             validator.accept(request);

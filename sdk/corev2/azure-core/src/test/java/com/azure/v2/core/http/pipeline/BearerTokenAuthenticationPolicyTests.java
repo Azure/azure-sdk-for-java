@@ -18,8 +18,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.time.OffsetDateTime;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicReference;
@@ -44,8 +42,6 @@ public class BearerTokenAuthenticationPolicyTests {
         try (Response<BinaryData> response
             = pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost"))) {
             assertEquals(expectedStatusCode, response.getStatusCode());
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
         }
         assertEquals(expectedClaims, claims.get());
 

@@ -8,6 +8,7 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LogLevel;
+import io.clientcore.core.models.ClientCoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.http.netty.implementation.NettyHttpResponse;
 import io.netty.bootstrap.Bootstrap;
@@ -33,7 +34,6 @@ import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
@@ -56,7 +56,7 @@ class NettyHttpClient implements HttpClient {
     }
 
     @Override
-    public Response<BinaryData> send(HttpRequest request) throws IOException {
+    public Response<BinaryData> send(HttpRequest request) {
         URI uri = request.getUri();
         String host = uri.getHost();
         int port = uri.getPort() == -1 ? ("https".equalsIgnoreCase(uri.getScheme()) ? 443 : 80) : uri.getPort();
@@ -110,7 +110,7 @@ class NettyHttpClient implements HttpClient {
             channel.close();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw LOGGER.logThrowableAsError(new IOException("Request interrupted", e));
+            throw LOGGER.logThrowableAsError(ClientCoreException.from(e));
         }
 
         return responseReference.get();
