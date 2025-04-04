@@ -1743,7 +1743,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
 
         OpenAIFile openAIFile = client.uploadFile(fileDetails, purpose);
 
-        assertNotNull(openAIFile);
+        assertNotNull(openAIFile.getId());
         assertEquals("test-file.txt", openAIFile.getFilename());
         client.deleteFile(openAIFile.getId());
     }
