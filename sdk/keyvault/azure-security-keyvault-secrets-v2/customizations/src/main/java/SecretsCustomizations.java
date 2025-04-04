@@ -20,16 +20,13 @@ public class SecretsCustomizations extends Customization {
             .getClass("KeyVaultServiceVersion")
             .rename("SecretServiceVersion");
 
-        // Move *ListResult files.
         moveListResultFiles(libraryCustomization);
-
-        // Customize the module-info.java file.
         customizeModuleInfo(libraryCustomization.getRawEditor());
     }
 
     private static void removeFiles(Editor editor) {
-        //editor.removeFile("src/main/java/com/azure/v2/security/keyvault/secrets/SecretClient.java");
-        //editor.removeFile("src/main/java/com/azure/v2/security/keyvault/secrets/SecretClientBuilder.java");
+        editor.removeFile("src/main/java/com/azure/v2/security/keyvault/secrets/SecretClient.java");
+        editor.removeFile("src/main/java/com/azure/v2/security/keyvault/secrets/SecretClientBuilder.java");
         editor.removeFile("src/main/java/com/azure/v2/security/keyvault/secrets/implementation/implementation/models/package-info.java");
     }
 

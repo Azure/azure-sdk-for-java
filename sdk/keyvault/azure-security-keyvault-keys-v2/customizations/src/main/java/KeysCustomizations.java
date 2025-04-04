@@ -20,10 +20,7 @@ public class KeysCustomizations extends Customization {
             .getClass("KeyVaultServiceVersion")
             .rename("KeyServiceVersion");
 
-        // Move *ListResult files.
         moveListResultFiles(libraryCustomization);
-
-        // Customize the module-info.java file.
         customizeModuleInfo(libraryCustomization.getRawEditor());
     }
 
