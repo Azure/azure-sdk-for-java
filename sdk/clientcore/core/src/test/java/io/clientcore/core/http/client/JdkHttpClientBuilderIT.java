@@ -47,7 +47,6 @@ public class JdkHttpClientBuilderIT {
         server = new LocalTestServer((req, resp, requestBody) -> {
             if ("GET".equalsIgnoreCase(req.getMethod()) && SERVICE_ENDPOINT.equals(req.getServletPath())) {
                 resp.setStatus(200);
-                resp.flushBuffer();
             } else {
                 throw new ServletException("Unexpected request: " + req.getMethod() + " " + req.getServletPath());
             }

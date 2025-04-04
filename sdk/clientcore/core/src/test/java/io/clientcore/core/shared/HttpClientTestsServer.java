@@ -97,7 +97,6 @@ public class HttpClientTestsServer {
                 // This uses a size too large for a byte[], so if the incorrect handling is used an OutOfMemoryError
                 // will be thrown.
                 resp.setHeader("Content-Length", "10737418240"); // 10 GB
-                resp.flushBuffer();
             } else if (put && path.startsWith("/voiderrorreturned")) {
                 resp.setStatus(400);
                 resp.getOutputStream().write("void exception body thrown".getBytes(StandardCharsets.UTF_8));
