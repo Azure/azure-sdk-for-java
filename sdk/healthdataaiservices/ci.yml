@@ -39,13 +39,10 @@ parameters:
   type: boolean
   default: false
 
-# Pending for PR https://github.com/Azure/azure-sdk-for-java/pull/42783 to be merged.
-# Then we can remove IgnoreVerifyTypeSpecCodeGenerationError.
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: healthdataaiservices
-    IgnoreVerifyTypeSpecCodeGenerationError: true
     Artifacts:
       - name: azure-health-deidentification
         groupId: com.azure
