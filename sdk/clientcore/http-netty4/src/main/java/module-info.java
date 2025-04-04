@@ -20,7 +20,7 @@ module io.clientcore.http.netty4 {
 
     exports io.clientcore.http.netty4;
 
-    provides io.clientcore.core.http.client.HttpClientProvider with NettyHttpClientProvider;
+    provides io.clientcore.core.http.client.HttpClientProvider with io.clientcore.http.netty4.NettyHttpClientProvider;
 
     uses io.clientcore.core.http.client.HttpClientProvider;
 }

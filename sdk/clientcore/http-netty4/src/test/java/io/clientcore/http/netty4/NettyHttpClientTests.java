@@ -10,7 +10,7 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.ProxyOptions;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.ProgressReporter;
@@ -112,8 +112,9 @@ public class NettyHttpClientTests {
             .setUri(uri(SHORT_POST_BODY_PATH))
             .setHeaders(new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(SHORT_BODY.length)))
             .setBody(BinaryData.fromBytes(SHORT_BODY))
-            .setRequestOptions(
-                new RequestOptions().setProgressReporter(ProgressReporter.withProgressListener(progress::add)));
+            .setContext(RequestContext.builder()
+                .putMetadata("progressReporter", ProgressReporter.withProgressListener(progress::add))
+                .build());
 
         try (Response<BinaryData> response = client.send(request)) {
             assertEquals(200, response.getStatusCode());

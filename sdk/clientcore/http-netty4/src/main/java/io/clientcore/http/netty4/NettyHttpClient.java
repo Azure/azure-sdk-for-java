@@ -92,8 +92,9 @@ class NettyHttpClient implements HttpClient {
         String host = uri.getHost();
         int port = uri.getPort() == -1 ? ("https".equalsIgnoreCase(uri.getScheme()) ? 443 : 80) : uri.getPort();
         boolean isHttps = "https".equalsIgnoreCase(uri.getScheme());
-        ProgressReporter progressReporter
-            = (request.getRequestOptions() == null) ? null : request.getRequestOptions().getProgressReporter();
+        ProgressReporter progressReporter = (request.getContext() == null)
+            ? null
+            : (ProgressReporter) request.getContext().getMetadata("progressReporter");
         CoreProgressAndTimeoutHandler progressAndTimeoutHandler = new CoreProgressAndTimeoutHandler(progressReporter,
             writeTimeoutMillis, responseTimeoutMillis, readTimeoutMillis);
 

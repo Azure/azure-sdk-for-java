@@ -348,7 +348,7 @@ public final class HttpRequestContext {
 
         // This is the type of the parameter that has been annotated with @BodyParam.
         // This is used to determine which setBody method to call on HttpRequest.
-        private final String parameterType;
+        private final TypeMirror parameterType;
 
         // This is the parameter name, so we can refer to it when setting the body on the HttpRequest.
         private final String parameterName;
@@ -360,7 +360,7 @@ public final class HttpRequestContext {
          * @param parameterType the parameter type.
          * @param parameterName the parameter name.
          */
-        public Body(String contentType, String parameterType, String parameterName) {
+        public Body(String contentType, TypeMirror parameterType, String parameterName) {
             this.contentType = contentType;
             this.parameterType = parameterType;
             this.parameterName = parameterName;
@@ -380,7 +380,7 @@ public final class HttpRequestContext {
          *
          * @return the parameter type.
          */
-        public String getParameterType() {
+        public TypeMirror getParameterType() {
             return parameterType;
         }
 
