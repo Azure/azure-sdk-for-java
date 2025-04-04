@@ -88,11 +88,7 @@ public class RetryPolicyTests {
             int count = attemptCount.getAndIncrement();
 
             if (count == 0) {
-                try {
-                    throw new IOException();
-                } catch (IOException e) {
-                    throw CoreException.from(e);
-                }
+                throw CoreException.from(new IOException());
             } else {
                 return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
             }
@@ -101,6 +97,22 @@ public class RetryPolicyTests {
         try (Response<?> response = sendRequest(pipeline)) {
             assertEquals(200, response.getStatusCode());
         }
+    }
+
+    @Test
+    public void defaultRetryPolicyDoesNotRetryUnretryable() {
+        AtomicInteger attemptCount = new AtomicInteger();
+        HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(new HttpRetryPolicy()).httpClient(request -> {
+            int count = attemptCount.getAndIncrement();
+
+            if (count == 0) {
+                throw CoreException.from(new IOException(), false);
+            } else {
+                return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
+            }
+        }).build();
+
+        assertThrows(CoreException.class, () -> sendRequest(pipeline));
     }
 
     @ParameterizedTest

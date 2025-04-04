@@ -75,7 +75,7 @@ public class ClientCoreExceptionTests {
     @Test
     public void wrapClientCoreExceptionNonRetryable() {
         ClientCoreException exception = ClientCoreException.from(new IOException("Test exception"));
-        ClientCoreException nonRetryable = ClientCoreException.from(exception, false);
+        ClientCoreException nonRetryable = ClientCoreException.from(null, exception, false);
         assertNotSame(exception, nonRetryable);
         assertEquals(exception.getMessage(), nonRetryable.getMessage());
         assertSame(exception.getCause(), nonRetryable.getCause());
@@ -96,7 +96,7 @@ public class ClientCoreExceptionTests {
     public void uncheckedIOExceptionWithMessage() {
         IOException ioException = new IOException("Test exception");
         UncheckedIOException uncheckedIOException = new UncheckedIOException("A better message", ioException);
-        ClientCoreException exception = ClientCoreException.from(uncheckedIOException, false);
+        ClientCoreException exception = ClientCoreException.from(null, uncheckedIOException, false);
         assertSame(ioException, exception.getCause());
         assertEquals(uncheckedIOException.getMessage(), exception.getMessage());
         assertFalse(exception.isRetryable());
@@ -113,7 +113,7 @@ public class ClientCoreExceptionTests {
             Arguments.of(new FileNotFoundException("Test exception"), false),
             Arguments.of(new UncheckedIOException("Test exception", new IOException("Test exception")), true),
             Arguments.of(ClientCoreException.from("Test exception", new FileNotFoundException(), true), true),
-            Arguments.of(ClientCoreException.from(new IOException("Test exception"), false), false));
+            Arguments.of(ClientCoreException.from(null, new IOException("Test exception"), false), false));
     }
 
     @Test

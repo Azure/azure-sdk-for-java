@@ -80,6 +80,7 @@ public class OAuthBearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
         String authHeader = httpResponse.getHeaders().getValue(HttpHeaderName.WWW_AUTHENTICATE);
         if (httpResponse.getStatusCode() == 401 && authHeader != null) {
             if (authorizeRequestOnChallenge(httpRequest, httpResponse)) {
+                // body needs to be closed or read to the end to release the connection
                 httpResponse.close();
                 return nextPolicy.process();
             } else {
