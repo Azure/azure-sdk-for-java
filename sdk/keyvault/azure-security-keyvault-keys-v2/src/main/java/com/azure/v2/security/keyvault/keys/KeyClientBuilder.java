@@ -47,8 +47,8 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  * rotating the {@link KeyVaultKey keys}. The client also supports listing {@link DeletedKey deleted keys} for a
  * soft-delete enabled key vault or managed HSM.
  *
- * <p>The minimal configuration options required by {@link KeyClientBuilder keyClientBuilder} to build a
- * {@link KeyClient} are an {@link String endpoint} and {@link TokenCredential credential}.</p>
+ * <p>The minimal configuration options required by {@link KeyClientBuilder} to build a {@link KeyClient} are an
+ * {@link String endpoint} and {@link TokenCredential credential}.</p>
  *
  * <!-- src_embed com.v2.azure.security.keyvault.keys.KeyClient.instantiation -->
  * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.instantiation -->
@@ -116,10 +116,6 @@ public final class KeyClientBuilder
      * {@link KeyClientBuilder#httpPipeline(HttpPipeline) pipeline} were not provided.
      */
     public KeyClient buildClient() {
-        return new KeyClient(buildImplClient(), endpoint);
-    }
-
-    private KeyClientImpl buildImplClient() {
         Configuration configuration = this.configuration == null
             ? Configuration.getGlobalConfiguration()
             : this.configuration;
@@ -128,14 +124,15 @@ public final class KeyClientBuilder
 
         if (endpoint == null) {
             throw LOGGER.logThrowableAsError(new IllegalStateException(
-                "An Azure Key Vault endpoint is required. You can set one by using the KeyClientBuilder.endpoint()"
-                    + "method or by setting the environment variable 'AZURE_KEYVAULT_ENDPOINT'."));
+                "An Azure Key Vault or Managed HSM endpoint is required. You can set one by using the"
+                    + " KeyClientBuilder.endpoint() method or by setting the environment variable"
+                    + " 'AZURE_KEYVAULT_ENDPOINT'."));
         }
 
         KeyServiceVersion version = this.version == null ? KeyServiceVersion.getLatest() : this.version;
 
         if (pipeline != null) {
-            return new KeyClientImpl(pipeline, endpoint, version);
+            return new KeyClient(new KeyClientImpl(pipeline, endpoint, version));
         }
 
         if (credential == null) {
@@ -167,7 +164,7 @@ public final class KeyClientBuilder
 
         HttpPipeline builtPipeline = httpPipelineBuilder.httpClient(httpClient).build();
 
-        return new KeyClientImpl(builtPipeline, endpoint, version);
+        return new KeyClient(new KeyClientImpl(builtPipeline, endpoint, version));
     }
 
     /**

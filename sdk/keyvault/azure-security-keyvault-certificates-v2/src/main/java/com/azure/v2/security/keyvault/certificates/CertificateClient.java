@@ -92,7 +92,7 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  * their corresponding credential types in the
  * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">Azure Identity documentation"</a>.</p>
  *
- * <p><strong>Sample: Construct CertificateClient</strong></p>
+ * <p><strong>Sample: Construct Certificate Client</strong></p>
  * <p>The following code sample demonstrates the creation of a {@link CertificateClient}, using the
  * {@link CertificateClientBuilder} to configure it.</p>
  * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.instantiation -->
@@ -143,26 +143,14 @@ public final class CertificateClient {
     private static final ClientLogger LOGGER = new ClientLogger(CertificateClient.class);
 
     private final CertificateClientImpl clientImpl;
-    private final String endpoint;
-
-    /**
-     * Get the vault endpoint to which service requests are sent to.
-     *
-     * @return The vault endpoint.
-     */
-    public String getEndpoint() {
-        return endpoint;
-    }
 
     /**
      * Creates an instance of {@link CertificateClient} that sends requests to the given endpoint.
      *
      * @param clientImpl The implementation client.
-     * @param endpoint The vault endpoint.
      */
-    CertificateClient(CertificateClientImpl clientImpl, String endpoint) {
+    CertificateClient(CertificateClientImpl clientImpl) {
         this.clientImpl = clientImpl;
-        this.endpoint = endpoint;
     }
 
     /**
@@ -949,7 +937,7 @@ public final class CertificateClient {
     }
 
     /**
-     * List all versions of the specified certificate in the key vault. Each certificate is represented by a properties
+     * Lists all versions of the specified certificate in the key vault. Each certificate is represented by a properties
      * object containing the certificate identifier, thumbprint, and attributes. The policy and individual versions are
      * not included in the response. This operation requires the {@code certificates/list} permission.
      *
@@ -979,7 +967,7 @@ public final class CertificateClient {
     }
 
     /**
-     * List all versions of the specified certificate in the key vault. Each certificate is represented by a properties
+     * Lists all versions of the specified certificate in the key vault. Each certificate is represented by a properties
      * object containing the certificate identifier, thumbprint, and attributes. The policy and individual versions are
      * not included in the response. This operation requires the {@code certificates/list} permission.
      *
@@ -1366,7 +1354,7 @@ public final class CertificateClient {
     }
 
     /**
-     * List all the certificate issuers in the key vault. Each issuer is represented by a properties object containing
+     * Lists all the certificate issuers in the key vault. Each issuer is represented by a properties object containing
      * the certificate issuer identifier and provider. This operation requires the
      * {@code certificates/manageissuers/getissuers} permission.
      *
@@ -1390,7 +1378,7 @@ public final class CertificateClient {
     }
 
     /**
-     * List all the certificate issuers in the key vault. Each issuer is represented by a properties object containing
+     * Lists all the certificate issuers in the key vault. Each issuer is represented by a properties object containing
      * the certificate issuer identifier and provider. This operation requires the
      * {@code certificates/manageissuers/getissuers} permission.
      *
