@@ -55,7 +55,7 @@ public class CollectionCrudTest extends TestSuiteBase {
 
     @Factory(dataProvider = "clientBuildersWithDirect")
     public CollectionCrudTest(CosmosClientBuilder clientBuilder) {
-        super(clientBuilder.credential(TestConfigurations.AZURE_CREDENTIAL));
+        super(clientBuilder);
         this.subscriberValidationTimeout = TIMEOUT;
     }
 

@@ -1,7 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos.implementation;
+package com.azure.cosmos;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.guava25.base.Strings;
 import org.slf4j.Logger;
@@ -28,12 +29,14 @@ import java.util.Properties;
  *
  * If none of the above is set, emulator endpoint will be used.
  */
-public final class TestConfigurations {
-    private static Logger logger = LoggerFactory.getLogger(TestConfigurations.class);
+public final class FabricTestConfigurations {
+    private static Logger logger = LoggerFactory.getLogger(FabricTestConfigurations.class);
     private static Properties properties = loadProperties();
 
     private final static String COSMOS_EMULATOR_KEY = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
     private final static String COSMOS_EMULATOR_HOST = "https://localhost:8081/";
+    public final static TokenCredential TOKEN_CREDENTIAL = new FabricTokenCredential();
+    public final static String FABRIC_COSMOS_ENDPOINT = "";
 
     // REPLACE MASTER_KEY and HOST with values from your Azure Cosmos DB account.
     // The default values are credentials of the local emulator, which are not used in any production environment.

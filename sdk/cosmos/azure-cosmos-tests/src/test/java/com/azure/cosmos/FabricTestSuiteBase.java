@@ -1,27 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.cosmos.rx;
+package com.azure.cosmos;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.ConsistencyLevel;
-import com.azure.cosmos.CosmosAsyncClient;
-import com.azure.cosmos.CosmosAsyncClientTest;
-import com.azure.cosmos.CosmosAsyncContainer;
-import com.azure.cosmos.CosmosAsyncDatabase;
-import com.azure.cosmos.CosmosAsyncUser;
-import com.azure.cosmos.CosmosBridgeInternal;
-import com.azure.cosmos.CosmosClient;
-import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.CosmosDatabase;
-import com.azure.cosmos.CosmosDatabaseForTest;
-import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfigBuilder;
-import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.CosmosResponseValidator;
-import com.azure.cosmos.DirectConnectionConfig;
-import com.azure.cosmos.GatewayConnectionConfig;
-import com.azure.cosmos.TestNGLogListener;
-import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.FailureValidator;
@@ -42,7 +23,6 @@ import com.azure.cosmos.models.CompositePathSortOrder;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerRequestOptions;
 import com.azure.cosmos.models.CosmosDatabaseProperties;
-import com.azure.cosmos.models.CosmosDatabaseResponse;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -57,8 +37,9 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PartitionKeyDefinitionVersion;
 import com.azure.cosmos.models.PartitionKind;
-import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.rx.CosmosItemResponseValidator;
+import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -96,7 +77,7 @@ import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.spy;
 
 @Listeners({TestNGLogListener.class})
-public class TestSuiteBase extends CosmosAsyncClientTest {
+public class FabricTestSuiteBase extends CosmosAsyncClientTest {
 
     private static final int DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL = 500;
     private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -121,13 +102,14 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     protected int subscriberValidationTimeout = TIMEOUT;
 
+    public static final String DATABASE_ID = "dkunda-fabric-cdb";
     private static CosmosAsyncDatabase SHARED_DATABASE;
     private static CosmosAsyncContainer SHARED_MULTI_PARTITION_COLLECTION_WITH_ID_AS_PARTITION_KEY;
     private static CosmosAsyncContainer SHARED_MULTI_PARTITION_COLLECTION;
     private static CosmosAsyncContainer SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES;
     private static CosmosAsyncContainer SHARED_SINGLE_PARTITION_COLLECTION;
 
-    public TestSuiteBase(CosmosClientBuilder clientBuilder) {
+    public FabricTestSuiteBase(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
 
@@ -169,7 +151,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         credential = new AzureKeyCredential(TestConfigurations.MASTER_KEY);
     }
 
-    protected TestSuiteBase() {
+    protected FabricTestSuiteBase() {
         logger.debug("Initializing {} ...", this.getClass().getSimpleName());
     }
 
@@ -177,72 +159,22 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         return list != null ? ImmutableList.copyOf(list) : null;
     }
 
-    private static class DatabaseManagerImpl implements CosmosDatabaseForTest.DatabaseManager {
-        public static DatabaseManagerImpl getInstance(CosmosAsyncClient client) {
-            return new DatabaseManagerImpl(client);
-        }
-
-        private final CosmosAsyncClient client;
-
-        private DatabaseManagerImpl(CosmosAsyncClient client) {
-            this.client = client;
-        }
-
-        @Override
-        public CosmosPagedFlux<CosmosDatabaseProperties> queryDatabases(SqlQuerySpec query) {
-            return client.queryDatabases(query, null);
-        }
-
-        @Override
-        public Mono<CosmosDatabaseResponse> createDatabase(CosmosDatabaseProperties databaseDefinition) {
-            return client.createDatabase(databaseDefinition);
-        }
-
-        @Override
-        public CosmosAsyncDatabase getDatabase(String id) {
-            return client.getDatabase(id);
-        }
-    }
-
-    @BeforeSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator", "emulator-vnext", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many"}, timeOut = SUITE_SETUP_TIMEOUT)
+    @BeforeSuite(groups = {"fabric-test"}, timeOut = SUITE_SETUP_TIMEOUT)
     public void beforeSuite() {
-
         logger.info("beforeSuite Started");
-
-        try (CosmosAsyncClient houseKeepingClient = createGatewayHouseKeepingDocumentClient(true).buildAsyncClient()) {
-            CosmosDatabaseForTest dbForTest = CosmosDatabaseForTest.create(DatabaseManagerImpl.getInstance(houseKeepingClient));
-            SHARED_DATABASE = dbForTest.createdDatabase;
-            CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
-            SHARED_MULTI_PARTITION_COLLECTION = createCollection(SHARED_DATABASE, getCollectionDefinitionWithRangeRangeIndex(), options, 10100);
-            SHARED_MULTI_PARTITION_COLLECTION_WITH_ID_AS_PARTITION_KEY = createCollection(SHARED_DATABASE, getCollectionDefinitionWithRangeRangeIndexWithIdAsPartitionKey(), options, 10100);
-            SHARED_MULTI_PARTITION_COLLECTION_WITH_COMPOSITE_AND_SPATIAL_INDEXES = createCollection(SHARED_DATABASE, getCollectionDefinitionMultiPartitionWithCompositeAndSpatialIndexes(), options);
-            SHARED_SINGLE_PARTITION_COLLECTION = createCollection(SHARED_DATABASE, getCollectionDefinitionWithRangeRangeIndex(), options, 6000);
-        }
     }
 
-    @BeforeSuite(groups = {"unit"})
+    @BeforeSuite(groups = {"fabric-test"})
     public static void parallelizeUnitTests(ITestContext context) {
         // TODO: Parallelization was disabled due to flaky tests. Re-enable after fixing the flaky tests.
-//        context.getSuite().getXmlSuite().setParallel(XmlSuite.ParallelMode.CLASSES);
-//        context.getSuite().getXmlSuite().setThreadCount(Runtime.getRuntime().availableProcessors());
+        //        context.getSuite().getXmlSuite().setParallel(XmlSuite.ParallelMode.CLASSES);
+        //        context.getSuite().getXmlSuite().setThreadCount(Runtime.getRuntime().availableProcessors());
     }
 
-    @AfterSuite(groups = {"fast", "long", "direct", "multi-region", "multi-master", "flaky-multi-master", "emulator", "split", "query", "cfp-split", "circuit-breaker-misc-gateway", "circuit-breaker-misc-direct", "circuit-breaker-read-all-read-many"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
+    @AfterSuite(groups = {"fabric-test"}, timeOut = SUITE_SHUTDOWN_TIMEOUT)
     public void afterSuite() {
 
         logger.info("afterSuite Started");
-
-        try (CosmosAsyncClient houseKeepingClient = createGatewayHouseKeepingDocumentClient(true).buildAsyncClient()) {
-            safeDeleteDatabase(SHARED_DATABASE);
-            CosmosDatabaseForTest.cleanupStaleTestDatabases(DatabaseManagerImpl.getInstance(houseKeepingClient));
-        }
-    }
-
-    @AfterSuite(groups = { "emulator-vnext" }, timeOut = SUITE_SHUTDOWN_TIMEOUT)
-    public void afterSuitEmulatorVNext() {
-        // can not use the after suite method directly as for vnext, query databases is not implemented, so it will error out
-        logger.info("afterSuite for emulator vnext group started. ");
-        safeDeleteDatabase(SHARED_DATABASE);
     }
 
     protected static void cleanUpContainer(CosmosAsyncContainer cosmosContainer) {
@@ -259,28 +191,28 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         int maxItemCount = 100;
 
         cosmosContainer.queryItems("SELECT * FROM root", options, InternalObjectNode.class)
-            .byPage(maxItemCount)
-            .publishOn(Schedulers.parallel())
-            .flatMap(page -> Flux.fromIterable(page.getResults()))
-            .flatMap(doc -> {
+                       .byPage(maxItemCount)
+                       .publishOn(Schedulers.parallel())
+                       .flatMap(page -> Flux.fromIterable(page.getResults()))
+                       .flatMap(doc -> {
 
-                PartitionKey partitionKey = null;
+                           PartitionKey partitionKey = null;
 
-                Object propertyValue = null;
-                if (paths != null && !paths.isEmpty()) {
-                    List<String> pkPath = PathParser.getPathParts(paths.get(0));
-                    propertyValue = doc.getObjectByPath(pkPath);
-                    if (propertyValue == null) {
-                        partitionKey = PartitionKey.NONE;
-                    } else {
-                        partitionKey = new PartitionKey(propertyValue);
-                    }
-                } else {
-                    partitionKey = new PartitionKey(null);
-                }
+                           Object propertyValue = null;
+                           if (paths != null && !paths.isEmpty()) {
+                               List<String> pkPath = PathParser.getPathParts(paths.get(0));
+                               propertyValue = doc.getObjectByPath(pkPath);
+                               if (propertyValue == null) {
+                                   partitionKey = PartitionKey.NONE;
+                               } else {
+                                   partitionKey = new PartitionKey(propertyValue);
+                               }
+                           } else {
+                               partitionKey = new PartitionKey(null);
+                           }
 
-                return cosmosContainer.deleteItem(doc.getId(), partitionKey);
-            }).then().block();
+                           return cosmosContainer.deleteItem(doc.getId(), partitionKey);
+                       }).then().block();
     }
 
     protected static void truncateCollection(CosmosAsyncContainer cosmosContainer) {
@@ -604,7 +536,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         return Flux.merge(Flux.fromIterable(result), concurrencyLevel);
     }
     public <T> List<T> bulkInsertBlocking(CosmosAsyncContainer cosmosContainer,
-                                                         List<T> documentDefinitionList) {
+                                          List<T> documentDefinitionList) {
         return bulkInsert(cosmosContainer, documentDefinitionList, DEFAULT_BULK_INSERT_CONCURRENCY_LEVEL)
             .publishOn(Schedulers.parallel())
             .map(itemResponse -> itemResponse.getItem())
@@ -726,8 +658,8 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         CosmosAsyncDatabase database = client.getDatabase(databaseId);
         database.read().block();
         List<CosmosContainerProperties> res = database.queryContainers(String.format("SELECT * FROM root r where r.id = '%s'", collectionId), null)
-            .collectList()
-            .block();
+                                                      .collectList()
+                                                      .block();
 
         if (!res.isEmpty()) {
             deleteCollection(database, collectionId);
@@ -740,6 +672,10 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     public static void deleteCollection(CosmosAsyncContainer cosmosContainer) {
         cosmosContainer.delete().block();
+    }
+
+    public static void deleteCollection(CosmosContainer cosmosContainer) {
+        cosmosContainer.delete();
     }
 
     public static void deleteDocumentIfExists(CosmosAsyncClient client, String databaseId, String collectionId, String docId) {
@@ -785,6 +721,15 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         cosmosContainer.deleteItem(documentId, PartitionKey.NONE, options).block();
     }
 
+    public static void deleteDocument(CosmosContainer cosmosContainer, String documentId) {
+        CosmosItemRequestOptions options = new CosmosItemRequestOptions()
+            .setCosmosEndToEndOperationLatencyPolicyConfig(
+                new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofHours(1))
+                    .build()
+            );
+        cosmosContainer.deleteItem(documentId, PartitionKey.NONE, options);
+    }
+
     public static void deleteUserIfExists(CosmosAsyncClient client, String databaseId, String userId) {
         CosmosAsyncDatabase database = client.getDatabase(databaseId);
         client.getDatabase(databaseId).read().block();
@@ -825,8 +770,8 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
     static protected CosmosAsyncDatabase createDatabaseIfNotExists(CosmosAsyncClient client, String databaseId) {
         List<CosmosDatabaseProperties> res = client.queryDatabases(String.format("SELECT * FROM r where r.id = '%s'", databaseId), null)
-            .collectList()
-            .block();
+                                                   .collectList()
+                                                   .block();
         if (res.size() != 0) {
             CosmosAsyncDatabase database = client.getDatabase(databaseId);
             database.read().block();
@@ -862,8 +807,8 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     static protected void safeDeleteAllCollections(CosmosAsyncDatabase database) {
         if (database != null) {
             List<CosmosContainerProperties> collections = database.readAllContainers()
-                .collectList()
-                .block();
+                                                                  .collectList()
+                                                                  .block();
 
             for(CosmosContainerProperties collection: collections) {
                 database.getContainer(collection.getId()).delete().block();
@@ -1025,12 +970,12 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     public <T> void validateQuerySuccess(Flux<FeedResponse<T>> flowable,
-                                                          FeedResponseListValidator<T> validator) {
+                                         FeedResponseListValidator<T> validator) {
         validateQuerySuccess(flowable, validator, subscriberValidationTimeout);
     }
 
     public static <T> void validateQuerySuccess(Flux<FeedResponse<T>> flowable,
-                                                                 FeedResponseListValidator<T> validator, long timeout) {
+                                                FeedResponseListValidator<T> validator, long timeout) {
 
         TestSubscriber<FeedResponse<T>> testSubscriber = new TestSubscriber<>();
 
@@ -1091,7 +1036,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     public static <T> void validateQueryFailure(Flux<FeedResponse<T>> flowable,
-                                                                 FailureValidator validator, long timeout) {
+                                                FailureValidator validator, long timeout) {
 
         TestSubscriber<FeedResponse<T>> testSubscriber = new TestSubscriber<>();
 
@@ -1114,6 +1059,20 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     }
 
     @DataProvider
+    public static Object[][] clientBuildersWithGatewayForFabric() {
+        return new Object[][]{{createGatewayForFabric()}};
+    }
+
+    public static CosmosClientBuilder createGatewayForFabric() {
+        return new CosmosClientBuilder()
+            .endpoint(FabricTestConfigurations.FABRIC_COSMOS_ENDPOINT)
+            .credential(FabricTestConfigurations.TOKEN_CREDENTIAL)
+            .contentResponseOnWriteEnabled(true)
+            .consistencyLevel(ConsistencyLevel.SESSION)
+            .gatewayMode();
+    }
+
+    @DataProvider
     public static Object[][] clientBuildersWithSessionConsistency() {
         return new Object[][]{
             {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.TCP, false, null, true, true)},
@@ -1124,7 +1083,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
     @DataProvider
     public static Object[][] clientBuilderSolelyDirectWithSessionConsistency() {
         return new Object[][]{
-                {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.TCP, false, null, true, true)}
+            {createDirectRxDocumentClient(ConsistencyLevel.SESSION, Protocol.TCP, false, null, true, true)}
         };
     }
 
@@ -1472,12 +1431,12 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
 
         GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
         CosmosClientBuilder builder = new CosmosClientBuilder().endpoint(endpoint)
-            .credential(credential)
-            .gatewayMode(gatewayConnectionConfig)
-            .multipleWriteRegionsEnabled(multiMasterEnabled)
-            .preferredRegions(preferredRegions)
-            .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
-            .consistencyLevel(consistencyLevel);
+                                                               .credential(credential)
+                                                               .gatewayMode(gatewayConnectionConfig)
+                                                               .multipleWriteRegionsEnabled(multiMasterEnabled)
+                                                               .preferredRegions(preferredRegions)
+                                                               .contentResponseOnWriteEnabled(contentResponseOnWriteEnabled)
+                                                               .consistencyLevel(consistencyLevel);
         ImplementationBridgeHelpers
             .CosmosClientBuilderHelper
             .getCosmosClientBuilderAccessor()
@@ -1519,7 +1478,7 @@ public class TestSuiteBase extends CosmosAsyncClientTest {
         }
 
         Configs configs = spy(new Configs());
-        doAnswer((Answer<Protocol>)invocation -> protocol).when(configs).getProtocol();
+        doAnswer((Answer<Protocol>) invocation -> protocol).when(configs).getProtocol();
 
         return injectConfigs(builder, configs);
     }
