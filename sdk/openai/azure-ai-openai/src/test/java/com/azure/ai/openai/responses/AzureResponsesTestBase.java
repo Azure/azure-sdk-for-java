@@ -14,6 +14,8 @@ import com.azure.ai.openai.responses.models.ResponsesItem;
 import com.azure.ai.openai.responses.models.ResponsesResponse;
 import com.azure.ai.openai.responses.models.ResponsesStreamEvent;
 import com.azure.ai.openai.responses.models.ResponsesUserMessage;
+import com.azure.ai.openai.responses.models.ResponsesAssistantMessage;
+import com.azure.ai.openai.responses.models.ResponsesOutputContentText;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.http.HttpClient;
@@ -28,7 +30,11 @@ import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.function.Consumer;
 
 import static com.azure.ai.openai.responses.TestUtils.FAKE_API_KEY;
@@ -39,6 +45,8 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AzureResponsesTestBase extends TestProxyTestBase {
+
+    private static final String MS_LOGO_PNG = "ms_logo.png";
 
     private ResponsesClientBuilder getBuilderForTests(HttpClient httpClient,
         AzureResponsesServiceVersion serviceVersion) {
@@ -230,4 +238,20 @@ public class AzureResponsesTestBase extends TestProxyTestBase {
         assertNotNull(responseItem.getId());
         assertNotNull(responseItem.getType());
     }
+
+    public static void openImageFileBase64Runner(Consumer<String> testRunner) throws IOException {
+        byte[] imageBytes = Files.readAllBytes(Paths.get("src/test/resources/" + MS_LOGO_PNG));
+        String base64Image = Base64.getEncoder().encodeToString(imageBytes);
+        testRunner.accept(base64Image);
+    }
+
+    static void assertAssistantMessage(ResponsesAssistantMessage assistantMessage) {
+        assertNotNull(assistantMessage);
+    }
+
+    static void assertOutputContentText(ResponsesOutputContentText outputContent) {
+        assertNotNull(outputContent);
+        assertNotNull(outputContent.getText());
+    }
+
 }
