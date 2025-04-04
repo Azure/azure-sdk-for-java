@@ -18,10 +18,12 @@ import java.io.UncheckedIOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 
 import static io.clientcore.http.netty.implementation.NettyUtility.awaitLatch;
+import static io.clientcore.http.netty.implementation.NettyUtility.writeEagerContentsToStreamAndRelease;
 
 final class NettyChannelBinaryData extends BinaryData {
     private static final ClientLogger LOGGER = new ClientLogger(NettyChannelBinaryData.class);
@@ -29,14 +31,14 @@ final class NettyChannelBinaryData extends BinaryData {
     private static final String TOO_LARGE_FOR_BYTE_ARRAY
         = "The content length is too large for a byte array. Content length is: ";
 
-    private final HttpContent firstContent;
+    private final List<HttpContent> eagerContents;
     private final Channel channel;
     private final Long length;
 
     private volatile byte[] bytes;
 
-    NettyChannelBinaryData(HttpContent firstContent, Channel channel, Long length) {
-        this.firstContent = firstContent;
+    NettyChannelBinaryData(List<HttpContent> eagerContents, Channel channel, Long length) {
+        this.eagerContents = eagerContents;
         this.channel = channel;
         this.length = length;
     }
@@ -50,18 +52,18 @@ final class NettyChannelBinaryData extends BinaryData {
         if (bytes == null) {
             CountDownLatch latch = new CountDownLatch(1);
             ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            if (firstContent != null && firstContent.content() != null) {
-                // If the first content is not null, we need to add it to the output stream.
-                try {
-                    firstContent.content().readBytes(outputStream, firstContent.content().readableBytes());
-                } catch (IOException ex) {
-                    ReferenceCountUtil.release(firstContent);
-                    throw new UncheckedIOException(ex);
+            try {
+                writeEagerContentsToStreamAndRelease(eagerContents, outputStream);
+            } catch (IOException ex) {
+                channel.close();
+                throw new UncheckedIOException(ex);
+            } finally {
+                // Release the contents of the eager contents list.
+                for (HttpContent content : eagerContents) {
+                    if (content.refCnt() > 0) {
+                        ReferenceCountUtil.release(content);
+                    }
                 }
-            }
-
-            if (firstContent != null) {
-                ReferenceCountUtil.release(firstContent);
             }
 
             channel.pipeline().addLast(new EagerConsumeNetworkResponseHandler(latch, buf -> {
@@ -125,6 +127,12 @@ final class NettyChannelBinaryData extends BinaryData {
 
     @Override
     public void close() throws IOException {
+        // Release the contents of the eager contents list.
+        for (HttpContent content : eagerContents) {
+            if (content.refCnt() > 0) {
+                ReferenceCountUtil.safeRelease(content);
+            }
+        }
         channel.close();
     }
 }

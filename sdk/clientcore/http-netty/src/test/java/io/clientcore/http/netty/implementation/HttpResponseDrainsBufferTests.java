@@ -32,6 +32,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
@@ -156,12 +157,16 @@ public class HttpResponseDrainsBufferTests {
         throws InterruptedException, ExecutionException {
         HttpClient httpClient = new NettyHttpClientProvider().getSharedInstance();
 
+        Semaphore limiter = new Semaphore(Runtime.getRuntime().availableProcessors());
         List<Future<Void>> futures = SharedExecutorService.getInstance()
             .invokeAll(IntStream.range(0, 100).mapToObj(ignored -> (Callable<Void>) () -> {
                 try {
+                    limiter.acquire();
                     responseConsumer.accept(httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(URL)));
                 } catch (IOException ex) {
                     throw new UncheckedIOException(ex);
+                } finally {
+                    limiter.release();
                 }
 
                 return null;

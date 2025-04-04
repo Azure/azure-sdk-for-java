@@ -10,9 +10,12 @@ import io.clientcore.core.instrumentation.logging.LogLevel;
 import io.clientcore.core.instrumentation.logging.LoggingEvent;
 import io.clientcore.core.utils.CoreUtils;
 import io.netty.buffer.ByteBuf;
+import io.netty.handler.codec.http.HttpContent;
+import io.netty.util.ReferenceCountUtil;
 import io.netty.util.Version;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
@@ -80,6 +83,33 @@ public final class NettyUtility {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new RuntimeException("Interrupted while waiting for latch", e);
+        }
+    }
+
+    /**
+     * Writes and releases all the eager {@link HttpContent} received in {@link CoreResponseHandler}.
+     *
+     * @param eagerContents The eager {@link HttpContent} to write to the stream.
+     * @param outputStream The stream to write the eager {@link HttpContent} to.
+     */
+    static void writeEagerContentsToStreamAndRelease(List<HttpContent> eagerContents, OutputStream outputStream)
+        throws IOException {
+        for (int i = 0; i < eagerContents.size(); i++) {
+            HttpContent eagerContent = eagerContents.get(i);
+            if (eagerContent.content() == null) {
+                ReferenceCountUtil.release(eagerContent);
+                continue;
+            }
+            try {
+                eagerContent.content().readBytes(outputStream, eagerContent.content().readableBytes());
+            } catch (IOException ex) {
+                for (; i < eagerContents.size(); i++) {
+                    ReferenceCountUtil.release(eagerContents.get(i));
+                }
+                throw ex;
+            } finally {
+                ReferenceCountUtil.release(eagerContent);
+            }
         }
     }
 

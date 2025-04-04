@@ -11,9 +11,12 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPromise;
 import io.netty.channel.DefaultChannelPromise;
+import io.netty.channel.DefaultEventLoop;
 import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.util.concurrent.DefaultEventExecutor;
 import io.netty.util.concurrent.EventExecutor;
+import io.netty.util.concurrent.Future;
+import io.netty.util.concurrent.GenericFutureListener;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
@@ -32,8 +35,7 @@ public class CoreProgressAndTimeoutHandlerTests {
         MockEventExecutor eventExecutor = new MockEventExecutor();
         ChannelHandlerContext ctx = new MockChannelHandlerContext(eventExecutor);
 
-        coreProgressAndTimeoutHandler.handlerAdded(ctx);
-        coreProgressAndTimeoutHandler.startReadTracking();
+        coreProgressAndTimeoutHandler.startReadTracking(ctx);
 
         assertEquals(0, eventExecutor.getScheduleAtFixedRateCallCount());
     }
@@ -45,8 +47,7 @@ public class CoreProgressAndTimeoutHandlerTests {
         MockEventExecutor eventExecutor = new MockEventExecutor();
         ChannelHandlerContext ctx = new MockChannelHandlerContext(eventExecutor);
 
-        coreProgressAndTimeoutHandler.handlerAdded(ctx);
-        coreProgressAndTimeoutHandler.startReadTracking();
+        coreProgressAndTimeoutHandler.startReadTracking(ctx);
 
         assertEquals(1, eventExecutor.getScheduleAtFixedRateCallCount(1, 1));
     }
@@ -58,8 +59,7 @@ public class CoreProgressAndTimeoutHandlerTests {
 
         ChannelHandlerContext ctx = new MockChannelHandlerContext(new DefaultEventExecutor());
 
-        coreProgressAndTimeoutHandler.handlerAdded(ctx);
-        coreProgressAndTimeoutHandler.startReadTracking();
+        coreProgressAndTimeoutHandler.startReadTracking(ctx);
         coreProgressAndTimeoutHandler.handlerRemoved(ctx);
 
         assertNull(coreProgressAndTimeoutHandler.getReadTimeoutWatcher());
@@ -71,8 +71,6 @@ public class CoreProgressAndTimeoutHandlerTests {
             = new CoreProgressAndTimeoutHandler(null, 0, 0, 100);
 
         MockChannelHandlerContext ctx = new MockChannelHandlerContext(new DefaultEventExecutor());
-
-        coreProgressAndTimeoutHandler.handlerAdded(ctx);
 
         // Fake that the scheduled timer completed before any read operations happened.
         coreProgressAndTimeoutHandler.readTimeoutRunnable(ctx);
@@ -86,8 +84,6 @@ public class CoreProgressAndTimeoutHandlerTests {
             = new CoreProgressAndTimeoutHandler(null, 0, 0, 500);
 
         MockChannelHandlerContext ctx = new MockChannelHandlerContext(new DefaultEventExecutor());
-
-        coreProgressAndTimeoutHandler.handlerAdded(ctx);
 
         coreProgressAndTimeoutHandler.channelReadComplete(ctx);
 
@@ -106,8 +102,7 @@ public class CoreProgressAndTimeoutHandlerTests {
         MockEventExecutor eventExecutor = new MockEventExecutor();
         ChannelHandlerContext ctx = new MockChannelHandlerContext(eventExecutor);
 
-        coreProgressAndTimeoutHandler.handlerAdded(ctx);
-        coreProgressAndTimeoutHandler.startResponseTracking();
+        coreProgressAndTimeoutHandler.startResponseTracking(ctx);
 
         assertEquals(0, eventExecutor.getScheduleCallCount());
     }
@@ -119,8 +114,7 @@ public class CoreProgressAndTimeoutHandlerTests {
         MockEventExecutor eventExecutor = new MockEventExecutor();
         ChannelHandlerContext ctx = new MockChannelHandlerContext(eventExecutor);
 
-        coreProgressAndTimeoutHandler.handlerAdded(ctx);
-        coreProgressAndTimeoutHandler.startResponseTracking();
+        coreProgressAndTimeoutHandler.startResponseTracking(ctx);
 
         assertEquals(1, eventExecutor.getScheduleCallCount(1));
     }
@@ -132,8 +126,7 @@ public class CoreProgressAndTimeoutHandlerTests {
 
         ChannelHandlerContext ctx = new MockChannelHandlerContext(new DefaultEventExecutor());
 
-        coreProgressAndTimeoutHandler.handlerAdded(ctx);
-        coreProgressAndTimeoutHandler.startResponseTracking();
+        coreProgressAndTimeoutHandler.startResponseTracking(ctx);
         coreProgressAndTimeoutHandler.handlerRemoved(ctx);
 
         assertNull(coreProgressAndTimeoutHandler.getResponseTimeoutWatcher());
@@ -145,8 +138,6 @@ public class CoreProgressAndTimeoutHandlerTests {
             = new CoreProgressAndTimeoutHandler(null, 0, 100, 0);
 
         MockChannelHandlerContext ctx = new MockChannelHandlerContext(new DefaultEventExecutor());
-
-        coreProgressAndTimeoutHandler.handlerAdded(ctx);
 
         // Fake that the scheduled timer completed before any response is received.
         coreProgressAndTimeoutHandler.responseTimedOut(ctx);
@@ -161,8 +152,7 @@ public class CoreProgressAndTimeoutHandlerTests {
         MockEventExecutor eventExecutor = new MockEventExecutor();
         ChannelHandlerContext ctx = new MockChannelHandlerContext(eventExecutor);
 
-        coreProgressAndTimeoutHandler.handlerAdded(ctx);
-        coreProgressAndTimeoutHandler.startWriteTracking();
+        coreProgressAndTimeoutHandler.startWriteTracking(ctx);
 
         assertNull(coreProgressAndTimeoutHandler.getWriteTimeoutWatcher());
     }
@@ -174,8 +164,7 @@ public class CoreProgressAndTimeoutHandlerTests {
         MockEventExecutor eventExecutor = new MockEventExecutor();
         ChannelHandlerContext ctx = new MockChannelHandlerContext(eventExecutor);
 
-        coreProgressAndTimeoutHandler.handlerAdded(ctx);
-        coreProgressAndTimeoutHandler.startWriteTracking();
+        coreProgressAndTimeoutHandler.startWriteTracking(ctx);
 
         assertEquals(1, eventExecutor.getScheduleAtFixedRateCallCount(1, 1));
     }
@@ -187,8 +176,7 @@ public class CoreProgressAndTimeoutHandlerTests {
 
         ChannelHandlerContext ctx = new MockChannelHandlerContext(new DefaultEventExecutor());
 
-        coreProgressAndTimeoutHandler.handlerAdded(ctx);
-        coreProgressAndTimeoutHandler.startWriteTracking();
+        coreProgressAndTimeoutHandler.startWriteTracking(ctx);
         coreProgressAndTimeoutHandler.handlerRemoved(ctx);
 
         // When the handler is removed the timer is nulled out.
@@ -203,8 +191,6 @@ public class CoreProgressAndTimeoutHandlerTests {
         Channel channel = new MockChannel(new MockUnsafe());
         MockChannelHandlerContext ctx = new MockChannelHandlerContext(channel, new MockEventExecutor());
 
-        coreProgressAndTimeoutHandler.handlerAdded(ctx);
-
         // Fake that the scheduled timer completed before any write operations happened.
         coreProgressAndTimeoutHandler.writeTimeoutRunnable(ctx);
 
@@ -217,8 +203,21 @@ public class CoreProgressAndTimeoutHandlerTests {
             = new CoreProgressAndTimeoutHandler(null, 500, 0, 0);
 
         Channel channel = new MockChannel(new MockUnsafe());
-        EventExecutor eventExecutor = new DefaultEventExecutor();
-        ChannelPromise channelPromise = new DefaultChannelPromise(channel, eventExecutor);
+        EventExecutor eventExecutor = new DefaultEventLoop();
+        ChannelPromise channelPromise = new DefaultChannelPromise(channel, eventExecutor) {
+            @Override
+            public ChannelPromise addListener(GenericFutureListener<? extends Future<? super Void>> listener) {
+                try {
+                    // Since we're not doing a real write operation, override the ChannelPromise to complete the
+                    // listener immediately.
+                    listener.operationComplete(null);
+                } catch (Exception ex) {
+                    throw new RuntimeException(ex);
+                }
+
+                return this;
+            }
+        };
 
         MockChannelHandlerContext ctx = new MockChannelHandlerContext(channel, eventExecutor) {
             @Override
@@ -227,7 +226,7 @@ public class CoreProgressAndTimeoutHandlerTests {
             }
         };
 
-        coreProgressAndTimeoutHandler.handlerAdded(ctx);
+        coreProgressAndTimeoutHandler.startWriteTracking(ctx);
 
         // Fake that the scheduled timer completed before after a write operation happened.
         coreProgressAndTimeoutHandler.write(ctx, LastHttpContent.EMPTY_LAST_CONTENT, channelPromise);

@@ -49,7 +49,6 @@ public final class CoreProgressAndTimeoutHandler extends ChannelDuplexHandler {
     private boolean readTrackingStarted;
     private ScheduledFuture<?> readTimeoutWatcher;
 
-    private ChannelHandlerContext ctx;
     private boolean closed;
 
     /**
@@ -75,11 +74,6 @@ public final class CoreProgressAndTimeoutHandler extends ChannelDuplexHandler {
     }
 
     @Override
-    public void handlerAdded(ChannelHandlerContext ctx) {
-        this.ctx = ctx;
-    }
-
-    @Override
     public void handlerRemoved(ChannelHandlerContext ctx) {
         disposeWriteTimeoutWatcher();
         disposeResponseTimeoutWatcher();
@@ -95,7 +89,7 @@ public final class CoreProgressAndTimeoutHandler extends ChannelDuplexHandler {
      * <p>
      * Write tracking involves write timeout and progress reporting.
      */
-    public void startWriteTracking() {
+    void startWriteTracking(ChannelHandlerContext ctx) {
         writeTrackingStarted = true;
         if (ctx != null && writeTimeoutMillis > 0) {
             this.writeTimeoutWatcher = ctx.executor()
@@ -107,7 +101,7 @@ public final class CoreProgressAndTimeoutHandler extends ChannelDuplexHandler {
     /**
      * Ends write tracking.
      */
-    public void endWriteTracking() {
+    void endWriteTracking() {
         writeTrackingStarted = false;
         disposeWriteTimeoutWatcher();
     }
@@ -115,7 +109,7 @@ public final class CoreProgressAndTimeoutHandler extends ChannelDuplexHandler {
     @Override
     public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
         if (!writeTrackingStarted) {
-            startWriteTracking();
+            startWriteTracking(ctx);
         }
 
         if (progressReporter != null) {
@@ -133,7 +127,7 @@ public final class CoreProgressAndTimeoutHandler extends ChannelDuplexHandler {
                 lastWriteMillis = System.currentTimeMillis();
                 if (msg instanceof LastHttpContent) {
                     endWriteTracking();
-                    startResponseTracking();
+                    startResponseTracking(ctx);
                 }
             });
         } else {
@@ -186,7 +180,7 @@ public final class CoreProgressAndTimeoutHandler extends ChannelDuplexHandler {
      * <p>
      * Response timeout is overridable on a per-request basis.
      */
-    public void startResponseTracking() {
+    void startResponseTracking(ChannelHandlerContext ctx) {
         responseTrackingStarted = true;
         if (ctx != null && responseTimeoutMillis > 0) {
             this.responseTimeoutWatcher
@@ -197,7 +191,7 @@ public final class CoreProgressAndTimeoutHandler extends ChannelDuplexHandler {
     /**
      * Ends response tracking.
      */
-    public void endResponseTracking() {
+    void endResponseTracking() {
         responseTrackingStarted = false;
         disposeResponseTimeoutWatcher();
     }
@@ -223,7 +217,7 @@ public final class CoreProgressAndTimeoutHandler extends ChannelDuplexHandler {
     public void channelRead(ChannelHandlerContext ctx, Object msg) {
         if (responseTrackingStarted) {
             endResponseTracking();
-            startReadTracking();
+            startReadTracking(ctx);
         }
 
         lastRead = msg instanceof LastHttpContent;
@@ -246,7 +240,7 @@ public final class CoreProgressAndTimeoutHandler extends ChannelDuplexHandler {
     /**
      * Starts read tracking.
      */
-    public void startReadTracking() {
+    void startReadTracking(ChannelHandlerContext ctx) {
         readTrackingStarted = true;
         if (ctx != null && readTimeoutMillis > 0) {
             this.readTimeoutWatcher = ctx.executor()

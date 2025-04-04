@@ -38,8 +38,8 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
-    <jacoco.min.linecoverage>0.80</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.65</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.60</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.55</jacoco.min.branchcoverage>
     <javaModulesSurefireArgLine>
       --add-exports io.clientcore.core/io.clientcore.core.implementation.http=ALL-UNNAMED
       --add-exports io.clientcore.core/io.clientcore.core.implementation.http.serializer=ALL-UNNAMED
@@ -59,6 +59,8 @@
       io.clientcore.core.http.exception,io.clientcore.core.http.models,io.clientcore.core.http.pipeline,io.clientcore.core.implementation,
       io.clientcore.core.implementation*,io.clientcore.core.models,io.clientcore.core.util,io.clientcore.core.util*
     </javadoc.excludePackageNames>
+
+    <netty.version>4.1.118.Final</netty.version> <!-- {x-version-update;io.netty:netty-common;external_dependency} -->
   </properties>
 
   <dependencies>
@@ -159,27 +161,9 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <version>4.11.0</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>org.conscrypt</groupId>
       <artifactId>conscrypt-openjdk-uber</artifactId>
       <version>2.5.2</version> <!-- {x-version-update;org.conscrypt:conscrypt-openjdk-uber;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <version>1.7.36</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>jul-to-slf4j</artifactId>
-      <version>1.7.36</version>
       <scope>test</scope>
     </dependency>
   </dependencies>

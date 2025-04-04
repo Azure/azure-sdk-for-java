@@ -15,6 +15,7 @@ import io.clientcore.core.models.binarydata.InputStreamBinaryData;
 import io.clientcore.core.utils.ProgressReporter;
 import io.clientcore.http.netty.implementation.CoreProgressAndTimeoutHandler;
 import io.clientcore.http.netty.implementation.CoreResponseHandler;
+import io.clientcore.http.netty.implementation.CoreSslInitializationHandler;
 import io.clientcore.http.netty.implementation.WrappedHttpHeaders;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
@@ -90,9 +91,15 @@ class NettyHttpClient implements HttpClient {
         URI uri = request.getUri();
         String host = uri.getHost();
         int port = uri.getPort() == -1 ? ("https".equalsIgnoreCase(uri.getScheme()) ? 443 : 80) : uri.getPort();
+        boolean isHttps = "https".equalsIgnoreCase(uri.getScheme());
+        ProgressReporter progressReporter
+            = (request.getRequestOptions() == null) ? null : request.getRequestOptions().getProgressReporter();
+        CoreProgressAndTimeoutHandler progressAndTimeoutHandler = new CoreProgressAndTimeoutHandler(progressReporter,
+            writeTimeoutMillis, responseTimeoutMillis, readTimeoutMillis);
 
         // Disable auto-read as we want to control when and how data is read from the channel.
         bootstrap.option(ChannelOption.AUTO_READ, false);
+        // TODO (alzimmer): Next task is to add support for connection pooling.
         bootstrap.handler(new ChannelInitializer<Channel>() {
             @Override
             protected void initChannel(Channel ch) throws Exception {
@@ -111,11 +118,20 @@ class NettyHttpClient implements HttpClient {
                     }
                 }
 
-                if ("https".equalsIgnoreCase(uri.getScheme())) {
+                if (isHttps) {
                     SslContext ssl = (sslContext != null)
                         ? sslContext
                         : SslContextBuilder.forClient().endpointIdentificationAlgorithm("HTTPS").build();
                     pipeline.addLast(ssl.newHandler(ch.alloc(), host, port));
+
+                    // When SSL is being used we need to defer adding 'CoreResponseHandler' and
+                    // 'CoreProgressAndTimeoutHandler' until after the SSL handshake is complete.
+                    // This is because the SSL Handshake will require reading to complete and that reading will be SSL
+                    // events rather than HTTP response and content events. So, if we add the handlers now, they will
+                    // consume the incorrect information.
+                    // Another possible option here would be having those handlers ignore SSL events. But that requires
+                    // much more state management, therefore is more likely to have issues.
+                    pipeline.addLast(new CoreSslInitializationHandler(progressAndTimeoutHandler));
                 }
 
                 HttpClientCodec httpClientCodec
@@ -133,11 +149,6 @@ class NettyHttpClient implements HttpClient {
                         HttpClientCodec.DEFAULT_FAIL_ON_MISSING_RESPONSE);
 
                 pipeline.addLast(httpClientCodec);
-
-                ProgressReporter progressReporter
-                    = (request.getRequestOptions() == null) ? null : request.getRequestOptions().getProgressReporter();
-                pipeline.addLast(new CoreProgressAndTimeoutHandler(progressReporter, writeTimeoutMillis,
-                    responseTimeoutMillis, readTimeoutMillis));
             }
         });
 
@@ -148,14 +159,18 @@ class NettyHttpClient implements HttpClient {
         try {
             Channel channel = bootstrap.connect(host, port).sync().channel();
 
+            if (!isHttps) {
+                channel.pipeline().addLast(progressAndTimeoutHandler);
+            }
+
             CoreResponseHandler responseHandler = new CoreResponseHandler(request, responseReference, latch);
             channel.pipeline().addLast(responseHandler);
 
             sendRequest(request, channel).addListener((ChannelFutureListener) future -> {
                 if (!future.isSuccess()) {
                     LOGGER.atLevel(LogLevel.ERROR).log("Failed to send request", future.cause());
-                    future.channel().pipeline().fireExceptionCaught(future.cause());
                     errorReference.set(future.cause());
+                    future.channel().close();
                     latch.countDown();
                 } else {
                     future.channel().read();

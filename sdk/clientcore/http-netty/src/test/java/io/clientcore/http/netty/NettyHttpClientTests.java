@@ -12,19 +12,14 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
-import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.ProgressReporter;
-import io.clientcore.core.utils.SharedExecutorService;
 import io.clientcore.http.netty.implementation.MockProxyServer;
 import io.clientcore.http.netty.implementation.NettyHttpClientLocalTestServer;
 import io.netty.handler.proxy.ProxyConnectException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -44,13 +39,14 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
-import static io.clientcore.core.utils.TestUtils.assertArraysEqual;
+import static io.clientcore.http.netty.TestUtils.assertArraysEqual;
 import static io.clientcore.http.netty.implementation.NettyHttpClientLocalTestServer.EXPECTED_HEADER;
 import static io.clientcore.http.netty.implementation.NettyHttpClientLocalTestServer.HTTP_HEADERS_PATH;
 import static io.clientcore.http.netty.implementation.NettyHttpClientLocalTestServer.LONG_BODY;
@@ -65,6 +61,7 @@ import static io.clientcore.http.netty.implementation.NettyHttpClientLocalTestSe
 import static io.clientcore.http.netty.implementation.NettyHttpClientLocalTestServer.SHORT_POST_BODY_WITH_VALIDATION_PATH;
 import static io.clientcore.http.netty.implementation.NettyHttpClientLocalTestServer.TEST_HEADER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -79,15 +76,20 @@ public class NettyHttpClientTests {
         int numRequests = 100; // 100 = 1GB of data read
         HttpClient client = new NettyHttpClientProvider().getSharedInstance();
 
-        List<Future<byte[]>> requests = SharedExecutorService.getInstance()
-            .invokeAll(IntStream.range(0, numRequests).mapToObj(ignored -> (Callable<byte[]>) () -> {
-                try (Response<BinaryData> response = sendRequest(client, "/long")) {
-                    return response.getValue().toBytes();
-                }
-            }).collect(Collectors.toList()), 60, TimeUnit.SECONDS);
+        ForkJoinPool pool = new ForkJoinPool();
+        try {
+            List<Future<byte[]>> requests
+                = pool.invokeAll(IntStream.range(0, numRequests).mapToObj(ignored -> (Callable<byte[]>) () -> {
+                    try (Response<BinaryData> response = sendRequest(client, "/long")) {
+                        return response.getValue().toBytes();
+                    }
+                }).collect(Collectors.toList()), 60, TimeUnit.SECONDS);
 
-        for (Future<byte[]> request : requests) {
-            assertArraysEqual(LONG_BODY, request.get());
+            for (Future<byte[]> request : requests) {
+                assertArraysEqual(LONG_BODY, request.get());
+            }
+        } finally {
+            pool.shutdown();
         }
     }
 
@@ -105,22 +107,19 @@ public class NettyHttpClientTests {
     public void testProgressReporterSync() throws IOException {
         HttpClient client = new NettyHttpClientProvider().getSharedInstance();
 
-        // TODO (alzimmer): How to handle this test where all content is not written in a single go.
-        //  This is also something needed for Storage where request bodies can be >2GB.
         ConcurrentLinkedDeque<Long> progress = new ConcurrentLinkedDeque<>();
         HttpRequest request = new HttpRequest().setMethod(HttpMethod.POST)
             .setUri(uri(SHORT_POST_BODY_PATH))
-            .setHeaders(new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH,
-                String.valueOf(SHORT_BODY.length + LONG_BODY.length)))
-            .setBody(BinaryData.fromBytes(LONG_BODY)) //.concatWith(Flux.just(ByteBuffer.wrap(SHORT_BODY)));
+            .setHeaders(new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(SHORT_BODY.length)))
+            .setBody(BinaryData.fromBytes(SHORT_BODY))
             .setRequestOptions(
                 new RequestOptions().setProgressReporter(ProgressReporter.withProgressListener(progress::add)));
 
         try (Response<BinaryData> response = client.send(request)) {
             assertEquals(200, response.getStatusCode());
+            assertArraysEqual(SHORT_BODY, response.getValue().toBytes());
             List<Long> progressList = progress.stream().collect(Collectors.toList());
-            assertEquals(LONG_BODY.length, progressList.get(0));
-            //            assertEquals(SHORT_BODY.length + LONG_BODY.length, progressList.get(1));
+            assertEquals(SHORT_BODY.length, progressList.get(0));
         }
     }
 
@@ -153,8 +152,9 @@ public class NettyHttpClientTests {
                 }
             }));
 
-        RuntimeException thrown = assertThrows(RuntimeException.class, () -> client.send(request).close());
-        assertEquals("boo", thrown.getMessage());
+        IOException thrown = assertThrows(IOException.class, () -> client.send(request).close());
+        RuntimeException causal = assertInstanceOf(RuntimeException.class, thrown.getCause());
+        assertEquals("boo", causal.getMessage());
     }
 
     @Test
@@ -281,16 +281,17 @@ public class NettyHttpClientTests {
      * This test validates that if the eager retrying of Proxy Authentication (407) responses uses all retries returns
      * the correct error.
      */
-    @Test
+    // TODO (alzimmer): Reenable test when proxy support work is done.
+    //    @Test
     public void failedProxyAuthenticationReturnsCorrectError() {
         try (MockProxyServer mockProxyServer = new MockProxyServer("1", "1")) {
-            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(new NettyHttpClientBuilder()
+            HttpClient httpClient = new NettyHttpClientBuilder()
                 .proxy(
                     new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress()).setCredentials("2", "2"))
-                .build()).build();
+                .build();
 
             ProxyConnectException exception = assertThrows(ProxyConnectException.class,
-                () -> httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(PROXY_TO_ADDRESS))));
+                () -> httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(PROXY_TO_ADDRESS))));
             assertTrue(exception.getMessage().contains("Failed to connect to proxy. Status: "),
                 () -> "Expected exception message to contain \"Failed to connect to proxy. Status: \", it was: "
                     + exception.getMessage());

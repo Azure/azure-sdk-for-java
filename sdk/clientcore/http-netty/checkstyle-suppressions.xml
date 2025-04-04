@@ -5,4 +5,7 @@
 <suppressions>
   <suppress files="io.clientcore.http.netty.NettyHttpClientBuilder.java" checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck" />
   <suppress files="io.clientcore.http.netty.NettyHttpClientBuilder.java" checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" />
+  <suppress files="io.clientcore.http.netty.NettyHttpClient.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="io.clientcore.http.netty.implementation.CoreResponseHandler.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
+  <suppress files="io.clientcore.http.netty.implementation.NettyChannelBinaryData.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
 </suppressions>

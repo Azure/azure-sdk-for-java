@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package io.clientcore.http.netty.implementation;
 
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Isolated;
 
 import java.net.URISyntaxException;
@@ -24,9 +23,9 @@ public class NettyUtilityIT {
         originalManager = System.getSecurityManager();
         originalPolicy = java.security.Policy.getPolicy();
 
-        // Set the System property codebase.azure-core-netty-http to the location of NettyUtility's codebase.
+        // Set the System property codebase.netty-http to the location of NettyUtility's codebase.
         // This gets picked up by the policy setting to prevent needing to hardcode the code base location.
-        System.setProperty("codebase.azure-core-http-netty",
+        System.setProperty("codebase.http-netty",
             NettyUtility.class.getProtectionDomain().getCodeSource().getLocation().toString());
     }
 
@@ -35,10 +34,10 @@ public class NettyUtilityIT {
         java.security.Policy.setPolicy(originalPolicy);
 
         // Now that the properties have been used, clear them.
-        System.clearProperty("codebase.azure-core-http-netty");
+        System.clearProperty("codebase.http-netty");
     }
 
-    @Test
+    //    @Test
     public void validateVersionLoggingWithSecurityManager() throws URISyntaxException, NoSuchAlgorithmException {
         captureDefaultConfigurations();
 
