@@ -26,6 +26,7 @@ import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import com.azure.storage.blob.implementation.models.BlobStorageExceptionInternal;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
+import com.azure.storage.blob.implementation.models.FileShareTokenIntent;
 import com.azure.storage.blob.implementation.models.PageBlobsClearPagesHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobsCopyIncrementalHeaders;
 import com.azure.storage.blob.implementation.models.PageBlobsCreateHeaders;
@@ -480,6 +481,7 @@ public final class PageBlobsImpl {
             @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
             @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
+            @HeaderParam("x-ms-file-request-intent") FileShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{containerName}/{blob}")
@@ -509,6 +511,7 @@ public final class PageBlobsImpl {
             @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
             @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
+            @HeaderParam("x-ms-file-request-intent") FileShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{containerName}/{blob}")
@@ -538,6 +541,7 @@ public final class PageBlobsImpl {
             @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
             @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
+            @HeaderParam("x-ms-file-request-intent") FileShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Put("/{containerName}/{blob}")
@@ -567,6 +571,7 @@ public final class PageBlobsImpl {
             @HeaderParam("x-ms-source-if-none-match") String sourceIfNoneMatch,
             @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId,
             @HeaderParam("x-ms-copy-source-authorization") String copySourceAuthorization,
+            @HeaderParam("x-ms-file-request-intent") FileShareTokenIntent fileRequestIntent,
             @HeaderParam("Accept") String accept, Context context);
 
         @Get("/{containerName}/{blob}")
@@ -3258,6 +3263,7 @@ public final class PageBlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
      * copy source.
+     * @param fileRequestIntent Valid value is backup.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3273,14 +3279,14 @@ public final class PageBlobsImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
         String sourceIfMatch, String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
-        CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
+        FileShareTokenIntent fileRequestIntent, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
         return FluxUtil
             .withContext(context -> uploadPagesFromURLWithResponseAsync(containerName, blob, sourceUrl, sourceRange,
                 contentLength, range, sourceContentMD5, sourceContentcrc64, timeout, leaseId,
                 ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSince,
                 ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSince, sourceIfUnmodifiedSince,
-                sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization, cpkInfo, encryptionScopeParam,
-                context))
+                sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization, fileRequestIntent, cpkInfo,
+                encryptionScopeParam, context))
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -3325,6 +3331,7 @@ public final class PageBlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
      * copy source.
+     * @param fileRequestIntent Valid value is backup.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
@@ -3341,7 +3348,8 @@ public final class PageBlobsImpl {
         OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch,
         String ifTags, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
         String sourceIfMatch, String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
-        CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
+        FileShareTokenIntent fileRequestIntent, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam,
+        Context context) {
         final String comp = "page";
         final String pageWrite = "update";
         final String accept = "application/xml";
@@ -3381,8 +3389,8 @@ public final class PageBlobsImpl {
                 encryptionKeySha256, encryptionAlgorithm, encryptionScope, leaseId, ifSequenceNumberLessThanOrEqualTo,
                 ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSinceConverted, ifUnmodifiedSinceConverted,
                 ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted,
-                sourceIfMatch, sourceIfNoneMatch, this.client.getVersion(), requestId, copySourceAuthorization, accept,
-                context)
+                sourceIfMatch, sourceIfNoneMatch, this.client.getVersion(), requestId, copySourceAuthorization,
+                fileRequestIntent, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -3427,6 +3435,7 @@ public final class PageBlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
      * copy source.
+     * @param fileRequestIntent Valid value is backup.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3441,12 +3450,12 @@ public final class PageBlobsImpl {
         Long ifSequenceNumberEqualTo, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
         String ifNoneMatch, String ifTags, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
         String sourceIfMatch, String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
-        CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
+        FileShareTokenIntent fileRequestIntent, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
         return uploadPagesFromURLWithResponseAsync(containerName, blob, sourceUrl, sourceRange, contentLength, range,
             sourceContentMD5, sourceContentcrc64, timeout, leaseId, ifSequenceNumberLessThanOrEqualTo,
             ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch,
             ifTags, sourceIfModifiedSince, sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, requestId,
-            copySourceAuthorization, cpkInfo, encryptionScopeParam)
+            copySourceAuthorization, fileRequestIntent, cpkInfo, encryptionScopeParam)
                 .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
@@ -3492,6 +3501,7 @@ public final class PageBlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
      * copy source.
+     * @param fileRequestIntent Valid value is backup.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
@@ -3507,12 +3517,13 @@ public final class PageBlobsImpl {
         Long ifSequenceNumberEqualTo, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
         String ifNoneMatch, String ifTags, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
         String sourceIfMatch, String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
-        CpkInfo cpkInfo, EncryptionScope encryptionScopeParam, Context context) {
+        FileShareTokenIntent fileRequestIntent, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam,
+        Context context) {
         return uploadPagesFromURLWithResponseAsync(containerName, blob, sourceUrl, sourceRange, contentLength, range,
             sourceContentMD5, sourceContentcrc64, timeout, leaseId, ifSequenceNumberLessThanOrEqualTo,
             ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch,
             ifTags, sourceIfModifiedSince, sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, requestId,
-            copySourceAuthorization, cpkInfo, encryptionScopeParam, context)
+            copySourceAuthorization, fileRequestIntent, cpkInfo, encryptionScopeParam, context)
                 .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException)
                 .flatMap(ignored -> Mono.empty());
     }
@@ -3558,6 +3569,7 @@ public final class PageBlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
      * copy source.
+     * @param fileRequestIntent Valid value is backup.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3572,14 +3584,16 @@ public final class PageBlobsImpl {
         Long ifSequenceNumberLessThan, Long ifSequenceNumberEqualTo, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags,
         OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch,
-        String sourceIfNoneMatch, String requestId, String copySourceAuthorization, CpkInfo cpkInfo,
-        EncryptionScope encryptionScopeParam) {
-        return FluxUtil.withContext(context -> uploadPagesFromURLNoCustomHeadersWithResponseAsync(containerName, blob,
-            sourceUrl, sourceRange, contentLength, range, sourceContentMD5, sourceContentcrc64, timeout, leaseId,
-            ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSince,
-            ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSince, sourceIfUnmodifiedSince,
-            sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization, cpkInfo, encryptionScopeParam,
-            context)).onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
+        String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
+        FileShareTokenIntent fileRequestIntent, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
+        return FluxUtil
+            .withContext(context -> uploadPagesFromURLNoCustomHeadersWithResponseAsync(containerName, blob, sourceUrl,
+                sourceRange, contentLength, range, sourceContentMD5, sourceContentcrc64, timeout, leaseId,
+                ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSince,
+                ifUnmodifiedSince, ifMatch, ifNoneMatch, ifTags, sourceIfModifiedSince, sourceIfUnmodifiedSince,
+                sourceIfMatch, sourceIfNoneMatch, requestId, copySourceAuthorization, fileRequestIntent, cpkInfo,
+                encryptionScopeParam, context))
+            .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
     /**
@@ -3623,6 +3637,7 @@ public final class PageBlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
      * copy source.
+     * @param fileRequestIntent Valid value is backup.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
@@ -3638,8 +3653,9 @@ public final class PageBlobsImpl {
         Long ifSequenceNumberLessThan, Long ifSequenceNumberEqualTo, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags,
         OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch,
-        String sourceIfNoneMatch, String requestId, String copySourceAuthorization, CpkInfo cpkInfo,
-        EncryptionScope encryptionScopeParam, Context context) {
+        String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
+        FileShareTokenIntent fileRequestIntent, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam,
+        Context context) {
         final String comp = "page";
         final String pageWrite = "update";
         final String accept = "application/xml";
@@ -3680,7 +3696,7 @@ public final class PageBlobsImpl {
                 ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch,
-                this.client.getVersion(), requestId, copySourceAuthorization, accept, context)
+                this.client.getVersion(), requestId, copySourceAuthorization, fileRequestIntent, accept, context)
             .onErrorMap(BlobStorageExceptionInternal.class, ModelHelper::mapToBlobStorageException);
     }
 
@@ -3725,6 +3741,7 @@ public final class PageBlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
      * copy source.
+     * @param fileRequestIntent Valid value is backup.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
@@ -3740,8 +3757,9 @@ public final class PageBlobsImpl {
         Long ifSequenceNumberLessThan, Long ifSequenceNumberEqualTo, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags,
         OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch,
-        String sourceIfNoneMatch, String requestId, String copySourceAuthorization, CpkInfo cpkInfo,
-        EncryptionScope encryptionScopeParam, Context context) {
+        String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
+        FileShareTokenIntent fileRequestIntent, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam,
+        Context context) {
         try {
             final String comp = "page";
             final String pageWrite = "update";
@@ -3782,7 +3800,7 @@ public final class PageBlobsImpl {
                 ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch,
-                this.client.getVersion(), requestId, copySourceAuthorization, accept, context);
+                this.client.getVersion(), requestId, copySourceAuthorization, fileRequestIntent, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }
@@ -3829,6 +3847,7 @@ public final class PageBlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
      * copy source.
+     * @param fileRequestIntent Valid value is backup.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3842,12 +3861,12 @@ public final class PageBlobsImpl {
         Long ifSequenceNumberEqualTo, OffsetDateTime ifModifiedSince, OffsetDateTime ifUnmodifiedSince, String ifMatch,
         String ifNoneMatch, String ifTags, OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince,
         String sourceIfMatch, String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
-        CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
+        FileShareTokenIntent fileRequestIntent, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam) {
         uploadPagesFromURLWithResponse(containerName, blob, sourceUrl, sourceRange, contentLength, range,
             sourceContentMD5, sourceContentcrc64, timeout, leaseId, ifSequenceNumberLessThanOrEqualTo,
             ifSequenceNumberLessThan, ifSequenceNumberEqualTo, ifModifiedSince, ifUnmodifiedSince, ifMatch, ifNoneMatch,
             ifTags, sourceIfModifiedSince, sourceIfUnmodifiedSince, sourceIfMatch, sourceIfNoneMatch, requestId,
-            copySourceAuthorization, cpkInfo, encryptionScopeParam, Context.NONE);
+            copySourceAuthorization, fileRequestIntent, cpkInfo, encryptionScopeParam, Context.NONE);
     }
 
     /**
@@ -3891,6 +3910,7 @@ public final class PageBlobsImpl {
      * analytics logs when storage analytics logging is enabled.
      * @param copySourceAuthorization Only Bearer type is supported. Credentials should be a valid OAuth access token to
      * copy source.
+     * @param fileRequestIntent Valid value is backup.
      * @param cpkInfo Parameter group.
      * @param encryptionScopeParam Parameter group.
      * @param context The context to associate with this operation.
@@ -3906,8 +3926,9 @@ public final class PageBlobsImpl {
         Long ifSequenceNumberLessThan, Long ifSequenceNumberEqualTo, OffsetDateTime ifModifiedSince,
         OffsetDateTime ifUnmodifiedSince, String ifMatch, String ifNoneMatch, String ifTags,
         OffsetDateTime sourceIfModifiedSince, OffsetDateTime sourceIfUnmodifiedSince, String sourceIfMatch,
-        String sourceIfNoneMatch, String requestId, String copySourceAuthorization, CpkInfo cpkInfo,
-        EncryptionScope encryptionScopeParam, Context context) {
+        String sourceIfNoneMatch, String requestId, String copySourceAuthorization,
+        FileShareTokenIntent fileRequestIntent, CpkInfo cpkInfo, EncryptionScope encryptionScopeParam,
+        Context context) {
         try {
             final String comp = "page";
             final String pageWrite = "update";
@@ -3948,7 +3969,7 @@ public final class PageBlobsImpl {
                 leaseId, ifSequenceNumberLessThanOrEqualTo, ifSequenceNumberLessThan, ifSequenceNumberEqualTo,
                 ifModifiedSinceConverted, ifUnmodifiedSinceConverted, ifMatch, ifNoneMatch, ifTags,
                 sourceIfModifiedSinceConverted, sourceIfUnmodifiedSinceConverted, sourceIfMatch, sourceIfNoneMatch,
-                this.client.getVersion(), requestId, copySourceAuthorization, accept, context);
+                this.client.getVersion(), requestId, copySourceAuthorization, fileRequestIntent, accept, context);
         } catch (BlobStorageExceptionInternal internalException) {
             throw ModelHelper.mapToBlobStorageException(internalException);
         }

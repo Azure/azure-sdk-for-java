@@ -13,17 +13,8 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
-import com.azure.core.test.utils.MockTokenCredential;
-import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.SyncPoller;
-import com.azure.identity.AzureCliCredentialBuilder;
-import com.azure.identity.AzureDeveloperCliCredentialBuilder;
-import com.azure.identity.AzurePipelinesCredentialBuilder;
-import com.azure.identity.AzurePowerShellCredentialBuilder;
-import com.azure.identity.ChainedTokenCredentialBuilder;
-import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonWriter;
@@ -285,42 +276,6 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
                 LOGGER.warning(response.getBodyAsString().block());
             }
             assertEquals(200, response.getStatusCode());
-        }
-    }
-
-    public static TokenCredential getTokenCredential(TestMode testMode) {
-        if (testMode == TestMode.RECORD) {
-            return new DefaultAzureCredentialBuilder().build();
-        } else if (testMode == TestMode.LIVE) {
-            Configuration config = Configuration.getGlobalConfiguration();
-
-            ChainedTokenCredentialBuilder builder
-                = new ChainedTokenCredentialBuilder().addLast(new EnvironmentCredentialBuilder().build())
-                    .addLast(new AzureCliCredentialBuilder().build())
-                    .addLast(new AzureDeveloperCliCredentialBuilder().build());
-
-            String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
-            String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
-            String tenantId = config.get("AZURESUBSCRIPTION_TENANT_ID");
-            String systemAccessToken = config.get("SYSTEM_ACCESSTOKEN");
-
-            if (!CoreUtils.isNullOrEmpty(serviceConnectionId)
-                && !CoreUtils.isNullOrEmpty(clientId)
-                && !CoreUtils.isNullOrEmpty(tenantId)
-                && !CoreUtils.isNullOrEmpty(systemAccessToken)) {
-
-                builder.addLast(new AzurePipelinesCredentialBuilder().systemAccessToken(systemAccessToken)
-                    .clientId(clientId)
-                    .tenantId(tenantId)
-                    .serviceConnectionId(serviceConnectionId)
-                    .build());
-            }
-
-            builder.addLast(new AzurePowerShellCredentialBuilder().build());
-
-            return builder.build();
-        } else { //playback or not set
-            return new MockTokenCredential();
         }
     }
 

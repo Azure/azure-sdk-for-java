@@ -990,7 +990,8 @@ public class BlobAsyncClientBase {
                 destRequestConditions.getIfNoneMatch(), destRequestConditions.getTagsConditions(),
                 destRequestConditions.getLeaseId(), null, null, ModelHelper.tagsToString(options.getTags()),
                 immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(), options.hasLegalHold(),
-                sourceAuth, options.getCopySourceTagsMode(), this.encryptionScope, context)
+                sourceAuth, options.getCopySourceTagsMode(), options.getSourceShareTokenIntent(), this.encryptionScope,
+                context)
             .map(rb -> new SimpleResponse<>(rb, rb.getDeserializedHeaders().getXMsCopyId()));
     }
 

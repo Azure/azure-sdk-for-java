@@ -1098,7 +1098,8 @@ public class BlobClientBase {
                 destRequestConditions.getIfNoneMatch(), destRequestConditions.getTagsConditions(),
                 destRequestConditions.getLeaseId(), null, null, ModelHelper.tagsToString(options.getTags()),
                 immutabilityPolicy.getExpiryTime(), immutabilityPolicy.getPolicyMode(), options.hasLegalHold(),
-                sourceAuth, options.getCopySourceTagsMode(), this.encryptionScope, finalContext);
+                sourceAuth, options.getCopySourceTagsMode(), options.getSourceShareTokenIntent(), this.encryptionScope,
+                finalContext);
 
         ResponseBase<BlobsCopyFromURLHeaders, Void> response
             = sendRequest(operation, timeout, BlobStorageException.class);
