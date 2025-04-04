@@ -10,6 +10,7 @@ import com.azure.json.JsonProviders;
 import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -159,33 +160,7 @@ public class AzureChatMapper {
         }
 
         // ---------------- Additional Azure fields:
-//        byte[] dataSourcesJsonBytes = BinaryData.fromObject(request.getDataSources())
-//            .toBytes();
-
-        JsonMapper mapper = ObjectMappers.jsonMapper();
         Map<String, JsonValue> additionalBodyProperties = new HashMap<>();
-
-        // THIS kind of works
-//        List<JsonValue> dataSourceJsonValue = Arrays.asList();
-//
-//        try {
-//            for (AzureChatDataSource dataSource : request.getDataSources()) {
-//                InputStream a = BinaryData.fromObject(dataSource).toStream();
-//                JsonValue b = mapper.readValue(a, new TypeReference<>() {
-//                });
-//                dataSourceJsonValue.add(b);
-//            }
-//        } catch (Exception e){}
-
-//        JsonNode node = mapper.valueToTree(request.getDataSources());
-//        additionalBodyProperties.put("data_sources", JsonValue.from(dataSourceJsonValue));
-//        BinaryData dataSourcesBinaryData = BinaryData.fromObject(request.getDataSources());
-//        try {
-//            JsonValue  dataSourceJsonValue = mapper.readValue(dataSourcesBinaryData.toStream(), new TypeReference<>() {});
-//            additionalBodyProperties.put("data_sources", dataSourceJsonValue);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
 
         additionalBodyProperties.put("data_sources", JsonValue.from(request.getDataSources()));
 

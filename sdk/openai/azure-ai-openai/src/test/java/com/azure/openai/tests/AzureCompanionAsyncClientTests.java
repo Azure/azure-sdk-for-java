@@ -73,8 +73,8 @@ public class AzureCompanionAsyncClientTests extends  OpenAIOkHttpClientTestBase 
         AzureSearchChatDataSourceParameters parameters = new AzureSearchChatDataSourceParameters(
             System.getenv("AZURE_SEARCH_ENDPOINT"),
             System.getenv("AZURE_SEARCH_INDEX_NAME"),
-            BinaryData.fromObject(new AzureChatDataSourceApiKeyAuthenticationOptions(
-                System.getenv("AZURE_SEARCH_API_KEY")))
+            new AzureChatDataSourceApiKeyAuthenticationOptions(
+                System.getenv("AZURE_SEARCH_API_KEY"))
         );
 
         request.setDataSources(Arrays.asList(new AzureSearchChatDataSource(parameters)));

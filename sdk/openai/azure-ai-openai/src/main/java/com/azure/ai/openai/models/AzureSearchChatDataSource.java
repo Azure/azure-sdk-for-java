@@ -27,7 +27,7 @@ public final class AzureSearchChatDataSource extends AzureChatDataSource {
      * The differentiating type identifier for the data source.
      */
     @Generated
-    @JsonTypeId
+//    @JsonTypeId  // <-- this breaks serialization causing Jackson to omit as "type" is also defined in the super class
     @JsonProperty(value = "type")
     private String type = "azure_search";
 
@@ -40,7 +40,7 @@ public final class AzureSearchChatDataSource extends AzureChatDataSource {
 
     /**
      * Creates an instance of AzureSearchChatDataSource class.
-     * 
+     *
      * @param parameters the parameters value to set.
      */
     @Generated
@@ -52,7 +52,7 @@ public final class AzureSearchChatDataSource extends AzureChatDataSource {
 
     /**
      * Get the type property: The differentiating type identifier for the data source.
-     * 
+     *
      * @return the type value.
      */
     @Generated
@@ -63,7 +63,7 @@ public final class AzureSearchChatDataSource extends AzureChatDataSource {
 
     /**
      * Get the parameters property: The parameter information to control the use of the Azure Search data source.
-     * 
+     *
      * @return the parameters value.
      */
     @Generated

@@ -31,10 +31,10 @@ public class AzureChatDataSource {
     /*
      * The differentiating type identifier for the data source.
      */
-    @Generated
+//    @Generated
     @JsonTypeId
     @JsonProperty(value = "type")
-    private String type = "AzureChatDataSource";
+    protected String type = "AzureChatDataSource";
 
     /**
      * Creates an instance of AzureChatDataSource class.

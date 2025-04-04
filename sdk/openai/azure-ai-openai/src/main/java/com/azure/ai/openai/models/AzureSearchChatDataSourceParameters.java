@@ -9,6 +9,8 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+
 import java.util.List;
 
 /**
@@ -81,7 +83,8 @@ public final class AzureSearchChatDataSourceParameters {
      */
     @Generated
     @JsonProperty(value = "authentication")
-    private final BinaryData authentication;
+    @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, property = "type", defaultImpl = AzureChatDataSourceAuthenticationOptions.class, visible = true)
+    private final Object authentication;
 
     /*
      * The field mappings to use with the Azure Search resource.
@@ -130,7 +133,7 @@ public final class AzureSearchChatDataSourceParameters {
     @JsonCreator
     public AzureSearchChatDataSourceParameters(@JsonProperty(value = "endpoint") String endpoint,
         @JsonProperty(value = "index_name") String indexName,
-        @JsonProperty(value = "authentication") BinaryData authentication) {
+        @JsonProperty(value = "authentication") Object authentication) {
         this.endpoint = endpoint;
         this.indexName = indexName;
         this.authentication = authentication;
@@ -307,7 +310,7 @@ public final class AzureSearchChatDataSourceParameters {
      * @return the authentication value.
      */
     @Generated
-    public BinaryData getAuthentication() {
+    public Object getAuthentication() {
         return this.authentication;
     }
 

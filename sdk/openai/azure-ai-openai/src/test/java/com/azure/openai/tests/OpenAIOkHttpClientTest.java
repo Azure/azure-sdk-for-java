@@ -5,6 +5,7 @@ package com.azure.openai.tests;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
+import com.openai.azure.AzureOpenAIServiceVersion;
 import com.openai.azure.credential.AzureApiKeyCredential;
 import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
@@ -43,13 +44,14 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
 
     private OpenAIOkHttpClient.Builder setAzureServiceApiVersion(OpenAIOkHttpClient.Builder clientBuilder,
         String apiVersion) {
-        if (GA.equals(apiVersion)) {
-            clientBuilder.azureServiceVersion(AZURE_OPENAI_SERVICE_VERSION_GA);
-        } else if (PREVIEW.equals(apiVersion)) {
-            clientBuilder.azureServiceVersion(AZURE_OPENAI_SERVICE_VERSION_PREVIEW);
-        } else {
-            throw new IllegalArgumentException("Invalid Azure API version");
-        }
+//        if (GA.equals(apiVersion)) {
+//            clientBuilder.azureServiceVersion(AZURE_OPENAI_SERVICE_VERSION_GA);
+//        } else if (PREVIEW.equals(apiVersion)) {
+//            clientBuilder.azureServiceVersion(AZURE_OPENAI_SERVICE_VERSION_PREVIEW);
+//        } else {
+//            throw new IllegalArgumentException("Invalid Azure API version");
+//        }
+        clientBuilder.azureServiceVersion(AzureOpenAIServiceVersion.fromString(apiVersion));
         return clientBuilder;
     }
 
@@ -113,7 +115,7 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     @MethodSource("com.azure.openai.tests.TestUtils#allApiTypeClient")
     public void testChatCompletionMaxTokens(String apiType, String apiVersion, String testModel) {
         client = createClient(apiType, apiVersion);
-
+        
         ChatCompletionCreateParams params = createParamsBuilder(testModel).maxTokens(50).build();
         ChatCompletion chatCompletion = client.chat().completions().create(params);
         assertChatCompletion(chatCompletion, 1);
@@ -266,7 +268,7 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     @ParameterizedTest
     @MethodSource("com.azure.openai.tests.TestUtils#azureOnlyClient")
     public void testChatCompletionByod(String apiType, String apiVersion, String testModel) {
-        client = createClient(apiType, apiVersion);
+        client = createClient(apiType, "v1_0");
 
         ChatCompletionCreateParams params = createParamsBuilder("gpt-4o-mini")
                 .messages(asList(
