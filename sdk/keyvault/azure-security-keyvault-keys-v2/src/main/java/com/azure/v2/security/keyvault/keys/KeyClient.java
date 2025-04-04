@@ -79,7 +79,7 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  * their corresponding credential types in the
  * <a href="https://learn.microsoft.com/java/api/overview/azure/identity-readme?view=azure-java-stable">Azure Identity documentation"</a>.</p>
  *
- * <p><strong>Sample: Construct KeyClient</strong></p>
+ * <p><strong>Sample: Construct Key Client</strong></p>
  * <p>The following code sample demonstrates the creation of a {@link KeyClient}, using the {@link KeyClientBuilder}
  * to configure it.</p>
  * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.instantiation -->
@@ -129,26 +129,14 @@ public final class KeyClient {
     private static final ClientLogger LOGGER = new ClientLogger(KeyClient.class);
 
     private final KeyClientImpl clientImpl;
-    private final String endpoint;
-
-    /**
-     * Get the vault endpoint to which service requests are sent to.
-     *
-     * @return The vault endpoint.
-     */
-    public String getEndpoint() {
-        return endpoint;
-    }
 
     /**
      * Creates an instance of {@link KeyClient} that sends requests to the given endpoint.
      *
      * @param clientImpl The implementation client.
-     * @param endpoint The vault endpoint.
      */
-    KeyClient(KeyClientImpl clientImpl, String endpoint) {
+    KeyClient(KeyClientImpl clientImpl) {
         this.clientImpl = clientImpl;
-        this.endpoint = endpoint;
     }
 
     /**
@@ -734,17 +722,17 @@ public final class KeyClient {
      * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.importKeyWithResponse#ImportKeyOptions-RequestOptions -->
      * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.importKeyWithResponse#ImportKeyOptions-RequestOptions -->
      *
-     * @param importKeyOptions The {@link ImportKeyOptions options object} containing information about the
-     * {@link JsonWebKey} being imported. It is required and cannot be {@code null}.
+     * @param importKeyOptions The options object containing information about the {@link JsonWebKey} being imported. It
+     * is required and cannot be {@code null}.
      * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
      * @return A response object whose {@link Response#getValue() value} contains the imported key as a
      * {@link KeyVaultKey}.
      *
      * @throws HttpResponseException If {@code importKeyOptions} is malformed.
-     * @throws IllegalArgumentException If the provided {@link ImportKeyOptions#getName()} is {@code null} or an empty
+     * @throws IllegalArgumentException If the key name provided in {@code importKeyOptions} is {@code null} or an empty
      * string.
-     * @throws NullPointerException If either of the provided {@code importKeyOptions} or
-     * {@link ImportKeyOptions#getKey()} is {@code null}.
+     * @throws NullPointerException If either of the provided {@code importKeyOptions} object or the key it contains is
+     * {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> importKeyWithResponse(ImportKeyOptions importKeyOptions,
@@ -1521,7 +1509,7 @@ public final class KeyClient {
     }
 
     /**
-     * Get the requested number of bytes containing random values from a managed HSM.
+     * Gets the requested number of bytes containing random values from a managed HSM.
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Gets a number of bytes containing random values from a managed HSM. Prints out the retrieved bytes as a
@@ -1543,7 +1531,7 @@ public final class KeyClient {
     }
 
     /**
-     * Get the requested number of bytes containing random values from a managed HSM.
+     * Gets the requested number of bytes containing random values from a managed HSM.
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Gets a number of bytes containing random values from a managed HSM. Prints out details of the response 
