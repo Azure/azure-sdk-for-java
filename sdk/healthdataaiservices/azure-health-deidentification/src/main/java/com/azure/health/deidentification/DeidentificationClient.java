@@ -319,7 +319,7 @@ public final class DeidentificationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -355,7 +355,6 @@ public final class DeidentificationClient {
      * @return paged collection of DeidentificationDocumentDetails items as paginated response with
      * {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listJobDocuments(String jobName, RequestOptions requestOptions) {
         return this.serviceClient.listJobDocuments(jobName, requestOptions);
@@ -610,7 +609,7 @@ public final class DeidentificationClient {
      *
      * Resource list operation template.
      *
-     * @param name The name of a job.
+     * @param jobName The name of a job.
      * @param continuationToken Token to continue a previous query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -621,7 +620,6 @@ public final class DeidentificationClient {
      * @return paged collection of DeidentificationDocumentDetails items as paginated response with
      * {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedIterable<DeidentificationDocumentDetails> listJobDocuments(String jobName, String continuationToken) {
         // Generated convenience method for listJobDocuments
@@ -648,7 +646,6 @@ public final class DeidentificationClient {
      * @return paged collection of DeidentificationDocumentDetails items as paginated response with
      * {@link PagedIterable}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeidentificationDocumentDetails> listJobDocuments(String jobName) {
         // Generated convenience method for listJobDocuments

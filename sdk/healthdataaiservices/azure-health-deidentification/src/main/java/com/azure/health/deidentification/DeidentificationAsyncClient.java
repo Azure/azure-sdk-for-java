@@ -325,7 +325,7 @@ public final class DeidentificationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -360,7 +360,6 @@ public final class DeidentificationAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of DeidentificationDocumentDetails items as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listJobDocuments(String jobName, RequestOptions requestOptions) {
         return this.serviceClient.listJobDocumentsAsync(jobName, requestOptions);
@@ -582,7 +581,6 @@ public final class DeidentificationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DeidentificationJob items as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DeidentificationJob> listJobs(String continuationToken) {
         // Generated convenience method for listJobs
@@ -644,7 +642,7 @@ public final class DeidentificationAsyncClient {
      *
      * Resource list operation template.
      *
-     * @param name The name of a job.
+     * @param jobName The name of a job.
      * @param continuationToken Token to continue a previous query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -654,7 +652,6 @@ public final class DeidentificationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DeidentificationDocumentDetails items as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DeidentificationDocumentDetails> listJobDocuments(String jobName, String continuationToken) {
         // Generated convenience method for listJobDocuments
@@ -691,7 +688,6 @@ public final class DeidentificationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DeidentificationDocumentDetails items as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeidentificationDocumentDetails> listJobDocuments(String jobName) {
         // Generated convenience method for listJobDocuments
