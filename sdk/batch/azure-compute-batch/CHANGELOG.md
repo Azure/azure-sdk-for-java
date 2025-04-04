@@ -6,33 +6,25 @@ This release is the first stable release of the Azure Compute Batch client libra
 
 ### Breaking Changes
 
-Most of these changes are minor name/casing changes.
+- Made many small name/casing changes to names of models, properties, and methods for clarity and consistency.
 
-- Changed capitalization of the methods in some models
   - On `BatchJobNetworkConfiguration`, `isSkipWithdrawFromVNet()` is now `isSkipWithdrawFromVnet()`.
-  - On `BatchJobScheduleStatistics`, `getReadIOps()` is now `getReadIops()` and `getWriteIOps()` is now `getWriteIops()`.
-  - On `BatchJobStatistics`, `getReadIOps()` is now `getReadIops()` and `getWriteIOps()` is now `getWriteIops()`.
   - On `BatchPoolResourceStatistics`, `getDiskReadIOps()` is now `getDiskReadIops()` and `getDiskWriteIOps()` is now `getDiskWriteIops()`.
-  - On `BatchTaskStatistics`, `getReadIOps()` is now `getReadIops()` and `getWriteIOps()` is now `getWriteIops()`.
   - On `NetworkConfiguration`, `getDynamicVNetAssignmentScope()` is now `getDynamicVnetAssignmentScope()` and `setDynamicVNetAssignmentScope(DynamicVNetAssignmentScope dynamicVNetAssignmentScope)` is now `setDynamicVnetAssignmentScope(DynamicVNetAssignmentScope dynamicVnetAssignmentScope)`.
-
-- Changed casing of the methods in some models
-  - On `BatchJobStatistics`, `getReadIOGiB()` is now `getReadIoGiB()` and `getWriteIOGiB()` is now `getWriteIoGiB()`.
-  - On `BatchJobScheduleStatistics`, `getReadIOGiB()` is now `getReadIoGiB()` and `getWriteIOGiB()` is now `getWriteIoGiB()`.
-  - On `BatchTaskStatistics`, `getReadIOGiB()` is now `getReadIoGiB()` and `getWriteIOGiB()` is now `getWriteIoGiB()`.
+  - On `BatchTaskStatistics`, `getReadIOps()` is now `getReadIops()`, `getWriteIOps()` is now `getWriteIops()`, `getReadIOGiB()` is now `getReadIoGiB()`, and `getWriteIOGiB()` is now `getWriteIoGiB()`.
   - `VMDiskSecurityProfile` has now been changed to `VmDiskSecurityProfile`.
-
-- Changed names of some model properties
-  - On `BatchJobStatistics`, `getNumSucceededTasks()` is now `getSucceededTasksCount()`, `getNumFailedTasks()` is now `getFailedTasksCount()`, and `getNumTaskRetries()` is now `getTaskRetriesCount()`.
-  - On `BatchJobScheduleStatistics`, `getNumSucceededTasks()` is now `getSucceededTasksCount()`, `getNumFailedTasks()` is now `getFailedTasksCount()`, and `getNumTaskRetries()` is now `getTaskRetriesCount()`.
+  - On `BatchJobStatistics`, `getNumSucceededTasks()` is now `getSucceededTasksCount()`, `getNumFailedTasks()` is now `getFailedTasksCount()`, `getNumTaskRetries()` is now `getTaskRetriesCount()`, `getReadIOps()` is now `getReadIops()`, `getWriteIOps()` is now `getWriteIops()`, `getReadIOGiB()` is now `getReadIoGiB()`, and `getWriteIOGiB()` is now `getWriteIoGiB()`
+  - On `BatchJobScheduleStatistics`, `getNumSucceededTasks()` is now `getSucceededTasksCount()`, `getNumFailedTasks()` is now `getFailedTasksCount()`, `getNumTaskRetries()` is now `getTaskRetriesCount()`, `getReadIOps()` is now `getReadIops()`, `getWriteIOps()` is now `getWriteIops()`, `getReadIOGiB()` is now `getReadIoGiB()`, and `getWriteIOGiB()` is now `getWriteIoGiB()`.
   - On `BatchClientParallelOptions`, `getMaxDegreeOfParallelism()` is now `getMaxConcurrency()`.
   - On the `BatchClient` (synchronous client), `getNodeFileProperties` and `getTaskFileProperties` now return `BatchFileProperties` instead of `FileResponseHeaderProperties`. On `BatchAsyncClient` (asynchronous methods), `getNodeFileProperties` and `getTaskFileProperties` now return `Mono<BatchFileProperties>` instead of `Mono<FileResponseHeaderProperties>`.
-
-- Changed the names of some models
   - `AccessScope` is now `BatchAccessScope`. On `AuthenticationTokenSettings`, `getAccess()` now returns `List<BatchAccessScope>` instead of `List<AccessScope>` and `setAccess` takes in a parameter of type `List<BatchAccessScope>` rather than `List<AccessScope>`.
   - `AffinityInfo` is now `BatchAffinityInfo`. On `BatchTask` and `BatchTaskCreateContent`, `getAffinityInfo()` now returns `BatchAffinityInfo` instead of `AffinityInfo`.
+  - `HttpHeader` has been changed to `OutputFileUploadHeader`.
+  - In `OutputFileBlobContainerDestination`, `getUploadHeaders()` returns `List<OutputFileUploadHeader>` instead of `List<HttpHeader>` and `setUploadHeaders` takes in a parameter of `List<OutputFileUploadHeader>` rather than `List<HttpHeader>`
 
 - On the `BatchCertificate` model, the return type of `getData()` is now `byte[]` instead of `String`.
+
+- Changed the names of the optional parameters models:
 
   - `GetBatchApplicationOptions` is now `BatchApplicationGetOptions`.
   - `ListBatchApplicationsOptions` is now `BatchApplicationsListOptions`.
