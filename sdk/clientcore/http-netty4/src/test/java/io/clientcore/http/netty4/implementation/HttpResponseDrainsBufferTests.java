@@ -83,13 +83,7 @@ public class HttpResponseDrainsBufferTests {
 
     @Test
     public void closeHttpResponseWithoutConsumingBody() throws ExecutionException, InterruptedException {
-        runScenario(response -> {
-            try {
-                response.close();
-            } catch (IOException ex) {
-                throw new UncheckedIOException(ex);
-            }
-        });
+        runScenario(Response::close);
     }
 
     @Test
@@ -107,11 +101,7 @@ public class HttpResponseDrainsBufferTests {
     @Test
     public void closeHttpResponseWithConsumingPartialWrite() throws ExecutionException, InterruptedException {
         runScenario(response -> {
-            try {
-                response.getValue().writeTo(new ThrowingWritableByteChannel());
-            } catch (IOException ex) {
-                throw new UncheckedIOException(ex);
-            }
+            response.getValue().writeTo(new ThrowingWritableByteChannel());
         });
     }
 
@@ -136,7 +126,7 @@ public class HttpResponseDrainsBufferTests {
         }
 
         @Override
-        public void close() throws IOException {
+        public void close() {
             open = false;
         }
     }
@@ -144,12 +134,8 @@ public class HttpResponseDrainsBufferTests {
     @Test
     public void closeHttpResponseWithConsumingFullBody() throws ExecutionException, InterruptedException {
         runScenario(response -> {
-            try {
-                response.getValue().toBytes();
-                response.close();
-            } catch (IOException ex) {
-                throw new UncheckedIOException(ex);
-            }
+            response.getValue().toBytes();
+            response.close();
         });
     }
 
@@ -163,8 +149,6 @@ public class HttpResponseDrainsBufferTests {
                 try {
                     limiter.acquire();
                     responseConsumer.accept(httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(URL)));
-                } catch (IOException ex) {
-                    throw new UncheckedIOException(ex);
                 } finally {
                     limiter.release();
                 }
@@ -191,7 +175,7 @@ public class HttpResponseDrainsBufferTests {
     }
 
     @Test
-    public void closingHttpResponseIsIdempotent() throws IOException, InterruptedException {
+    public void closingHttpResponseIsIdempotent() throws InterruptedException {
         HttpClient httpClient = new NettyHttpClientProvider().getSharedInstance();
 
         Response<BinaryData> response = httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(URL));

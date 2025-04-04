@@ -8,6 +8,7 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.models.binarydata.FileBinaryData;
 import io.clientcore.core.models.binarydata.InputStreamBinaryData;
@@ -86,7 +87,7 @@ class NettyHttpClient implements HttpClient {
     }
 
     @Override
-    public Response<BinaryData> send(HttpRequest request) throws IOException {
+    public Response<BinaryData> send(HttpRequest request) throws CoreException {
         URI uri = request.getUri();
         String host = uri.getHost();
         int port = uri.getPort() == -1 ? ("https".equalsIgnoreCase(uri.getScheme()) ? 443 : 80) : uri.getPort();
@@ -180,14 +181,14 @@ class NettyHttpClient implements HttpClient {
             latch.await();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw LOGGER.logThrowableAsError(new IOException("Request interrupted", e));
+            throw LOGGER.logThrowableAsError(CoreException.from("Request interrupted", e));
         }
 
         Response<BinaryData> response = responseReference.get();
         if (response != null) {
             return response;
         } else {
-            throw new IOException(errorReference.get());
+            throw CoreException.from(errorReference.get());
         }
     }
 

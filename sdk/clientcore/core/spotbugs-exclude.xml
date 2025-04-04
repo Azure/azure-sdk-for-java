@@ -31,6 +31,7 @@
       <Class name="io.clientcore.core.implementation.utils.SliceInputStream" />
       <Class name="io.clientcore.core.implementation.utils.StreamUtil" />
       <Class name="io.clientcore.core.models.CloudEvent" />
+      <Class name="io.clientcore.core.models.binarydata.BinaryData" />
       <Class name="io.clientcore.core.models.binarydata.FileBinaryData" />
       <Class name="io.clientcore.core.models.binarydata.InputStreamBinaryData" />
       <Class name="io.clientcore.core.models.binarydata.ListByteBufferBinaryData" />

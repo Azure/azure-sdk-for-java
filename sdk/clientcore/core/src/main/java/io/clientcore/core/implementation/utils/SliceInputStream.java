@@ -4,10 +4,10 @@
 package io.clientcore.core.implementation.utils;
 
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UncheckedIOException;
 import java.util.Objects;
 
 /**
@@ -129,7 +129,7 @@ public final class SliceInputStream extends InputStream {
         try {
             ensureInWindow();
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+            throw LOGGER.logThrowableAsError(CoreException.from(e));
         }
         innerStream.mark(readlimit);
         mark = innerPosition;

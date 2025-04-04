@@ -13,13 +13,13 @@ import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LoggingEvent;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.DateTimeRfc1123;
 import io.clientcore.core.utils.configuration.Configuration;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.net.HttpURLConnection;
 import java.time.DateTimeException;
 import java.time.Duration;
@@ -213,11 +213,7 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
 
             logRetry(logger.atVerbose(), tryCount, delayDuration, null, false, instrumentationContext);
 
-            try {
-                response.close();
-            } catch (IOException e) {
-                throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-            }
+            response.close();
 
             long millis = delayDuration.toMillis();
             if (millis > 0) {
@@ -232,7 +228,7 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
         } else {
             if (tryCount >= maxRetries) {
                 // TODO (limolkova): do we have better heuristic to determine if we're retrying because of error
-                // or because we got successful response?
+                // or because we got an unsuccessful response?
                 logRetry(logger.atWarning(), tryCount, null, null, true, instrumentationContext);
             }
             return response;
@@ -338,7 +334,12 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
                     && code != HttpURLConnection.HTTP_NOT_IMPLEMENTED
                     && code != HttpURLConnection.HTTP_VERSION));
         } else {
-            return requestRetryCondition.getException() != null;
+            Exception ex = requestRetryCondition.getException();
+            if (ex instanceof CoreException) {
+                return ((CoreException) ex).isRetryable();
+            }
+
+            return ex != null;
         }
     }
 

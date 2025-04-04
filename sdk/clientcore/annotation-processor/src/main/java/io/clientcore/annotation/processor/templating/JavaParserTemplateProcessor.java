@@ -34,7 +34,6 @@ import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -194,7 +193,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             .addParameter(ObjectSerializer.class, "serializer")
             .addParameter("ParameterizedType", "returnType");
         deserializeHelperMethod.tryAddImportToParentCompilationUnit(IOException.class);
-        deserializeHelperMethod.tryAddImportToParentCompilationUnit(UncheckedIOException.class);
         deserializeHelperMethod.tryAddImportToParentCompilationUnit(ParameterizedType.class);
         deserializeHelperMethod.tryAddImportToParentCompilationUnit(Type.class);
         deserializeHelperMethod.tryAddImportToParentCompilationUnit(List.class);
@@ -202,7 +200,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             .setJavadocComment("Decodes the body of an {@link Response} into the type returned by the called API.\n"
                 + "@param data The BinaryData to decode.\n" + "@param serializer The serializer to use.\n"
                 + "@param returnType The type of the ParameterizedType return value.\n" + "@return The decoded value.\n"
-                + "@throws IOException If the deserialization fails.");
+                + "@throws CoreException If the deserialization fails.");
 
         deserializeHelperMethod.setBody(new BlockStmt()
             .addStatement(StaticJavaParser.parseStatement("if (data == null) { return null; }"))
@@ -212,7 +210,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                     + "Type token = returnType.getRawType(); if (Response.class.isAssignableFrom((Class<?>) token)) { "
                     + " token = returnType.getActualTypeArguments()[0]; } "
                     + "return serializer.deserializeFromBytes(data.toBytes(), token); } catch (IOException e) { "
-                    + "    throw LOGGER.logThrowableAsError(new UncheckedIOException(e)); }")));
+                    + "    throw LOGGER.logThrowableAsError(CoreException.from(e)); }")));
 
     }
 

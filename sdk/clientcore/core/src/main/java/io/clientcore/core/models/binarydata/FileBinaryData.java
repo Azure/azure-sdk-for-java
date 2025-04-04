@@ -6,6 +6,7 @@ package io.clientcore.core.models.binarydata;
 import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.implementation.utils.SliceInputStream;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.ObjectSerializer;
@@ -16,16 +17,13 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UncheckedIOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
-import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.Channels;
 import java.nio.channels.FileChannel;
 import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
@@ -55,7 +53,7 @@ public class FileBinaryData extends BinaryData {
      * @throws IllegalArgumentException if {@code chunkSize} is less than or equal to zero.
      * @throws IllegalArgumentException if {@code position} is less than zero.
      * @throws IllegalArgumentException if {@code length} is less than zero.
-     * @throws UncheckedIOException if file doesn't exist.
+     * @throws CoreException if file doesn't exist.
      */
     public FileBinaryData(Path file, int chunkSize, Long position, Long length) {
         this(validateFile(file), validateChunkSize(chunkSize), validatePosition(position),
@@ -73,8 +71,8 @@ public class FileBinaryData extends BinaryData {
         Objects.requireNonNull(file, "'file' cannot be null.");
 
         if (!file.toFile().exists()) {
-            throw LOGGER.logThrowableAsError(
-                new UncheckedIOException(new FileNotFoundException("File does not exist " + file)));
+            throw LOGGER
+                .logThrowableAsError(CoreException.from(new FileNotFoundException("File does not exist " + file)));
         }
 
         return file;
@@ -137,8 +135,12 @@ public class FileBinaryData extends BinaryData {
     }
 
     @Override
-    public <T> T toObject(Type type, ObjectSerializer serializer) throws IOException {
-        return serializer.deserializeFromStream(toStream(), type);
+    public <T> T toObject(Type type, ObjectSerializer serializer) {
+        try {
+            return serializer.deserializeFromStream(toStream(), type);
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(CoreException.from(e));
+        }
     }
 
     @Override
@@ -146,7 +148,8 @@ public class FileBinaryData extends BinaryData {
         try {
             return new SliceInputStream(new BufferedInputStream(getFileInputStream(), chunkSize), position, length);
         } catch (FileNotFoundException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException("File not found " + file, e));
+            // TODO: we can assume all FileNotFoundException are not retryable by default
+            throw LOGGER.logThrowableAsError(CoreException.from("File not found " + file, e, false));
         }
     }
 
@@ -164,22 +167,28 @@ public class FileBinaryData extends BinaryData {
     }
 
     @Override
-    public void writeTo(OutputStream outputStream) throws IOException {
+    public void writeTo(OutputStream outputStream) {
         writeTo(Channels.newChannel(outputStream));
     }
 
     @Override
-    public void writeTo(WritableByteChannel channel) throws IOException {
+    public void writeTo(WritableByteChannel channel) {
         try (FileChannel fileChannel = FileChannel.open(file)) {
             fileChannel.transferTo(position, length, channel);
+        } catch (IOException exception) {
+            throw LOGGER.logThrowableAsError(CoreException.from(exception));
         }
     }
 
     @Override
-    public void writeTo(JsonWriter jsonWriter) throws IOException {
+    public void writeTo(JsonWriter jsonWriter) {
         Objects.requireNonNull(jsonWriter, "'jsonWriter' cannot be null");
 
-        jsonWriter.writeBinary(toBytes());
+        try {
+            jsonWriter.writeBinary(toBytes());
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(CoreException.from(e));
+        }
     }
 
     ByteBuffer toByteBufferInternal() {
@@ -190,12 +199,8 @@ public class FileBinaryData extends BinaryData {
         try (FileChannel fileChannel = FileChannel.open(file)) {
             return fileChannel.map(FileChannel.MapMode.READ_ONLY, position, length);
         } catch (IOException exception) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(exception));
+            throw LOGGER.logThrowableAsError(CoreException.from(exception));
         }
-    }
-
-    AsynchronousFileChannel openAsynchronousFileChannel() throws IOException {
-        return AsynchronousFileChannel.open(file, StandardOpenOption.READ);
     }
 
     /**
@@ -239,12 +244,12 @@ public class FileBinaryData extends BinaryData {
             } while (pendingBytes > 0);
             return bytes;
         } catch (IOException exception) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(exception));
+            throw LOGGER.logThrowableAsError(CoreException.from(exception));
         }
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         // Since this uses a Path, there is nothing to close, therefore no-op.
     }
 }
