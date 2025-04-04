@@ -47,7 +47,7 @@ public final class RntbdResponse implements ReferenceCounted {
     private final RntbdResponseStatus frame;
 
     @JsonProperty
-    private final RntbdResponseHeaders headers;
+    public final RntbdResponseHeaders headers;
 
     private final ByteBuf message;
 
@@ -318,7 +318,7 @@ public final class RntbdResponse implements ReferenceCounted {
         return this;
     }
 
-    static RntbdResponse decode(final ByteBuf in) {
+    public static RntbdResponse decode(final ByteBuf in) {
 
         final int start = in.markReaderIndex().readerIndex();
 

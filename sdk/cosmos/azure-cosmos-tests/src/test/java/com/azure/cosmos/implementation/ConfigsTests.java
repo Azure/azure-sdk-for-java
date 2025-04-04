@@ -168,12 +168,12 @@ public class ConfigsTests {
     @Test(groups = { "unit" })
     public void thinClientEnabledTest() {
         Configs config = new Configs();
-        assertThat(config.getThinclientEnabled()).isFalse();
+        assertThat(config.isThinClientEnabled()).isFalse();
 
         System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
         try {
-            assertThat(config.getThinclientEnabled()).isTrue();
+            assertThat(config.isThinClientEnabled()).isTrue();
         } finally {
             System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         }

@@ -434,7 +434,7 @@ public class Configs {
         return URI.create(DEFAULT_THINCLIENT_ENDPOINT);
     }
 
-    public static boolean getThinclientEnabled() {
+    public static boolean isThinClientEnabled() {
         String valueFromSystemProperty = System.getProperty(THINCLIENT_ENABLED);
         if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
             return Boolean.parseBoolean(valueFromSystemProperty);
