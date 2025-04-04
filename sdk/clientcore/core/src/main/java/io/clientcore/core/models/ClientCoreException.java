@@ -32,7 +32,7 @@ public class ClientCoreException extends RuntimeException {
     /**
      * Translates a {@link Throwable} into a {@link ClientCoreException}.
      *
-     * @param message the message to use
+     * @param message the message to use instead of the cause's message
      * @param cause the {@link Throwable} to translate
      * @return the {@link ClientCoreException} that was created
      */
@@ -54,12 +54,12 @@ public class ClientCoreException extends RuntimeException {
     /**
      * Translates a {@link Throwable} into a {@link ClientCoreException}.
      *
-     * @param message the message to use
+     * @param message the message to use instead of the cause's message
      * @param cause the {@link Throwable} to translate
      * @param isRetryable whether the exception is retryable. When in doubt, set to {@code true}.
      * @return the {@link ClientCoreException} that was created
      */
-    public static ClientCoreException from(String message, Throwable cause, boolean isRetryable) {
+    static ClientCoreException from(String message, Throwable cause, boolean isRetryable) {
         if (cause instanceof ClientCoreException) {
             ClientCoreException e = (ClientCoreException) cause;
             if (e.isRetryable() == isRetryable && message == null) {

@@ -411,7 +411,7 @@ public abstract class HttpClientTests {
      * Tests that the response body is correctly returned as a byte array.
      */
     @Test
-    public void requestWithByteArrayReturnType() throws IOException {
+    public void requestWithByteArrayReturnType() {
         String uri = UriBuilder.parse(getRequestUri()).setPath("bytes/100").toString();
 
         try (Response<BinaryData> response
@@ -426,7 +426,7 @@ public abstract class HttpClientTests {
      * Tests that the response body is correctly returned as a byte array.
      */
     @Test
-    public void requestWithByteArrayReturnTypeAndParameterizedHostAndPath() throws IOException {
+    public void requestWithByteArrayReturnTypeAndParameterizedHostAndPath() {
         String uri = new UriBuilder().setScheme(getRequestScheme())
             .setHost("localhost")
             .setPort(getPort())
@@ -445,7 +445,7 @@ public abstract class HttpClientTests {
      * Tests that the response body is correctly returned as a byte array.
      */
     @Test
-    public void requestWithEmptyByteArrayReturnTypeAndParameterizedHostAndPath() throws IOException {
+    public void requestWithEmptyByteArrayReturnTypeAndParameterizedHostAndPath() {
         String uri = new UriBuilder().setScheme(getRequestScheme())
             .setHost("localhost")
             .setPort(getPort())
@@ -603,7 +603,7 @@ public abstract class HttpClientTests {
     }
 
     @Test
-    public void headRequest() throws IOException {
+    public void headRequest() {
         String uri = UriBuilder.parse(getRequestUri()).setPath("anything").toString();
         try (Response<BinaryData> response
             = getHttpClient().send(new HttpRequest().setMethod(HttpMethod.HEAD).setUri(uri))) {
@@ -711,7 +711,7 @@ public abstract class HttpClientTests {
     }
 
     @Test
-    public void canReceiveServerSentEvents() throws IOException {
+    public void canReceiveServerSentEvents() {
         String uri = UriBuilder.parse(getRequestUri()).setPath("serversentevent").toString();
         final int[] i = { 0 };
         ServerSentEventListener serverSentEventListener = sse -> {
@@ -746,7 +746,7 @@ public abstract class HttpClientTests {
      * Tests that eagerly converting implementation HTTP headers to Client Core Headers is done.
      */
     @Test
-    public void canRecognizeServerSentEvent() throws IOException {
+    public void canRecognizeServerSentEvent() {
         List<String> expected = Arrays.asList("YHOO", "+2", "10");
         String uri = UriBuilder.parse(getRequestUri()).setPath("serversentevent").toString();
         HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, ContentType.APPLICATION_OCTET_STREAM);
@@ -788,7 +788,7 @@ public abstract class HttpClientTests {
     }
 
     @Test
-    public void onRetryWithLastEventIdReceiveServerSentEvents() throws IOException {
+    public void onRetryWithLastEventIdReceiveServerSentEvents() {
         String uri = UriBuilder.parse(getRequestUri()).setPath("serversentevent").toString();
         final int[] i = { 0 };
         ServerSentEventListener serverSentEventListener = sse -> {
