@@ -32,7 +32,6 @@ public class HttpResponseException extends CoreException {
      * @param value The deserialized response value.
      */
     public HttpResponseException(final String message, final Response<BinaryData> response, final Object value) {
-        // TODO: retryable classification based on code?
         super(message, null, isRetryable(response.getStatusCode()));
 
         this.value = value;
@@ -47,7 +46,6 @@ public class HttpResponseException extends CoreException {
      * @param cause The {@link Throwable} which caused the creation of this exception.
      */
     public HttpResponseException(final String message, final Response<BinaryData> response, final Throwable cause) {
-        // TODO: retryable classification based on code?
         super(message, cause, isRetryable(response.getStatusCode()));
 
         this.value = null;

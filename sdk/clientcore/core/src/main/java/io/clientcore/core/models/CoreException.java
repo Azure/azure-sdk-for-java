@@ -32,7 +32,7 @@ public class CoreException extends RuntimeException {
     /**
      * Translates a {@link Throwable} into a {@link CoreException}.
      *
-     * @param message the message to use
+     * @param message the message to use instead of the cause's message
      * @param cause the {@link Throwable} to translate
      * @return the {@link CoreException} that was created
      */
@@ -54,7 +54,7 @@ public class CoreException extends RuntimeException {
     /**
      * Translates a {@link Throwable} into a {@link CoreException}.
      *
-     * @param message the message to use
+     * @param message the message to use instead of the cause's message
      * @param cause the {@link Throwable} to translate
      * @param isRetryable whether the exception is retryable. When in doubt, set to {@code true}.
      * @return the {@link CoreException} that was created
