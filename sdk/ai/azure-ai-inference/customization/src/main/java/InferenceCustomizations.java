@@ -19,8 +19,8 @@ public class InferenceCustomizations extends Customization {
     public void customize(LibraryCustomization customization, Logger logger) {
         // remove unused class (no reference to them, after partial-update)
         PackageCustomization implModels = customization.getPackage("com.azure.ai.inference.implementation.models");
-        ClassCustomization embedRequest1 = implModels.getClass("EmbedRequest1");
-        embedRequest1.rename("ImageEmbedRequest");
+        // ClassCustomization embedRequest1 = implModels.getClass("EmbedRequest1");
+        // embedRequest1.rename("ImageEmbedRequest");
         PackageCustomization inferenceModels = customization.getPackage("com.azure.ai.inference.models");
         inferenceModels.getClass("ChatCompletionsOptions").customizeAst(ast -> {
             ast.addImport("com.azure.ai.inference.implementation.accesshelpers.ChatCompletionsOptionsAccessHelper");
