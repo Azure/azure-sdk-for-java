@@ -47,8 +47,8 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  * and listing {@link KeyVaultCertificate certificates}. The client also supports listing
  * {@link DeletedCertificate deleted certificates} for a soft-delete enabled key vault.</p>
  *
- * <p>The minimal configuration options required by {@link CertificateClientBuilder certificateClientBuilder} to build
- * a {@link CertificateClient} are an {@link String endpoint} and {@link TokenCredential credential}.</p>
+ * <p>The minimal configuration options required by {@link CertificateClientBuilder} to build a
+ * {@link CertificateClient} are an {@link String endpoint} and {@link TokenCredential credential}.</p>
  * <!-- src_embed com.v2.azure.security.keyvault.certificates.CertificateClient.instantiation -->
  * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.instantiation -->
  *
@@ -117,7 +117,7 @@ public final class CertificateClientBuilder
      * {@link CertificateClientBuilder#httpPipeline(HttpPipeline) pipeline} were not provided.
      */
     public CertificateClient buildClient() {
-        return new CertificateClient(buildImplClient(), endpoint);
+        return new CertificateClient(buildImplClient());
     }
 
     private CertificateClientImpl buildImplClient() {
