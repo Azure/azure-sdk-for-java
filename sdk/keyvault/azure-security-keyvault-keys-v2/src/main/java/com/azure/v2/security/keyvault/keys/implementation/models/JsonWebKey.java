@@ -12,6 +12,8 @@ import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
+import io.clientcore.core.utils.Base64Uri;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
@@ -43,61 +45,61 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * RSA modulus.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    private String n;
+    private Base64Uri n;
 
     /*
      * RSA public exponent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    private String e;
+    private Base64Uri e;
 
     /*
      * RSA private exponent, or the D component of an EC private key.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    private String d;
+    private Base64Uri d;
 
     /*
      * RSA private key parameter.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    private String dp;
+    private Base64Uri dp;
 
     /*
      * RSA private key parameter.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    private String dq;
+    private Base64Uri dq;
 
     /*
      * RSA private key parameter.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    private String qi;
+    private Base64Uri qi;
 
     /*
      * RSA secret prime.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    private String p;
+    private Base64Uri p;
 
     /*
      * RSA secret prime, with p < q.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    private String q;
+    private Base64Uri q;
 
     /*
      * Symmetric key.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    private String k;
+    private Base64Uri k;
 
     /*
      * Protected Key, used with 'Bring Your Own Key'.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    private String t;
+    private Base64Uri t;
 
     /*
      * Elliptic curve name. For valid values, see JsonWebKeyCurveName.
@@ -109,13 +111,13 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
      * X component of an EC public key.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    private String x;
+    private Base64Uri x;
 
     /*
      * Y component of an EC public key.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    private String y;
+    private Base64Uri y;
 
     /**
      * Creates an instance of JsonWebKey class.
@@ -218,7 +220,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
         if (n == null) {
             this.n = null;
         } else {
-            this.n = String.encode(n);
+            this.n = Base64Uri.encode(n);
         }
         return this;
     }
@@ -247,7 +249,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
         if (e == null) {
             this.e = null;
         } else {
-            this.e = String.encode(e);
+            this.e = Base64Uri.encode(e);
         }
         return this;
     }
@@ -276,7 +278,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
         if (d == null) {
             this.d = null;
         } else {
-            this.d = String.encode(d);
+            this.d = Base64Uri.encode(d);
         }
         return this;
     }
@@ -305,7 +307,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
         if (dp == null) {
             this.dp = null;
         } else {
-            this.dp = String.encode(dp);
+            this.dp = Base64Uri.encode(dp);
         }
         return this;
     }
@@ -334,7 +336,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
         if (dq == null) {
             this.dq = null;
         } else {
-            this.dq = String.encode(dq);
+            this.dq = Base64Uri.encode(dq);
         }
         return this;
     }
@@ -363,7 +365,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
         if (qi == null) {
             this.qi = null;
         } else {
-            this.qi = String.encode(qi);
+            this.qi = Base64Uri.encode(qi);
         }
         return this;
     }
@@ -392,7 +394,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
         if (p == null) {
             this.p = null;
         } else {
-            this.p = String.encode(p);
+            this.p = Base64Uri.encode(p);
         }
         return this;
     }
@@ -421,7 +423,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
         if (q == null) {
             this.q = null;
         } else {
-            this.q = String.encode(q);
+            this.q = Base64Uri.encode(q);
         }
         return this;
     }
@@ -450,7 +452,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
         if (k == null) {
             this.k = null;
         } else {
-            this.k = String.encode(k);
+            this.k = Base64Uri.encode(k);
         }
         return this;
     }
@@ -479,7 +481,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
         if (t == null) {
             this.t = null;
         } else {
-            this.t = String.encode(t);
+            this.t = Base64Uri.encode(t);
         }
         return this;
     }
@@ -530,7 +532,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
         if (x == null) {
             this.x = null;
         } else {
-            this.x = String.encode(x);
+            this.x = Base64Uri.encode(x);
         }
         return this;
     }
@@ -559,7 +561,7 @@ public final class JsonWebKey implements JsonSerializable<JsonWebKey> {
         if (y == null) {
             this.y = null;
         } else {
-            this.y = String.encode(y);
+            this.y = Base64Uri.encode(y);
         }
         return this;
     }
