@@ -197,7 +197,6 @@ public final class ImageEmbeddingsAsyncClient {
             .map(protocolMethodData -> protocolMethodData.toObject(ModelInfo.class));
     }
 
-
     /**
      * Return the embedding vectors for given images.
      * The method makes a REST API call to the `/images/embeddings` route on the given endpoint.
