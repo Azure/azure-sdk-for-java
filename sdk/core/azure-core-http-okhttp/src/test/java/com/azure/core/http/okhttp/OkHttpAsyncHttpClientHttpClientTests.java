@@ -7,6 +7,7 @@ import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpProtocolVersion;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.validation.http.HttpClientTests;
 import com.azure.core.validation.http.HttpClientTestsServer;
@@ -32,7 +33,7 @@ public class OkHttpAsyncHttpClientHttpClientTests extends HttpClientTests {
 
     @BeforeAll
     public static void startTestServer() {
-        server = HttpClientTestsServer.getHttpClientTestsServer();
+        server = HttpClientTestsServer.getHttpClientTestsServer(HttpProtocolVersion.HTTP_1_1, false);
         server.start();
     }
 
@@ -46,12 +47,12 @@ public class OkHttpAsyncHttpClientHttpClientTests extends HttpClientTests {
     @Override
     @Deprecated
     protected int getPort() {
-        return server.getHttpPort();
+        return server.getPort();
     }
 
     @Override
     protected String getServerUri(boolean secure) {
-        return secure ? server.getHttpsUri() : server.getHttpUri();
+        return secure ? server.getHttpsUri() : server.getUri();
     }
 
     @Override

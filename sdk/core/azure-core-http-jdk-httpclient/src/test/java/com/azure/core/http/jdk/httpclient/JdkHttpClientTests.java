@@ -71,7 +71,7 @@ public class JdkHttpClientTests {
     private static final StepVerifierOptions EMPTY_INITIAL_REQUEST_OPTIONS
         = StepVerifierOptions.create().initialRequest(0);
 
-    private static final String SERVER_HTTP_URI = JdkHttpClientLocalTestServer.getServer().getHttpUri();
+    private static final String SERVER_HTTP_URI = JdkHttpClientLocalTestServer.getServer().getUri();
 
     @Test
     public void testFlowableResponseShortBodyAsByteArrayAsync() {

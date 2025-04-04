@@ -53,7 +53,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class VertxHttpClientTests {
-    private static final String SERVER_HTTP_URI = VertxHttpClientLocalTestServer.getServer().getHttpUri();
+    private static final String SERVER_HTTP_URI = VertxHttpClientLocalTestServer.getServer().getUri();
 
     private static final StepVerifierOptions EMPTY_INITIAL_REQUEST_OPTIONS
         = StepVerifierOptions.create().initialRequest(0);
