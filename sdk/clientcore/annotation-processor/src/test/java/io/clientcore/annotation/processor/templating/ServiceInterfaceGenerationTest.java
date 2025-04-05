@@ -28,7 +28,7 @@ public class ServiceInterfaceGenerationTest {
         processor = new JavaParserTemplateProcessor();
         JavaFileObject filerSourceFile = new MockJavaFileObject();
         Filer filer = new MockFiler(filerSourceFile);
-        processingEnv = new MockProcessingEnvironment(filer);
+        processingEnv = new MockProcessingEnvironment(filer, null, null);
     }
 
     @Test
@@ -54,7 +54,7 @@ public class ServiceInterfaceGenerationTest {
 
     @Test
     public void testAddOrphanComments() {
-        processor.addOrphanComments();
+        processor.addCopyrightComments();
         assertEquals(2, processor.getCompilationUnit().getOrphanComments().size());
     }
 
@@ -67,7 +67,7 @@ public class ServiceInterfaceGenerationTest {
 
     @Test
     public void testCreateClass() {
-        processor.createClass("ServiceImpl", "Service", templateInput);
+        processor.createClass("ServiceImpl", "Service", templateInput, processingEnv);
         assertEquals("ServiceImpl", processor.getCompilationUnit().getTypes().get(0).getNameAsString());
     }
 }

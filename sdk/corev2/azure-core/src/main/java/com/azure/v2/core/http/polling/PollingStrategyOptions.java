@@ -5,9 +5,9 @@ package com.azure.v2.core.http.polling;
 
 import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.MetadataProperties;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.serialization.ObjectSerializer;
-import io.clientcore.core.utils.Context;
 
 import java.util.Objects;
 
@@ -20,7 +20,7 @@ public final class PollingStrategyOptions {
     private final HttpPipeline httpPipeline;
     private String endpoint;
     private ObjectSerializer serializer;
-    private Context context;
+    private RequestContext context = RequestContext.none();
     private String serviceVersion;
 
     /**
@@ -91,7 +91,7 @@ public final class PollingStrategyOptions {
      *
      * @return the context to use for sending the request using the {@link #getHttpPipeline()}.
      */
-    public Context getContext() {
+    public RequestContext getRequestContext() {
         return context;
     }
 
@@ -101,7 +101,7 @@ public final class PollingStrategyOptions {
      * @param context the context to use for sending the request using the {@link #getHttpPipeline()}.
      * @return the updated {@link PollingStrategyOptions} instance.
      */
-    public PollingStrategyOptions setContext(Context context) {
+    public PollingStrategyOptions setRequestContext(RequestContext context) {
         this.context = context;
         return this;
     }

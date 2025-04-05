@@ -50,8 +50,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @Isolated
 @Execution(ExecutionMode.SAME_THREAD)
 public class InstrumentationTests {
-    private static final LibraryInstrumentationOptions DEFAULT_LIB_OPTIONS
-        = new LibraryInstrumentationOptions("test-library");
+    private static final SdkInstrumentationOptions DEFAULT_SDK_OPTIONS = new SdkInstrumentationOptions("test-library");
     private InMemorySpanExporter exporter;
     private SdkTracerProvider tracerProvider;
 
@@ -69,7 +68,7 @@ public class InstrumentationTests {
 
     @Test
     public void createTracerOTelNotConfigured() {
-        Tracer tracer = Instrumentation.create(null, DEFAULT_LIB_OPTIONS).getTracer();
+        Tracer tracer = Instrumentation.create(null, DEFAULT_SDK_OPTIONS).getTracer();
         assertFalse(tracer.isEnabled());
     }
 
@@ -80,7 +79,7 @@ public class InstrumentationTests {
         InstrumentationOptions options
             = new InstrumentationOptions().setTracingEnabled(false).setTelemetryProvider(otel);
 
-        Tracer tracer = Instrumentation.create(options, DEFAULT_LIB_OPTIONS).getTracer();
+        Tracer tracer = Instrumentation.create(options, DEFAULT_SDK_OPTIONS).getTracer();
         assertFalse(tracer.isEnabled());
         tracer.spanBuilder("test", INTERNAL, null).startSpan().end();
 
@@ -93,7 +92,7 @@ public class InstrumentationTests {
         try (AutoCloseable otel
             = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).buildAndRegisterGlobal()) {
 
-            Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_LIB_OPTIONS);
+            Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_SDK_OPTIONS);
             Tracer tracer = instrumentation.getTracer();
             assertTrue(tracer.isEnabled());
 
@@ -121,7 +120,7 @@ public class InstrumentationTests {
             OpenTelemetry localOTel = OpenTelemetrySdk.builder().setTracerProvider(localTracerProvider).build();
 
             Tracer tracer = Instrumentation
-                .create(new InstrumentationOptions().setTelemetryProvider(localOTel), DEFAULT_LIB_OPTIONS)
+                .create(new InstrumentationOptions().setTelemetryProvider(localOTel), DEFAULT_SDK_OPTIONS)
                 .getTracer();
             assertTrue(tracer.isEnabled());
 
@@ -138,7 +137,7 @@ public class InstrumentationTests {
         InstrumentationOptions options = new InstrumentationOptions().setTelemetryProvider(tracerProvider);
 
         assertThrows(IllegalArgumentException.class,
-            () -> Instrumentation.create(options, DEFAULT_LIB_OPTIONS).getTracer());
+            () -> Instrumentation.create(options, DEFAULT_SDK_OPTIONS).getTracer());
         assertThrows(NullPointerException.class, () -> Instrumentation.create(null, null).getTracer());
     }
 
@@ -148,11 +147,10 @@ public class InstrumentationTests {
         try (AutoCloseable otel
             = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).buildAndRegisterGlobal()) {
 
-            LibraryInstrumentationOptions libOptions
-                = new LibraryInstrumentationOptions("test-library").setLibraryVersion("1.0.0")
-                    .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
+            SdkInstrumentationOptions sdkOptions = new SdkInstrumentationOptions("test-library").setSdkVersion("1.0.0")
+                .setSchemaUrl("https://opentelemetry.io/schemas/1.29.0");
 
-            Tracer tracer = Instrumentation.create(null, libOptions).getTracer();
+            Tracer tracer = Instrumentation.create(null, sdkOptions).getTracer();
             assertTrue(tracer.isEnabled());
 
             tracer.spanBuilder("test", INTERNAL, null).startSpan().end();
@@ -186,7 +184,7 @@ public class InstrumentationTests {
         assertEquals(otelSpan.getSpanContext().getTraceFlags().asHex(), context.getTraceFlags());
 
         Tracer tracer
-            = Instrumentation.create(new InstrumentationOptions().setTelemetryProvider(otel), DEFAULT_LIB_OPTIONS)
+            = Instrumentation.create(new InstrumentationOptions().setTelemetryProvider(otel), DEFAULT_SDK_OPTIONS)
                 .getTracer();
         Span span = tracer.spanBuilder("test", INTERNAL, context).startSpan();
         assertEquals(otelSpan.getSpanContext().getTraceId(), span.getInstrumentationContext().getTraceId());
@@ -230,7 +228,7 @@ public class InstrumentationTests {
         assertEquals(otelSpanContext.getTraceFlags().asHex(), context.getTraceFlags());
 
         Tracer tracer
-            = Instrumentation.create(new InstrumentationOptions().setTelemetryProvider(otel), DEFAULT_LIB_OPTIONS)
+            = Instrumentation.create(new InstrumentationOptions().setTelemetryProvider(otel), DEFAULT_SDK_OPTIONS)
                 .getTracer();
         Span span = tracer.spanBuilder("test", INTERNAL, context).startSpan();
         assertEquals(otelSpanContext.getTraceId(), span.getInstrumentationContext().getTraceId());
@@ -270,7 +268,7 @@ public class InstrumentationTests {
 
     @Test
     public void testCreateMeterAndInstruments() {
-        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_LIB_OPTIONS);
+        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_SDK_OPTIONS);
         Meter meter = instrumentation.getMeter();
         assertTrue(meter.isEnabled());
 
@@ -290,7 +288,7 @@ public class InstrumentationTests {
 
     @Test
     public void testInvalidParams() {
-        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_LIB_OPTIONS);
+        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_SDK_OPTIONS);
         Meter meter = instrumentation.getMeter();
 
         assertThrows(NullPointerException.class, () -> meter.createDoubleHistogram("test", null, "1", null));
@@ -315,7 +313,7 @@ public class InstrumentationTests {
 
     @Test
     public void testCreateAttributes() {
-        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_LIB_OPTIONS);
+        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_SDK_OPTIONS);
         InstrumentationAttributes attributes = instrumentation.createAttributes(Collections.emptyMap());
         assertInstanceOf(OTelAttributes.class, attributes);
 
@@ -327,7 +325,7 @@ public class InstrumentationTests {
 
     @Test
     public void testAttributesInvalidParams() {
-        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_LIB_OPTIONS);
+        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_SDK_OPTIONS);
         assertThrows(NullPointerException.class,
             () -> instrumentation.createAttributes(Collections.singletonMap(null, "value")));
         assertThrows(NullPointerException.class,
@@ -339,7 +337,7 @@ public class InstrumentationTests {
 
     @Test
     public void testAttributes() {
-        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_LIB_OPTIONS);
+        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_SDK_OPTIONS);
         Map<String, Object> start = new HashMap<>();
         start.put("string", "value");
         start.put("int", 42);
@@ -386,7 +384,7 @@ public class InstrumentationTests {
 
     @Test
     public void testDuplicates() {
-        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_LIB_OPTIONS);
+        Instrumentation instrumentation = Instrumentation.create(null, DEFAULT_SDK_OPTIONS);
         Map<String, Object> start = new HashMap<>();
         start.put("string", "value1");
         start.put("string", "value2");
@@ -399,31 +397,4 @@ public class InstrumentationTests {
         assertEquals(1, attrs.size());
         assertEquals("value4", attrs.get(AttributeKey.stringKey("string")));
     }
-
-    /*@Test
-    public void testSuppression() {
-        OpenTelemetry otel = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).buildAndRegisterGlobal();
-        InstrumentationOptions options = new InstrumentationOptions().setTelemetryProvider(otel);
-        Instrumentation instrumentation = Instrumentation.create(options, DEFAULT_LIB_OPTIONS, null);
-        assertTrue(instrumentation.shouldInstrument(CLIENT, null));
-    
-        Tracer tracer = instrumentation.getTracer();
-        Span span = tracer.spanBuilder("test", CLIENT, null).startSpan();
-    
-        assertFalse(instrumentation.shouldInstrument(CLIENT, span.getInstrumentationContext()));
-        assertTrue(instrumentation.shouldInstrument(INTERNAL, span.getInstrumentationContext()));
-        assertTrue(instrumentation.shouldInstrument(CONSUMER, span.getInstrumentationContext()));
-        assertTrue(instrumentation.shouldInstrument(PRODUCER, span.getInstrumentationContext()));
-        assertTrue(instrumentation.shouldInstrument(SERVER, span.getInstrumentationContext()));
-    }
-    
-    @Test
-    public void testSuppressionTracingAndMetricsDisabled() {
-        OpenTelemetry otel = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).buildAndRegisterGlobal();
-    
-        InstrumentationOptions options
-            = new InstrumentationOptions().setTracingEnabled(false).setMetricsEnabled(false).setTelemetryProvider(otel);
-    
-        assertFalse(Instrumentation.create(options, DEFAULT_LIB_OPTIONS, null).shouldInstrument(CLIENT, null));
-    }*/
 }

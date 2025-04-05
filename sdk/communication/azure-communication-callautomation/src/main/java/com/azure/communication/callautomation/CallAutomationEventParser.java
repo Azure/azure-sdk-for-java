@@ -36,15 +36,16 @@ import com.azure.communication.callautomation.models.events.HoldAudioPaused;
 import com.azure.communication.callautomation.models.events.HoldAudioResumed;
 import com.azure.communication.callautomation.models.events.HoldAudioStarted;
 import com.azure.communication.callautomation.models.events.HoldFailed;
+import com.azure.communication.callautomation.models.events.IncomingCall;
 import com.azure.communication.callautomation.models.events.MediaStreamingFailed;
 import com.azure.communication.callautomation.models.events.MediaStreamingStarted;
 import com.azure.communication.callautomation.models.events.MediaStreamingStopped;
 import com.azure.communication.callautomation.models.events.ParticipantsUpdated;
 import com.azure.communication.callautomation.models.events.PlayCanceled;
 import com.azure.communication.callautomation.models.events.PlayCompleted;
+import com.azure.communication.callautomation.models.events.PlayFailed;
 import com.azure.communication.callautomation.models.events.PlayPaused;
 import com.azure.communication.callautomation.models.events.PlayResumed;
-import com.azure.communication.callautomation.models.events.PlayFailed;
 import com.azure.communication.callautomation.models.events.PlayStarted;
 import com.azure.communication.callautomation.models.events.RecognizeCanceled;
 import com.azure.communication.callautomation.models.events.RecognizeCompleted;
@@ -122,6 +123,8 @@ public final class CallAutomationEventParser {
                 ret = CallConnected.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.CallDisconnected")) {
                 ret = CallDisconnected.fromJson(jsonReader);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.IncomingCall")) {
+                ret = IncomingCall.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.AddParticipantFailed")) {
                 ret = AddParticipantFailed.fromJson(jsonReader);
             } else if (Objects.equals(eventType, "Microsoft.Communication.AddParticipantSucceeded")) {

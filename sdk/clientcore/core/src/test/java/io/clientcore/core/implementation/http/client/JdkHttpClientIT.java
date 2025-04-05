@@ -10,13 +10,12 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.shared.InsecureTrustManager;
 import io.clientcore.core.shared.LocalTestServer;
-import io.clientcore.core.utils.Context;
 import io.clientcore.core.utils.TestUtils;
 import org.conscrypt.Conscrypt;
 import org.junit.jupiter.api.AfterAll;
@@ -223,7 +222,7 @@ public class JdkHttpClientIT {
     public void testBufferedResponse() throws IOException {
         HttpClient client = new JdkHttpClientBuilder().build();
 
-        try (Response<BinaryData> response = getResponse(client, "/short", Context.none())) {
+        try (Response<BinaryData> response = getResponse(client, "/short", RequestContext.none())) {
             assertArraysEqual(SHORT_BODY, response.getValue().toBytes());
         }
     }
@@ -232,7 +231,7 @@ public class JdkHttpClientIT {
     public void testEmptyBufferResponse() throws IOException {
         HttpClient client = new JdkHttpClientBuilder().build();
 
-        try (Response<BinaryData> response = getResponse(client, "/empty", Context.none())) {
+        try (Response<BinaryData> response = getResponse(client, "/empty", RequestContext.none())) {
             assertEquals(0L, response.getValue().toBytes().length);
         }
     }
@@ -267,11 +266,9 @@ public class JdkHttpClientIT {
         }
     }
 
-    private static Response<BinaryData> getResponse(HttpClient client, String path, Context context)
+    private static Response<BinaryData> getResponse(HttpClient client, String path, RequestContext context)
         throws IOException {
-        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET)
-            .setUri(uri(server, path))
-            .setRequestOptions(new RequestOptions().setContext(context));
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(server, path)).setContext(context);
 
         return client.send(request);
     }

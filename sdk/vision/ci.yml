@@ -35,16 +35,10 @@ parameters:
     type: boolean
     default: true
 
-# Note that IgnoreVerifyTypeSpecCodeGenerationError is set to true here in order to ignore
-# errors from the task "Verify TypeSpec Code Generation" in the CI pipeline. This task is
-# currently failing because the tools do not account for the additional code snippet that
-# were inserted into Java source code comments (JavaDocs). This task will be enabled again
-# once the tools are updated.
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: vision
-    IgnoreVerifyTypeSpecCodeGenerationError: true
     Artifacts:
       - name: azure-ai-vision-imageanalysis
         groupId: com.azure

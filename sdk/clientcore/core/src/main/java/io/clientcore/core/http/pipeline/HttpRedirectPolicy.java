@@ -87,9 +87,7 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
     @Override
     public Response<BinaryData> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         // Reset the attemptedRedirectUris for each individual request.
-        InstrumentationContext instrumentationContext = httpRequest.getRequestOptions() == null
-            ? null
-            : httpRequest.getRequestOptions().getInstrumentationContext();
+        InstrumentationContext instrumentationContext = httpRequest.getContext().getInstrumentationContext();
 
         ClientLogger logger = getLogger(httpRequest);
         return attemptRedirect(logger, next, 0, new LinkedHashSet<>(), instrumentationContext);
@@ -217,8 +215,8 @@ public final class HttpRedirectPolicy implements HttpPipelinePolicy {
     private ClientLogger getLogger(HttpRequest httpRequest) {
         ClientLogger logger = null;
 
-        if (httpRequest.getRequestOptions() != null && httpRequest.getRequestOptions().getLogger() != null) {
-            logger = httpRequest.getRequestOptions().getLogger();
+        if (httpRequest.getContext() != null && httpRequest.getContext().getLogger() != null) {
+            logger = httpRequest.getContext().getLogger();
         }
 
         return logger == null ? LOGGER : logger;

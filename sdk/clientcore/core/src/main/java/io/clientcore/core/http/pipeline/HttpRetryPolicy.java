@@ -163,9 +163,7 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
         // It can be used by the policies during the process call.
         HttpRequestAccessHelper.setTryCount(httpRequest, tryCount);
 
-        final InstrumentationContext instrumentationContext = httpRequest.getRequestOptions() == null
-            ? null
-            : httpRequest.getRequestOptions().getInstrumentationContext();
+        final InstrumentationContext instrumentationContext = httpRequest.getContext().getInstrumentationContext();
 
         Response<BinaryData> response;
         ClientLogger logger = getLogger(httpRequest);
@@ -350,8 +348,8 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
     private ClientLogger getLogger(HttpRequest httpRequest) {
         ClientLogger logger = null;
 
-        if (httpRequest.getRequestOptions() != null && httpRequest.getRequestOptions().getLogger() != null) {
-            logger = httpRequest.getRequestOptions().getLogger();
+        if (httpRequest.getContext() != null && httpRequest.getContext().getLogger() != null) {
+            logger = httpRequest.getContext().getLogger();
         }
 
         return logger == null ? LOGGER : logger;

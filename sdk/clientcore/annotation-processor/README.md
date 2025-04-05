@@ -73,65 +73,61 @@ The client-core annotation processor for introducing compile-time code generatio
    public class ExampleServiceImpl implements ExampleService {
       private static final ClientLogger LOGGER = new ClientLogger(TestInterfaceClientService.class);
 
-    private final HttpPipeline defaultPipeline;
+      private final HttpPipeline defaultPipeline;
 
-    private final ObjectSerializer serializer;
+      private final ObjectSerializer serializer;
 
-    public ExampleServiceImpl(HttpPipeline defaultPipeline, ObjectSerializer serializer) {
-        this.defaultPipeline = defaultPipeline;
-        this.serializer = serializer == null ? new JsonSerializer() : serializer;
-    }
+      public ExampleServiceImpl(HttpPipeline defaultPipeline, ObjectSerializer serializer) {
+          this.defaultPipeline = defaultPipeline;
+          this.serializer = serializer == null ? new JsonSerializer() : serializer;
+      }
 
-    public static ExampleService getNewInstance(HttpPipeline pipeline, ObjectSerializer serializer) {
-        return new ExampleServiceImpl(pipeline, serializer);
-    }
+      public static ExampleService getNewInstance(HttpPipeline pipeline, ObjectSerializer serializer) {
+          return new ExampleServiceImpl(pipeline, serializer);
+      }
 
-    public HttpPipeline getPipeline() {
-        return defaultPipeline;
-    }
+      public HttpPipeline getPipeline() {
+          return defaultPipeline;
+      }
       
-    public Response<BinaryData> getUser(String userId, Context context) {
-        return getUser(endpoint, apiVersion, userId, context);
-    }
+      public Response<BinaryData> getUser(String userId, Context context) {
+          return getUser(endpoint, apiVersion, userId, context);
+      }
 
-    @Override
-    private Response<BinaryData> getUser(String endpoint, String apiVersion, String userId, Context context) {
-        HttpPipeline pipeline = this.getPipeline();
-        String host = endpoint + "/example/users/" + userId + "?api-version=" + apiVersion;
+      @Override
+      private Response<BinaryData> getUser(String endpoint, String apiVersion, String userId, RequestContext requestContext) {
+          HttpPipeline pipeline = this.getPipeline();
+          String host = endpoint + "/example/users/" + userId + "?api-version=" + apiVersion;
 
-        // create the request
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, host);
+          // create the request
+          HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, host);
 
-        // set the headers
-        HttpHeaders headers = new HttpHeaders();
-        httpRequest.setHeaders(headers);
+          // set the headers
+          HttpHeaders headers = new HttpHeaders();
+          httpRequest.setHeaders(headers);
 
-        // add RequestOptions to the request
-        httpRequest.setRequestOptions(requestOptions);
+          // add RequestContext to the request
+          httpRequest.setContext(requestContext);
 
-        // set the body content if present
+          // set the body content if present
 
-        // send the request through the pipeline
-        Response<BinaryData> networkResponse = pipeline.send(httpRequest);
+          // send the request through the pipeline
+          Response<BinaryData> networkResponse = pipeline.send(httpRequest);
 
-        final int responseCode = networkResponse.getStatusCode();
-        boolean expectedResponse = responseCode == 200;
-        if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
-        }
-        ResponseBodyMode responseBodyMode = ResponseBodyMode.IGNORE;
-        if (requestOptions != null) {
-            responseBodyMode = requestOptions.getResponseBodyMode();
-        }
-        if (responseBodyMode == ResponseBodyMode.DESERIALIZE) {
-            BinaryData responseBody = response.getBody();
-            HttpResponseAccessHelper.setValue((HttpResponse<?>) response, responseBody);
-        } else {
-            BinaryData responseBody = response.getBody();
-            HttpResponseAccessHelper.setBodyDeserializer((HttpResponse<?>) response, (body) -> responseBody);
-        }
-        return (Response<BinaryData>) response;
-    }
+          final int responseCode = networkResponse.getStatusCode();
+          boolean expectedResponse = responseCode == 200;
+          if (!expectedResponse) {
+              throw new RuntimeException("Unexpected response code: " + responseCode);
+          }
+       
+          try {
+              networkResponse.close();
+          } catch (IOException e) {
+              throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+          }
+
+          return networkResponse;
+      }
    }
    ```
 This implementation eliminates reflection and integrates directly with your HTTP client infrastructure.

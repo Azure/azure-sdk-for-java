@@ -92,6 +92,8 @@ public final class Constants {
 
     public static final String ADJUSTED_BLOB_LENGTH_KEY = "adjustedBlobLength";
 
+    public static final String SKIP_ECHO_VALIDATION_KEY = "skipEchoValidation";
+
     private Constants() {
     }
 

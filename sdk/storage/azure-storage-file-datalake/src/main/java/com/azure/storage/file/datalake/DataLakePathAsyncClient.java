@@ -60,10 +60,12 @@ import com.azure.storage.file.datalake.models.PathItem;
 import com.azure.storage.file.datalake.models.PathPermissions;
 import com.azure.storage.file.datalake.models.PathProperties;
 import com.azure.storage.file.datalake.models.PathRemoveAccessControlEntry;
+import com.azure.storage.file.datalake.models.PathSystemProperties;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.file.datalake.options.DataLakePathCreateOptions;
 import com.azure.storage.file.datalake.options.DataLakePathDeleteOptions;
 import com.azure.storage.file.datalake.options.PathGetPropertiesOptions;
+import com.azure.storage.file.datalake.options.PathGetSystemPropertiesOptions;
 import com.azure.storage.file.datalake.options.PathRemoveAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathSetAccessControlRecursiveOptions;
 import com.azure.storage.file.datalake.options.PathUpdateAccessControlRecursiveOptions;
@@ -894,6 +896,77 @@ public class DataLakePathAsyncClient {
             .onErrorMap(DataLakeImplUtils::transformBlobStorageException)
             .map(
                 response -> new SimpleResponse<>(response, Transforms.toPathProperties(response.getValue(), response)));
+    }
+
+    /**
+     * Returns the system properties for a resource by using the getStatus query parameter.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.getSystemProperties -->
+     * <pre>
+     * client.getSystemProperties&#40;&#41;.subscribe&#40;
+     *     response -&gt; System.out.printf&#40;&quot;Is server encrypted: %s&quot;, response.isServerEncrypted&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.getSystemProperties -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/get-properties">Azure Docs</a></p>
+     *
+     * @return A {@link Mono} containing resource system properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PathSystemProperties> getSystemProperties() {
+        return getSystemPropertiesWithResponse(null).flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Returns the system properties for a resource by using the getStatus query parameter.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.getSystemPropertiesWithResponse#PathGetSystemPropertiesOptions -->
+     * <pre>
+     * PathGetSystemPropertiesOptions options = new PathGetSystemPropertiesOptions&#40;&#41;.setRequestConditions&#40;
+     *     new DataLakeRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;&#41;;
+     *
+     * client.getSystemPropertiesWithResponse&#40;options&#41;.subscribe&#40;
+     *     response -&gt; System.out.printf&#40;&quot;Is server encrypted: %s&quot;, response.getValue&#40;&#41;.isServerEncrypted&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.getSystemPropertiesWithResponse#PathGetSystemPropertiesOptions -->
+     *
+     * <p>For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/datalakestoragegen2/path/get-properties">Azure Docs</a></p>
+     *
+     * @param options {@link PathGetSystemPropertiesOptions}
+     * @return A {@link Mono} containing the response and a resource's system properties.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PathSystemProperties>>
+        getSystemPropertiesWithResponse(PathGetSystemPropertiesOptions options) {
+        try {
+            return withContext(context -> getSystemPropertiesWithResponse(options, context));
+        } catch (RuntimeException ex) {
+            return monoError(LOGGER, ex);
+        }
+    }
+
+    Mono<Response<PathSystemProperties>> getSystemPropertiesWithResponse(PathGetSystemPropertiesOptions options,
+        Context context) {
+        options = options == null ? new PathGetSystemPropertiesOptions() : options;
+        context = BuilderHelper.skipResponseValidationForEncryptionKey(context);
+        DataLakeRequestConditions requestConditions
+            = options.getRequestConditions() == null ? new DataLakeRequestConditions() : options.getRequestConditions();
+
+        LeaseAccessConditions lac = new LeaseAccessConditions().setLeaseId(requestConditions.getLeaseId());
+        ModifiedAccessConditions mac = new ModifiedAccessConditions().setIfMatch(requestConditions.getIfMatch())
+            .setIfNoneMatch(requestConditions.getIfNoneMatch())
+            .setIfModifiedSince(requestConditions.getIfModifiedSince())
+            .setIfUnmodifiedSince(requestConditions.getIfUnmodifiedSince());
+
+        return this.dataLakeStorage.getPaths()
+            .getPropertiesWithResponseAsync(null, null, PathGetPropertiesAction.GET_STATUS, false, lac, mac, context)
+            .map(response -> new SimpleResponse<>(response, ModelHelper.getSystemPropertiesResponse(response)));
     }
 
     /**

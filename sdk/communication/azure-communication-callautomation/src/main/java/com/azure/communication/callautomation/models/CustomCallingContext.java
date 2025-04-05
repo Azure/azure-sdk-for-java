@@ -6,17 +6,29 @@ package com.azure.communication.callautomation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 
+import java.io.IOException;
 import java.util.Map;
 
 /**
  * Custom calling context details.
  */
 @Fluent
-public final class CustomCallingContext {
-    private final Map<String, String> sipHeaders;
-    private final Map<String, String> voipHeaders;
+public final class CustomCallingContext implements JsonSerializable<CustomCallingContext> {
+    private Map<String, String> sipHeaders;
+    private Map<String, String> voipHeaders;
     private final ClientLogger logger;
+
+    /**
+     * Creates an instance of CustomCallingContext class.
+     */
+    public CustomCallingContext() {
+        this.logger = new ClientLogger(CustomCallingContext.class);
+    }
 
     /**
      * Create a CustomCallingContext object with SIP and VOIP headers
@@ -87,5 +99,46 @@ public final class CustomCallingContext {
             throw logger.logExceptionAsError(new IllegalStateException("Cannot add sip header, VoipHeaders is null."));
         }
         voipHeaders.put(key, value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeMapField("voipHeaders", this.voipHeaders, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("sipHeaders", this.sipHeaders, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CustomCallingContext from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CustomCallingContext if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the CustomCallingContext.
+     */
+    public static CustomCallingContext fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            CustomCallingContext deserializedCustomCallingContext = new CustomCallingContext();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("voipHeaders".equals(fieldName)) {
+                    Map<String, String> voipHeaders = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCustomCallingContext.voipHeaders = voipHeaders;
+                } else if ("sipHeaders".equals(fieldName)) {
+                    Map<String, String> sipHeaders = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCustomCallingContext.sipHeaders = sipHeaders;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedCustomCallingContext;
+        });
     }
 }

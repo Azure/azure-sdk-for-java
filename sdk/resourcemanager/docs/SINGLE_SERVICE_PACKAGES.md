@@ -341,12 +341,12 @@ service
 <details>
 <summary> chaos </summary>
 
-* package-2024-01
+* [package-2024-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/chaos/resource-manager#tag-package-2024-01)
     * [1.2.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-chaos/1.2.0)
     * [1.1.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-chaos/1.1.0)
-* package-2023-11
+* [package-2023-11](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/chaos/resource-manager#tag-package-2023-11)
     * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-chaos/1.0.0)
-* package-2023-04-15-preview
+* [package-2023-04-15-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/chaos/resource-manager#tag-package-2023-04-15-preview)
     * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-chaos/1.0.0-beta.1)
 </details>
 
@@ -541,6 +541,8 @@ service
 <details>
 <summary> databox </summary>
 
+* [package-2025-02](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databox/resource-manager#tag-package-2025-02)
+    * [1.1.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-databox/1.1.0)
 * [package-2022-12](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/databox/resource-manager#tag-package-2022-12)
     * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-databox/1.0.0)
     * [1.0.0-beta.4](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-databox/1.0.0-beta.4)
@@ -928,6 +930,8 @@ service
 <details>
 <summary> eventgrid </summary>
 
+* [package-2025-02](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager#tag-package-2025-02)
+    * [1.2.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-eventgrid/1.2.0)
 * [package-2024-06-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/eventgrid/resource-manager#tag-package-2024-06-preview)
     * [1.2.0-beta.7](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-eventgrid/1.2.0-beta.7)
     * [1.2.0-beta.6](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-eventgrid/1.2.0-beta.6)
@@ -1131,6 +1135,8 @@ service
 <details>
 <summary> hybridkubernetes </summary>
 
+* [package-2024-12-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridkubernetes/resource-manager#tag-package-2024-12-01-preview)
+    * [1.1.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-hybridkubernetes/1.1.0-beta.1)
 * [package-2021-10-01](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/hybridkubernetes/resource-manager#tag-package-2021-10-01)
     * [1.0.0](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-hybridkubernetes/1.0.0)
     * [1.0.0-beta.4](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-hybridkubernetes/1.0.0-beta.4)

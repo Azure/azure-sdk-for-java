@@ -13,10 +13,10 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.ClientOptions;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.AzureAuthorityHosts;
-import com.azure.identity.ChainedTokenCredential;
 import com.azure.identity.AuthenticationRecord;
+import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.BrowserCustomizationOptions;
+import com.azure.identity.ChainedTokenCredential;
 import com.azure.identity.TokenCachePersistenceOptions;
 import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.util.ValidationUtil;
@@ -60,8 +60,6 @@ public final class IdentityClientOptions implements Cloneable {
     private boolean multiTenantAuthDisabled;
     private Configuration configuration;
     private IdentityLogOptionsImpl identityLogOptionsImpl;
-    private boolean accountIdentifierLogging;
-    private ManagedIdentityType managedIdentityType;
     private ManagedIdentityParameters managedIdentityParameters;
     private Set<String> additionallyAllowedTenants;
     private ClientOptions clientOptions;
@@ -445,24 +443,6 @@ public final class IdentityClientOptions implements Cloneable {
     public IdentityClientOptions setIdentityLogOptionsImpl(IdentityLogOptionsImpl identityLogOptionsImpl) {
         this.identityLogOptionsImpl = identityLogOptionsImpl;
         return this;
-    }
-
-    /**
-     * Set the Managed Identity Type
-     * @param managedIdentityType the Managed Identity Type
-     * @return the updated identity client options
-     */
-    public IdentityClientOptions setManagedIdentityType(ManagedIdentityType managedIdentityType) {
-        this.managedIdentityType = managedIdentityType;
-        return this;
-    }
-
-    /**
-     * Get the Managed Identity Type
-     * @return the Managed Identity Type
-     */
-    public ManagedIdentityType getManagedIdentityType() {
-        return managedIdentityType;
     }
 
     /**
