@@ -7,6 +7,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.test.utils.MockTokenCredential;
@@ -33,6 +34,10 @@ public class BatchOperationTestBase extends TestProxyTestBase {
             .endpoint(Configuration.getGlobalConfiguration().get("DEID_SERVICE_ENDPOINT", "https://localhost:8080"))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (interceptorManager.isPlaybackMode()) {
+            List<String> excludedHeaders = new ArrayList<>();
+            excludedHeaders.add("Connection");
+            CustomMatcher customMatcher = new CustomMatcher().setExcludedHeaders(excludedHeaders);
+            interceptorManager.addMatchers(customMatcher);
             deidentificationClientBuilder.httpClient(interceptorManager.getPlaybackClient())
                 .credential(new MockTokenCredential());
         }

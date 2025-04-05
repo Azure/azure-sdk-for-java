@@ -11,7 +11,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.health.deidentification.DeidentificationClient;
 import com.azure.health.deidentification.models.DeidentificationJob;
 import com.azure.health.deidentification.models.DeidentificationDocumentDetails;
-import com.azure.health.deidentification.models.OperationState;
+import com.azure.health.deidentification.models.OperationStatus;
 import com.azure.health.deidentification.models.DeidentificationOperationType;
 import com.azure.health.deidentification.models.SourceStorageLocation;
 import com.azure.health.deidentification.models.TargetStorageLocation;
@@ -57,7 +57,7 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
         assertNotNull(result.getCreatedAt());
         assertNotNull(result.getLastUpdatedAt());
         assertNull(result.getStartedAt());
-        assertEquals(OperationState.NOT_STARTED, result.getStatus());
+        assertEquals(OperationStatus.NOT_STARTED, result.getStatus());
         assertNull(result.getError());
         assertEquals("en-US", result.getCustomizations().getSurrogateLocale());
         assertNull(result.getSummary());
@@ -99,7 +99,7 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
                 assertNotNull(currentJob.getCreatedAt());
                 assertNotNull(currentJob.getLastUpdatedAt());
                 assertNull(currentJob.getStartedAt());
-                assertEquals(OperationState.NOT_STARTED, currentJob.getStatus());
+                assertEquals(OperationStatus.NOT_STARTED, currentJob.getStatus());
                 assertNull(currentJob.getError());
                 assertEquals("en-US", currentJob.getCustomizations().getSurrogateLocale());
                 assertEquals(inputPrefix, currentJob.getSourceLocation().getPrefix());
@@ -133,14 +133,14 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
         SyncPoller<DeidentificationJob, DeidentificationJob> poller
             = setPlaybackSyncPollerPollInterval(deidentificationClient.beginDeidentifyDocuments(jobName, job));
         DeidentificationJob result = poller.waitForCompletion().getValue();
-        assertEquals(OperationState.SUCCEEDED, result.getStatus());
+        assertEquals(OperationStatus.SUCCEEDED, result.getStatus());
 
         PagedIterable<DeidentificationDocumentDetails> reports = deidentificationClient.listJobDocuments(jobName);
         Iterator<DeidentificationDocumentDetails> iterator = reports.iterator();
         int results = 0;
         while (iterator.hasNext()) {
             DeidentificationDocumentDetails currentReport = iterator.next();
-            assertEquals(OperationState.SUCCEEDED, currentReport.getStatus());
+            assertEquals(OperationStatus.SUCCEEDED, currentReport.getStatus());
             assertTrue(currentReport.getOutput().getLocation().contains(OUTPUT_FOLDER));
             assertEquals(36, currentReport.getId().length());
             results++;
@@ -168,10 +168,10 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
         DeidentificationJob result = deidentificationClient.beginDeidentifyDocuments(jobName, job)
             .waitUntil(LongRunningOperationStatus.NOT_STARTED)
             .getValue();
-        assertEquals(OperationState.NOT_STARTED, result.getStatus());
+        assertEquals(OperationStatus.NOT_STARTED, result.getStatus());
 
         DeidentificationJob cancelledJob = deidentificationClient.cancelJob(jobName);
-        assertEquals(OperationState.CANCELED, cancelledJob.getStatus());
+        assertEquals(OperationStatus.CANCELED, cancelledJob.getStatus());
 
         deidentificationClient.deleteJob(jobName);
 
