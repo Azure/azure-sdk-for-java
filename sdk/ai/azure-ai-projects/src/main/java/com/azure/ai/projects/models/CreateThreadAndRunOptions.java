@@ -16,6 +16,12 @@ import java.util.Map;
 public final class CreateThreadAndRunOptions {
 
     /*
+     * The ID of the agent for which the thread should be created.
+     */
+    @Generated
+    private final String assistantId;
+
+    /*
      * The details used to create the new thread. If no thread is provided, an empty one will be created.
      */
     @Generated
@@ -129,6 +135,16 @@ public final class CreateThreadAndRunOptions {
     @Generated
     public CreateThreadAndRunOptions(String assistantId) {
         this.assistantId = assistantId;
+    }
+
+    /**
+     * Get the assistantId property: The ID of the agent for which the thread should be created.
+     *
+     * @return the assistantId value.
+     */
+    @Generated
+    public String getAssistantId() {
+        return this.assistantId;
     }
 
     /**
@@ -499,21 +515,5 @@ public final class CreateThreadAndRunOptions {
     public CreateThreadAndRunOptions setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
-    }
-
-    /*
-     * The ID of the agent for which the thread should be created.
-     */
-    @Generated
-    private final String assistantId;
-
-    /**
-     * Get the assistantId property: The ID of the agent for which the thread should be created.
-     *
-     * @return the assistantId value.
-     */
-    @Generated
-    public String getAssistantId() {
-        return this.assistantId;
     }
 }

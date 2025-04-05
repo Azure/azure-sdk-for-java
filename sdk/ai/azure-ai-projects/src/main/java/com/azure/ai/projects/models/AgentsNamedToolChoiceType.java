@@ -55,6 +55,12 @@ public final class AgentsNamedToolChoiceType extends ExpandableStringEnum<Agents
     public static final AgentsNamedToolChoiceType AZURE_AISEARCH = fromString("azure_ai_search");
 
     /**
+     * Tool type `bing_custom_search`.
+     */
+    @Generated
+    public static final AgentsNamedToolChoiceType BING_CUSTOM_SEARCH = fromString("bing_custom_search");
+
+    /**
      * Creates a new instance of AgentsNamedToolChoiceType value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.

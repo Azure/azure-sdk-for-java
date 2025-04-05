@@ -35,7 +35,7 @@ public class AIProjectsCustomizations extends Customization {
             "com.azure.ai.projects.implementation",
             "TelemetriesImpl");
 
-        List<Range> toReplace = telemetriesImpl.getEditor().searchText(
+        toReplace = telemetriesImpl.getEditor().searchText(
             telemetriesImpl.getFileName(),
             "{endpoint}/agents/v1.0");
 

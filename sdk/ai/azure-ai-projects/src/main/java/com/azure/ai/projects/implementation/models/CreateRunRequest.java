@@ -24,6 +24,12 @@ import java.util.Map;
 public final class CreateRunRequest implements JsonSerializable<CreateRunRequest> {
 
     /*
+     * The ID of the agent that should run the thread.
+     */
+    @Generated
+    private final String assistantId;
+
+    /*
      * The overridden model name that the agent should use to run the thread.
      */
     @Generated
@@ -139,6 +145,16 @@ public final class CreateRunRequest implements JsonSerializable<CreateRunRequest
     @Generated
     public CreateRunRequest(String assistantId) {
         this.assistantId = assistantId;
+    }
+
+    /**
+     * Get the assistantId property: The ID of the agent that should run the thread.
+     *
+     * @return the assistantId value.
+     */
+    @Generated
+    public String getAssistantId() {
+        return this.assistantId;
     }
 
     /**
@@ -631,21 +647,5 @@ public final class CreateRunRequest implements JsonSerializable<CreateRunRequest
             deserializedCreateRunRequest.metadata = metadata;
             return deserializedCreateRunRequest;
         });
-    }
-
-    /*
-     * The ID of the agent that should run the thread.
-     */
-    @Generated
-    private final String assistantId;
-
-    /**
-     * Get the assistantId property: The ID of the agent that should run the thread.
-     *
-     * @return the assistantId value.
-     */
-    @Generated
-    public String getAssistantId() {
-        return this.assistantId;
     }
 }

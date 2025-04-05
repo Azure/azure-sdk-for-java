@@ -26,7 +26,7 @@ public final class AOAIModelConfig extends TargetModelConfig {
     private String type = "AOAI";
 
     /*
-     * Endpoint URL for AOAI model.
+     * Endpoint targetURI for AOAI model.
      */
     @Generated
     private String azureEndpoint;
@@ -68,7 +68,7 @@ public final class AOAIModelConfig extends TargetModelConfig {
     }
 
     /**
-     * Get the azureEndpoint property: Endpoint URL for AOAI model.
+     * Get the azureEndpoint property: Endpoint targetURI for AOAI model.
      *
      * @return the azureEndpoint value.
      */
@@ -78,7 +78,7 @@ public final class AOAIModelConfig extends TargetModelConfig {
     }
 
     /**
-     * Set the azureEndpoint property: Endpoint URL for AOAI model.
+     * Set the azureEndpoint property: Endpoint targetURI for AOAI model.
      * <p>Required when create the resource.</p>
      *
      * @param azureEndpoint the azureEndpoint value to set.

@@ -34,6 +34,12 @@ public final class Evaluation implements JsonSerializable<Evaluation> {
     private InputData data;
 
     /*
+     * Evaluation target specifying the model config and parameters
+     */
+    @Generated
+    private EvaluationTarget target;
+
+    /*
      * Display Name for evaluation. It helps to find the evaluation easily in AI Foundry. It does not need to be unique.
      */
     @Generated
@@ -144,6 +150,29 @@ public final class Evaluation implements JsonSerializable<Evaluation> {
     public Evaluation setData(InputData data) {
         this.data = data;
         this.updatedProperties.add("data");
+        return this;
+    }
+
+    /**
+     * Get the target property: Evaluation target specifying the model config and parameters.
+     *
+     * @return the target value.
+     */
+    @Generated
+    public EvaluationTarget getTarget() {
+        return this.target;
+    }
+
+    /**
+     * Set the target property: Evaluation target specifying the model config and parameters.
+     *
+     * @param target the target value to set.
+     * @return the Evaluation object itself.
+     */
+    @Generated
+    public Evaluation setTarget(EvaluationTarget target) {
+        this.target = target;
+        this.updatedProperties.add("target");
         return this;
     }
 
@@ -437,34 +466,5 @@ public final class Evaluation implements JsonSerializable<Evaluation> {
             }
             return deserializedEvaluation;
         });
-    }
-
-    /*
-     * Evaluation target specifying the model config and parameters
-     */
-    @Generated
-    private EvaluationTarget target;
-
-    /**
-     * Get the target property: Evaluation target specifying the model config and parameters.
-     *
-     * @return the target value.
-     */
-    @Generated
-    public EvaluationTarget getTarget() {
-        return this.target;
-    }
-
-    /**
-     * Set the target property: Evaluation target specifying the model config and parameters.
-     *
-     * @param target the target value to set.
-     * @return the Evaluation object itself.
-     */
-    @Generated
-    public Evaluation setTarget(EvaluationTarget target) {
-        this.target = target;
-        this.updatedProperties.add("target");
-        return this;
     }
 }

@@ -25,6 +25,12 @@ import java.util.Map;
 public final class CreateThreadAndRunRequest implements JsonSerializable<CreateThreadAndRunRequest> {
 
     /*
+     * The ID of the agent for which the thread should be created.
+     */
+    @Generated
+    private final String assistantId;
+
+    /*
      * The details used to create the new thread. If no thread is provided, an empty one will be created.
      */
     @Generated
@@ -138,6 +144,16 @@ public final class CreateThreadAndRunRequest implements JsonSerializable<CreateT
     @Generated
     public CreateThreadAndRunRequest(String assistantId) {
         this.assistantId = assistantId;
+    }
+
+    /**
+     * Get the assistantId property: The ID of the agent for which the thread should be created.
+     *
+     * @return the assistantId value.
+     */
+    @Generated
+    public String getAssistantId() {
+        return this.assistantId;
     }
 
     /**
@@ -630,21 +646,5 @@ public final class CreateThreadAndRunRequest implements JsonSerializable<CreateT
             deserializedCreateThreadAndRunRequest.metadata = metadata;
             return deserializedCreateThreadAndRunRequest;
         });
-    }
-
-    /*
-     * The ID of the agent for which the thread should be created.
-     */
-    @Generated
-    private final String assistantId;
-
-    /**
-     * Get the assistantId property: The ID of the agent for which the thread should be created.
-     *
-     * @return the assistantId value.
-     */
-    @Generated
-    public String getAssistantId() {
-        return this.assistantId;
     }
 }

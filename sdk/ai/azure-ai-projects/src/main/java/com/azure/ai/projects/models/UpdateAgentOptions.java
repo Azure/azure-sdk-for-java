@@ -16,6 +16,12 @@ import java.util.Map;
 public final class UpdateAgentOptions {
 
     /*
+     * The ID of the agent to modify.
+     */
+    @Generated
+    private final String assistantId;
+
+    /*
      * The ID of the model to use.
      */
     @Generated
@@ -93,6 +99,16 @@ public final class UpdateAgentOptions {
     @Generated
     public UpdateAgentOptions(String assistantId) {
         this.assistantId = assistantId;
+    }
+
+    /**
+     * Get the assistantId property: The ID of the agent to modify.
+     *
+     * @return the assistantId value.
+     */
+    @Generated
+    public String getAssistantId() {
+        return this.assistantId;
     }
 
     /**
@@ -335,21 +351,5 @@ public final class UpdateAgentOptions {
     public UpdateAgentOptions setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
-    }
-
-    /*
-     * The ID of the agent to modify.
-     */
-    @Generated
-    private final String assistantId;
-
-    /**
-     * Get the assistantId property: The ID of the agent to modify.
-     *
-     * @return the assistantId value.
-     */
-    @Generated
-    public String getAssistantId() {
-        return this.assistantId;
     }
 }

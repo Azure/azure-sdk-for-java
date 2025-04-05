@@ -83,6 +83,12 @@ public final class ThreadMessage implements JsonSerializable<ThreadMessage> {
     private final List<MessageContent> content;
 
     /*
+     * If applicable, the ID of the agent that authored this message.
+     */
+    @Generated
+    private final String assistantId;
+
+    /*
      * If applicable, the ID of the run associated with the authoring of this message.
      */
     @Generated
@@ -258,6 +264,16 @@ public final class ThreadMessage implements JsonSerializable<ThreadMessage> {
     }
 
     /**
+     * Get the assistantId property: If applicable, the ID of the agent that authored this message.
+     *
+     * @return the assistantId value.
+     */
+    @Generated
+    public String getAssistantId() {
+        return this.assistantId;
+    }
+
+    /**
      * Get the runId property: If applicable, the ID of the run associated with the authoring of this message.
      *
      * @return the runId value.
@@ -382,21 +398,5 @@ public final class ThreadMessage implements JsonSerializable<ThreadMessage> {
             return new ThreadMessage(id, createdAt, threadId, status, incompleteDetails, completedAt, incompleteAt,
                 role, content, assistantId, runId, attachments, metadata);
         });
-    }
-
-    /*
-     * If applicable, the ID of the agent that authored this message.
-     */
-    @Generated
-    private final String assistantId;
-
-    /**
-     * Get the assistantId property: If applicable, the ID of the agent that authored this message.
-     *
-     * @return the assistantId value.
-     */
-    @Generated
-    public String getAssistantId() {
-        return this.assistantId;
     }
 }

@@ -40,6 +40,12 @@ public final class RunStep implements JsonSerializable<RunStep> {
     private final RunStepType type;
 
     /*
+     * The ID of the agent associated with the run step.
+     */
+    @Generated
+    private final String assistantId;
+
+    /*
      * The ID of the thread that was run.
      */
     @Generated
@@ -200,6 +206,16 @@ public final class RunStep implements JsonSerializable<RunStep> {
     @Generated
     public RunStepType getType() {
         return this.type;
+    }
+
+    /**
+     * Get the assistantId property: The ID of the agent associated with the run step.
+     *
+     * @return the assistantId value.
+     */
+    @Generated
+    public String getAssistantId() {
+        return this.assistantId;
     }
 
     /**
@@ -446,21 +462,5 @@ public final class RunStep implements JsonSerializable<RunStep> {
             deserializedRunStep.usage = usage;
             return deserializedRunStep;
         });
-    }
-
-    /*
-     * The ID of the agent associated with the run step.
-     */
-    @Generated
-    private final String assistantId;
-
-    /**
-     * Get the assistantId property: The ID of the agent associated with the run step.
-     *
-     * @return the assistantId value.
-     */
-    @Generated
-    public String getAssistantId() {
-        return this.assistantId;
     }
 }

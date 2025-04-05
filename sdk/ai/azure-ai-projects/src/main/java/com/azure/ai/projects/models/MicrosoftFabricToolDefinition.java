@@ -22,6 +22,12 @@ public final class MicrosoftFabricToolDefinition extends ToolDefinition {
     @Generated
     private String type = "fabric_dataagent";
 
+    /*
+     * The list of connections used by the Microsoft Fabric tool.
+     */
+    @Generated
+    private final ToolConnectionList fabricDataagent;
+
     /**
      * Creates an instance of MicrosoftFabricToolDefinition class.
      *
@@ -41,6 +47,16 @@ public final class MicrosoftFabricToolDefinition extends ToolDefinition {
     @Override
     public String getType() {
         return this.type;
+    }
+
+    /**
+     * Get the fabricDataagent property: The list of connections used by the Microsoft Fabric tool.
+     *
+     * @return the fabricDataagent value.
+     */
+    @Generated
+    public ToolConnectionList getFabricDataagent() {
+        return this.fabricDataagent;
     }
 
     /**
@@ -85,21 +101,5 @@ public final class MicrosoftFabricToolDefinition extends ToolDefinition {
             deserializedMicrosoftFabricToolDefinition.type = type;
             return deserializedMicrosoftFabricToolDefinition;
         });
-    }
-
-    /*
-     * The list of connections used by the Microsoft Fabric tool.
-     */
-    @Generated
-    private final ToolConnectionList fabricDataagent;
-
-    /**
-     * Get the fabricDataagent property: The list of connections used by the Microsoft Fabric tool.
-     *
-     * @return the fabricDataagent value.
-     */
-    @Generated
-    public ToolConnectionList getFabricDataagent() {
-        return this.fabricDataagent;
     }
 }

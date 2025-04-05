@@ -4232,6 +4232,33 @@ public final class AgentsAsyncClient {
     }
 
     /**
+     * Uploads a file for use by other operations.
+     *
+     * @param body Multipart body.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return represents an agent that can call the model and use tools on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<OpenAIFile> uploadFile(UploadFileRequest body) {
+        // Generated convenience method for uploadFileWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        return uploadFileWithResponse(new MultipartFormDataHelper(requestOptions)
+            .serializeFileField("file", body.getFile().getContent(), body.getFile().getContentType(),
+                body.getFile().getFilename())
+            .serializeTextField("purpose", Objects.toString(body.getPurpose()))
+            .serializeTextField("filename", body.getFilename())
+            .end()
+            .getRequestBody(), requestOptions).flatMap(FluxUtil::toMono)
+                .map(protocolMethodData -> protocolMethodData.toObject(OpenAIFile.class));
+    }
+
+    /**
      * Delete a previously uploaded file.
      *
      * @param fileId The ID of the file to delete.
@@ -4861,32 +4888,5 @@ public final class AgentsAsyncClient {
         return listVectorStoreFileBatchFilesWithResponse(vectorStoreId, batchId, requestOptions)
             .flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(OpenAIPageableListOfVectorStoreFile.class));
-    }
-
-    /**
-     * Uploads a file for use by other operations.
-     *
-     * @param body Multipart body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an agent that can call the model and use tools on successful completion of {@link Mono}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<OpenAIFile> uploadFile(UploadFileRequest body) {
-        // Generated convenience method for uploadFileWithResponse
-        RequestOptions requestOptions = new RequestOptions();
-        return uploadFileWithResponse(new MultipartFormDataHelper(requestOptions)
-            .serializeFileField("file", body.getFile().getContent(), body.getFile().getContentType(),
-                body.getFile().getFilename())
-            .serializeTextField("purpose", Objects.toString(body.getPurpose()))
-            .serializeTextField("filename", body.getFilename())
-            .end()
-            .getRequestBody(), requestOptions).flatMap(FluxUtil::toMono)
-                .map(protocolMethodData -> protocolMethodData.toObject(OpenAIFile.class));
     }
 }

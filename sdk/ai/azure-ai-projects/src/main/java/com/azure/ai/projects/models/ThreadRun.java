@@ -42,6 +42,12 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
     private final String threadId;
 
     /*
+     * The ID of the agent associated with the thread this run was performed against.
+     */
+    @Generated
+    private final String assistantId;
+
+    /*
      * The status of the agent thread run.
      */
     @Generated
@@ -299,6 +305,16 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
     @Generated
     public String getThreadId() {
         return this.threadId;
+    }
+
+    /**
+     * Get the assistantId property: The ID of the agent associated with the thread this run was performed against.
+     *
+     * @return the assistantId value.
+     */
+    @Generated
+    public String getAssistantId() {
+        return this.assistantId;
     }
 
     /**
@@ -733,21 +749,5 @@ public final class ThreadRun implements JsonSerializable<ThreadRun> {
             deserializedThreadRun.toolResources = toolResources;
             return deserializedThreadRun;
         });
-    }
-
-    /*
-     * The ID of the agent associated with the thread this run was performed against.
-     */
-    @Generated
-    private final String assistantId;
-
-    /**
-     * Get the assistantId property: The ID of the agent associated with the thread this run was performed against.
-     *
-     * @return the assistantId value.
-     */
-    @Generated
-    public String getAssistantId() {
-        return this.assistantId;
     }
 }
