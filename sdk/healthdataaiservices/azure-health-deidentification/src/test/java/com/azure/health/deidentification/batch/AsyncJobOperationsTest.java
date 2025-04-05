@@ -54,7 +54,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
         assertNotNull(result.getCreatedAt());
         assertNotNull(result.getLastUpdatedAt());
         assertNull(result.getStartedAt());
-        assertEquals(OperationState.NOT_STARTED, result.getStatus());
+        assertEquals(OperationStatus.NOT_STARTED, result.getStatus());
         assertNull(result.getError());
         assertEquals("en-US", result.getCustomizations().getSurrogateLocale());
         assertEquals(inputPrefix, result.getSourceLocation().getPrefix());
@@ -93,7 +93,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
                 assertNotNull(item.getCreatedAt());
                 assertNotNull(item.getLastUpdatedAt());
                 assertNull(item.getStartedAt());
-                assertEquals(OperationState.NOT_STARTED, item.getStatus());
+                assertEquals(OperationStatus.NOT_STARTED, item.getStatus());
                 assertNull(item.getError());
                 assertEquals("en-US", item.getCustomizations().getSurrogateLocale());
                 assertNull(item.getSummary());
@@ -125,7 +125,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
             = setPlaybackPollerFluxPollInterval(deidentificationAsyncClient.beginDeidentifyDocuments(jobName, job));
         DeidentificationJob result = poller.getSyncPoller().waitForCompletion().getValue();
 
-        assertEquals(OperationState.SUCCEEDED, result.getStatus());
+        assertEquals(OperationStatus.SUCCEEDED, result.getStatus());
 
         PagedFlux<BinaryData> reports = deidentificationAsyncClient.listJobDocuments(jobName,
             new RequestOptions().addQueryParam("maxpagesize", String.valueOf(2)));
@@ -142,7 +142,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
                         = detailsBinary.toObject(DeidentificationDocumentDetails.class);
                     assertFalse(documentIdList.contains(details.getId()));
                     documentIdList.add(details.getId());
-                    assertEquals(OperationState.SUCCEEDED, details.getStatus());
+                    assertEquals(OperationStatus.SUCCEEDED, details.getStatus());
                     assertNotNull(details.getOutput());
                     assertTrue(details.getOutput().getLocation().contains(OUTPUT_FOLDER));
                     assertEquals(36, details.getId().length());
@@ -175,7 +175,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
 
         DeidentificationJob cancelledJob = deidentificationAsyncClient.cancelJob(jobName).block();
 
-        assertEquals(OperationState.CANCELED, cancelledJob.getStatus());
+        assertEquals(OperationStatus.CANCELED, cancelledJob.getStatus());
 
         deidentificationAsyncClient.deleteJob(jobName).block();
 

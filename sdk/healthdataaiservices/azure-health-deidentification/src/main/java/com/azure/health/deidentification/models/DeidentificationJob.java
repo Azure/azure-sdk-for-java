@@ -53,8 +53,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
     /*
      * Current status of a job.
      */
-    @Generated
-    private OperationState status;
+    private OperationStatus status;
 
     /*
      * Error when job fails in it's entirety.
@@ -64,9 +63,9 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
 
     /*
      * Date and time when the job was completed.
-     * 
+     *
      * If the job is canceled, this is the time when the job was canceled.
-     * 
+     *
      * If the job failed, this is the time when the job failed.
      */
     @Generated
@@ -181,8 +180,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
      *
      * @return the status value.
      */
-    @Generated
-    public OperationState getStatus() {
+    public OperationStatus getStatus() {
         return this.status;
     }
 
@@ -269,7 +267,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
             String name = null;
             SourceStorageLocation sourceLocation = null;
             TargetStorageLocation targetLocation = null;
-            OperationState status = null;
+            OperationStatus status = null;
             OffsetDateTime lastUpdatedAt = null;
             OffsetDateTime createdAt = null;
             DeidentificationOperationType operation = null;
@@ -287,7 +285,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
                 } else if ("targetLocation".equals(fieldName)) {
                     targetLocation = TargetStorageLocation.fromJson(reader);
                 } else if ("status".equals(fieldName)) {
-                    status = OperationState.fromString(reader.getString());
+                    status = OperationStatus.fromString(reader.getString());
                 } else if ("lastUpdatedAt".equals(fieldName)) {
                     lastUpdatedAt = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
