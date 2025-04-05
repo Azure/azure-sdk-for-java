@@ -1,13 +1,30 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.ai.projects.usage.agent;
 
 import com.azure.ai.projects.AIProjectClientBuilder;
 import com.azure.ai.projects.AgentsClient;
-import com.azure.ai.projects.models.*;
+import com.azure.ai.projects.models.AISearchIndexResource;
+import com.azure.ai.projects.models.Agent;
+import com.azure.ai.projects.models.AgentThread;
+import com.azure.ai.projects.models.AzureAISearchResource;
+import com.azure.ai.projects.models.AzureAISearchToolDefinition;
+import com.azure.ai.projects.models.CreateAgentOptions;
+import com.azure.ai.projects.models.CreateRunOptions;
+import com.azure.ai.projects.models.MessageContent;
+import com.azure.ai.projects.models.MessageImageFileContent;
+import com.azure.ai.projects.models.MessageRole;
+import com.azure.ai.projects.models.MessageTextContent;
+import com.azure.ai.projects.models.OpenAIPageableListOfThreadMessage;
+import com.azure.ai.projects.models.RunStatus;
+import com.azure.ai.projects.models.ThreadMessage;
+import com.azure.ai.projects.models.ThreadRun;
+import com.azure.ai.projects.models.ToolResources;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
+import java.util.Arrays;
 
 public class SampleAgentAzureAISearch {
 
@@ -21,30 +38,30 @@ public class SampleAgentAzureAISearch {
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAgentsClient();
 
-        String aiSearchConnectionId = "subscriptions/696debc0-8b66-4d84-87b1-39f43917d76c/resourceGroups/rg-jayant/providers/Microsoft.MachineLearningServices/workspaces/jayant-project-2aqa/connections/jayant-hub-2aqa-connection-AISearch";
+        String aiSearchConnectionId = Configuration.getGlobalConfiguration().get("AI_SEARCH_CONNECTION_ID", "");
 
         ToolResources toolResources = new ToolResources()
             .setAzureAISearch(new AzureAISearchResource()
-                .setIndexList(List.of(new AISearchIndexResource(aiSearchConnectionId, "sample_index"))));
+                .setIndexList(Arrays.asList(new AISearchIndexResource(aiSearchConnectionId, "sample_index"))));
 
-        var agentName = "ai_search_example";
-        var createAgentOptions = new CreateAgentOptions("gpt-4o-mini")
+        String agentName = "ai_search_example";
+        CreateAgentOptions createAgentOptions = new CreateAgentOptions("gpt-4o-mini")
             .setName(agentName)
             .setInstructions("You are a helpful agent")
-            .setTools(List.of(new AzureAISearchToolDefinition()))
+            .setTools(Arrays.asList(new AzureAISearchToolDefinition()))
             .setToolResources(toolResources);
         Agent agent = agentsClient.createAgent(createAgentOptions);
 
-        var thread = agentsClient.createThread();
-        var createdMessage = agentsClient.createMessage(
+        AgentThread thread = agentsClient.createThread();
+        ThreadMessage createdMessage = agentsClient.createMessage(
             thread.getId(),
             MessageRole.USER,
             "Hello, send an email with the datetime and weather information in New York?");
 
         //run agent
-        var createRunOptions = new CreateRunOptions(thread.getId(), agent.getId())
+        CreateRunOptions createRunOptions = new CreateRunOptions(thread.getId(), agent.getId())
             .setAdditionalInstructions("");
-        var threadRun = agentsClient.createRun(createRunOptions);
+        ThreadRun threadRun = agentsClient.createRun(createRunOptions);
 
         try {
             do {
@@ -60,18 +77,13 @@ public class SampleAgentAzureAISearch {
                 System.out.println(threadRun.getLastError().getMessage());
             }
 
-            var runMessages = agentsClient.listMessages(thread.getId());
-            for (ThreadMessage message : runMessages.getData())
-            {
+            OpenAIPageableListOfThreadMessage runMessages = agentsClient.listMessages(thread.getId());
+            for (ThreadMessage message : runMessages.getData()) {
                 System.out.print(String.format("%1$s - %2$s : ", message.getCreatedAt(), message.getRole()));
-                for (MessageContent contentItem : message.getContent())
-                {
-                    if (contentItem instanceof MessageTextContent)
-                    {
+                for (MessageContent contentItem : message.getContent()) {
+                    if (contentItem instanceof MessageTextContent) {
                         System.out.print((((MessageTextContent) contentItem).getText().getValue()));
-                    }
-                    else if (contentItem instanceof MessageImageFileContent)
-                    {
+                    } else if (contentItem instanceof MessageImageFileContent) {
                         String imageFileId = (((MessageImageFileContent) contentItem).getImageFile().getFileId());
                         System.out.print("Image from ID: " + imageFileId);
                     }
@@ -80,8 +92,7 @@ public class SampleAgentAzureAISearch {
             }
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
-        }
-        finally {
+        } finally {
             //cleanup
             agentsClient.deleteThread(thread.getId());
             agentsClient.deleteAgent(agent.getId());

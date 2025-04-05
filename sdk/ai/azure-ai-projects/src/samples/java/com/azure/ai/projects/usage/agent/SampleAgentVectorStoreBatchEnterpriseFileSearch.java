@@ -1,13 +1,33 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.ai.projects.usage.agent;
 
 import com.azure.ai.projects.AIProjectClientBuilder;
 import com.azure.ai.projects.AgentsClient;
-import com.azure.ai.projects.models.*;
+import com.azure.ai.projects.models.Agent;
+import com.azure.ai.projects.models.AgentThread;
+import com.azure.ai.projects.models.CreateAgentOptions;
+import com.azure.ai.projects.models.CreateRunOptions;
+import com.azure.ai.projects.models.FileSearchToolDefinition;
+import com.azure.ai.projects.models.FileSearchToolResource;
+import com.azure.ai.projects.models.MessageContent;
+import com.azure.ai.projects.models.MessageImageFileContent;
+import com.azure.ai.projects.models.MessageRole;
+import com.azure.ai.projects.models.MessageTextContent;
+import com.azure.ai.projects.models.OpenAIPageableListOfThreadMessage;
+import com.azure.ai.projects.models.RunStatus;
+import com.azure.ai.projects.models.ThreadMessage;
+import com.azure.ai.projects.models.ThreadRun;
+import com.azure.ai.projects.models.ToolResources;
+import com.azure.ai.projects.models.VectorStore;
+import com.azure.ai.projects.models.VectorStoreConfiguration;
+import com.azure.ai.projects.models.VectorStoreDataSource;
+import com.azure.ai.projects.models.VectorStoreDataSourceAssetType;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
+import java.util.Arrays;
 
 public class SampleAgentVectorStoreBatchEnterpriseFileSearch {
 
@@ -21,40 +41,40 @@ public class SampleAgentVectorStoreBatchEnterpriseFileSearch {
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAgentsClient();
 
-        var dataUri = "azureml://subscriptions/696debc0-8b66-4d84-87b1-39f43917d76c/resourcegroups/rg-jayant/workspaces/jayant-project-2aqa/datastores/workspaceblobstore/paths/product_info_1.md";
+        String dataUri = Configuration.getGlobalConfiguration().get("DATA_URI", "");
         VectorStoreDataSource vectorStoreDataSource = new VectorStoreDataSource(
             dataUri, VectorStoreDataSourceAssetType.URI_ASSET);
 
         VectorStore vs = agentsClient.createVectorStore(
             null, "sample_vector_store",
-            new VectorStoreConfiguration(List.of(vectorStoreDataSource)),
-            null,null, null
+            new VectorStoreConfiguration(Arrays.asList(vectorStoreDataSource)),
+            null, null, null
         );
 
         agentsClient.createVectorStoreFileBatch(vs.getId(),
-            null, List.of(vectorStoreDataSource), null);
+            null, Arrays.asList(vectorStoreDataSource), null);
 
         FileSearchToolResource fileSearchToolResource = new FileSearchToolResource()
-            .setVectorStoreIds(List.of(vs.getId()));
+            .setVectorStoreIds(Arrays.asList(vs.getId()));
 
-        var agentName = "vector_store_batch_enterprise_file_search_example";
-        var createAgentOptions = new CreateAgentOptions("gpt-4o-mini")
+        String agentName = "vector_store_batch_enterprise_file_search_example";
+        CreateAgentOptions createAgentOptions = new CreateAgentOptions("gpt-4o-mini")
             .setName(agentName)
             .setInstructions("You are a helpful agent")
-            .setTools(List.of(new FileSearchToolDefinition()))
+            .setTools(Arrays.asList(new FileSearchToolDefinition()))
             .setToolResources(new ToolResources().setFileSearch(fileSearchToolResource));
         Agent agent = agentsClient.createAgent(createAgentOptions);
 
-        var thread = agentsClient.createThread();
-        var createdMessage = agentsClient.createMessage(
+        AgentThread thread = agentsClient.createThread();
+        ThreadMessage createdMessage = agentsClient.createMessage(
             thread.getId(),
             MessageRole.USER,
             "What feature does Smart Eyewear offer?");
 
         //run agent
-        var createRunOptions = new CreateRunOptions(thread.getId(), agent.getId())
+        CreateRunOptions createRunOptions = new CreateRunOptions(thread.getId(), agent.getId())
             .setAdditionalInstructions("");
-        var threadRun = agentsClient.createRun(createRunOptions);
+        ThreadRun threadRun = agentsClient.createRun(createRunOptions);
 
         try {
             do {
@@ -70,18 +90,13 @@ public class SampleAgentVectorStoreBatchEnterpriseFileSearch {
                 System.out.println(threadRun.getLastError().getMessage());
             }
 
-            var runMessages = agentsClient.listMessages(thread.getId());
-            for (ThreadMessage message : runMessages.getData())
-            {
+            OpenAIPageableListOfThreadMessage runMessages = agentsClient.listMessages(thread.getId());
+            for (ThreadMessage message : runMessages.getData()) {
                 System.out.print(String.format("%1$s - %2$s : ", message.getCreatedAt(), message.getRole()));
-                for (MessageContent contentItem : message.getContent())
-                {
-                    if (contentItem instanceof MessageTextContent)
-                    {
+                for (MessageContent contentItem : message.getContent()) {
+                    if (contentItem instanceof MessageTextContent) {
                         System.out.print((((MessageTextContent) contentItem).getText().getValue()));
-                    }
-                    else if (contentItem instanceof MessageImageFileContent)
-                    {
+                    } else if (contentItem instanceof MessageImageFileContent) {
                         String imageFileId = (((MessageImageFileContent) contentItem).getImageFile().getFileId());
                         System.out.print("Image from ID: " + imageFileId);
                     }
@@ -90,8 +105,7 @@ public class SampleAgentVectorStoreBatchEnterpriseFileSearch {
             }
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
-        }
-        finally {
+        } finally {
             //cleanup
             agentsClient.deleteThread(thread.getId());
             agentsClient.deleteAgent(agent.getId());

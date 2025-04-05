@@ -101,4 +101,23 @@ public class AIProjectClientTestBase extends TestProxyTestBase {
         evaluationsClient = evaluationsClientbuilder.buildEvaluationsClient();
 
     }
+
+    protected AIProjectClientBuilder getAIProjectClientBuilder() {
+        AIProjectClientBuilder agentsClientbuilder
+            = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+                .subscriptionId(Configuration.getGlobalConfiguration().get("SUBSCRIPTIONID", "subscriptionid"))
+                .resourceGroupName(Configuration.getGlobalConfiguration().get("RESOURCEGROUPNAME", "resourcegroupname"))
+                .projectName(Configuration.getGlobalConfiguration().get("PROJECTNAME", "projectname"))
+                .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        if (getTestMode() == TestMode.PLAYBACK) {
+            agentsClientbuilder.credential(new MockTokenCredential());
+        } else if (getTestMode() == TestMode.RECORD) {
+            agentsClientbuilder.addPolicy(interceptorManager.getRecordPolicy())
+                .credential(new DefaultAzureCredentialBuilder().build());
+        } else if (getTestMode() == TestMode.LIVE) {
+            agentsClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
+        }
+        return agentsClientbuilder;
+    }
 }

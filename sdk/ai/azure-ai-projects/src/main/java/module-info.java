@@ -10,6 +10,8 @@ module com.azure.ai.projects {
 
     opens com.azure.ai.projects.models to com.azure.core;
     opens com.azure.ai.projects.implementation.models to com.azure.core;
+
     exports com.azure.ai.projects.models.streaming;
+
     opens com.azure.ai.projects.models.streaming to com.azure.core;
 }

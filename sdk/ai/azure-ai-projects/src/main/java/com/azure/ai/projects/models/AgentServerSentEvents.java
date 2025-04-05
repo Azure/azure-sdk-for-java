@@ -5,6 +5,7 @@ package com.azure.ai.projects.models;
 import com.azure.ai.projects.models.streaming.StreamTypeFactory;
 import com.azure.ai.projects.models.streaming.StreamUpdate;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
 
@@ -26,6 +27,8 @@ public final class AgentServerSentEvents {
 
     // Server sent events are divided by 2 CRLF or single LF character
     private static final int SSE_CHUNK_LINE_BREAK_COUNT_MARKER = 2;
+
+    private final ClientLogger logger = new ClientLogger(AgentServerSentEvents.class);
 
     /**
      * A factory that determines into which type to deserialize the server sent events.
@@ -147,6 +150,8 @@ public final class AgentServerSentEvents {
      * @param currentEvent The current line of the server sent event.
      * @param outputValues The list of values to add the current line to.
      * @throws IllegalStateException If the current event contains a server side error.
+     * @throws IllegalArgumentException If there's an error processing the event data.
+     * @throws UncheckedIOException If there's an error deserializing the event data.
      */
     public void handleCurrentEvent(String currentEvent, List<StreamUpdate> outputValues)
         throws IllegalArgumentException {
@@ -172,7 +177,7 @@ public final class AgentServerSentEvents {
             return;
         }
         if (ERROR.equals(AgentStreamEvent.fromString(eventName))) {
-            throw new IllegalArgumentException(eventJson);
+            throw logger.logExceptionAsError(new IllegalArgumentException(eventJson));
         }
 
         outputValues.add(this.eventDeserializer.deserializeEvent(eventName, BinaryData.fromString(eventJson)));

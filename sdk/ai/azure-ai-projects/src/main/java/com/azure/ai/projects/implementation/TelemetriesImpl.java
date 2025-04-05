@@ -44,7 +44,7 @@ public final class TelemetriesImpl {
 
     /**
      * Initializes an instance of TelemetriesImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     TelemetriesImpl(AIProjectClientImpl client) {
@@ -55,7 +55,7 @@ public final class TelemetriesImpl {
 
     /**
      * Gets Service version.
-     * 
+     *
      * @return the serviceVersion value.
      */
     public ProjectsServiceVersion getServiceVersion() {
@@ -66,7 +66,7 @@ public final class TelemetriesImpl {
      * The interface defining all the services for AIProjectClientTelemetries to be used by the proxy service to perform
      * REST calls.
      */
-    @Host("{endpoint}/agents/v1.0/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{projectName}")
+    @Host("{endpoint}/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{projectName}")
     @ServiceInterface(name = "AIProjectClientTelem")
     public interface TelemetriesService {
         @Get("/{appInsightsResourceUrl}")
@@ -99,7 +99,7 @@ public final class TelemetriesImpl {
     /**
      * Gets the properties of the specified Application Insights resource.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -111,16 +111,16 @@ public final class TelemetriesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param appInsightsResourceUrl The AppInsights Azure resource Url. It should have the format:
      * '/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/microsoft.insights/components/{resourcename}'.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the properties of the specified Application Insights resource along with {@link Response} on successful
+     * completion of {@link Mono}.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the properties of the specified Application Insights resource along with {@link Response} on successful
-     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAppInsightsWithResponseAsync(String appInsightsResourceUrl,
@@ -134,7 +134,7 @@ public final class TelemetriesImpl {
     /**
      * Gets the properties of the specified Application Insights resource.
      * <p><strong>Response Body Schema</strong></p>
-     * 
+     *
      * <pre>
      * {@code
      * {
@@ -146,15 +146,15 @@ public final class TelemetriesImpl {
      * }
      * }
      * </pre>
-     * 
+     *
      * @param appInsightsResourceUrl The AppInsights Azure resource Url. It should have the format:
      * '/subscriptions/{subscription_id}/resourceGroups/{resource_group_name}/providers/microsoft.insights/components/{resourcename}'.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @return the properties of the specified Application Insights resource along with {@link Response}.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the properties of the specified Application Insights resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAppInsightsWithResponse(String appInsightsResourceUrl,

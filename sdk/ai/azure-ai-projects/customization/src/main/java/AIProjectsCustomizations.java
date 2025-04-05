@@ -21,10 +21,28 @@ public class AIProjectsCustomizations extends Customization {
             connectionsImpl.getFileName(),
             "{endpoint}/agents/v1.0");
 
-        for (Range r : toReplace ) {
+        for (Range r : toReplace) {
             logger.info("customizing");
             connectionsImpl.getEditor().replace(
                 connectionsImpl.getFileName(),
+                r.getStart(),
+                r.getEnd(),
+                "{endpoint}"
+            );
+        }
+
+        ClassCustomization telemetriesImpl = customization.getClass(
+            "com.azure.ai.projects.implementation",
+            "TelemetriesImpl");
+
+        List<Range> toReplace = telemetriesImpl.getEditor().searchText(
+            telemetriesImpl.getFileName(),
+            "{endpoint}/agents/v1.0");
+
+        for (Range r : toReplace) {
+            logger.info("customizing");
+            telemetriesImpl.getEditor().replace(
+                telemetriesImpl.getFileName(),
                 r.getStart(),
                 r.getEnd(),
                 "{endpoint}"

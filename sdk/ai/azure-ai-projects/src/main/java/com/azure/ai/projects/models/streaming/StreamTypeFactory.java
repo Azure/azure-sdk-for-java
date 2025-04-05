@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.ai.projects.models.streaming;
 
 // Copyright (c) Microsoft Corporation. All rights reserved.
@@ -10,6 +12,7 @@ import com.azure.ai.projects.models.RunStepDeltaChunk;
 import com.azure.ai.projects.models.ThreadMessage;
 import com.azure.ai.projects.models.ThreadRun;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.logging.ClientLogger;
 
 import static com.azure.ai.projects.models.AgentStreamEvent.THREAD_CREATED;
 import static com.azure.ai.projects.models.AgentStreamEvent.THREAD_MESSAGE_COMPLETED;
@@ -40,6 +43,14 @@ import static com.azure.ai.projects.models.AgentStreamEvent.THREAD_RUN_STEP_IN_P
  * data.
  */
 public final class StreamTypeFactory {
+    private final ClientLogger logger = new ClientLogger(StreamTypeFactory.class);
+
+    /**
+     * Default constructor for creating a new instance of StreamTypeFactory.
+     */
+    public StreamTypeFactory() {
+        // Default constructor
+    }
 
     /**
      * Deserializes the server sent event into the appropriate type.
@@ -82,7 +93,7 @@ public final class StreamTypeFactory {
         } else if (THREAD_RUN_REQUIRES_ACTION.equals(event)) {
             return new StreamRequiredAction(eventJson.toObject(ThreadRun.class), event);
         } else {
-            throw new IllegalArgumentException("Unknown event type: " + event);
+            throw logger.logExceptionAsError(new IllegalArgumentException("Unknown event type: " + event));
         }
     }
 }
