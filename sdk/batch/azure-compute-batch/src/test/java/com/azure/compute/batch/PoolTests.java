@@ -52,7 +52,7 @@ public class PoolTests extends BatchClientTestBase {
         // Will be enabled back soon.
         //        Assertions.assertNotNull(pool.stats());
 
-        ListBatchPoolsOptions selectOptions = new ListBatchPoolsOptions();
+        BatchPoolsListOptions selectOptions = new BatchPoolsListOptions();
         selectOptions.setSelect(Arrays.asList("id", "state"));
         PagedIterable<BatchPool> pools = batchClient.listPools(selectOptions);
         Assertions.assertNotNull(pools);
@@ -71,7 +71,7 @@ public class PoolTests extends BatchClientTestBase {
 
         // When tests are being ran in parallel, there may be a previous pool delete still in progress
 
-        ListBatchPoolsOptions filterOptions = new ListBatchPoolsOptions();
+        BatchPoolsListOptions filterOptions = new BatchPoolsListOptions();
         filterOptions.setFilter("state eq 'deleting'");
         pools = batchClient.listPools(filterOptions);
         Assertions.assertNotNull(pools);
@@ -303,8 +303,8 @@ public class PoolTests extends BatchClientTestBase {
             Assertions.assertEquals(3.0, stats.getPeakMemoryGiB());
             Assertions.assertEquals(1.5, stats.getAvgDiskGiB());
             Assertions.assertEquals(2.0, stats.getPeakDiskGiB());
-            Assertions.assertEquals(1000, stats.getDiskReadIOps());
-            Assertions.assertEquals(500, stats.getDiskWriteIOps());
+            Assertions.assertEquals(1000, stats.getDiskReadIops());
+            Assertions.assertEquals(500, stats.getDiskWriteIops());
             Assertions.assertEquals(0.5, stats.getDiskReadGiB());
             Assertions.assertEquals(0.25, stats.getDiskWriteGiB());
             Assertions.assertEquals(1.0, stats.getNetworkReadGiB());
@@ -329,8 +329,8 @@ public class PoolTests extends BatchClientTestBase {
                 new UefiSettings().setSecureBootEnabled(true).setVTpmEnabled(true));
 
             // Set the VM disk security profile
-            VMDiskSecurityProfile diskSecurityProfile
-                = new VMDiskSecurityProfile().setSecurityEncryptionType(SecurityEncryptionTypes.VMGUEST_STATE_ONLY);
+            VmDiskSecurityProfile diskSecurityProfile
+                = new VmDiskSecurityProfile().setSecurityEncryptionType(SecurityEncryptionTypes.VMGUEST_STATE_ONLY);
 
             ManagedDisk managedDisk = new ManagedDisk().setSecurityProfile(diskSecurityProfile);
 
@@ -423,7 +423,7 @@ public class PoolTests extends BatchClientTestBase {
             // Deallocate the node using the compute node operations
             BatchNodeDeallocateContent deallocateContent
                 = new BatchNodeDeallocateContent().setNodeDeallocateOption(BatchNodeDeallocateOption.TERMINATE);
-            DeallocateBatchNodeOptions options = new DeallocateBatchNodeOptions();
+            BatchNodeDeallocateOptions options = new BatchNodeDeallocateOptions();
             options.setTimeOutInSeconds(30);
             options.setParameters(deallocateContent);
             batchClient.deallocateNode(poolId, nodeId, options);

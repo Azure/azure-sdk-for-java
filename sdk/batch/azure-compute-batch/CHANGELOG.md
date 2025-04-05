@@ -1,14 +1,106 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
+## 1.0.0 (2025-04-04)
 
-### Features Added
+This release is the first stable release of the Azure Compute Batch client library.
 
 ### Breaking Changes
 
-### Bugs Fixed
+- Made many small name/casing changes to names of models, properties, and methods for clarity and consistency.
 
-### Other Changes
+  - On `BatchJobNetworkConfiguration`, `isSkipWithdrawFromVNet()` is now `isSkipWithdrawFromVnet()`.
+  - On `BatchPoolResourceStatistics`, `getDiskReadIOps()` is now `getDiskReadIops()` and `getDiskWriteIOps()` is now `getDiskWriteIops()`.
+  - On `NetworkConfiguration`, `getDynamicVNetAssignmentScope()` is now `getDynamicVnetAssignmentScope()` and `setDynamicVNetAssignmentScope(DynamicVNetAssignmentScope dynamicVNetAssignmentScope)` is now `setDynamicVnetAssignmentScope(DynamicVNetAssignmentScope dynamicVnetAssignmentScope)`.
+  - On `BatchTaskStatistics`, `getReadIOps()` is now `getReadIops()`, `getWriteIOps()` is now `getWriteIops()`, `getReadIOGiB()` is now `getReadIoGiB()`, and `getWriteIOGiB()` is now `getWriteIoGiB()`.
+  - `VMDiskSecurityProfile` has now been changed to `VmDiskSecurityProfile`.
+  - On `BatchJobStatistics`, `getNumSucceededTasks()` is now `getSucceededTasksCount()`, `getNumFailedTasks()` is now `getFailedTasksCount()`, `getNumTaskRetries()` is now `getTaskRetriesCount()`, `getReadIOps()` is now `getReadIops()`, `getWriteIOps()` is now `getWriteIops()`, `getReadIOGiB()` is now `getReadIoGiB()`, and `getWriteIOGiB()` is now `getWriteIoGiB()`
+  - On `BatchJobScheduleStatistics`, `getNumSucceededTasks()` is now `getSucceededTasksCount()`, `getNumFailedTasks()` is now `getFailedTasksCount()`, `getNumTaskRetries()` is now `getTaskRetriesCount()`, `getReadIOps()` is now `getReadIops()`, `getWriteIOps()` is now `getWriteIops()`, `getReadIOGiB()` is now `getReadIoGiB()`, and `getWriteIOGiB()` is now `getWriteIoGiB()`.
+  - On `BatchClientParallelOptions`, `getMaxDegreeOfParallelism()` is now `getMaxConcurrency()`.
+  - On the `BatchClient` (synchronous client), `getNodeFileProperties` and `getTaskFileProperties` now return `BatchFileProperties` instead of `FileResponseHeaderProperties`. On `BatchAsyncClient` (asynchronous methods), `getNodeFileProperties` and `getTaskFileProperties` now return `Mono<BatchFileProperties>` instead of `Mono<FileResponseHeaderProperties>`.
+  - `AccessScope` is now `BatchAccessScope`. On `AuthenticationTokenSettings`, `getAccess()` now returns `List<BatchAccessScope>` instead of `List<AccessScope>` and `setAccess` takes in a parameter of type `List<BatchAccessScope>` rather than `List<AccessScope>`.
+  - `AffinityInfo` is now `BatchAffinityInfo`. On `BatchTask` and `BatchTaskCreateContent`, `getAffinityInfo()` now returns `BatchAffinityInfo` instead of `AffinityInfo`.
+  - `HttpHeader` has been changed to `OutputFileUploadHeader`.
+  - In `OutputFileBlobContainerDestination`, `getUploadHeaders()` returns `List<OutputFileUploadHeader>` instead of `List<HttpHeader>` and `setUploadHeaders` takes in a parameter of `List<OutputFileUploadHeader>` rather than `List<HttpHeader>`
+
+- On the `BatchCertificate` model, the return type of `getData()` is now `byte[]` instead of `String`.
+
+- Changed the names of the optional parameters models:
+
+  - `GetBatchApplicationOptions` is now `BatchApplicationGetOptions`.
+  - `ListBatchApplicationsOptions` is now `BatchApplicationsListOptions`.
+  - `ListBatchPoolUsageMetricsOptions` is now `BatchPoolUsageMetricsListOptions`.
+  - `CreateBatchPoolOptions` is now `BatchPoolCreateOptions`.
+  - `ListBatchPoolsOptions` is now `BatchPoolsListOptions`.
+  - `DeleteBatchPoolOptions` is now `BatchPoolDeleteOptions`.
+  - `GetBatchPoolOptions` is now `BatchPoolGetOptions`.
+  - `UpdateBatchPoolOptions` is now `BatchPoolUpdateOptions`.
+  - `DisableBatchPoolAutoScaleOptions` is now `BatchPoolAutoScaleDisableOptions`.
+  - `EnableBatchPoolAutoScaleOptions` is now `BatchPoolAutoScaleEnableOptions`.
+  - `EvaluateBatchPoolAutoScaleOptions` is now `BatchPoolAutoScaleEvaluateOptions`.
+  - `ResizeBatchPoolOptions` is now `BatchPoolResizeOptions`.
+  - `StopBatchPoolResizeOptions` is now `BatchPoolResizeStopOptions`.
+  - `ReplaceBatchPoolPropertiesOptions` is now `BatchPoolPropertiesReplaceOptions`.
+  - `RemoveBatchNodesOptions` is now `BatchNodesRemoveOptions`.
+  - `ListSupportedBatchImagesOptions` is now `SupportedBatchImagesListOptions`.
+  - `ListBatchPoolNodeCountsOptions` is now `BatchPoolNodeCountsListOptions`.
+  - `DeleteBatchJobOptions` is now `BatchJobDeleteOptions`.
+  - `GetBatchJobOptions` is now `BatchJobGetOptions`.
+  - `UpdateBatchJobOptions` is now `BatchJobUpdateOptions`.
+  - `ReplaceBatchJobOptions` is now `BatchJobReplaceOptions`.
+  - `DisableBatchJobOptions` is now `BatchJobDisableOptions`.
+  - `EnableBatchJobOptions` is now `BatchJobEnableOptions`.
+  - `TerminateBatchJobOptions` is now `BatchJobTerminateOptions`.
+  - `CreateBatchJobOptions` is now `BatchJobCreateOptions`.
+  - `ListBatchJobsOptions` is now `BatchJobsListOptions`.
+  - `ListBatchJobsFromScheduleOptions` is now `BatchJobsFromScheduleListOptions`.
+  - `ListBatchJobPreparationAndReleaseTaskStatusOptions` is now `BatchJobPreparationAndReleaseTaskStatusListOptions`.
+  - `GetBatchJobTaskCountsOptions` is now `BatchJobTaskCountsGetOptions`.
+  - `CreateBatchCertificateOptions` is now `BatchCertificateCreateOptions`.
+  - `ListBatchCertificatesOptions` is now `BatchCertificatesListOptions`.
+  - `CancelBatchCertificateDeletionOptions` is now `BatchCertificateCancelDeletionOptions`.
+  - `DeleteBatchCertificateOptions` is now `BatchCertificateDeleteOptions`.
+  - `GetBatchCertificateOptions` is now `BatchCertificateGetOptions`.
+  - `DeleteBatchJobScheduleOptions` is now `BatchJobScheduleDeleteOptions`.
+  - `GetBatchJobScheduleOptions` is now `BatchJobScheduleGetOptions`.
+  - `UpdateBatchJobScheduleOptions` is now `BatchJobScheduleUpdateOptions`.
+  - `ReplaceBatchJobScheduleOptions` is now `BatchJobScheduleReplaceOptions`.
+  - `DisableBatchJobScheduleOptions` is now `BatchJobScheduleDisableOptions`.
+  - `EnableBatchJobScheduleOptions` is now `BatchJobScheduleEnableOptions`.
+  - `TerminateBatchJobScheduleOptions` is now `BatchJobScheduleTerminateOptions`.
+  - `CreateBatchJobScheduleOptions` is now `BatchJobScheduleCreateOptions`.
+  - `ListBatchJobSchedulesOptions` is now `BatchJobSchedulesListOptions`.
+  - `CreateBatchTaskOptions` is now `BatchTaskCreateOptions`.
+  - `ListBatchTasksOptions` is now `BatchTasksListOptions`.
+  - `CreateBatchTaskCollectionOptions` is now `BatchTaskCollectionCreateOptions`.
+  - `DeleteBatchTaskOptions` is now `BatchTaskDeleteOptions.`
+  - `GetBatchTaskOptions` is now `BatchTaskGetOptions`.
+  - `ReplaceBatchTaskOptions` is now `BatchTaskReplaceOptions`.
+  - `ListBatchSubTasksOptions` is now `BatchSubTasksListOptions`.
+  - `TerminateBatchTaskOptions` is now `BatchTaskTerminateOptions`.
+  - `ReactivateBatchTaskOptions` is now `BatchTaskReactivateOptions`.
+  - `DeleteBatchTaskFileOptions` is now `BatchTaskFileDeleteOptions`.
+  - `GetBatchTaskFileOptions` is now `BatchTaskFileGetOptions`.
+  - `GetBatchTaskFilePropertiesOptions` is now `BatchTaskFilePropertiesGetOptions`.
+  - `ListBatchTaskFilesOptions` is now `BatchTaskFilesListOptions`.
+  - `CreateBatchNodeUserOptions` is now `BatchNodeUserCreateOptions`.
+  - `DeleteBatchNodeUserOptions` is now `BatchNodeUserDeleteOptions`.
+  - `ReplaceBatchNodeUserOptions` is now `BatchNodeUserReplaceOptions`.
+  - `GetBatchNodeOptions` is now `BatchNodeGetOptions`.
+  - `RebootBatchNodeOptions` is now `BatchNodeRebootOptions`.
+  - `StartBatchNodeOptions` is now `BatchNodeStartOptions`.
+  - `DeallocateBatchNodeOptions` is now `BatchNodeDeallocateOptions`.
+  - `ReimageBatchNodeOptions` is now `BatchNodeReimageOptions`.
+  - `DisableBatchNodeSchedulingOptions` is now `BatchNodeSchedulingDisableOptions`.
+  - `EnableBatchNodeSchedulingOptions` is now `BatchNodeSchedulingEnableOptions`.
+  - `GetBatchNodeRemoteLoginSettingsOptions` is now `BatchNodeRemoteLoginSettingsGetOptions`.
+  - `UploadBatchNodeLogsOptions` is now `BatchNodeLogsUploadOptions`.
+  - `ListBatchNodesOptions` is now `BatchNodesListOptions`.
+  - `GetBatchNodeExtensionOptions` is now `BatchNodeExtensionGetOptions`.
+  - `ListBatchNodeExtensionsOptions` is now `BatchNodeExtensionsListOptions`.
+  - `DeleteBatchNodeFileOptions` is now `BatchNodeFileDeleteOptions`.
+  - `GetBatchNodeFileOptions` is now `BatchNodeFileGetOptions`.
+  - `GetBatchNodeFilePropertiesOptions` is now `BatchNodeFilePropertiesGetOptions`.
+  - `ListBatchNodeFilesOptions` is now `BatchNodeFilesListOptions`.
 
 ## 1.0.0-beta.4 (2025-03-24)
 

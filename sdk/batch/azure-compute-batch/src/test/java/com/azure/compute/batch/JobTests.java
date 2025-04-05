@@ -150,7 +150,7 @@ public class JobTests extends BatchClientTestBase {
             Assertions.assertEquals(BatchJobState.ACTIVE, job.getState());
 
             BatchJobTerminateContent terminateContent = new BatchJobTerminateContent().setTerminationReason("myreason");
-            TerminateBatchJobOptions options = new TerminateBatchJobOptions();
+            BatchJobTerminateOptions options = new BatchJobTerminateOptions();
             options.setParameters(terminateContent);
 
             batchClient.terminateJob(jobId, options, null);
@@ -243,13 +243,13 @@ public class JobTests extends BatchClientTestBase {
             Assertions.assertEquals(Duration.parse("PT1H"), stats.getUserCpuTime());
             Assertions.assertEquals(Duration.parse("PT30M"), stats.getKernelCpuTime());
             Assertions.assertEquals(Duration.parse("PT1H30M"), stats.getWallClockTime());
-            Assertions.assertEquals(1000, stats.getReadIOps());
-            Assertions.assertEquals(500, stats.getWriteIOps());
-            Assertions.assertEquals(0.5, stats.getReadIOGiB());
-            Assertions.assertEquals(0.25, stats.getWriteIOGiB());
-            Assertions.assertEquals(10, stats.getNumSucceededTasks());
-            Assertions.assertEquals(2, stats.getNumFailedTasks());
-            Assertions.assertEquals(3, stats.getNumTaskRetries());
+            Assertions.assertEquals(1000, stats.getReadIops());
+            Assertions.assertEquals(500, stats.getWriteIops());
+            Assertions.assertEquals(0.5, stats.getReadIoGiB());
+            Assertions.assertEquals(0.25, stats.getWriteIoGiB());
+            Assertions.assertEquals(10, stats.getSucceededTasksCount());
+            Assertions.assertEquals(2, stats.getFailedTasksCount());
+            Assertions.assertEquals(3, stats.getTaskRetriesCount());
             Assertions.assertEquals(Duration.parse("PT10M"), stats.getWaitTime());
         } catch (IOException e) {
             throw new RuntimeException(e);

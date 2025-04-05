@@ -296,7 +296,7 @@ public class TaskTests extends BatchClientTestBase {
                 tasksToAdd.add(taskCreateContent);
             }
             BatchClientParallelOptions option = new BatchClientParallelOptions();
-            option.setMaxDegreeOfParallelism(10);
+            option.setMaxConcurrency(10);
             batchClient.createTasks(jobId, tasksToAdd, option);
 
             // LIST
@@ -336,7 +336,7 @@ public class TaskTests extends BatchClientTestBase {
                 tasksToAdd.add(taskCreateContent);
             }
             BatchClientParallelOptions option = new BatchClientParallelOptions();
-            option.setMaxDegreeOfParallelism(10);
+            option.setMaxConcurrency(10);
             batchClient.createTasks(jobId, tasksToAdd, option);
             // batchClient.createTaskCollection(jobId, new BatchTaskCollection(tasksToAdd));
             Assertions.assertTrue(true, "Should not here");
@@ -418,7 +418,7 @@ public class TaskTests extends BatchClientTestBase {
         ResourceFile resourceFile;
 
         BatchClientParallelOptions option = new BatchClientParallelOptions();
-        option.setMaxDegreeOfParallelism(10);
+        option.setMaxConcurrency(10);
 
         // Num Resource Files * Max Chunk Size should be greater than or equal to the limit which triggers the PoisonTask test to ensure we encounter the error in the initial chunk.
         for (int i = 0; i < 100; i++) {
@@ -481,7 +481,7 @@ public class TaskTests extends BatchClientTestBase {
                 tasksToAdd.add(taskCreateContent);
             }
             BatchClientParallelOptions option = new BatchClientParallelOptions();
-            option.setMaxDegreeOfParallelism(10);
+            option.setMaxConcurrency(10);
             batchClient.createTasks(jobId, tasksToAdd, option);
 
             //The Waiting period is only needed in record mode.
@@ -656,10 +656,10 @@ public class TaskTests extends BatchClientTestBase {
             Assertions.assertEquals(Duration.parse("PT1H"), stats.getUserCpuTime());
             Assertions.assertEquals(Duration.parse("PT2H"), stats.getKernelCpuTime());
             Assertions.assertEquals(Duration.parse("PT3H"), stats.getWallClockTime());
-            Assertions.assertEquals(1000, stats.getReadIOps());
-            Assertions.assertEquals(500, stats.getWriteIOps());
-            Assertions.assertEquals(0.5, stats.getReadIOGiB());
-            Assertions.assertEquals(0.25, stats.getWriteIOGiB());
+            Assertions.assertEquals(1000, stats.getReadIops());
+            Assertions.assertEquals(500, stats.getWriteIops());
+            Assertions.assertEquals(0.5, stats.getReadIoGiB());
+            Assertions.assertEquals(0.25, stats.getWriteIoGiB());
             Assertions.assertEquals(Duration.parse("PT30M"), stats.getWaitTime());
         } catch (IOException e) {
             throw new RuntimeException(e);

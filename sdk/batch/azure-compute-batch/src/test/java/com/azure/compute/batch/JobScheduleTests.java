@@ -11,7 +11,7 @@ import com.azure.compute.batch.models.BatchJobScheduleUpdateContent;
 import com.azure.compute.batch.models.BatchJobSpecification;
 import com.azure.compute.batch.models.BatchPool;
 import com.azure.compute.batch.models.BatchPoolInfo;
-import com.azure.compute.batch.models.ListBatchJobSchedulesOptions;
+import com.azure.compute.batch.models.BatchJobSchedulesListOptions;
 import com.azure.compute.batch.models.MetadataItem;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
@@ -79,7 +79,7 @@ public class JobScheduleTests extends BatchClientTestBase {
             }
 
             // LIST
-            ListBatchJobSchedulesOptions listOptions = new ListBatchJobSchedulesOptions();
+            BatchJobSchedulesListOptions listOptions = new BatchJobSchedulesListOptions();
             listOptions.setFilter(String.format("id eq '%s'", jobScheduleId));
             PagedIterable<BatchJobSchedule> jobSchedules = batchClient.listJobSchedules(listOptions);
             Assertions.assertNotNull(jobSchedules);
@@ -214,13 +214,13 @@ public class JobScheduleTests extends BatchClientTestBase {
             Assertions.assertEquals(Duration.parse("PT1H"), stats.getUserCpuTime());
             Assertions.assertEquals(Duration.parse("PT30M"), stats.getKernelCpuTime());
             Assertions.assertEquals(Duration.parse("PT1H30M"), stats.getWallClockTime());
-            Assertions.assertEquals(1000, stats.getReadIOps());
-            Assertions.assertEquals(500, stats.getWriteIOps());
-            Assertions.assertEquals(0.5, stats.getReadIOGiB());
-            Assertions.assertEquals(0.25, stats.getWriteIOGiB());
-            Assertions.assertEquals(10, stats.getNumSucceededTasks());
-            Assertions.assertEquals(2, stats.getNumFailedTasks());
-            Assertions.assertEquals(3, stats.getNumTaskRetries());
+            Assertions.assertEquals(1000, stats.getReadIops());
+            Assertions.assertEquals(500, stats.getWriteIops());
+            Assertions.assertEquals(0.5, stats.getReadIoGiB());
+            Assertions.assertEquals(0.25, stats.getWriteIoGiB());
+            Assertions.assertEquals(10, stats.getSucceededTasksCount());
+            Assertions.assertEquals(2, stats.getFailedTasksCount());
+            Assertions.assertEquals(3, stats.getTaskRetriesCount());
             Assertions.assertEquals(Duration.parse("PT10M"), stats.getWaitTime());
         } catch (IOException e) {
             throw new RuntimeException(e);
