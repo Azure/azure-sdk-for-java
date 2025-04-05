@@ -81,10 +81,6 @@ Once you perform [the authentication set up that suits you best][default_azure_c
 **your-key-vault-endpoint** with the URL for your key vault, you can create a `SecretClient`:
 
 ```java readme-sample-createSecretClient
-SecretClient secretClient = new SecretClientBuilder()
-    .endpoint("<your-key-vault-endpoint>")
-    .credential(new DefaultAzureCredentialBuilder().build())
-    .buildClient();
 ```
 
 ## Key concepts
@@ -118,63 +114,30 @@ Create a secret to be stored in the key vault.
 of the secret is created.
 
 ```java readme-sample-createSecret
-KeyVaultSecret secret = secretClient.setSecret("<secret-name>", "<secret-value>");
-
-System.out.printf("Secret created with name \"%s\" and value \"%s\"%n", secret.getName(), secret.getValue());
 ```
 
 ### Retrieve a secret
 Retrieve a previously stored secret by calling `getSecret`.
 
 ```java readme-sample-retrieveSecret
-KeyVaultSecret secret = secretClient.getSecret("<secret-name>");
-
-System.out.printf("Retrieved secret with name \"%s\" and value \"%s\"%n", secret.getName(), secret.getValue());
 ```
 
 ### Update an existing secret
 Update an existing secret by calling `updateSecretProperties`.
 
 ```java readme-sample-updateSecret
-// Get the secret to update.
-KeyVaultSecret secret = secretClient.getSecret("<secret-name>");
-
-// Update the expiry time of the secret.
-secret.getProperties().setExpiresOn(OffsetDateTime.now().plusDays(30));
-
-SecretProperties updatedSecretProperties = secretClient.updateSecretProperties(secret.getProperties());
-
-System.out.printf("Secret's updated expiry time: %s%n", updatedSecretProperties.getExpiresOn());
 ```
 
 ### Delete a secret
 Delete an existing secret by calling `beginDeleteSecret`.
 
 ```java readme-sample-deleteSecret
-SyncPoller<DeletedSecret, Void> deletedSecretPoller = secretClient.beginDeleteSecret("<secret-name>");
-
-// Deleted secret is accessible as soon as polling begins.
-PollResponse<DeletedSecret> deletedSecretPollResponse = deletedSecretPoller.poll();
-
-// Deletion date only works for a SoftDelete-enabled key vault.
-System.out.printf("Deletion date: %s%n", deletedSecretPollResponse.getValue().getDeletedOn());
-
-// Secret is being deleted on server.
-deletedSecretPoller.waitForCompletion();
 ```
 
 ### List secrets
 List the secrets in the key vault by calling `listPropertiesOfSecrets`.
 
 ```java readme-sample-listSecrets
-// List operations don't return the secrets with value information. So, for each returned secret we call getSecret to
-// get the secret with its value information.
-for (SecretProperties secretProperties : secretClient.listPropertiesOfSecrets()) {
-    KeyVaultSecret secretWithValue = secretClient.getSecret(secretProperties.getName(), secretProperties.getVersion());
-
-    System.out.printf("Retrieved secret with name \"%s\" and value \"%s\"%n", secretWithValue.getName(),
-        secretWithValue.getValue());
-}
 ```
 
 ### Service API versions
@@ -202,11 +165,6 @@ is returned, indicating the resource was not found. In the following snippet, th
 catching the exception and displaying additional information about the error.
 
 ```java readme-sample-troubleshooting
-try {
-    secretClient.getSecret("<deleted-secret-name>");
-} catch (HttpResponseException e) {
-    System.out.println(e.getMessage());
-}
 ```
 
 ### Default HTTP Client
