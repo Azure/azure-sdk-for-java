@@ -1,6 +1,6 @@
 # Guide for Migrating to `Azure.Compute.Batch` from `Microsoft.Azure.Batch` (Java)
 
-This guide is intended to assist customers in migrating to the new Java SDK package, `Azure.Compute.Batch` (Track 2), from the legacy `Microsoft.Azure.Batch` package (Track 1). It provides side‐by‐side comparisons of similar operations between the two versions. Familiarity with the legacy client library is assumed. For newcomers, please refer to the [README for Track 2](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/batch/azure-compute-batch/README.md) and the [legacy README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/batch/microsoft-azure-batch/README.md).
+This guide is intended to assist customers in migrating to the new Java SDK package, `Azure.Compute.Batch` (Track 2), from the legacy `Microsoft.Azure.Batch` package (Track 1). It provides side‐by‐side comparisons of similar operations between the two versions. Familiarity with the legacy client library is assumed. For newcomers, please refer to the [README for Track 2](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/batch/azure-compute-batch/README.md) and the [legacy README for Track 1](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/batch/microsoft-azure-batch/README.md).
 
 > **Note:** The legacy `Microsoft.Azure.Batch` package is deprecated. Upgrade to `Azure.Compute.Batch` for continued support and new features.
 
@@ -243,6 +243,8 @@ Track 1:
 ```java
 batchClient.poolOperations().deletePool("poolId");
 ```
+
+Track 2:
 
 ```java
 batchClient.deletePool("poolId");
@@ -502,9 +504,9 @@ batchClient.deleteJob("jobId");
 
 #### ReplaceJob
 
-(Known as UpdateJob in Track 1, ReplaceJob in Track 2)
+(Known as `UpdateJob` in Track 1, `ReplaceJob` in Track 2)
 
-Track 1 (Update job priority to 1):
+Track 1:
 
 ```java
 PoolInformation poolInfo = new PoolInformation();
@@ -520,15 +522,15 @@ batchClient.replaceJob("jobId", job);
 
 #### UpdateJob
 
-(Known as PatchJob in Track 1, UpdateJob in Track 2)
+(Known as `PatchJob` in Track 1, `UpdateJob` in Track 2)
 
-Track 1 (Update job priority to 1):
+Track 1:
 
 ```java
 batchClient.jobOperations().patchJob(jobId, OnAllTasksComplete.TERMINATE_JOB);
 ```
 
-Track 2 (Update metadata):
+Track 2:
 
 ```java
 import com.azure.compute.batch.models.BatchJobUpdateContent;
@@ -540,14 +542,14 @@ batchClient.updateJob("jobId", updateContent);
 
 #### DisableJob
 
-Track 1
+Track 1:
 
 ```java
 CloudJob job = batchClient.getJobOperations().getJob("jobId");
 job.disable(DisableJobOption.TERMINATE);
 ```
 
-Track 2
+Track 2:
 
 ```java
 import com.azure.compute.batch.models.BatchJobDisableContent;
@@ -558,13 +560,13 @@ batchClient.disableJob("jobId", disableContent);
 
 #### EnableJob
 
-Track 1
+Track 1:
 
 ```java
 batchClient.jobOperations().enableJob(jobId);
 ```
 
-Track 2
+Track 2:
 
 ```java
 batchClient.enableJob("jobId");
@@ -572,7 +574,7 @@ batchClient.enableJob("jobId");
 
 #### List Job Preparation and Release Task Status
 
-Track 1
+Track 1:
 
 ```java
 List<JobPreparationAndReleaseTaskExecutionInformation> status =
@@ -582,7 +584,7 @@ for (JobPreparationAndReleaseTaskExecutionInformation info : status) {
 }
 ```
 
-Track 2
+Track 2:
 
 ```java
 for (BatchJobPreparationAndReleaseTaskStatus status : batchClient.getJobPreparationAndReleaseTaskStatuses("jobId")) {
@@ -592,13 +594,13 @@ for (BatchJobPreparationAndReleaseTaskStatus status : batchClient.getJobPreparat
 
 #### Get Job Task Counts
 
-Track 1
+Track 1:
 
 ```java
 TaskCounts counts = batchClient.getJobOperations().getTaskCounts("jobId");
 ```
 
-Track 2
+Track 2:
 
 ```java
 BatchTaskCountsResult counts = batchClient.getJobTaskCounts("jobId");
@@ -606,13 +608,13 @@ BatchTaskCountsResult counts = batchClient.getJobTaskCounts("jobId");
 
 #### TerminateJob
 
-Track 1
+Track 1:
 
 ```java
 batchClient.jobOperations().terminateJob("jobId");
 ```
 
-Track 2
+Track 2:
 
 ```java
 batchClient.terminateJob("jobId");
@@ -622,7 +624,7 @@ batchClient.terminateJob("jobId");
 
 #### CreateJobSchedule
 
-Track 1
+Track 1:
 
 ```java
 String jobScheduleId = getStringIdWithUserNamePrefix("-JobSchedule-updateJobScheduleState");
@@ -635,7 +637,7 @@ Schedule schedule = new Schedule().withDoNotRunUntil(DateTime.now()).withDoNotRu
 batchClient.jobScheduleOperations().createJobSchedule(jobScheduleId, schedule, spec);
 ```
 
-Track 2
+Track 2:
 
 ```java
 String jobScheduleId = "jobScheduleId";
@@ -652,13 +654,13 @@ batchClient.createJobSchedule(new BatchJobScheduleCreateContent(jobScheduleId, s
 
 #### GetJobSchedule
 
-Track 1
+Track 1:
 
 ```java
 CloudJobSchedule jobSchedule = batchClient.getJobScheduleOperations().getJobSchedule("jobScheduleId");
 ```
 
-Track 2
+Track 2:
 
 ```java
 BatchJobSchedule jobSchedule = batchClient.getJobSchedule("jobScheduleId");
@@ -667,7 +669,7 @@ System.out.println(jobSchedule.getId());
 
 #### ListJobSchedules
 
-Track 1
+Track 1:
 
 ```java
 List<CloudJobSchedule> schedules = new ArrayList<>(batchClient.jobScheduleOperations().listJobSchedules());
@@ -676,7 +678,7 @@ for (CloudJobSchedule schedule : schedules) {
 }
 ```
 
-Track 2
+Track 2:
 
 ```java
 for (BatchJobSchedule schedule : batchClient.listJobSchedules()) {
@@ -686,13 +688,13 @@ for (BatchJobSchedule schedule : batchClient.listJobSchedules()) {
 
 #### DeleteJobSchedule
 
-Track 1
+Track 1:
 
 ```java
 batchClient.jobScheduleOperations().deleteJobSchedule("jobScheduleId");
 ```
 
-Track 2
+Track 2:
 
 ```java
 batchClient.deleteJobSchedule("jobScheduleId");
@@ -700,9 +702,9 @@ batchClient.deleteJobSchedule("jobScheduleId");
 
 #### ReplaceJobSchedule
 
-(Known as UpdateJobSchedule in Track 1, ReplaceJobSchedule in Track 2)
+(Known as `UpdateJobSchedule` in Track 1, `ReplaceJobSchedule` in Track 2)
 
-Track 1
+Track 1:
 
 ```java
 Schedule schedule = new Schedule();
@@ -710,7 +712,7 @@ JobSpecification jobSpecification = new JobSpecification();
 batchClient.jobScheduleOperations().updateJobSchedule("jobScheduleId", schedule, jobSpecification);
 ```
 
-Track 2
+Track 2:
 
 ```java
 BatchJobSchedule jobSchedule = batchClient.getJobSchedule("jobScheduleId");
@@ -721,9 +723,9 @@ batchClient.replaceJobSchedule("jobScheduleId", jobSchedule);
 
 #### UpdateJobSchedule
 
-(Known as PatchJobSchedule in Track 1, UpdateJobSchedule in Track 2)
+(Known as `PatchJobSchedule` in Track 1, `UpdateJobSchedule` in Track 2)
 
-Track 1
+Track 1:
 
 ```java
 LinkedList<MetadataItem> metadata = new LinkedList<MetadataItem>();
@@ -731,7 +733,7 @@ metadata.add((new MetadataItem()).withName("key1").withValue("value1"));
 batchClient.jobScheduleOperations().patchJobSchedule(jobScheduleId, null, null, metadata);
 ```
 
-Track 2
+Track 2:
 
 ```java
 import com.azure.compute.batch.models.BatchJobScheduleUpdateContent;
@@ -743,13 +745,13 @@ batchClient.updateJobSchedule("jobScheduleId", updateContent);
 
 #### DisableJobSchedule
 
-Track 1
+Track 1:
 
 ```java
 batchClient.jobScheduleOperations().disableJobSchedule("jobScheduleId");
 ```
 
-Track 2
+Track 2:
 
 ```java
 batchClient.disableJobSchedule("jobScheduleId");
@@ -757,13 +759,13 @@ batchClient.disableJobSchedule("jobScheduleId");
 
 #### EnableJobSchedule
 
-Track 1
+Track 1:
 
 ```java
 batchClient.jobScheduleOperations().enableJobSchedule("jobScheduleId");
 ```
 
-Track 2
+Track 2:
 
 ```java
 batchClient.enableJobSchedule("jobScheduleId");
@@ -771,13 +773,13 @@ batchClient.enableJobSchedule("jobScheduleId");
 
 #### TerminateJobSchedule
 
-Track 1
+Track 1:
 
 ```java
 batchClient.jobScheduleOperations().terminateJobSchedule("jobScheduleId");
 ```
 
-Track 2
+Track 2:
 
 ```java
 batchClient.terminateJobSchedule("jobScheduleId");
@@ -789,7 +791,7 @@ batchClient.terminateJobSchedule("jobScheduleId");
 
 There are several options in Track 2.
 
-Track 1 (Single task or collection):
+Track 1 (Create a single task or collection of tasks):
 
 ```java
 // Single task
@@ -820,7 +822,7 @@ BatchTaskCreateContent taskContent = new BatchTaskCreateContent("taskId", "cmd /
 batchClient.createTask("jobId", taskContent);
 ```
 
-Create a task collection:
+Create a task collection (100 tasks or less):
 
 ```java
 import com.azure.compute.batch.models.BatchTaskGroup;
@@ -833,7 +835,7 @@ BatchTaskGroup taskGroup = new BatchTaskGroup(new BatchTaskCreateContent[] {
 BatchTaskAddCollectionResult result = batchClient.createTaskCollection("jobId", taskGroup);
 ```
 
-Create multiple tasks (utility method):
+Create multiple tasks (used for creating very large numbers of tasks):
 
 ```java
 List<BatchTaskCreateContent> tasks = new ArrayList<>();
@@ -845,13 +847,13 @@ batchClient.createTasks("jobId", tasks);
 
 #### GetTask
 
-Track 1
+Track 1:
 
 ```java
 CloudTask task = batchClient.getJobOperations().getTask("jobId", "taskId");
 ```
 
-Track 2
+Track 2:
 
 ```java
 BatchTask task = batchClient.getTask("jobId", "taskId");
@@ -861,13 +863,13 @@ System.out.println(task.getState());
 
 #### ListTasks
 
-Track 1
+Track 1:
 
 ```java
 List<CloudTask> tasks = batchClient.taskOperations().listTasks(jobId);
 ```
 
-Track 2
+Track 2:
 
 ```java
 batchClient.listTasks("jobId");
@@ -875,13 +877,13 @@ batchClient.listTasks("jobId");
 
 #### DeleteTask
 
-Track 1
+Track 1:
 
 ```java
 batchClient.taskOperations().deleteTask("jobId", "taskId");
 ```
 
-Track 2
+Track 2:
 
 ```java
 batchClient.deleteTask("jobId", "taskId");
@@ -889,9 +891,9 @@ batchClient.deleteTask("jobId", "taskId");
 
 #### ReplaceTask
 
-(Known as UpdateTask in Track 1, ReplaceTask in Track 2)
+(Known as `UpdateTask` in Track 1, `ReplaceTask` in Track 2)
 
-Track 1
+Track 1:
 
 ```java
 TaskConstraints contraint = new TaskConstraints();
@@ -899,7 +901,7 @@ contraint.withMaxTaskRetryCount(5);
 batchClient.taskOperations().updateTask("jobId", "taskId", contraint);
 ```
 
-Track 2
+Track 2:
 
 ```java
 BatchTask task = batchClient.getTask("jobId", "taskId");
@@ -909,13 +911,13 @@ batchClient.replaceTask("jobId", "taskId", task);
 
 #### ReactivateTask
 
-Track 1
+Track 1:
 
 ```java
 batchClient.taskOperations().reactivateTask("jobId", "taskId");
 ```
 
-Track 2
+Track 2:
 
 ```java
 batchClient.reactivateTask("jobId", "taskId");
@@ -923,13 +925,13 @@ batchClient.reactivateTask("jobId", "taskId");
 
 #### TerminateTask
 
-Track 1
+Track 1:
 
 ```java
 batchClient.taskOperations().terminateTask("jobId", "taskId");
 ```
 
-Track 2
+Track 2:
 
 ```java
 batchClient.terminateTask("jobId", "taskId");
@@ -939,7 +941,7 @@ batchClient.terminateTask("jobId", "taskId");
 
 #### ListTaskFiles
 
-**Track 1:**
+Track 1:
 
 ```java
 // Using the legacy FileOperations class to list task files
@@ -949,7 +951,7 @@ for (NodeFile file : files) {
 }
 ```
 
-Track 2
+Track 2:
 
 ```java
 import com.azure.compute.batch.models.BatchNodeFile;
@@ -964,14 +966,14 @@ for (BatchNodeFile file : files) {
 
 #### GetTaskFile
 
-Track 1
+Track 1:
 
 ```java
 ByteArrayOutputStream stream = new ByteArrayOutputStream();
 batchClient.fileOperations().getFileFromTask(jobId, taskId, "stdout.txt", stream);
 ```
 
-Track 2
+Track 2:
 
 ```java
 import com.azure.core.util.BinaryData;
@@ -1002,13 +1004,13 @@ BatchFileProperties properties = batchClient.getTaskFileProperties("jobId", "tas
 
 #### GetComputeNode
 
-Track 1
+Track 1:
 
 ```java
 ComputeNode computeNode = batchClient.computeNodeOperations().getComputeNode("poolId", "nodeId");
 ```
 
-Track 2
+Track 2:
 
 ```java
 BatchNode node = batchClient.getNode("poolId", "nodeId");
@@ -1016,13 +1018,13 @@ BatchNode node = batchClient.getNode("poolId", "nodeId");
 
 #### ListComputeNodes
 
-Track 1
+Track 1:
 
 ```java
 List<ComputeNode> nodes = batchClient.computeNodeOperations().listComputeNodes("poolId");
 ```
 
-Track 2
+Track 2:
 
 ```java
 PagedIterable<BatchNode> nodes = batchClient.listNodes("poolId");
@@ -1030,13 +1032,13 @@ PagedIterable<BatchNode> nodes = batchClient.listNodes("poolId");
 
 #### RebootNode
 
-Track 1
+Track 1:
 
 ```java
 batchClient.computeNodeOperations().rebootComputeNode("poolId", "nodeId");
 ```
 
-Track 2
+Track 2:
 
 ```java
 batchClient.rebootNode("poolId", "nodeId");
@@ -1044,9 +1046,9 @@ batchClient.rebootNode("poolId", "nodeId");
 
 #### CreateComputeNodeUser
 
-(Known as AddComputeNodeUser in Track 1 and CreateComputeNodeUser in Track 2)
+(Known as `AddComputeNodeUser` in Track 1 and `CreateComputeNodeUser` in Track 2)
 
-Track 1
+Track 1:
 
 ```java
 ComputeNodeUser user = new ComputeNodeUser();
@@ -1055,7 +1057,7 @@ user.withPassword("userPassword");
 batchClient.computeNodeOperations().addComputeNodeUser("poolId", "nodeId", user);
 ```
 
-Track 2
+Track 2:
 
 ```java
 import com.azure.compute.batch.models.BatchNodeUserCreateContent;
@@ -1067,13 +1069,13 @@ batchClient.createNodeUser("poolId", "nodeId", userContent);
 
 #### DeleteComputeNodeUser
 
-Track 1
+Track 1:
 
 ```java
 batchClient.computeNodeOperations().deleteComputeNodeUser("poolId", "nodeId", "userName");
 ```
 
-Track 2
+Track 2:
 
 ```java
 batchClient.deleteNodeUser("poolId", "nodeId", "userName");
@@ -1081,14 +1083,14 @@ batchClient.deleteNodeUser("poolId", "nodeId", "userName");
 
 #### GetNodeFile
 
-Track 1
+Track 1:
 
 ```java
 ByteArrayOutputStream stream = new ByteArrayOutputStream();
 batchClient.fileOperations().getFileFromComputeNode("poolId", "nodeId", "fileName", stream);
 ```
 
-Track 2
+Track 2:
 
 ```java
 BinaryData fileContent = batchClient.getNodeFile("poolId", "nodeId", "filePath");
@@ -1096,13 +1098,13 @@ BinaryData fileContent = batchClient.getNodeFile("poolId", "nodeId", "filePath")
 
 #### ListNodeFiles
 
-Track 1
+Track 1:
 
 ```java
 List<NodeFile> files = batchClient.fileOperations().listFilesFromComputeNode(poolId, nodeId, true, null);
 ```
 
-Track 2
+Track 2:
 
 ```java
 PagedIterable<BatchNodeFile> files = batchClient.listNodeFiles("jobId", "nodeId");
@@ -1110,13 +1112,13 @@ PagedIterable<BatchNodeFile> files = batchClient.listNodeFiles("jobId", "nodeId"
 
 #### DeleteNodeFile
 
-Track 1
+Track 1:
 
 ```java
 batchClient.fileOperations().deleteFileFromComputeNode("jobId", "taskId", "fileName");
 ```
 
-Track 2
+Track 2:
 
 ```java
 batchClient.deleteNodeFile("jobId", "nodeId", "filePath");
@@ -1124,13 +1126,13 @@ batchClient.deleteNodeFile("jobId", "nodeId", "filePath");
 
 #### GetNodeFileProperties
 
-Track 1
+Track 1:
 
 ```java
 FileProperties properties = batchClient.fileOperations().getFilePropertiesFromComputeNode("jobId", "taskId", "fileName");
 ```
 
-Track 2
+Track 2:
 
 ```java
 BatchFileProperties properties = batchClient.getNodeFileProperties("poolId", "nodeId", "filePath");
@@ -1138,13 +1140,13 @@ BatchFileProperties properties = batchClient.getNodeFileProperties("poolId", "no
 
 #### GetRemoteLoginSettings
 
-Track 1
+Track 1:
 
 ```java
 ComputeNodeGetRemoteLoginSettingsResult settings = batchClient.computeNodeOperations().getComputeNodeRemoteLoginSettings("poolId", "nodeId");
 ```
 
-Track 2
+Track 2:
 
 ```java
 BatchNodeRemoteLoginSettings settings = batchClient.getNodeRemoteLoginSettings("poolId", "nodeId");
@@ -1152,7 +1154,7 @@ BatchNodeRemoteLoginSettings settings = batchClient.getNodeRemoteLoginSettings("
 
 #### UploadNodeLogs
 
-Track 1
+Track 1:
 
 ```java
 String containerUrl = "https://storageaccount.blob.core.windows.net/container?sasToken=abc123";
@@ -1160,7 +1162,7 @@ DateTime startTime = new DateTime(2025, 4, 1, 0, 0, 0, DateTimeZone.UTC);
 UploadBatchServiceLogsResult result = uploadBatchServiceLogs("poolId", "nodeId", containerUrl, startTime);
 ```
 
-Track 2
+Track 2:
 
 ```java
 import com.azure.compute.batch.models.UploadBatchServiceLogsContent;
@@ -1183,7 +1185,7 @@ Track 1:
 Certificate cert = batchClient.getCertificateOperations().createCertificateFromCer("cerFilePath");
 ```
 
-Track 2
+Track 2:
 
 ```java
 import com.azure.compute.batch.models.BatchCertificate;
@@ -1202,16 +1204,16 @@ batchClient.createCertificate(cerCertificate);
 
 #### CreateCertificate
 
-Track 1
+Track 1:
 
-Method 1 (CreateCertificate takes in InputStream parameter):
+Method 1 (`createCertificate` takes in `InputStream` parameter):
 
 ```java
 InputStream certStream = new FileInputStream("path/to/certificate.cer");
 batchClient.certificateOperations().createCertificate(certStream);
 ```
 
-Method 2 (createCertificate takes in CertificateAddParameter):
+Method 2 (`createCertificate` takes in `CertificateAddParameter`):
 
 ```java
 CertificateAddParameter certParam = new CertificateAddParameter()
@@ -1223,7 +1225,7 @@ CertificateAddParameter certParam = new CertificateAddParameter()
 batchClient.createCertificate(certParam);
 ```
 
-Track 2
+Track 2:
 
 ```java
 byte[] base64DecodedBytes = Files.readAllBytes(Paths.get("path/to/your-certificate.cer"));
@@ -1234,7 +1236,7 @@ batchClient.createCertificate(cert);
 
 #### GetCertificate
 
-Track 1
+Track 1:
 
 ```java
 String thumbprintAlgorithm = "sha1";
@@ -1242,7 +1244,7 @@ String thumbprint = "your-thumbprint";
 Certificate cert = batchClient.certificateOperations().getCertificate(thumbprintAlgorithm, thumbprint);
 ```
 
-Track 2
+Track 2:
 
 ```java
 String thumbprintAlgorithm = "sha1";
@@ -1252,7 +1254,7 @@ BatchCertificate cert = batchClient.getCertificate(thumbprintAlgorithm, thumbpri
 
 #### ListCertificates
 
-Track 1
+Track 1:
 
 ```java
 for (Certificate cert : batchClient.getCertificateOperations().listCertificates()) {
@@ -1260,7 +1262,7 @@ for (Certificate cert : batchClient.getCertificateOperations().listCertificates(
 }
 ```
 
-Track 2
+Track 2:
 
 ```java
 for (BatchCertificate cert : batchClient.listCertificates()) {
@@ -1270,7 +1272,7 @@ for (BatchCertificate cert : batchClient.listCertificates()) {
 
 #### DeleteCertificate
 
-Track 1
+Track 1:
 
 ```java
 String thumbprintAlgorithm = "sha1";
@@ -1278,7 +1280,7 @@ String thumbprint = "your-thumbprint";
 batchClient.certificateOperations().deleteCertificate(thumbprintAlgorithm, thumbprint);
 ```
 
-Track 2
+Track 2:
 
 ```java
 String thumbprintAlgorithm = "sha1";
@@ -1288,7 +1290,7 @@ batchClient.deleteCertificate(thumbprintAlgorithm, thumbprint);
 
 #### CancelDeleteCertificate
 
-Track 1
+Track 1:
 
 ```java
 String thumbprintAlgorithm = "sha1";
@@ -1296,7 +1298,7 @@ String thumbprint = "your-thumbprint";
 batchClient.certificateOperations().cancelDeleteCertificate(thumbprintAlgorithm, thumbprint);
 ```
 
-Track 2
+Track 2:
 
 ```java
 batchClient.cancelCertificateDeletion("ThumbprintAlgorithm", "Thumbprint");
@@ -1306,13 +1308,13 @@ batchClient.cancelCertificateDeletion("ThumbprintAlgorithm", "Thumbprint");
 
 #### GetApplication
 
-Track 1
+Track 1:
 
 ```java
 ApplicationSummary appSummary = batchClient.applicationOperations().getApplication("appId");
 ```
 
-Track 2
+Track 2:
 
 ```java
 BatchApplication application = batchClient.getApplication("appId");
@@ -1320,7 +1322,7 @@ BatchApplication application = batchClient.getApplication("appId");
 
 #### ListApplications
 
-Track 1
+Track 1:
 
 ```java
 PagedList<ApplicationSummary> apps = batchClient.applicationOperations().listApplications();
@@ -1330,7 +1332,7 @@ for (ApplicationSummary app : apps) {
 }
 ```
 
-Track 2
+Track 2:
 
 ```java
 for (BatchApplication app : batchClient.listApplications()) {
