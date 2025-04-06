@@ -17,15 +17,18 @@ import java.util.UUID;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class ThinClientE2ETest {
-    @Test(groups = {"e2e"})
+    @Test(groups = {"thinclient"})
     public void testThinclientHttp2() {
         try {
             System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
             System.setProperty("COSMOS.HTTP2_ENABLED", "true");
 
+            String thinclientTestEndpoint = System.getProperty("COSMOS.THINCLIENT_ENDPOINT");
+            String thinclientTestKey = System.getProperty("COSMOS_THINCLIENT_KEY");
+
             CosmosAsyncClient client  = new CosmosClientBuilder()
-                .key(TestConfigurations.MASTER_KEY)
-                .endpoint(TestConfigurations.HOST)
+                .key(thinclientTestEndpoint)
+                .endpoint(thinclientTestKey)
                 .gatewayMode()
                 .consistencyLevel(ConsistencyLevel.SESSION)
                 .buildAsyncClient();

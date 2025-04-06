@@ -48,6 +48,8 @@ public class Configs {
     private static final String DEFAULT_THINCLIENT_ENDPOINT = "";
     private static final String THINCLIENT_ENDPOINT = "COSMOS.THINCLIENT_ENDPOINT";
     private static final String THINCLIENT_ENDPOINT_VARIABLE = "COSMOS_THINCLIENT_ENDPOINT";
+    private static final String THINCLIENT_KEY = "COSMOS.THINCLIENT_KEY";
+    private static final String THINCLIENT_KEY_VARIABLE = "COSMOS_THINCLIENT_KEY";
     private static final boolean DEFAULT_THINCLIENT_ENABLED = false;
     private static final String THINCLIENT_ENABLED = "COSMOS.THINCLIENT_ENABLED";
     private static final String THINCLIENT_ENABLED_VARIABLE = "COSMOS_THINCLIENT_ENABLED";
