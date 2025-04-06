@@ -16,7 +16,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
 @SuppressWarnings("UnstableApiUsage")
-abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements ReferenceCounted {
+public abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements ReferenceCounted {
 
     final ByteBuf in;
     final Map<Short, T> headers;
@@ -32,6 +32,22 @@ abstract class RntbdTokenStream<T extends Enum<T> & RntbdHeader> implements Refe
         headers.stream().forEach(h -> tokens.put(h, RntbdToken.create(h)));
         this.headers = ids;
         this.in = in;
+    }
+
+    public String dumpTokens() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(System.lineSeparator());
+        for (Map.Entry<?, RntbdToken> entry : this.tokens.entrySet()) {
+            RntbdToken token = entry.getValue();
+            if (token == null || !token.isPresent()) {
+                continue;
+            }
+
+            sb.append(token);
+            sb.append(System.lineSeparator());
+        }
+
+        return sb.toString();
     }
 
     // region Methods

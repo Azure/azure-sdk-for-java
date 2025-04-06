@@ -47,7 +47,7 @@ import static com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdCons
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 @JsonFilter("RntbdToken")
-final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
+public final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
 
     // region Fields
 

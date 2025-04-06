@@ -88,6 +88,10 @@ public final class RntbdRequest {
         return new RntbdRequest(header, metadata, payload);
     }
 
+    public RntbdRequestHeaders getHeaders() {
+        return this.headers;
+    }
+
     public void encode(final ByteBuf out, boolean forThinClient) {
 
         // If payload exists it is encoded as prefix length (32-bit) + the raw payload
