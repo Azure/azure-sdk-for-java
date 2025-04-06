@@ -17,7 +17,7 @@ import java.util.UUID;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class ThinClientE2ETest {
-    @Test
+    @Test(groups = {"e2e"})
     public void testThinclientHttp2() {
         try {
             System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
