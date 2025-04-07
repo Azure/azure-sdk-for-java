@@ -26,7 +26,6 @@
     <groups>
       <run>
         <include name="thinclient"/>
-        <exclude name="unit"/>
       </run>
     </groups>
     <packages>

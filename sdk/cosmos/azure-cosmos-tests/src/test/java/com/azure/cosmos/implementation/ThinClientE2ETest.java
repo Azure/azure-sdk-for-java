@@ -27,8 +27,8 @@ public class ThinClientE2ETest {
             String thinclientTestKey = System.getProperty("COSMOS_THINCLIENT_KEY");
 
             CosmosAsyncClient client  = new CosmosClientBuilder()
-                .key(thinclientTestEndpoint)
-                .endpoint(thinclientTestKey)
+                .key(thinclientTestKey)
+                .endpoint(thinclientTestEndpoint)
                 .gatewayMode()
                 .consistencyLevel(ConsistencyLevel.SESSION)
                 .buildAsyncClient();
