@@ -9,6 +9,7 @@ import com.azure.compute.batch.models.BatchJobScheduleState;
 import com.azure.compute.batch.models.BatchJobScheduleStatistics;
 import com.azure.compute.batch.models.BatchJobScheduleUpdateContent;
 import com.azure.compute.batch.models.BatchJobSpecification;
+import com.azure.compute.batch.models.BatchMetadataItem;
 import com.azure.compute.batch.models.BatchPool;
 import com.azure.compute.batch.models.BatchPoolInfo;
 import com.azure.compute.batch.models.BatchJobSchedulesListOptions;
@@ -94,9 +95,9 @@ public class JobScheduleTests extends BatchClientTestBase {
             Assertions.assertTrue(found);
 
             // REPLACE
-            List<MetadataItem> metadataList = new ArrayList<>();
-            metadataList.add(new MetadataItem("name1", "value1"));
-            metadataList.add(new MetadataItem("name2", "value2"));
+            List<BatchMetadataItem> metadataList = new ArrayList<>();
+            metadataList.add(new BatchMetadataItem("name1", "value1"));
+            metadataList.add(new BatchMetadataItem("name2", "value2"));
 
             jobSchedule.setMetadata(metadataList);
             batchClient.replaceJobSchedule(jobScheduleId, jobSchedule);
@@ -106,8 +107,8 @@ public class JobScheduleTests extends BatchClientTestBase {
             Assertions.assertEquals("value2", jobSchedule.getMetadata().get(1).getValue());
 
             // UPDATE
-            LinkedList<MetadataItem> metadata = new LinkedList<MetadataItem>();
-            metadata.add((new MetadataItem("key1", "value1")));
+            LinkedList<BatchMetadataItem> metadata = new LinkedList<BatchMetadataItem>();
+            metadata.add((new BatchMetadataItem("key1", "value1")));
             BatchJobScheduleUpdateContent jobScheduleUpdateContent = new BatchJobScheduleUpdateContent();
             jobScheduleUpdateContent.setMetadata(metadata);
             batchClient.updateJobSchedule(jobScheduleId, jobScheduleUpdateContent);
