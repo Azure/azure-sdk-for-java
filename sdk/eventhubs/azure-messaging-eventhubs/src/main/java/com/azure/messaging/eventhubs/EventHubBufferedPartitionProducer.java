@@ -199,12 +199,11 @@ class EventHubBufferedPartitionProducer implements Closeable {
      *
      * @return A stream of published results.
      */
-    private Flux<PublishResult> publishEvents(Flux<EventDataBatchCarrier> upstream) {
-        return upstream.flatMap(carrier -> {
-            if (carrier == EventDataBatchCarrier.EMPTY) {
+    private Flux<PublishResult> publishEvents(Flux<EventDataBatch> upstream) {
+        return upstream.flatMap(batch -> {
+            if (batch == EventDataBatch.EMPTY) {
                 return Mono.just(PublishResult.EMPTY);
             }
-            final EventDataBatch batch = carrier.getBatch();
             return client.send(batch)
                 .thenReturn(new PublishResult(batch.getEvents(), null))
                 // Resuming on error because an error is a terminal signal, so we want to wrap that with a result,
