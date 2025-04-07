@@ -20,7 +20,6 @@ from utils import update_service_files_for_new_lib
 from utils import update_root_pom
 from utils import update_version
 from utils import is_windows
-from utils import set_or_default_version
 
 os.chdir(pwd)
 

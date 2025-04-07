@@ -211,8 +211,12 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
                         "pom.xml",
                     ],
                     "readmeMd": [readme],
-                    "artifacts": ["{0}/pom.xml".format(output_folder)]
-                    + [jar for jar in glob.glob("{0}/target/*.jar".format(output_folder))] if succeeded else [],
+                    "artifacts": (
+                        ["{0}/pom.xml".format(output_folder)]
+                        + [jar for jar in glob.glob("{0}/target/*.jar".format(output_folder))]
+                        if succeeded
+                        else []
+                    ),
                     "apiViewArtifact": next(iter(glob.glob("{0}/target/*-sources.jar".format(output_folder))), None),
                     "language": "Java",
                     "result": "succeeded" if succeeded else "failed",
@@ -273,7 +277,14 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
         logging.info(f"[SelfServe] Generate with apiVersion: {api_version} and sdkReleaseType: {sdk_release_type}")
 
     succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
-        tsp_project, sdk_root, spec_root, head_sha, repo_url, remove_before_regen=True, group_id=GROUP_ID, api_version=api_version
+        tsp_project,
+        sdk_root,
+        spec_root,
+        head_sha,
+        repo_url,
+        remove_before_regen=True,
+        group_id=GROUP_ID,
+        api_version=api_version,
     )
 
     if succeeded:
@@ -297,7 +308,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
                 service,
                 get_latest_ga_version(GROUP_ID, module, stable_version),
                 current_version,
-                module
+                module,
             )
             logging.info("[Changelog] Complete breaking change detection for SDK automation.")
             logging.info("[Changelog] Start generating changelog.")
@@ -307,7 +318,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
                 service,
                 get_latest_release_version(stable_version, current_version),
                 current_version,
-                module
+                module,
             )
             update_changelog_version(sdk_root, output_folder, current_version)
             logging.info("[Changelog] Complete generating changelog.")
