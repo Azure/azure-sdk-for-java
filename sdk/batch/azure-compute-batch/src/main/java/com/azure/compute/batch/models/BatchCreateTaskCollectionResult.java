@@ -18,27 +18,11 @@ import java.util.List;
 @Immutable
 public final class BatchCreateTaskCollectionResult implements JsonSerializable<BatchCreateTaskCollectionResult> {
 
-    /*
-     * The results of the create Task collection operation.
-     */
-    @Generated
-    private List<BatchTaskCreateResult> value;
-
     /**
      * Creates an instance of BatchCreateTaskCollectionResult class.
      */
     @Generated
     private BatchCreateTaskCollectionResult() {
-    }
-
-    /**
-     * Get the value property: The results of the create Task collection operation.
-     *
-     * @return the value value.
-     */
-    @Generated
-    public List<BatchTaskCreateResult> getValue() {
-        return this.value;
     }
 
     /**
@@ -48,7 +32,7 @@ public final class BatchCreateTaskCollectionResult implements JsonSerializable<B
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("value", this.values, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -69,14 +53,30 @@ public final class BatchCreateTaskCollectionResult implements JsonSerializable<B
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("value".equals(fieldName)) {
-                    List<BatchTaskCreateResult> value
+                    List<BatchTaskCreateResult> values
                         = reader.readArray(reader1 -> BatchTaskCreateResult.fromJson(reader1));
-                    deserializedBatchCreateTaskCollectionResult.value = value;
+                    deserializedBatchCreateTaskCollectionResult.values = values;
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedBatchCreateTaskCollectionResult;
         });
+    }
+
+    /*
+     * The results of the create Task collection operation.
+     */
+    @Generated
+    private List<BatchTaskCreateResult> values;
+
+    /**
+     * Get the values property: The results of the create Task collection operation.
+     *
+     * @return the values value.
+     */
+    @Generated
+    public List<BatchTaskCreateResult> getValues() {
+        return this.values;
     }
 }
