@@ -5,6 +5,7 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import java.time.Duration;
 
 /**
  * Optional parameters for Replace Task operation.
@@ -17,7 +18,7 @@ public final class BatchTaskReplaceOptions {
      * value is larger than 30, the default will be used instead.".
      */
     @Generated
-    private Integer timeOutInSeconds;
+    private Long timeOutInSeconds;
 
     /**
      * Creates an instance of BatchTaskReplaceOptions class.
@@ -33,8 +34,11 @@ public final class BatchTaskReplaceOptions {
      * @return the timeOutInSeconds value.
      */
     @Generated
-    public Integer getTimeOutInSeconds() {
-        return this.timeOutInSeconds;
+    public Duration getTimeOutInSeconds() {
+        if (this.timeOutInSeconds == null) {
+            return null;
+        }
+        return Duration.ofSeconds(this.timeOutInSeconds);
     }
 
     /**
@@ -45,8 +49,12 @@ public final class BatchTaskReplaceOptions {
      * @return the BatchTaskReplaceOptions object itself.
      */
     @Generated
-    public BatchTaskReplaceOptions setTimeOutInSeconds(Integer timeOutInSeconds) {
-        this.timeOutInSeconds = timeOutInSeconds;
+    public BatchTaskReplaceOptions setTimeOutInSeconds(Duration timeOutInSeconds) {
+        if (timeOutInSeconds == null) {
+            this.timeOutInSeconds = null;
+        } else {
+            this.timeOutInSeconds = timeOutInSeconds.getSeconds();
+        }
         return this;
     }
 }

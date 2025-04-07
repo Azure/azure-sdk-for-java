@@ -5,6 +5,7 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import java.time.Duration;
 
 /**
  * Optional parameters for Delete Job operation.
@@ -17,7 +18,7 @@ public final class BatchJobDeleteOptions {
      * value is larger than 30, the default will be used instead.".
      */
     @Generated
-    private Integer timeOutInSeconds;
+    private Long timeOutInSeconds;
 
     /*
      * If true, the server will delete the Job even if the corresponding nodes have not fully processed the deletion.
@@ -40,21 +41,11 @@ public final class BatchJobDeleteOptions {
      * @return the timeOutInSeconds value.
      */
     @Generated
-    public Integer getTimeOutInSeconds() {
-        return this.timeOutInSeconds;
-    }
-
-    /**
-     * Set the timeOutInSeconds property: The maximum time that the server can spend processing the request, in seconds.
-     * The default is 30 seconds. If the value is larger than 30, the default will be used instead.".
-     *
-     * @param timeOutInSeconds the timeOutInSeconds value to set.
-     * @return the BatchJobDeleteOptions object itself.
-     */
-    @Generated
-    public BatchJobDeleteOptions setTimeOutInSeconds(Integer timeOutInSeconds) {
-        this.timeOutInSeconds = timeOutInSeconds;
-        return this;
+    public Duration getTimeOutInSeconds() {
+        if (this.timeOutInSeconds == null) {
+            return null;
+        }
+        return Duration.ofSeconds(this.timeOutInSeconds);
     }
 
     /**
@@ -78,6 +69,23 @@ public final class BatchJobDeleteOptions {
     @Generated
     public BatchJobDeleteOptions setForce(Boolean force) {
         this.force = force;
+        return this;
+    }
+
+    /**
+     * Set the timeOutInSeconds property: The maximum time that the server can spend processing the request, in seconds.
+     * The default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     *
+     * @param timeOutInSeconds the timeOutInSeconds value to set.
+     * @return the BatchJobDeleteOptions object itself.
+     */
+    @Generated
+    public BatchJobDeleteOptions setTimeOutInSeconds(Duration timeOutInSeconds) {
+        if (timeOutInSeconds == null) {
+            this.timeOutInSeconds = null;
+        } else {
+            this.timeOutInSeconds = timeOutInSeconds.getSeconds();
+        }
         return this;
     }
 }

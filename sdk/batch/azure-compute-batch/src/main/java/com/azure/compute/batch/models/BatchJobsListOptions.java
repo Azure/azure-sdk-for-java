@@ -5,6 +5,7 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import java.time.Duration;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ public final class BatchJobsListOptions {
      * value is larger than 30, the default will be used instead.".
      */
     @Generated
-    private Integer timeOutInSeconds;
+    private Long timeOutInSeconds;
 
     /*
      * The maximum number of items to return in the response. A maximum of 1000
@@ -60,21 +61,11 @@ public final class BatchJobsListOptions {
      * @return the timeOutInSeconds value.
      */
     @Generated
-    public Integer getTimeOutInSeconds() {
-        return this.timeOutInSeconds;
-    }
-
-    /**
-     * Set the timeOutInSeconds property: The maximum time that the server can spend processing the request, in seconds.
-     * The default is 30 seconds. If the value is larger than 30, the default will be used instead.".
-     *
-     * @param timeOutInSeconds the timeOutInSeconds value to set.
-     * @return the BatchJobsListOptions object itself.
-     */
-    @Generated
-    public BatchJobsListOptions setTimeOutInSeconds(Integer timeOutInSeconds) {
-        this.timeOutInSeconds = timeOutInSeconds;
-        return this;
+    public Duration getTimeOutInSeconds() {
+        if (this.timeOutInSeconds == null) {
+            return null;
+        }
+        return Duration.ofSeconds(this.timeOutInSeconds);
     }
 
     /**
@@ -166,6 +157,23 @@ public final class BatchJobsListOptions {
     @Generated
     public BatchJobsListOptions setExpand(List<String> expand) {
         this.expand = expand;
+        return this;
+    }
+
+    /**
+     * Set the timeOutInSeconds property: The maximum time that the server can spend processing the request, in seconds.
+     * The default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     *
+     * @param timeOutInSeconds the timeOutInSeconds value to set.
+     * @return the BatchJobsListOptions object itself.
+     */
+    @Generated
+    public BatchJobsListOptions setTimeOutInSeconds(Duration timeOutInSeconds) {
+        if (timeOutInSeconds == null) {
+            this.timeOutInSeconds = null;
+        } else {
+            this.timeOutInSeconds = timeOutInSeconds.getSeconds();
+        }
         return this;
     }
 }
