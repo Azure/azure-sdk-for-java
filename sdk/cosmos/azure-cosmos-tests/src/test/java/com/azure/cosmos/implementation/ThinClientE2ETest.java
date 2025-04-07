@@ -24,7 +24,7 @@ public class ThinClientE2ETest extends com.azure.cosmos.rx.TestSuiteBase {
             System.setProperty("COSMOS.HTTP2_ENABLED", "true");
 
             String thinclientTestEndpoint = System.getProperty("COSMOS.THINCLIENT_ENDPOINT");
-            String thinclientTestKey = System.getProperty("COSMOS_THINCLIENT_KEY");
+            String thinclientTestKey = System.getProperty("COSMOS.THINCLIENT_KEY");
 
             CosmosAsyncClient client  = new CosmosClientBuilder()
                 .key(thinclientTestKey)
