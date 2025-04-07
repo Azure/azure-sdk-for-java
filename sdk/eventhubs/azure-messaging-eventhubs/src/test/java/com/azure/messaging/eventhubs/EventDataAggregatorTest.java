@@ -107,9 +107,9 @@ public class EventDataAggregatorTest {
         StepVerifier.create(aggregator).then(() -> {
             publisher.next(event1, event2, event3);
         })
-            .expectNext(batch)
+            .expectNextMatches(c -> c.getBatch() == batch)
             .then(() -> publisher.complete())
-            .expectNext(batch2)
+            .expectNextMatches(c -> c.getBatch() == batch2)
             .expectComplete()
             .verify(Duration.ofSeconds(10));
     }
@@ -145,7 +145,10 @@ public class EventDataAggregatorTest {
         StepVerifier.create(aggregator).then(() -> {
             publisher.next(event1, event2);
             publisher.error(testException);
-        }).expectNext(batch).expectErrorMatches(e -> e.equals(testException)).verify(Duration.ofSeconds(10));
+        })
+            .expectNextMatches(c -> c.getBatch() == batch)
+            .expectErrorMatches(e -> e.equals(testException))
+            .verify(Duration.ofSeconds(10));
 
         // Verify that these events were added to the batch.
         assertEquals(2, batchEvents.size());
@@ -194,8 +197,8 @@ public class EventDataAggregatorTest {
         StepVerifier.create(aggregator).then(() -> {
             publisher.next(event1);
             publisher.next(event2);
-        }).thenAwait(waitTime).assertNext(b -> {
-            assertEquals(b, batch);
+        }).thenAwait(waitTime).assertNext(c -> {
+            assertEquals(c.getBatch(), batch);
             assertEquals(2, batchEvents.size());
         }).thenCancel().verify();
     }
@@ -272,9 +275,9 @@ public class EventDataAggregatorTest {
 
         final long request = 1L;
 
-        StepVerifier.create(aggregator, request).then(() -> publisher.next(event1)).assertNext(b -> {
-            assertEquals(1, b.getCount());
-            assertTrue(b.getEvents().contains(event1));
+        StepVerifier.create(aggregator, request).then(() -> publisher.next(event1)).assertNext(c -> {
+            assertEquals(1, c.getBatch().getCount());
+            assertTrue(c.getBatch().getEvents().contains(event1));
         }).expectNoEvent(waitTime).thenCancel().verify();
 
         publisher.assertMaxRequested(request);
