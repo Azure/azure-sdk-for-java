@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.*;
 
@@ -92,7 +93,7 @@ public class PoolTests extends BatchClientTestBase {
         List<DataDisk> dataDisks = new ArrayList<DataDisk>();
         dataDisks.add(new DataDisk(lun, diskSizeGB));
 
-        ImageReference imgRef = new ImageReference().setPublisher("Canonical")
+        BatchImageReference imgRef = new BatchImageReference().setPublisher("Canonical")
             .setOffer("UbuntuServer")
             .setSku("18.04-LTS")
             .setVersion("latest");
@@ -139,7 +140,7 @@ public class PoolTests extends BatchClientTestBase {
 
         // Check if pool exists
         if (!poolExists(batchClient, poolId)) {
-            ImageReference imgRef = new ImageReference().setPublisher("Canonical")
+            BatchImageReference imgRef = new BatchImageReference().setPublisher("Canonical")
                 .setOffer("UbuntuServer")
                 .setSku("18.04-LTS")
                 .setVersion("latest");
@@ -218,7 +219,7 @@ public class PoolTests extends BatchClientTestBase {
 
             BatchPoolUpdateContent poolUpdateContent = new BatchPoolUpdateContent();
             poolUpdateContent.setApplicationPackageReferences(new LinkedList<BatchApplicationPackageReference>())
-                .setMetadata(new LinkedList<MetadataItem>());
+                .setMetadata(new LinkedList<BatchMetadataItem>());
 
             poolUpdateContent.setTargetNodeCommunicationMode(BatchNodeCommunicationMode.SIMPLIFIED);
 
@@ -320,7 +321,7 @@ public class PoolTests extends BatchClientTestBase {
 
         if (!poolExists(batchClient, poolId)) {
             // Define the image reference
-            ImageReference imageReference = new ImageReference().setPublisher("microsoftwindowsserver")
+            BatchImageReference imageReference = new BatchImageReference().setPublisher("microsoftwindowsserver")
                 .setOffer("windowsserver")
                 .setSku("2022-datacenter-smalldisk-g2");
 
@@ -387,7 +388,7 @@ public class PoolTests extends BatchClientTestBase {
 
         // Check if the pool exists, if not, create it
         if (!poolExists(batchClient, poolId)) {
-            ImageReference imgRef = new ImageReference().setPublisher("Canonical")
+            BatchImageReference imgRef = new BatchImageReference().setPublisher("Canonical")
                 .setOffer("UbuntuServer")
                 .setSku("18.04-LTS")
                 .setVersion("latest");
@@ -424,7 +425,7 @@ public class PoolTests extends BatchClientTestBase {
             BatchNodeDeallocateContent deallocateContent
                 = new BatchNodeDeallocateContent().setNodeDeallocateOption(BatchNodeDeallocateOption.TERMINATE);
             BatchNodeDeallocateOptions options = new BatchNodeDeallocateOptions();
-            options.setTimeOutInSeconds(30);
+            options.setTimeOutInSeconds(Duration.ofSeconds(30));
             options.setParameters(deallocateContent);
             batchClient.deallocateNode(poolId, nodeId, options);
 
