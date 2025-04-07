@@ -5,6 +5,7 @@
 package com.azure.compute.batch;
 
 import com.azure.compute.batch.models.AllocationState;
+import com.azure.compute.batch.models.BatchImageReference;
 import com.azure.compute.batch.models.BatchPool;
 import com.azure.compute.batch.models.BatchPoolCreateContent;
 import com.azure.compute.batch.models.BatchTask;
@@ -155,7 +156,7 @@ class BatchClientTestBase extends TestProxyTestBase {
         // Check if pool exists
         if (!poolExists(batchClient, poolId)) {
             // Use IaaS VM with Ubuntu
-            ImageReference imgRef = new ImageReference().setPublisher("Canonical")
+            BatchImageReference imgRef = new BatchImageReference().setPublisher("Canonical")
                 .setOffer("UbuntuServer")
                 .setSku("18.04-LTS")
                 .setVersion("latest");
