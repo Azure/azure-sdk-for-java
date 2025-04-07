@@ -2166,7 +2166,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -2218,7 +2218,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -2289,7 +2289,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -2339,7 +2339,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -2410,7 +2410,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -2461,7 +2461,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -2512,7 +2512,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -2577,7 +2577,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -2660,7 +2660,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -2723,7 +2723,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -2803,7 +2803,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -3115,7 +3115,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -3423,7 +3423,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -3812,7 +3812,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -4219,7 +4219,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -4606,7 +4606,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -5026,7 +5026,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -5088,7 +5088,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -5137,7 +5137,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -5192,7 +5192,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -5247,7 +5247,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -5650,7 +5650,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -6056,7 +6056,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -6385,7 +6385,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -6709,7 +6709,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -6736,7 +6736,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -6770,7 +6770,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -6839,7 +6839,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -6905,7 +6905,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -6973,7 +6973,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -7044,7 +7044,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -7116,7 +7116,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -7187,7 +7187,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -7244,7 +7244,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -7297,7 +7297,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -7411,7 +7411,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -7525,7 +7525,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -7594,7 +7594,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -7658,7 +7658,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -7719,7 +7719,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -7798,7 +7798,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -7857,7 +7857,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -7939,7 +7939,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -8006,7 +8006,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -8091,7 +8091,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -8156,7 +8156,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -8249,7 +8249,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will delete the Job even if the
@@ -8309,7 +8309,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will delete the Job even if the
@@ -8360,7 +8360,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -8843,7 +8843,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -9330,7 +9330,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -9688,7 +9688,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -10045,7 +10045,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -10531,7 +10531,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -11021,7 +11021,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -11091,7 +11091,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -11158,7 +11158,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -11214,7 +11214,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -11270,7 +11270,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will terminate the Job even if the
@@ -11345,7 +11345,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will terminate the Job even if the
@@ -11423,7 +11423,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -11850,7 +11850,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -12267,7 +12267,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -12737,7 +12737,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -13225,7 +13225,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -13693,7 +13693,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -14181,7 +14181,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -14653,7 +14653,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -15142,7 +15142,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -15612,7 +15612,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -16109,7 +16109,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -16206,7 +16206,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -16322,7 +16322,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -16418,7 +16418,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -16531,7 +16531,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -16589,7 +16589,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -16641,7 +16641,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -16699,7 +16699,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -16756,7 +16756,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -16823,7 +16823,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -16908,7 +16908,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -16973,7 +16973,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -17066,7 +17066,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -17103,7 +17103,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -17142,7 +17142,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -17181,7 +17181,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -17210,7 +17210,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -17271,7 +17271,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -17331,7 +17331,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -17387,7 +17387,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -17448,7 +17448,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will delete the JobSchedule even if the
@@ -17506,7 +17506,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will delete the JobSchedule even if the
@@ -17557,7 +17557,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -18045,7 +18045,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -18537,7 +18537,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -18995,7 +18995,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -19452,7 +19452,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -19944,7 +19944,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -20431,7 +20431,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -20483,7 +20483,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -20532,7 +20532,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -20582,7 +20582,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -20631,7 +20631,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will terminate the JobSchedule even if the
@@ -20683,7 +20683,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will terminate the JobSchedule even if the
@@ -20734,7 +20734,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -21164,7 +21164,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -21593,7 +21593,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -22066,7 +22066,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -22557,7 +22557,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -23028,7 +23028,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -23523,7 +23523,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -23691,7 +23691,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -23858,7 +23858,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -24092,7 +24092,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -24344,7 +24344,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -24576,7 +24576,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -24839,7 +24839,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -25055,7 +25055,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -25260,7 +25260,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -25317,7 +25317,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -25371,7 +25371,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -25622,7 +25622,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -25868,7 +25868,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -26110,7 +26110,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -26355,7 +26355,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -26434,7 +26434,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -26510,7 +26510,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -26587,7 +26587,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -26664,7 +26664,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -26719,7 +26719,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -26778,7 +26778,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -26838,7 +26838,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -26888,7 +26888,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to delete children of a directory. If the filePath
@@ -26923,7 +26923,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to delete children of a directory. If the filePath
@@ -26958,7 +26958,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -27012,7 +27012,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -27066,7 +27066,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -27111,7 +27111,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -27155,7 +27155,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -27215,7 +27215,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -27293,7 +27293,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -27352,7 +27352,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -27433,7 +27433,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -27480,7 +27480,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -27527,7 +27527,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -27560,7 +27560,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -27595,7 +27595,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -27644,7 +27644,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -27687,7 +27687,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -27885,7 +27885,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -28083,7 +28083,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -28137,7 +28137,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -28190,7 +28190,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -28221,7 +28221,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -28253,7 +28253,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -28309,7 +28309,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -28362,7 +28362,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -28416,7 +28416,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -28470,7 +28470,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -28525,7 +28525,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -28580,7 +28580,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -28612,7 +28612,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -28644,7 +28644,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -28690,7 +28690,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -28738,7 +28738,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -28803,7 +28803,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -28860,7 +28860,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -29065,7 +29065,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -29288,7 +29288,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -29491,7 +29491,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -29714,7 +29714,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -29788,7 +29788,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -29861,7 +29861,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -29940,7 +29940,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -30036,7 +30036,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -30113,7 +30113,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -30210,7 +30210,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to delete children of a directory. If the filePath
@@ -30245,7 +30245,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to delete children of a directory. If the filePath
@@ -30280,7 +30280,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -30334,7 +30334,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -30388,7 +30388,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -30433,7 +30433,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -30477,7 +30477,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -30535,7 +30535,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -30611,7 +30611,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -30668,7 +30668,7 @@ public final class BatchClientImpl {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A

@@ -5,6 +5,7 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import java.time.Duration;
 
 /**
  * Optional parameters for Delete Task operation.
@@ -17,7 +18,7 @@ public final class BatchTaskDeleteOptions {
      * value is larger than 30, the default will be used instead.".
      */
     @Generated
-    private Integer timeOutInSeconds;
+    private Long timeOutInSeconds;
 
     /**
      * Creates an instance of BatchTaskDeleteOptions class.
@@ -33,8 +34,11 @@ public final class BatchTaskDeleteOptions {
      * @return the timeOutInSeconds value.
      */
     @Generated
-    public Integer getTimeOutInSeconds() {
-        return this.timeOutInSeconds;
+    public Duration getTimeOutInSeconds() {
+        if (this.timeOutInSeconds == null) {
+            return null;
+        }
+        return Duration.ofSeconds(this.timeOutInSeconds);
     }
 
     /**
@@ -45,8 +49,12 @@ public final class BatchTaskDeleteOptions {
      * @return the BatchTaskDeleteOptions object itself.
      */
     @Generated
-    public BatchTaskDeleteOptions setTimeOutInSeconds(Integer timeOutInSeconds) {
-        this.timeOutInSeconds = timeOutInSeconds;
+    public BatchTaskDeleteOptions setTimeOutInSeconds(Duration timeOutInSeconds) {
+        if (timeOutInSeconds == null) {
+            this.timeOutInSeconds = null;
+        } else {
+            this.timeOutInSeconds = timeOutInSeconds.getSeconds();
+        }
         return this;
     }
 }

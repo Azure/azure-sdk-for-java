@@ -145,6 +145,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Objects;
@@ -222,7 +223,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -270,7 +271,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -321,7 +322,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -377,7 +378,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -683,7 +684,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -1080,7 +1081,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -1128,7 +1129,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -1182,7 +1183,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -1588,7 +1589,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -1910,7 +1911,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -1943,7 +1944,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -2007,7 +2008,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -2077,7 +2078,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -2147,7 +2148,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -2199,7 +2200,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -2311,7 +2312,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -2374,7 +2375,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -2432,7 +2433,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -2501,7 +2502,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will delete the Job even if the
@@ -2551,7 +2552,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -3037,7 +3038,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -3392,7 +3393,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -3880,7 +3881,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -3946,7 +3947,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -4001,7 +4002,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will terminate the Job even if the
@@ -4072,7 +4073,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -4487,7 +4488,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -4952,7 +4953,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -5426,7 +5427,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -5515,7 +5516,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -5567,7 +5568,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -5622,7 +5623,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -5692,7 +5693,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -5731,7 +5732,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -5759,7 +5760,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -5819,7 +5820,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -5879,7 +5880,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will delete the JobSchedule even if the
@@ -5929,7 +5930,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -6421,7 +6422,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -6876,7 +6877,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -7361,7 +7362,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -7409,7 +7410,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -7457,7 +7458,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>force</td><td>Boolean</td><td>No</td><td>If true, the server will terminate the JobSchedule even if the
@@ -7507,7 +7508,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -7934,7 +7935,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -8406,7 +8407,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -8571,7 +8572,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -8811,7 +8812,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -9015,7 +9016,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -9068,7 +9069,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -9313,7 +9314,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -9556,7 +9557,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -9630,7 +9631,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -9688,7 +9689,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -9737,7 +9738,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to delete children of a directory. If the filePath
@@ -9771,7 +9772,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -9824,7 +9825,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -9868,7 +9869,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -9926,7 +9927,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -9971,7 +9972,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -10005,7 +10006,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -10046,7 +10047,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -10244,7 +10245,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -10290,7 +10291,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -10321,7 +10322,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -10367,7 +10368,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -10415,7 +10416,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -10463,7 +10464,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -10494,7 +10495,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -10542,7 +10543,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -10598,7 +10599,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -10798,7 +10799,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>$select</td><td>List&lt;String&gt;</td><td>No</td><td>An OData $select clause. In the form of ","
@@ -10871,7 +10872,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -10944,7 +10945,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>recursive</td><td>Boolean</td><td>No</td><td>Whether to delete children of a directory. If the filePath
@@ -10978,7 +10979,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -11031,7 +11032,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * </table>
@@ -11075,7 +11076,7 @@ public final class BatchAsyncClient {
      * <table border="1">
      * <caption>Query Parameters</caption>
      * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
-     * <tr><td>timeOut</td><td>Integer</td><td>No</td><td>The maximum time that the server can spend processing the
+     * <tr><td>timeOut</td><td>Duration</td><td>No</td><td>The maximum time that the server can spend processing the
      * request, in seconds. The default is 30 seconds. If the value is larger than 30, the default will be used
      * instead.".</td></tr>
      * <tr><td>maxresults</td><td>Integer</td><td>No</td><td>The maximum number of items to return in the response. A
@@ -11334,13 +11335,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for poolExistsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -11862,13 +11863,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for jobScheduleExistsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -12454,7 +12455,7 @@ public final class BatchAsyncClient {
     public Mono<BatchFileProperties> getTaskFileProperties(String jobId, String taskId, String filePath,
         BatchTaskFilePropertiesGetOptions options) {
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         OffsetDateTime ifModifiedSince = options == null ? null : options.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = options == null ? null : options.getIfUnmodifiedSince();
         if (timeOutInSeconds != null) {
@@ -12985,7 +12986,7 @@ public final class BatchAsyncClient {
     public Mono<BatchFileProperties> getNodeFileProperties(String poolId, String nodeId, String filePath,
         BatchNodeFilePropertiesGetOptions options) {
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         OffsetDateTime ifModifiedSince = options == null ? null : options.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = options == null ? null : options.getIfUnmodifiedSince();
         if (timeOutInSeconds != null) {
@@ -13082,9 +13083,9 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchApplication> listApplications(BatchApplicationsListOptions options) {
         // Generated convenience method for listApplications
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         PagedFlux<BinaryData> pagedFluxResponse = listApplications(requestOptions);
         return PagedFlux.create(() -> (continuationTokenParam, pageSizeParam) -> {
@@ -13128,9 +13129,9 @@ public final class BatchAsyncClient {
     public Mono<BatchApplication> getApplication(String applicationId, BatchApplicationGetOptions options) {
         // Generated convenience method for getApplicationWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         return getApplicationWithResponse(applicationId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(BatchApplication.class));
@@ -13161,12 +13162,12 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchPoolUsageMetrics> listPoolUsageMetrics(BatchPoolUsageMetricsListOptions options) {
         // Generated convenience method for listPoolUsageMetrics
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         OffsetDateTime startTime = options == null ? null : options.getStartTime();
         OffsetDateTime endtime = options == null ? null : options.getEndtime();
         String filter = options == null ? null : options.getFilter();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (startTime != null) {
             requestOptions.addQueryParam("startTime", String.valueOf(startTime), false);
@@ -13215,9 +13216,9 @@ public final class BatchAsyncClient {
     public Mono<Void> createPool(BatchPoolCreateContent pool, BatchPoolCreateOptions options) {
         // Generated convenience method for createPoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         return createPoolWithResponse(BinaryData.fromObject(pool), requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -13239,12 +13240,12 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchPool> listPools(BatchPoolsListOptions options) {
         // Generated convenience method for listPools
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (filter != null) {
             requestOptions.addQueryParam("$filter", filter, false);
@@ -13310,13 +13311,13 @@ public final class BatchAsyncClient {
     public Mono<Void> deletePool(String poolId, BatchPoolDeleteOptions options, RequestConditions requestConditions) {
         // Generated convenience method for deletePoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -13354,7 +13355,7 @@ public final class BatchAsyncClient {
     public Mono<BatchPool> getPool(String poolId, BatchPoolGetOptions options, RequestConditions requestConditions) {
         // Generated convenience method for getPoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
@@ -13362,7 +13363,7 @@ public final class BatchAsyncClient {
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -13421,13 +13422,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for updatePoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -13464,9 +13465,9 @@ public final class BatchAsyncClient {
     public Mono<Void> disablePoolAutoScale(String poolId, BatchPoolAutoScaleDisableOptions options) {
         // Generated convenience method for disablePoolAutoScaleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         return disablePoolAutoScaleWithResponse(poolId, requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -13499,13 +13500,13 @@ public final class BatchAsyncClient {
         BatchPoolAutoScaleEnableOptions options, RequestConditions requestConditions) {
         // Generated convenience method for enablePoolAutoScaleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -13552,9 +13553,9 @@ public final class BatchAsyncClient {
         BatchPoolAutoScaleEvaluateOptions options) {
         // Generated convenience method for evaluatePoolAutoScaleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         return evaluatePoolAutoScaleWithResponse(poolId, BinaryData.fromObject(content), requestOptions)
             .flatMap(FluxUtil::toMono)
@@ -13590,13 +13591,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for resizePoolWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -13643,13 +13644,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for stopPoolResizeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -13692,9 +13693,9 @@ public final class BatchAsyncClient {
         BatchPoolPropertiesReplaceOptions options) {
         // Generated convenience method for replacePoolPropertiesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         return replacePoolPropertiesWithResponse(poolId, BinaryData.fromObject(pool), requestOptions)
             .flatMap(FluxUtil::toMono);
@@ -13725,13 +13726,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for removeNodesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -13768,14 +13769,10 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchSupportedImage> listSupportedImages(SupportedBatchImagesListOptions options) {
         // Generated convenience method for listSupportedImages
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         String filter = options == null ? null : options.getFilter();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxPageSize != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
         }
         if (filter != null) {
             requestOptions.addQueryParam("$filter", filter, false);
@@ -13815,14 +13812,10 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchPoolNodeCounts> listPoolNodeCounts(BatchPoolNodeCountsListOptions options) {
         // Generated convenience method for listPoolNodeCounts
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         String filter = options == null ? null : options.getFilter();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxPageSize != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
         }
         if (filter != null) {
             requestOptions.addQueryParam("$filter", filter, false);
@@ -13871,14 +13864,14 @@ public final class BatchAsyncClient {
     public Mono<Void> deleteJob(String jobId, BatchJobDeleteOptions options, RequestConditions requestConditions) {
         // Generated convenience method for deleteJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         Boolean force = options == null ? null : options.isForce();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (force != null) {
             requestOptions.addQueryParam("force", String.valueOf(force), false);
@@ -13919,7 +13912,7 @@ public final class BatchAsyncClient {
     public Mono<BatchJob> getJob(String jobId, BatchJobGetOptions options, RequestConditions requestConditions) {
         // Generated convenience method for getJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
@@ -13927,7 +13920,7 @@ public final class BatchAsyncClient {
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -13986,13 +13979,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for updateJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -14036,13 +14029,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for replaceJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -14091,13 +14084,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for disableJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -14142,13 +14135,13 @@ public final class BatchAsyncClient {
     public Mono<Void> enableJob(String jobId, BatchJobEnableOptions options, RequestConditions requestConditions) {
         // Generated convenience method for enableJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -14194,7 +14187,7 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for terminateJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         BatchJobTerminateContent parameters = options == null ? null : options.getParameters();
         Boolean force = options == null ? null : options.isForce();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
@@ -14202,7 +14195,7 @@ public final class BatchAsyncClient {
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
@@ -14255,9 +14248,9 @@ public final class BatchAsyncClient {
     public Mono<Void> createJob(BatchJobCreateContent job, BatchJobCreateOptions options) {
         // Generated convenience method for createJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         return createJobWithResponse(BinaryData.fromObject(job), requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -14279,16 +14272,12 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchJob> listJobs(BatchJobsListOptions options) {
         // Generated convenience method for listJobs
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxPageSize != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
         }
         if (filter != null) {
             requestOptions.addQueryParam("$filter", filter, false);
@@ -14340,16 +14329,12 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchJob> listJobsFromSchedule(String jobScheduleId, BatchJobsFromScheduleListOptions options) {
         // Generated convenience method for listJobsFromSchedule
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxPageSize != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
         }
         if (filter != null) {
             requestOptions.addQueryParam("$filter", filter, false);
@@ -14411,15 +14396,11 @@ public final class BatchAsyncClient {
         BatchJobPreparationAndReleaseTaskStatusListOptions options) {
         // Generated convenience method for listJobPreparationAndReleaseTaskStatus
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxPageSize != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
         }
         if (filter != null) {
             requestOptions.addQueryParam("$filter", filter, false);
@@ -14473,9 +14454,9 @@ public final class BatchAsyncClient {
     public Mono<BatchTaskCountsResult> getJobTaskCounts(String jobId, BatchJobTaskCountsGetOptions options) {
         // Generated convenience method for getJobTaskCountsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         return getJobTaskCountsWithResponse(jobId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(BatchTaskCountsResult.class));
@@ -14499,9 +14480,9 @@ public final class BatchAsyncClient {
     public Mono<Void> createCertificate(BatchCertificate certificate, BatchCertificateCreateOptions options) {
         // Generated convenience method for createCertificateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         return createCertificateWithResponse(BinaryData.fromObject(certificate), requestOptions)
             .flatMap(FluxUtil::toMono);
@@ -14524,15 +14505,11 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchCertificate> listCertificates(BatchCertificatesListOptions options) {
         // Generated convenience method for listCertificates
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxPageSize != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
         }
         if (filter != null) {
             requestOptions.addQueryParam("$filter", filter, false);
@@ -14587,9 +14564,9 @@ public final class BatchAsyncClient {
         BatchCertificateCancelDeletionOptions options) {
         // Generated convenience method for cancelCertificateDeletionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         return cancelCertificateDeletionWithResponse(thumbprintAlgorithm, thumbprint, requestOptions)
             .flatMap(FluxUtil::toMono);
@@ -14625,9 +14602,9 @@ public final class BatchAsyncClient {
         BatchCertificateDeleteOptions options) {
         // Generated convenience method for deleteCertificateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         return deleteCertificateWithResponse(thumbprintAlgorithm, thumbprint, requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -14652,10 +14629,10 @@ public final class BatchAsyncClient {
         BatchCertificateGetOptions options) {
         // Generated convenience method for getCertificateWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         List<String> select = options == null ? null : options.getSelect();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -14694,14 +14671,14 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for deleteJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         Boolean force = options == null ? null : options.isForce();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (force != null) {
             requestOptions.addQueryParam("force", String.valueOf(force), false);
@@ -14743,7 +14720,7 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for getJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
@@ -14751,7 +14728,7 @@ public final class BatchAsyncClient {
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -14812,13 +14789,13 @@ public final class BatchAsyncClient {
         BatchJobScheduleUpdateOptions options, RequestConditions requestConditions) {
         // Generated convenience method for updateJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -14865,13 +14842,13 @@ public final class BatchAsyncClient {
         BatchJobScheduleReplaceOptions options, RequestConditions requestConditions) {
         // Generated convenience method for replaceJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -14913,13 +14890,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for disableJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -14958,13 +14935,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for enableJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -15003,14 +14980,14 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for terminateJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         Boolean force = options == null ? null : options.isForce();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (force != null) {
             requestOptions.addQueryParam("force", String.valueOf(force), false);
@@ -15051,9 +15028,9 @@ public final class BatchAsyncClient {
         BatchJobScheduleCreateOptions options) {
         // Generated convenience method for createJobScheduleWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         return createJobScheduleWithResponse(BinaryData.fromObject(jobSchedule), requestOptions)
             .flatMap(FluxUtil::toMono);
@@ -15076,16 +15053,12 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchJobSchedule> listJobSchedules(BatchJobSchedulesListOptions options) {
         // Generated convenience method for listJobSchedules
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxPageSize != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
         }
         if (filter != null) {
             requestOptions.addQueryParam("$filter", filter, false);
@@ -15142,9 +15115,9 @@ public final class BatchAsyncClient {
     public Mono<Void> createTask(String jobId, BatchTaskCreateContent task, BatchTaskCreateOptions options) {
         // Generated convenience method for createTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         return createTaskWithResponse(jobId, BinaryData.fromObject(task), requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -15171,16 +15144,12 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchTask> listTasks(String jobId, BatchTasksListOptions options) {
         // Generated convenience method for listTasks
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxPageSize != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
         }
         if (filter != null) {
             requestOptions.addQueryParam("$filter", filter, false);
@@ -15249,9 +15218,9 @@ public final class BatchAsyncClient {
         BatchTaskCollectionCreateOptions options) {
         // Generated convenience method for createTaskCollectionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         return createTaskCollectionWithResponse(jobId, BinaryData.fromObject(taskCollection), requestOptions)
             .flatMap(FluxUtil::toMono)
@@ -15285,13 +15254,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for deleteTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -15338,7 +15307,7 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for getTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         List<String> select = options == null ? null : options.getSelect();
         List<String> expand = options == null ? null : options.getExpand();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
@@ -15346,7 +15315,7 @@ public final class BatchAsyncClient {
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -15402,13 +15371,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for replaceTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -15450,10 +15419,10 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchSubtask> listSubTasks(String jobId, String taskId, BatchSubTasksListOptions options) {
         // Generated convenience method for listSubTasks
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         List<String> select = options == null ? null : options.getSelect();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -15502,13 +15471,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for terminateTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -15557,13 +15526,13 @@ public final class BatchAsyncClient {
         RequestConditions requestConditions) {
         // Generated convenience method for reactivateTaskWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         OffsetDateTime ifModifiedSince = requestConditions == null ? null : requestConditions.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = requestConditions == null ? null : requestConditions.getIfUnmodifiedSince();
         String ifMatch = requestConditions == null ? null : requestConditions.getIfMatch();
         String ifNoneMatch = requestConditions == null ? null : requestConditions.getIfNoneMatch();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -15602,10 +15571,10 @@ public final class BatchAsyncClient {
     public Mono<Void> deleteTaskFile(String jobId, String taskId, String filePath, BatchTaskFileDeleteOptions options) {
         // Generated convenience method for deleteTaskFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         Boolean recursive = options == null ? null : options.isRecursive();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (recursive != null) {
             requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
@@ -15633,12 +15602,12 @@ public final class BatchAsyncClient {
     public Mono<BinaryData> getTaskFile(String jobId, String taskId, String filePath, BatchTaskFileGetOptions options) {
         // Generated convenience method for getTaskFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         OffsetDateTime ifModifiedSince = options == null ? null : options.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = options == null ? null : options.getIfUnmodifiedSince();
         String ocpRange = options == null ? null : options.getOcpRange();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -15674,15 +15643,11 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchNodeFile> listTaskFiles(String jobId, String taskId, BatchTaskFilesListOptions options) {
         // Generated convenience method for listTaskFiles
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         String filter = options == null ? null : options.getFilter();
         Boolean recursive = options == null ? null : options.isRecursive();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxPageSize != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
         }
         if (filter != null) {
             requestOptions.addQueryParam("$filter", filter, false);
@@ -15729,9 +15694,9 @@ public final class BatchAsyncClient {
         BatchNodeUserCreateOptions options) {
         // Generated convenience method for createNodeUserWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         return createNodeUserWithResponse(poolId, nodeId, BinaryData.fromObject(user), requestOptions)
             .flatMap(FluxUtil::toMono);
@@ -15761,9 +15726,9 @@ public final class BatchAsyncClient {
         BatchNodeUserDeleteOptions options) {
         // Generated convenience method for deleteNodeUserWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         return deleteNodeUserWithResponse(poolId, nodeId, userName, requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -15795,9 +15760,9 @@ public final class BatchAsyncClient {
         BatchNodeUserReplaceOptions options) {
         // Generated convenience method for replaceNodeUserWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         return replaceNodeUserWithResponse(poolId, nodeId, userName, BinaryData.fromObject(content), requestOptions)
             .flatMap(FluxUtil::toMono);
@@ -15822,10 +15787,10 @@ public final class BatchAsyncClient {
     public Mono<BatchNode> getNode(String poolId, String nodeId, BatchNodeGetOptions options) {
         // Generated convenience method for getNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         List<String> select = options == null ? null : options.getSelect();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -15859,10 +15824,10 @@ public final class BatchAsyncClient {
     public Mono<Void> rebootNode(String poolId, String nodeId, BatchNodeRebootOptions options) {
         // Generated convenience method for rebootNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         BatchNodeRebootContent parameters = options == null ? null : options.getParameters();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
@@ -15891,9 +15856,9 @@ public final class BatchAsyncClient {
     public Mono<Void> startNode(String poolId, String nodeId, BatchNodeStartOptions options) {
         // Generated convenience method for startNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         return startNodeWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -15921,10 +15886,10 @@ public final class BatchAsyncClient {
     public Mono<Void> reimageNode(String poolId, String nodeId, BatchNodeReimageOptions options) {
         // Generated convenience method for reimageNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         BatchNodeReimageContent parameters = options == null ? null : options.getParameters();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
@@ -15953,10 +15918,10 @@ public final class BatchAsyncClient {
     public Mono<Void> deallocateNode(String poolId, String nodeId, BatchNodeDeallocateOptions options) {
         // Generated convenience method for deallocateNodeWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         BatchNodeDeallocateContent parameters = options == null ? null : options.getParameters();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
@@ -15986,10 +15951,10 @@ public final class BatchAsyncClient {
     public Mono<Void> disableNodeScheduling(String poolId, String nodeId, BatchNodeSchedulingDisableOptions options) {
         // Generated convenience method for disableNodeSchedulingWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         BatchNodeDisableSchedulingContent parameters = options == null ? null : options.getParameters();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (parameters != null) {
             requestOptions.setBody(BinaryData.fromObject(parameters));
@@ -16019,9 +15984,9 @@ public final class BatchAsyncClient {
     public Mono<Void> enableNodeScheduling(String poolId, String nodeId, BatchNodeSchedulingEnableOptions options) {
         // Generated convenience method for enableNodeSchedulingWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         return enableNodeSchedulingWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono);
     }
@@ -16052,9 +16017,9 @@ public final class BatchAsyncClient {
         BatchNodeRemoteLoginSettingsGetOptions options) {
         // Generated convenience method for getNodeRemoteLoginSettingsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         return getNodeRemoteLoginSettingsWithResponse(poolId, nodeId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(BatchNodeRemoteLoginSettings.class));
@@ -16089,9 +16054,9 @@ public final class BatchAsyncClient {
         UploadBatchServiceLogsContent content, BatchNodeLogsUploadOptions options) {
         // Generated convenience method for uploadNodeLogsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         return uploadNodeLogsWithResponse(poolId, nodeId, BinaryData.fromObject(content), requestOptions)
             .flatMap(FluxUtil::toMono)
@@ -16116,15 +16081,11 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchNode> listNodes(String poolId, BatchNodesListOptions options) {
         // Generated convenience method for listNodes
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         String filter = options == null ? null : options.getFilter();
         List<String> select = options == null ? null : options.getSelect();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxPageSize != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
         }
         if (filter != null) {
             requestOptions.addQueryParam("$filter", filter, false);
@@ -16172,10 +16133,10 @@ public final class BatchAsyncClient {
         BatchNodeExtensionGetOptions options) {
         // Generated convenience method for getNodeExtensionWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         List<String> select = options == null ? null : options.getSelect();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -16208,14 +16169,10 @@ public final class BatchAsyncClient {
         BatchNodeExtensionsListOptions options) {
         // Generated convenience method for listNodeExtensions
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         List<String> select = options == null ? null : options.getSelect();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxPageSize != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
         }
         if (select != null) {
             requestOptions.addQueryParam("$select",
@@ -16261,10 +16218,10 @@ public final class BatchAsyncClient {
         BatchNodeFileDeleteOptions options) {
         // Generated convenience method for deleteNodeFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         Boolean recursive = options == null ? null : options.isRecursive();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (recursive != null) {
             requestOptions.addQueryParam("recursive", String.valueOf(recursive), false);
@@ -16293,12 +16250,12 @@ public final class BatchAsyncClient {
         BatchNodeFileGetOptions options) {
         // Generated convenience method for getNodeFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         OffsetDateTime ifModifiedSince = options == null ? null : options.getIfModifiedSince();
         OffsetDateTime ifUnmodifiedSince = options == null ? null : options.getIfUnmodifiedSince();
         String ocpRange = options == null ? null : options.getOcpRange();
         if (timeOutInSeconds != null) {
-            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
+            requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds.getSeconds()), false);
         }
         if (ifModifiedSince != null) {
             requestOptions.setHeader(HttpHeaderName.IF_MODIFIED_SINCE,
@@ -16334,15 +16291,11 @@ public final class BatchAsyncClient {
     public PagedFlux<BatchNodeFile> listNodeFiles(String poolId, String nodeId, BatchNodeFilesListOptions options) {
         // Generated convenience method for listNodeFiles
         RequestOptions requestOptions = new RequestOptions();
-        Integer timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
-        Integer maxPageSize = options == null ? null : options.getMaxPageSize();
+        Duration timeOutInSeconds = options == null ? null : options.getTimeOutInSeconds();
         String filter = options == null ? null : options.getFilter();
         Boolean recursive = options == null ? null : options.isRecursive();
         if (timeOutInSeconds != null) {
             requestOptions.addQueryParam("timeOut", String.valueOf(timeOutInSeconds), false);
-        }
-        if (maxPageSize != null) {
-            requestOptions.addQueryParam("maxresults", String.valueOf(maxPageSize), false);
         }
         if (filter != null) {
             requestOptions.addQueryParam("$filter", filter, false);

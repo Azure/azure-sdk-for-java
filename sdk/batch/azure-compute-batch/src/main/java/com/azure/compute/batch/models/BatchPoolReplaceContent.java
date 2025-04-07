@@ -57,7 +57,7 @@ public final class BatchPoolReplaceContent implements JsonSerializable<BatchPool
      * the Pool.
      */
     @Generated
-    private final List<MetadataItem> metadata;
+    private final List<BatchMetadataItem> metadata;
 
     /*
      * The desired node communication mode for the pool. This setting replaces any existing targetNodeCommunication
@@ -75,7 +75,7 @@ public final class BatchPoolReplaceContent implements JsonSerializable<BatchPool
      */
     @Generated
     public BatchPoolReplaceContent(List<BatchCertificateReference> certificateReferences,
-        List<BatchApplicationPackageReference> applicationPackageReferences, List<MetadataItem> metadata) {
+        List<BatchApplicationPackageReference> applicationPackageReferences, List<BatchMetadataItem> metadata) {
         this.certificateReferences = certificateReferences;
         this.applicationPackageReferences = applicationPackageReferences;
         this.metadata = metadata;
@@ -149,7 +149,7 @@ public final class BatchPoolReplaceContent implements JsonSerializable<BatchPool
      * @return the metadata value.
      */
     @Generated
-    public List<MetadataItem> getMetadata() {
+    public List<BatchMetadataItem> getMetadata() {
         return this.metadata;
     }
 
@@ -210,7 +210,7 @@ public final class BatchPoolReplaceContent implements JsonSerializable<BatchPool
         return jsonReader.readObject(reader -> {
             List<BatchCertificateReference> certificateReferences = null;
             List<BatchApplicationPackageReference> applicationPackageReferences = null;
-            List<MetadataItem> metadata = null;
+            List<BatchMetadataItem> metadata = null;
             BatchStartTask startTask = null;
             BatchNodeCommunicationMode targetNodeCommunicationMode = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -222,7 +222,7 @@ public final class BatchPoolReplaceContent implements JsonSerializable<BatchPool
                     applicationPackageReferences
                         = reader.readArray(reader1 -> BatchApplicationPackageReference.fromJson(reader1));
                 } else if ("metadata".equals(fieldName)) {
-                    metadata = reader.readArray(reader1 -> MetadataItem.fromJson(reader1));
+                    metadata = reader.readArray(reader1 -> BatchMetadataItem.fromJson(reader1));
                 } else if ("startTask".equals(fieldName)) {
                     startTask = BatchStartTask.fromJson(reader);
                 } else if ("targetNodeCommunicationMode".equals(fieldName)) {
