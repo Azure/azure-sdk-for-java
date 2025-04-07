@@ -34,7 +34,7 @@ public final class BatchPoolIdentity implements JsonSerializable<BatchPoolIdenti
      * userAssignedIdentities/{identityName}'.
      */
     @Generated
-    private List<UserAssignedIdentity> userAssignedIdentities;
+    private List<BatchUserAssignedIdentity> userAssignedIdentities;
 
     /**
      * Creates an instance of BatchPoolIdentity class.
@@ -66,7 +66,7 @@ public final class BatchPoolIdentity implements JsonSerializable<BatchPoolIdenti
      * @return the userAssignedIdentities value.
      */
     @Generated
-    public List<UserAssignedIdentity> getUserAssignedIdentities() {
+    public List<BatchUserAssignedIdentity> getUserAssignedIdentities() {
         return this.userAssignedIdentities;
     }
 
@@ -96,14 +96,14 @@ public final class BatchPoolIdentity implements JsonSerializable<BatchPoolIdenti
     public static BatchPoolIdentity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BatchPoolIdentityType type = null;
-            List<UserAssignedIdentity> userAssignedIdentities = null;
+            List<BatchUserAssignedIdentity> userAssignedIdentities = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("type".equals(fieldName)) {
                     type = BatchPoolIdentityType.fromString(reader.getString());
                 } else if ("userAssignedIdentities".equals(fieldName)) {
-                    userAssignedIdentities = reader.readArray(reader1 -> UserAssignedIdentity.fromJson(reader1));
+                    userAssignedIdentities = reader.readArray(reader1 -> BatchUserAssignedIdentity.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
