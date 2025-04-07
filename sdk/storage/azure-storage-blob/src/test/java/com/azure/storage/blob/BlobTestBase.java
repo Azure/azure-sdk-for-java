@@ -57,6 +57,7 @@ import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.policy.RequestRetryOptions;
+import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 import com.azure.storage.common.test.shared.StorageCommonTestUtils;
 import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.common.test.shared.TestDataFactory;
@@ -897,7 +898,7 @@ public class BlobTestBase extends TestProxyTestBase {
         return generateResourceName(entityNo++);
     }
 
-    protected void setupFileShareResourcesWithoutDependency() throws IOException {
+    protected String setupFileShareResourcesWithoutDependency(byte[] data) throws IOException {
         //overall setup
         //todo: potentially make these final and use them in immutablestoragewithversioning
         String accountName = ENVIRONMENT.getPrimaryAccount().getName();
@@ -907,8 +908,8 @@ public class BlobTestBase extends TestProxyTestBase {
         TokenCredential credential = getTokenCredential(ENVIRONMENT.getTestMode());
         BearerTokenAuthenticationPolicy credentialPolicyManagementPlane
             = new BearerTokenAuthenticationPolicy(credential, "https://management.azure.com/.default");
-        BearerTokenAuthenticationPolicy credentialPolicyDataPlane
-            = new BearerTokenAuthenticationPolicy(credential, Constants.STORAGE_SCOPE);
+        StorageSharedKeyCredentialPolicy credentialPolicyDataPlane
+            = new StorageSharedKeyCredentialPolicy(ENVIRONMENT.getPrimaryAccount().getCredential());
         //share setup
         String shareName = generateContainerName();
         String id = String.format("/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Storage/storageAccounts/"
@@ -955,6 +956,51 @@ public class BlobTestBase extends TestProxyTestBase {
         //todo: create file
         //todo: upload data to file
         //todo: return source url
+
+        String fileUrl = null;
+        HttpHeaders fileHeaders = null;
+        try {
+            String fileName = generateBlobName();
+            fileUrl = String.format("https://%s.file.core.windows.net/%s/%s/%s", accountName, shareName, directoryName,
+                fileName);
+            fileHeaders = new HttpHeaders().set("Accept", "application/xml")
+                .set("x-ms-version", "2025-07-05")
+                .set("x-ms-type", "file")
+                .set("x-ms-content-length", String.valueOf(Constants.KB))
+                .set("x-ms-file-request-intent", "backup")
+                .set("x-ms-allow-trailing-dot", "false")
+                .set("content-length", "0")
+                .set("Date", DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()))
+                .set("host", accountName + ".file.core.windows.net")
+                .set("User-Agent", "azsdk-java-azure-storage-file-share/12.26.0-beta.1 (17.0.12; Windows 11; 10.0)")
+                .set("x-ms-client-request-id", CoreUtils.randomUuid().toString());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        // Create file
+        HttpResponse fileCreateResponse
+            = dataPlanePipeline.send(new HttpRequest(HttpMethod.PUT, new URL(fileUrl), fileHeaders)).block();
+        assertEquals(201, fileCreateResponse.getStatusCode());
+
+        // Upload data to file
+        HttpHeaders uploadHeaders = new HttpHeaders().set("x-ms-version", "2025-07-05")
+            .set("x-ms-write", "update")
+            .set("x-ms-range", "bytes=0-" + (Constants.KB - 1))
+            .set("x-ms-file-request-intent", "backup")
+            .set("Content-Length", String.valueOf(Constants.KB))
+            .set("Content-Type", "application/octet-stream")
+            .set("Date", DateTimeRfc1123.toRfc1123String(OffsetDateTime.now()))
+            .set("host", accountName + ".file.core.windows.net")
+            .set("User-Agent", "azsdk-java-azure-storage-file-share/12.26.0-beta.1 (17.0.12; Windows 11; 10.0)")
+            .set("x-ms-client-request-id", CoreUtils.randomUuid().toString());
+
+        HttpResponse fileUploadResponse = dataPlanePipeline.send(new HttpRequest(HttpMethod.PUT,
+            new URL(fileUrl + "?comp=range"), uploadHeaders, Flux.just(ByteBuffer.wrap(data)))).block();
+        assertEquals(201, fileUploadResponse.getStatusCode());
+
+        return fileUrl;
+
     }
 
     //todo: potentially move immutable storage body here too?

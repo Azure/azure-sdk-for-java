@@ -898,35 +898,36 @@ public class AppendBlobApiTests extends BlobTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
     @Test
-    public void appendBlockFromUrlSourceBearerTokenFileSource() {
+    public void appendBlockFromUrlSourceBearerTokenFileSource() throws IOException {
 
         BlobServiceClient blobServiceClient = getOAuthServiceClient();
 
         BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(generateContainerName());
         containerClient.create();
 
-        ShareServiceClient shareServiceClient
-            = getOAuthShareServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
-        String shareName = generateShareName();
-        ShareClient shareClient = shareServiceClient.getShareClient(shareName);
-        shareClient.create();
+        //        ShareServiceClient shareServiceClient
+        //            = getOAuthShareServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
+        //        String shareName = generateShareName();
+        //        ShareClient shareClient = shareServiceClient.getShareClient(shareName);
+        //        shareClient.create();
 
         byte[] data = getRandomByteArray(Constants.KB);
-        ByteArrayInputStream dataStream = new ByteArrayInputStream(data);
+        //        ByteArrayInputStream dataStream = new ByteArrayInputStream(data);
 
-        // Create file share and upload data
-        ShareDirectoryClient directoryClient = shareClient.getDirectoryClient(generateBlobName());
-        directoryClient.create();
-        ShareFileClient fileClient = directoryClient.getFileClient(generateBlobName());
-        fileClient.create(Constants.KB);
-        fileClient.upload(dataStream, data.length, null);
+        //        // Create file share and upload data
+        //        ShareDirectoryClient directoryClient = shareClient.getDirectoryClient(generateBlobName());
+        //        directoryClient.create();
+        //        ShareFileClient fileClient = directoryClient.getFileClient(generateBlobName());
+        //        fileClient.create(Constants.KB);
+        //        fileClient.upload(dataStream, data.length, null);
 
         // Create destination append blob
         AppendBlobClient destBlob = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
         destBlob.createIfNotExists();
 
         // Set up source URL with bearer token
-        String sourceUrl = fileClient.getFileUrl();
+        String sourceUrl = setupFileShareResourcesWithoutDependency(data);
+        System.out.println(sourceUrl);
 
         AppendBlobAppendBlockFromUrlOptions appendBlobAppendBlockFromUrlOptions
             = new AppendBlobAppendBlockFromUrlOptions(sourceUrl);
@@ -941,13 +942,14 @@ public class AppendBlobApiTests extends BlobTestBase {
         destBlob.downloadStream(downloadedData);
         TestUtils.assertArraysEqual(data, downloadedData.toByteArray());
 
-        // Clean up resources
-        shareClient.delete();
+        //        // Clean up resources
+        //        shareClient.delete();
 
     }
 
     @Test
     public void getFileHTTPRequests() throws IOException {
-        setupFileShareResourcesWithoutDependency();
+        byte[] data = getRandomByteArray(Constants.KB);
+        setupFileShareResourcesWithoutDependency(data);
     }
 }
