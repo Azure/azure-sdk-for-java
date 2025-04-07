@@ -5,6 +5,7 @@ package com.azure.compute.batch.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
+import java.time.Duration;
 import java.util.List;
 
 /**
@@ -18,7 +19,7 @@ public final class BatchNodeExtensionGetOptions {
      * value is larger than 30, the default will be used instead.".
      */
     @Generated
-    private Integer timeOutInSeconds;
+    private Long timeOutInSeconds;
 
     /*
      * An OData $select clause.
@@ -40,21 +41,11 @@ public final class BatchNodeExtensionGetOptions {
      * @return the timeOutInSeconds value.
      */
     @Generated
-    public Integer getTimeOutInSeconds() {
-        return this.timeOutInSeconds;
-    }
-
-    /**
-     * Set the timeOutInSeconds property: The maximum time that the server can spend processing the request, in seconds.
-     * The default is 30 seconds. If the value is larger than 30, the default will be used instead.".
-     *
-     * @param timeOutInSeconds the timeOutInSeconds value to set.
-     * @return the BatchNodeExtensionGetOptions object itself.
-     */
-    @Generated
-    public BatchNodeExtensionGetOptions setTimeOutInSeconds(Integer timeOutInSeconds) {
-        this.timeOutInSeconds = timeOutInSeconds;
-        return this;
+    public Duration getTimeOutInSeconds() {
+        if (this.timeOutInSeconds == null) {
+            return null;
+        }
+        return Duration.ofSeconds(this.timeOutInSeconds);
     }
 
     /**
@@ -76,6 +67,23 @@ public final class BatchNodeExtensionGetOptions {
     @Generated
     public BatchNodeExtensionGetOptions setSelect(List<String> select) {
         this.select = select;
+        return this;
+    }
+
+    /**
+     * Set the timeOutInSeconds property: The maximum time that the server can spend processing the request, in seconds.
+     * The default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     *
+     * @param timeOutInSeconds the timeOutInSeconds value to set.
+     * @return the BatchNodeExtensionGetOptions object itself.
+     */
+    @Generated
+    public BatchNodeExtensionGetOptions setTimeOutInSeconds(Duration timeOutInSeconds) {
+        if (timeOutInSeconds == null) {
+            this.timeOutInSeconds = null;
+        } else {
+            this.timeOutInSeconds = timeOutInSeconds.getSeconds();
+        }
         return this;
     }
 }

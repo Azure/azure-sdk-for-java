@@ -194,12 +194,6 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
     private MultiInstanceSettings multiInstanceSettings;
 
     /*
-     * Resource usage statistics for the Task.
-     */
-    @Generated
-    private BatchTaskStatistics stats;
-
-    /*
      * The Tasks that this Task depends on. This Task will not be scheduled until all Tasks that it depends on have
      * completed successfully. If any of those Tasks fail and exhaust their retry counts, this Task will never be
      * scheduled.
@@ -510,16 +504,6 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
     }
 
     /**
-     * Get the stats property: Resource usage statistics for the Task.
-     *
-     * @return the stats value.
-     */
-    @Generated
-    public BatchTaskStatistics getStats() {
-        return this.stats;
-    }
-
-    /**
      * Get the dependsOn property: The Tasks that this Task depends on. This Task will not be scheduled until all Tasks
      * that it depends on have completed successfully. If any of those Tasks fail and exhaust their retry counts, this
      * Task will never be scheduled.
@@ -641,7 +625,7 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
                 } else if ("multiInstanceSettings".equals(fieldName)) {
                     deserializedBatchTask.multiInstanceSettings = MultiInstanceSettings.fromJson(reader);
                 } else if ("stats".equals(fieldName)) {
-                    deserializedBatchTask.stats = BatchTaskStatistics.fromJson(reader);
+                    deserializedBatchTask.taskStatistics = BatchTaskStatistics.fromJson(reader);
                 } else if ("dependsOn".equals(fieldName)) {
                     deserializedBatchTask.dependsOn = BatchTaskDependencies.fromJson(reader);
                 } else if ("applicationPackageReferences".equals(fieldName)) {
@@ -656,5 +640,21 @@ public final class BatchTask implements JsonSerializable<BatchTask> {
             }
             return deserializedBatchTask;
         });
+    }
+
+    /*
+     * Resource usage statistics for the Task.
+     */
+    @Generated
+    private BatchTaskStatistics taskStatistics;
+
+    /**
+     * Get the taskStatistics property: Resource usage statistics for the Task.
+     *
+     * @return the taskStatistics value.
+     */
+    @Generated
+    public BatchTaskStatistics getTaskStatistics() {
+        return this.taskStatistics;
     }
 }

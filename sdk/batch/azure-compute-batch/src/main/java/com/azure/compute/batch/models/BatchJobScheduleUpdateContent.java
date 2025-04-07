@@ -37,7 +37,7 @@ public final class BatchJobScheduleUpdateContent implements JsonSerializable<Bat
      * existing metadata is left unchanged.
      */
     @Generated
-    private List<MetadataItem> metadata;
+    private List<BatchMetadataItem> metadata;
 
     /**
      * Creates an instance of BatchJobScheduleUpdateContent class.
@@ -105,7 +105,7 @@ public final class BatchJobScheduleUpdateContent implements JsonSerializable<Bat
      * @return the metadata value.
      */
     @Generated
-    public List<MetadataItem> getMetadata() {
+    public List<BatchMetadataItem> getMetadata() {
         return this.metadata;
     }
 
@@ -117,7 +117,7 @@ public final class BatchJobScheduleUpdateContent implements JsonSerializable<Bat
      * @return the BatchJobScheduleUpdateContent object itself.
      */
     @Generated
-    public BatchJobScheduleUpdateContent setMetadata(List<MetadataItem> metadata) {
+    public BatchJobScheduleUpdateContent setMetadata(List<BatchMetadataItem> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -156,7 +156,7 @@ public final class BatchJobScheduleUpdateContent implements JsonSerializable<Bat
                 } else if ("jobSpecification".equals(fieldName)) {
                     deserializedBatchJobScheduleUpdateContent.jobSpecification = BatchJobSpecification.fromJson(reader);
                 } else if ("metadata".equals(fieldName)) {
-                    List<MetadataItem> metadata = reader.readArray(reader1 -> MetadataItem.fromJson(reader1));
+                    List<BatchMetadataItem> metadata = reader.readArray(reader1 -> BatchMetadataItem.fromJson(reader1));
                     deserializedBatchJobScheduleUpdateContent.metadata = metadata;
                 } else {
                     reader.skipChildren();

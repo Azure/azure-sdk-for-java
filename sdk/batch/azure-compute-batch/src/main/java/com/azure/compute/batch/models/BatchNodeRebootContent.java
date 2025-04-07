@@ -17,41 +17,11 @@ import java.io.IOException;
 @Fluent
 public final class BatchNodeRebootContent implements JsonSerializable<BatchNodeRebootContent> {
 
-    /*
-     * When to reboot the Compute Node and what to do with currently running Tasks. The default value is requeue.
-     */
-    @Generated
-    private BatchNodeRebootOption nodeRebootOption;
-
     /**
      * Creates an instance of BatchNodeRebootContent class.
      */
     @Generated
     public BatchNodeRebootContent() {
-    }
-
-    /**
-     * Get the nodeRebootOption property: When to reboot the Compute Node and what to do with currently running Tasks.
-     * The default value is requeue.
-     *
-     * @return the nodeRebootOption value.
-     */
-    @Generated
-    public BatchNodeRebootOption getNodeRebootOption() {
-        return this.nodeRebootOption;
-    }
-
-    /**
-     * Set the nodeRebootOption property: When to reboot the Compute Node and what to do with currently running Tasks.
-     * The default value is requeue.
-     *
-     * @param nodeRebootOption the nodeRebootOption value to set.
-     * @return the BatchNodeRebootContent object itself.
-     */
-    @Generated
-    public BatchNodeRebootContent setNodeRebootOption(BatchNodeRebootOption nodeRebootOption) {
-        this.nodeRebootOption = nodeRebootOption;
-        return this;
     }
 
     /**
@@ -62,7 +32,7 @@ public final class BatchNodeRebootContent implements JsonSerializable<BatchNodeR
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("nodeRebootOption",
-            this.nodeRebootOption == null ? null : this.nodeRebootOption.toString());
+            this.nodeRebootKind == null ? null : this.nodeRebootKind.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -82,13 +52,43 @@ public final class BatchNodeRebootContent implements JsonSerializable<BatchNodeR
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("nodeRebootOption".equals(fieldName)) {
-                    deserializedBatchNodeRebootContent.nodeRebootOption
-                        = BatchNodeRebootOption.fromString(reader.getString());
+                    deserializedBatchNodeRebootContent.nodeRebootKind
+                        = BatchNodeRebootKind.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
             return deserializedBatchNodeRebootContent;
         });
+    }
+
+    /*
+     * When to reboot the Compute Node and what to do with currently running Tasks. The default value is requeue.
+     */
+    @Generated
+    private BatchNodeRebootKind nodeRebootKind;
+
+    /**
+     * Get the nodeRebootKind property: When to reboot the Compute Node and what to do with currently running Tasks. The
+     * default value is requeue.
+     *
+     * @return the nodeRebootKind value.
+     */
+    @Generated
+    public BatchNodeRebootKind getNodeRebootKind() {
+        return this.nodeRebootKind;
+    }
+
+    /**
+     * Set the nodeRebootKind property: When to reboot the Compute Node and what to do with currently running Tasks. The
+     * default value is requeue.
+     *
+     * @param nodeRebootKind the nodeRebootKind value to set.
+     * @return the BatchNodeRebootContent object itself.
+     */
+    @Generated
+    public BatchNodeRebootContent setNodeRebootKind(BatchNodeRebootKind nodeRebootKind) {
+        this.nodeRebootKind = nodeRebootKind;
+        return this;
     }
 }

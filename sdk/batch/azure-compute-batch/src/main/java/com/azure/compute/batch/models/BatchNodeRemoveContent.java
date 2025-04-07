@@ -21,13 +21,6 @@ import java.util.List;
 public final class BatchNodeRemoveContent implements JsonSerializable<BatchNodeRemoveContent> {
 
     /*
-     * A list containing the IDs of the Compute Nodes to be removed from the specified Pool. A maximum of 100 nodes may
-     * be removed per request.
-     */
-    @Generated
-    private final List<String> nodeList;
-
-    /*
      * The timeout for removal of Compute Nodes to the Pool. The default value is 15 minutes. The minimum value is 5
      * minutes. If you specify a value less than 5 minutes, the Batch service returns an error; if you are calling the
      * REST API directly, the HTTP status code is 400 (Bad Request).
@@ -45,22 +38,11 @@ public final class BatchNodeRemoveContent implements JsonSerializable<BatchNodeR
     /**
      * Creates an instance of BatchNodeRemoveContent class.
      *
-     * @param nodeList the nodeList value to set.
+     * @param nodeIds the nodeIds value to set.
      */
     @Generated
-    public BatchNodeRemoveContent(List<String> nodeList) {
-        this.nodeList = nodeList;
-    }
-
-    /**
-     * Get the nodeList property: A list containing the IDs of the Compute Nodes to be removed from the specified Pool.
-     * A maximum of 100 nodes may be removed per request.
-     *
-     * @return the nodeList value.
-     */
-    @Generated
-    public List<String> getNodeList() {
-        return this.nodeList;
+    public BatchNodeRemoveContent(List<String> nodeIds) {
+        this.nodeIds = nodeIds;
     }
 
     /**
@@ -120,7 +102,7 @@ public final class BatchNodeRemoveContent implements JsonSerializable<BatchNodeR
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("nodeList", this.nodeList, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("nodeList", this.nodeIds, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("resizeTimeout", CoreUtils.durationToStringWithDays(this.resizeTimeout));
         jsonWriter.writeStringField("nodeDeallocationOption",
             this.nodeDeallocationOption == null ? null : this.nodeDeallocationOption.toString());
@@ -139,14 +121,14 @@ public final class BatchNodeRemoveContent implements JsonSerializable<BatchNodeR
     @Generated
     public static BatchNodeRemoveContent fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            List<String> nodeList = null;
+            List<String> nodeIds = null;
             Duration resizeTimeout = null;
             BatchNodeDeallocationOption nodeDeallocationOption = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("nodeList".equals(fieldName)) {
-                    nodeList = reader.readArray(reader1 -> reader1.getString());
+                    nodeIds = reader.readArray(reader1 -> reader1.getString());
                 } else if ("resizeTimeout".equals(fieldName)) {
                     resizeTimeout = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
                 } else if ("nodeDeallocationOption".equals(fieldName)) {
@@ -155,10 +137,28 @@ public final class BatchNodeRemoveContent implements JsonSerializable<BatchNodeR
                     reader.skipChildren();
                 }
             }
-            BatchNodeRemoveContent deserializedBatchNodeRemoveContent = new BatchNodeRemoveContent(nodeList);
+            BatchNodeRemoveContent deserializedBatchNodeRemoveContent = new BatchNodeRemoveContent(nodeIds);
             deserializedBatchNodeRemoveContent.resizeTimeout = resizeTimeout;
             deserializedBatchNodeRemoveContent.nodeDeallocationOption = nodeDeallocationOption;
             return deserializedBatchNodeRemoveContent;
         });
+    }
+
+    /*
+     * A list containing the IDs of the Compute Nodes to be removed from the specified Pool. A maximum of 100 nodes may
+     * be removed per request.
+     */
+    @Generated
+    private final List<String> nodeIds;
+
+    /**
+     * Get the nodeIds property: A list containing the IDs of the Compute Nodes to be removed from the specified Pool. A
+     * maximum of 100 nodes may be removed per request.
+     *
+     * @return the nodeIds value.
+     */
+    @Generated
+    public List<String> getNodeIds() {
+        return this.nodeIds;
     }
 }
