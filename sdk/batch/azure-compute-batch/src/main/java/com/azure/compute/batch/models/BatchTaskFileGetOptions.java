@@ -6,6 +6,7 @@ package com.azure.compute.batch.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.DateTimeRfc1123;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 
 /**
@@ -19,7 +20,7 @@ public final class BatchTaskFileGetOptions {
      * value is larger than 30, the default will be used instead.".
      */
     @Generated
-    private Integer timeOutInSeconds;
+    private Long timeOutInSeconds;
 
     /*
      * A timestamp indicating the last modified time of the resource known to the
@@ -58,21 +59,11 @@ public final class BatchTaskFileGetOptions {
      * @return the timeOutInSeconds value.
      */
     @Generated
-    public Integer getTimeOutInSeconds() {
-        return this.timeOutInSeconds;
-    }
-
-    /**
-     * Set the timeOutInSeconds property: The maximum time that the server can spend processing the request, in seconds.
-     * The default is 30 seconds. If the value is larger than 30, the default will be used instead.".
-     *
-     * @param timeOutInSeconds the timeOutInSeconds value to set.
-     * @return the BatchTaskFileGetOptions object itself.
-     */
-    @Generated
-    public BatchTaskFileGetOptions setTimeOutInSeconds(Integer timeOutInSeconds) {
-        this.timeOutInSeconds = timeOutInSeconds;
-        return this;
+    public Duration getTimeOutInSeconds() {
+        if (this.timeOutInSeconds == null) {
+            return null;
+        }
+        return Duration.ofSeconds(this.timeOutInSeconds);
     }
 
     /**
@@ -162,6 +153,23 @@ public final class BatchTaskFileGetOptions {
     @Generated
     public BatchTaskFileGetOptions setOcpRange(String ocpRange) {
         this.ocpRange = ocpRange;
+        return this;
+    }
+
+    /**
+     * Set the timeOutInSeconds property: The maximum time that the server can spend processing the request, in seconds.
+     * The default is 30 seconds. If the value is larger than 30, the default will be used instead.".
+     *
+     * @param timeOutInSeconds the timeOutInSeconds value to set.
+     * @return the BatchTaskFileGetOptions object itself.
+     */
+    @Generated
+    public BatchTaskFileGetOptions setTimeOutInSeconds(Duration timeOutInSeconds) {
+        if (timeOutInSeconds == null) {
+            this.timeOutInSeconds = null;
+        } else {
+            this.timeOutInSeconds = timeOutInSeconds.getSeconds();
+        }
         return this;
     }
 }
