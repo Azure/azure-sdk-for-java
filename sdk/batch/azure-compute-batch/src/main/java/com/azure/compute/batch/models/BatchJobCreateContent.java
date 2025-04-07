@@ -115,25 +115,6 @@ public final class BatchJobCreateContent implements JsonSerializable<BatchJobCre
     private final BatchPoolInfo poolInfo;
 
     /*
-     * The action the Batch service should take when all Tasks in the Job are in the completed state. Note that if a Job
-     * contains no Tasks, then all Tasks are considered complete. This option is therefore most commonly used with a Job
-     * Manager task; if you want to use automatic Job termination without a Job Manager, you should initially set
-     * onAllTasksComplete to noaction and update the Job properties to set onAllTasksComplete to terminatejob once you
-     * have finished adding Tasks. The default is noaction.
-     */
-    @Generated
-    private OnAllBatchTasksComplete onAllTasksComplete;
-
-    /*
-     * The action the Batch service should take when any Task in the Job fails. A Task is considered to have failed if
-     * has a failureInfo. A failureInfo is set if the Task completes with a non-zero exit code after exhausting its
-     * retry count, or if there was an error starting the Task, for example due to a resource file download error. The
-     * default is noaction.
-     */
-    @Generated
-    private OnBatchTaskFailure onTaskFailure;
-
-    /*
      * The network configuration for the Job.
      */
     @Generated
@@ -144,7 +125,7 @@ public final class BatchJobCreateContent implements JsonSerializable<BatchJobCre
      * metadata; it is solely for the use of user code.
      */
     @Generated
-    private List<MetadataItem> metadata;
+    private List<BatchMetadataItem> metadata;
 
     /**
      * Creates an instance of BatchJobCreateContent class.
@@ -452,64 +433,6 @@ public final class BatchJobCreateContent implements JsonSerializable<BatchJobCre
     }
 
     /**
-     * Get the onAllTasksComplete property: The action the Batch service should take when all Tasks in the Job are in
-     * the completed state. Note that if a Job contains no Tasks, then all Tasks are considered complete. This option is
-     * therefore most commonly used with a Job Manager task; if you want to use automatic Job termination without a Job
-     * Manager, you should initially set onAllTasksComplete to noaction and update the Job properties to set
-     * onAllTasksComplete to terminatejob once you have finished adding Tasks. The default is noaction.
-     *
-     * @return the onAllTasksComplete value.
-     */
-    @Generated
-    public OnAllBatchTasksComplete getOnAllTasksComplete() {
-        return this.onAllTasksComplete;
-    }
-
-    /**
-     * Set the onAllTasksComplete property: The action the Batch service should take when all Tasks in the Job are in
-     * the completed state. Note that if a Job contains no Tasks, then all Tasks are considered complete. This option is
-     * therefore most commonly used with a Job Manager task; if you want to use automatic Job termination without a Job
-     * Manager, you should initially set onAllTasksComplete to noaction and update the Job properties to set
-     * onAllTasksComplete to terminatejob once you have finished adding Tasks. The default is noaction.
-     *
-     * @param onAllTasksComplete the onAllTasksComplete value to set.
-     * @return the BatchJobCreateContent object itself.
-     */
-    @Generated
-    public BatchJobCreateContent setOnAllTasksComplete(OnAllBatchTasksComplete onAllTasksComplete) {
-        this.onAllTasksComplete = onAllTasksComplete;
-        return this;
-    }
-
-    /**
-     * Get the onTaskFailure property: The action the Batch service should take when any Task in the Job fails. A Task
-     * is considered to have failed if has a failureInfo. A failureInfo is set if the Task completes with a non-zero
-     * exit code after exhausting its retry count, or if there was an error starting the Task, for example due to a
-     * resource file download error. The default is noaction.
-     *
-     * @return the onTaskFailure value.
-     */
-    @Generated
-    public OnBatchTaskFailure getOnTaskFailure() {
-        return this.onTaskFailure;
-    }
-
-    /**
-     * Set the onTaskFailure property: The action the Batch service should take when any Task in the Job fails. A Task
-     * is considered to have failed if has a failureInfo. A failureInfo is set if the Task completes with a non-zero
-     * exit code after exhausting its retry count, or if there was an error starting the Task, for example due to a
-     * resource file download error. The default is noaction.
-     *
-     * @param onTaskFailure the onTaskFailure value to set.
-     * @return the BatchJobCreateContent object itself.
-     */
-    @Generated
-    public BatchJobCreateContent setOnTaskFailure(OnBatchTaskFailure onTaskFailure) {
-        this.onTaskFailure = onTaskFailure;
-        return this;
-    }
-
-    /**
      * Get the networkConfiguration property: The network configuration for the Job.
      *
      * @return the networkConfiguration value.
@@ -538,7 +461,7 @@ public final class BatchJobCreateContent implements JsonSerializable<BatchJobCre
      * @return the metadata value.
      */
     @Generated
-    public List<MetadataItem> getMetadata() {
+    public List<BatchMetadataItem> getMetadata() {
         return this.metadata;
     }
 
@@ -550,7 +473,7 @@ public final class BatchJobCreateContent implements JsonSerializable<BatchJobCre
      * @return the BatchJobCreateContent object itself.
      */
     @Generated
-    public BatchJobCreateContent setMetadata(List<MetadataItem> metadata) {
+    public BatchJobCreateContent setMetadata(List<BatchMetadataItem> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -576,8 +499,9 @@ public final class BatchJobCreateContent implements JsonSerializable<BatchJobCre
         jsonWriter.writeArrayField("commonEnvironmentSettings", this.commonEnvironmentSettings,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("onAllTasksComplete",
-            this.onAllTasksComplete == null ? null : this.onAllTasksComplete.toString());
-        jsonWriter.writeStringField("onTaskFailure", this.onTaskFailure == null ? null : this.onTaskFailure.toString());
+            this.allTasksCompleteMode == null ? null : this.allTasksCompleteMode.toString());
+        jsonWriter.writeStringField("onTaskFailure",
+            this.taskFailureMode == null ? null : this.taskFailureMode.toString());
         jsonWriter.writeJsonField("networkConfiguration", this.networkConfiguration);
         jsonWriter.writeArrayField("metadata", this.metadata, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
@@ -607,10 +531,10 @@ public final class BatchJobCreateContent implements JsonSerializable<BatchJobCre
             BatchJobPreparationTask jobPreparationTask = null;
             BatchJobReleaseTask jobReleaseTask = null;
             List<EnvironmentSetting> commonEnvironmentSettings = null;
-            OnAllBatchTasksComplete onAllTasksComplete = null;
-            OnBatchTaskFailure onTaskFailure = null;
+            BatchAllTasksCompleteMode allTasksCompleteMode = null;
+            BatchTaskFailureMode taskFailureMode = null;
             BatchJobNetworkConfiguration networkConfiguration = null;
-            List<MetadataItem> metadata = null;
+            List<BatchMetadataItem> metadata = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -639,13 +563,13 @@ public final class BatchJobCreateContent implements JsonSerializable<BatchJobCre
                 } else if ("commonEnvironmentSettings".equals(fieldName)) {
                     commonEnvironmentSettings = reader.readArray(reader1 -> EnvironmentSetting.fromJson(reader1));
                 } else if ("onAllTasksComplete".equals(fieldName)) {
-                    onAllTasksComplete = OnAllBatchTasksComplete.fromString(reader.getString());
+                    allTasksCompleteMode = BatchAllTasksCompleteMode.fromString(reader.getString());
                 } else if ("onTaskFailure".equals(fieldName)) {
-                    onTaskFailure = OnBatchTaskFailure.fromString(reader.getString());
+                    taskFailureMode = BatchTaskFailureMode.fromString(reader.getString());
                 } else if ("networkConfiguration".equals(fieldName)) {
                     networkConfiguration = BatchJobNetworkConfiguration.fromJson(reader);
                 } else if ("metadata".equals(fieldName)) {
-                    metadata = reader.readArray(reader1 -> MetadataItem.fromJson(reader1));
+                    metadata = reader.readArray(reader1 -> BatchMetadataItem.fromJson(reader1));
                 } else {
                     reader.skipChildren();
                 }
@@ -661,11 +585,88 @@ public final class BatchJobCreateContent implements JsonSerializable<BatchJobCre
             deserializedBatchJobCreateContent.jobPreparationTask = jobPreparationTask;
             deserializedBatchJobCreateContent.jobReleaseTask = jobReleaseTask;
             deserializedBatchJobCreateContent.commonEnvironmentSettings = commonEnvironmentSettings;
-            deserializedBatchJobCreateContent.onAllTasksComplete = onAllTasksComplete;
-            deserializedBatchJobCreateContent.onTaskFailure = onTaskFailure;
+            deserializedBatchJobCreateContent.allTasksCompleteMode = allTasksCompleteMode;
+            deserializedBatchJobCreateContent.taskFailureMode = taskFailureMode;
             deserializedBatchJobCreateContent.networkConfiguration = networkConfiguration;
             deserializedBatchJobCreateContent.metadata = metadata;
             return deserializedBatchJobCreateContent;
         });
+    }
+
+    /*
+     * The action the Batch service should take when all Tasks in the Job are in the completed state. Note that if a Job
+     * contains no Tasks, then all Tasks are considered complete. This option is therefore most commonly used with a Job
+     * Manager task; if you want to use automatic Job termination without a Job Manager, you should initially set
+     * onAllTasksComplete to noaction and update the Job properties to set onAllTasksComplete to terminatejob once you
+     * have finished adding Tasks. The default is noaction.
+     */
+    @Generated
+    private BatchAllTasksCompleteMode allTasksCompleteMode;
+
+    /*
+     * The action the Batch service should take when any Task in the Job fails. A Task is considered to have failed if
+     * has a failureInfo. A failureInfo is set if the Task completes with a non-zero exit code after exhausting its
+     * retry count, or if there was an error starting the Task, for example due to a resource file download error. The
+     * default is noaction.
+     */
+    @Generated
+    private BatchTaskFailureMode taskFailureMode;
+
+    /**
+     * Get the allTasksCompleteMode property: The action the Batch service should take when all Tasks in the Job are in
+     * the completed state. Note that if a Job contains no Tasks, then all Tasks are considered complete. This option is
+     * therefore most commonly used with a Job Manager task; if you want to use automatic Job termination without a Job
+     * Manager, you should initially set onAllTasksComplete to noaction and update the Job properties to set
+     * onAllTasksComplete to terminatejob once you have finished adding Tasks. The default is noaction.
+     *
+     * @return the allTasksCompleteMode value.
+     */
+    @Generated
+    public BatchAllTasksCompleteMode getAllTasksCompleteMode() {
+        return this.allTasksCompleteMode;
+    }
+
+    /**
+     * Set the allTasksCompleteMode property: The action the Batch service should take when all Tasks in the Job are in
+     * the completed state. Note that if a Job contains no Tasks, then all Tasks are considered complete. This option is
+     * therefore most commonly used with a Job Manager task; if you want to use automatic Job termination without a Job
+     * Manager, you should initially set onAllTasksComplete to noaction and update the Job properties to set
+     * onAllTasksComplete to terminatejob once you have finished adding Tasks. The default is noaction.
+     *
+     * @param allTasksCompleteMode the allTasksCompleteMode value to set.
+     * @return the BatchJobCreateContent object itself.
+     */
+    @Generated
+    public BatchJobCreateContent setAllTasksCompleteMode(BatchAllTasksCompleteMode allTasksCompleteMode) {
+        this.allTasksCompleteMode = allTasksCompleteMode;
+        return this;
+    }
+
+    /**
+     * Get the taskFailureMode property: The action the Batch service should take when any Task in the Job fails. A Task
+     * is considered to have failed if has a failureInfo. A failureInfo is set if the Task completes with a non-zero
+     * exit code after exhausting its retry count, or if there was an error starting the Task, for example due to a
+     * resource file download error. The default is noaction.
+     *
+     * @return the taskFailureMode value.
+     */
+    @Generated
+    public BatchTaskFailureMode getTaskFailureMode() {
+        return this.taskFailureMode;
+    }
+
+    /**
+     * Set the taskFailureMode property: The action the Batch service should take when any Task in the Job fails. A Task
+     * is considered to have failed if has a failureInfo. A failureInfo is set if the Task completes with a non-zero
+     * exit code after exhausting its retry count, or if there was an error starting the Task, for example due to a
+     * resource file download error. The default is noaction.
+     *
+     * @param taskFailureMode the taskFailureMode value to set.
+     * @return the BatchJobCreateContent object itself.
+     */
+    @Generated
+    public BatchJobCreateContent setTaskFailureMode(BatchTaskFailureMode taskFailureMode) {
+        this.taskFailureMode = taskFailureMode;
+        return this;
     }
 }
