@@ -46,12 +46,6 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
-import com.azure.storage.file.share.ShareAsyncClient;
-import com.azure.storage.file.share.ShareDirectoryAsyncClient;
-import com.azure.storage.file.share.ShareFileAsyncClient;
-import com.azure.storage.file.share.ShareServiceAsyncClient;
-import com.azure.storage.file.share.ShareServiceClientBuilder;
-import com.azure.storage.file.share.models.ShareTokenIntent;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -1815,44 +1809,33 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
 
     @Test
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
-    public void uploadPagesFromUriSourceBearerTokenFilesSource() {
+    public void uploadPagesFromUriSourceBearerTokenFilesSource() throws IOException {
         BlobServiceAsyncClient blobServiceAsyncClient = getOAuthServiceAsyncClient();
         BlobContainerAsyncClient containerAsyncClient
             = blobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
 
-        ShareServiceAsyncClient shareServiceAsyncClient = getOAuthShareServiceAsyncClient(
-            new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
-        String shareName = generateShareName();
-        ShareAsyncClient shareAsyncClient = shareServiceAsyncClient.getShareAsyncClient(shareName);
-
         byte[] data = getRandomByteArray(Constants.KB);
-        Flux<ByteBuffer> dataFlux = Flux.just(ByteBuffer.wrap(data));
 
-        ShareDirectoryAsyncClient directoryAsyncClient = shareAsyncClient.getDirectoryClient(generateBlobName());
-        ShareFileAsyncClient fileAsyncClient = directoryAsyncClient.getFileClient(generateBlobName());
+        // Set up source URL with bearer token
+        String shareName = generateContainerName();
+        String sourceUrl = setupFileShareResourcesWithoutDependency(data, shareName);
 
         PageBlobAsyncClient destBlob
             = containerAsyncClient.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
 
-        StepVerifier
-            .create(containerAsyncClient.create()
-                .then(shareAsyncClient.create())
-                .then(directoryAsyncClient.create())
-                .then(fileAsyncClient.create(Constants.KB))
-                .then(fileAsyncClient.upload(dataFlux, null))
-                .then(destBlob.create(Constants.KB))
-                .then(destBlob.uploadPagesFromUrlWithResponse(
-                    new PageBlobUploadPagesFromUrlOptions(new PageRange().setStart(0).setEnd(Constants.KB - 1),
-                        fileAsyncClient.getFileUrl())
-                            .setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()))
-                            .setSourceShareTokenIntent(FileShareTokenIntent.BACKUP),
-                    null))
-                .then(FluxUtil.collectBytesInByteBufferStream(destBlob.downloadStream())))
+        StepVerifier.create(containerAsyncClient.create()
+            .then(destBlob.create(Constants.KB))
+            .then(destBlob.uploadPagesFromUrlWithResponse(
+                new PageBlobUploadPagesFromUrlOptions(new PageRange().setStart(0).setEnd(Constants.KB - 1), sourceUrl)
+                    .setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()))
+                    .setSourceShareTokenIntent(FileShareTokenIntent.BACKUP),
+                null))
+            .then(FluxUtil.collectBytesInByteBufferStream(destBlob.downloadStream())))
             .assertNext(downloadedData -> TestUtils.assertArraysEqual(data, downloadedData))
             .verifyComplete();
 
-        // Cleanup
-        shareAsyncClient.delete().block();
+        //cleanup
+        deleteShare(shareName);
 
     }
 

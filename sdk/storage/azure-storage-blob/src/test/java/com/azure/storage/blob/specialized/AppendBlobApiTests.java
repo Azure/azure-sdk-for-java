@@ -33,12 +33,6 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
-import com.azure.storage.file.share.ShareClient;
-import com.azure.storage.file.share.ShareDirectoryClient;
-import com.azure.storage.file.share.ShareFileClient;
-import com.azure.storage.file.share.ShareServiceClient;
-import com.azure.storage.file.share.ShareServiceClientBuilder;
-import com.azure.storage.file.share.models.ShareTokenIntent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -536,9 +530,9 @@ public class AppendBlobApiTests extends BlobTestBase {
     public void appendBlockFromURLSourceErrorAndStatusCodeNewTest() {
         AppendBlobClient destBlob = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
         destBlob.createIfNotExists();
-    
+
         BlobStorageException e = assertThrows(BlobStorageException.class, () -> destBlob.appendBlockFromUrl(bc.getBlobUrl(), new BlobRange(0, (long) PageBlobClient.PAGE_BYTES)));
-    
+
         assertTrue(e.getStatusCode() == 409);
         assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
         assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
@@ -905,29 +899,15 @@ public class AppendBlobApiTests extends BlobTestBase {
         BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(generateContainerName());
         containerClient.create();
 
-        //        ShareServiceClient shareServiceClient
-        //            = getOAuthShareServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
-        //        String shareName = generateShareName();
-        //        ShareClient shareClient = shareServiceClient.getShareClient(shareName);
-        //        shareClient.create();
-
         byte[] data = getRandomByteArray(Constants.KB);
-        //        ByteArrayInputStream dataStream = new ByteArrayInputStream(data);
-
-        //        // Create file share and upload data
-        //        ShareDirectoryClient directoryClient = shareClient.getDirectoryClient(generateBlobName());
-        //        directoryClient.create();
-        //        ShareFileClient fileClient = directoryClient.getFileClient(generateBlobName());
-        //        fileClient.create(Constants.KB);
-        //        fileClient.upload(dataStream, data.length, null);
 
         // Create destination append blob
         AppendBlobClient destBlob = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
         destBlob.createIfNotExists();
 
         // Set up source URL with bearer token
-        String sourceUrl = setupFileShareResourcesWithoutDependency(data);
-        System.out.println(sourceUrl);
+        String shareName = generateContainerName();
+        String sourceUrl = setupFileShareResourcesWithoutDependency(data, shareName);
 
         AppendBlobAppendBlockFromUrlOptions appendBlobAppendBlockFromUrlOptions
             = new AppendBlobAppendBlockFromUrlOptions(sourceUrl);
@@ -942,14 +922,18 @@ public class AppendBlobApiTests extends BlobTestBase {
         destBlob.downloadStream(downloadedData);
         TestUtils.assertArraysEqual(data, downloadedData.toByteArray());
 
-        //        // Clean up resources
-        //        shareClient.delete();
+        //cleanup
+        deleteShare(shareName);
 
     }
 
     @Test
     public void getFileHTTPRequests() throws IOException {
         byte[] data = getRandomByteArray(Constants.KB);
-        setupFileShareResourcesWithoutDependency(data);
+        String shareName = generateContainerName();
+        setupFileShareResourcesWithoutDependency(data, shareName);
+
+        //cleanup
+        deleteShare(shareName);
     }
 }

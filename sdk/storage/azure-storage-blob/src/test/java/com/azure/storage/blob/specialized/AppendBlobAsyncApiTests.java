@@ -32,12 +32,6 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
-import com.azure.storage.file.share.ShareAsyncClient;
-import com.azure.storage.file.share.ShareDirectoryAsyncClient;
-import com.azure.storage.file.share.ShareFileAsyncClient;
-import com.azure.storage.file.share.ShareServiceAsyncClient;
-import com.azure.storage.file.share.ShareServiceClientBuilder;
-import com.azure.storage.file.share.models.ShareTokenIntent;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,6 +43,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -942,26 +937,19 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
     @Test
-    public void appendBlockFromUrlSourceBearerTokenFileSource() {
+    public void appendBlockFromUrlSourceBearerTokenFileSource() throws IOException {
         BlobServiceAsyncClient blobServiceAsyncClient = getOAuthServiceAsyncClient();
         BlobContainerAsyncClient containerAsyncClient
             = blobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
 
-        ShareServiceAsyncClient shareServiceAsyncClient = getOAuthShareServiceAsyncClient(
-            new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
-        String shareName = generateShareName();
-        ShareAsyncClient shareAsyncClient = shareServiceAsyncClient.getShareAsyncClient(shareName);
-
         byte[] data = getRandomByteArray(Constants.KB);
-        Flux<ByteBuffer> dataFlux = Flux.just(ByteBuffer.wrap(data));
 
-        ShareDirectoryAsyncClient directoryAsyncClient = shareAsyncClient.getDirectoryClient(generateBlobName());
-        ShareFileAsyncClient fileAsyncClient = directoryAsyncClient.getFileClient(generateBlobName());
+        // Set up source URL with bearer token
+        String shareName = generateContainerName();
+        String sourceUrl = setupFileShareResourcesWithoutDependency(data, shareName);
 
         AppendBlobAsyncClient destBlob
             = containerAsyncClient.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
-
-        String sourceUrl = fileAsyncClient.getFileUrl();
 
         AppendBlobAppendBlockFromUrlOptions appendOptions
             = new AppendBlobAppendBlockFromUrlOptions(sourceUrl).setSourceShareTokenIntent(FileShareTokenIntent.BACKUP)
@@ -969,18 +957,14 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
 
         StepVerifier
             .create(containerAsyncClient.create()
-                .then(shareAsyncClient.create())
-                .then(directoryAsyncClient.create())
-                .then(fileAsyncClient.create(Constants.KB))
-                .then(fileAsyncClient.upload(dataFlux, null))
                 .then(destBlob.createIfNotExists())
                 .then(destBlob.appendBlockFromUrlWithResponse(appendOptions, null))
                 .then(FluxUtil.collectBytesInByteBufferStream(destBlob.downloadStream())))
             .assertNext(downloadedData -> TestUtils.assertArraysEqual(data, downloadedData))
             .verifyComplete();
 
-        // Cleanup
-        shareAsyncClient.delete().block();
+        //cleanup
+        deleteShare(shareName);
     }
 
 }

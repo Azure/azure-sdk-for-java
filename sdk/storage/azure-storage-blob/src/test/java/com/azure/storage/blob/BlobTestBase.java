@@ -63,9 +63,6 @@ import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.common.test.shared.TestDataFactory;
 import com.azure.storage.common.test.shared.TestEnvironment;
 import com.azure.storage.common.test.shared.policy.PerCallVersionPolicy;
-import com.azure.storage.file.share.ShareServiceAsyncClient;
-import com.azure.storage.file.share.ShareServiceClient;
-import com.azure.storage.file.share.ShareServiceClientBuilder;
 import org.junit.jupiter.params.provider.Arguments;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -872,33 +869,11 @@ public class BlobTestBase extends TestProxyTestBase {
         return setPolicyMono;
     }
 
-    protected ShareServiceClient getOAuthShareServiceClient(ShareServiceClientBuilder builder) {
-        if (builder == null) {
-            builder = new ShareServiceClientBuilder();
-        }
-        builder.endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint());
-
-        instrument(builder);
-
-        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildClient();
-    }
-
-    protected ShareServiceAsyncClient getOAuthShareServiceAsyncClient(ShareServiceClientBuilder builder) {
-        if (builder == null) {
-            builder = new ShareServiceClientBuilder();
-        }
-        builder.endpoint(ENVIRONMENT.getPrimaryAccount().getFileEndpoint());
-
-        instrument(builder);
-
-        return builder.credential(StorageCommonTestUtils.getTokenCredential(interceptorManager)).buildAsyncClient();
-    }
-
     protected String generateShareName() {
         return generateResourceName(entityNo++);
     }
 
-    protected String setupFileShareResourcesWithoutDependency(byte[] data) throws IOException {
+    protected String setupFileShareResourcesWithoutDependency(byte[] data, String shareName) throws IOException {
         //overall setup
         //todo: potentially make these final and use them in immutablestoragewithversioning
         String accountName = ENVIRONMENT.getPrimaryAccount().getName();
@@ -911,7 +886,6 @@ public class BlobTestBase extends TestProxyTestBase {
         StorageSharedKeyCredentialPolicy credentialPolicyDataPlane
             = new StorageSharedKeyCredentialPolicy(ENVIRONMENT.getPrimaryAccount().getCredential());
         //share setup
-        String shareName = generateContainerName();
         String id = String.format("/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Storage/storageAccounts/"
             + "%s/fileServices/default/shares/%s", subscriptionId, resourceGroup, accountName, shareName);
         String shareURL = "https://management.azure.com" + id + "?api-version=" + apiVersion;
@@ -952,10 +926,6 @@ public class BlobTestBase extends TestProxyTestBase {
         HttpResponse directoryCreateResponse
             = dataPlanePipeline.send(new HttpRequest(HttpMethod.PUT, new URL(directoryUrl), headers)).block();
         assertEquals(201, directoryCreateResponse.getStatusCode());
-
-        //todo: create file
-        //todo: upload data to file
-        //todo: return source url
 
         String fileUrl = null;
         HttpHeaders fileHeaders = null;
@@ -1077,5 +1047,38 @@ public class BlobTestBase extends TestProxyTestBase {
         } else { //playback or not set
             return new MockTokenCredential();
         }
+    }
+
+    protected void deleteShare(String shareName) throws IOException {
+        String accountName = ENVIRONMENT.getPrimaryAccount().getName();
+        String resourceGroup = ENVIRONMENT.getResourceGroupName();
+        String subscriptionId = ENVIRONMENT.getSubscriptionId();
+        String apiVersion = "2024-01-01";
+        String id = String.format("/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Storage/storageAccounts/"
+            + "%s/fileServices/default/shares/%s", subscriptionId, resourceGroup, accountName, shareName);
+        String shareURL = "https://management.azure.com" + id + "?api-version=" + apiVersion;
+        String shareType = "Microsoft.Storage/storageAccounts/fileServices/shares";
+
+        Body shareBody = new Body();
+        shareBody.setId(id);
+        shareBody.setName(shareName);
+        shareBody.setType(shareType);
+
+        ByteArrayOutputStream shareJson = new ByteArrayOutputStream();
+        try (JsonWriter jsonWriter = JsonProviders.createWriter(shareJson)) {
+            shareBody.toJson(jsonWriter);
+        }
+
+        TokenCredential credential = getTokenCredential(ENVIRONMENT.getTestMode());
+
+        BearerTokenAuthenticationPolicy credentialPolicyManagementPlane
+            = new BearerTokenAuthenticationPolicy(credential, "https://management.azure.com/.default");
+        HttpPipeline managementPlanePipeline
+            = new HttpPipelineBuilder().policies(credentialPolicyManagementPlane).build();
+
+        //Delete the Share
+        HttpResponse shareDeleteResponse
+            = managementPlanePipeline.send(new HttpRequest(HttpMethod.DELETE, new URL(shareURL))).block();
+        assertEquals(200, shareDeleteResponse.getStatusCode());
     }
 }

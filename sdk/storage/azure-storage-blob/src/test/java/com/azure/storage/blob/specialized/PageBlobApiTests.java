@@ -45,12 +45,6 @@ import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import com.azure.storage.common.test.shared.policy.TransientFailureInjectingHttpPipelinePolicy;
-import com.azure.storage.file.share.ShareClient;
-import com.azure.storage.file.share.ShareDirectoryClient;
-import com.azure.storage.file.share.ShareFileClient;
-import com.azure.storage.file.share.ShareServiceClient;
-import com.azure.storage.file.share.ShareServiceClientBuilder;
-import com.azure.storage.file.share.models.ShareTokenIntent;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -1730,34 +1724,25 @@ public class PageBlobApiTests extends BlobTestBase {
 
     @Test
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
-    public void uploadPagesFromUriSourceBearerTokenFilesSource() {
+    public void uploadPagesFromUriSourceBearerTokenFilesSource() throws IOException {
         BlobServiceClient blobServiceClient = getOAuthServiceClient();
 
         BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(generateContainerName());
         containerClient.create();
 
-        ShareServiceClient shareServiceClient
-            = getOAuthShareServiceClient(new ShareServiceClientBuilder().shareTokenIntent(ShareTokenIntent.BACKUP));
-        String shareName = generateShareName();
-        ShareClient shareClient = shareServiceClient.getShareClient(shareName);
-        shareClient.create();
-
         byte[] data = getRandomByteArray(Constants.KB);
-        ByteArrayInputStream dataStream = new ByteArrayInputStream(data);
 
-        ShareDirectoryClient directoryClient = shareClient.getDirectoryClient(generateBlobName());
-        directoryClient.create();
-        ShareFileClient fileClient = directoryClient.getFileClient(generateBlobName());
-        fileClient.create(Constants.KB);
-        fileClient.upload(dataStream, data.length, null);
+        // Set up source URL with bearer token
+        String shareName = generateContainerName();
+        String sourceUrl = setupFileShareResourcesWithoutDependency(data, shareName);
 
         PageBlobClient destBlob = cc.getBlobClient(generateBlobName()).getPageBlobClient();
         destBlob.create(Constants.KB);
 
         PageBlobUploadPagesFromUrlOptions options
-            = new PageBlobUploadPagesFromUrlOptions(new PageRange().setStart(0).setEnd(Constants.KB - 1),
-                fileClient.getFileUrl()).setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()))
-                    .setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
+            = new PageBlobUploadPagesFromUrlOptions(new PageRange().setStart(0).setEnd(Constants.KB - 1), sourceUrl)
+                .setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()))
+                .setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
 
         destBlob.uploadPagesFromUrlWithResponse(options, null, Context.NONE);
 
@@ -1765,6 +1750,7 @@ public class PageBlobApiTests extends BlobTestBase {
         destBlob.downloadStream(downloadedData);
         TestUtils.assertArraysEqual(data, downloadedData.toByteArray());
 
-        shareClient.delete();
+        //cleanup
+        deleteShare(shareName);
     }
 }

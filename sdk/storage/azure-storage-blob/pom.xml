@@ -142,12 +142,6 @@
       <version>1.15.5</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-storage-file-share</artifactId>
-      <version>12.26.0-beta.1</version>
-      <scope>test</scope>
-    </dependency>
   </dependencies>
 
   <profiles>
