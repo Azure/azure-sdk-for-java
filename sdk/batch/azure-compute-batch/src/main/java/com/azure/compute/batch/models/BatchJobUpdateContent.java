@@ -59,21 +59,11 @@ public final class BatchJobUpdateContent implements JsonSerializable<BatchJobUpd
     private BatchPoolInfo poolInfo;
 
     /*
-     * The action the Batch service should take when all Tasks in the Job are in the completed state. If omitted, the
-     * completion behavior is left unchanged. You may not change the value from terminatejob to noaction - that is, once
-     * you have engaged automatic Job termination, you cannot turn it off again. If you try to do this, the request
-     * fails with an 'invalid property value' error response; if you are calling the REST API directly, the HTTP status
-     * code is 400 (Bad Request).
-     */
-    @Generated
-    private OnAllBatchTasksComplete onAllTasksComplete;
-
-    /*
      * A list of name-value pairs associated with the Job as metadata. If omitted, the existing Job metadata is left
      * unchanged.
      */
     @Generated
-    private List<MetadataItem> metadata;
+    private List<BatchMetadataItem> metadata;
 
     /*
      * The network configuration for the Job.
@@ -225,43 +215,13 @@ public final class BatchJobUpdateContent implements JsonSerializable<BatchJobUpd
     }
 
     /**
-     * Get the onAllTasksComplete property: The action the Batch service should take when all Tasks in the Job are in
-     * the completed state. If omitted, the completion behavior is left unchanged. You may not change the value from
-     * terminatejob to noaction - that is, once you have engaged automatic Job termination, you cannot turn it off
-     * again. If you try to do this, the request fails with an 'invalid property value' error response; if you are
-     * calling the REST API directly, the HTTP status code is 400 (Bad Request).
-     *
-     * @return the onAllTasksComplete value.
-     */
-    @Generated
-    public OnAllBatchTasksComplete getOnAllTasksComplete() {
-        return this.onAllTasksComplete;
-    }
-
-    /**
-     * Set the onAllTasksComplete property: The action the Batch service should take when all Tasks in the Job are in
-     * the completed state. If omitted, the completion behavior is left unchanged. You may not change the value from
-     * terminatejob to noaction - that is, once you have engaged automatic Job termination, you cannot turn it off
-     * again. If you try to do this, the request fails with an 'invalid property value' error response; if you are
-     * calling the REST API directly, the HTTP status code is 400 (Bad Request).
-     *
-     * @param onAllTasksComplete the onAllTasksComplete value to set.
-     * @return the BatchJobUpdateContent object itself.
-     */
-    @Generated
-    public BatchJobUpdateContent setOnAllTasksComplete(OnAllBatchTasksComplete onAllTasksComplete) {
-        this.onAllTasksComplete = onAllTasksComplete;
-        return this;
-    }
-
-    /**
      * Get the metadata property: A list of name-value pairs associated with the Job as metadata. If omitted, the
      * existing Job metadata is left unchanged.
      *
      * @return the metadata value.
      */
     @Generated
-    public List<MetadataItem> getMetadata() {
+    public List<BatchMetadataItem> getMetadata() {
         return this.metadata;
     }
 
@@ -273,7 +233,7 @@ public final class BatchJobUpdateContent implements JsonSerializable<BatchJobUpd
      * @return the BatchJobUpdateContent object itself.
      */
     @Generated
-    public BatchJobUpdateContent setMetadata(List<MetadataItem> metadata) {
+    public BatchJobUpdateContent setMetadata(List<BatchMetadataItem> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -313,7 +273,7 @@ public final class BatchJobUpdateContent implements JsonSerializable<BatchJobUpd
         jsonWriter.writeJsonField("constraints", this.constraints);
         jsonWriter.writeJsonField("poolInfo", this.poolInfo);
         jsonWriter.writeStringField("onAllTasksComplete",
-            this.onAllTasksComplete == null ? null : this.onAllTasksComplete.toString());
+            this.allTasksCompleteMode == null ? null : this.allTasksCompleteMode.toString());
         jsonWriter.writeArrayField("metadata", this.metadata, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeJsonField("networkConfiguration", this.networkConfiguration);
         return jsonWriter.writeEndObject();
@@ -345,10 +305,10 @@ public final class BatchJobUpdateContent implements JsonSerializable<BatchJobUpd
                 } else if ("poolInfo".equals(fieldName)) {
                     deserializedBatchJobUpdateContent.poolInfo = BatchPoolInfo.fromJson(reader);
                 } else if ("onAllTasksComplete".equals(fieldName)) {
-                    deserializedBatchJobUpdateContent.onAllTasksComplete
-                        = OnAllBatchTasksComplete.fromString(reader.getString());
+                    deserializedBatchJobUpdateContent.allTasksCompleteMode
+                        = BatchAllTasksCompleteMode.fromString(reader.getString());
                 } else if ("metadata".equals(fieldName)) {
-                    List<MetadataItem> metadata = reader.readArray(reader1 -> MetadataItem.fromJson(reader1));
+                    List<BatchMetadataItem> metadata = reader.readArray(reader1 -> BatchMetadataItem.fromJson(reader1));
                     deserializedBatchJobUpdateContent.metadata = metadata;
                 } else if ("networkConfiguration".equals(fieldName)) {
                     deserializedBatchJobUpdateContent.networkConfiguration
@@ -359,5 +319,45 @@ public final class BatchJobUpdateContent implements JsonSerializable<BatchJobUpd
             }
             return deserializedBatchJobUpdateContent;
         });
+    }
+
+    /*
+     * The action the Batch service should take when all Tasks in the Job are in the completed state. If omitted, the
+     * completion behavior is left unchanged. You may not change the value from terminatejob to noaction - that is, once
+     * you have engaged automatic Job termination, you cannot turn it off again. If you try to do this, the request
+     * fails with an 'invalid property value' error response; if you are calling the REST API directly, the HTTP status
+     * code is 400 (Bad Request).
+     */
+    @Generated
+    private BatchAllTasksCompleteMode allTasksCompleteMode;
+
+    /**
+     * Get the allTasksCompleteMode property: The action the Batch service should take when all Tasks in the Job are in
+     * the completed state. If omitted, the completion behavior is left unchanged. You may not change the value from
+     * terminatejob to noaction - that is, once you have engaged automatic Job termination, you cannot turn it off
+     * again. If you try to do this, the request fails with an 'invalid property value' error response; if you are
+     * calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     *
+     * @return the allTasksCompleteMode value.
+     */
+    @Generated
+    public BatchAllTasksCompleteMode getAllTasksCompleteMode() {
+        return this.allTasksCompleteMode;
+    }
+
+    /**
+     * Set the allTasksCompleteMode property: The action the Batch service should take when all Tasks in the Job are in
+     * the completed state. If omitted, the completion behavior is left unchanged. You may not change the value from
+     * terminatejob to noaction - that is, once you have engaged automatic Job termination, you cannot turn it off
+     * again. If you try to do this, the request fails with an 'invalid property value' error response; if you are
+     * calling the REST API directly, the HTTP status code is 400 (Bad Request).
+     *
+     * @param allTasksCompleteMode the allTasksCompleteMode value to set.
+     * @return the BatchJobUpdateContent object itself.
+     */
+    @Generated
+    public BatchJobUpdateContent setAllTasksCompleteMode(BatchAllTasksCompleteMode allTasksCompleteMode) {
+        this.allTasksCompleteMode = allTasksCompleteMode;
+        return this;
     }
 }
