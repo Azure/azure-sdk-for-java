@@ -7,8 +7,6 @@ import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.json.JsonWriter;
 import io.netty.channel.Channel;
-import io.netty.handler.codec.http.HttpContent;
-import io.netty.util.ReferenceCountUtil;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -18,12 +16,10 @@ import java.io.UncheckedIOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 
 import static io.clientcore.http.netty4.implementation.NettyUtility.awaitLatch;
-import static io.clientcore.http.netty4.implementation.NettyUtility.writeEagerContentsToStreamAndRelease;
 
 final class NettyChannelBinaryData extends BinaryData {
     private static final ClientLogger LOGGER = new ClientLogger(NettyChannelBinaryData.class);
@@ -31,14 +27,16 @@ final class NettyChannelBinaryData extends BinaryData {
     private static final String TOO_LARGE_FOR_BYTE_ARRAY
         = "The content length is too large for a byte array. Content length is: ";
 
-    private final List<HttpContent> eagerContents;
     private final Channel channel;
     private final Long length;
 
+    // Non-final to allow nulling out after use.
+    private ByteArrayOutputStream eagerContent;
+
     private volatile byte[] bytes;
 
-    NettyChannelBinaryData(List<HttpContent> eagerContents, Channel channel, Long length) {
-        this.eagerContents = eagerContents;
+    NettyChannelBinaryData(ByteArrayOutputStream eagerContent, Channel channel, Long length) {
+        this.eagerContent = eagerContent;
         this.channel = channel;
         this.length = length;
     }
@@ -51,31 +49,17 @@ final class NettyChannelBinaryData extends BinaryData {
 
         if (bytes == null) {
             CountDownLatch latch = new CountDownLatch(1);
-            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-            try {
-                writeEagerContentsToStreamAndRelease(eagerContents, outputStream);
-            } catch (IOException ex) {
-                channel.close();
-                throw new UncheckedIOException(ex);
-            } finally {
-                // Release the contents of the eager contents list.
-                for (HttpContent content : eagerContents) {
-                    if (content.refCnt() > 0) {
-                        ReferenceCountUtil.release(content);
-                    }
-                }
-            }
-
             channel.pipeline().addLast(new EagerConsumeNetworkResponseHandler(latch, buf -> {
                 try {
-                    buf.readBytes(outputStream, buf.readableBytes());
+                    buf.readBytes(eagerContent, buf.readableBytes());
                 } catch (IOException ex) {
                     throw new UncheckedIOException(ex);
                 }
             }));
 
             awaitLatch(latch);
-            bytes = outputStream.toByteArray();
+            bytes = eagerContent.toByteArray();
+            eagerContent = null;
         }
 
         return bytes;
@@ -127,12 +111,6 @@ final class NettyChannelBinaryData extends BinaryData {
 
     @Override
     public void close() throws IOException {
-        // Release the contents of the eager contents list.
-        for (HttpContent content : eagerContents) {
-            if (content.refCnt() > 0) {
-                ReferenceCountUtil.safeRelease(content);
-            }
-        }
         channel.close();
     }
 }

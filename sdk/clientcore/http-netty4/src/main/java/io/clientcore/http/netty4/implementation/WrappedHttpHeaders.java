@@ -394,127 +394,36 @@ public final class WrappedHttpHeaders extends HttpHeaders {
         return this;
     }
 
-    // Helper method that hot paths some well-known AsciiString HttpHeaderNames.
+    // Helper method that hot paths some well-known AsciiString HttpHeaderNames that are known to be used by Netty
+    // internally.
     @SuppressWarnings("deprecation")
     private static HttpHeaderName fromPossibleAsciiString(CharSequence asciiString) {
-        if (HttpHeaderNames.ACCEPT == asciiString) {
-            return HttpHeaderName.ACCEPT;
-        } else if (HttpHeaderNames.ACCEPT_CHARSET == asciiString) {
-            return HttpHeaderName.ACCEPT_CHARSET;
-        } else if (HttpHeaderNames.ACCEPT_ENCODING == asciiString) {
+        if (HttpHeaderNames.ACCEPT_ENCODING == asciiString) {
             return HttpHeaderName.ACCEPT_ENCODING;
-        } else if (HttpHeaderNames.ACCEPT_LANGUAGE == asciiString) {
-            return HttpHeaderName.ACCEPT_LANGUAGE;
-        } else if (HttpHeaderNames.ACCEPT_RANGES == asciiString) {
-            return HttpHeaderName.ACCEPT_RANGES;
-        } else if (HttpHeaderNames.ACCEPT_PATCH == asciiString) {
-            return HttpHeaderName.ACCEPT_PATCH;
-        } else if (HttpHeaderNames.ACCESS_CONTROL_ALLOW_CREDENTIALS == asciiString) {
-            return HttpHeaderName.ACCESS_CONTROL_ALLOW_CREDENTIALS;
-        } else if (HttpHeaderNames.ACCESS_CONTROL_ALLOW_HEADERS == asciiString) {
-            return HttpHeaderName.ACCESS_CONTROL_ALLOW_HEADERS;
-        } else if (HttpHeaderNames.ACCESS_CONTROL_ALLOW_METHODS == asciiString) {
-            return HttpHeaderName.ACCESS_CONTROL_ALLOW_METHODS;
-        } else if (HttpHeaderNames.ACCESS_CONTROL_ALLOW_ORIGIN == asciiString) {
-            return HttpHeaderName.ACCESS_CONTROL_ALLOW_ORIGIN;
-        } else if (HttpHeaderNames.ACCESS_CONTROL_EXPOSE_HEADERS == asciiString) {
-            return HttpHeaderName.ACCESS_CONTROL_EXPOSE_HEADERS;
-        } else if (HttpHeaderNames.ACCESS_CONTROL_MAX_AGE == asciiString) {
-            return HttpHeaderName.ACCESS_CONTROL_MAX_AGE;
-        } else if (HttpHeaderNames.AGE == asciiString) {
-            return HttpHeaderName.AGE;
-        } else if (HttpHeaderNames.ALLOW == asciiString) {
-            return HttpHeaderName.ALLOW;
-        } else if (HttpHeaderNames.AUTHORIZATION == asciiString) {
-            return HttpHeaderName.AUTHORIZATION;
-        } else if (HttpHeaderNames.CACHE_CONTROL == asciiString) {
-            return HttpHeaderName.CACHE_CONTROL;
         } else if (HttpHeaderNames.CONNECTION == asciiString) {
             return HttpHeaderName.CONNECTION;
         } else if (HttpHeaderNames.CONTENT_ENCODING == asciiString) {
             return HttpHeaderName.CONTENT_ENCODING;
-        } else if (HttpHeaderNames.CONTENT_LANGUAGE == asciiString) {
-            return HttpHeaderName.CONTENT_LANGUAGE;
         } else if (HttpHeaderNames.CONTENT_LENGTH == asciiString) {
             return HttpHeaderName.CONTENT_LENGTH;
-        } else if (HttpHeaderNames.CONTENT_LOCATION == asciiString) {
-            return HttpHeaderName.CONTENT_LOCATION;
-        } else if (HttpHeaderNames.CONTENT_DISPOSITION == asciiString) {
-            return HttpHeaderName.CONTENT_DISPOSITION;
-        } else if (HttpHeaderNames.CONTENT_MD5 == asciiString) {
-            return HttpHeaderName.CONTENT_MD5;
-        } else if (HttpHeaderNames.CONTENT_RANGE == asciiString) {
-            return HttpHeaderName.CONTENT_RANGE;
         } else if (HttpHeaderNames.CONTENT_TYPE == asciiString) {
             return HttpHeaderName.CONTENT_TYPE;
         } else if (HttpHeaderNames.COOKIE == asciiString) {
             return HttpHeaderName.COOKIE;
-        } else if (HttpHeaderNames.DATE == asciiString) {
-            return HttpHeaderName.DATE;
-        } else if (HttpHeaderNames.ETAG == asciiString) {
-            return HttpHeaderName.ETAG;
         } else if (HttpHeaderNames.EXPECT == asciiString) {
             return HttpHeaderName.EXPECT;
-        } else if (HttpHeaderNames.EXPIRES == asciiString) {
-            return HttpHeaderName.EXPIRES;
-        } else if (HttpHeaderNames.FROM == asciiString) {
-            return HttpHeaderName.FROM;
         } else if (HttpHeaderNames.HOST == asciiString) {
             return HttpHeaderName.HOST;
-        } else if (HttpHeaderNames.IF_MATCH == asciiString) {
-            return HttpHeaderName.IF_MATCH;
-        } else if (HttpHeaderNames.IF_MODIFIED_SINCE == asciiString) {
-            return HttpHeaderName.IF_MODIFIED_SINCE;
-        } else if (HttpHeaderNames.IF_NONE_MATCH == asciiString) {
-            return HttpHeaderName.IF_NONE_MATCH;
-        } else if (HttpHeaderNames.IF_RANGE == asciiString) {
-            return HttpHeaderName.IF_RANGE;
-        } else if (HttpHeaderNames.IF_UNMODIFIED_SINCE == asciiString) {
-            return HttpHeaderName.IF_UNMODIFIED_SINCE;
         } else if (HttpHeaderNames.KEEP_ALIVE == asciiString) {
             return HttpHeaderName.KEEP_ALIVE;
-        } else if (HttpHeaderNames.LAST_MODIFIED == asciiString) {
-            return HttpHeaderName.LAST_MODIFIED;
-        } else if (HttpHeaderNames.LOCATION == asciiString) {
-            return HttpHeaderName.LOCATION;
-        } else if (HttpHeaderNames.MAX_FORWARDS == asciiString) {
-            return HttpHeaderName.MAX_FORWARDS;
-        } else if (HttpHeaderNames.ORIGIN == asciiString) {
-            return HttpHeaderName.ORIGIN;
-        } else if (HttpHeaderNames.PRAGMA == asciiString) {
-            return HttpHeaderName.PRAGMA;
-        } else if (HttpHeaderNames.PROXY_AUTHENTICATE == asciiString) {
-            return HttpHeaderName.PROXY_AUTHENTICATE;
         } else if (HttpHeaderNames.PROXY_AUTHORIZATION == asciiString) {
             return HttpHeaderName.PROXY_AUTHORIZATION;
-        } else if (HttpHeaderNames.RANGE == asciiString) {
-            return HttpHeaderName.RANGE;
-        } else if (HttpHeaderNames.REFERER == asciiString) {
-            return HttpHeaderName.REFERER;
-        } else if (HttpHeaderNames.RETRY_AFTER == asciiString) {
-            return HttpHeaderName.RETRY_AFTER;
-        } else if (HttpHeaderNames.SERVER == asciiString) {
-            return HttpHeaderName.SERVER;
-        } else if (HttpHeaderNames.SET_COOKIE == asciiString) {
-            return HttpHeaderName.SET_COOKIE;
         } else if (HttpHeaderNames.TE == asciiString) {
             return HttpHeaderName.TE;
         } else if (HttpHeaderNames.TRAILER == asciiString) {
             return HttpHeaderName.TRAILER;
         } else if (HttpHeaderNames.TRANSFER_ENCODING == asciiString) {
             return HttpHeaderName.TRANSFER_ENCODING;
-        } else if (HttpHeaderNames.UPGRADE == asciiString) {
-            return HttpHeaderName.UPGRADE;
-        } else if (HttpHeaderNames.USER_AGENT == asciiString) {
-            return HttpHeaderName.USER_AGENT;
-        } else if (HttpHeaderNames.VARY == asciiString) {
-            return HttpHeaderName.VARY;
-        } else if (HttpHeaderNames.VIA == asciiString) {
-            return HttpHeaderName.VIA;
-        } else if (HttpHeaderNames.WARNING == asciiString) {
-            return HttpHeaderName.WARNING;
-        } else if (HttpHeaderNames.WWW_AUTHENTICATE == asciiString) {
-            return HttpHeaderName.WWW_AUTHENTICATE;
         } else {
             return HttpHeaderName.fromString(asciiString.toString());
         }

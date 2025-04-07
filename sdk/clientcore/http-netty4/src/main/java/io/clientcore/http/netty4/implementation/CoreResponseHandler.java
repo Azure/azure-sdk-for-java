@@ -8,6 +8,7 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.CoreUtils;
+import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandler;
 import io.netty.channel.ChannelInboundHandlerAdapter;
@@ -17,22 +18,17 @@ import io.netty.handler.codec.http.HttpContent;
 import io.netty.handler.codec.http.HttpObject;
 import io.netty.handler.codec.http.HttpResponse;
 import io.netty.handler.codec.http.LastHttpContent;
-import io.netty.util.ReferenceCountUtil;
-import io.netty.util.ReferenceCounted;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static io.clientcore.core.http.models.HttpMethod.HEAD;
 import static io.clientcore.http.netty4.implementation.NettyUtility.awaitLatch;
-import static io.clientcore.http.netty4.implementation.NettyUtility.writeEagerContentsToStreamAndRelease;
+import static io.clientcore.http.netty4.implementation.NettyUtility.readByteBufIntoOutputStream;
 
 /**
  * A {@link ChannelInboundHandler} implementation that appropriately handles the response reading from the server based
@@ -51,9 +47,10 @@ public final class CoreResponseHandler extends ChannelInboundHandlerAdapter {
 
     private boolean started;
 
-    // Another solution around eager content handling would be to store it in an OutputStream, rather than retaining the
-    // HttpContents which leaves to do reference counting.
-    private List<HttpContent> eagerContents;
+    // Maintain an OutputStream that'll be used to hold eagerly read content from the Netty pipeline.
+    // Eager content occurs when the first buffer(s) read from the network contains both HTTP status line and headers
+    // and initial response body content.
+    private ByteArrayOutputStream eagerContent = new ByteArrayOutputStream();
     private boolean complete;
 
     /**
@@ -87,7 +84,7 @@ public final class CoreResponseHandler extends ChannelInboundHandlerAdapter {
     }
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) {
+    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         // If the msg isn't HTTP object ignore it.
         if (!(msg instanceof HttpObject)) {
             ctx.fireChannelRead(msg);
@@ -136,10 +133,8 @@ public final class CoreResponseHandler extends ChannelInboundHandlerAdapter {
 
             if (msg instanceof FullHttpResponse) {
                 complete = true;
-                // Need to call retain here as this will be released in HttpClientCodec. We'll need to make sure to
-                // release this when consuming it later.
-                ((ReferenceCounted) msg).touch("CoreResponseHandler retaining for future use.");
-                eagerContents = Collections.singletonList(((HttpContent) msg).retain());
+                ByteBuf content = ((FullHttpResponse) msg).content();
+                readByteBufIntoOutputStream(content, eagerContent);
             }
 
             return;
@@ -147,13 +142,8 @@ public final class CoreResponseHandler extends ChannelInboundHandlerAdapter {
 
         if (msg instanceof LastHttpContent) {
             complete = true;
-            // Same reason as above.
-            ((ReferenceCounted) msg).touch("CoreResponseHandler retaining for future use.");
-            if (eagerContents != null) {
-                eagerContents.add(((HttpContent) msg).retain());
-            } else {
-                eagerContents = Collections.singletonList(((HttpContent) msg).retain());
-            }
+            ByteBuf content = ((LastHttpContent) msg).content();
+            readByteBufIntoOutputStream(content, eagerContent);
             return;
         }
 
@@ -162,11 +152,10 @@ public final class CoreResponseHandler extends ChannelInboundHandlerAdapter {
             return;
         }
 
-        if (eagerContents == null) {
-            eagerContents = new LinkedList<>();
+        if (msg instanceof HttpContent) {
+            ByteBuf content = ((HttpContent) msg).content();
+            readByteBufIntoOutputStream(content, eagerContent);
         }
-        ((ReferenceCounted) msg).touch("CoreResponseHandler retaining for future use.");
-        eagerContents.add((HttpContent) msg);
     }
 
     @Override
@@ -184,13 +173,11 @@ public final class CoreResponseHandler extends ChannelInboundHandlerAdapter {
             // The network response is already complete, handle creating our Response based on the request method and
             // response headers.
             BinaryData body = BinaryData.empty();
-            if (bodyHandling != BodyHandling.IGNORE && eagerContents != null) {
+            if (bodyHandling != BodyHandling.IGNORE && eagerContent.size() > 0) {
                 // Set the response body as the first HttpContent received if the request wasn't a HEAD request and
                 // there was body content.
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                writeEagerContentsToStreamAndRelease(eagerContents, outputStream);
-
-                body = BinaryData.fromBytes(outputStream.toByteArray());
+                body = BinaryData.fromBytes(eagerContent.toByteArray());
+                eagerContent = null;
             }
 
             responseReference.set(new Response<>(request, statusCode, headers, body));
@@ -205,9 +192,7 @@ public final class CoreResponseHandler extends ChannelInboundHandlerAdapter {
             if (bodyHandling == BodyHandling.IGNORE) {
                 // We're ignoring the response content.
                 CountDownLatch latch = new CountDownLatch(1);
-                for (HttpContent eagerContent : eagerContents) {
-                    ReferenceCountUtil.release(eagerContent);
-                }
+                eagerContent = null;
                 ctx.pipeline().addLast(new EagerConsumeNetworkResponseHandler(latch, ignored -> {
                 }));
                 awaitLatch(latch);
@@ -226,22 +211,21 @@ public final class CoreResponseHandler extends ChannelInboundHandlerAdapter {
                     }
                 }
 
-                body = new NettyChannelBinaryData(eagerContents, ctx.channel(), length);
+                body = new NettyChannelBinaryData(eagerContent, ctx.channel(), length);
             } else {
                 // All cases otherwise assume BUFFER.
                 CountDownLatch latch = new CountDownLatch(1);
-                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-                writeEagerContentsToStreamAndRelease(eagerContents, outputStream);
                 ctx.pipeline().addLast(new EagerConsumeNetworkResponseHandler(latch, buf -> {
                     try {
-                        buf.readBytes(outputStream, buf.readableBytes());
+                        buf.readBytes(eagerContent, buf.readableBytes());
                     } catch (IOException ex) {
                         throw new UncheckedIOException(ex);
                     }
                 }));
                 awaitLatch(latch);
 
-                body = BinaryData.fromBytes(outputStream.toByteArray());
+                body = BinaryData.fromBytes(eagerContent.toByteArray());
+                eagerContent = null;
             }
 
             responseReference.set(new Response<>(request, statusCode, headers, body));

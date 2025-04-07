@@ -8,7 +8,6 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.instrumentation.logging.LogLevel;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.models.binarydata.FileBinaryData;
 import io.clientcore.core.models.binarydata.InputStreamBinaryData;
@@ -169,7 +168,7 @@ class NettyHttpClient implements HttpClient {
 
             sendRequest(request, channel).addListener((ChannelFutureListener) future -> {
                 if (!future.isSuccess()) {
-                    LOGGER.atLevel(LogLevel.ERROR).log("Failed to send request", future.cause());
+                    LOGGER.atError().log("Failed to send request", future.cause());
                     errorReference.set(future.cause());
                     future.channel().close();
                     latch.countDown();
