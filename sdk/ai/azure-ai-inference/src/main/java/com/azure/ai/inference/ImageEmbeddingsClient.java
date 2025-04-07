@@ -56,7 +56,7 @@ public final class ImageEmbeddingsClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -76,9 +76,9 @@ public final class ImageEmbeddingsClient {
      * }
      * }
      * </pre>
-     *
+     * 
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -146,7 +146,7 @@ public final class ImageEmbeddingsClient {
      * This method will only work when using Serverless API or Managed Compute endpoint.
      * It will not work for GitHub Models endpoint or Azure OpenAI endpoint.
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
