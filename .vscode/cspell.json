@@ -1382,6 +1382,16 @@
         "gcch",
         "updation" // current typo in a swagger
       ]
+    },
+    {
+      "filename": "sdk/ai/azure-ai-projects/**",
+      "words": [
+        "AISEARCH",
+	      "AISERVICES",
+        "SUBSCRIPTIONID",
+        "RESOURCEGROUPNAME",
+        "PROJECTNAME"
+      ]
     }
   ],
   "allowCompoundWords": true
