@@ -33,7 +33,7 @@ import static com.azure.messaging.eventhubs.implementation.ClientConstants.PARTI
  *     <li>{@link EventDataBatch} cannot hold any more events.</li>
  * </ul>
  */
-class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
+class EventDataAggregator extends FluxOperator<EventData, EventDataBatchCarrier> {
     private static final ClientLogger LOGGER = new ClientLogger(EventDataAggregator.class);
 
     private volatile EventDataAggregatorMain downstreamSubscription;
@@ -68,7 +68,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
      * @param actual Downstream subscriber.
      */
     @Override
-    public void subscribe(CoreSubscriber<? super EventDataBatch> actual) {
+    public void subscribe(CoreSubscriber<? super EventDataBatchCarrier> actual) {
         final EventDataAggregatorMain subscription
             = new EventDataAggregatorMain(actual, namespace, options, batchSupplier, partitionId, LOGGER);
 
@@ -103,7 +103,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
         private final Disposable disposable;
 
         private final AtomicBoolean isCompleted = new AtomicBoolean(false);
-        private final CoreSubscriber<? super EventDataBatch> downstream;
+        private final CoreSubscriber<? super EventDataBatchCarrier> downstream;
 
         private final String partitionId;
         private final ClientLogger logger;
@@ -116,7 +116,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
 
         private volatile Throwable lastError;
 
-        EventDataAggregatorMain(CoreSubscriber<? super EventDataBatch> downstream, String namespace,
+        EventDataAggregatorMain(CoreSubscriber<? super EventDataBatchCarrier> downstream, String namespace,
             BufferedProducerClientOptions options, Supplier<EventDataBatch> batchSupplier, String partitionId,
             ClientLogger logger) {
             this.namespace = namespace;
@@ -239,10 +239,12 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
          * @param alwaysPublish {@code true} to always push batch downstream. {@code false}, otherwise.
          */
         private void updateOrPublishBatch(EventData eventData, boolean alwaysPublish) {
-            if (alwaysPublish) {
-                publishDownstream();
+            final boolean isFlush = isFlushSignal(eventData);
+            if (alwaysPublish || isFlush) {
+                publishDownstream(isFlush);
                 return;
-            } else if (eventData == null) {
+            }
+            if (eventData == null) {
                 // EventData will be null in the case when options.maxWaitTime() has elapsed  and we want to push the
                 // batch downstream.
                 return;
@@ -256,7 +258,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
                     return;
                 }
 
-                publishDownstream();
+                publishDownstream(false);
                 added = currentBatch.tryAdd(eventData);
             }
 
@@ -271,23 +273,28 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
         /**
          * Publishes batch downstream if there are events in the batch and updates it.
          */
-        private void publishDownstream() {
+        private void publishDownstream(boolean isFlush) {
             EventDataBatch previous = null;
-
             try {
                 synchronized (lock) {
                     previous = this.currentBatch;
-
                     if (previous == null) {
                         logger.warning("Batch should not be null, setting a new batch.");
-
                         this.currentBatch = batchSupplier.get();
+                        if (isFlush) {
+                            downstream.onNext(EventDataBatchCarrier.EMPTY);
+                        }
                         return;
                     } else if (previous.getEvents().isEmpty()) {
+                        if (isFlush) {
+                            // Even if the batch is empty, we'll push EMPTY on a flush signal.
+                            // This ensures any flush related flags set at the call site are reset.
+                            downstream.onNext(EventDataBatchCarrier.EMPTY);
+                        }
                         return;
                     }
 
-                    downstream.onNext(previous);
+                    downstream.onNext(new EventDataBatchCarrier(previous));
 
                     final long batchesLeft = REQUESTED.updateAndGet(this, (v) -> {
                         if (v == Long.MAX_VALUE) {
@@ -331,6 +338,10 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
                     onError(error);
                 }
             }
+        }
+
+        private static boolean isFlushSignal(EventData eventData) {
+            return eventData instanceof FlushSignal;
         }
     }
 }
