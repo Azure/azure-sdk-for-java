@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.compute.batch;
 
+import com.azure.compute.batch.models.BatchImageReference;
+import com.azure.compute.batch.models.BatchMetadataItem;
 import com.azure.compute.batch.models.BatchNodeCommunicationMode;
 import com.azure.compute.batch.models.BatchPool;
 import com.azure.compute.batch.models.BatchPoolCreateContent;
@@ -46,7 +48,7 @@ public class SharedKeyTests extends BatchClientTestBase {
             /*
              * Creating Pool
              * */
-            ImageReference imgRef = new ImageReference().setPublisher("Canonical")
+            BatchImageReference imgRef = new BatchImageReference().setPublisher("Canonical")
                 .setOffer("UbuntuServer")
                 .setSku("18.04-LTS")
                 .setVersion("latest");
@@ -76,8 +78,8 @@ public class SharedKeyTests extends BatchClientTestBase {
             /*
              * Replacing Pool Properties
              */
-            ArrayList<MetadataItem> updatedMetadata = new ArrayList<MetadataItem>();
-            updatedMetadata.add(new MetadataItem("foo", "bar"));
+            ArrayList<BatchMetadataItem> updatedMetadata = new ArrayList<BatchMetadataItem>();
+            updatedMetadata.add(new BatchMetadataItem("foo", "bar"));
 
             BatchPoolReplaceContent poolReplaceContent
                 = new BatchPoolReplaceContent(new ArrayList<>(), new ArrayList<>(), updatedMetadata);
@@ -88,14 +90,14 @@ public class SharedKeyTests extends BatchClientTestBase {
 
             pool = batchClientWithSharedKey.getPool(sharedKeyPoolId);
             Assertions.assertEquals(BatchNodeCommunicationMode.SIMPLIFIED, pool.getTargetNodeCommunicationMode());
-            List<MetadataItem> metadata = pool.getMetadata();
+            List<BatchMetadataItem> metadata = pool.getMetadata();
             Assertions.assertTrue(metadata.size() == 1 && metadata.get(0).getName().equals("foo"));
 
             /*
              * Update Pool
              */
             updatedMetadata.clear();
-            updatedMetadata.add(new MetadataItem("key1", "value1"));
+            updatedMetadata.add(new BatchMetadataItem("key1", "value1"));
             BatchPoolUpdateContent poolUpdateContent = new BatchPoolUpdateContent().setMetadata(updatedMetadata)
                 .setTargetNodeCommunicationMode(BatchNodeCommunicationMode.CLASSIC);
             Response<Void> updatePoolResponse = batchClientWithSharedKey.updatePoolWithResponse(sharedKeyPoolId,

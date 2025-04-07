@@ -81,8 +81,8 @@ public class TaskManager {
                         pendingList.addAll(taskList);
                     }
                 }).subscribe(response -> {
-                    if (response != null && response.getValue() != null) {
-                        for (BatchTaskCreateResult result : response.getValue()) {
+                    if (response != null && response.getValues() != null) {
+                        for (BatchTaskCreateResult result : response.getValues()) {
                             if (result.getError() != null) {
                                 if (result.getStatus() == BatchTaskAddStatus.SERVER_ERROR) {
                                     // Server error will be retried
