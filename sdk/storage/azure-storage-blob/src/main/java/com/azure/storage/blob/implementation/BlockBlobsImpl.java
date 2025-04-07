@@ -32,7 +32,6 @@ import com.azure.storage.blob.implementation.models.BlockBlobsStageBlockFromURLH
 import com.azure.storage.blob.implementation.models.BlockBlobsStageBlockHeaders;
 import com.azure.storage.blob.implementation.models.BlockBlobsUploadHeaders;
 import com.azure.storage.blob.implementation.models.EncryptionScope;
-import com.azure.storage.blob.implementation.models.FileShareTokenIntent;
 import com.azure.storage.blob.implementation.util.ModelHelper;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobCopySourceTagsMode;
@@ -43,6 +42,7 @@ import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.models.BlockLookupList;
 import com.azure.storage.blob.models.CpkInfo;
 import com.azure.storage.blob.models.EncryptionAlgorithmType;
+import com.azure.storage.blob.models.FileShareTokenIntent;
 import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.Map;

@@ -27,7 +27,7 @@ import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.ProgressReceiver;
-import com.azure.storage.blob.implementation.models.FileShareTokenIntent;
+import com.azure.storage.blob.models.FileShareTokenIntent;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobCopySourceTagsMode;
