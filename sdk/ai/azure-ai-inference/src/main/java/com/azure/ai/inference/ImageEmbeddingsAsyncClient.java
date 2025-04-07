@@ -100,7 +100,7 @@ public final class ImageEmbeddingsAsyncClient {
      * }
      * </pre>
      *
-     * @param body request options to pass to the endpoint using images embeddings path.
+     * @param body The body of the request containing options for image embeddings.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -120,6 +120,8 @@ public final class ImageEmbeddingsAsyncClient {
     /**
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
+     * This method will only work when using Serverless API or Managed Compute endpoint.
+     * It will not work for GitHub Models endpoint or Azure OpenAI endpoint.
      * <p><strong>Response Body Schema</strong></p>
      * 
      * <pre>
@@ -176,6 +178,8 @@ public final class ImageEmbeddingsAsyncClient {
     /**
      * Returns information about the AI model.
      * The method makes a REST API call to the `/info` route on the given endpoint.
+     * This method will only work when using Serverless API or Managed Compute endpoint.
+     * It will not work for GitHub Models endpoint or Azure OpenAI endpoint.
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -211,7 +215,6 @@ public final class ImageEmbeddingsAsyncClient {
      * Embeddings measure the relatedness of text strings and are commonly used for search, clustering,
      * recommendations, and other similar scenarios on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<EmbeddingsResult> embed(ImageEmbedRequest body, ExtraParameters extraParams) {
         // Generated convenience method for embedWithResponse
@@ -238,7 +241,6 @@ public final class ImageEmbeddingsAsyncClient {
      * Embeddings measure the relatedness of text strings and are commonly used for search, clustering,
      * recommendations, and other similar scenarios on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<EmbeddingsResult> embed(ImageEmbedRequest body) {
         // Generated convenience method for embedWithResponse

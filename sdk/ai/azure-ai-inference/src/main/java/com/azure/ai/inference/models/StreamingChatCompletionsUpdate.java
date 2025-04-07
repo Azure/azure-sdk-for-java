@@ -47,7 +47,7 @@ public final class StreamingChatCompletionsUpdate implements JsonSerializable<St
      * Usage information for tokens processed and generated as part of this completions operation.
      */
     @Generated
-    private final CompletionsUsage usage;
+    private CompletionsUsage usage;
 
     /*
      * An update to the collection of completion choices associated with this completions response.
@@ -56,29 +56,6 @@ public final class StreamingChatCompletionsUpdate implements JsonSerializable<St
      */
     @Generated
     private final List<StreamingChatChoiceUpdate> choices;
-
-    /**
-     * Creates an instance of StreamingChatCompletionsUpdate class.
-     *
-     * @param id the id value to set.
-     * @param created the created value to set.
-     * @param model the model value to set.
-     * @param usage the usage value to set.
-     * @param choices the choices value to set.
-     */
-    @Generated
-    private StreamingChatCompletionsUpdate(String id, OffsetDateTime created, String model, CompletionsUsage usage,
-        List<StreamingChatChoiceUpdate> choices) {
-        this.id = id;
-        if (created == null) {
-            this.created = 0L;
-        } else {
-            this.created = created.toEpochSecond();
-        }
-        this.model = model;
-        this.usage = usage;
-        this.choices = choices;
-    }
 
     /**
      * Get the id property: A unique identifier associated with this chat completions response.
@@ -154,8 +131,8 @@ public final class StreamingChatCompletionsUpdate implements JsonSerializable<St
         jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeLongField("created", this.created);
         jsonWriter.writeStringField("model", this.model);
-        jsonWriter.writeJsonField("usage", this.usage);
         jsonWriter.writeArrayField("choices", this.choices, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("usage", this.usage);
         return jsonWriter.writeEndObject();
     }
 
@@ -174,8 +151,8 @@ public final class StreamingChatCompletionsUpdate implements JsonSerializable<St
             String id = null;
             OffsetDateTime created = null;
             String model = null;
-            CompletionsUsage usage = null;
             List<StreamingChatChoiceUpdate> choices = null;
+            CompletionsUsage usage = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -185,15 +162,39 @@ public final class StreamingChatCompletionsUpdate implements JsonSerializable<St
                     created = OffsetDateTime.ofInstant(Instant.ofEpochSecond(reader.getLong()), ZoneOffset.UTC);
                 } else if ("model".equals(fieldName)) {
                     model = reader.getString();
-                } else if ("usage".equals(fieldName)) {
-                    usage = CompletionsUsage.fromJson(reader);
                 } else if ("choices".equals(fieldName)) {
                     choices = reader.readArray(reader1 -> StreamingChatChoiceUpdate.fromJson(reader1));
+                } else if ("usage".equals(fieldName)) {
+                    usage = CompletionsUsage.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new StreamingChatCompletionsUpdate(id, created, model, usage, choices);
+            StreamingChatCompletionsUpdate deserializedStreamingChatCompletionsUpdate
+                = new StreamingChatCompletionsUpdate(id, created, model, choices);
+            deserializedStreamingChatCompletionsUpdate.usage = usage;
+            return deserializedStreamingChatCompletionsUpdate;
         });
+    }
+
+    /**
+     * Creates an instance of StreamingChatCompletionsUpdate class.
+     *
+     * @param id the id value to set.
+     * @param created the created value to set.
+     * @param model the model value to set.
+     * @param choices the choices value to set.
+     */
+    @Generated
+    private StreamingChatCompletionsUpdate(String id, OffsetDateTime created, String model,
+        List<StreamingChatChoiceUpdate> choices) {
+        this.id = id;
+        if (created == null) {
+            this.created = 0L;
+        } else {
+            this.created = created.toEpochSecond();
+        }
+        this.model = model;
+        this.choices = choices;
     }
 }

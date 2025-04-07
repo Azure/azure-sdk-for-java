@@ -17,7 +17,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The ChatCompletionsOptions model.
+ * The configuration information for a chat completions request.
+ * Completions support a wide variety of tasks and generate text that continues from or "completes"
+ * provided prompt data.
  */
 @Fluent
 public final class ChatCompletionsOptions implements JsonSerializable<ChatCompletionsOptions> {
@@ -664,13 +666,17 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
     }
 
     /*
-     * The ChatCompletionsOptions model
+     * The configuration information for a chat completions request.
+     * Completions support a wide variety of tasks and generate text that continues from or "completes"
+     * provided prompt data.
      */
     @Generated
     private Map<String, BinaryData> additionalProperties;
 
     /**
-     * Get the additionalProperties property: The ChatCompletionsOptions model.
+     * Get the additionalProperties property: The configuration information for a chat completions request.
+     * Completions support a wide variety of tasks and generate text that continues from or "completes"
+     * provided prompt data.
      *
      * @return the additionalProperties value.
      */
@@ -680,7 +686,9 @@ public final class ChatCompletionsOptions implements JsonSerializable<ChatComple
     }
 
     /**
-     * Set the additionalProperties property: The ChatCompletionsOptions model.
+     * Set the additionalProperties property: The configuration information for a chat completions request.
+     * Completions support a wide variety of tasks and generate text that continues from or "completes"
+     * provided prompt data.
      *
      * @param additionalProperties the additionalProperties value to set.
      * @return the ChatCompletionsOptions object itself.
