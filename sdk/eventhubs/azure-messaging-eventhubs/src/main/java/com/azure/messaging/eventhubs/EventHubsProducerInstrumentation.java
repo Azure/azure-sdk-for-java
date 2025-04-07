@@ -20,6 +20,8 @@ import static com.azure.messaging.eventhubs.implementation.instrumentation.Instr
 import static com.azure.messaging.eventhubs.implementation.instrumentation.OperationName.SEND;
 
 class EventHubsProducerInstrumentation {
+    public static final EventHubsProducerInstrumentation NOP_INSTANCE
+        = new EventHubsProducerInstrumentation(null, null, "NOP_HOST", "NOP_ENTITY");
     private final EventHubsTracer tracer;
     private final EventHubsMetricsProvider meter;
 

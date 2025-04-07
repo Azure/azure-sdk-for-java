@@ -14,8 +14,11 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import reactor.core.Disposable;
+import reactor.core.publisher.MonoSink;
 import reactor.test.StepVerifier;
 import reactor.test.publisher.TestPublisher;
+import reactor.util.context.Context;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -23,6 +26,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.LongConsumer;
 import java.util.function.Supplier;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -107,9 +111,9 @@ public class EventDataAggregatorTest {
         StepVerifier.create(aggregator).then(() -> {
             publisher.next(event1, event2, event3);
         })
-            .expectNextMatches(c -> c.getBatch() == batch)
+            .expectNext(batch)
             .then(() -> publisher.complete())
-            .expectNextMatches(c -> c.getBatch() == batch2)
+            .expectNext(batch2)
             .expectComplete()
             .verify(Duration.ofSeconds(10));
     }
@@ -145,10 +149,7 @@ public class EventDataAggregatorTest {
         StepVerifier.create(aggregator).then(() -> {
             publisher.next(event1, event2);
             publisher.error(testException);
-        })
-            .expectNextMatches(c -> c.getBatch() == batch)
-            .expectErrorMatches(e -> e.equals(testException))
-            .verify(Duration.ofSeconds(10));
+        }).expectNext(batch).expectErrorMatches(e -> e.equals(testException)).verify(Duration.ofSeconds(10));
 
         // Verify that these events were added to the batch.
         assertEquals(2, batchEvents.size());
@@ -197,10 +198,47 @@ public class EventDataAggregatorTest {
         StepVerifier.create(aggregator).then(() -> {
             publisher.next(event1);
             publisher.next(event2);
-        }).thenAwait(waitTime).assertNext(c -> {
-            assertEquals(c.getBatch(), batch);
+        }).thenAwait(waitTime).assertNext(b -> {
+            assertEquals(b, batch);
             assertEquals(2, batchEvents.size());
         }).thenCancel().verify();
+    }
+
+    /**
+     * Tests that it pushes partial batches downstream when flush signal arrives.
+     */
+    @Test
+    public void pushesBatchesOnFlushSignal() {
+        // Arrange
+        final List<EventData> batchEvents = new ArrayList<>();
+        setupBatchMock(batch, batchEvents, event1, event2);
+
+        final Duration waitTime = Duration.ofSeconds(30);
+        final BufferedProducerClientOptions options = new BufferedProducerClientOptions();
+        options.setMaxWaitTime(waitTime);
+
+        final AtomicBoolean first = new AtomicBoolean();
+        final Supplier<EventDataBatch> supplier = () -> {
+            if (first.compareAndSet(false, true)) {
+                return batch;
+            } else {
+                return batch2;
+            }
+        };
+
+        final TestPublisher<EventData> publisher = TestPublisher.createCold();
+        final EventDataAggregator aggregator
+            = new EventDataAggregator(publisher.flux(), supplier, NAMESPACE, options, PARTITION_ID);
+
+        // Act & Assert
+        StepVerifier.create(aggregator).then(() -> {
+            publisher.next(event1, event2, new FlushSignal(new NopMonoSink()));
+        }).expectNext(batch).thenCancel().verify(Duration.ofSeconds(10));
+
+        // Verify that exactly two expected events were added to the batch.
+        assertEquals(2, batchEvents.size());
+        assertTrue(batchEvents.contains(event1));
+        assertTrue(batchEvents.contains(event2));
     }
 
     /**
@@ -275,9 +313,9 @@ public class EventDataAggregatorTest {
 
         final long request = 1L;
 
-        StepVerifier.create(aggregator, request).then(() -> publisher.next(event1)).assertNext(c -> {
-            assertEquals(1, c.getBatch().getCount());
-            assertTrue(c.getBatch().getEvents().contains(event1));
+        StepVerifier.create(aggregator, request).then(() -> publisher.next(event1)).assertNext(b -> {
+            assertEquals(1, b.getCount());
+            assertTrue(b.getEvents().contains(event1));
         }).expectNoEvent(waitTime).thenCancel().verify();
 
         publisher.assertMaxRequested(request);
@@ -307,5 +345,40 @@ public class EventDataAggregatorTest {
             return resultSet;
         });
         when(batch.getCount()).thenAnswer(invocation -> resultSet.size());
+    }
+
+    static final class NopMonoSink implements MonoSink<Void> {
+        @Override
+        public void success() {
+        }
+
+        @Override
+        public void success(Void v) {
+
+        }
+
+        @Override
+        public void error(Throwable e) {
+        }
+
+        @Override
+        public Context currentContext() {
+            return Context.empty();
+        }
+
+        @Override
+        public MonoSink<Void> onRequest(LongConsumer consumer) {
+            return this;
+        }
+
+        @Override
+        public MonoSink<Void> onCancel(Disposable d) {
+            return this;
+        }
+
+        @Override
+        public MonoSink<Void> onDispose(Disposable d) {
+            return this;
+        }
     }
 }
