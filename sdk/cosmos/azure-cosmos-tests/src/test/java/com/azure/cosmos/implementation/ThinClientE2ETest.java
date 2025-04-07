@@ -16,7 +16,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class ThinClientE2ETest extends TestSuiteBase {
+public class ThinClientE2ETest extends com.azure.cosmos.rx.TestSuiteBase {
     @Test(groups = {"thinclient"})
     public void testThinclientHttp2() {
         try {
