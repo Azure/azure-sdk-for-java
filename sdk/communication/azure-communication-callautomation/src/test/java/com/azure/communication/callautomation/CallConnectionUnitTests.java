@@ -20,7 +20,9 @@ import com.azure.communication.callautomation.models.RemoveParticipantOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantResult;
 import com.azure.communication.callautomation.models.TransferCallResult;
 import com.azure.communication.callautomation.models.TransferCallToParticipantOptions;
+import com.azure.communication.callautomation.models.CustomCallingContext.SipHeaderPrefix;
 import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
@@ -151,6 +153,19 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
+    public void transferToParticipantCall_PhoneNumberIdentifier() {
+        CallConnection callConnection
+            = getCallAutomationClient(new ArrayList<>(Collections.singletonList(new SimpleEntry<>(
+                serializeObject(new TransferCallResponseInternal().setOperationContext(CALL_OPERATION_CONTEXT)), 202))))
+                    .getCallConnection(CALL_CONNECTION_ID);
+        TransferCallResult transferCallResult
+            = callConnection.transferCallToParticipant(new PhoneNumberIdentifier(CALL_PSTN_TARGET_ID));
+
+        assertNotNull(transferCallResult);
+        assertEquals(CALL_OPERATION_CONTEXT, transferCallResult.getOperationContext());
+    }
+
+    @Test
     public void transferToParticipantCallWithResponse() {
         CallConnection callConnection
             = getCallAutomationClient(new ArrayList<>(Collections.singletonList(new SimpleEntry<>(
@@ -159,6 +174,45 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
         Response<TransferCallResult> transferCallResultResponse = callConnection.transferCallToParticipantWithResponse(
             new TransferCallToParticipantOptions(new CommunicationUserIdentifier(CALL_TARGET_ID))
                 .setOperationContext(CALL_OPERATION_CONTEXT),
+            Context.NONE);
+
+        assertNotNull(transferCallResultResponse);
+        assertEquals(202, transferCallResultResponse.getStatusCode());
+        assertNotNull(transferCallResultResponse.getValue());
+    }
+
+    @Test
+    public void transferToParticipantCallWithResponse_PhoneNumberIdentifier_XMSHeader() {
+        CallConnection callConnection
+            = getCallAutomationClient(new ArrayList<>(Collections.singletonList(new SimpleEntry<>(
+                serializeObject(new TransferCallResponseInternal().setOperationContext(CALL_OPERATION_CONTEXT)), 202))))
+                    .getCallConnection(CALL_CONNECTION_ID);
+        TransferCallToParticipantOptions transferCallToParticipantOptions =
+            new TransferCallToParticipantOptions(new PhoneNumberIdentifier(CALL_PSTN_TARGET_ID))
+                .setOperationContext(CALL_OPERATION_CONTEXT);
+        transferCallToParticipantOptions.getCustomCallingContext().addSipX("Test-Sip-Header", "Test-Sip-Value", SipHeaderPrefix.XMSCustom);
+        Response<TransferCallResult> transferCallResultResponse = callConnection.transferCallToParticipantWithResponse(
+            transferCallToParticipantOptions,
+            Context.NONE);
+
+
+        assertNotNull(transferCallResultResponse);
+        assertEquals(202, transferCallResultResponse.getStatusCode());
+        assertNotNull(transferCallResultResponse.getValue());
+    }
+
+    @Test
+    public void transferToParticipantCall_WithResponsePhoneNumberIdentifier_XHeader() {
+        CallConnection callConnection
+            = getCallAutomationClient(new ArrayList<>(Collections.singletonList(new SimpleEntry<>(
+                serializeObject(new TransferCallResponseInternal().setOperationContext(CALL_OPERATION_CONTEXT)), 202))))
+                    .getCallConnection(CALL_CONNECTION_ID);
+        TransferCallToParticipantOptions transferCallToParticipantOptions =
+            new TransferCallToParticipantOptions(new PhoneNumberIdentifier(CALL_PSTN_TARGET_ID))
+                .setOperationContext(CALL_OPERATION_CONTEXT);
+        transferCallToParticipantOptions.getCustomCallingContext().addSipX("Test-Sip-Header", "Test-Sip-Value", SipHeaderPrefix.X);
+        Response<TransferCallResult> transferCallResultResponse = callConnection.transferCallToParticipantWithResponse(
+            transferCallToParticipantOptions,
             Context.NONE);
 
         assertNotNull(transferCallResultResponse);
