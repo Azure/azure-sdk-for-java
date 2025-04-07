@@ -33,6 +33,7 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.cosmos.util.CosmosPagedIterable;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -118,6 +119,14 @@ public class FabricChangeFeedTest extends FabricTestSuiteBase {
         deleteCollection(this.createdContainer);
         assertThat(this.client).isNotNull();
         this.client.close();
+    }
+
+    @Test(groups = { "fabric-test" })
+    public void testChangeFeed_fromBeginning() {
+        CosmosPagedIterable<Document> documents = createdContainer.queryChangeFeed(CosmosChangeFeedRequestOptions
+            .createForProcessingFromBeginning(FeedRange.forFullRange()), Document.class);
+        List<FeedResponse<Document>> collect = documents.streamByPage().collect(Collectors.toList());
+        assertThat(collect).hasSize(1);
     }
 
     @Test(groups = { "fabric-test" }, timeOut = TIMEOUT)
