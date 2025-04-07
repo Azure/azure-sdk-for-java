@@ -1722,8 +1722,9 @@ public class PageBlobApiTests extends BlobTestBase {
         assertTrue(aadBlob.exists());
     }
 
-    @Test
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
+    @Test
+    @LiveOnly
     public void uploadPagesFromUriSourceBearerTokenFilesSource() throws IOException {
         BlobServiceClient blobServiceClient = getOAuthServiceClient();
 
@@ -1734,7 +1735,7 @@ public class PageBlobApiTests extends BlobTestBase {
 
         // Set up source URL with bearer token
         String shareName = generateContainerName();
-        String sourceUrl = setupFileShareResourcesWithoutDependency(data, shareName);
+        String sourceUrl = createFileAndDirectoryWithoutFileShareDependency(data, shareName);
 
         PageBlobClient destBlob = cc.getBlobClient(generateBlobName()).getPageBlobClient();
         destBlob.create(Constants.KB);
@@ -1751,6 +1752,6 @@ public class PageBlobApiTests extends BlobTestBase {
         TestUtils.assertArraysEqual(data, downloadedData.toByteArray());
 
         //cleanup
-        deleteShare(shareName);
+        manageShareResourceWithoutDependency(shareName, true);
     }
 }

@@ -937,7 +937,8 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
     @Test
-    public void appendBlockFromUrlSourceBearerTokenFileSource() throws IOException {
+    @LiveOnly
+    public void appendBlockFromUriSourceBearerTokenFileSource() throws IOException {
         BlobServiceAsyncClient blobServiceAsyncClient = getOAuthServiceAsyncClient();
         BlobContainerAsyncClient containerAsyncClient
             = blobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
@@ -946,7 +947,7 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
 
         // Set up source URL with bearer token
         String shareName = generateContainerName();
-        String sourceUrl = setupFileShareResourcesWithoutDependency(data, shareName);
+        String sourceUrl = createFileAndDirectoryWithoutFileShareDependency(data, shareName);
 
         AppendBlobAsyncClient destBlob
             = containerAsyncClient.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
@@ -964,7 +965,7 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
 
         //cleanup
-        deleteShare(shareName);
+        manageShareResourceWithoutDependency(shareName, true);
     }
 
 }

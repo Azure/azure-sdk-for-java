@@ -530,9 +530,9 @@ public class AppendBlobApiTests extends BlobTestBase {
     public void appendBlockFromURLSourceErrorAndStatusCodeNewTest() {
         AppendBlobClient destBlob = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
         destBlob.createIfNotExists();
-
+    
         BlobStorageException e = assertThrows(BlobStorageException.class, () -> destBlob.appendBlockFromUrl(bc.getBlobUrl(), new BlobRange(0, (long) PageBlobClient.PAGE_BYTES)));
-
+    
         assertTrue(e.getStatusCode() == 409);
         assertTrue(e.getServiceMessage().contains("PublicAccessNotPermitted"));
         assertTrue(e.getServiceMessage().contains("Public access is not permitted on this storage account."));
@@ -892,10 +892,9 @@ public class AppendBlobApiTests extends BlobTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
     @Test
-    public void appendBlockFromUrlSourceBearerTokenFileSource() throws IOException {
-
+    @LiveOnly
+    public void appendBlockFromUriSourceBearerTokenFileSource() throws IOException {
         BlobServiceClient blobServiceClient = getOAuthServiceClient();
-
         BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(generateContainerName());
         containerClient.create();
 
@@ -907,7 +906,7 @@ public class AppendBlobApiTests extends BlobTestBase {
 
         // Set up source URL with bearer token
         String shareName = generateContainerName();
-        String sourceUrl = setupFileShareResourcesWithoutDependency(data, shareName);
+        String sourceUrl = createFileAndDirectoryWithoutFileShareDependency(data, shareName);
 
         AppendBlobAppendBlockFromUrlOptions appendBlobAppendBlockFromUrlOptions
             = new AppendBlobAppendBlockFromUrlOptions(sourceUrl);
@@ -923,17 +922,6 @@ public class AppendBlobApiTests extends BlobTestBase {
         TestUtils.assertArraysEqual(data, downloadedData.toByteArray());
 
         //cleanup
-        deleteShare(shareName);
-
-    }
-
-    @Test
-    public void getFileHTTPRequests() throws IOException {
-        byte[] data = getRandomByteArray(Constants.KB);
-        String shareName = generateContainerName();
-        setupFileShareResourcesWithoutDependency(data, shareName);
-
-        //cleanup
-        deleteShare(shareName);
+        manageShareResourceWithoutDependency(shareName, true);
     }
 }

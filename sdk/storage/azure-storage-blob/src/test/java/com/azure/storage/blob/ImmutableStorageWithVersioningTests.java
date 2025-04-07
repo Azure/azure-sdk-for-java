@@ -16,7 +16,6 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.json.JsonProviders;
-import com.azure.json.JsonSerializable;
 import com.azure.json.JsonWriter;
 import com.azure.storage.blob.models.BlobContainerItem;
 import com.azure.storage.blob.models.BlobContainerProperties;
@@ -92,10 +91,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ImmutableStorageWithVersioningTests extends BlobTestBase {
     private static String vlwContainerName;
-    private static final String ACCOUNT_NAME = ENVIRONMENT.getVersionedAccount().getName();
-    private static final String RESOURCE_GROUP_NAME = ENVIRONMENT.getResourceGroupName();
-    private static final String SUBSCRIPTION_ID = ENVIRONMENT.getSubscriptionId();
-    private static final String API_VERSION = "2021-04-01";
     private static final TokenCredential CREDENTIAL = getTokenCredential(ENVIRONMENT.getTestMode());
     private static final BearerTokenAuthenticationPolicy CREDENTIAL_POLICY
         = new BearerTokenAuthenticationPolicy(CREDENTIAL, "https://management.azure.com/.default");
@@ -147,89 +142,6 @@ public class ImmutableStorageWithVersioningTests extends BlobTestBase {
             .getBlobContainerClient(testResourceNamer.recordValueFromConfig(vlwContainerName));
         vlwBlob = vlwContainer.getBlobClient(generateBlobName());
         vlwBlob.upload(new ByteArrayInputStream(new byte[0]), 0);
-    }
-
-    public static final class Body implements JsonSerializable<Body> {
-        private String id;
-        private String name;
-        private String type;
-        private Properties properties;
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public void setName(String name) {
-            this.name = name;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public void setType(String type) {
-            this.type = type;
-        }
-
-        public Properties getProperties() {
-            return properties;
-        }
-
-        public void setProperties(Properties properties) {
-            this.properties = properties;
-        }
-
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject()
-                .writeStringField("id", this.id)
-                .writeStringField("name", this.name)
-                .writeStringField("type", this.type)
-                .writeJsonField("properties", this.properties);
-
-            return jsonWriter.writeEndObject();
-        }
-    }
-
-    public static final class Properties implements JsonSerializable<Properties> {
-        private ImmutableStorageWithVersioning immutableStorageWithVersioning;
-
-        public void setImmutableStorageWithVersioning(ImmutableStorageWithVersioning immutableStorageWithVersioning) {
-            this.immutableStorageWithVersioning = immutableStorageWithVersioning;
-        }
-
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject()
-                .writeJsonField("immutableStorageWithVersioning", this.immutableStorageWithVersioning);
-
-            return jsonWriter.writeEndObject();
-        }
-    }
-
-    public static final class ImmutableStorageWithVersioning
-        implements JsonSerializable<ImmutableStorageWithVersioning> {
-        private boolean enabled;
-
-        public boolean isEnabled() {
-            return enabled;
-        }
-
-        public void setEnabled(boolean enabled) {
-            this.enabled = enabled;
-        }
-
-        public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-            jsonWriter.writeStartObject().writeBooleanField("enabled", this.enabled);
-
-            return jsonWriter.writeEndObject();
-        }
     }
 
     @AfterAll

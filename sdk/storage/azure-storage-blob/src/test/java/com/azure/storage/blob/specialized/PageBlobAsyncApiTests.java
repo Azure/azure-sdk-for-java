@@ -1807,8 +1807,9 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         StepVerifier.create(aadBlob.exists()).expectNext(true).verifyComplete();
     }
 
-    @Test
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
+    @Test
+    @LiveOnly
     public void uploadPagesFromUriSourceBearerTokenFilesSource() throws IOException {
         BlobServiceAsyncClient blobServiceAsyncClient = getOAuthServiceAsyncClient();
         BlobContainerAsyncClient containerAsyncClient
@@ -1818,7 +1819,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
 
         // Set up source URL with bearer token
         String shareName = generateContainerName();
-        String sourceUrl = setupFileShareResourcesWithoutDependency(data, shareName);
+        String sourceUrl = createFileAndDirectoryWithoutFileShareDependency(data, shareName);
 
         PageBlobAsyncClient destBlob
             = containerAsyncClient.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
@@ -1835,8 +1836,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
 
         //cleanup
-        deleteShare(shareName);
-
+        manageShareResourceWithoutDependency(shareName, true);
     }
 
 }

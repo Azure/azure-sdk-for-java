@@ -2699,6 +2699,7 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
     @Test
+    @LiveOnly
     public void stageBlockFromUriSourceBearerTokenFilesSource() throws IOException {
         BlobServiceAsyncClient blobServiceAsyncClient = getOAuthServiceAsyncClient();
         BlobContainerAsyncClient containerAsyncClient
@@ -2708,7 +2709,7 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
 
         // Set up source URL with bearer token
         String shareName = generateContainerName();
-        String sourceUrl = setupFileShareResourcesWithoutDependency(data, shareName);
+        String sourceUrl = createFileAndDirectoryWithoutFileShareDependency(data, shareName);
 
         BlockBlobAsyncClient destBlob
             = containerAsyncClient.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
@@ -2726,11 +2727,12 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
 
         //cleanup
-        deleteShare(shareName);
+        manageShareResourceWithoutDependency(shareName, true);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
     @Test
+    @LiveOnly
     public void uploadFromUriAsyncSourceBearerTokenFilesSource() throws IOException {
         BlobServiceAsyncClient blobServiceAsyncClient = getOAuthServiceAsyncClient();
         BlobContainerAsyncClient containerAsyncClient
@@ -2740,7 +2742,7 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
 
         // Set up source URL with bearer token
         String shareName = generateContainerName();
-        String sourceUrl = setupFileShareResourcesWithoutDependency(data, shareName);
+        String sourceUrl = createFileAndDirectoryWithoutFileShareDependency(data, shareName);
 
         BlockBlobAsyncClient destBlob
             = containerAsyncClient.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
@@ -2757,7 +2759,7 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
 
         //cleanup
-        deleteShare(shareName);
+        manageShareResourceWithoutDependency(shareName, true);
     }
 
 }
