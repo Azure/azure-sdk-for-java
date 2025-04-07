@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.messaging.servicebus.core;
 
 import com.azure.core.credential.TokenCredential;

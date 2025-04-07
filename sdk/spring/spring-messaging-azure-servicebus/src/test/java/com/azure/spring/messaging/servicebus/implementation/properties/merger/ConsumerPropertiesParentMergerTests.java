@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.spring.messaging.servicebus.implementation.properties.merger;
 
 import com.azure.core.amqp.AmqpTransportType;
@@ -18,7 +21,6 @@ public class ConsumerPropertiesParentMergerTests {
     void childNotProvidedShouldUseParent() {
         ConsumerProperties child = new ConsumerProperties();
         child.setSessionEnabled(true);
-        String customEndpoint = "https://test.address.com:443";
         NamespaceProperties parent = new NamespaceProperties();
         parent.setConnectionString("parent-connection-str");
         parent.getProxy().setHostname("parent-hostname");
