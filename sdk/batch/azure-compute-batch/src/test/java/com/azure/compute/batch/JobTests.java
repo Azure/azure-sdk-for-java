@@ -136,14 +136,14 @@ public class JobTests extends BatchClientTestBase {
             job = batchClient.getJob(jobId);
             Assertions
                 .assertTrue(job.getState() == BatchJobState.DISABLED || job.getState() == BatchJobState.DISABLING);
-            Assertions.assertEquals(OnAllBatchTasksComplete.NO_ACTION, job.getOnAllTasksComplete());
+            Assertions.assertEquals(OnAllBatchTasksComplete.NO_ACTION, job.getAllTasksCompleteMode());
 
             // UPDATE
             BatchJobUpdateContent jobUpdateContent = new BatchJobUpdateContent();
-            jobUpdateContent.setOnAllTasksComplete(OnAllBatchTasksComplete.TERMINATE_JOB);
+            jobUpdateContent.setAllTasksCompleteMode(BatchAllTasksCompleteMode.TERMINATE_JOB);
             batchClient.updateJob(jobId, jobUpdateContent);
             job = batchClient.getJob(jobId);
-            Assertions.assertEquals(OnAllBatchTasksComplete.TERMINATE_JOB, job.getOnAllTasksComplete());
+            Assertions.assertEquals(OnAllBatchTasksComplete.TERMINATE_JOB, job.getAllTasksCompleteMode());
 
             batchClient.enableJob(jobId);
             job = batchClient.getJob(jobId);
@@ -175,7 +175,7 @@ public class JobTests extends BatchClientTestBase {
         String jobId = getStringIdWithUserNamePrefix("-Job-canCRUDWithPoolNodeComm");
         BatchNodeCommunicationMode targetMode = BatchNodeCommunicationMode.SIMPLIFIED;
 
-        ImageReference imgRef = new ImageReference().setPublisher("Canonical")
+        BatchImageReference imgRef = new BatchImageReference().setPublisher("Canonical")
             .setOffer("UbuntuServer")
             .setSku("18.04-LTS")
             .setVersion("latest");
