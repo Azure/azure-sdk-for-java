@@ -15,7 +15,7 @@ import io.clientcore.core.http.annotations.PathParam;
 import io.clientcore.core.http.annotations.QueryParam;
 import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
 import io.clientcore.core.http.models.HttpMethod;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.http.ContentType;
@@ -47,18 +47,19 @@ public final class TestInterfaceClientImpl {
         }
 
         @HttpRequestInformation(method = HttpMethod.POST, path = "my/uri/path", expectedStatusCodes = { 200 })
-        Response<Void> testMethod(@BodyParam("application/octet-stream") ByteBuffer request,
+        Response<Void> testMethod(@HostParam("uri") String uri,
+            @BodyParam("application/octet-stream") ByteBuffer request,
                                   @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") Long contentLength);
 
         @HttpRequestInformation(method = HttpMethod.POST, path = "my/uri/path", expectedStatusCodes = { 200 })
-        Response<Void> testMethod(@BodyParam("application/octet-stream") BinaryData data,
+        Response<Void> testMethod(@HostParam("uri") String uri, @BodyParam("application/octet-stream") BinaryData data,
                                   @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") Long contentLength);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         Response<Void> testListNext(@PathParam(value = "nextLink", encoded = true) String nextLink);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "my/uri/path", expectedStatusCodes = { 200 })
-        Void testMethodReturnsVoid();
+        Void testMethodReturnsVoid(@HostParam("uri") String uri);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "kv/{key}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
@@ -66,41 +67,41 @@ public final class TestInterfaceClientImpl {
                              @HeaderParam("Sync-Token") String syncToken);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "foos", expectedStatusCodes = { 200 })
-        Response<FooListResult> listFooListResult(@HostParam("uri") String uri, RequestOptions requestOptions);
+        Response<FooListResult> listFooListResult(@HostParam("uri") String uri, RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         Response<FooListResult> listNextFooListResult(@PathParam(value = "nextLink", encoded = true) String nextLink,
-                                                      RequestOptions requestOptions);
+                                                      RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "foos", expectedStatusCodes = { 200 })
         Response<List<Foo>> listFoo(@HostParam("uri") String uri, @QueryParam(value = "tags", multipleQueryParams =
             true) List<String> tags, @QueryParam(value = "tags2", multipleQueryParams = true) List<String> tags2,
-            RequestOptions requestOptions);
+                                    RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         Response<List<Foo>> listNextFoo(@PathParam(value = "nextLink", encoded = true) String nextLink,
-                                        RequestOptions requestOptions);
+                                        RequestContext requestContext);
         // HttpClientTests
-        // Need to add RequestOptions to specify ResponseBodyMode, which is otherwise provided by convenience methods
+        // Need to add RequestContext to specify ResponseBodyMode, which is otherwise provided by convenience methods
         @SuppressWarnings({ "unchecked", "cast" })
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = {200})
-        default HttpBinJSON putConvenience(String uri, int putBody, RequestOptions options) {
-            return putResponse(uri, putBody, options).getValue();
+        default HttpBinJSON putConvenience(String uri, int putBody, RequestContext requestContext) {
+            return putResponse(uri, putBody, requestContext).getValue();
         }
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 200 })
         Response<HttpBinJSON> putResponse(@HostParam("uri") String uri,
-                                          @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody, RequestOptions options);
+                                          @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody, RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.POST, path = "stream", expectedStatusCodes = { 200 })
         default HttpBinJSON postStreamConvenience(@HostParam("uri") String uri,
-                                                  @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody, RequestOptions options) {
-            return postStreamResponse(uri, putBody, options).getValue();
+                                                  @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody, RequestContext requestContext) {
+            return postStreamResponse(uri, putBody, requestContext).getValue();
         }
 
         @HttpRequestInformation(method = HttpMethod.POST, path = "stream", expectedStatusCodes = { 200 })
         Response<HttpBinJSON> postStreamResponse(@HostParam("uri") String uri,
-                                                 @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody, RequestOptions options);
+                                                 @BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody, RequestContext requestContext);
 
         // Service 1
         @HttpRequestInformation(method = HttpMethod.GET, path = "bytes/100", expectedStatusCodes = {200})
@@ -134,5 +135,63 @@ public final class TestInterfaceClientImpl {
         @HttpRequestInformation(method = HttpMethod.GET, path = "anything", expectedStatusCodes = { 200 })
         HttpBinJSON getAnythingWithEncoded(@HostParam("uri") String uri,
             @QueryParam(value = "a", encoded = true) String a, @QueryParam("b") int b);
+
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
+        HttpBinJSON putWithNoContentTypeAndStringBody(@HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
+
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
+        HttpBinJSON putWithNoContentTypeAndByteArrayBody(@HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] body);
+
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
+        HttpBinJSON putWithHeaderApplicationJsonContentTypeAndStringBody(@HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_JSON) String body);
+
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", headers = { "Content-Type: application/json" })
+        HttpBinJSON putWithHeaderApplicationJsonContentTypeAndByteArrayBody(@HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_JSON) byte[] body);
+
+        @HttpRequestInformation(
+            method = HttpMethod.PUT,
+            path = "put",
+            headers = { "Content-Type: application/json; charset=utf-8" })
+        HttpBinJSON putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(@HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
+
+        @HttpRequestInformation(
+            method = HttpMethod.PUT,
+            path = "put",
+            headers = { "Content-Type: application/octet-stream" }, expectedStatusCodes = { 200 })
+        Response<HttpBinJSON> putWithHeaderApplicationOctetStreamContentTypeAndStringBody(@HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
+
+        @HttpRequestInformation(
+            method = HttpMethod.PUT,
+            path = "put",
+            headers = { "Content-Type: application/octet-stream" })
+        HttpBinJSON putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(@HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] body);
+
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 200 })
+        Response<HttpBinJSON> putWithBodyParamApplicationJsonContentTypeAndStringBody(@HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_JSON) String body);
+
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
+        HttpBinJSON putWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBody(@HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_JSON + "; charset=utf-8") String body);
+
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
+        HttpBinJSON putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(@HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_JSON) byte[] body);
+
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
+        HttpBinJSON putWithBodyParamApplicationOctetStreamContentTypeAndStringBody(@HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
+
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "put")
+        HttpBinJSON putWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBody(@HostParam("uri") String uri,
+            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] body);
+
     }
 }

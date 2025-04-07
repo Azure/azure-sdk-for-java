@@ -3,10 +3,10 @@
 
 package io.clientcore.core.instrumentation;
 
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
@@ -152,14 +152,15 @@ public class TelemetryJavaDocCodeSnippets {
         SampleClient client = new SampleClientBuilder().build();
 
         // Propagating context implicitly is preferred way in synchronous code.
-        // However, in asynchronous code, context may need to be propagated explicitly using RequestOptions
+        // However, in asynchronous code, context may need to be propagated explicitly using RequestContext
         // and explicit io.clientcore.core.util.Context.
 
-        RequestOptions options = new RequestOptions()
-            .setInstrumentationContext(Instrumentation.createInstrumentationContext(span));
+        RequestContext context = RequestContext.builder()
+            .setInstrumentationContext(Instrumentation.createInstrumentationContext(span))
+            .build();
 
         // run on another thread - all telemetry will be correlated with the span created above
-        client.clientCall(options);
+        client.clientCall(context);
 
         // END: io.clientcore.core.telemetry.correlationwithexplicitcontext
     }
@@ -179,39 +180,37 @@ public class TelemetryJavaDocCodeSnippets {
     }
 
     static class SampleClient {
-        private static final String LIBRARY_NAME = "contoso.sample";
+        private static final String SDK_NAME = "contoso.sample";
         private final Instrumentation instrumentation;
         private final HttpPipeline httpPipeline;
         private final String serviceEndpoint;
 
         SampleClient(InstrumentationOptions instrumentationOptions, HttpPipeline httpPipeline) {
             serviceEndpoint = "https://contoso.com";
-            LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions(LIBRARY_NAME)
+            SdkInstrumentationOptions sdkOptions = new SdkInstrumentationOptions(SDK_NAME)
                 .setEndpoint(serviceEndpoint);
             this.httpPipeline = httpPipeline;
-            this.instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions);
+            this.instrumentation = Instrumentation.create(instrumentationOptions, sdkOptions);
         }
 
         public Response<?> clientCall() {
             return this.clientCallWithResponse(null);
         }
 
-        @SuppressWarnings("try")
-        public Response<?> clientCallWithResponse(RequestOptions options) {
-            return instrumentation.instrumentWithResponse("Sample.call", options, this::clientCallWithResponseImpl);
+        public Response<?> clientCallWithResponse(RequestContext context) {
+            return instrumentation.instrumentWithResponse("Sample.call", context, this::clientCallWithResponseImpl);
         }
 
-        @SuppressWarnings("try")
-        public void clientCall(RequestOptions options) {
-            instrumentation.instrument("Sample.call", options, this::clientCallImpl);
+        public void clientCall(RequestContext context) {
+            instrumentation.instrument("Sample.call", context, this::clientCallImpl);
         }
 
-        private Response<?> clientCallWithResponseImpl(RequestOptions options) {
-            return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint).setRequestOptions(options));
+        private Response<?> clientCallWithResponseImpl(RequestContext context) {
+            return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint).setContext(context));
         }
 
-        private void clientCallImpl(RequestOptions options) {
-            httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint).setRequestOptions(options));
+        private void clientCallImpl(RequestContext context) {
+            httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint).setContext(context));
         }
     }
 }

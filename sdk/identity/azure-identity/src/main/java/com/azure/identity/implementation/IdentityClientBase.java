@@ -55,7 +55,6 @@ import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.SystemBrowserOptions;
 import com.microsoft.aad.msal4j.TokenProviderResult;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
-import reactor.core.publisher.Mono;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -112,12 +111,8 @@ public abstract class IdentityClientBase {
     static final Pattern SH_PROCESS_ERROR_MESSAGE = Pattern.compile("azd?:.*not found");
     static final String DEFAULT_MAC_LINUX_PATH = "/bin/";
     static final Duration REFRESH_OFFSET = Duration.ofMinutes(5);
-    static final String IDENTITY_ENDPOINT_VERSION = "2019-08-01";
-    static final String MSI_ENDPOINT_VERSION = "2017-09-01";
-    static final String ARC_MANAGED_IDENTITY_ENDPOINT_API_VERSION = "2019-11-01";
     static final String ADFS_TENANT = "adfs";
     static final String HTTP_LOCALHOST = "http://localhost";
-    static final String SERVICE_FABRIC_MANAGED_IDENTITY_API_VERSION = "2019-07-01-preview";
     static final ClientLogger LOGGER = new ClientLogger(IdentityClient.class);
     static final Pattern ACCESS_TOKEN_PATTERN = Pattern.compile("\"accessToken\": \"(.*?)(\"|$)");
     static final Pattern TRAILING_FORWARD_SLASHES = Pattern.compile("/+$");
@@ -396,66 +391,6 @@ public abstract class IdentityClientBase {
             tokenCache.registerCache();
         }
         return publicClientApplication;
-    }
-
-    ConfidentialClientApplication getManagedIdentityConfidentialClient() {
-        String authorityUrl
-            = TRAILING_FORWARD_SLASHES.matcher(options.getAuthorityHost()).replaceAll("") + "/" + tenantId;
-
-        // Temporarily pass in Dummy Client secret and Client ID. until MSal removes its requirements.
-        IClientCredential credential
-            = ClientCredentialFactory.createFromSecret(clientSecret != null ? clientSecret : "dummy-secret");
-        ConfidentialClientApplication.Builder applicationBuilder = ConfidentialClientApplication
-            .builder(clientId == null ? "SYSTEM-ASSIGNED-MANAGED-IDENTITY" : clientId, credential);
-
-        applicationBuilder.instanceDiscovery(false)
-            .validateAuthority(false)
-            .logPii(options.isUnsafeSupportLoggingEnabled());
-
-        try {
-            applicationBuilder = applicationBuilder.authority(authorityUrl);
-        } catch (MalformedURLException e) {
-            throw LOGGER.logExceptionAsWarning(new IllegalStateException(e));
-        }
-
-        if (options.getManagedIdentityType() == null) {
-            throw LOGGER.logExceptionAsError(new CredentialUnavailableException(
-                "Managed Identity type not configured, authentication not available."));
-        }
-        applicationBuilder.appTokenProvider(appTokenProviderParameters -> {
-            TokenRequestContext trc
-                = new TokenRequestContext().setScopes(new ArrayList<>(appTokenProviderParameters.scopes))
-                    .setClaims(appTokenProviderParameters.claims)
-                    .setTenantId(appTokenProviderParameters.tenantId);
-
-            Mono<AccessToken> accessTokenAsync = getTokenFromTargetManagedIdentity(trc);
-
-            return accessTokenAsync.map(accessToken -> {
-                TokenProviderResult result = new TokenProviderResult();
-                result.setAccessToken(accessToken.getToken());
-                result.setTenantId(trc.getTenantId());
-                result.setExpiresInSeconds(accessToken.getExpiresAt().toEpochSecond());
-                if (accessToken.getRefreshAt() != null) {
-                    result.setRefreshInSeconds(accessToken.getRefreshAt().toEpochSecond());
-                }
-                return result;
-            }).toFuture();
-        });
-
-        initializeHttpPipelineAdapter();
-        if (httpPipelineAdapter != null) {
-            applicationBuilder.httpClient(httpPipelineAdapter);
-        } else {
-            applicationBuilder.proxy(proxyOptionsToJavaNetProxy(options.getProxyOptions()));
-        }
-
-        if (options.getExecutorService() != null) {
-            applicationBuilder.executorService(options.getExecutorService());
-        } else {
-            applicationBuilder.executorService(SharedExecutorService.getInstance());
-        }
-
-        return applicationBuilder.build();
     }
 
     ManagedIdentityApplication getManagedIdentityMsalApplication() {
@@ -914,8 +849,6 @@ public abstract class IdentityClientBase {
     String redactInfo(String input) {
         return ACCESS_TOKEN_PATTERN.matcher(input).replaceAll("****");
     }
-
-    abstract Mono<AccessToken> getTokenFromTargetManagedIdentity(TokenRequestContext tokenRequestContext);
 
     HttpPipeline setupPipeline() {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
