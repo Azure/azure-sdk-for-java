@@ -334,7 +334,7 @@ def generate_typespec_project(
     repo_url: str = "",
     remove_before_regen: bool = False,
     group_id: str = None,
-    version: str = None,
+    api_version: str = None,
     **kwargs,
 ):
 
@@ -384,6 +384,9 @@ def generate_typespec_project(
                 "--local-spec-repo",
                 tsp_dir,
             ]
+            if api_version:
+                tsp_cmd.append("--emitter-options")
+                tsp_cmd.append(f"api-version={api_version}")
 
         if tspconfig_valid:
             check_call(tsp_cmd, sdk_root)
@@ -414,9 +417,6 @@ def generate_typespec_project(
                     # clear existing generated source code, and regenerate
                     drop_changes(sdk_root)
                     remove_generated_source_code(sdk_folder, f"{group_id}.{service}")
-                    _, current_version = set_or_default_version(sdk_root, group_id, module, version=version)
-                    tsp_cmd.append("--emitter-options")
-                    tsp_cmd.append(f'package-version={current_version}')
                     # regenerate
                     check_call(tsp_cmd, sdk_root)
                 succeeded = True
