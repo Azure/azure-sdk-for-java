@@ -9,7 +9,7 @@ import io.clientcore.core.http.models.ServiceVersion;
 /**
  * Service version of AzureAppConfigurationClient.
  */
-public enum AzureAppConfigurationServiceVersion implements ServiceVersion {
+public enum ConfigurationServiceVersion implements ServiceVersion {
     /**
      * Enum value 2023-11-01.
      */
@@ -17,7 +17,7 @@ public enum AzureAppConfigurationServiceVersion implements ServiceVersion {
 
     private final String version;
 
-    AzureAppConfigurationServiceVersion(String version) {
+    ConfigurationServiceVersion(String version) {
         this.version = version;
     }
 
@@ -32,9 +32,9 @@ public enum AzureAppConfigurationServiceVersion implements ServiceVersion {
     /**
      * Gets the latest service version supported by this client library.
      * 
-     * @return The latest {@link AzureAppConfigurationServiceVersion}.
+     * @return The latest {@link ConfigurationServiceVersion}.
      */
-    public static AzureAppConfigurationServiceVersion getLatest() {
+    public static ConfigurationServiceVersion getLatest() {
         return V2023_11_01;
     }
 }

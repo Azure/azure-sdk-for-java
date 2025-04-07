@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.v2.data.appconfiguration.implementation;
 
+import com.azure.v2.data.appconfiguration.ConfigurationClientBuilder;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
@@ -16,8 +17,7 @@ import java.util.Objects;
  * is leveraged in {@link ConfigurationClientCredentials} to generate the correct "Authorization" header value.
  *
  * @see ConfigurationClientCredentials
-// * @see ConfigurationAsyncClient
-// * @see ConfigurationClientBuilder
+ * @see ConfigurationClientBuilder
  */
 public final class ConfigurationCredentialsPolicy implements HttpPipelinePolicy {
     // "Host", "Date", and "x-ms-content-sha256" are required to generate "Authorization" value in

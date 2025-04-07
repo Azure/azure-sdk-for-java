@@ -20,52 +20,58 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 /**
- * Snapshot status.
+ * Enum describing allowed operation states.
  */
-public final class SnapshotStatus implements ExpandableEnum<String>, JsonSerializable<SnapshotStatus> {
-    private static final Map<String, SnapshotStatus> VALUES = new ConcurrentHashMap<>();
+public final class OperationState implements ExpandableEnum<String>, JsonSerializable<OperationState> {
+    private static final Map<String, OperationState> VALUES = new ConcurrentHashMap<>();
 
-    private static final Function<String, SnapshotStatus> NEW_INSTANCE = SnapshotStatus::new;
-
-    /**
-     * Provisioning.
-     */
-    @Metadata(properties = { MetadataProperties.GENERATED })
-    public static final SnapshotStatus PROVISIONING = fromValue("provisioning");
+    private static final Function<String, OperationState> NEW_INSTANCE = OperationState::new;
 
     /**
-     * Ready.
+     * The operation has not started.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public static final SnapshotStatus READY = fromValue("ready");
+    public static final OperationState NOT_STARTED = fromValue("NotStarted");
 
     /**
-     * Archived.
+     * The operation is in progress.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public static final SnapshotStatus ARCHIVED = fromValue("archived");
+    public static final OperationState RUNNING = fromValue("Running");
 
     /**
-     * Failed.
+     * The operation has completed successfully.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public static final SnapshotStatus FAILED = fromValue("failed");
+    public static final OperationState SUCCEEDED = fromValue("Succeeded");
+
+    /**
+     * The operation has failed.
+     */
+    @Metadata(properties = { MetadataProperties.GENERATED })
+    public static final OperationState FAILED = fromValue("Failed");
+
+    /**
+     * The operation has been canceled by the user.
+     */
+    @Metadata(properties = { MetadataProperties.GENERATED })
+    public static final OperationState CANCELED = fromValue("Canceled");
 
     private final String value;
 
-    private SnapshotStatus(String value) {
+    private OperationState(String value) {
         this.value = value;
     }
 
     /**
-     * Creates or finds a SnapshotStatus.
+     * Creates or finds a OperationState.
      * 
      * @param value a value to look for.
-     * @return the corresponding SnapshotStatus.
+     * @return the corresponding OperationState.
      * @throws IllegalArgumentException if value is null.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public static SnapshotStatus fromValue(String value) {
+    public static OperationState fromValue(String value) {
         if (value == null) {
             throw new IllegalArgumentException("'value' cannot be null.");
         }
@@ -73,19 +79,19 @@ public final class SnapshotStatus implements ExpandableEnum<String>, JsonSeriali
     }
 
     /**
-     * Gets known SnapshotStatus values.
+     * Gets known OperationState values.
      * 
-     * @return Known SnapshotStatus values.
+     * @return Known OperationState values.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public static Collection<SnapshotStatus> values() {
+    public static Collection<OperationState> values() {
         return new ArrayList<>(VALUES.values());
     }
 
     /**
-     * Gets the value of the SnapshotStatus instance.
+     * Gets the value of the OperationState instance.
      * 
-     * @return the value of the SnapshotStatus instance.
+     * @return the value of the OperationState instance.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @Override
@@ -103,16 +109,16 @@ public final class SnapshotStatus implements ExpandableEnum<String>, JsonSeriali
     }
 
     /**
-     * Reads an instance of SnapshotStatus from the JsonReader.
+     * Reads an instance of OperationState from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of SnapshotStatus if the JsonReader was pointing to an instance of it, or null if the
+     * @return An instance of OperationState if the JsonReader was pointing to an instance of it, or null if the
      * JsonReader was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the SnapshotStatus.
+     * @throws IOException If an error occurs while reading the OperationState.
      * @throws IllegalStateException If unexpected JSON token is found.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public static SnapshotStatus fromJson(JsonReader jsonReader) throws IOException {
+    public static OperationState fromJson(JsonReader jsonReader) throws IOException {
         JsonToken nextToken = jsonReader.nextToken();
         if (nextToken == JsonToken.NULL) {
             return null;
@@ -121,7 +127,7 @@ public final class SnapshotStatus implements ExpandableEnum<String>, JsonSeriali
             throw new IllegalStateException(
                 String.format("Unexpected JSON token for %s deserialization: %s", JsonToken.STRING, nextToken));
         }
-        return SnapshotStatus.fromValue(jsonReader.getString());
+        return OperationState.fromValue(jsonReader.getString());
     }
 
     @Metadata(properties = { MetadataProperties.GENERATED })

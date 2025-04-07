@@ -20,34 +20,53 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 /**
- * Label fields.
+ * Snapshot status.
  */
-public final class LabelFields implements ExpandableEnum<String>, JsonSerializable<LabelFields> {
-    private static final Map<String, LabelFields> VALUES = new ConcurrentHashMap<>();
+public final class ConfigurationSnapshotStatus
+    implements ExpandableEnum<String>, JsonSerializable<ConfigurationSnapshotStatus> {
+    private static final Map<String, ConfigurationSnapshotStatus> VALUES = new ConcurrentHashMap<>();
 
-    private static final Function<String, LabelFields> NEW_INSTANCE = LabelFields::new;
+    private static final Function<String, ConfigurationSnapshotStatus> NEW_INSTANCE = ConfigurationSnapshotStatus::new;
 
     /**
-     * Name field.
+     * Provisioning.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public static final LabelFields NAME = fromValue("name");
+    public static final ConfigurationSnapshotStatus PROVISIONING = fromValue("provisioning");
+
+    /**
+     * Ready.
+     */
+    @Metadata(properties = { MetadataProperties.GENERATED })
+    public static final ConfigurationSnapshotStatus READY = fromValue("ready");
+
+    /**
+     * Archived.
+     */
+    @Metadata(properties = { MetadataProperties.GENERATED })
+    public static final ConfigurationSnapshotStatus ARCHIVED = fromValue("archived");
+
+    /**
+     * Failed.
+     */
+    @Metadata(properties = { MetadataProperties.GENERATED })
+    public static final ConfigurationSnapshotStatus FAILED = fromValue("failed");
 
     private final String value;
 
-    private LabelFields(String value) {
+    private ConfigurationSnapshotStatus(String value) {
         this.value = value;
     }
 
     /**
-     * Creates or finds a LabelFields.
+     * Creates or finds a ConfigurationSnapshotStatus.
      * 
      * @param value a value to look for.
-     * @return the corresponding LabelFields.
+     * @return the corresponding ConfigurationSnapshotStatus.
      * @throws IllegalArgumentException if value is null.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public static LabelFields fromValue(String value) {
+    public static ConfigurationSnapshotStatus fromValue(String value) {
         if (value == null) {
             throw new IllegalArgumentException("'value' cannot be null.");
         }
@@ -55,19 +74,19 @@ public final class LabelFields implements ExpandableEnum<String>, JsonSerializab
     }
 
     /**
-     * Gets known LabelFields values.
+     * Gets known ConfigurationSnapshotStatus values.
      * 
-     * @return Known LabelFields values.
+     * @return Known ConfigurationSnapshotStatus values.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public static Collection<LabelFields> values() {
+    public static Collection<ConfigurationSnapshotStatus> values() {
         return new ArrayList<>(VALUES.values());
     }
 
     /**
-     * Gets the value of the LabelFields instance.
+     * Gets the value of the ConfigurationSnapshotStatus instance.
      * 
-     * @return the value of the LabelFields instance.
+     * @return the value of the ConfigurationSnapshotStatus instance.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @Override
@@ -85,16 +104,16 @@ public final class LabelFields implements ExpandableEnum<String>, JsonSerializab
     }
 
     /**
-     * Reads an instance of LabelFields from the JsonReader.
+     * Reads an instance of ConfigurationSnapshotStatus from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of LabelFields if the JsonReader was pointing to an instance of it, or null if the JsonReader
-     * was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the LabelFields.
+     * @return An instance of ConfigurationSnapshotStatus if the JsonReader was pointing to an instance of it, or null
+     * if the JsonReader was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ConfigurationSnapshotStatus.
      * @throws IllegalStateException If unexpected JSON token is found.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public static LabelFields fromJson(JsonReader jsonReader) throws IOException {
+    public static ConfigurationSnapshotStatus fromJson(JsonReader jsonReader) throws IOException {
         JsonToken nextToken = jsonReader.nextToken();
         if (nextToken == JsonToken.NULL) {
             return null;
@@ -103,7 +122,7 @@ public final class LabelFields implements ExpandableEnum<String>, JsonSerializab
             throw new IllegalStateException(
                 String.format("Unexpected JSON token for %s deserialization: %s", JsonToken.STRING, nextToken));
         }
-        return LabelFields.fromValue(jsonReader.getString());
+        return ConfigurationSnapshotStatus.fromValue(jsonReader.getString());
     }
 
     @Metadata(properties = { MetadataProperties.GENERATED })

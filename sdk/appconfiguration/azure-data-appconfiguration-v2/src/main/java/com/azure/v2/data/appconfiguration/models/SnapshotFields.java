@@ -49,19 +49,19 @@ public final class SnapshotFields implements ExpandableEnum<String>, JsonSeriali
      * Composition type field.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public static final SnapshotFields COMPOSITION_TYPE = fromValue("composition_type");
+    public static final SnapshotFields SNAPSHOT_COMPOSITION = fromValue("composition_type");
 
     /**
      * Created field.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public static final SnapshotFields CREATED = fromValue("created");
+    public static final SnapshotFields CREATED_AT = fromValue("created");
 
     /**
      * Expires field.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public static final SnapshotFields EXPIRES = fromValue("expires");
+    public static final SnapshotFields EXPIRES_AT = fromValue("expires");
 
     /**
      * Retention period field.
@@ -73,13 +73,13 @@ public final class SnapshotFields implements ExpandableEnum<String>, JsonSeriali
      * Size field.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public static final SnapshotFields SIZE = fromValue("size");
+    public static final SnapshotFields SIZE_IN_BYTES = fromValue("size");
 
     /**
      * Items count field.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public static final SnapshotFields ITEMS_COUNT = fromValue("items_count");
+    public static final SnapshotFields ITEM_COUNT = fromValue("items_count");
 
     /**
      * Tags field.
