@@ -106,6 +106,8 @@
       "location": "[parameters('location')]",
       "properties": {
         "accessTier": "Hot",
+        "allowSharedKeyAccess": false,
+        "disableLocalAuth": true,
         "supportsHttpsTrafficOnly": true,
         "minimumTlsVersion": "TLS1_2"
       },
@@ -119,7 +121,10 @@
           "type": "Microsoft.Storage/storageAccounts/blobServices/containers",
           "name": "[concat(variables('storageAccountName'), '/default/', 'searchcontainer')]",
           "apiVersion": "[variables('storageApiVersion')]",
-          "properties": {},
+          "properties": {
+            "disableLocalAuth": true,
+            "allowSharedKeyAccess": false
+          },
           "dependsOn": [
             "[variables('storageAccountName')]"
           ]
@@ -131,18 +136,6 @@
     "SEARCH_SERVICE_ENDPOINT": {
       "type": "string",
       "value": "[concat('https://', variables('searchServiceName'), '.', parameters('searchEndpointSuffix'))]"
-    },
-    "SEARCH_SERVICE_API_KEY": {
-      "type": "string",
-      "value": "[listAdminKeys(variables('searchServiceName'), variables('searchApiVersion')).primaryKey]"
-    },
-    "SEARCH_QUERY_API_KEY": {
-      "type": "string",
-      "value": "[listQueryKeys(variables('searchServiceName'), variables('searchApiVersion')).value[0].key]"
-    },
-    "SEARCH_STORAGE_CONNECTION_STRING": {
-      "type": "string",
-      "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountName'), variables('storageApiVersion')).keys[0].value, ';EndpointSuffix=', parameters('storageEndpointSuffix'))]"
     }
   }
 }
