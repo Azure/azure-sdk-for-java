@@ -1,6 +1,6 @@
 # Release History
 
-## 2.50.0-beta.1 (Unreleased)
+## 2.50.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,14 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.50.0-beta.1 (2025-04-07)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2025-02-01-preview`.
 
 ## 2.49.0 (2025-03-28)
 
