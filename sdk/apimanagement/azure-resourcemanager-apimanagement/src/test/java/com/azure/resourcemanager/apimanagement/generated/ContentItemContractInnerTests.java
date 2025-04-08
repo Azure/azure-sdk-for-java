@@ -13,14 +13,14 @@ public final class ContentItemContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ContentItemContractInner model = BinaryData.fromString(
-            "{\"properties\":{\"dnkefgm\":\"datacvbiiftksdw\",\"zldbglzoutbaaqg\":\"datadhcebuv\",\"lyzgsnor\":\"dataekaj\"},\"id\":\"jgmn\",\"name\":\"jotvmrxkhl\",\"type\":\"bvvjbhvhdiq\"}")
+            "{\"properties\":{\"iceevsaaxwspca\":\"datanzjahwriuomzczf\"},\"id\":\"ikhfjqebglcxk\",\"name\":\"gzzromv\",\"type\":\"g\"}")
             .toObject(ContentItemContractInner.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ContentItemContractInner model = new ContentItemContractInner().withProperties(
-            mapOf("dnkefgm", "datacvbiiftksdw", "zldbglzoutbaaqg", "datadhcebuv", "lyzgsnor", "dataekaj"));
+        ContentItemContractInner model
+            = new ContentItemContractInner().withProperties(mapOf("iceevsaaxwspca", "datanzjahwriuomzczf"));
         model = BinaryData.fromObject(model).toObject(ContentItemContractInner.class);
     }
 

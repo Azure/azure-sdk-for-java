@@ -12,14 +12,14 @@ public final class PortalSigninSettingPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PortalSigninSettingProperties model
-            = BinaryData.fromString("{\"enabled\":true}").toObject(PortalSigninSettingProperties.class);
-        Assertions.assertEquals(true, model.enabled());
+            = BinaryData.fromString("{\"enabled\":false}").toObject(PortalSigninSettingProperties.class);
+        Assertions.assertEquals(false, model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PortalSigninSettingProperties model = new PortalSigninSettingProperties().withEnabled(true);
+        PortalSigninSettingProperties model = new PortalSigninSettingProperties().withEnabled(false);
         model = BinaryData.fromObject(model).toObject(PortalSigninSettingProperties.class);
-        Assertions.assertEquals(true, model.enabled());
+        Assertions.assertEquals(false, model.enabled());
     }
 }

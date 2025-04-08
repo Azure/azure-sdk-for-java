@@ -10,7 +10,7 @@ package com.azure.resourcemanager.apimanagement.generated;
 public final class PortalConfigListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListPortalConfig.json
      */
     /**
@@ -20,6 +20,6 @@ public final class PortalConfigListByServiceSamples {
      */
     public static void
         apiManagementListPortalConfig(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.portalConfigs().listByServiceWithResponse("rg1", "apimService1", com.azure.core.util.Context.NONE);
+        manager.portalConfigs().listByService("rg1", "apimService1", com.azure.core.util.Context.NONE);
     }
 }

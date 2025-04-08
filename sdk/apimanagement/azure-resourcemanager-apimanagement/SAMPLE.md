@@ -1,6 +1,10 @@
 # Code snippets and samples
 
 
+## AllPolicies
+
+- [ListByService](#allpolicies_listbyservice)
+
 ## Api
 
 - [CreateOrUpdate](#api_createorupdate)
@@ -23,6 +27,22 @@
 ## ApiExport
 
 - [Get](#apiexport_get)
+
+## ApiGateway
+
+- [CreateOrUpdate](#apigateway_createorupdate)
+- [Delete](#apigateway_delete)
+- [GetByResourceGroup](#apigateway_getbyresourcegroup)
+- [List](#apigateway_list)
+- [ListByResourceGroup](#apigateway_listbyresourcegroup)
+- [Update](#apigateway_update)
+
+## ApiGatewayConfigConnection
+
+- [CreateOrUpdate](#apigatewayconfigconnection_createorupdate)
+- [Delete](#apigatewayconfigconnection_delete)
+- [Get](#apigatewayconfigconnection_get)
+- [ListByGateway](#apigatewayconfigconnection_listbygateway)
 
 ## ApiIssue
 
@@ -48,6 +68,10 @@
 - [Get](#apiissuecomment_get)
 - [GetEntityTag](#apiissuecomment_getentitytag)
 - [ListByService](#apiissuecomment_listbyservice)
+
+## ApiManagementGatewaySkus
+
+- [ListAvailableSkus](#apimanagementgatewayskus_listavailableskus)
 
 ## ApiManagementOperations
 
@@ -76,6 +100,14 @@
 ## ApiManagementSkus
 
 - [List](#apimanagementskus_list)
+
+## ApiManagementWorkspaceLinkOperation
+
+- [Get](#apimanagementworkspacelinkoperation_get)
+
+## ApiManagementWorkspaceLinks
+
+- [ListByService](#apimanagementworkspacelinks_listbyservice)
 
 ## ApiOperation
 
@@ -283,8 +315,11 @@
 - [GenerateToken](#gateway_generatetoken)
 - [Get](#gateway_get)
 - [GetEntityTag](#gateway_getentitytag)
+- [InvalidateDebugCredentials](#gateway_invalidatedebugcredentials)
 - [ListByService](#gateway_listbyservice)
+- [ListDebugCredentials](#gateway_listdebugcredentials)
 - [ListKeys](#gateway_listkeys)
+- [ListTrace](#gateway_listtrace)
 - [RegenerateKey](#gateway_regeneratekey)
 - [Update](#gateway_update)
 
@@ -426,6 +461,14 @@
 
 - [ListByTags](#operation_listbytags)
 
+## OperationStatus
+
+- [Get](#operationstatus_get)
+
+## OperationsResults
+
+- [Get](#operationsresults_get)
+
 ## OutboundNetworkDependenciesEndpoints
 
 - [ListByService](#outboundnetworkdependenciesendpoints_listbyservice)
@@ -450,6 +493,19 @@
 - [GetEntityTag](#policyfragment_getentitytag)
 - [ListByService](#policyfragment_listbyservice)
 - [ListReferences](#policyfragment_listreferences)
+
+## PolicyRestriction
+
+- [CreateOrUpdate](#policyrestriction_createorupdate)
+- [Delete](#policyrestriction_delete)
+- [Get](#policyrestriction_get)
+- [GetEntityTag](#policyrestriction_getentitytag)
+- [ListByService](#policyrestriction_listbyservice)
+- [Update](#policyrestriction_update)
+
+## PolicyRestrictionValidations
+
+- [ByService](#policyrestrictionvalidations_byservice)
 
 ## PortalConfig
 
@@ -497,12 +553,26 @@
 - [Delete](#productapi_delete)
 - [ListByProduct](#productapi_listbyproduct)
 
+## ProductApiLink
+
+- [CreateOrUpdate](#productapilink_createorupdate)
+- [Delete](#productapilink_delete)
+- [Get](#productapilink_get)
+- [ListByProduct](#productapilink_listbyproduct)
+
 ## ProductGroup
 
 - [CheckEntityExists](#productgroup_checkentityexists)
 - [CreateOrUpdate](#productgroup_createorupdate)
 - [Delete](#productgroup_delete)
 - [ListByProduct](#productgroup_listbyproduct)
+
+## ProductGroupLink
+
+- [CreateOrUpdate](#productgrouplink_createorupdate)
+- [Delete](#productgrouplink_delete)
+- [Get](#productgrouplink_get)
+- [ListByProduct](#productgrouplink_listbyproduct)
 
 ## ProductPolicy
 
@@ -607,6 +677,27 @@
 - [ListByService](#tag_listbyservice)
 - [Update](#tag_update)
 
+## TagApiLink
+
+- [CreateOrUpdate](#tagapilink_createorupdate)
+- [Delete](#tagapilink_delete)
+- [Get](#tagapilink_get)
+- [ListByProduct](#tagapilink_listbyproduct)
+
+## TagOperationLink
+
+- [CreateOrUpdate](#tagoperationlink_createorupdate)
+- [Delete](#tagoperationlink_delete)
+- [Get](#tagoperationlink_get)
+- [ListByProduct](#tagoperationlink_listbyproduct)
+
+## TagProductLink
+
+- [CreateOrUpdate](#tagproductlink_createorupdate)
+- [Delete](#tagproductlink_delete)
+- [Get](#tagproductlink_get)
+- [ListByProduct](#tagproductlink_listbyproduct)
+
 ## TagResource
 
 - [ListByService](#tagresource_listbyservice)
@@ -666,6 +757,297 @@
 
 - [Get](#usersubscription_get)
 - [List](#usersubscription_list)
+
+## Workspace
+
+- [CreateOrUpdate](#workspace_createorupdate)
+- [Delete](#workspace_delete)
+- [Get](#workspace_get)
+- [GetEntityTag](#workspace_getentitytag)
+- [ListByService](#workspace_listbyservice)
+- [Update](#workspace_update)
+
+## WorkspaceApi
+
+- [CreateOrUpdate](#workspaceapi_createorupdate)
+- [Delete](#workspaceapi_delete)
+- [Get](#workspaceapi_get)
+- [GetEntityTag](#workspaceapi_getentitytag)
+- [ListByService](#workspaceapi_listbyservice)
+- [Update](#workspaceapi_update)
+
+## WorkspaceApiDiagnostic
+
+- [CreateOrUpdate](#workspaceapidiagnostic_createorupdate)
+- [Delete](#workspaceapidiagnostic_delete)
+- [Get](#workspaceapidiagnostic_get)
+- [GetEntityTag](#workspaceapidiagnostic_getentitytag)
+- [ListByWorkspace](#workspaceapidiagnostic_listbyworkspace)
+- [Update](#workspaceapidiagnostic_update)
+
+## WorkspaceApiExport
+
+- [Get](#workspaceapiexport_get)
+
+## WorkspaceApiOperation
+
+- [CreateOrUpdate](#workspaceapioperation_createorupdate)
+- [Delete](#workspaceapioperation_delete)
+- [Get](#workspaceapioperation_get)
+- [GetEntityTag](#workspaceapioperation_getentitytag)
+- [ListByApi](#workspaceapioperation_listbyapi)
+- [Update](#workspaceapioperation_update)
+
+## WorkspaceApiOperationPolicy
+
+- [CreateOrUpdate](#workspaceapioperationpolicy_createorupdate)
+- [Delete](#workspaceapioperationpolicy_delete)
+- [Get](#workspaceapioperationpolicy_get)
+- [GetEntityTag](#workspaceapioperationpolicy_getentitytag)
+- [ListByOperation](#workspaceapioperationpolicy_listbyoperation)
+
+## WorkspaceApiPolicy
+
+- [CreateOrUpdate](#workspaceapipolicy_createorupdate)
+- [Delete](#workspaceapipolicy_delete)
+- [Get](#workspaceapipolicy_get)
+- [GetEntityTag](#workspaceapipolicy_getentitytag)
+- [ListByApi](#workspaceapipolicy_listbyapi)
+
+## WorkspaceApiRelease
+
+- [CreateOrUpdate](#workspaceapirelease_createorupdate)
+- [Delete](#workspaceapirelease_delete)
+- [Get](#workspaceapirelease_get)
+- [GetEntityTag](#workspaceapirelease_getentitytag)
+- [ListByService](#workspaceapirelease_listbyservice)
+- [Update](#workspaceapirelease_update)
+
+## WorkspaceApiRevision
+
+- [ListByService](#workspaceapirevision_listbyservice)
+
+## WorkspaceApiSchema
+
+- [CreateOrUpdate](#workspaceapischema_createorupdate)
+- [Delete](#workspaceapischema_delete)
+- [Get](#workspaceapischema_get)
+- [GetEntityTag](#workspaceapischema_getentitytag)
+- [ListByApi](#workspaceapischema_listbyapi)
+
+## WorkspaceApiVersionSet
+
+- [CreateOrUpdate](#workspaceapiversionset_createorupdate)
+- [Delete](#workspaceapiversionset_delete)
+- [Get](#workspaceapiversionset_get)
+- [GetEntityTag](#workspaceapiversionset_getentitytag)
+- [ListByService](#workspaceapiversionset_listbyservice)
+- [Update](#workspaceapiversionset_update)
+
+## WorkspaceBackend
+
+- [CreateOrUpdate](#workspacebackend_createorupdate)
+- [Delete](#workspacebackend_delete)
+- [Get](#workspacebackend_get)
+- [GetEntityTag](#workspacebackend_getentitytag)
+- [ListByWorkspace](#workspacebackend_listbyworkspace)
+- [Update](#workspacebackend_update)
+
+## WorkspaceCertificate
+
+- [CreateOrUpdate](#workspacecertificate_createorupdate)
+- [Delete](#workspacecertificate_delete)
+- [Get](#workspacecertificate_get)
+- [GetEntityTag](#workspacecertificate_getentitytag)
+- [ListByWorkspace](#workspacecertificate_listbyworkspace)
+- [RefreshSecret](#workspacecertificate_refreshsecret)
+
+## WorkspaceDiagnostic
+
+- [CreateOrUpdate](#workspacediagnostic_createorupdate)
+- [Delete](#workspacediagnostic_delete)
+- [Get](#workspacediagnostic_get)
+- [GetEntityTag](#workspacediagnostic_getentitytag)
+- [ListByWorkspace](#workspacediagnostic_listbyworkspace)
+- [Update](#workspacediagnostic_update)
+
+## WorkspaceGlobalSchema
+
+- [CreateOrUpdate](#workspaceglobalschema_createorupdate)
+- [Delete](#workspaceglobalschema_delete)
+- [Get](#workspaceglobalschema_get)
+- [GetEntityTag](#workspaceglobalschema_getentitytag)
+- [ListByService](#workspaceglobalschema_listbyservice)
+
+## WorkspaceGroup
+
+- [CreateOrUpdate](#workspacegroup_createorupdate)
+- [Delete](#workspacegroup_delete)
+- [Get](#workspacegroup_get)
+- [GetEntityTag](#workspacegroup_getentitytag)
+- [ListByService](#workspacegroup_listbyservice)
+- [Update](#workspacegroup_update)
+
+## WorkspaceGroupUser
+
+- [CheckEntityExists](#workspacegroupuser_checkentityexists)
+- [Create](#workspacegroupuser_create)
+- [Delete](#workspacegroupuser_delete)
+- [List](#workspacegroupuser_list)
+
+## WorkspaceLogger
+
+- [CreateOrUpdate](#workspacelogger_createorupdate)
+- [Delete](#workspacelogger_delete)
+- [Get](#workspacelogger_get)
+- [GetEntityTag](#workspacelogger_getentitytag)
+- [ListByWorkspace](#workspacelogger_listbyworkspace)
+- [Update](#workspacelogger_update)
+
+## WorkspaceNamedValue
+
+- [CreateOrUpdate](#workspacenamedvalue_createorupdate)
+- [Delete](#workspacenamedvalue_delete)
+- [Get](#workspacenamedvalue_get)
+- [GetEntityTag](#workspacenamedvalue_getentitytag)
+- [ListByService](#workspacenamedvalue_listbyservice)
+- [ListValue](#workspacenamedvalue_listvalue)
+- [RefreshSecret](#workspacenamedvalue_refreshsecret)
+- [Update](#workspacenamedvalue_update)
+
+## WorkspaceNotification
+
+- [CreateOrUpdate](#workspacenotification_createorupdate)
+- [Get](#workspacenotification_get)
+- [ListByService](#workspacenotification_listbyservice)
+
+## WorkspaceNotificationRecipientEmail
+
+- [CheckEntityExists](#workspacenotificationrecipientemail_checkentityexists)
+- [CreateOrUpdate](#workspacenotificationrecipientemail_createorupdate)
+- [Delete](#workspacenotificationrecipientemail_delete)
+- [ListByNotification](#workspacenotificationrecipientemail_listbynotification)
+
+## WorkspaceNotificationRecipientUser
+
+- [CheckEntityExists](#workspacenotificationrecipientuser_checkentityexists)
+- [CreateOrUpdate](#workspacenotificationrecipientuser_createorupdate)
+- [Delete](#workspacenotificationrecipientuser_delete)
+- [ListByNotification](#workspacenotificationrecipientuser_listbynotification)
+
+## WorkspacePolicy
+
+- [CreateOrUpdate](#workspacepolicy_createorupdate)
+- [Delete](#workspacepolicy_delete)
+- [Get](#workspacepolicy_get)
+- [GetEntityTag](#workspacepolicy_getentitytag)
+- [ListByApi](#workspacepolicy_listbyapi)
+
+## WorkspacePolicyFragment
+
+- [CreateOrUpdate](#workspacepolicyfragment_createorupdate)
+- [Delete](#workspacepolicyfragment_delete)
+- [Get](#workspacepolicyfragment_get)
+- [GetEntityTag](#workspacepolicyfragment_getentitytag)
+- [ListByService](#workspacepolicyfragment_listbyservice)
+- [ListReferences](#workspacepolicyfragment_listreferences)
+
+## WorkspaceProduct
+
+- [CreateOrUpdate](#workspaceproduct_createorupdate)
+- [Delete](#workspaceproduct_delete)
+- [Get](#workspaceproduct_get)
+- [GetEntityTag](#workspaceproduct_getentitytag)
+- [ListByService](#workspaceproduct_listbyservice)
+- [Update](#workspaceproduct_update)
+
+## WorkspaceProductApiLink
+
+- [CreateOrUpdate](#workspaceproductapilink_createorupdate)
+- [Delete](#workspaceproductapilink_delete)
+- [Get](#workspaceproductapilink_get)
+- [ListByProduct](#workspaceproductapilink_listbyproduct)
+
+## WorkspaceProductGroupLink
+
+- [CreateOrUpdate](#workspaceproductgrouplink_createorupdate)
+- [Delete](#workspaceproductgrouplink_delete)
+- [Get](#workspaceproductgrouplink_get)
+- [ListByProduct](#workspaceproductgrouplink_listbyproduct)
+
+## WorkspaceProductPolicy
+
+- [CreateOrUpdate](#workspaceproductpolicy_createorupdate)
+- [Delete](#workspaceproductpolicy_delete)
+- [Get](#workspaceproductpolicy_get)
+- [GetEntityTag](#workspaceproductpolicy_getentitytag)
+- [ListByProduct](#workspaceproductpolicy_listbyproduct)
+
+## WorkspaceSubscription
+
+- [CreateOrUpdate](#workspacesubscription_createorupdate)
+- [Delete](#workspacesubscription_delete)
+- [Get](#workspacesubscription_get)
+- [GetEntityTag](#workspacesubscription_getentitytag)
+- [List](#workspacesubscription_list)
+- [ListSecrets](#workspacesubscription_listsecrets)
+- [RegeneratePrimaryKey](#workspacesubscription_regenerateprimarykey)
+- [RegenerateSecondaryKey](#workspacesubscription_regeneratesecondarykey)
+- [Update](#workspacesubscription_update)
+
+## WorkspaceTag
+
+- [CreateOrUpdate](#workspacetag_createorupdate)
+- [Delete](#workspacetag_delete)
+- [Get](#workspacetag_get)
+- [GetEntityState](#workspacetag_getentitystate)
+- [ListByService](#workspacetag_listbyservice)
+- [Update](#workspacetag_update)
+
+## WorkspaceTagApiLink
+
+- [CreateOrUpdate](#workspacetagapilink_createorupdate)
+- [Delete](#workspacetagapilink_delete)
+- [Get](#workspacetagapilink_get)
+- [ListByProduct](#workspacetagapilink_listbyproduct)
+
+## WorkspaceTagOperationLink
+
+- [CreateOrUpdate](#workspacetagoperationlink_createorupdate)
+- [Delete](#workspacetagoperationlink_delete)
+- [Get](#workspacetagoperationlink_get)
+- [ListByProduct](#workspacetagoperationlink_listbyproduct)
+
+## WorkspaceTagProductLink
+
+- [CreateOrUpdate](#workspacetagproductlink_createorupdate)
+- [Delete](#workspacetagproductlink_delete)
+- [Get](#workspacetagproductlink_get)
+- [ListByProduct](#workspacetagproductlink_listbyproduct)
+### AllPolicies_ListByService
+
+```java
+/**
+ * Samples for AllPolicies ListByService.
+ */
+public final class AllPoliciesListByServiceSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementAllPolicies.json
+     */
+    /**
+     * Sample code: ApiManagementListPolicyRestrictions.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListPolicyRestrictions(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.allPolicies().listByService("rg1", "apimService1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Api_CreateOrUpdate
 
 ```java
@@ -688,7 +1070,7 @@ import java.util.Arrays;
 public final class ApiCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiUsingSwaggerImport.json
      */
     /**
@@ -709,7 +1091,7 @@ public final class ApiCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiRevisionFromExistingApi.json
      */
     /**
@@ -723,7 +1105,7 @@ public final class ApiCreateOrUpdateSamples {
             .define("echo-api;rev=3")
             .withExistingService("rg1", "apimService1")
             .withSourceApiId(
-                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/echo-api")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/echo-api")
             .withServiceUrl("http://echoapi.cloudapp.net/apiv3")
             .withPath("echo")
             .withApiRevisionDescription("Creating a Revision of an existing API")
@@ -732,7 +1114,34 @@ public final class ApiCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateGrpcApi.json
+     */
+    /**
+     * Sample code: ApiManagementCreateGrpcApi.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementCreateGrpcApi(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.apis()
+            .define("tempgroup")
+            .withExistingService("rg1", "apimService1")
+            .withValue(
+                "https://raw.githubusercontent.com/kedacore/keda/main/pkg/scalers/externalscaler/externalscaler.proto")
+            .withFormat(ContentFormat.GRPC_LINK)
+            .withDisplayName("apiname1463")
+            .withServiceUrl("https://your-api-hostname/samples")
+            .withPath("grpc-api")
+            .withProtocols(Arrays.asList(Protocol.HTTPS))
+            .withDescription("apidescription5200")
+            .withApiType(ApiType.GRPC)
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiClone.json
      */
     /**
@@ -746,7 +1155,7 @@ public final class ApiCreateOrUpdateSamples {
             .define("echo-api2")
             .withExistingService("rg1", "apimService1")
             .withSourceApiId(
-                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/58a4aeac497000007d040001")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/58a4aeac497000007d040001")
             .withDisplayName("Echo API2")
             .withServiceUrl("http://echoapi.cloudapp.net/api")
             .withPath("echo2")
@@ -759,7 +1168,33 @@ public final class ApiCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateODataApi.json
+     */
+    /**
+     * Sample code: ApiManagementCreateODataApi.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementCreateODataApi(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.apis()
+            .define("tempgroup")
+            .withExistingService("rg1", "apimService1")
+            .withValue("https://services.odata.org/TripPinWebApiService/$metadata")
+            .withFormat(ContentFormat.ODATA_LINK)
+            .withDisplayName("apiname1463")
+            .withServiceUrl("https://services.odata.org/TripPinWebApiService")
+            .withPath("odata-api")
+            .withProtocols(Arrays.asList(Protocol.HTTP, Protocol.HTTPS))
+            .withDescription("apidescription5200")
+            .withApiType(ApiType.ODATA)
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiUsingOai3Import.json
      */
     /**
@@ -780,7 +1215,7 @@ public final class ApiCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiWithOpenIdConnect.json
      */
     /**
@@ -810,7 +1245,7 @@ public final class ApiCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateWebsocketApi.json
      */
     /**
@@ -834,7 +1269,7 @@ public final class ApiCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateGraphQLApi.json
      */
     /**
@@ -858,7 +1293,7 @@ public final class ApiCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateSoapPassThroughApiUsingWsdlImport.json
      */
     /**
@@ -882,7 +1317,7 @@ public final class ApiCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiUsingOai3ImportWithTranslateRequiredQueryParametersConduct.json
      */
     /**
@@ -904,7 +1339,7 @@ public final class ApiCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiWithMultipleAuthServers.json
      */
     /**
@@ -935,7 +1370,7 @@ public final class ApiCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiUsingImportOverrideServiceUrl.json
      */
     /**
@@ -957,7 +1392,7 @@ public final class ApiCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiUsingWadlImport.json
      */
     /**
@@ -979,7 +1414,7 @@ public final class ApiCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiNewVersionUsingExistingApi.json
      */
     /**
@@ -993,7 +1428,7 @@ public final class ApiCreateOrUpdateSamples {
             .define("echoapiv3")
             .withExistingService("rg1", "apimService1")
             .withSourceApiId(
-                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/echoPath")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/echoPath")
             .withDisplayName("Echo API2")
             .withServiceUrl("http://echoapi.cloudapp.net/api")
             .withPath("echo2")
@@ -1002,14 +1437,14 @@ public final class ApiCreateOrUpdateSamples {
             .withApiVersion("v4")
             .withIsCurrent(true)
             .withApiVersionSetId(
-                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apiVersionSets/aa9c59e6-c0cd-4258-9356-9ca7d2f0b458")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apiVersionSets/aa9c59e6-c0cd-4258-9356-9ca7d2f0b458")
             .withSubscriptionRequired(true)
             .create();
     }
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApi.json
      */
     /**
@@ -1036,7 +1471,7 @@ public final class ApiCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateSoapToRestApiUsingWsdlImport.json
      */
     /**
@@ -1059,7 +1494,7 @@ public final class ApiCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiWithMultipleOpenIdConnectProviders.json
      */
     /**
@@ -1099,7 +1534,7 @@ public final class ApiCreateOrUpdateSamples {
 public final class ApiDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteApi.json
      */
     /**
@@ -1108,8 +1543,7 @@ public final class ApiDeleteSamples {
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementDeleteApi(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.apis()
-            .deleteWithResponse("rg1", "apimService1", "echo-api", "*", null, com.azure.core.util.Context.NONE);
+        manager.apis().delete("rg1", "apimService1", "echo-api", "*", null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -1123,7 +1557,7 @@ public final class ApiDeleteSamples {
 public final class ApiGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetApiRevision.json
      */
     /**
@@ -1138,7 +1572,7 @@ public final class ApiGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetApiContract.json
      */
     /**
@@ -1163,7 +1597,7 @@ public final class ApiGetSamples {
 public final class ApiGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadApi.json
      */
     /**
@@ -1188,7 +1622,7 @@ public final class ApiGetEntityTagSamples {
 public final class ApiListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListApis.json
      */
     /**
@@ -1212,7 +1646,7 @@ public final class ApiListByServiceSamples {
 public final class ApiListByTagsSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListApisByTags.json
      */
     /**
@@ -1238,7 +1672,7 @@ import com.azure.resourcemanager.apimanagement.models.ApiContract;
 public final class ApiUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateApi.json
      */
     /**
@@ -1277,7 +1711,7 @@ import java.util.Arrays;
 public final class ApiDiagnosticCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiDiagnostic.json
      */
     /**
@@ -1317,7 +1751,7 @@ public final class ApiDiagnosticCreateOrUpdateSamples {
 public final class ApiDiagnosticDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteApiDiagnostic.json
      */
     /**
@@ -1343,7 +1777,7 @@ public final class ApiDiagnosticDeleteSamples {
 public final class ApiDiagnosticGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetApiDiagnostic.json
      */
     /**
@@ -1369,7 +1803,7 @@ public final class ApiDiagnosticGetSamples {
 public final class ApiDiagnosticGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadApiDiagnostic.json
      */
     /**
@@ -1395,7 +1829,7 @@ public final class ApiDiagnosticGetEntityTagSamples {
 public final class ApiDiagnosticListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListApiDiagnostics.json
      */
     /**
@@ -1429,7 +1863,7 @@ import java.util.Arrays;
 public final class ApiDiagnosticUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateApiDiagnostic.json
      */
     /**
@@ -1474,7 +1908,7 @@ import com.azure.resourcemanager.apimanagement.models.ExportFormat;
 public final class ApiExportGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetApiExportInOpenApi2dot0.json
      */
     /**
@@ -1491,7 +1925,7 @@ public final class ApiExportGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetApiExportInOpenApi3dot0.json
      */
     /**
@@ -1508,6 +1942,331 @@ public final class ApiExportGetSamples {
 }
 ```
 
+### ApiGateway_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.apimanagement.models.ApiGatewaySkuType;
+import com.azure.resourcemanager.apimanagement.models.ApiManagementGatewaySkuProperties;
+import com.azure.resourcemanager.apimanagement.models.BackendConfiguration;
+import com.azure.resourcemanager.apimanagement.models.BackendSubnetConfiguration;
+import com.azure.resourcemanager.apimanagement.models.VirtualNetworkType;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for ApiGateway CreateOrUpdate.
+ */
+public final class ApiGatewayCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateStandardGateway.json
+     */
+    /**
+     * Sample code: ApiManagementCreateStandardGateway.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementCreateStandardGateway(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.apiGateways()
+            .define("apimGateway1")
+            .withRegion("South Central US")
+            .withExistingResourceGroup("rg1")
+            .withSku(new ApiManagementGatewaySkuProperties().withName(ApiGatewaySkuType.STANDARD).withCapacity(1))
+            .withTags(mapOf("Name", "Contoso", "Test", "User"))
+            .withBackend(new BackendConfiguration().withSubnet(new BackendSubnetConfiguration().withId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vn1/subnets/sn1")))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspacePremiumGateway.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspacePremiumGateway.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementCreateWorkspacePremiumGateway(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.apiGateways()
+            .define("apimGateway1")
+            .withRegion("South Central US")
+            .withExistingResourceGroup("rg1")
+            .withSku(new ApiManagementGatewaySkuProperties().withName(ApiGatewaySkuType.WORKSPACE_GATEWAY_PREMIUM)
+                .withCapacity(1))
+            .withTags(mapOf("Name", "Contoso", "Test", "User"))
+            .withBackend(new BackendConfiguration().withSubnet(new BackendSubnetConfiguration().withId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vn1/subnets/sn1")))
+            .withVirtualNetworkType(VirtualNetworkType.EXTERNAL)
+            .create();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### ApiGateway_Delete
+
+```java
+/**
+ * Samples for ApiGateway Delete.
+ */
+public final class ApiGatewayDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGatewayDeleteGateway.json
+     */
+    /**
+     * Sample code: ApiManagementGatewayDeleteGateway.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGatewayDeleteGateway(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.apiGateways().delete("rg1", "example-gateway", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ApiGateway_GetByResourceGroup
+
+```java
+/**
+ * Samples for ApiGateway GetByResourceGroup.
+ */
+public final class ApiGatewayGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGatewayGetGateway.json
+     */
+    /**
+     * Sample code: ApiManagementGatewayGetGateway.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGatewayGetGateway(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.apiGateways().getByResourceGroupWithResponse("rg1", "apimService1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ApiGateway_List
+
+```java
+/**
+ * Samples for ApiGateway List.
+ */
+public final class ApiGatewayListSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListGatewaysBySubscription.json
+     */
+    /**
+     * Sample code: ApiManagementListGatewaysBySubscription.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListGatewaysBySubscription(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.apiGateways().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ApiGateway_ListByResourceGroup
+
+```java
+/**
+ * Samples for ApiGateway ListByResourceGroup.
+ */
+public final class ApiGatewayListByResourceGroupSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListGatewaysBySubscriptionAndResourceGroup.json
+     */
+    /**
+     * Sample code: ApiManagementListGatewaysBySubscriptionAndResourceGroup.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementListGatewaysBySubscriptionAndResourceGroup(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.apiGateways().listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ApiGateway_Update
+
+```java
+import com.azure.resourcemanager.apimanagement.models.ApiGatewaySkuType;
+import com.azure.resourcemanager.apimanagement.models.ApiManagementGatewayResource;
+import com.azure.resourcemanager.apimanagement.models.ApiManagementGatewaySkuPropertiesForPatch;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for ApiGateway Update.
+ */
+public final class ApiGatewayUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementUpdateStandardGateway.json
+     */
+    /**
+     * Sample code: ApiManagementUpdateStandardGateway.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementUpdateStandardGateway(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        ApiManagementGatewayResource resource = manager.apiGateways()
+            .getByResourceGroupWithResponse("rg1", "apimGateway1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withTags(mapOf("Name", "Contoso", "Test", "User"))
+            .withSku(
+                new ApiManagementGatewaySkuPropertiesForPatch().withName(ApiGatewaySkuType.STANDARD).withCapacity(10))
+            .apply();
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### ApiGatewayConfigConnection_CreateOrUpdate
+
+```java
+/**
+ * Samples for ApiGatewayConfigConnection CreateOrUpdate.
+ */
+public final class ApiGatewayConfigConnectionCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateGatewayConfigConnection.json
+     */
+    /**
+     * Sample code: ApiManagementCreateGatewayConfigConnection.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementCreateGatewayConfigConnection(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.apiGatewayConfigConnections()
+            .define("gcc-01")
+            .withExistingGateway("rg1", "standard-gw-01")
+            .withSourceId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/services/apim-service-1/workspaces/ws-001")
+            .create();
+    }
+}
+```
+
+### ApiGatewayConfigConnection_Delete
+
+```java
+/**
+ * Samples for ApiGatewayConfigConnection Delete.
+ */
+public final class ApiGatewayConfigConnectionDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteGatewayConfigConnection.json
+     */
+    /**
+     * Sample code: ApiManagementGatewayDeleteGateway.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGatewayDeleteGateway(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.apiGatewayConfigConnections()
+            .delete("rg1", "standard-gw-01", "gcc-01", "*", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ApiGatewayConfigConnection_Get
+
+```java
+/**
+ * Samples for ApiGatewayConfigConnection Get.
+ */
+public final class ApiGatewayConfigConnectionGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetGatewayConfigConnection.json
+     */
+    /**
+     * Sample code: ApiManagementGetGatewayConfigConnection.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetGatewayConfigConnection(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.apiGatewayConfigConnections()
+            .getWithResponse("rg1", "standard-gw-01", "gcc-01", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ApiGatewayConfigConnection_ListByGateway
+
+```java
+/**
+ * Samples for ApiGatewayConfigConnection ListByGateway.
+ */
+public final class ApiGatewayConfigConnectionListByGatewaySamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListGatewayConfigConnection.json
+     */
+    /**
+     * Sample code: ApiManagementListGatewayConfigConnection.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListGatewayConfigConnection(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.apiGatewayConfigConnections().listByGateway("rg1", "standard-gw-1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### ApiIssue_CreateOrUpdate
 
 ```java
@@ -1520,7 +2279,7 @@ import java.time.OffsetDateTime;
 public final class ApiIssueCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiIssue.json
      */
     /**
@@ -1536,7 +2295,7 @@ public final class ApiIssueCreateOrUpdateSamples {
             .withTitle("New API issue")
             .withDescription("New API issue description")
             .withUserId(
-                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/1")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/1")
             .withCreatedDate(OffsetDateTime.parse("2018-02-01T22:21:20.467Z"))
             .withState(State.OPEN)
             .create();
@@ -1553,7 +2312,7 @@ public final class ApiIssueCreateOrUpdateSamples {
 public final class ApiIssueDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteApiIssue.json
      */
     /**
@@ -1579,7 +2338,7 @@ public final class ApiIssueDeleteSamples {
 public final class ApiIssueGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetApiIssue.json
      */
     /**
@@ -1604,7 +2363,7 @@ public final class ApiIssueGetSamples {
 public final class ApiIssueGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadApiIssue.json
      */
     /**
@@ -1629,7 +2388,7 @@ public final class ApiIssueGetEntityTagSamples {
 public final class ApiIssueListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListApiIssues.json
      */
     /**
@@ -1658,7 +2417,7 @@ import com.azure.resourcemanager.apimanagement.models.State;
 public final class ApiIssueUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateApiIssue.json
      */
     /**
@@ -1686,7 +2445,7 @@ public final class ApiIssueUpdateSamples {
 public final class ApiIssueAttachmentCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiIssueAttachment.json
      */
     /**
@@ -1716,7 +2475,7 @@ public final class ApiIssueAttachmentCreateOrUpdateSamples {
 public final class ApiIssueAttachmentDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteApiIssueAttachment.json
      */
     /**
@@ -1742,7 +2501,7 @@ public final class ApiIssueAttachmentDeleteSamples {
 public final class ApiIssueAttachmentGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetApiIssueAttachment.json
      */
     /**
@@ -1768,7 +2527,7 @@ public final class ApiIssueAttachmentGetSamples {
 public final class ApiIssueAttachmentGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadApiIssueAttachment.json
      */
     /**
@@ -1794,7 +2553,7 @@ public final class ApiIssueAttachmentGetEntityTagSamples {
 public final class ApiIssueAttachmentListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListApiIssueAttachments.json
      */
     /**
@@ -1822,7 +2581,7 @@ import java.time.OffsetDateTime;
 public final class ApiIssueCommentCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiIssueComment.json
      */
     /**
@@ -1838,7 +2597,7 @@ public final class ApiIssueCommentCreateOrUpdateSamples {
             .withText("Issue comment.")
             .withCreatedDate(OffsetDateTime.parse("2018-02-01T22:21:20.467Z"))
             .withUserId(
-                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/1")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/1")
             .create();
     }
 }
@@ -1853,7 +2612,7 @@ public final class ApiIssueCommentCreateOrUpdateSamples {
 public final class ApiIssueCommentDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteApiIssueComment.json
      */
     /**
@@ -1879,7 +2638,7 @@ public final class ApiIssueCommentDeleteSamples {
 public final class ApiIssueCommentGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetApiIssueComment.json
      */
     /**
@@ -1905,7 +2664,7 @@ public final class ApiIssueCommentGetSamples {
 public final class ApiIssueCommentGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadApiIssueComment.json
      */
     /**
@@ -1931,7 +2690,7 @@ public final class ApiIssueCommentGetEntityTagSamples {
 public final class ApiIssueCommentListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListApiIssueComments.json
      */
     /**
@@ -1948,6 +2707,30 @@ public final class ApiIssueCommentListByServiceSamples {
 }
 ```
 
+### ApiManagementGatewaySkus_ListAvailableSkus
+
+```java
+/**
+ * Samples for ApiManagementGatewaySkus ListAvailableSkus.
+ */
+public final class ApiManagementGatewaySkusListAvailableSkusSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListSKUs-Gateways.json
+     */
+    /**
+     * Sample code: ApiManagementListSKUs-Gateways.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListSKUsGateways(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.apiManagementGatewaySkus().listAvailableSkus("rg1", "apimService1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### ApiManagementOperations_List
 
 ```java
@@ -1957,7 +2740,7 @@ public final class ApiIssueCommentListByServiceSamples {
 public final class ApiManagementOperationsListSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListOperations.json
      */
     /**
@@ -1983,7 +2766,7 @@ import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceApplyN
 public final class ApiManagementServiceApplyNetworkConfigurationUpdatesSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementApplyNetworkConfigurationUpdates.json
      */
     /**
@@ -2013,7 +2796,7 @@ import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceBackup
 public final class ApiManagementServiceBackupSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementBackupWithAccessKey.json
      */
     /**
@@ -2035,7 +2818,7 @@ public final class ApiManagementServiceBackupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementBackupWithUserAssignedManagedIdentity.json
      */
     /**
@@ -2057,7 +2840,7 @@ public final class ApiManagementServiceBackupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementBackupWithSystemManagedIdentity.json
      */
     /**
@@ -2089,7 +2872,7 @@ import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceCheckN
 public final class ApiManagementServiceCheckNameAvailabilitySamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementServiceCheckNameAvailability.json
      */
     /**
@@ -2117,8 +2900,11 @@ import com.azure.resourcemanager.apimanagement.models.ApiVersionConstraint;
 import com.azure.resourcemanager.apimanagement.models.ApimIdentityType;
 import com.azure.resourcemanager.apimanagement.models.CertificateConfiguration;
 import com.azure.resourcemanager.apimanagement.models.CertificateConfigurationStoreName;
+import com.azure.resourcemanager.apimanagement.models.ConfigurationApi;
+import com.azure.resourcemanager.apimanagement.models.DeveloperPortalStatus;
 import com.azure.resourcemanager.apimanagement.models.HostnameConfiguration;
 import com.azure.resourcemanager.apimanagement.models.HostnameType;
+import com.azure.resourcemanager.apimanagement.models.LegacyApiState;
 import com.azure.resourcemanager.apimanagement.models.NatGatewayState;
 import com.azure.resourcemanager.apimanagement.models.SkuType;
 import com.azure.resourcemanager.apimanagement.models.UserIdentityProperties;
@@ -2134,21 +2920,21 @@ import java.util.Map;
 public final class ApiManagementServiceCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
-     * ApiManagementCreateServiceHavingMsi.json
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateServiceSkuv2Service.json
      */
     /**
-     * Sample code: ApiManagementCreateServiceHavingMsi.
+     * Sample code: ApiManagementCreateServiceSkuv2Service.
      * 
      * @param manager Entry point to ApiManagementManager.
      */
     public static void
-        apiManagementCreateServiceHavingMsi(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        apiManagementCreateServiceSkuv2Service(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager.apiManagementServices()
             .define("apimService1")
             .withRegion("West US")
             .withExistingResourceGroup("rg1")
-            .withSku(new ApiManagementServiceSkuProperties().withName(SkuType.CONSUMPTION).withCapacity(0))
+            .withSku(new ApiManagementServiceSkuProperties().withName(SkuType.STANDARD_V2).withCapacity(1))
             .withPublisherEmail("apim@autorestsdk.com")
             .withPublisherName("autorestsdk")
             .withTags(mapOf("tag1", "value1", "tag2", "value2", "tag3", "value3"))
@@ -2158,34 +2944,7 @@ public final class ApiManagementServiceCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
-     * ApiManagementCreateServiceWithSystemCertificates.json
-     */
-    /**
-     * Sample code: ApiManagementCreateServiceWithSystemCertificates.
-     * 
-     * @param manager Entry point to ApiManagementManager.
-     */
-    public static void apiManagementCreateServiceWithSystemCertificates(
-        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.apiManagementServices()
-            .define("apimService1")
-            .withRegion("Central US")
-            .withExistingResourceGroup("rg1")
-            .withSku(new ApiManagementServiceSkuProperties().withName(SkuType.BASIC).withCapacity(1))
-            .withPublisherEmail("apim@autorestsdk.com")
-            .withPublisherName("autorestsdk")
-            .withTags(mapOf("tag1", "value1", "tag2", "value2", "tag3", "value3"))
-            .withCertificates(
-                Arrays.asList(new CertificateConfiguration().withEncodedCertificate("fakeTokenPlaceholder")
-                    .withCertificatePassword("fakeTokenPlaceholder")
-                    .withStoreName(CertificateConfigurationStoreName.CERTIFICATE_AUTHORITY)))
-            .create();
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateMultiRegionServiceWithCustomHostname.json
      */
     /**
@@ -2216,6 +2975,10 @@ public final class ApiManagementServiceCreateOrUpdateSamples {
                 new HostnameConfiguration().withType(HostnameType.PORTAL)
                     .withHostname("portal1.msitesting.net")
                     .withEncodedCertificate("fakeTokenPlaceholder")
+                    .withCertificatePassword("fakeTokenPlaceholder"),
+                new HostnameConfiguration().withType(HostnameType.CONFIGURATION_API)
+                    .withHostname("configuration-api.msitesting.net")
+                    .withEncodedCertificate("fakeTokenPlaceholder")
                     .withCertificatePassword("fakeTokenPlaceholder")))
             .withAdditionalLocations(Arrays.asList(new AdditionalLocation().withLocation("East US")
                 .withSku(new ApiManagementServiceSkuProperties().withName(SkuType.PREMIUM).withCapacity(1))
@@ -2227,7 +2990,7 @@ public final class ApiManagementServiceCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateServiceWithNatGatewayEnabled.json
      */
     /**
@@ -2251,7 +3014,7 @@ public final class ApiManagementServiceCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUndelete.json
      */
     /**
@@ -2273,7 +3036,153 @@ public final class ApiManagementServiceCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateServiceWithDeveloperPortal.json
+     */
+    /**
+     * Sample code: ApiManagementCreateServiceWithDeveloperPortal.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementCreateServiceWithDeveloperPortal(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.apiManagementServices()
+            .define("apimService1")
+            .withRegion("South Central US")
+            .withExistingResourceGroup("rg1")
+            .withSku(new ApiManagementServiceSkuProperties().withName(SkuType.DEVELOPER).withCapacity(1))
+            .withPublisherEmail("foo@contoso.com")
+            .withPublisherName("foo")
+            .withTags(mapOf("Name", "Contoso", "Test", "User"))
+            .withDeveloperPortalStatus(DeveloperPortalStatus.ENABLED)
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateServiceWithCustomHostnameKeyVault.json
+     */
+    /**
+     * Sample code: ApiManagementCreateServiceWithCustomHostnameKeyVault.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementCreateServiceWithCustomHostnameKeyVault(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.apiManagementServices()
+            .define("apimService1")
+            .withRegion("North Europe")
+            .withExistingResourceGroup("rg1")
+            .withSku(new ApiManagementServiceSkuProperties().withName(SkuType.PREMIUM).withCapacity(1))
+            .withPublisherEmail("apim@autorestsdk.com")
+            .withPublisherName("autorestsdk")
+            .withTags(mapOf("tag1", "value1", "tag2", "value2", "tag3", "value3"))
+            .withIdentity(new ApiManagementServiceIdentity().withType(ApimIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1",
+                    new UserIdentityProperties())))
+            .withHostnameConfigurations(Arrays.asList(
+                new HostnameConfiguration().withType(HostnameType.PROXY)
+                    .withHostname("gateway1.msitesting.net")
+                    .withKeyVaultId("fakeTokenPlaceholder")
+                    .withIdentityClientId("329419bc-adec-4dce-9568-25a6d486e468")
+                    .withDefaultSslBinding(true),
+                new HostnameConfiguration().withType(HostnameType.MANAGEMENT)
+                    .withHostname("mgmt.msitesting.net")
+                    .withKeyVaultId("fakeTokenPlaceholder")
+                    .withIdentityClientId("329419bc-adec-4dce-9568-25a6d486e468"),
+                new HostnameConfiguration().withType(HostnameType.PORTAL)
+                    .withHostname("portal1.msitesting.net")
+                    .withKeyVaultId("fakeTokenPlaceholder")
+                    .withIdentityClientId("329419bc-adec-4dce-9568-25a6d486e468"),
+                new HostnameConfiguration().withType(HostnameType.CONFIGURATION_API)
+                    .withHostname("configuration-api.msitesting.net")
+                    .withEncodedCertificate("fakeTokenPlaceholder")
+                    .withCertificatePassword("fakeTokenPlaceholder")))
+            .withVirtualNetworkType(VirtualNetworkType.NONE)
+            .withApiVersionConstraint(new ApiVersionConstraint().withMinApiVersion("2019-01-01"))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateServiceHavingMsi.json
+     */
+    /**
+     * Sample code: ApiManagementCreateServiceHavingMsi.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementCreateServiceHavingMsi(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.apiManagementServices()
+            .define("apimService1")
+            .withRegion("West US")
+            .withExistingResourceGroup("rg1")
+            .withSku(new ApiManagementServiceSkuProperties().withName(SkuType.CONSUMPTION).withCapacity(0))
+            .withPublisherEmail("apim@autorestsdk.com")
+            .withPublisherName("autorestsdk")
+            .withTags(mapOf("tag1", "value1", "tag2", "value2", "tag3", "value3"))
+            .withIdentity(new ApiManagementServiceIdentity().withType(ApimIdentityType.SYSTEM_ASSIGNED))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateServiceWithSystemCertificates.json
+     */
+    /**
+     * Sample code: ApiManagementCreateServiceWithSystemCertificates.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementCreateServiceWithSystemCertificates(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.apiManagementServices()
+            .define("apimService1")
+            .withRegion("Central US")
+            .withExistingResourceGroup("rg1")
+            .withSku(new ApiManagementServiceSkuProperties().withName(SkuType.BASIC).withCapacity(1))
+            .withPublisherEmail("apim@autorestsdk.com")
+            .withPublisherName("autorestsdk")
+            .withTags(mapOf("tag1", "value1", "tag2", "value2", "tag3", "value3"))
+            .withCertificates(
+                Arrays.asList(new CertificateConfiguration().withEncodedCertificate("fakeTokenPlaceholder")
+                    .withCertificatePassword("fakeTokenPlaceholder")
+                    .withStoreName(CertificateConfigurationStoreName.CERTIFICATE_AUTHORITY)))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateServiceWithoutLegacyConfigurationApi.json
+     */
+    /**
+     * Sample code: ApiManagementCreateServiceWithoutLegacyConfigurationApi.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementCreateServiceWithoutLegacyConfigurationApi(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.apiManagementServices()
+            .define("apimService1")
+            .withRegion("Central US")
+            .withExistingResourceGroup("rg1")
+            .withSku(new ApiManagementServiceSkuProperties().withName(SkuType.BASIC).withCapacity(1))
+            .withPublisherEmail("apim@autorestsdk.com")
+            .withPublisherName("autorestsdk")
+            .withTags(mapOf("tag1", "value1", "tag2", "value2", "tag3", "value3"))
+            .withConfigurationApi(new ConfigurationApi().withLegacyApi(LegacyApiState.DISABLED))
+            .create();
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateServiceWithUserAssignedIdentity.json
      */
     /**
@@ -2293,14 +3202,14 @@ public final class ApiManagementServiceCreateOrUpdateSamples {
             .withTags(mapOf("tag1", "value1", "tag2", "value2", "tag3", "value3"))
             .withIdentity(new ApiManagementServiceIdentity().withType(ApimIdentityType.USER_ASSIGNED)
                 .withUserAssignedIdentities(mapOf(
-                    "/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/apimService1",
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/apimService1",
                     new UserIdentityProperties())))
             .create();
     }
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateServiceInZones.json
      */
     /**
@@ -2324,7 +3233,7 @@ public final class ApiManagementServiceCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateServiceInVnetWithPublicIP.json
      */
     /**
@@ -2344,59 +3253,16 @@ public final class ApiManagementServiceCreateOrUpdateSamples {
             .withTags(mapOf("tag1", "value1", "tag2", "value2", "tag3", "value3"))
             .withZones(Arrays.asList("1", "2"))
             .withPublicIpAddressId(
-                "/subscriptions/subid/resourceGroups/rgName/providers/Microsoft.Network/publicIPAddresses/apimazvnet")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgName/providers/Microsoft.Network/publicIPAddresses/apimazvnet")
             .withVirtualNetworkConfiguration(new VirtualNetworkConfiguration().withSubnetResourceId(
-                "/subscriptions/subid/resourceGroups/rgName/providers/Microsoft.Network/virtualNetworks/apimcus/subnets/tenant"))
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgName/providers/Microsoft.Network/virtualNetworks/apimcus/subnets/tenant"))
             .withVirtualNetworkType(VirtualNetworkType.EXTERNAL)
             .create();
     }
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
-     * ApiManagementCreateServiceWithCustomHostnameKeyVault.json
-     */
-    /**
-     * Sample code: ApiManagementCreateServiceWithCustomHostnameKeyVault.
-     * 
-     * @param manager Entry point to ApiManagementManager.
-     */
-    public static void apiManagementCreateServiceWithCustomHostnameKeyVault(
-        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.apiManagementServices()
-            .define("apimService1")
-            .withRegion("North Europe")
-            .withExistingResourceGroup("rg1")
-            .withSku(new ApiManagementServiceSkuProperties().withName(SkuType.PREMIUM).withCapacity(1))
-            .withPublisherEmail("apim@autorestsdk.com")
-            .withPublisherName("autorestsdk")
-            .withTags(mapOf("tag1", "value1", "tag2", "value2", "tag3", "value3"))
-            .withIdentity(new ApiManagementServiceIdentity().withType(ApimIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf(
-                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1",
-                    new UserIdentityProperties())))
-            .withHostnameConfigurations(Arrays.asList(
-                new HostnameConfiguration().withType(HostnameType.PROXY)
-                    .withHostname("gateway1.msitesting.net")
-                    .withKeyVaultId("fakeTokenPlaceholder")
-                    .withIdentityClientId("329419bc-adec-4dce-9568-25a6d486e468")
-                    .withDefaultSslBinding(true),
-                new HostnameConfiguration().withType(HostnameType.MANAGEMENT)
-                    .withHostname("mgmt.msitesting.net")
-                    .withKeyVaultId("fakeTokenPlaceholder")
-                    .withIdentityClientId("329419bc-adec-4dce-9568-25a6d486e468"),
-                new HostnameConfiguration().withType(HostnameType.PORTAL)
-                    .withHostname("portal1.msitesting.net")
-                    .withKeyVaultId("fakeTokenPlaceholder")
-                    .withIdentityClientId("329419bc-adec-4dce-9568-25a6d486e468")))
-            .withVirtualNetworkType(VirtualNetworkType.NONE)
-            .withApiVersionConstraint(new ApiVersionConstraint().withMinApiVersion("2019-01-01"))
-            .create();
-    }
-
-    /*
-     * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateService.json
      */
     /**
@@ -2440,7 +3306,7 @@ public final class ApiManagementServiceCreateOrUpdateSamples {
 public final class ApiManagementServiceDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementServiceDeleteService.json
      */
     /**
@@ -2464,7 +3330,7 @@ public final class ApiManagementServiceDeleteSamples {
 public final class ApiManagementServiceGetByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementServiceGetMultiRegionInternalVnet.json
      */
     /**
@@ -2480,7 +3346,7 @@ public final class ApiManagementServiceGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementServiceGetServiceHavingMsi.json
      */
     /**
@@ -2496,7 +3362,7 @@ public final class ApiManagementServiceGetByResourceGroupSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementServiceGetService.json
      */
     /**
@@ -2521,7 +3387,7 @@ public final class ApiManagementServiceGetByResourceGroupSamples {
 public final class ApiManagementServiceGetDomainOwnershipIdentifierSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementServiceGetDomainOwnershipIdentifier.json
      */
     /**
@@ -2545,7 +3411,7 @@ public final class ApiManagementServiceGetDomainOwnershipIdentifierSamples {
 public final class ApiManagementServiceGetSsoTokenSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementServiceGetSsoToken.json
      */
     /**
@@ -2570,7 +3436,7 @@ public final class ApiManagementServiceGetSsoTokenSamples {
 public final class ApiManagementServiceListSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListServiceBySubscription.json
      */
     /**
@@ -2594,7 +3460,7 @@ public final class ApiManagementServiceListSamples {
 public final class ApiManagementServiceListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListServiceBySubscriptionAndResourceGroup.json
      */
     /**
@@ -2612,13 +3478,16 @@ public final class ApiManagementServiceListByResourceGroupSamples {
 ### ApiManagementService_MigrateToStv2
 
 ```java
+import com.azure.resourcemanager.apimanagement.models.MigrateToStv2Contract;
+import com.azure.resourcemanager.apimanagement.models.MigrateToStv2Mode;
+
 /**
  * Samples for ApiManagementService MigrateToStv2.
  */
 public final class ApiManagementServiceMigrateToStv2Samples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementServiceMigrateToStv2.json
      */
     /**
@@ -2628,7 +3497,9 @@ public final class ApiManagementServiceMigrateToStv2Samples {
      */
     public static void
         apiManagementMigrateService(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.apiManagementServices().migrateToStv2("rg1", "apimService1", com.azure.core.util.Context.NONE);
+        manager.apiManagementServices()
+            .migrateToStv2("rg1", "apimService1", new MigrateToStv2Contract().withMode(MigrateToStv2Mode.PRESERVE_IP),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2645,7 +3516,7 @@ import com.azure.resourcemanager.apimanagement.models.ApiManagementServiceBackup
 public final class ApiManagementServiceRestoreSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementRestoreWithAccessKey.json
      */
     /**
@@ -2686,7 +3557,7 @@ import java.util.Map;
 public final class ApiManagementServiceUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateServiceDisableTls10.json
      */
     /**
@@ -2707,7 +3578,7 @@ public final class ApiManagementServiceUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateServiceToNewVnetAndAZs.json
      */
     /**
@@ -2724,23 +3595,23 @@ public final class ApiManagementServiceUpdateSamples {
             .withSku(new ApiManagementServiceSkuProperties().withName(SkuType.PREMIUM).withCapacity(3))
             .withZones(Arrays.asList("1", "2", "3"))
             .withPublicIpAddressId(
-                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/publicip-apim-japan-east")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/publicip-apim-japan-east")
             .withVirtualNetworkConfiguration(new VirtualNetworkConfiguration().withSubnetResourceId(
-                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet-apim-japaneast/subnets/apim2"))
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet-apim-japaneast/subnets/apim2"))
             .withAdditionalLocations(Arrays.asList(new AdditionalLocation().withLocation("Australia East")
                 .withSku(new ApiManagementServiceSkuProperties().withName(SkuType.PREMIUM).withCapacity(3))
                 .withZones(Arrays.asList("1", "2", "3"))
                 .withPublicIpAddressId(
-                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/apim-australia-east-publicip")
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/apim-australia-east-publicip")
                 .withVirtualNetworkConfiguration(new VirtualNetworkConfiguration().withSubnetResourceId(
-                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/apimaeavnet/subnets/default"))))
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/apimaeavnet/subnets/default"))))
             .withVirtualNetworkType(VirtualNetworkType.EXTERNAL)
             .apply();
     }
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateServicePublisherDetails.json
      */
     /**
@@ -2779,7 +3650,7 @@ public final class ApiManagementServiceUpdateSamples {
 public final class ApiManagementServiceSkusListAvailableServiceSkusSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListSKUs-Dedicated.json
      */
     /**
@@ -2795,7 +3666,7 @@ public final class ApiManagementServiceSkusListAvailableServiceSkusSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListSKUs-Consumption.json
      */
     /**
@@ -2820,7 +3691,7 @@ public final class ApiManagementServiceSkusListAvailableServiceSkusSamples {
 public final class ApiManagementSkusListSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListSku.json
      */
     /**
@@ -2831,6 +3702,55 @@ public final class ApiManagementSkusListSamples {
     public static void
         listsAllAvailableResourceSKUs(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager.apiManagementSkus().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ApiManagementWorkspaceLinkOperation_Get
+
+```java
+/**
+ * Samples for ApiManagementWorkspaceLinkOperation Get.
+ */
+public final class ApiManagementWorkspaceLinkOperationGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspaceLink.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspaceLinks.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetWorkspaceLinks(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.apiManagementWorkspaceLinkOperations()
+            .getWithResponse("rg1", "service1", "wk-1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ApiManagementWorkspaceLinks_ListByService
+
+```java
+/**
+ * Samples for ApiManagementWorkspaceLinks ListByService.
+ */
+public final class ApiManagementWorkspaceLinksListByServiceSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspaceLinks.json
+     */
+    /**
+     * Sample code: ApiManagementListGatewayConfigConnection.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListGatewayConfigConnection(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.apiManagementWorkspaceLinks().listByService("rg1", "service1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -2849,7 +3769,7 @@ import java.util.Arrays;
 public final class ApiOperationCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiOperation.json
      */
     /**
@@ -2892,7 +3812,7 @@ public final class ApiOperationCreateOrUpdateSamples {
 public final class ApiOperationDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteApiOperation.json
      */
     /**
@@ -2918,7 +3838,7 @@ public final class ApiOperationDeleteSamples {
 public final class ApiOperationGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetApiOperation.json
      */
     /**
@@ -2935,7 +3855,7 @@ public final class ApiOperationGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetApiOperationPetStore.json
      */
     /**
@@ -2960,7 +3880,7 @@ public final class ApiOperationGetSamples {
 public final class ApiOperationGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadApiOperation.json
      */
     /**
@@ -2986,7 +3906,7 @@ public final class ApiOperationGetEntityTagSamples {
 public final class ApiOperationListByApiSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListApiOperations.json
      */
     /**
@@ -3018,7 +3938,7 @@ import java.util.Arrays;
 public final class ApiOperationUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateApiOperation.json
      */
     /**
@@ -3070,7 +3990,7 @@ import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 public final class ApiOperationPolicyCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiOperationPolicy.json
      */
     /**
@@ -3102,7 +4022,7 @@ import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 public final class ApiOperationPolicyDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteApiOperationPolicy.json
      */
     /**
@@ -3130,7 +4050,7 @@ import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 public final class ApiOperationPolicyGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetApiOperationPolicy.json
      */
     /**
@@ -3158,7 +4078,7 @@ import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 public final class ApiOperationPolicyGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadApiOperationPolicy.json
      */
     /**
@@ -3184,7 +4104,7 @@ public final class ApiOperationPolicyGetEntityTagSamples {
 public final class ApiOperationPolicyListByOperationSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListApiOperationPolicies.json
      */
     /**
@@ -3214,7 +4134,7 @@ import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 public final class ApiPolicyCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiPolicyNonXmlEncoded.json
      */
     /**
@@ -3234,7 +4154,7 @@ public final class ApiPolicyCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiPolicy.json
      */
     /**
@@ -3266,7 +4186,7 @@ import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 public final class ApiPolicyDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteApiPolicy.json
      */
     /**
@@ -3294,7 +4214,7 @@ import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 public final class ApiPolicyGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetApiPolicy.json
      */
     /**
@@ -3321,7 +4241,7 @@ import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 public final class ApiPolicyGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadApiPolicy.json
      */
     /**
@@ -3347,7 +4267,7 @@ public final class ApiPolicyGetEntityTagSamples {
 public final class ApiPolicyListByApiSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListApiPolicies.json
      */
     /**
@@ -3372,7 +4292,7 @@ public final class ApiPolicyListByApiSamples {
 public final class ApiProductListByApisSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListApiProducts.json
      */
     /**
@@ -3398,7 +4318,7 @@ public final class ApiProductListByApisSamples {
 public final class ApiReleaseCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiRelease.json
      */
     /**
@@ -3412,7 +4332,7 @@ public final class ApiReleaseCreateOrUpdateSamples {
             .define("testrev")
             .withExistingApi("rg1", "apimService1", "a1")
             .withApiId(
-                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/a1")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/a1")
             .withNotes("yahooagain")
             .create();
     }
@@ -3428,7 +4348,7 @@ public final class ApiReleaseCreateOrUpdateSamples {
 public final class ApiReleaseDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteApiRelease.json
      */
     /**
@@ -3454,7 +4374,7 @@ public final class ApiReleaseDeleteSamples {
 public final class ApiReleaseGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetApiRelease.json
      */
     /**
@@ -3479,7 +4399,7 @@ public final class ApiReleaseGetSamples {
 public final class ApiReleaseGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadApiRelease.json
      */
     /**
@@ -3505,7 +4425,7 @@ public final class ApiReleaseGetEntityTagSamples {
 public final class ApiReleaseListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListApiReleases.json
      */
     /**
@@ -3532,7 +4452,7 @@ import com.azure.resourcemanager.apimanagement.models.ApiReleaseContract;
 public final class ApiReleaseUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateApiRelease.json
      */
     /**
@@ -3547,7 +4467,7 @@ public final class ApiReleaseUpdateSamples {
             .getValue();
         resource.update()
             .withApiId(
-                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/a1")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/a1")
             .withNotes("yahooagain")
             .withIfMatch("*")
             .apply();
@@ -3564,7 +4484,7 @@ public final class ApiReleaseUpdateSamples {
 public final class ApiRevisionListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListApiRevisions.json
      */
     /**
@@ -3590,7 +4510,7 @@ public final class ApiRevisionListByServiceSamples {
 public final class ApiSchemaCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiSchema.json
      */
     /**
@@ -3620,7 +4540,7 @@ public final class ApiSchemaCreateOrUpdateSamples {
 public final class ApiSchemaDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteApiSchema.json
      */
     /**
@@ -3646,7 +4566,7 @@ public final class ApiSchemaDeleteSamples {
 public final class ApiSchemaGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetApiSchema.json
      */
     /**
@@ -3671,7 +4591,7 @@ public final class ApiSchemaGetSamples {
 public final class ApiSchemaGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadApiSchema.json
      */
     /**
@@ -3697,7 +4617,7 @@ public final class ApiSchemaGetEntityTagSamples {
 public final class ApiSchemaListByApiSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListApiSchemas.json
      */
     /**
@@ -3723,7 +4643,7 @@ public final class ApiSchemaListByApiSamples {
 public final class ApiTagDescriptionCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiTagDescription.json
      */
     /**
@@ -3754,7 +4674,7 @@ public final class ApiTagDescriptionCreateOrUpdateSamples {
 public final class ApiTagDescriptionDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteApiTagDescription.json
      */
     /**
@@ -3780,7 +4700,7 @@ public final class ApiTagDescriptionDeleteSamples {
 public final class ApiTagDescriptionGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetApiTagDescription.json
      */
     /**
@@ -3806,7 +4726,7 @@ public final class ApiTagDescriptionGetSamples {
 public final class ApiTagDescriptionGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadApiTagDescription.json
      */
     /**
@@ -3832,7 +4752,7 @@ public final class ApiTagDescriptionGetEntityTagSamples {
 public final class ApiTagDescriptionListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListApiTagDescriptions.json
      */
     /**
@@ -3860,7 +4780,7 @@ import com.azure.resourcemanager.apimanagement.models.VersioningScheme;
 public final class ApiVersionSetCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiVersionSet.json
      */
     /**
@@ -3890,7 +4810,7 @@ public final class ApiVersionSetCreateOrUpdateSamples {
 public final class ApiVersionSetDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteApiVersionSet.json
      */
     /**
@@ -3914,7 +4834,7 @@ public final class ApiVersionSetDeleteSamples {
 public final class ApiVersionSetGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetApiVersionSet.json
      */
     /**
@@ -3938,7 +4858,7 @@ public final class ApiVersionSetGetSamples {
 public final class ApiVersionSetGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadApiVersionSet.json
      */
     /**
@@ -3963,7 +4883,7 @@ public final class ApiVersionSetGetEntityTagSamples {
 public final class ApiVersionSetListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListApiVersionSets.json
      */
     /**
@@ -3991,7 +4911,7 @@ import com.azure.resourcemanager.apimanagement.models.VersioningScheme;
 public final class ApiVersionSetUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateApiVersionSet.json
      */
     /**
@@ -4027,7 +4947,7 @@ import java.util.Arrays;
 public final class ApiWikiCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiWiki.json
      */
     /**
@@ -4056,7 +4976,7 @@ public final class ApiWikiCreateOrUpdateSamples {
 public final class ApiWikiDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteApiWiki.json
      */
     /**
@@ -4082,7 +5002,7 @@ public final class ApiWikiDeleteSamples {
 public final class ApiWikiGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetApiWiki.json
      */
     /**
@@ -4106,7 +5026,7 @@ public final class ApiWikiGetSamples {
 public final class ApiWikiGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadApiWiki.json
      */
     /**
@@ -4135,7 +5055,7 @@ import java.util.Arrays;
 public final class ApiWikiUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateApiWiki.json
      */
     /**
@@ -4163,7 +5083,7 @@ public final class ApiWikiUpdateSamples {
 public final class ApiWikisOperationListSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListApiWikis.json
      */
     /**
@@ -4190,7 +5110,7 @@ import com.azure.resourcemanager.apimanagement.models.AuthorizationConfirmConsen
 public final class AuthorizationConfirmConsentCodeSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementPostAuthorizationConfirmConsentCodeRequest.json
      */
     /**
@@ -4222,7 +5142,7 @@ import java.util.Map;
 public final class AuthorizationCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateAuthorizationAADAuthCode.json
      */
     /**
@@ -4242,7 +5162,7 @@ public final class AuthorizationCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateAuthorizationAADClientCred.json
      */
     /**
@@ -4257,8 +5177,7 @@ public final class AuthorizationCreateOrUpdateSamples {
             .withExistingAuthorizationProvider("rg1", "apimService1", "aadwithclientcred")
             .withAuthorizationType(AuthorizationType.OAUTH2)
             .withOAuth2GrantType(OAuth2GrantType.AUTHORIZATION_CODE)
-            .withParameters(
-                mapOf("clientId", "53790925-fdd3-4b80-bc7a-4c3aaf25801d", "clientSecret", "fakeTokenPlaceholder"))
+            .withParameters(mapOf("clientId", "clientsecretid", "clientSecret", "fakeTokenPlaceholder"))
             .create();
     }
 
@@ -4285,7 +5204,7 @@ public final class AuthorizationCreateOrUpdateSamples {
 public final class AuthorizationDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteAuthorization.json
      */
     /**
@@ -4311,7 +5230,7 @@ public final class AuthorizationDeleteSamples {
 public final class AuthorizationGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetAuthorization.json
      */
     /**
@@ -4336,7 +5255,7 @@ public final class AuthorizationGetSamples {
 public final class AuthorizationListByAuthorizationProviderSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListAuthorizationsClientCred.json
      */
     /**
@@ -4353,7 +5272,7 @@ public final class AuthorizationListByAuthorizationProviderSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListAuthorizationsAuthCode.json
      */
     /**
@@ -4373,13 +5292,15 @@ public final class AuthorizationListByAuthorizationProviderSamples {
 ### AuthorizationAccessPolicy_CreateOrUpdate
 
 ```java
+import java.util.Arrays;
+
 /**
  * Samples for AuthorizationAccessPolicy CreateOrUpdate.
  */
 public final class AuthorizationAccessPolicyCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateAuthorizationAccessPolicy.json
      */
     /**
@@ -4392,6 +5313,7 @@ public final class AuthorizationAccessPolicyCreateOrUpdateSamples {
         manager.authorizationAccessPolicies()
             .define("fe0bed83-631f-4149-bd0b-0464b1bc7cab")
             .withExistingAuthorization("rg1", "apimService1", "aadwithauthcode", "authz1")
+            .withAppIds(Arrays.asList("d5f04bb0-ba78-4878-a43e-35a0b74fe315"))
             .withTenantId("13932a0d-5c63-4d37-901d-1df9c97722ff")
             .withObjectId("fe0bed83-631f-4149-bd0b-0464b1bc7cab")
             .create();
@@ -4408,7 +5330,7 @@ public final class AuthorizationAccessPolicyCreateOrUpdateSamples {
 public final class AuthorizationAccessPolicyDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteAuthorizationAccessPolicy.json
      */
     /**
@@ -4434,7 +5356,7 @@ public final class AuthorizationAccessPolicyDeleteSamples {
 public final class AuthorizationAccessPolicyGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetAuthorizationAccessPolicy.json
      */
     /**
@@ -4460,7 +5382,7 @@ public final class AuthorizationAccessPolicyGetSamples {
 public final class AuthorizationAccessPolicyListByAuthorizationSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListAuthorizationAccessPolicies.json
      */
     /**
@@ -4488,7 +5410,7 @@ import com.azure.resourcemanager.apimanagement.models.AuthorizationLoginRequestC
 public final class AuthorizationLoginLinksPostSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetAuthorizationLoginRequest.json
      */
     /**
@@ -4520,7 +5442,7 @@ import java.util.Map;
 public final class AuthorizationProviderCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateAuthorizationProviderOOBGoogle.json
      */
     /**
@@ -4538,15 +5460,15 @@ public final class AuthorizationProviderCreateOrUpdateSamples {
             .withOauth2(new AuthorizationProviderOAuth2Settings()
                 .withRedirectUrl("https://authorization-manager.consent.azure-apim.net/redirect/apim/apimService1")
                 .withGrantTypes(new AuthorizationProviderOAuth2GrantTypes().withAuthorizationCode(mapOf("clientId",
-                    "99999999-xxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com", "clientSecret", "fakeTokenPlaceholder",
-                    "scopes",
+                    "99999999-xxxxxxxxxxxxxxxxxxxxxxxx.apps.googleusercontent.com", "clientSecret",
+                    "fakeTokenPlaceholder", "scopes",
                     "openid https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email"))))
             .create();
     }
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateAuthorizationProviderGenericOAuth2.json
      */
     /**
@@ -4564,15 +5486,15 @@ public final class AuthorizationProviderCreateOrUpdateSamples {
             .withOauth2(new AuthorizationProviderOAuth2Settings()
                 .withRedirectUrl("https://authorization-manager.consent.azure-apim.net/redirect/apim/apimService1")
                 .withGrantTypes(new AuthorizationProviderOAuth2GrantTypes()
-                    .withAuthorizationCode(mapOf("authorizationUrl", "fakeTokenPlaceholder", "clientId",
-                        "genericClientId", "clientSecret", "fakeTokenPlaceholder", "refreshUrl",
-                        "https://www.eventbrite.com/oauth/token", "scopes", "", "tokenUrl", "fakeTokenPlaceholder"))))
+                    .withAuthorizationCode(mapOf("authorizationUrl", "fakeTokenPlaceholder", "clientId", "clientid",
+                        "clientSecret", "fakeTokenPlaceholder", "refreshUrl", "https://www.eventbrite.com/oauth/token",
+                        "scopes", null, "tokenUrl", "fakeTokenPlaceholder"))))
             .create();
     }
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateAuthorizationProviderAADAuthCode.json
      */
     /**
@@ -4587,18 +5509,17 @@ public final class AuthorizationProviderCreateOrUpdateSamples {
             .withExistingService("rg1", "apimService1")
             .withDisplayName("aadwithauthcode")
             .withIdentityProvider("aad")
-            .withOauth2(
-                new AuthorizationProviderOAuth2Settings()
-                    .withRedirectUrl("https://authorization-manager.consent.azure-apim.net/redirect/apim/apimService1")
-                    .withGrantTypes(new AuthorizationProviderOAuth2GrantTypes().withAuthorizationCode(mapOf("clientId",
-                        "59790825-fdd3-4b10-bc7a-4c3aaf25801d", "clientSecret", "fakeTokenPlaceholder", "resourceUri",
-                        "https://graph.microsoft.com", "scopes", "User.Read.All Group.Read.All"))))
+            .withOauth2(new AuthorizationProviderOAuth2Settings()
+                .withRedirectUrl("https://authorization-manager.consent.azure-apim.net/redirect/apim/apimService1")
+                .withGrantTypes(new AuthorizationProviderOAuth2GrantTypes()
+                    .withAuthorizationCode(mapOf("clientId", "clientsecretid", "clientSecret", "fakeTokenPlaceholder",
+                        "resourceUri", "https://graph.microsoft.com", "scopes", "User.Read.All Group.Read.All"))))
             .create();
     }
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateAuthorizationProviderAADClientCred.json
      */
     /**
@@ -4643,7 +5564,7 @@ public final class AuthorizationProviderCreateOrUpdateSamples {
 public final class AuthorizationProviderDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteAuthorizationProvider.json
      */
     /**
@@ -4668,7 +5589,7 @@ public final class AuthorizationProviderDeleteSamples {
 public final class AuthorizationProviderGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetAuthorizationProvider.json
      */
     /**
@@ -4693,7 +5614,7 @@ public final class AuthorizationProviderGetSamples {
 public final class AuthorizationProviderListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListAuthorizationProviders.json
      */
     /**
@@ -4723,7 +5644,7 @@ import java.util.Arrays;
 public final class AuthorizationServerCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateAuthorizationServer.json
      */
     /**
@@ -4766,7 +5687,7 @@ public final class AuthorizationServerCreateOrUpdateSamples {
 public final class AuthorizationServerDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteAuthorizationServer.json
      */
     /**
@@ -4791,7 +5712,7 @@ public final class AuthorizationServerDeleteSamples {
 public final class AuthorizationServerGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetAuthorizationServer.json
      */
     /**
@@ -4816,7 +5737,7 @@ public final class AuthorizationServerGetSamples {
 public final class AuthorizationServerGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadAuthorizationServer.json
      */
     /**
@@ -4841,7 +5762,7 @@ public final class AuthorizationServerGetEntityTagSamples {
 public final class AuthorizationServerListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListAuthorizationServers.json
      */
     /**
@@ -4866,7 +5787,7 @@ public final class AuthorizationServerListByServiceSamples {
 public final class AuthorizationServerListSecretsSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementAuthorizationServerListSecrets.json
      */
     /**
@@ -4893,7 +5814,7 @@ import com.azure.resourcemanager.apimanagement.models.AuthorizationServerContrac
 public final class AuthorizationServerUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateAuthorizationServer.json
      */
     /**
@@ -4938,7 +5859,7 @@ import java.util.Map;
 public final class BackendCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateBackendServiceFabric.json
      */
     /**
@@ -4956,7 +5877,7 @@ public final class BackendCreateOrUpdateSamples {
             .withDescription("Service Fabric Test App 1")
             .withProperties(new BackendProperties().withServiceFabricCluster(new BackendServiceFabricClusterProperties()
                 .withClientCertificateId(
-                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/cert1")
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/cert1")
                 .withMaxPartitionResolutionRetries(5)
                 .withManagementEndpoints(Arrays.asList("https://somecluster.com"))
                 .withServerX509Names(Arrays.asList(new X509CertificateName().withName("ServerCommonName1")
@@ -4966,7 +5887,7 @@ public final class BackendCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateBackendProxyBackend.json
      */
     /**
@@ -5016,7 +5937,7 @@ public final class BackendCreateOrUpdateSamples {
 public final class BackendDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteBackend.json
      */
     /**
@@ -5041,7 +5962,7 @@ public final class BackendDeleteSamples {
 public final class BackendGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetBackend.json
      */
     /**
@@ -5064,7 +5985,7 @@ public final class BackendGetSamples {
 public final class BackendGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadBackend.json
      */
     /**
@@ -5088,7 +6009,7 @@ public final class BackendGetEntityTagSamples {
 public final class BackendListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListBackends.json
      */
     /**
@@ -5114,7 +6035,7 @@ import java.time.Duration;
 public final class BackendReconnectSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementBackendReconnect.json
      */
     /**
@@ -5143,7 +6064,7 @@ import com.azure.resourcemanager.apimanagement.models.BackendTlsProperties;
 public final class BackendUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateBackend.json
      */
     /**
@@ -5174,7 +6095,7 @@ public final class BackendUpdateSamples {
 public final class CacheCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateCache.json
      */
     /**
@@ -5190,7 +6111,7 @@ public final class CacheCreateOrUpdateSamples {
             .withConnectionString("apim.redis.cache.windows.net:6380,password=xc,ssl=True,abortConnect=False")
             .withUseFromLocation("default")
             .withResourceId(
-                "https://management.azure.com/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Cache/redis/apimservice1")
+                "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/redis/apimservice1")
             .create();
     }
 }
@@ -5205,7 +6126,7 @@ public final class CacheCreateOrUpdateSamples {
 public final class CacheDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteCache.json
      */
     /**
@@ -5228,7 +6149,7 @@ public final class CacheDeleteSamples {
 public final class CacheGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetCache.json
      */
     /**
@@ -5251,7 +6172,7 @@ public final class CacheGetSamples {
 public final class CacheGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadCache.json
      */
     /**
@@ -5274,7 +6195,7 @@ public final class CacheGetEntityTagSamples {
 public final class CacheListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListCaches.json
      */
     /**
@@ -5299,7 +6220,7 @@ import com.azure.resourcemanager.apimanagement.models.CacheContract;
 public final class CacheUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateCache.json
      */
     /**
@@ -5327,7 +6248,7 @@ import com.azure.resourcemanager.apimanagement.models.KeyVaultContractCreateProp
 public final class CertificateCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateCertificate.json
      */
     /**
@@ -5347,7 +6268,7 @@ public final class CertificateCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateCertificateWithKeyVault.json
      */
     /**
@@ -5376,7 +6297,7 @@ public final class CertificateCreateOrUpdateSamples {
 public final class CertificateDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteCertificate.json
      */
     /**
@@ -5401,7 +6322,7 @@ public final class CertificateDeleteSamples {
 public final class CertificateGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetCertificateWithKeyVault.json
      */
     /**
@@ -5417,7 +6338,7 @@ public final class CertificateGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetCertificate.json
      */
     /**
@@ -5442,7 +6363,7 @@ public final class CertificateGetSamples {
 public final class CertificateGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadCertificate.json
      */
     /**
@@ -5467,7 +6388,7 @@ public final class CertificateGetEntityTagSamples {
 public final class CertificateListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListCertificates.json
      */
     /**
@@ -5492,7 +6413,7 @@ public final class CertificateListByServiceSamples {
 public final class CertificateRefreshSecretSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementRefreshCertificate.json
      */
     /**
@@ -5523,7 +6444,7 @@ import java.util.Map;
 public final class ContentItemCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateContentTypeContentItem.json
      */
     /**
@@ -5566,7 +6487,7 @@ public final class ContentItemCreateOrUpdateSamples {
 public final class ContentItemDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteContentTypeContentItem.json
      */
     /**
@@ -5592,7 +6513,7 @@ public final class ContentItemDeleteSamples {
 public final class ContentItemGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetContentTypeContentItem.json
      */
     /**
@@ -5618,7 +6539,7 @@ public final class ContentItemGetSamples {
 public final class ContentItemGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadContentTypeContentItem.json
      */
     /**
@@ -5644,7 +6565,7 @@ public final class ContentItemGetEntityTagSamples {
 public final class ContentItemListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListContentTypeContentItems.json
      */
     /**
@@ -5672,7 +6593,7 @@ import java.io.IOException;
 public final class ContentTypeCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateContentType.json
      */
     /**
@@ -5706,7 +6627,7 @@ public final class ContentTypeCreateOrUpdateSamples {
 public final class ContentTypeDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteContentType.json
      */
     /**
@@ -5730,7 +6651,7 @@ public final class ContentTypeDeleteSamples {
 public final class ContentTypeGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetContentType.json
      */
     /**
@@ -5754,7 +6675,7 @@ public final class ContentTypeGetSamples {
 public final class ContentTypeListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListContentTypes.json
      */
     /**
@@ -5782,7 +6703,7 @@ import com.azure.resourcemanager.apimanagement.models.SubscriptionsDelegationSet
 public final class DelegationSettingsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementPortalSettingsPutDelegation.json
      */
     /**
@@ -5812,7 +6733,7 @@ public final class DelegationSettingsCreateOrUpdateSamples {
 public final class DelegationSettingsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementPortalSettingsGetDelegation.json
      */
     /**
@@ -5836,7 +6757,7 @@ public final class DelegationSettingsGetSamples {
 public final class DelegationSettingsGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadDelegationSettings.json
      */
     /**
@@ -5860,7 +6781,7 @@ public final class DelegationSettingsGetEntityTagSamples {
 public final class DelegationSettingsListSecretsSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListSecretsPortalSettingsValidationKey.json
      */
     /**
@@ -5888,7 +6809,7 @@ import com.azure.resourcemanager.apimanagement.models.SubscriptionsDelegationSet
 public final class DelegationSettingsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementPortalSettingsUpdateDelegation.json
      */
     /**
@@ -5918,7 +6839,7 @@ public final class DelegationSettingsUpdateSamples {
 public final class DeletedServicesGetByNameSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetDeletedServiceByName.json
      */
     /**
@@ -5942,7 +6863,7 @@ public final class DeletedServicesGetByNameSamples {
 public final class DeletedServicesListSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeletedServicesListBySubscription.json
      */
     /**
@@ -5966,7 +6887,7 @@ public final class DeletedServicesListSamples {
 public final class DeletedServicesPurgeSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeletedServicesPurge.json
      */
     /**
@@ -5999,7 +6920,7 @@ import java.util.Arrays;
 public final class DiagnosticCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateDiagnostic.json
      */
     /**
@@ -6038,7 +6959,7 @@ public final class DiagnosticCreateOrUpdateSamples {
 public final class DiagnosticDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteDiagnostic.json
      */
     /**
@@ -6063,7 +6984,7 @@ public final class DiagnosticDeleteSamples {
 public final class DiagnosticGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetDiagnostic.json
      */
     /**
@@ -6088,7 +7009,7 @@ public final class DiagnosticGetSamples {
 public final class DiagnosticGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadDiagnostic.json
      */
     /**
@@ -6113,7 +7034,7 @@ public final class DiagnosticGetEntityTagSamples {
 public final class DiagnosticListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListDiagnostics.json
      */
     /**
@@ -6146,7 +7067,7 @@ import java.util.Arrays;
 public final class DiagnosticUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateDiagnostic.json
      */
     /**
@@ -6185,7 +7106,7 @@ public final class DiagnosticUpdateSamples {
 public final class DocumentationCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateDocumentation.json
      */
     /**
@@ -6214,7 +7135,7 @@ public final class DocumentationCreateOrUpdateSamples {
 public final class DocumentationDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteDocumentation.json
      */
     /**
@@ -6225,7 +7146,7 @@ public final class DocumentationDeleteSamples {
     public static void
         apiManagementDeleteDocumentation(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager.documentations()
-            .deleteWithResponse("rg1", "apimService1", "57d1f7558aa04f15146d9d8a", "*",
+            .deleteWithResponse("rg1", "apimService1", "57d1f7558aa04f15146d9d8a", null,
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -6240,7 +7161,7 @@ public final class DocumentationDeleteSamples {
 public final class DocumentationGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetDocumentation.json
      */
     /**
@@ -6265,7 +7186,7 @@ public final class DocumentationGetSamples {
 public final class DocumentationGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadDocumentation.json
      */
     /**
@@ -6291,7 +7212,7 @@ public final class DocumentationGetEntityTagSamples {
 public final class DocumentationListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListDocumentations.json
      */
     /**
@@ -6317,7 +7238,7 @@ import com.azure.resourcemanager.apimanagement.models.DocumentationContract;
 public final class DocumentationUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateDocumentation.json
      */
     /**
@@ -6330,7 +7251,7 @@ public final class DocumentationUpdateSamples {
         DocumentationContract resource = manager.documentations()
             .getWithResponse("rg1", "apimService1", "57d1f7558aa04f15146d9d8a", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withTitle("Title updated").withContent("content updated").withIfMatch("*").apply();
+        resource.update().withTitle("Title updated").withContent("content updated").apply();
     }
 }
 ```
@@ -6346,7 +7267,7 @@ import com.azure.resourcemanager.apimanagement.models.TemplateName;
 public final class EmailTemplateCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateTemplate.json
      */
     /**
@@ -6376,7 +7297,7 @@ import com.azure.resourcemanager.apimanagement.models.TemplateName;
 public final class EmailTemplateDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteTemplate.json
      */
     /**
@@ -6404,7 +7325,7 @@ import com.azure.resourcemanager.apimanagement.models.TemplateName;
 public final class EmailTemplateGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetTemplate.json
      */
     /**
@@ -6431,7 +7352,7 @@ import com.azure.resourcemanager.apimanagement.models.TemplateName;
 public final class EmailTemplateGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadEmailTemplate.json
      */
     /**
@@ -6457,7 +7378,7 @@ public final class EmailTemplateGetEntityTagSamples {
 public final class EmailTemplateListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListTemplates.json
      */
     /**
@@ -6485,7 +7406,7 @@ import com.azure.resourcemanager.apimanagement.models.TemplateName;
 public final class EmailTemplateUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateTemplate.json
      */
     /**
@@ -6520,7 +7441,7 @@ import com.azure.resourcemanager.apimanagement.models.ResourceLocationDataContra
 public final class GatewayCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateGateway.json
      */
     /**
@@ -6549,7 +7470,7 @@ public final class GatewayCreateOrUpdateSamples {
 public final class GatewayDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteGateway.json
      */
     /**
@@ -6577,7 +7498,7 @@ import java.time.OffsetDateTime;
 public final class GatewayGenerateTokenSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGatewayGenerateToken.json
      */
     /**
@@ -6605,7 +7526,7 @@ public final class GatewayGenerateTokenSamples {
 public final class GatewayGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetGateway.json
      */
     /**
@@ -6628,7 +7549,7 @@ public final class GatewayGetSamples {
 public final class GatewayGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadGateway.json
      */
     /**
@@ -6643,6 +7564,31 @@ public final class GatewayGetEntityTagSamples {
 }
 ```
 
+### Gateway_InvalidateDebugCredentials
+
+```java
+/**
+ * Samples for Gateway InvalidateDebugCredentials.
+ */
+public final class GatewayInvalidateDebugCredentialsSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGatewayInvalidateDebugCredentials.json
+     */
+    /**
+     * Sample code: ApiManagementGatewayInvalidateDebugCredentials.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementGatewayInvalidateDebugCredentials(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.gateways()
+            .invalidateDebugCredentialsWithResponse("rg1", "apimService1", "gw1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Gateway_ListByService
 
 ```java
@@ -6652,7 +7598,7 @@ public final class GatewayGetEntityTagSamples {
 public final class GatewayListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListGateways.json
      */
     /**
@@ -6666,6 +7612,41 @@ public final class GatewayListByServiceSamples {
 }
 ```
 
+### Gateway_ListDebugCredentials
+
+```java
+import com.azure.resourcemanager.apimanagement.models.GatewayListDebugCredentialsContract;
+import com.azure.resourcemanager.apimanagement.models.GatewayListDebugCredentialsContractPurpose;
+import java.time.Duration;
+import java.util.Arrays;
+
+/**
+ * Samples for Gateway ListDebugCredentials.
+ */
+public final class GatewayListDebugCredentialsSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGatewayListDebugCredentials.json
+     */
+    /**
+     * Sample code: ApiManagementGatewayListDebugCredentials.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGatewayListDebugCredentials(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.gateways()
+            .listDebugCredentialsWithResponse("rg1", "apimService1", "gw1", new GatewayListDebugCredentialsContract()
+                .withCredentialsExpireAfter(Duration.parse("PT1H"))
+                .withPurposes(Arrays.asList(GatewayListDebugCredentialsContractPurpose.TRACING))
+                .withApiId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/a1"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### Gateway_ListKeys
 
 ```java
@@ -6675,7 +7656,7 @@ public final class GatewayListByServiceSamples {
 public final class GatewayListKeysSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGatewayListKeys.json
      */
     /**
@@ -6686,6 +7667,35 @@ public final class GatewayListKeysSamples {
     public static void
         apiManagementGatewayListKeys(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager.gateways().listKeysWithResponse("rg1", "apimService1", "gw1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Gateway_ListTrace
+
+```java
+import com.azure.resourcemanager.apimanagement.models.GatewayListTraceContract;
+
+/**
+ * Samples for Gateway ListTrace.
+ */
+public final class GatewayListTraceSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGatewayListTrace.json
+     */
+    /**
+     * Sample code: ApiManagementGatewayListTrace.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGatewayListTrace(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.gateways()
+            .listTraceWithResponse("rg1", "apimService1", "gw1",
+                new GatewayListTraceContract().withTraceId("CrDvXXXXXXXXXXXXXVU3ZA2-1"),
+                com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -6702,7 +7712,7 @@ import com.azure.resourcemanager.apimanagement.models.KeyType;
 public final class GatewayRegenerateKeySamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGatewayRegenerateKey.json
      */
     /**
@@ -6732,7 +7742,7 @@ import com.azure.resourcemanager.apimanagement.models.ResourceLocationDataContra
 public final class GatewayUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateGateway.json
      */
     /**
@@ -6766,7 +7776,7 @@ import com.azure.resourcemanager.apimanagement.models.ProvisioningState;
 public final class GatewayApiCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateGatewayApi.json
      */
     /**
@@ -6793,7 +7803,7 @@ public final class GatewayApiCreateOrUpdateSamples {
 public final class GatewayApiDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteGatewayApi.json
      */
     /**
@@ -6818,7 +7828,7 @@ public final class GatewayApiDeleteSamples {
 public final class GatewayApiGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadGatewayApi.json
      */
     /**
@@ -6843,7 +7853,7 @@ public final class GatewayApiGetEntityTagSamples {
 public final class GatewayApiListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListGatewayApis.json
      */
     /**
@@ -6868,7 +7878,7 @@ public final class GatewayApiListByServiceSamples {
 public final class GatewayCertificateAuthorityCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateGatewayCertificateAuthority.json
      */
     /**
@@ -6896,7 +7906,7 @@ public final class GatewayCertificateAuthorityCreateOrUpdateSamples {
 public final class GatewayCertificateAuthorityDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteGatewayCertificateAuthority.json
      */
     /**
@@ -6921,7 +7931,7 @@ public final class GatewayCertificateAuthorityDeleteSamples {
 public final class GatewayCertificateAuthorityGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetGatewayCertificateAuthority.json
      */
     /**
@@ -6946,7 +7956,7 @@ public final class GatewayCertificateAuthorityGetSamples {
 public final class GatewayCertificateAuthorityGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadGatewayCertificateAuthority.json
      */
     /**
@@ -6971,7 +7981,7 @@ public final class GatewayCertificateAuthorityGetEntityTagSamples {
 public final class GatewayCertificateAuthorityListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListGatewayCertificateAuthorities.json
      */
     /**
@@ -6996,7 +8006,7 @@ public final class GatewayCertificateAuthorityListByServiceSamples {
 public final class GatewayHostnameConfigurationCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateGatewayHostnameConfiguration.json
      */
     /**
@@ -7011,7 +8021,7 @@ public final class GatewayHostnameConfigurationCreateOrUpdateSamples {
             .withExistingGateway("rg1", "apimService1", "gw1")
             .withHostname("*")
             .withCertificateId(
-                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/cert1")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/certificates/cert1")
             .withNegotiateClientCertificate(false)
             .withTls10Enabled(false)
             .withTls11Enabled(false)
@@ -7030,7 +8040,7 @@ public final class GatewayHostnameConfigurationCreateOrUpdateSamples {
 public final class GatewayHostnameConfigurationDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteGatewayHostnameConfiguration.json
      */
     /**
@@ -7055,7 +8065,7 @@ public final class GatewayHostnameConfigurationDeleteSamples {
 public final class GatewayHostnameConfigurationGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetGatewayHostnameConfiguration.json
      */
     /**
@@ -7080,7 +8090,7 @@ public final class GatewayHostnameConfigurationGetSamples {
 public final class GatewayHostnameConfigurationGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadGatewayHostnameConfiguration.json
      */
     /**
@@ -7105,7 +8115,7 @@ public final class GatewayHostnameConfigurationGetEntityTagSamples {
 public final class GatewayHostnameConfigurationListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListGatewayHostnameConfigurations.json
      */
     /**
@@ -7135,7 +8145,7 @@ import java.io.IOException;
 public final class GlobalSchemaCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateGlobalSchema1.json
      */
     /**
@@ -7157,7 +8167,7 @@ public final class GlobalSchemaCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateGlobalSchema2.json
      */
     /**
@@ -7190,7 +8200,7 @@ public final class GlobalSchemaCreateOrUpdateSamples {
 public final class GlobalSchemaDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteGlobalSchema.json
      */
     /**
@@ -7214,7 +8224,7 @@ public final class GlobalSchemaDeleteSamples {
 public final class GlobalSchemaGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetGlobalSchema2.json
      */
     /**
@@ -7228,7 +8238,7 @@ public final class GlobalSchemaGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetGlobalSchema1.json
      */
     /**
@@ -7251,7 +8261,7 @@ public final class GlobalSchemaGetSamples {
 public final class GlobalSchemaGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadGlobalSchema.json
      */
     /**
@@ -7275,7 +8285,7 @@ public final class GlobalSchemaGetEntityTagSamples {
 public final class GlobalSchemaListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListGlobalSchemas.json
      */
     /**
@@ -7299,7 +8309,7 @@ public final class GlobalSchemaListByServiceSamples {
 public final class GraphQLApiResolverCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateGraphQLApiResolver.json
      */
     /**
@@ -7329,7 +8339,7 @@ public final class GraphQLApiResolverCreateOrUpdateSamples {
 public final class GraphQLApiResolverDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteGraphQLApiResolver.json
      */
     /**
@@ -7355,7 +8365,7 @@ public final class GraphQLApiResolverDeleteSamples {
 public final class GraphQLApiResolverGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetGraphQLApiResolver.json
      */
     /**
@@ -7381,7 +8391,7 @@ public final class GraphQLApiResolverGetSamples {
 public final class GraphQLApiResolverGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadGraphQLApiResolver.json
      */
     /**
@@ -7407,7 +8417,7 @@ public final class GraphQLApiResolverGetEntityTagSamples {
 public final class GraphQLApiResolverListByApiSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListGraphQLApiResolvers.json
      */
     /**
@@ -7435,7 +8445,7 @@ import com.azure.resourcemanager.apimanagement.models.ResolverContract;
 public final class GraphQLApiResolverUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateGraphQLApiResolver.json
      */
     /**
@@ -7471,7 +8481,7 @@ import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 public final class GraphQLApiResolverPolicyCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateGraphQLApiResolverPolicy.json
      */
     /**
@@ -7503,7 +8513,7 @@ import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 public final class GraphQLApiResolverPolicyDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteGraphQLApiResolverPolicy.json
      */
     /**
@@ -7531,7 +8541,7 @@ import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 public final class GraphQLApiResolverPolicyGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetGraphQLApiResolverPolicy.json
      */
     /**
@@ -7559,7 +8569,7 @@ import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 public final class GraphQLApiResolverPolicyGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadGraphQLApiResolverPolicy.json
      */
     /**
@@ -7585,7 +8595,7 @@ public final class GraphQLApiResolverPolicyGetEntityTagSamples {
 public final class GraphQLApiResolverPolicyListByResolverSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListGraphQLApiResolverPolicies.json
      */
     /**
@@ -7613,7 +8623,7 @@ import com.azure.resourcemanager.apimanagement.models.GroupType;
 public final class GroupCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateGroupExternal.json
      */
     /**
@@ -7635,7 +8645,7 @@ public final class GroupCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateGroup.json
      */
     /**
@@ -7662,7 +8672,7 @@ public final class GroupCreateOrUpdateSamples {
 public final class GroupDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteGroup.json
      */
     /**
@@ -7685,7 +8695,7 @@ public final class GroupDeleteSamples {
 public final class GroupGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetGroup.json
      */
     /**
@@ -7709,7 +8719,7 @@ public final class GroupGetSamples {
 public final class GroupGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadGroup.json
      */
     /**
@@ -7734,7 +8744,7 @@ public final class GroupGetEntityTagSamples {
 public final class GroupListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListGroups.json
      */
     /**
@@ -7759,7 +8769,7 @@ import com.azure.resourcemanager.apimanagement.models.GroupContract;
 public final class GroupUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateGroup.json
      */
     /**
@@ -7785,7 +8795,7 @@ public final class GroupUpdateSamples {
 public final class GroupUserCheckEntityExistsSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadGroupUser.json
      */
     /**
@@ -7811,7 +8821,7 @@ public final class GroupUserCheckEntityExistsSamples {
 public final class GroupUserCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateGroupUser.json
      */
     /**
@@ -7837,7 +8847,7 @@ public final class GroupUserCreateSamples {
 public final class GroupUserDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteGroupUser.json
      */
     /**
@@ -7863,7 +8873,7 @@ public final class GroupUserDeleteSamples {
 public final class GroupUserListSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListGroupUsers.json
      */
     /**
@@ -7891,7 +8901,7 @@ import com.azure.resourcemanager.apimanagement.models.IdentityProviderType;
 public final class IdentityProviderCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateIdentityProvider.json
      */
     /**
@@ -7922,7 +8932,7 @@ import com.azure.resourcemanager.apimanagement.models.IdentityProviderType;
 public final class IdentityProviderDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteIdentityProvider.json
      */
     /**
@@ -7949,7 +8959,7 @@ import com.azure.resourcemanager.apimanagement.models.IdentityProviderType;
 public final class IdentityProviderGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetIdentityProvider.json
      */
     /**
@@ -7976,7 +8986,7 @@ import com.azure.resourcemanager.apimanagement.models.IdentityProviderType;
 public final class IdentityProviderGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadIdentityProvider.json
      */
     /**
@@ -8002,7 +9012,7 @@ public final class IdentityProviderGetEntityTagSamples {
 public final class IdentityProviderListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListIdentityProviders.json
      */
     /**
@@ -8028,7 +9038,7 @@ import com.azure.resourcemanager.apimanagement.models.IdentityProviderType;
 public final class IdentityProviderListSecretsSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementIdentityProviderListSecrets.json
      */
     /**
@@ -8057,7 +9067,7 @@ import com.azure.resourcemanager.apimanagement.models.IdentityProviderType;
 public final class IdentityProviderUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateIdentityProvider.json
      */
     /**
@@ -8088,7 +9098,7 @@ public final class IdentityProviderUpdateSamples {
 public final class IssueGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetIssue.json
      */
     /**
@@ -8112,7 +9122,7 @@ public final class IssueGetSamples {
 public final class IssueListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListIssues.json
      */
     /**
@@ -8139,7 +9149,7 @@ import java.util.Map;
 public final class LoggerCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateAILogger.json
      */
     /**
@@ -8160,7 +9170,7 @@ public final class LoggerCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateEHLogger.json
      */
     /**
@@ -8203,7 +9213,7 @@ public final class LoggerCreateOrUpdateSamples {
 public final class LoggerDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteLogger.json
      */
     /**
@@ -8226,7 +9236,7 @@ public final class LoggerDeleteSamples {
 public final class LoggerGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetLogger.json
      */
     /**
@@ -8249,7 +9259,7 @@ public final class LoggerGetSamples {
 public final class LoggerGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadLogger.json
      */
     /**
@@ -8273,7 +9283,7 @@ public final class LoggerGetEntityTagSamples {
 public final class LoggerListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListLoggers.json
      */
     /**
@@ -8299,7 +9309,7 @@ import com.azure.resourcemanager.apimanagement.models.LoggerType;
 public final class LoggerUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateLogger.json
      */
     /**
@@ -8332,7 +9342,7 @@ import java.util.Arrays;
 public final class NamedValueCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateNamedValue.json
      */
     /**
@@ -8354,7 +9364,7 @@ public final class NamedValueCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateNamedValueWithKeyVault.json
      */
     /**
@@ -8386,7 +9396,7 @@ public final class NamedValueCreateOrUpdateSamples {
 public final class NamedValueDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteNamedValue.json
      */
     /**
@@ -8411,7 +9421,7 @@ public final class NamedValueDeleteSamples {
 public final class NamedValueGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetNamedValueWithKeyVault.json
      */
     /**
@@ -8426,7 +9436,7 @@ public final class NamedValueGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetNamedValue.json
      */
     /**
@@ -8451,7 +9461,7 @@ public final class NamedValueGetSamples {
 public final class NamedValueGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadNamedValue.json
      */
     /**
@@ -8477,7 +9487,7 @@ public final class NamedValueGetEntityTagSamples {
 public final class NamedValueListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListNamedValues.json
      */
     /**
@@ -8502,7 +9512,7 @@ public final class NamedValueListByServiceSamples {
 public final class NamedValueListValueSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementNamedValueListValue.json
      */
     /**
@@ -8528,7 +9538,7 @@ public final class NamedValueListValueSamples {
 public final class NamedValueRefreshSecretSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementRefreshNamedValue.json
      */
     /**
@@ -8555,7 +9565,7 @@ import java.util.Arrays;
 public final class NamedValueUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateNamedValue.json
      */
     /**
@@ -8588,7 +9598,7 @@ public final class NamedValueUpdateSamples {
 public final class NetworkStatusListByLocationSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementServiceGetNetworkStatusByLocation.json
      */
     /**
@@ -8613,7 +9623,7 @@ public final class NetworkStatusListByLocationSamples {
 public final class NetworkStatusListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementServiceGetNetworkStatus.json
      */
     /**
@@ -8639,7 +9649,7 @@ import com.azure.resourcemanager.apimanagement.models.NotificationName;
 public final class NotificationCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateNotification.json
      */
     /**
@@ -8667,7 +9677,7 @@ import com.azure.resourcemanager.apimanagement.models.NotificationName;
 public final class NotificationGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetNotification.json
      */
     /**
@@ -8693,7 +9703,7 @@ public final class NotificationGetSamples {
 public final class NotificationListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListNotifications.json
      */
     /**
@@ -8719,7 +9729,7 @@ import com.azure.resourcemanager.apimanagement.models.NotificationName;
 public final class NotificationRecipientEmailCheckEntityExistsSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadNotificationRecipientEmail.json
      */
     /**
@@ -8748,7 +9758,7 @@ import com.azure.resourcemanager.apimanagement.models.NotificationName;
 public final class NotificationRecipientEmailCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateNotificationRecipientEmail.json
      */
     /**
@@ -8776,7 +9786,7 @@ import com.azure.resourcemanager.apimanagement.models.NotificationName;
 public final class NotificationRecipientEmailDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteNotificationRecipientEmail.json
      */
     /**
@@ -8804,7 +9814,7 @@ import com.azure.resourcemanager.apimanagement.models.NotificationName;
 public final class NotificationRecipientEmailListByNotificationSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListNotificationRecipientEmails.json
      */
     /**
@@ -8832,7 +9842,7 @@ import com.azure.resourcemanager.apimanagement.models.NotificationName;
 public final class NotificationRecipientUserCheckEntityExistsSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadNotificationRecipientUser.json
      */
     /**
@@ -8861,7 +9871,7 @@ import com.azure.resourcemanager.apimanagement.models.NotificationName;
 public final class NotificationRecipientUserCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateNotificationRecipientUser.json
      */
     /**
@@ -8889,7 +9899,7 @@ import com.azure.resourcemanager.apimanagement.models.NotificationName;
 public final class NotificationRecipientUserDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteNotificationRecipientUser.json
      */
     /**
@@ -8917,7 +9927,7 @@ import com.azure.resourcemanager.apimanagement.models.NotificationName;
 public final class NotificationRecipientUserListByNotificationSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListNotificationRecipientUsers.json
      */
     /**
@@ -8943,7 +9953,7 @@ public final class NotificationRecipientUserListByNotificationSamples {
 public final class OpenIdConnectProviderCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateOpenIdConnectProvider.json
      */
     /**
@@ -8976,7 +9986,7 @@ public final class OpenIdConnectProviderCreateOrUpdateSamples {
 public final class OpenIdConnectProviderDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteOpenIdConnectProvider.json
      */
     /**
@@ -9001,7 +10011,7 @@ public final class OpenIdConnectProviderDeleteSamples {
 public final class OpenIdConnectProviderGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetOpenIdConnectProvider.json
      */
     /**
@@ -9026,7 +10036,7 @@ public final class OpenIdConnectProviderGetSamples {
 public final class OpenIdConnectProviderGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadOpenIdConnectProvider.json
      */
     /**
@@ -9052,7 +10062,7 @@ public final class OpenIdConnectProviderGetEntityTagSamples {
 public final class OpenIdConnectProviderListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListOpenIdConnectProviders.json
      */
     /**
@@ -9077,7 +10087,7 @@ public final class OpenIdConnectProviderListByServiceSamples {
 public final class OpenIdConnectProviderListSecretsSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementOpenidConnectProviderListSecrets.json
      */
     /**
@@ -9104,7 +10114,7 @@ import com.azure.resourcemanager.apimanagement.models.OpenidConnectProviderContr
 public final class OpenIdConnectProviderUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateOpenIdConnectProvider.json
      */
     /**
@@ -9136,7 +10146,7 @@ public final class OpenIdConnectProviderUpdateSamples {
 public final class OperationListByTagsSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListApiOperationsByTags.json
      */
     /**
@@ -9152,6 +10162,55 @@ public final class OperationListByTagsSamples {
 }
 ```
 
+### OperationStatus_Get
+
+```java
+/**
+ * Samples for OperationStatus Get.
+ */
+public final class OperationStatusGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetOperationStatus.json
+     */
+    /**
+     * Sample code: Get operation status.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void getOperationStatus(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.operationStatus()
+            .getWithResponse("testLocation", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### OperationsResults_Get
+
+```java
+/**
+ * Samples for OperationsResults Get.
+ */
+public final class OperationsResultsGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetOperationResult.json
+     */
+    /**
+     * Sample code: ApiManagementGetOperationResult.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetOperationResult(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.operationsResults()
+            .getWithResponse("westus2", "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### OutboundNetworkDependenciesEndpoints_ListByService
 
 ```java
@@ -9161,7 +10220,7 @@ public final class OperationListByTagsSamples {
 public final class OutboundNetworkDependenciesEndpointsListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementServiceGetOutboundNetworkDependenciesEndpoints.json
      */
     /**
@@ -9190,7 +10249,7 @@ import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 public final class PolicyCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreatePolicy.json
      */
     /**
@@ -9218,7 +10277,7 @@ import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 public final class PolicyDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeletePolicy.json
      */
     /**
@@ -9245,7 +10304,7 @@ import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 public final class PolicyGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetPolicyFormat.json
      */
     /**
@@ -9262,7 +10321,7 @@ public final class PolicyGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetPolicy.json
      */
     /**
@@ -9288,7 +10347,7 @@ import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 public final class PolicyGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadPolicy.json
      */
     /**
@@ -9312,7 +10371,7 @@ public final class PolicyGetEntityTagSamples {
 public final class PolicyListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListPolicies.json
      */
     /**
@@ -9321,7 +10380,7 @@ public final class PolicyListByServiceSamples {
      * @param manager Entry point to ApiManagementManager.
      */
     public static void apiManagementListPolicies(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.policies().listByServiceWithResponse("rg1", "apimService1", com.azure.core.util.Context.NONE);
+        manager.policies().listByService("rg1", "apimService1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -9337,7 +10396,7 @@ import com.azure.resourcemanager.apimanagement.models.PolicyScopeContract;
 public final class PolicyDescriptionListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListPolicyDescriptions.json
      */
     /**
@@ -9365,7 +10424,7 @@ import com.azure.resourcemanager.apimanagement.models.PolicyFragmentContentForma
 public final class PolicyFragmentCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreatePolicyFragment.json
      */
     /**
@@ -9394,7 +10453,7 @@ public final class PolicyFragmentCreateOrUpdateSamples {
 public final class PolicyFragmentDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeletePolicyFragment.json
      */
     /**
@@ -9420,7 +10479,7 @@ import com.azure.resourcemanager.apimanagement.models.PolicyFragmentContentForma
 public final class PolicyFragmentGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetPolicyFragment.json
      */
     /**
@@ -9436,7 +10495,7 @@ public final class PolicyFragmentGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetPolicyFragmentFormat.json
      */
     /**
@@ -9462,7 +10521,7 @@ public final class PolicyFragmentGetSamples {
 public final class PolicyFragmentGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadPolicyFragment.json
      */
     /**
@@ -9487,7 +10546,7 @@ public final class PolicyFragmentGetEntityTagSamples {
 public final class PolicyFragmentListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListPolicyFragments.json
      */
     /**
@@ -9498,7 +10557,7 @@ public final class PolicyFragmentListByServiceSamples {
     public static void
         apiManagementListPolicyFragments(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager.policyFragments()
-            .listByServiceWithResponse("rg1", "apimService1", null, null, null, null, com.azure.core.util.Context.NONE);
+            .listByService("rg1", "apimService1", null, null, null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -9512,7 +10571,7 @@ public final class PolicyFragmentListByServiceSamples {
 public final class PolicyFragmentListReferencesSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListPolicyFragmentReferences.json
      */
     /**
@@ -9525,6 +10584,190 @@ public final class PolicyFragmentListReferencesSamples {
         manager.policyFragments()
             .listReferencesWithResponse("rg1", "apimService1", "policyFragment1", null, null,
                 com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PolicyRestriction_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.apimanagement.models.PolicyRestrictionRequireBase;
+
+/**
+ * Samples for PolicyRestriction CreateOrUpdate.
+ */
+public final class PolicyRestrictionCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreatePolicyRestriction.json
+     */
+    /**
+     * Sample code: ApiManagementCreatePolicyRestriction.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementCreatePolicyRestriction(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.policyRestrictions()
+            .define("policyRestriction1")
+            .withExistingService("rg1", "apimService1")
+            .withScope("Sample Path to the policy document.")
+            .withRequireBase(PolicyRestrictionRequireBase.TRUE)
+            .withIfMatch("*")
+            .create();
+    }
+}
+```
+
+### PolicyRestriction_Delete
+
+```java
+/**
+ * Samples for PolicyRestriction Delete.
+ */
+public final class PolicyRestrictionDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeletePolicyRestriction.json
+     */
+    /**
+     * Sample code: ApiManagementDeletePolicyRestriction.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementDeletePolicyRestriction(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.policyRestrictions()
+            .deleteWithResponse("rg1", "apimService1", "policyRestriction1", "*", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PolicyRestriction_Get
+
+```java
+/**
+ * Samples for PolicyRestriction Get.
+ */
+public final class PolicyRestrictionGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetPolicyRestriction.json
+     */
+    /**
+     * Sample code: ApiManagementGetPolicyRestriction.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetPolicyRestriction(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.policyRestrictions()
+            .getWithResponse("rg1", "apimService1", "policyRestriction1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PolicyRestriction_GetEntityTag
+
+```java
+/**
+ * Samples for PolicyRestriction GetEntityTag.
+ */
+public final class PolicyRestrictionGetEntityTagSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementHeadPolicyRestriction.json
+     */
+    /**
+     * Sample code: ApiManagementHeadPolicyRestriction.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementHeadPolicyRestriction(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.policyRestrictions()
+            .getEntityTagWithResponse("rg1", "apimService1", "policyRestriction1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PolicyRestriction_ListByService
+
+```java
+/**
+ * Samples for PolicyRestriction ListByService.
+ */
+public final class PolicyRestrictionListByServiceSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListPolicyRestrictions.json
+     */
+    /**
+     * Sample code: ApiManagementListPolicyRestrictions.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListPolicyRestrictions(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.policyRestrictions().listByService("rg1", "apimService1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### PolicyRestriction_Update
+
+```java
+import com.azure.resourcemanager.apimanagement.models.PolicyRestrictionContract;
+
+/**
+ * Samples for PolicyRestriction Update.
+ */
+public final class PolicyRestrictionUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementUpdatePolicyRestriction.json
+     */
+    /**
+     * Sample code: ApiManagementUpdatePolicyRestriction.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementUpdatePolicyRestriction(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        PolicyRestrictionContract resource = manager.policyRestrictions()
+            .getWithResponse("rg1", "apimService1", "policyRestriction1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withScope("Sample Path 2 to the policy document.").withIfMatch("*").apply();
+    }
+}
+```
+
+### PolicyRestrictionValidations_ByService
+
+```java
+/**
+ * Samples for PolicyRestrictionValidations ByService.
+ */
+public final class PolicyRestrictionValidationsByServiceSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementValidatePolicies.json
+     */
+    /**
+     * Sample code: ApiManagementListPolicyRestrictions.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListPolicyRestrictions(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.policyRestrictionValidations().byService("rg1", "apimService1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -9547,7 +10790,7 @@ import java.util.Arrays;
 public final class PortalConfigCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreatePortalConfig.json
      */
     /**
@@ -9586,7 +10829,7 @@ public final class PortalConfigCreateOrUpdateSamples {
 public final class PortalConfigGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementPortalConfig.json
      */
     /**
@@ -9609,7 +10852,7 @@ public final class PortalConfigGetSamples {
 public final class PortalConfigGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadPortalConfig.json
      */
     /**
@@ -9634,7 +10877,7 @@ public final class PortalConfigGetEntityTagSamples {
 public final class PortalConfigListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListPortalConfig.json
      */
     /**
@@ -9644,7 +10887,7 @@ public final class PortalConfigListByServiceSamples {
      */
     public static void
         apiManagementListPortalConfig(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
-        manager.portalConfigs().listByServiceWithResponse("rg1", "apimService1", com.azure.core.util.Context.NONE);
+        manager.portalConfigs().listByService("rg1", "apimService1", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -9668,7 +10911,7 @@ import java.util.Arrays;
 public final class PortalConfigUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdatePortalConfig.json
      */
     /**
@@ -9708,7 +10951,7 @@ public final class PortalConfigUpdateSamples {
 public final class PortalRevisionCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreatePortalRevision.json
      */
     /**
@@ -9737,7 +10980,7 @@ public final class PortalRevisionCreateOrUpdateSamples {
 public final class PortalRevisionGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetPortalRevision.json
      */
     /**
@@ -9762,7 +11005,7 @@ public final class PortalRevisionGetSamples {
 public final class PortalRevisionGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadPortalRevision.json
      */
     /**
@@ -9787,7 +11030,7 @@ public final class PortalRevisionGetEntityTagSamples {
 public final class PortalRevisionListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListPortalRevisions.json
      */
     /**
@@ -9814,7 +11057,7 @@ import com.azure.resourcemanager.apimanagement.models.PortalRevisionContract;
 public final class PortalRevisionUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdatePortalRevision.json
      */
     /**
@@ -9841,7 +11084,7 @@ public final class PortalRevisionUpdateSamples {
 public final class PortalSettingsListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListPortalSettings.json
      */
     /**
@@ -9869,7 +11112,7 @@ import com.azure.resourcemanager.apimanagement.models.PrivateLinkServiceConnecti
 public final class PrivateEndpointConnectionCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementApproveOrRejectPrivateEndpointConnection.json
      */
     /**
@@ -9899,7 +11142,7 @@ public final class PrivateEndpointConnectionCreateOrUpdateSamples {
 public final class PrivateEndpointConnectionDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeletePrivateEndpointConnection.json
      */
     /**
@@ -9924,7 +11167,7 @@ public final class PrivateEndpointConnectionDeleteSamples {
 public final class PrivateEndpointConnectionGetByNameSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetPrivateEndpointConnection.json
      */
     /**
@@ -9950,7 +11193,7 @@ public final class PrivateEndpointConnectionGetByNameSamples {
 public final class PrivateEndpointConnectionGetPrivateLinkResourceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetPrivateLinkGroupResource.json
      */
     /**
@@ -9976,7 +11219,7 @@ public final class PrivateEndpointConnectionGetPrivateLinkResourceSamples {
 public final class PrivateEndpointConnectionListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListPrivateEndpointConnections.json
      */
     /**
@@ -10000,7 +11243,7 @@ public final class PrivateEndpointConnectionListByServiceSamples {
 public final class PrivateEndpointConnectionListPrivateLinkResourcesSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListPrivateLinkGroupResources.json
      */
     /**
@@ -10025,7 +11268,7 @@ public final class PrivateEndpointConnectionListPrivateLinkResourcesSamples {
 public final class ProductCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateProduct.json
      */
     /**
@@ -10053,7 +11296,7 @@ public final class ProductCreateOrUpdateSamples {
 public final class ProductDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteProduct.json
      */
     /**
@@ -10078,7 +11321,7 @@ public final class ProductDeleteSamples {
 public final class ProductGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetProduct.json
      */
     /**
@@ -10101,7 +11344,7 @@ public final class ProductGetSamples {
 public final class ProductGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadProduct.json
      */
     /**
@@ -10125,7 +11368,7 @@ public final class ProductGetEntityTagSamples {
 public final class ProductListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListProducts.json
      */
     /**
@@ -10149,7 +11392,7 @@ public final class ProductListByServiceSamples {
 public final class ProductListByTagsSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListProductsByTags.json
      */
     /**
@@ -10175,7 +11418,7 @@ import com.azure.resourcemanager.apimanagement.models.ProductContract;
 public final class ProductUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateProduct.json
      */
     /**
@@ -10202,7 +11445,7 @@ public final class ProductUpdateSamples {
 public final class ProductApiCheckEntityExistsSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadProductApi.json
      */
     /**
@@ -10228,7 +11471,7 @@ public final class ProductApiCheckEntityExistsSamples {
 public final class ProductApiCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateProductApi.json
      */
     /**
@@ -10254,7 +11497,7 @@ public final class ProductApiCreateOrUpdateSamples {
 public final class ProductApiDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteProductApi.json
      */
     /**
@@ -10279,7 +11522,7 @@ public final class ProductApiDeleteSamples {
 public final class ProductApiListByProductSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListProductApis.json
      */
     /**
@@ -10296,6 +11539,110 @@ public final class ProductApiListByProductSamples {
 }
 ```
 
+### ProductApiLink_CreateOrUpdate
+
+```java
+/**
+ * Samples for ProductApiLink CreateOrUpdate.
+ */
+public final class ProductApiLinkCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateProductApiLink.json
+     */
+    /**
+     * Sample code: ApiManagementCreateProductApiLink.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementCreateProductApiLink(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.productApiLinks()
+            .define("link1")
+            .withExistingProduct("rg1", "apimService1", "testproduct")
+            .withApiId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/echo-api")
+            .create();
+    }
+}
+```
+
+### ProductApiLink_Delete
+
+```java
+/**
+ * Samples for ProductApiLink Delete.
+ */
+public final class ProductApiLinkDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteProductApiLink.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteProductApiLink.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementDeleteProductApiLink(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.productApiLinks()
+            .deleteWithResponse("rg1", "apimService1", "testproduct", "link1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ProductApiLink_Get
+
+```java
+/**
+ * Samples for ProductApiLink Get.
+ */
+public final class ProductApiLinkGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetProductApiLink.json
+     */
+    /**
+     * Sample code: ApiManagementGetProductApiLink.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetProductApiLink(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.productApiLinks()
+            .getWithResponse("rg1", "apimService1", "testproduct", "link1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ProductApiLink_ListByProduct
+
+```java
+/**
+ * Samples for ProductApiLink ListByProduct.
+ */
+public final class ProductApiLinkListByProductSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListProductApiLinks.json
+     */
+    /**
+     * Sample code: ApiManagementListProductApiLinks.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListProductApiLinks(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.productApiLinks()
+            .listByProduct("rg1", "apimService1", "product1", null, null, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### ProductGroup_CheckEntityExists
 
 ```java
@@ -10305,7 +11652,7 @@ public final class ProductApiListByProductSamples {
 public final class ProductGroupCheckEntityExistsSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadProductGroup.json
      */
     /**
@@ -10331,7 +11678,7 @@ public final class ProductGroupCheckEntityExistsSamples {
 public final class ProductGroupCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateProductGroup.json
      */
     /**
@@ -10357,7 +11704,7 @@ public final class ProductGroupCreateOrUpdateSamples {
 public final class ProductGroupDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteProductGroup.json
      */
     /**
@@ -10383,7 +11730,7 @@ public final class ProductGroupDeleteSamples {
 public final class ProductGroupListByProductSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListProductGroups.json
      */
     /**
@@ -10396,6 +11743,110 @@ public final class ProductGroupListByProductSamples {
         manager.productGroups()
             .listByProduct("rg1", "apimService1", "5600b57e7e8880006a060002", null, null, null,
                 com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ProductGroupLink_CreateOrUpdate
+
+```java
+/**
+ * Samples for ProductGroupLink CreateOrUpdate.
+ */
+public final class ProductGroupLinkCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateProductGroupLink.json
+     */
+    /**
+     * Sample code: ApiManagementCreateProductGroupLink.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementCreateProductGroupLink(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.productGroupLinks()
+            .define("link1")
+            .withExistingProduct("rg1", "apimService1", "testproduct")
+            .withGroupId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/groups/group1")
+            .create();
+    }
+}
+```
+
+### ProductGroupLink_Delete
+
+```java
+/**
+ * Samples for ProductGroupLink Delete.
+ */
+public final class ProductGroupLinkDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteProductGroupLink.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteProductGroupLink.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementDeleteProductGroupLink(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.productGroupLinks()
+            .deleteWithResponse("rg1", "apimService1", "testproduct", "link1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ProductGroupLink_Get
+
+```java
+/**
+ * Samples for ProductGroupLink Get.
+ */
+public final class ProductGroupLinkGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetProductGroupLink.json
+     */
+    /**
+     * Sample code: ApiManagementGetProductGroupLink.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetProductGroupLink(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.productGroupLinks()
+            .getWithResponse("rg1", "apimService1", "testproduct", "link1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### ProductGroupLink_ListByProduct
+
+```java
+/**
+ * Samples for ProductGroupLink ListByProduct.
+ */
+public final class ProductGroupLinkListByProductSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListProductGroupLinks.json
+     */
+    /**
+     * Sample code: ApiManagementListProductGroupLinks.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListProductGroupLinks(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.productGroupLinks()
+            .listByProduct("rg1", "apimService1", "product1", null, null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -10413,7 +11864,7 @@ import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 public final class ProductPolicyCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateProductPolicy.json
      */
     /**
@@ -10444,7 +11895,7 @@ import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 public final class ProductPolicyDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteProductPolicy.json
      */
     /**
@@ -10472,7 +11923,7 @@ import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 public final class ProductPolicyGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetProductPolicy.json
      */
     /**
@@ -10500,7 +11951,7 @@ import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
 public final class ProductPolicyGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadProductPolicy.json
      */
     /**
@@ -10526,7 +11977,7 @@ public final class ProductPolicyGetEntityTagSamples {
 public final class ProductPolicyListByProductSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListProductPolicies.json
      */
     /**
@@ -10537,7 +11988,7 @@ public final class ProductPolicyListByProductSamples {
     public static void
         apiManagementListProductPolicies(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager.productPolicies()
-            .listByProductWithResponse("rg1", "apimService1", "armTemplateProduct4", com.azure.core.util.Context.NONE);
+            .listByProduct("rg1", "apimService1", "armTemplateProduct4", com.azure.core.util.Context.NONE);
     }
 }
 ```
@@ -10551,7 +12002,7 @@ public final class ProductPolicyListByProductSamples {
 public final class ProductSubscriptionsListSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListProductSubscriptions.json
      */
     /**
@@ -10581,7 +12032,7 @@ import java.util.Arrays;
 public final class ProductWikiCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateProductWiki.json
      */
     /**
@@ -10610,7 +12061,7 @@ public final class ProductWikiCreateOrUpdateSamples {
 public final class ProductWikiDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteProductWiki.json
      */
     /**
@@ -10636,7 +12087,7 @@ public final class ProductWikiDeleteSamples {
 public final class ProductWikiGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetProductWiki.json
      */
     /**
@@ -10661,7 +12112,7 @@ public final class ProductWikiGetSamples {
 public final class ProductWikiGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadProductWiki.json
      */
     /**
@@ -10691,7 +12142,7 @@ import java.util.Arrays;
 public final class ProductWikiUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateProductWiki.json
      */
     /**
@@ -10719,7 +12170,7 @@ public final class ProductWikiUpdateSamples {
 public final class ProductWikisOperationListSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListProductWikis.json
      */
     /**
@@ -10744,7 +12195,7 @@ public final class ProductWikisOperationListSamples {
 public final class QuotaByCounterKeysListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetQuotaCounterKeys.json
      */
     /**
@@ -10771,7 +12222,7 @@ import com.azure.resourcemanager.apimanagement.models.QuotaCounterValueUpdateCon
 public final class QuotaByCounterKeysUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateQuotaCounterKey.json
      */
     /**
@@ -10798,7 +12249,7 @@ public final class QuotaByCounterKeysUpdateSamples {
 public final class QuotaByPeriodKeysGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetQuotaCounterKeysByQuotaPeriod.json
      */
     /**
@@ -10825,7 +12276,7 @@ import com.azure.resourcemanager.apimanagement.models.QuotaCounterValueUpdateCon
 public final class QuotaByPeriodKeysUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateQuotaCounterKeyByQuotaPeriod.json
      */
     /**
@@ -10852,7 +12303,7 @@ public final class QuotaByPeriodKeysUpdateSamples {
 public final class RegionListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListRegions.json
      */
     /**
@@ -10875,7 +12326,7 @@ public final class RegionListByServiceSamples {
 public final class ReportsListByApiSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetReportsByApi.json
      */
     /**
@@ -10902,7 +12353,7 @@ public final class ReportsListByApiSamples {
 public final class ReportsListByGeoSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetReportsByGeo.json
      */
     /**
@@ -10929,7 +12380,7 @@ public final class ReportsListByGeoSamples {
 public final class ReportsListByOperationSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetReportsByOperation.json
      */
     /**
@@ -10956,7 +12407,7 @@ public final class ReportsListByOperationSamples {
 public final class ReportsListByProductSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetReportsByProduct.json
      */
     /**
@@ -10983,7 +12434,7 @@ public final class ReportsListByProductSamples {
 public final class ReportsListByRequestSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetReportsByRequest.json
      */
     /**
@@ -11010,7 +12461,7 @@ public final class ReportsListByRequestSamples {
 public final class ReportsListBySubscriptionSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetReportsBySubscription.json
      */
     /**
@@ -11039,7 +12490,7 @@ import java.time.Duration;
 public final class ReportsListByTimeSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetReportsByTime.json
      */
     /**
@@ -11066,7 +12517,7 @@ public final class ReportsListByTimeSamples {
 public final class ReportsListByUserSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetReportsByUser.json
      */
     /**
@@ -11104,7 +12555,7 @@ import java.util.Arrays;
 public final class ResourceProviderPerformConnectivityCheckAsyncSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementPerformConnectivityCheck.json
      */
     /**
@@ -11124,7 +12575,7 @@ public final class ResourceProviderPerformConnectivityCheckAsyncSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementPerformConnectivityCheckHttpConnect.json
      */
     /**
@@ -11142,7 +12593,8 @@ public final class ResourceProviderPerformConnectivityCheckAsyncSamples {
                 .withProtocolConfiguration(new ConnectivityCheckRequestProtocolConfiguration().withHttpConfiguration(
                     new ConnectivityCheckRequestProtocolConfigurationHttpConfiguration().withMethod(Method.GET)
                         .withValidStatusCodes(Arrays.asList(200L, 204L))
-                        .withHeaders(Arrays.asList(new HttpHeader().withName("Authorization").withValue("******"))))),
+                        .withHeaders(Arrays
+                            .asList(new HttpHeader().withName("Authorization").withValue("Bearer myPreciousToken"))))),
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -11159,7 +12611,7 @@ import com.azure.resourcemanager.apimanagement.fluent.models.PortalSigninSetting
 public final class SignInSettingsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementPortalSettingsPutSignIn.json
      */
     /**
@@ -11185,7 +12637,7 @@ public final class SignInSettingsCreateOrUpdateSamples {
 public final class SignInSettingsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementPortalSettingsGetSignIn.json
      */
     /**
@@ -11209,7 +12661,7 @@ public final class SignInSettingsGetSamples {
 public final class SignInSettingsGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadSignInSettings.json
      */
     /**
@@ -11235,7 +12687,7 @@ import com.azure.resourcemanager.apimanagement.fluent.models.PortalSigninSetting
 public final class SignInSettingsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementPortalSettingsUpdateSignIn.json
      */
     /**
@@ -11264,7 +12716,7 @@ import com.azure.resourcemanager.apimanagement.models.TermsOfServiceProperties;
 public final class SignUpSettingsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementPortalSettingsPutSignUp.json
      */
     /**
@@ -11294,7 +12746,7 @@ public final class SignUpSettingsCreateOrUpdateSamples {
 public final class SignUpSettingsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementPortalSettingsGetSignUp.json
      */
     /**
@@ -11318,7 +12770,7 @@ public final class SignUpSettingsGetSamples {
 public final class SignUpSettingsGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadSignUpSettings.json
      */
     /**
@@ -11345,7 +12797,7 @@ import com.azure.resourcemanager.apimanagement.models.TermsOfServiceProperties;
 public final class SignUpSettingsUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementPortalSettingsUpdateSignUp.json
      */
     /**
@@ -11377,7 +12829,7 @@ import com.azure.resourcemanager.apimanagement.models.SubscriptionCreateParamete
 public final class SubscriptionCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateSubscription.json
      */
     /**
@@ -11390,9 +12842,9 @@ public final class SubscriptionCreateOrUpdateSamples {
         manager.subscriptions()
             .createOrUpdateWithResponse("rg1", "apimService1", "testsub", new SubscriptionCreateParameters()
                 .withOwnerId(
-                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/57127d485157a511ace86ae7")
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/57127d485157a511ace86ae7")
                 .withScope(
-                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/products/5600b59475ff190048060002")
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/products/5600b59475ff190048060002")
                 .withDisplayName("testsub"), null, null, null, com.azure.core.util.Context.NONE);
     }
 }
@@ -11407,7 +12859,7 @@ public final class SubscriptionCreateOrUpdateSamples {
 public final class SubscriptionDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteSubscription.json
      */
     /**
@@ -11432,7 +12884,7 @@ public final class SubscriptionDeleteSamples {
 public final class SubscriptionGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetSubscription.json
      */
     /**
@@ -11457,7 +12909,7 @@ public final class SubscriptionGetSamples {
 public final class SubscriptionGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadSubscription.json
      */
     /**
@@ -11483,7 +12935,7 @@ public final class SubscriptionGetEntityTagSamples {
 public final class SubscriptionListSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListSubscriptions.json
      */
     /**
@@ -11507,7 +12959,7 @@ public final class SubscriptionListSamples {
 public final class SubscriptionListSecretsSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementSubscriptionListSecrets.json
      */
     /**
@@ -11533,7 +12985,7 @@ public final class SubscriptionListSecretsSamples {
 public final class SubscriptionRegeneratePrimaryKeySamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementSubscriptionRegeneratePrimaryKey.json
      */
     /**
@@ -11558,7 +13010,7 @@ public final class SubscriptionRegeneratePrimaryKeySamples {
 public final class SubscriptionRegenerateSecondaryKeySamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementSubscriptionRegenerateSecondaryKey.json
      */
     /**
@@ -11585,7 +13037,7 @@ import com.azure.resourcemanager.apimanagement.models.SubscriptionUpdateParamete
 public final class SubscriptionUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateSubscription.json
      */
     /**
@@ -11612,7 +13064,7 @@ public final class SubscriptionUpdateSamples {
 public final class TagAssignToApiSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiTag.json
      */
     /**
@@ -11637,7 +13089,7 @@ public final class TagAssignToApiSamples {
 public final class TagAssignToOperationSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiOperationTag.json
      */
     /**
@@ -11663,7 +13115,7 @@ public final class TagAssignToOperationSamples {
 public final class TagAssignToProductSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateProductTag.json
      */
     /**
@@ -11689,7 +13141,7 @@ public final class TagAssignToProductSamples {
 public final class TagCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateTag.json
      */
     /**
@@ -11712,7 +13164,7 @@ public final class TagCreateOrUpdateSamples {
 public final class TagDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteTag.json
      */
     /**
@@ -11735,7 +13187,7 @@ public final class TagDeleteSamples {
 public final class TagDetachFromApiSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteApiTag.json
      */
     /**
@@ -11760,7 +13212,7 @@ public final class TagDetachFromApiSamples {
 public final class TagDetachFromOperationSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteApiOperationTag.json
      */
     /**
@@ -11786,7 +13238,7 @@ public final class TagDetachFromOperationSamples {
 public final class TagDetachFromProductSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteProductTag.json
      */
     /**
@@ -11812,7 +13264,7 @@ public final class TagDetachFromProductSamples {
 public final class TagGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetTag.json
      */
     /**
@@ -11836,7 +13288,7 @@ public final class TagGetSamples {
 public final class TagGetByApiSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetApiTag.json
      */
     /**
@@ -11861,7 +13313,7 @@ public final class TagGetByApiSamples {
 public final class TagGetByOperationSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetApiOperationTag.json
      */
     /**
@@ -11887,7 +13339,7 @@ public final class TagGetByOperationSamples {
 public final class TagGetByProductSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetProductTag.json
      */
     /**
@@ -11913,7 +13365,7 @@ public final class TagGetByProductSamples {
 public final class TagGetEntityStateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadTag.json
      */
     /**
@@ -11938,7 +13390,7 @@ public final class TagGetEntityStateSamples {
 public final class TagGetEntityStateByApiSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadApiTag.json
      */
     /**
@@ -11963,7 +13415,7 @@ public final class TagGetEntityStateByApiSamples {
 public final class TagGetEntityStateByOperationSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadApiOperationTag.json
      */
     /**
@@ -11989,7 +13441,7 @@ public final class TagGetEntityStateByOperationSamples {
 public final class TagGetEntityStateByProductSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadProductTag.json
      */
     /**
@@ -12015,7 +13467,7 @@ public final class TagGetEntityStateByProductSamples {
 public final class TagListByApiSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListApiTags.json
      */
     /**
@@ -12040,7 +13492,7 @@ public final class TagListByApiSamples {
 public final class TagListByOperationSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListApiOperationTags.json
      */
     /**
@@ -12066,7 +13518,7 @@ public final class TagListByOperationSamples {
 public final class TagListByProductSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListProductTags.json
      */
     /**
@@ -12092,7 +13544,7 @@ public final class TagListByProductSamples {
 public final class TagListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListTags.json
      */
     /**
@@ -12117,7 +13569,7 @@ import com.azure.resourcemanager.apimanagement.models.TagContract;
 public final class TagUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateTag.json
      */
     /**
@@ -12134,6 +13586,317 @@ public final class TagUpdateSamples {
 }
 ```
 
+### TagApiLink_CreateOrUpdate
+
+```java
+/**
+ * Samples for TagApiLink CreateOrUpdate.
+ */
+public final class TagApiLinkCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateTagApiLink.json
+     */
+    /**
+     * Sample code: ApiManagementCreateTagApiLink.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementCreateTagApiLink(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.tagApiLinks()
+            .define("link1")
+            .withExistingTag("rg1", "apimService1", "tag1")
+            .withApiId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/echo-api")
+            .create();
+    }
+}
+```
+
+### TagApiLink_Delete
+
+```java
+/**
+ * Samples for TagApiLink Delete.
+ */
+public final class TagApiLinkDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteTagApiLink.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteTagApiLink.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementDeleteTagApiLink(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.tagApiLinks()
+            .deleteWithResponse("rg1", "apimService1", "tag1", "link1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### TagApiLink_Get
+
+```java
+/**
+ * Samples for TagApiLink Get.
+ */
+public final class TagApiLinkGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetTagApiLink.json
+     */
+    /**
+     * Sample code: ApiManagementGetTagApiLink.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetTagApiLink(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.tagApiLinks().getWithResponse("rg1", "apimService1", "tag1", "link1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### TagApiLink_ListByProduct
+
+```java
+/**
+ * Samples for TagApiLink ListByProduct.
+ */
+public final class TagApiLinkListByProductSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListTagApiLinks.json
+     */
+    /**
+     * Sample code: ApiManagementListTagApiLinks.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListTagApiLinks(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.tagApiLinks()
+            .listByProduct("rg1", "apimService1", "tag1", null, null, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### TagOperationLink_CreateOrUpdate
+
+```java
+/**
+ * Samples for TagOperationLink CreateOrUpdate.
+ */
+public final class TagOperationLinkCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateTagOperationLink.json
+     */
+    /**
+     * Sample code: ApiManagementCreateTagOperationLink.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementCreateTagOperationLink(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.tagOperationLinks()
+            .define("link1")
+            .withExistingTag("rg1", "apimService1", "tag1")
+            .withOperationId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/apis/echo-api/operations/op1")
+            .create();
+    }
+}
+```
+
+### TagOperationLink_Delete
+
+```java
+/**
+ * Samples for TagOperationLink Delete.
+ */
+public final class TagOperationLinkDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteTagOperationLink.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteTagOperationLink.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementDeleteTagOperationLink(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.tagOperationLinks()
+            .deleteWithResponse("rg1", "apimService1", "tag1", "link1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### TagOperationLink_Get
+
+```java
+/**
+ * Samples for TagOperationLink Get.
+ */
+public final class TagOperationLinkGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetTagOperationLink.json
+     */
+    /**
+     * Sample code: ApiManagementGetTagOperationLink.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetTagOperationLink(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.tagOperationLinks()
+            .getWithResponse("rg1", "apimService1", "tag1", "link1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### TagOperationLink_ListByProduct
+
+```java
+/**
+ * Samples for TagOperationLink ListByProduct.
+ */
+public final class TagOperationLinkListByProductSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListTagOperationLinks.json
+     */
+    /**
+     * Sample code: ApiManagementListTagOperationLinks.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListTagOperationLinks(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.tagOperationLinks()
+            .listByProduct("rg1", "apimService1", "tag1", null, null, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### TagProductLink_CreateOrUpdate
+
+```java
+/**
+ * Samples for TagProductLink CreateOrUpdate.
+ */
+public final class TagProductLinkCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateTagProductLink.json
+     */
+    /**
+     * Sample code: ApiManagementCreateTagProductLink.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementCreateTagProductLink(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.tagProductLinks()
+            .define("link1")
+            .withExistingTag("rg1", "apimService1", "tag1")
+            .withProductId(
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/products/product1")
+            .create();
+    }
+}
+```
+
+### TagProductLink_Delete
+
+```java
+/**
+ * Samples for TagProductLink Delete.
+ */
+public final class TagProductLinkDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteTagProductLink.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteTagProductLink.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementDeleteTagProductLink(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.tagProductLinks()
+            .deleteWithResponse("rg1", "apimService1", "tag1", "link1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### TagProductLink_Get
+
+```java
+/**
+ * Samples for TagProductLink Get.
+ */
+public final class TagProductLinkGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetTagProductLink.json
+     */
+    /**
+     * Sample code: ApiManagementGetTagProductLink.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetTagProductLink(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.tagProductLinks()
+            .getWithResponse("rg1", "apimService1", "tag1", "link1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### TagProductLink_ListByProduct
+
+```java
+/**
+ * Samples for TagProductLink ListByProduct.
+ */
+public final class TagProductLinkListByProductSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListTagProductLinks.json
+     */
+    /**
+     * Sample code: ApiManagementListTagProductLinks.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListTagProductLinks(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.tagProductLinks()
+            .listByProduct("rg1", "apimService1", "tag1", null, null, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
 ### TagResource_ListByService
 
 ```java
@@ -12143,7 +13906,7 @@ public final class TagUpdateSamples {
 public final class TagResourceListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListTagResources.json
      */
     /**
@@ -12169,7 +13932,7 @@ import com.azure.resourcemanager.apimanagement.models.AccessIdName;
 public final class TenantAccessCreateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateTenantAccess.json
      */
     /**
@@ -12200,7 +13963,7 @@ import com.azure.resourcemanager.apimanagement.models.AccessIdName;
 public final class TenantAccessGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetTenantAccess.json
      */
     /**
@@ -12216,7 +13979,7 @@ public final class TenantAccessGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetTenantGitAccess.json
      */
     /**
@@ -12243,7 +14006,7 @@ import com.azure.resourcemanager.apimanagement.models.AccessIdName;
 public final class TenantAccessGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadTenantAccess.json
      */
     /**
@@ -12268,7 +14031,7 @@ public final class TenantAccessGetEntityTagSamples {
 public final class TenantAccessListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListTenantAccess.json
      */
     /**
@@ -12294,7 +14057,7 @@ import com.azure.resourcemanager.apimanagement.models.AccessIdName;
 public final class TenantAccessListSecretsSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListSecretsTenantAccess.json
      */
     /**
@@ -12321,7 +14084,7 @@ import com.azure.resourcemanager.apimanagement.models.AccessIdName;
 public final class TenantAccessRegeneratePrimaryKeySamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementTenantAccessRegenerateKey.json
      */
     /**
@@ -12349,7 +14112,7 @@ import com.azure.resourcemanager.apimanagement.models.AccessIdName;
 public final class TenantAccessRegenerateSecondaryKeySamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementTenantAccessRegenerateKey.json
      */
     /**
@@ -12378,7 +14141,7 @@ import com.azure.resourcemanager.apimanagement.models.AccessInformationContract;
 public final class TenantAccessUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateTenantAccess.json
      */
     /**
@@ -12407,7 +14170,7 @@ import com.azure.resourcemanager.apimanagement.models.AccessIdName;
 public final class TenantAccessGitRegeneratePrimaryKeySamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementTenantAccessRegenerateKey.json
      */
     /**
@@ -12435,7 +14198,7 @@ import com.azure.resourcemanager.apimanagement.models.AccessIdName;
 public final class TenantAccessGitRegenerateSecondaryKeySamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementTenantAccessRegenerateKey.json
      */
     /**
@@ -12464,7 +14227,7 @@ import com.azure.resourcemanager.apimanagement.models.DeployConfigurationParamet
 public final class TenantConfigurationDeploySamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementTenantConfigurationDeploy.json
      */
     /**
@@ -12492,7 +14255,7 @@ import com.azure.resourcemanager.apimanagement.models.ConfigurationIdName;
 public final class TenantConfigurationGetSyncStateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementTenantAccessSyncState.json
      */
     /**
@@ -12521,7 +14284,7 @@ import com.azure.resourcemanager.apimanagement.models.SaveConfigurationParameter
 public final class TenantConfigurationSaveSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementTenantConfigurationSave.json
      */
     /**
@@ -12550,7 +14313,7 @@ import com.azure.resourcemanager.apimanagement.models.DeployConfigurationParamet
 public final class TenantConfigurationValidateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementTenantConfigurationValidate.json
      */
     /**
@@ -12578,7 +14341,7 @@ import com.azure.resourcemanager.apimanagement.models.SettingsTypeName;
 public final class TenantSettingsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetTenantSettings.json
      */
     /**
@@ -12603,7 +14366,7 @@ public final class TenantSettingsGetSamples {
 public final class TenantSettingsListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListTenantSettings.json
      */
     /**
@@ -12629,7 +14392,7 @@ import com.azure.resourcemanager.apimanagement.models.Confirmation;
 public final class UserCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateUser.json
      */
     /**
@@ -12660,7 +14423,7 @@ public final class UserCreateOrUpdateSamples {
 public final class UserDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementDeleteUser.json
      */
     /**
@@ -12670,7 +14433,7 @@ public final class UserDeleteSamples {
      */
     public static void apiManagementDeleteUser(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
         manager.users()
-            .deleteWithResponse("rg1", "apimService1", "5931a75ae4bbd512288c680b", "*", null, null, null,
+            .delete("rg1", "apimService1", "5931a75ae4bbd512288c680b", "*", null, null, null,
                 com.azure.core.util.Context.NONE);
     }
 }
@@ -12685,7 +14448,7 @@ public final class UserDeleteSamples {
 public final class UserGenerateSsoUrlSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUserGenerateSsoUrl.json
      */
     /**
@@ -12711,7 +14474,7 @@ public final class UserGenerateSsoUrlSamples {
 public final class UserGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetUser.json
      */
     /**
@@ -12735,7 +14498,7 @@ public final class UserGetSamples {
 public final class UserGetEntityTagSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementHeadUser.json
      */
     /**
@@ -12764,7 +14527,7 @@ import java.time.OffsetDateTime;
 public final class UserGetSharedAccessTokenSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUserToken.json
      */
     /**
@@ -12791,7 +14554,7 @@ public final class UserGetSharedAccessTokenSamples {
 public final class UserListByServiceSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListUsers.json
      */
     /**
@@ -12816,7 +14579,7 @@ import com.azure.resourcemanager.apimanagement.models.UserContract;
 public final class UserUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateUser.json
      */
     /**
@@ -12848,7 +14611,7 @@ public final class UserUpdateSamples {
 public final class UserConfirmationPasswordSendSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUserConfirmationPasswordSend.json
      */
     /**
@@ -12874,7 +14637,7 @@ public final class UserConfirmationPasswordSendSamples {
 public final class UserGroupListSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListUserGroups.json
      */
     /**
@@ -12900,7 +14663,7 @@ public final class UserGroupListSamples {
 public final class UserIdentitiesListSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListUserIdentities.json
      */
     /**
@@ -12925,7 +14688,7 @@ public final class UserIdentitiesListSamples {
 public final class UserSubscriptionGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetUserSubscription.json
      */
     /**
@@ -12950,7 +14713,7 @@ public final class UserSubscriptionGetSamples {
 public final class UserSubscriptionListSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementListUserSubscriptions.json
      */
     /**
@@ -12963,6 +14726,4957 @@ public final class UserSubscriptionListSamples {
         manager.userSubscriptions()
             .list("rg1", "apimService1", "57681833a40f7eb6c49f6acf", null, null, null,
                 com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Workspace_CreateOrUpdate
+
+```java
+/**
+ * Samples for Workspace CreateOrUpdate.
+ */
+public final class WorkspaceCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspace.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspace.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementCreateWorkspace(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaces()
+            .define("wks1")
+            .withExistingService("rg1", "apimService1")
+            .withDisplayName("my workspace")
+            .withDescription("workspace 1")
+            .create();
+    }
+}
+```
+
+### Workspace_Delete
+
+```java
+/**
+ * Samples for Workspace Delete.
+ */
+public final class WorkspaceDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteWorkspace.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteWorkspace.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementDeleteWorkspace(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaces().deleteWithResponse("rg1", "apimService1", "wks1", "*", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Workspace_Get
+
+```java
+/**
+ * Samples for Workspace Get.
+ */
+public final class WorkspaceGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspace.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspace.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementGetWorkspace(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaces().getWithResponse("rg1", "apimService1", "wks1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Workspace_GetEntityTag
+
+```java
+/**
+ * Samples for Workspace GetEntityTag.
+ */
+public final class WorkspaceGetEntityTagSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementHeadWorkspace.json
+     */
+    /**
+     * Sample code: ApiManagementHeadWorkspace.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementHeadWorkspace(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaces().getEntityTagWithResponse("rg1", "apimService1", "wks", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Workspace_ListByService
+
+```java
+/**
+ * Samples for Workspace ListByService.
+ */
+public final class WorkspaceListByServiceSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspaces.json
+     */
+    /**
+     * Sample code: ApiManagementListWorkspaces.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListWorkspaces(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaces().listByService("rg1", "apimService1", null, null, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### Workspace_Update
+
+```java
+import com.azure.resourcemanager.apimanagement.models.WorkspaceContract;
+
+/**
+ * Samples for Workspace Update.
+ */
+public final class WorkspaceUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementUpdateWorkspace.json
+     */
+    /**
+     * Sample code: ApiManagementUpdateWorkspace.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementUpdateWorkspace(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        WorkspaceContract resource = manager.workspaces()
+            .getWithResponse("rg1", "apimService1", "wks1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().withDisplayName("my workspace").withDescription("workspace 1").withIfMatch("*").apply();
+    }
+}
+```
+
+### WorkspaceApi_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.apimanagement.models.ApiCreateOrUpdateParameter;
+import com.azure.resourcemanager.apimanagement.models.AuthenticationSettingsContract;
+import com.azure.resourcemanager.apimanagement.models.OAuth2AuthenticationSettingsContract;
+import com.azure.resourcemanager.apimanagement.models.Protocol;
+import com.azure.resourcemanager.apimanagement.models.SubscriptionKeyParameterNamesContract;
+import java.util.Arrays;
+
+/**
+ * Samples for WorkspaceApi CreateOrUpdate.
+ */
+public final class WorkspaceApiCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspaceApi.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspaceApi.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementCreateWorkspaceApi(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApis()
+            .createOrUpdate("rg1", "apimService1", "wks1", "tempgroup",
+                new ApiCreateOrUpdateParameter().withDisplayName("apiname1463")
+                    .withServiceUrl("http://newechoapi.cloudapp.net/api")
+                    .withPath("newapiPath")
+                    .withProtocols(Arrays.asList(Protocol.HTTPS, Protocol.HTTP))
+                    .withDescription("apidescription5200")
+                    .withAuthenticationSettings(new AuthenticationSettingsContract().withOAuth2(
+                        new OAuth2AuthenticationSettingsContract().withAuthorizationServerId("fakeTokenPlaceholder")
+                            .withScope("oauth2scope2580")))
+                    .withSubscriptionKeyParameterNames(
+                        new SubscriptionKeyParameterNamesContract().withHeaderProperty("header4520")
+                            .withQuery("query3037")),
+                null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApi_Delete
+
+```java
+/**
+ * Samples for WorkspaceApi Delete.
+ */
+public final class WorkspaceApiDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteWorkspaceApi.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteWorkspaceApi.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementDeleteWorkspaceApi(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApis()
+            .deleteWithResponse("rg1", "apimService1", "wks1", "echo-api", "*", null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApi_Get
+
+```java
+/**
+ * Samples for WorkspaceApi Get.
+ */
+public final class WorkspaceApiGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspaceApiRevision.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspaceApiRevision.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetWorkspaceApiRevision(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApis()
+            .getWithResponse("rg1", "apimService1", "wks1", "echo-api;rev=3", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspaceApiContract.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspaceApiContract.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetWorkspaceApiContract(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApis()
+            .getWithResponse("rg1", "apimService1", "wks1", "57d1f7558aa04f15146d9d8a",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApi_GetEntityTag
+
+```java
+/**
+ * Samples for WorkspaceApi GetEntityTag.
+ */
+public final class WorkspaceApiGetEntityTagSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementHeadWorkspaceApi.json
+     */
+    /**
+     * Sample code: ApiManagementHeadWorkspaceApi.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementHeadWorkspaceApi(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApis()
+            .getEntityTagWithResponse("rg1", "apimService1", "wks1", "57d1f7558aa04f15146d9d8a",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApi_ListByService
+
+```java
+/**
+ * Samples for WorkspaceApi ListByService.
+ */
+public final class WorkspaceApiListByServiceSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspaceApis.json
+     */
+    /**
+     * Sample code: ApiManagementListWorkspaceApis.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListWorkspaceApis(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApis()
+            .listByService("rg1", "apimService1", "wks1", null, null, null, null, null,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApi_Update
+
+```java
+import com.azure.resourcemanager.apimanagement.models.ApiUpdateContract;
+
+/**
+ * Samples for WorkspaceApi Update.
+ */
+public final class WorkspaceApiUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementUpdateWorkspaceApi.json
+     */
+    /**
+     * Sample code: ApiManagementUpdateWorkspaceApi.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementUpdateWorkspaceApi(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApis()
+            .updateWithResponse("rg1", "apimService1", "wks1", "echo-api", "*",
+                new ApiUpdateContract().withDisplayName("Echo API New")
+                    .withServiceUrl("http://echoapi.cloudapp.net/api2")
+                    .withPath("newecho"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiDiagnostic_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.apimanagement.fluent.models.DiagnosticContractInner;
+import com.azure.resourcemanager.apimanagement.models.AlwaysLog;
+import com.azure.resourcemanager.apimanagement.models.BodyDiagnosticSettings;
+import com.azure.resourcemanager.apimanagement.models.HttpMessageDiagnostic;
+import com.azure.resourcemanager.apimanagement.models.PipelineDiagnosticSettings;
+import com.azure.resourcemanager.apimanagement.models.SamplingSettings;
+import com.azure.resourcemanager.apimanagement.models.SamplingType;
+import java.util.Arrays;
+
+/**
+ * Samples for WorkspaceApiDiagnostic CreateOrUpdate.
+ */
+public final class WorkspaceApiDiagnosticCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspaceApiDiagnostic.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspaceApiDiagnostic.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementCreateWorkspaceApiDiagnostic(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiDiagnostics()
+            .createOrUpdateWithResponse("rg1", "apimService1", "wks1", "57d1f7558aa04f15146d9d8a",
+                "applicationinsights",
+                new DiagnosticContractInner().withAlwaysLog(AlwaysLog.ALL_ERRORS)
+                    .withLoggerId("/workspaces/wks1/loggers/applicationinsights")
+                    .withSampling(new SamplingSettings().withSamplingType(SamplingType.FIXED).withPercentage(50.0D))
+                    .withFrontend(new PipelineDiagnosticSettings()
+                        .withRequest(new HttpMessageDiagnostic().withHeaders(Arrays.asList("Content-type"))
+                            .withBody(new BodyDiagnosticSettings().withBytes(512)))
+                        .withResponse(new HttpMessageDiagnostic().withHeaders(Arrays.asList("Content-type"))
+                            .withBody(new BodyDiagnosticSettings().withBytes(512))))
+                    .withBackend(new PipelineDiagnosticSettings()
+                        .withRequest(new HttpMessageDiagnostic().withHeaders(Arrays.asList("Content-type"))
+                            .withBody(new BodyDiagnosticSettings().withBytes(512)))
+                        .withResponse(new HttpMessageDiagnostic().withHeaders(Arrays.asList("Content-type"))
+                            .withBody(new BodyDiagnosticSettings().withBytes(512)))),
+                null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiDiagnostic_Delete
+
+```java
+/**
+ * Samples for WorkspaceApiDiagnostic Delete.
+ */
+public final class WorkspaceApiDiagnosticDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteWorkspaceApiDiagnostic.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteWorkspaceApiDiagnostic.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementDeleteWorkspaceApiDiagnostic(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiDiagnostics()
+            .deleteWithResponse("rg1", "apimService1", "wks1", "57d1f7558aa04f15146d9d8a", "applicationinsights", "*",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiDiagnostic_Get
+
+```java
+/**
+ * Samples for WorkspaceApiDiagnostic Get.
+ */
+public final class WorkspaceApiDiagnosticGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspaceApiDiagnostic.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspaceApiDiagnostic.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetWorkspaceApiDiagnostic(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiDiagnostics()
+            .getWithResponse("rg1", "apimService1", "wks1", "57d1f7558aa04f15146d9d8a", "applicationinsights",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiDiagnostic_GetEntityTag
+
+```java
+/**
+ * Samples for WorkspaceApiDiagnostic GetEntityTag.
+ */
+public final class WorkspaceApiDiagnosticGetEntityTagSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementHeadWorkspaceApiDiagnostic.json
+     */
+    /**
+     * Sample code: ApiManagementHeadWorkspaceApiDiagnostic.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementHeadWorkspaceApiDiagnostic(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiDiagnostics()
+            .getEntityTagWithResponse("rg1", "apimService1", "wks1", "57d1f7558aa04f15146d9d8a", "applicationinsights",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiDiagnostic_ListByWorkspace
+
+```java
+/**
+ * Samples for WorkspaceApiDiagnostic ListByWorkspace.
+ */
+public final class WorkspaceApiDiagnosticListByWorkspaceSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspaceApiDiagnostics.json
+     */
+    /**
+     * Sample code: ApiManagementListWorkspaceApiDiagnostics.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListWorkspaceApiDiagnostics(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiDiagnostics()
+            .listByWorkspace("rg1", "apimService1", "wks1", "echo-api", null, null, null,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiDiagnostic_Update
+
+```java
+import com.azure.resourcemanager.apimanagement.models.AlwaysLog;
+import com.azure.resourcemanager.apimanagement.models.BodyDiagnosticSettings;
+import com.azure.resourcemanager.apimanagement.models.DiagnosticUpdateContract;
+import com.azure.resourcemanager.apimanagement.models.HttpMessageDiagnostic;
+import com.azure.resourcemanager.apimanagement.models.PipelineDiagnosticSettings;
+import com.azure.resourcemanager.apimanagement.models.SamplingSettings;
+import com.azure.resourcemanager.apimanagement.models.SamplingType;
+import java.util.Arrays;
+
+/**
+ * Samples for WorkspaceApiDiagnostic Update.
+ */
+public final class WorkspaceApiDiagnosticUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementUpdateWorkspaceApiDiagnostic.json
+     */
+    /**
+     * Sample code: ApiManagementUpdateWorkspaceApiDiagnostic.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementUpdateWorkspaceApiDiagnostic(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiDiagnostics()
+            .updateWithResponse("rg1", "apimService1", "wks1", "echo-api", "applicationinsights", "*",
+                new DiagnosticUpdateContract().withAlwaysLog(AlwaysLog.ALL_ERRORS)
+                    .withLoggerId("/workspaces/wks1/loggers/applicationinsights")
+                    .withSampling(new SamplingSettings().withSamplingType(SamplingType.FIXED).withPercentage(50.0D))
+                    .withFrontend(new PipelineDiagnosticSettings()
+                        .withRequest(new HttpMessageDiagnostic().withHeaders(Arrays.asList("Content-type"))
+                            .withBody(new BodyDiagnosticSettings().withBytes(512)))
+                        .withResponse(new HttpMessageDiagnostic().withHeaders(Arrays.asList("Content-type"))
+                            .withBody(new BodyDiagnosticSettings().withBytes(512))))
+                    .withBackend(new PipelineDiagnosticSettings()
+                        .withRequest(new HttpMessageDiagnostic().withHeaders(Arrays.asList("Content-type"))
+                            .withBody(new BodyDiagnosticSettings().withBytes(512)))
+                        .withResponse(new HttpMessageDiagnostic().withHeaders(Arrays.asList("Content-type"))
+                            .withBody(new BodyDiagnosticSettings().withBytes(512)))),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiExport_Get
+
+```java
+import com.azure.resourcemanager.apimanagement.models.ExportApi;
+import com.azure.resourcemanager.apimanagement.models.ExportFormat;
+
+/**
+ * Samples for WorkspaceApiExport Get.
+ */
+public final class WorkspaceApiExportGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspaceApiExportInOpenApi3dot0.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspaceApiExportInOpenApi3dot0.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementGetWorkspaceApiExportInOpenApi3dot0(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiExports()
+            .getWithResponse("rg1", "apimService1", "wks1", "aid9676", ExportFormat.OPENAPI_LINK, ExportApi.TRUE,
+                com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspaceApiExportInOpenApi2dot0.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspaceApiExportInOpenApi2dot0.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementGetWorkspaceApiExportInOpenApi2dot0(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiExports()
+            .getWithResponse("rg1", "apimService1", "wks1", "echo-api", ExportFormat.SWAGGER_LINK, ExportApi.TRUE,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiOperation_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.apimanagement.fluent.models.OperationContractInner;
+import com.azure.resourcemanager.apimanagement.models.RepresentationContract;
+import com.azure.resourcemanager.apimanagement.models.RequestContract;
+import com.azure.resourcemanager.apimanagement.models.ResponseContract;
+import java.util.Arrays;
+
+/**
+ * Samples for WorkspaceApiOperation CreateOrUpdate.
+ */
+public final class WorkspaceApiOperationCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspaceApiOperation.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspaceApiOperation.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementCreateWorkspaceApiOperation(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiOperations()
+            .createOrUpdateWithResponse("rg1", "apimService1", "wks1", "PetStoreTemplate2", "newoperations",
+                new OperationContractInner().withDisplayName("createUser2")
+                    .withMethod("POST")
+                    .withUrlTemplate("/user1")
+                    .withTemplateParameters(Arrays.asList())
+                    .withDescription("This can only be done by the logged in user.")
+                    .withRequest(new RequestContract().withDescription("Created user object")
+                        .withQueryParameters(Arrays.asList())
+                        .withHeaders(Arrays.asList())
+                        .withRepresentations(
+                            Arrays.asList(new RepresentationContract().withContentType("application/json")
+                                .withSchemaId("592f6c1d0af5840ca8897f0c")
+                                .withTypeName("User"))))
+                    .withResponses(Arrays.asList(new ResponseContract().withStatusCode(200)
+                        .withDescription("successful operation")
+                        .withRepresentations(
+                            Arrays.asList(new RepresentationContract().withContentType("application/xml"),
+                                new RepresentationContract().withContentType("application/json")))
+                        .withHeaders(Arrays.asList()))),
+                null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiOperation_Delete
+
+```java
+/**
+ * Samples for WorkspaceApiOperation Delete.
+ */
+public final class WorkspaceApiOperationDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteWorkspaceApiOperation.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteWorkspaceApiOperation.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementDeleteWorkspaceApiOperation(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiOperations()
+            .deleteWithResponse("rg1", "apimService1", "wks1", "57d2ef278aa04f0888cba3f3", "57d2ef278aa04f0ad01d6cdc",
+                "*", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiOperation_Get
+
+```java
+/**
+ * Samples for WorkspaceApiOperation Get.
+ */
+public final class WorkspaceApiOperationGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspaceApiOperation.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspaceApiOperation.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetWorkspaceApiOperation(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiOperations()
+            .getWithResponse("rg1", "apimService1", "wks1", "57d2ef278aa04f0888cba3f3", "57d2ef278aa04f0ad01d6cdc",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiOperation_GetEntityTag
+
+```java
+/**
+ * Samples for WorkspaceApiOperation GetEntityTag.
+ */
+public final class WorkspaceApiOperationGetEntityTagSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementHeadWorkspaceApiOperation.json
+     */
+    /**
+     * Sample code: ApiManagementHeadWorkspaceApiOperation.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementHeadWorkspaceApiOperation(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiOperations()
+            .getEntityTagWithResponse("rg1", "apimService1", "wks1", "57d2ef278aa04f0888cba3f3",
+                "57d2ef278aa04f0ad01d6cdc", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiOperation_ListByApi
+
+```java
+/**
+ * Samples for WorkspaceApiOperation ListByApi.
+ */
+public final class WorkspaceApiOperationListByApiSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspaceApiOperations.json
+     */
+    /**
+     * Sample code: ApiManagementListWorkspaceApiOperations.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListWorkspaceApiOperations(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiOperations()
+            .listByApi("rg1", "apimService1", "wks1", "57d2ef278aa04f0888cba3f3", null, null, null, null,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiOperation_Update
+
+```java
+import com.azure.resourcemanager.apimanagement.models.OperationUpdateContract;
+import com.azure.resourcemanager.apimanagement.models.ParameterContract;
+import com.azure.resourcemanager.apimanagement.models.RequestContract;
+import com.azure.resourcemanager.apimanagement.models.ResponseContract;
+import java.util.Arrays;
+
+/**
+ * Samples for WorkspaceApiOperation Update.
+ */
+public final class WorkspaceApiOperationUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementUpdateWorkspaceApiOperation.json
+     */
+    /**
+     * Sample code: ApiManagementUpdateWorkspaceApiOperation.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementUpdateWorkspaceApiOperation(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiOperations()
+            .updateWithResponse("rg1", "apimService1", "wks1", "echo-api", "operationId", "*",
+                new OperationUpdateContract().withDisplayName("Retrieve resource")
+                    .withMethod("GET")
+                    .withUrlTemplate("/resource")
+                    .withTemplateParameters(Arrays.asList())
+                    .withRequest(new RequestContract().withQueryParameters(Arrays.asList(new ParameterContract()
+                        .withName("param1")
+                        .withDescription("A sample parameter that is required and has a default value of \"sample\".")
+                        .withType("string")
+                        .withDefaultValue("sample")
+                        .withRequired(true)
+                        .withValues(Arrays.asList("sample")))))
+                    .withResponses(Arrays.asList(
+                        new ResponseContract().withStatusCode(200)
+                            .withDescription("Returned in all cases.")
+                            .withRepresentations(Arrays.asList())
+                            .withHeaders(Arrays.asList()),
+                        new ResponseContract().withStatusCode(500)
+                            .withDescription("Server Error.")
+                            .withRepresentations(Arrays.asList())
+                            .withHeaders(Arrays.asList()))),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiOperationPolicy_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.apimanagement.fluent.models.PolicyContractInner;
+import com.azure.resourcemanager.apimanagement.models.PolicyContentFormat;
+import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
+
+/**
+ * Samples for WorkspaceApiOperationPolicy CreateOrUpdate.
+ */
+public final class WorkspaceApiOperationPolicyCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspaceApiOperationPolicy.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspaceApiOperationPolicy.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementCreateWorkspaceApiOperationPolicy(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiOperationPolicies()
+            .createOrUpdateWithResponse("rg1", "apimService1", "wks1", "5600b57e7e8880006a040001",
+                "5600b57e7e8880006a080001", PolicyIdName.POLICY,
+                new PolicyContractInner()
+                    .withValue(
+                        "<policies> <inbound /> <backend>    <forward-request />  </backend>  <outbound /></policies>")
+                    .withFormat(PolicyContentFormat.XML),
+                "*", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiOperationPolicy_Delete
+
+```java
+import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
+
+/**
+ * Samples for WorkspaceApiOperationPolicy Delete.
+ */
+public final class WorkspaceApiOperationPolicyDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteWorkspaceApiOperationPolicy.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteWorkspaceApiOperationPolicy.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementDeleteWorkspaceApiOperationPolicy(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiOperationPolicies()
+            .deleteWithResponse("rg1", "apimService1", "wks1", "testapi", "testoperation", PolicyIdName.POLICY, "*",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiOperationPolicy_Get
+
+```java
+import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
+
+/**
+ * Samples for WorkspaceApiOperationPolicy Get.
+ */
+public final class WorkspaceApiOperationPolicyGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspaceApiOperationPolicy.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspaceApiOperationPolicy.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementGetWorkspaceApiOperationPolicy(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiOperationPolicies()
+            .getWithResponse("rg1", "apimService1", "wks1", "5600b539c53f5b0062040001", "5600b53ac53f5b0062080006",
+                PolicyIdName.POLICY, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiOperationPolicy_GetEntityTag
+
+```java
+import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
+
+/**
+ * Samples for WorkspaceApiOperationPolicy GetEntityTag.
+ */
+public final class WorkspaceApiOperationPolicyGetEntityTagSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementHeadWorkspaceApiOperationPolicy.json
+     */
+    /**
+     * Sample code: ApiManagementHeadWorkspaceApiOperationPolicy.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementHeadWorkspaceApiOperationPolicy(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiOperationPolicies()
+            .getEntityTagWithResponse("rg1", "apimService1", "wks1", "5600b539c53f5b0062040001",
+                "5600b53ac53f5b0062080006", PolicyIdName.POLICY, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiOperationPolicy_ListByOperation
+
+```java
+/**
+ * Samples for WorkspaceApiOperationPolicy ListByOperation.
+ */
+public final class WorkspaceApiOperationPolicyListByOperationSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspaceApiOperationPolicies.json
+     */
+    /**
+     * Sample code: ApiManagementListWorkspaceApiOperationPolicies.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementListWorkspaceApiOperationPolicies(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiOperationPolicies()
+            .listByOperation("rg1", "apimService1", "wks1", "599e2953193c3c0bd0b3e2fa", "599e29ab193c3c0bd0b3e2fb",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiPolicy_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.apimanagement.fluent.models.PolicyContractInner;
+import com.azure.resourcemanager.apimanagement.models.PolicyContentFormat;
+import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
+
+/**
+ * Samples for WorkspaceApiPolicy CreateOrUpdate.
+ */
+public final class WorkspaceApiPolicyCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspaceApiPolicy.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspaceApiPolicy.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementCreateWorkspaceApiPolicy(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiPolicies()
+            .createOrUpdateWithResponse("rg1", "apimService1", "wks1", "5600b57e7e8880006a040001", PolicyIdName.POLICY,
+                new PolicyContractInner()
+                    .withValue(
+                        "<policies> <inbound /> <backend>    <forward-request />  </backend>  <outbound /></policies>")
+                    .withFormat(PolicyContentFormat.XML),
+                "*", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiPolicy_Delete
+
+```java
+import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
+
+/**
+ * Samples for WorkspaceApiPolicy Delete.
+ */
+public final class WorkspaceApiPolicyDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteWorkspaceApiPolicy.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteWorkspaceApiPolicy.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementDeleteWorkspaceApiPolicy(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiPolicies()
+            .deleteWithResponse("rg1", "apimService1", "wks1", "loggerId", PolicyIdName.POLICY, "*",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiPolicy_Get
+
+```java
+import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
+
+/**
+ * Samples for WorkspaceApiPolicy Get.
+ */
+public final class WorkspaceApiPolicyGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspaceApiPolicy.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspaceApiPolicy.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetWorkspaceApiPolicy(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiPolicies()
+            .getWithResponse("rg1", "apimService1", "wks1", "5600b59475ff190048040001", PolicyIdName.POLICY, null,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiPolicy_GetEntityTag
+
+```java
+import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
+
+/**
+ * Samples for WorkspaceApiPolicy GetEntityTag.
+ */
+public final class WorkspaceApiPolicyGetEntityTagSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementHeadWorkspaceApiPolicy.json
+     */
+    /**
+     * Sample code: ApiManagementHeadWorkspaceApiPolicy.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementHeadWorkspaceApiPolicy(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiPolicies()
+            .getEntityTagWithResponse("rg1", "apimService1", "wks1", "57d1f7558aa04f15146d9d8a", PolicyIdName.POLICY,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiPolicy_ListByApi
+
+```java
+/**
+ * Samples for WorkspaceApiPolicy ListByApi.
+ */
+public final class WorkspaceApiPolicyListByApiSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspaceApiPolicies.json
+     */
+    /**
+     * Sample code: ApiManagementListWorkspaceApiPolicies.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListWorkspaceApiPolicies(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiPolicies()
+            .listByApi("rg1", "apimService1", "wks1", "5600b59475ff190048040001", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiRelease_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.apimanagement.fluent.models.ApiReleaseContractInner;
+
+/**
+ * Samples for WorkspaceApiRelease CreateOrUpdate.
+ */
+public final class WorkspaceApiReleaseCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspaceApiRelease.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspaceApiRelease.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementCreateWorkspaceApiRelease(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiReleases()
+            .createOrUpdateWithResponse("rg1", "apimService1", "wks1", "a1", "testrev",
+                new ApiReleaseContractInner().withApiId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/workspaces/wks1/apis/a1")
+                    .withNotes("yahooagain"),
+                null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiRelease_Delete
+
+```java
+/**
+ * Samples for WorkspaceApiRelease Delete.
+ */
+public final class WorkspaceApiReleaseDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteWorkspaceApiRelease.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteWorkspaceApiRelease.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementDeleteWorkspaceApiRelease(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiReleases()
+            .deleteWithResponse("rg1", "apimService1", "wks1", "5a5fcc09124a7fa9b89f2f1d", "testrev", "*",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiRelease_Get
+
+```java
+/**
+ * Samples for WorkspaceApiRelease Get.
+ */
+public final class WorkspaceApiReleaseGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspaceApiRelease.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspaceApiRelease.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetWorkspaceApiRelease(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiReleases()
+            .getWithResponse("rg1", "apimService1", "wks1", "a1", "5a7cb545298324c53224a799",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiRelease_GetEntityTag
+
+```java
+/**
+ * Samples for WorkspaceApiRelease GetEntityTag.
+ */
+public final class WorkspaceApiReleaseGetEntityTagSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementHeadWorkspaceApiRelease.json
+     */
+    /**
+     * Sample code: ApiManagementHeadWorkspaceApiRelease.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementHeadWorkspaceApiRelease(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiReleases()
+            .getEntityTagWithResponse("rg1", "apimService1", "wks1", "a1", "5a7cb545298324c53224a799",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiRelease_ListByService
+
+```java
+/**
+ * Samples for WorkspaceApiRelease ListByService.
+ */
+public final class WorkspaceApiReleaseListByServiceSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspaceApiReleases.json
+     */
+    /**
+     * Sample code: ApiManagementListWorkspaceApiReleases.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListWorkspaceApiReleases(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiReleases()
+            .listByService("rg1", "apimService1", "wks1", "a1", null, null, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiRelease_Update
+
+```java
+import com.azure.resourcemanager.apimanagement.fluent.models.ApiReleaseContractInner;
+
+/**
+ * Samples for WorkspaceApiRelease Update.
+ */
+public final class WorkspaceApiReleaseUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementUpdateWorkspaceApiRelease.json
+     */
+    /**
+     * Sample code: ApiManagementUpdateWorkspaceApiRelease.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementUpdateWorkspaceApiRelease(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiReleases()
+            .updateWithResponse("rg1", "apimService1", "wks1", "a1", "testrev", "*",
+                new ApiReleaseContractInner().withApiId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/workspaces/wks1/apis/a1")
+                    .withNotes("yahooagain"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiRevision_ListByService
+
+```java
+/**
+ * Samples for WorkspaceApiRevision ListByService.
+ */
+public final class WorkspaceApiRevisionListByServiceSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspaceApiRevisions.json
+     */
+    /**
+     * Sample code: ApiManagementListWorkspaceApiRevisions.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListWorkspaceApiRevisions(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiRevisions()
+            .listByService("rg1", "apimService1", "wks1", "57d2ef278aa04f0888cba3f3", null, null, null,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiSchema_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.apimanagement.fluent.models.SchemaContractInner;
+
+/**
+ * Samples for WorkspaceApiSchema CreateOrUpdate.
+ */
+public final class WorkspaceApiSchemaCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspaceApiSchema.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspaceApiSchema.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementCreateWorkspaceApiSchema(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiSchemas()
+            .createOrUpdate("rg1", "apimService1", "wks1", "59d6bb8f1f7fab13dc67ec9b",
+                "ec12520d-9d48-4e7b-8f39-698ca2ac63f1",
+                new SchemaContractInner().withContentType("application/vnd.ms-azure-apim.xsd+xml")
+                    .withValue(
+                        "<s:schema elementFormDefault=\"qualified\" targetNamespace=\"http://ws.cdyne.com/WeatherWS/\" xmlns:tns=\"http://ws.cdyne.com/WeatherWS/\" xmlns:s=\"http://www.w3.org/2001/XMLSchema\" xmlns:soap12=\"http://schemas.xmlsoap.org/wsdl/soap12/\" xmlns:mime=\"http://schemas.xmlsoap.org/wsdl/mime/\" xmlns:soap=\"http://schemas.xmlsoap.org/wsdl/soap/\" xmlns:tm=\"http://microsoft.com/wsdl/mime/textMatching/\" xmlns:http=\"http://schemas.xmlsoap.org/wsdl/http/\" xmlns:soapenc=\"http://schemas.xmlsoap.org/soap/encoding/\" xmlns:wsdl=\"http://schemas.xmlsoap.org/wsdl/\" xmlns:apim-wsdltns=\"http://ws.cdyne.com/WeatherWS/\">\r\n  <s:element name=\"GetWeatherInformation\">\r\n    <s:complexType />\r\n  </s:element>\r\n  <s:element name=\"GetWeatherInformationResponse\">\r\n    <s:complexType>\r\n      <s:sequence>\r\n        <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"GetWeatherInformationResult\" type=\"tns:ArrayOfWeatherDescription\" />\r\n      </s:sequence>\r\n    </s:complexType>\r\n  </s:element>\r\n  <s:complexType name=\"ArrayOfWeatherDescription\">\r\n    <s:sequence>\r\n      <s:element minOccurs=\"0\" maxOccurs=\"unbounded\" name=\"WeatherDescription\" type=\"tns:WeatherDescription\" />\r\n    </s:sequence>\r\n  </s:complexType>\r\n  <s:complexType name=\"WeatherDescription\">\r\n    <s:sequence>\r\n      <s:element minOccurs=\"1\" maxOccurs=\"1\" name=\"WeatherID\" type=\"s:short\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"Description\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"PictureURL\" type=\"s:string\" />\r\n    </s:sequence>\r\n  </s:complexType>\r\n  <s:element name=\"GetCityForecastByZIP\">\r\n    <s:complexType>\r\n      <s:sequence>\r\n        <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"ZIP\" type=\"s:string\" />\r\n      </s:sequence>\r\n    </s:complexType>\r\n  </s:element>\r\n  <s:element name=\"GetCityForecastByZIPResponse\">\r\n    <s:complexType>\r\n      <s:sequence>\r\n        <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"GetCityForecastByZIPResult\" type=\"tns:ForecastReturn\" />\r\n      </s:sequence>\r\n    </s:complexType>\r\n  </s:element>\r\n  <s:complexType name=\"ForecastReturn\">\r\n    <s:sequence>\r\n      <s:element minOccurs=\"1\" maxOccurs=\"1\" name=\"Success\" type=\"s:boolean\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"ResponseText\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"State\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"City\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"WeatherStationCity\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"ForecastResult\" type=\"tns:ArrayOfForecast\" />\r\n    </s:sequence>\r\n  </s:complexType>\r\n  <s:complexType name=\"ArrayOfForecast\">\r\n    <s:sequence>\r\n      <s:element minOccurs=\"0\" maxOccurs=\"unbounded\" name=\"Forecast\" nillable=\"true\" type=\"tns:Forecast\" />\r\n    </s:sequence>\r\n  </s:complexType>\r\n  <s:complexType name=\"Forecast\">\r\n    <s:sequence>\r\n      <s:element minOccurs=\"1\" maxOccurs=\"1\" name=\"Date\" type=\"s:dateTime\" />\r\n      <s:element minOccurs=\"1\" maxOccurs=\"1\" name=\"WeatherID\" type=\"s:short\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"Desciption\" type=\"s:string\" />\r\n      <s:element minOccurs=\"1\" maxOccurs=\"1\" name=\"Temperatures\" type=\"tns:temp\" />\r\n      <s:element minOccurs=\"1\" maxOccurs=\"1\" name=\"ProbabilityOfPrecipiation\" type=\"tns:POP\" />\r\n    </s:sequence>\r\n  </s:complexType>\r\n  <s:complexType name=\"temp\">\r\n    <s:sequence>\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"MorningLow\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"DaytimeHigh\" type=\"s:string\" />\r\n    </s:sequence>\r\n  </s:complexType>\r\n  <s:complexType name=\"POP\">\r\n    <s:sequence>\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"Nighttime\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"Daytime\" type=\"s:string\" />\r\n    </s:sequence>\r\n  </s:complexType>\r\n  <s:element name=\"GetCityWeatherByZIP\">\r\n    <s:complexType>\r\n      <s:sequence>\r\n        <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"ZIP\" type=\"s:string\" />\r\n      </s:sequence>\r\n    </s:complexType>\r\n  </s:element>\r\n  <s:element name=\"GetCityWeatherByZIPResponse\">\r\n    <s:complexType>\r\n      <s:sequence>\r\n        <s:element minOccurs=\"1\" maxOccurs=\"1\" name=\"GetCityWeatherByZIPResult\" type=\"tns:WeatherReturn\" />\r\n      </s:sequence>\r\n    </s:complexType>\r\n  </s:element>\r\n  <s:complexType name=\"WeatherReturn\">\r\n    <s:sequence>\r\n      <s:element minOccurs=\"1\" maxOccurs=\"1\" name=\"Success\" type=\"s:boolean\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"ResponseText\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"State\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"City\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"WeatherStationCity\" type=\"s:string\" />\r\n      <s:element minOccurs=\"1\" maxOccurs=\"1\" name=\"WeatherID\" type=\"s:short\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"Description\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"Temperature\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"RelativeHumidity\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"Wind\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"Pressure\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"Visibility\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"WindChill\" type=\"s:string\" />\r\n      <s:element minOccurs=\"0\" maxOccurs=\"1\" name=\"Remarks\" type=\"s:string\" />\r\n    </s:sequence>\r\n  </s:complexType>\r\n  <s:element name=\"ArrayOfWeatherDescription\" nillable=\"true\" type=\"tns:ArrayOfWeatherDescription\" />\r\n  <s:element name=\"ForecastReturn\" nillable=\"true\" type=\"tns:ForecastReturn\" />\r\n  <s:element name=\"WeatherReturn\" type=\"tns:WeatherReturn\" />\r\n</s:schema>"),
+                null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiSchema_Delete
+
+```java
+/**
+ * Samples for WorkspaceApiSchema Delete.
+ */
+public final class WorkspaceApiSchemaDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteWorkspaceApiSchema.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteWorkspaceApiSchema.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementDeleteWorkspaceApiSchema(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiSchemas()
+            .deleteWithResponse("rg1", "apimService1", "wks1", "59d5b28d1f7fab116c282650", "59d5b28e1f7fab116402044e",
+                "*", null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiSchema_Get
+
+```java
+/**
+ * Samples for WorkspaceApiSchema Get.
+ */
+public final class WorkspaceApiSchemaGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspaceApiSchema.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspaceApiSchema.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetWorkspaceApiSchema(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiSchemas()
+            .getWithResponse("rg1", "apimService1", "wks1", "59d6bb8f1f7fab13dc67ec9b",
+                "ec12520d-9d48-4e7b-8f39-698ca2ac63f1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiSchema_GetEntityTag
+
+```java
+/**
+ * Samples for WorkspaceApiSchema GetEntityTag.
+ */
+public final class WorkspaceApiSchemaGetEntityTagSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementHeadWorkspaceApiSchema.json
+     */
+    /**
+     * Sample code: ApiManagementHeadWorkspaceApiSchema.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementHeadWorkspaceApiSchema(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiSchemas()
+            .getEntityTagWithResponse("rg1", "apimService1", "wks1", "57d1f7558aa04f15146d9d8a",
+                "ec12520d-9d48-4e7b-8f39-698ca2ac63f1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiSchema_ListByApi
+
+```java
+/**
+ * Samples for WorkspaceApiSchema ListByApi.
+ */
+public final class WorkspaceApiSchemaListByApiSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspaceApiSchemas.json
+     */
+    /**
+     * Sample code: ApiManagementListWorkspaceApiSchemas.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListWorkspaceApiSchemas(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiSchemas()
+            .listByApi("rg1", "apimService1", "wks1", "59d5b28d1f7fab116c282650", null, null, null,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiVersionSet_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.apimanagement.fluent.models.ApiVersionSetContractInner;
+import com.azure.resourcemanager.apimanagement.models.VersioningScheme;
+
+/**
+ * Samples for WorkspaceApiVersionSet CreateOrUpdate.
+ */
+public final class WorkspaceApiVersionSetCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspaceApiVersionSet.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspaceApiVersionSet.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementCreateWorkspaceApiVersionSet(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiVersionSets()
+            .createOrUpdateWithResponse("rg1", "apimService1", "wks1", "api1",
+                new ApiVersionSetContractInner().withDisplayName("api set 1")
+                    .withVersioningScheme(VersioningScheme.SEGMENT)
+                    .withDescription("Version configuration"),
+                null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiVersionSet_Delete
+
+```java
+/**
+ * Samples for WorkspaceApiVersionSet Delete.
+ */
+public final class WorkspaceApiVersionSetDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteWorkspaceApiVersionSet.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteWorkspaceApiVersionSet.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementDeleteWorkspaceApiVersionSet(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiVersionSets()
+            .deleteWithResponse("rg1", "apimService1", "wks1", "a1", "*", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiVersionSet_Get
+
+```java
+/**
+ * Samples for WorkspaceApiVersionSet Get.
+ */
+public final class WorkspaceApiVersionSetGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspaceApiVersionSet.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspaceApiVersionSet.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetWorkspaceApiVersionSet(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiVersionSets()
+            .getWithResponse("rg1", "apimService1", "wks1", "vs1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiVersionSet_GetEntityTag
+
+```java
+/**
+ * Samples for WorkspaceApiVersionSet GetEntityTag.
+ */
+public final class WorkspaceApiVersionSetGetEntityTagSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementHeadWorkspaceApiVersionSet.json
+     */
+    /**
+     * Sample code: ApiManagementHeadWorkspaceApiVersionSet.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementHeadWorkspaceApiVersionSet(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiVersionSets()
+            .getEntityTagWithResponse("rg1", "apimService1", "wks1", "vs1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiVersionSet_ListByService
+
+```java
+/**
+ * Samples for WorkspaceApiVersionSet ListByService.
+ */
+public final class WorkspaceApiVersionSetListByServiceSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspaceApiVersionSets.json
+     */
+    /**
+     * Sample code: ApiManagementListWorkspaceApiVersionSets.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListWorkspaceApiVersionSets(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiVersionSets()
+            .listByService("rg1", "apimService1", "wks1", null, null, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceApiVersionSet_Update
+
+```java
+import com.azure.resourcemanager.apimanagement.models.ApiVersionSetUpdateParameters;
+import com.azure.resourcemanager.apimanagement.models.VersioningScheme;
+
+/**
+ * Samples for WorkspaceApiVersionSet Update.
+ */
+public final class WorkspaceApiVersionSetUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementUpdateWorkspaceApiVersionSet.json
+     */
+    /**
+     * Sample code: ApiManagementUpdateWorkspaceApiVersionSet.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementUpdateWorkspaceApiVersionSet(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceApiVersionSets()
+            .updateWithResponse("rg1", "apimService1", "wks1", "vs1", "*",
+                new ApiVersionSetUpdateParameters().withDisplayName("api set 1")
+                    .withVersioningScheme(VersioningScheme.SEGMENT)
+                    .withDescription("Version configuration"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceBackend_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.apimanagement.fluent.models.BackendContractInner;
+import com.azure.resourcemanager.apimanagement.models.BackendAuthorizationHeaderCredentials;
+import com.azure.resourcemanager.apimanagement.models.BackendCredentialsContract;
+import com.azure.resourcemanager.apimanagement.models.BackendProperties;
+import com.azure.resourcemanager.apimanagement.models.BackendProtocol;
+import com.azure.resourcemanager.apimanagement.models.BackendProxyContract;
+import com.azure.resourcemanager.apimanagement.models.BackendServiceFabricClusterProperties;
+import com.azure.resourcemanager.apimanagement.models.BackendTlsProperties;
+import com.azure.resourcemanager.apimanagement.models.X509CertificateName;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for WorkspaceBackend CreateOrUpdate.
+ */
+public final class WorkspaceBackendCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspaceBackendServiceFabric.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspaceBackendServiceFabric.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementCreateWorkspaceBackendServiceFabric(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceBackends()
+            .createOrUpdateWithResponse("rg1", "apimService1", "wks1", "sfbackend", new BackendContractInner()
+                .withUrl("fabric:/mytestapp/mytestservice")
+                .withProtocol(BackendProtocol.HTTP)
+                .withDescription("Service Fabric Test App 1")
+                .withProperties(new BackendProperties()
+                    .withServiceFabricCluster(new BackendServiceFabricClusterProperties().withClientCertificateId(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/workspaces/wks1/certificates/cert1")
+                        .withMaxPartitionResolutionRetries(5)
+                        .withManagementEndpoints(Arrays.asList("https://somecluster.com"))
+                        .withServerX509Names(Arrays.asList(new X509CertificateName().withName("ServerCommonName1")
+                            .withIssuerCertificateThumbprint("IssuerCertificateThumbprint1"))))),
+                null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspaceBackendProxyBackend.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspaceBackendProxyBackend.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementCreateWorkspaceBackendProxyBackend(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceBackends()
+            .createOrUpdateWithResponse("rg1", "apimService1", "wks1", "proxybackend",
+                new BackendContractInner().withUrl("https://backendname2644/")
+                    .withProtocol(BackendProtocol.HTTP)
+                    .withDescription("description5308")
+                    .withCredentials(
+                        new BackendCredentialsContract().withQuery(mapOf("sv", Arrays.asList("xx", "bb", "cc")))
+                            .withHeaderProperty(mapOf("x-my-1", Arrays.asList("val1", "val2")))
+                            .withAuthorization(new BackendAuthorizationHeaderCredentials().withScheme("Basic")
+                                .withParameter("opensesma")))
+                    .withProxy(new BackendProxyContract().withUrl("http://192.168.1.1:8080")
+                        .withUsername("Contoso\\admin")
+                        .withPassword("fakeTokenPlaceholder"))
+                    .withTls(new BackendTlsProperties().withValidateCertificateChain(true)
+                        .withValidateCertificateName(true)),
+                null, com.azure.core.util.Context.NONE);
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### WorkspaceBackend_Delete
+
+```java
+/**
+ * Samples for WorkspaceBackend Delete.
+ */
+public final class WorkspaceBackendDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteWorkspaceBackend.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteWorkspaceBackend.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementDeleteWorkspaceBackend(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceBackends()
+            .deleteWithResponse("rg1", "apimService1", "wks1", "sfbackend", "*", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceBackend_Get
+
+```java
+/**
+ * Samples for WorkspaceBackend Get.
+ */
+public final class WorkspaceBackendGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspaceBackend.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspaceBackend.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetWorkspaceBackend(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceBackends()
+            .getWithResponse("rg1", "apimService1", "wks1", "sfbackend", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceBackend_GetEntityTag
+
+```java
+/**
+ * Samples for WorkspaceBackend GetEntityTag.
+ */
+public final class WorkspaceBackendGetEntityTagSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementHeadWorkspaceBackend.json
+     */
+    /**
+     * Sample code: ApiManagementHeadWorkspaceBackend.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementHeadWorkspaceBackend(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceBackends()
+            .getEntityTagWithResponse("rg1", "apimService1", "wks1", "sfbackend", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceBackend_ListByWorkspace
+
+```java
+/**
+ * Samples for WorkspaceBackend ListByWorkspace.
+ */
+public final class WorkspaceBackendListByWorkspaceSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspaceBackends.json
+     */
+    /**
+     * Sample code: ApiManagementListWorkspaceBackends.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListWorkspaceBackends(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceBackends()
+            .listByWorkspace("rg1", "apimService1", "wks1", null, null, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceBackend_Update
+
+```java
+import com.azure.resourcemanager.apimanagement.models.BackendTlsProperties;
+import com.azure.resourcemanager.apimanagement.models.BackendUpdateParameters;
+
+/**
+ * Samples for WorkspaceBackend Update.
+ */
+public final class WorkspaceBackendUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementUpdateWorkspaceBackend.json
+     */
+    /**
+     * Sample code: ApiManagementUpdateWorkspaceBackend.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementUpdateWorkspaceBackend(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceBackends()
+            .updateWithResponse("rg1", "apimService1", "wks1", "proxybackend", "*",
+                new BackendUpdateParameters().withDescription("description5308")
+                    .withTls(new BackendTlsProperties().withValidateCertificateChain(false)
+                        .withValidateCertificateName(true)),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceCertificate_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.apimanagement.models.CertificateCreateOrUpdateParameters;
+import com.azure.resourcemanager.apimanagement.models.KeyVaultContractCreateProperties;
+
+/**
+ * Samples for WorkspaceCertificate CreateOrUpdate.
+ */
+public final class WorkspaceCertificateCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspaceCertificateWithKeyVault.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspaceCertificateWithKeyVault.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementCreateWorkspaceCertificateWithKeyVault(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceCertificates()
+            .createOrUpdateWithResponse("rg1", "apimService1", "wks1", "templateCertkv",
+                new CertificateCreateOrUpdateParameters()
+                    .withKeyVault(new KeyVaultContractCreateProperties().withSecretIdentifier("fakeTokenPlaceholder")
+                        .withIdentityClientId("ceaa6b06-c00f-43ef-99ac-f53d1fe876a0")),
+                null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspaceCertificate.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspaceCertificate.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementCreateWorkspaceCertificate(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceCertificates()
+            .createOrUpdateWithResponse("rg1", "apimService1", "wks1", "tempcert",
+                new CertificateCreateOrUpdateParameters()
+                    .withData("****************Base 64 Encoded Certificate *******************************")
+                    .withPassword("fakeTokenPlaceholder"),
+                null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceCertificate_Delete
+
+```java
+/**
+ * Samples for WorkspaceCertificate Delete.
+ */
+public final class WorkspaceCertificateDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteWorkspaceCertificate.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteWorkspaceCertificate.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementDeleteWorkspaceCertificate(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceCertificates()
+            .deleteWithResponse("rg1", "apimService1", "wks1", "tempcert", "*", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceCertificate_Get
+
+```java
+/**
+ * Samples for WorkspaceCertificate Get.
+ */
+public final class WorkspaceCertificateGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspaceCertificate.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspaceCertificate.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetWorkspaceCertificate(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceCertificates()
+            .getWithResponse("rg1", "apimService1", "wks1", "templateCert1", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspaceCertificateWithKeyVault.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspaceCertificateWithKeyVault.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementGetWorkspaceCertificateWithKeyVault(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceCertificates()
+            .getWithResponse("rg1", "apimService1", "wks1", "templateCertkv", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceCertificate_GetEntityTag
+
+```java
+/**
+ * Samples for WorkspaceCertificate GetEntityTag.
+ */
+public final class WorkspaceCertificateGetEntityTagSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementHeadWorkspaceCertificate.json
+     */
+    /**
+     * Sample code: ApiManagementWorkspaceHeadCertificate.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementWorkspaceHeadCertificate(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceCertificates()
+            .getEntityTagWithResponse("rg1", "apimService1", "wks1", "templateCert1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceCertificate_ListByWorkspace
+
+```java
+/**
+ * Samples for WorkspaceCertificate ListByWorkspace.
+ */
+public final class WorkspaceCertificateListByWorkspaceSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspaceCertificates.json
+     */
+    /**
+     * Sample code: ApiManagementListWorkspaceCertificates.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListWorkspaceCertificates(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceCertificates()
+            .listByWorkspace("rg1", "apimService1", "wks1", null, null, null, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceCertificate_RefreshSecret
+
+```java
+/**
+ * Samples for WorkspaceCertificate RefreshSecret.
+ */
+public final class WorkspaceCertificateRefreshSecretSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementRefreshWorkspaceCertificate.json
+     */
+    /**
+     * Sample code: ApiManagementRefreshWorkspaceCertificate.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementRefreshWorkspaceCertificate(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceCertificates()
+            .refreshSecretWithResponse("rg1", "apimService1", "wks1", "templateCertkv",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceDiagnostic_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.apimanagement.fluent.models.DiagnosticContractInner;
+import com.azure.resourcemanager.apimanagement.models.AlwaysLog;
+import com.azure.resourcemanager.apimanagement.models.BodyDiagnosticSettings;
+import com.azure.resourcemanager.apimanagement.models.HttpMessageDiagnostic;
+import com.azure.resourcemanager.apimanagement.models.PipelineDiagnosticSettings;
+import com.azure.resourcemanager.apimanagement.models.SamplingSettings;
+import com.azure.resourcemanager.apimanagement.models.SamplingType;
+import java.util.Arrays;
+
+/**
+ * Samples for WorkspaceDiagnostic CreateOrUpdate.
+ */
+public final class WorkspaceDiagnosticCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspaceDiagnostic.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspaceDiagnostic.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementCreateWorkspaceDiagnostic(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceDiagnostics()
+            .createOrUpdateWithResponse("rg1", "apimService1", "wks1", "applicationinsights",
+                new DiagnosticContractInner().withAlwaysLog(AlwaysLog.ALL_ERRORS)
+                    .withLoggerId("/workspaces/wks1/loggers/azuremonitor")
+                    .withSampling(new SamplingSettings().withSamplingType(SamplingType.FIXED).withPercentage(50.0D))
+                    .withFrontend(new PipelineDiagnosticSettings()
+                        .withRequest(new HttpMessageDiagnostic().withHeaders(Arrays.asList("Content-type"))
+                            .withBody(new BodyDiagnosticSettings().withBytes(512)))
+                        .withResponse(new HttpMessageDiagnostic().withHeaders(Arrays.asList("Content-type"))
+                            .withBody(new BodyDiagnosticSettings().withBytes(512))))
+                    .withBackend(new PipelineDiagnosticSettings()
+                        .withRequest(new HttpMessageDiagnostic().withHeaders(Arrays.asList("Content-type"))
+                            .withBody(new BodyDiagnosticSettings().withBytes(512)))
+                        .withResponse(new HttpMessageDiagnostic().withHeaders(Arrays.asList("Content-type"))
+                            .withBody(new BodyDiagnosticSettings().withBytes(512)))),
+                null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceDiagnostic_Delete
+
+```java
+/**
+ * Samples for WorkspaceDiagnostic Delete.
+ */
+public final class WorkspaceDiagnosticDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteWorkspaceDiagnostic.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteWorkspaceDiagnostic.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementDeleteWorkspaceDiagnostic(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceDiagnostics()
+            .deleteWithResponse("rg1", "apimService1", "wks1", "applicationinsights", "*",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceDiagnostic_Get
+
+```java
+/**
+ * Samples for WorkspaceDiagnostic Get.
+ */
+public final class WorkspaceDiagnosticGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspaceDiagnostic.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspaceDiagnostic.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetWorkspaceDiagnostic(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceDiagnostics()
+            .getWithResponse("rg1", "apimService1", "wks1", "applicationinsights", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceDiagnostic_GetEntityTag
+
+```java
+/**
+ * Samples for WorkspaceDiagnostic GetEntityTag.
+ */
+public final class WorkspaceDiagnosticGetEntityTagSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementHeadWorkspaceDiagnostic.json
+     */
+    /**
+     * Sample code: ApiManagementHeadWorkspaceDiagnostic.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementHeadWorkspaceDiagnostic(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceDiagnostics()
+            .getEntityTagWithResponse("rg1", "apimService1", "wks1", "applicationinsights",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceDiagnostic_ListByWorkspace
+
+```java
+/**
+ * Samples for WorkspaceDiagnostic ListByWorkspace.
+ */
+public final class WorkspaceDiagnosticListByWorkspaceSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspaceDiagnostics.json
+     */
+    /**
+     * Sample code: ApiManagementListWorkspaceDiagnostics.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListWorkspaceDiagnostics(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceDiagnostics()
+            .listByWorkspace("rg1", "apimService1", "wks1", null, null, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceDiagnostic_Update
+
+```java
+import com.azure.resourcemanager.apimanagement.models.AlwaysLog;
+import com.azure.resourcemanager.apimanagement.models.BodyDiagnosticSettings;
+import com.azure.resourcemanager.apimanagement.models.DiagnosticUpdateContract;
+import com.azure.resourcemanager.apimanagement.models.HttpMessageDiagnostic;
+import com.azure.resourcemanager.apimanagement.models.PipelineDiagnosticSettings;
+import com.azure.resourcemanager.apimanagement.models.SamplingSettings;
+import com.azure.resourcemanager.apimanagement.models.SamplingType;
+import java.util.Arrays;
+
+/**
+ * Samples for WorkspaceDiagnostic Update.
+ */
+public final class WorkspaceDiagnosticUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementUpdateWorkspaceDiagnostic.json
+     */
+    /**
+     * Sample code: ApiManagementUpdateWorkspaceDiagnostic.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementUpdateWorkspaceDiagnostic(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceDiagnostics()
+            .updateWithResponse("rg1", "apimService1", "wks1", "applicationinsights", "*",
+                new DiagnosticUpdateContract().withAlwaysLog(AlwaysLog.ALL_ERRORS)
+                    .withLoggerId("/workspaces/wks1/loggers/applicationinsights")
+                    .withSampling(new SamplingSettings().withSamplingType(SamplingType.FIXED).withPercentage(50.0D))
+                    .withFrontend(new PipelineDiagnosticSettings()
+                        .withRequest(new HttpMessageDiagnostic().withHeaders(Arrays.asList("Content-type"))
+                            .withBody(new BodyDiagnosticSettings().withBytes(512)))
+                        .withResponse(new HttpMessageDiagnostic().withHeaders(Arrays.asList("Content-type"))
+                            .withBody(new BodyDiagnosticSettings().withBytes(512))))
+                    .withBackend(new PipelineDiagnosticSettings()
+                        .withRequest(new HttpMessageDiagnostic().withHeaders(Arrays.asList("Content-type"))
+                            .withBody(new BodyDiagnosticSettings().withBytes(512)))
+                        .withResponse(new HttpMessageDiagnostic().withHeaders(Arrays.asList("Content-type"))
+                            .withBody(new BodyDiagnosticSettings().withBytes(512)))),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceGlobalSchema_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.apimanagement.fluent.models.GlobalSchemaContractInner;
+import com.azure.resourcemanager.apimanagement.models.SchemaType;
+
+/**
+ * Samples for WorkspaceGlobalSchema CreateOrUpdate.
+ */
+public final class WorkspaceGlobalSchemaCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspaceSchema.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspaceSchema.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementCreateWorkspaceSchema(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceGlobalSchemas()
+            .createOrUpdate("rg1", "apimService1", "wks1", "schema1", new GlobalSchemaContractInner()
+                .withSchemaType(SchemaType.XML)
+                .withDescription("sample schema description")
+                .withValue(
+                    "<xsd:schema xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"\r\n           xmlns:tns=\"http://tempuri.org/PurchaseOrderSchema.xsd\"\r\n           targetNamespace=\"http://tempuri.org/PurchaseOrderSchema.xsd\"\r\n           elementFormDefault=\"qualified\">\r\n <xsd:element name=\"PurchaseOrder\" type=\"tns:PurchaseOrderType\"/>\r\n <xsd:complexType name=\"PurchaseOrderType\">\r\n  <xsd:sequence>\r\n   <xsd:element name=\"ShipTo\" type=\"tns:USAddress\" maxOccurs=\"2\"/>\r\n   <xsd:element name=\"BillTo\" type=\"tns:USAddress\"/>\r\n  </xsd:sequence>\r\n  <xsd:attribute name=\"OrderDate\" type=\"xsd:date\"/>\r\n </xsd:complexType>\r\n\r\n <xsd:complexType name=\"USAddress\">\r\n  <xsd:sequence>\r\n   <xsd:element name=\"name\"   type=\"xsd:string\"/>\r\n   <xsd:element name=\"street\" type=\"xsd:string\"/>\r\n   <xsd:element name=\"city\"   type=\"xsd:string\"/>\r\n   <xsd:element name=\"state\"  type=\"xsd:string\"/>\r\n   <xsd:element name=\"zip\"    type=\"xsd:integer\"/>\r\n  </xsd:sequence>\r\n  <xsd:attribute name=\"country\" type=\"xsd:NMTOKEN\" fixed=\"US\"/>\r\n </xsd:complexType>\r\n</xsd:schema>"),
+                null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceGlobalSchema_Delete
+
+```java
+/**
+ * Samples for WorkspaceGlobalSchema Delete.
+ */
+public final class WorkspaceGlobalSchemaDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteWorkspaceSchema.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteWorkspaceSchema.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementDeleteWorkspaceSchema(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceGlobalSchemas()
+            .deleteWithResponse("rg1", "apimService1", "wks1", "schema1", "*", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceGlobalSchema_Get
+
+```java
+/**
+ * Samples for WorkspaceGlobalSchema Get.
+ */
+public final class WorkspaceGlobalSchemaGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspaceSchema.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspaceSchema.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetWorkspaceSchema(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceGlobalSchemas()
+            .getWithResponse("rg1", "apimService1", "wks1", "schema1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceGlobalSchema_GetEntityTag
+
+```java
+/**
+ * Samples for WorkspaceGlobalSchema GetEntityTag.
+ */
+public final class WorkspaceGlobalSchemaGetEntityTagSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementHeadWorkspaceSchema.json
+     */
+    /**
+     * Sample code: ApiManagementHeadWorkspaceSchema.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementHeadWorkspaceSchema(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceGlobalSchemas()
+            .getEntityTagWithResponse("rg1", "apimService1", "wks1", "myschema", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceGlobalSchema_ListByService
+
+```java
+/**
+ * Samples for WorkspaceGlobalSchema ListByService.
+ */
+public final class WorkspaceGlobalSchemaListByServiceSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspaceSchemas.json
+     */
+    /**
+     * Sample code: ApiManagementListWorkspaceSchemas.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListWorkspaceSchemas(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceGlobalSchemas()
+            .listByService("rg1", "apimService1", "wks1", null, null, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceGroup_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.apimanagement.models.GroupCreateParameters;
+import com.azure.resourcemanager.apimanagement.models.GroupType;
+
+/**
+ * Samples for WorkspaceGroup CreateOrUpdate.
+ */
+public final class WorkspaceGroupCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspaceGroupExternal.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspaceGroupExternal.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementCreateWorkspaceGroupExternal(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceGroups()
+            .createOrUpdateWithResponse("rg1", "apimService1", "wks1", "aadGroup",
+                new GroupCreateParameters().withDisplayName("NewGroup (samiraad.onmicrosoft.com)")
+                    .withDescription("new group to test")
+                    .withType(GroupType.EXTERNAL)
+                    .withExternalId("aad://samiraad.onmicrosoft.com/groups/83cf2753-5831-4675-bc0e-2f8dc067c58d"),
+                null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspaceGroup.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspaceGroup.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementCreateWorkspaceGroup(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceGroups()
+            .createOrUpdateWithResponse("rg1", "apimService1", "wks1", "tempgroup",
+                new GroupCreateParameters().withDisplayName("temp group"), null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceGroup_Delete
+
+```java
+/**
+ * Samples for WorkspaceGroup Delete.
+ */
+public final class WorkspaceGroupDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteWorkspaceGroup.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteWorkspaceGroup.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementDeleteWorkspaceGroup(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceGroups()
+            .deleteWithResponse("rg1", "apimService1", "wks1", "aadGroup", "*", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceGroup_Get
+
+```java
+/**
+ * Samples for WorkspaceGroup Get.
+ */
+public final class WorkspaceGroupGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspaceGroup.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspaceGroup.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetWorkspaceGroup(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceGroups()
+            .getWithResponse("rg1", "apimService1", "wks1", "59306a29e4bbd510dc24e5f9",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceGroup_GetEntityTag
+
+```java
+/**
+ * Samples for WorkspaceGroup GetEntityTag.
+ */
+public final class WorkspaceGroupGetEntityTagSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementHeadWorkspaceGroup.json
+     */
+    /**
+     * Sample code: ApiManagementHeadWorkspaceGroup.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementHeadWorkspaceGroup(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceGroups()
+            .getEntityTagWithResponse("rg1", "apimService1", "wks1", "59306a29e4bbd510dc24e5f9",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceGroup_ListByService
+
+```java
+/**
+ * Samples for WorkspaceGroup ListByService.
+ */
+public final class WorkspaceGroupListByServiceSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspaceGroups.json
+     */
+    /**
+     * Sample code: ApiManagementListWorkspaceGroups.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListWorkspaceGroups(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceGroups()
+            .listByService("rg1", "apimService1", "wks1", null, null, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceGroup_Update
+
+```java
+import com.azure.resourcemanager.apimanagement.models.GroupUpdateParameters;
+
+/**
+ * Samples for WorkspaceGroup Update.
+ */
+public final class WorkspaceGroupUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementUpdateWorkspaceGroup.json
+     */
+    /**
+     * Sample code: ApiManagementUpdateWorkspaceGroup.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementUpdateWorkspaceGroup(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceGroups()
+            .updateWithResponse("rg1", "apimService1", "wks1", "tempgroup", "*",
+                new GroupUpdateParameters().withDisplayName("temp group"), com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceGroupUser_CheckEntityExists
+
+```java
+/**
+ * Samples for WorkspaceGroupUser CheckEntityExists.
+ */
+public final class WorkspaceGroupUserCheckEntityExistsSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementHeadWorkspaceGroupUser.json
+     */
+    /**
+     * Sample code: ApiManagementHeadWorkspaceGroupUser.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementHeadWorkspaceGroupUser(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceGroupUsers()
+            .checkEntityExistsWithResponse("rg1", "apimService1", "wks1", "59306a29e4bbd510dc24e5f9",
+                "5931a75ae4bbd512a88c680b", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceGroupUser_Create
+
+```java
+/**
+ * Samples for WorkspaceGroupUser Create.
+ */
+public final class WorkspaceGroupUserCreateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspaceGroupUser.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspaceGroupUser.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementCreateWorkspaceGroupUser(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceGroupUsers()
+            .createWithResponse("rg1", "apimService1", "wks1", "tempgroup", "59307d350af58404d8a26300",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceGroupUser_Delete
+
+```java
+/**
+ * Samples for WorkspaceGroupUser Delete.
+ */
+public final class WorkspaceGroupUserDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteWorkspaceGroupUser.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteWorkspaceGroupUser.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementDeleteWorkspaceGroupUser(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceGroupUsers()
+            .deleteWithResponse("rg1", "apimService1", "wks1", "templategroup", "59307d350af58404d8a26300",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceGroupUser_List
+
+```java
+/**
+ * Samples for WorkspaceGroupUser List.
+ */
+public final class WorkspaceGroupUserListSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspaceGroupUsers.json
+     */
+    /**
+     * Sample code: ApiManagementListWorkspaceGroupUsers.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListWorkspaceGroupUsers(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceGroupUsers()
+            .list("rg1", "apimService1", "wks1", "57d2ef278aa04f0888cba3f3", null, null, null,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceLogger_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.apimanagement.fluent.models.LoggerContractInner;
+import com.azure.resourcemanager.apimanagement.models.LoggerType;
+import java.util.HashMap;
+import java.util.Map;
+
+/**
+ * Samples for WorkspaceLogger CreateOrUpdate.
+ */
+public final class WorkspaceLoggerCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspaceAILogger.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspaceAILogger.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementCreateWorkspaceAILogger(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceLoggers()
+            .createOrUpdateWithResponse("rg1", "apimService1", "wks1", "loggerId",
+                new LoggerContractInner().withLoggerType(LoggerType.APPLICATION_INSIGHTS)
+                    .withDescription("adding a new logger")
+                    .withCredentials(mapOf("instrumentationKey", "fakeTokenPlaceholder")),
+                null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspaceEHLogger.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspaceEHLogger.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementCreateWorkspaceEHLogger(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceLoggers()
+            .createOrUpdateWithResponse("rg1", "apimService1", "wks1", "eh1", new LoggerContractInner()
+                .withLoggerType(LoggerType.AZURE_EVENT_HUB)
+                .withDescription("adding a new logger")
+                .withCredentials(mapOf("name", "hydraeventhub", "connectionString",
+                    "Endpoint=sb://hydraeventhub-ns.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=********=")),
+                null, com.azure.core.util.Context.NONE);
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
+    }
+}
+```
+
+### WorkspaceLogger_Delete
+
+```java
+/**
+ * Samples for WorkspaceLogger Delete.
+ */
+public final class WorkspaceLoggerDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteWorkspaceLogger.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteWorkspaceLogger.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementDeleteWorkspaceLogger(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceLoggers()
+            .deleteWithResponse("rg1", "apimService1", "wks1", "loggerId", "*", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceLogger_Get
+
+```java
+/**
+ * Samples for WorkspaceLogger Get.
+ */
+public final class WorkspaceLoggerGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspaceLogger.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspaceLogger.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetWorkspaceLogger(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceLoggers()
+            .getWithResponse("rg1", "apimService1", "wks1", "templateLogger", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceLogger_GetEntityTag
+
+```java
+/**
+ * Samples for WorkspaceLogger GetEntityTag.
+ */
+public final class WorkspaceLoggerGetEntityTagSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementHeadWorkspaceLogger.json
+     */
+    /**
+     * Sample code: ApiManagementHeadWorkspaceLogger.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementHeadWorkspaceLogger(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceLoggers()
+            .getEntityTagWithResponse("rg1", "apimService1", "wks1", "templateLogger",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceLogger_ListByWorkspace
+
+```java
+/**
+ * Samples for WorkspaceLogger ListByWorkspace.
+ */
+public final class WorkspaceLoggerListByWorkspaceSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspaceLoggers.json
+     */
+    /**
+     * Sample code: ApiManagementListWorkspaceLoggers.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListWorkspaceLoggers(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceLoggers()
+            .listByWorkspace("rg1", "apimService1", "wks1", null, null, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceLogger_Update
+
+```java
+import com.azure.resourcemanager.apimanagement.models.LoggerType;
+import com.azure.resourcemanager.apimanagement.models.LoggerUpdateContract;
+
+/**
+ * Samples for WorkspaceLogger Update.
+ */
+public final class WorkspaceLoggerUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementUpdateWorkspaceLogger.json
+     */
+    /**
+     * Sample code: ApiManagementUpdateWorkspaceLogger.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementUpdateWorkspaceLogger(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceLoggers()
+            .updateWithResponse("rg1", "apimService1", "wks1", "eh1", "*",
+                new LoggerUpdateContract().withLoggerType(LoggerType.AZURE_EVENT_HUB)
+                    .withDescription("updating description"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceNamedValue_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.apimanagement.models.KeyVaultContractCreateProperties;
+import com.azure.resourcemanager.apimanagement.models.NamedValueCreateContract;
+import java.util.Arrays;
+
+/**
+ * Samples for WorkspaceNamedValue CreateOrUpdate.
+ */
+public final class WorkspaceNamedValueCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspaceNamedValueWithKeyVault.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspaceNamedValueWithKeyVault.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementCreateWorkspaceNamedValueWithKeyVault(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceNamedValues()
+            .createOrUpdate("rg1", "apimService1", "wks1", "testprop6",
+                new NamedValueCreateContract().withDisplayName("prop6namekv")
+                    .withKeyVault(new KeyVaultContractCreateProperties().withSecretIdentifier("fakeTokenPlaceholder")
+                        .withIdentityClientId("ceaa6b06-c00f-43ef-99ac-f53d1fe876a0"))
+                    .withTags(Arrays.asList("foo", "bar"))
+                    .withSecret(true),
+                null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspaceNamedValue.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspaceNamedValue.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementCreateWorkspaceNamedValue(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceNamedValues()
+            .createOrUpdate("rg1", "apimService1", "wks1", "testprop2",
+                new NamedValueCreateContract().withDisplayName("prop3name")
+                    .withValue("propValue")
+                    .withTags(Arrays.asList("foo", "bar"))
+                    .withSecret(false),
+                null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceNamedValue_Delete
+
+```java
+/**
+ * Samples for WorkspaceNamedValue Delete.
+ */
+public final class WorkspaceNamedValueDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteWorkspaceNamedValue.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteWorkspaceNamedValue.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementDeleteWorkspaceNamedValue(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceNamedValues()
+            .deleteWithResponse("rg1", "apimService1", "wks1", "testprop2", "*", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceNamedValue_Get
+
+```java
+/**
+ * Samples for WorkspaceNamedValue Get.
+ */
+public final class WorkspaceNamedValueGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspaceNamedValueWithKeyVault.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspaceNamedValueWithKeyVault.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementGetWorkspaceNamedValueWithKeyVault(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceNamedValues()
+            .getWithResponse("rg1", "apimService1", "wks1", "testprop6", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspaceNamedValue.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspaceNamedValue.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetWorkspaceNamedValue(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceNamedValues()
+            .getWithResponse("rg1", "apimService1", "wks1", "testarmTemplateproperties2",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceNamedValue_GetEntityTag
+
+```java
+/**
+ * Samples for WorkspaceNamedValue GetEntityTag.
+ */
+public final class WorkspaceNamedValueGetEntityTagSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementHeadWorkspaceNamedValue.json
+     */
+    /**
+     * Sample code: ApiManagementHeadWorkspaceNamedValue.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementHeadWorkspaceNamedValue(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceNamedValues()
+            .getEntityTagWithResponse("rg1", "apimService1", "wks1", "testarmTemplateproperties2",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceNamedValue_ListByService
+
+```java
+
+/**
+ * Samples for WorkspaceNamedValue ListByService.
+ */
+public final class WorkspaceNamedValueListByServiceSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspaceNamedValues.json
+     */
+    /**
+     * Sample code: ApiManagementListWorkspaceNamedValues.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListWorkspaceNamedValues(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceNamedValues()
+            .listByService("rg1", "apimService1", "wks1", null, null, null, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceNamedValue_ListValue
+
+```java
+/**
+ * Samples for WorkspaceNamedValue ListValue.
+ */
+public final class WorkspaceNamedValueListValueSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementWorkspaceNamedValueListValue.json
+     */
+    /**
+     * Sample code: ApiManagementWorkspaceNamedValueListValue.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementWorkspaceNamedValueListValue(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceNamedValues()
+            .listValueWithResponse("rg1", "apimService1", "wks1", "testarmTemplateproperties2",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceNamedValue_RefreshSecret
+
+```java
+/**
+ * Samples for WorkspaceNamedValue RefreshSecret.
+ */
+public final class WorkspaceNamedValueRefreshSecretSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementRefreshWorkspaceNamedValue.json
+     */
+    /**
+     * Sample code: ApiManagementRefreshWorkspaceNamedValue.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementRefreshWorkspaceNamedValue(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceNamedValues()
+            .refreshSecret("rg1", "apimService1", "wks1", "testprop2", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceNamedValue_Update
+
+```java
+import com.azure.resourcemanager.apimanagement.models.NamedValueUpdateParameters;
+import java.util.Arrays;
+
+/**
+ * Samples for WorkspaceNamedValue Update.
+ */
+public final class WorkspaceNamedValueUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementUpdateWorkspaceNamedValue.json
+     */
+    /**
+     * Sample code: ApiManagementUpdateWorkspaceNamedValue.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementUpdateWorkspaceNamedValue(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceNamedValues()
+            .update("rg1", "apimService1", "wks1", "testprop2", "*",
+                new NamedValueUpdateParameters().withDisplayName("prop3name")
+                    .withValue("propValue")
+                    .withTags(Arrays.asList("foo", "bar2"))
+                    .withSecret(false),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceNotification_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.apimanagement.models.NotificationName;
+
+/**
+ * Samples for WorkspaceNotification CreateOrUpdate.
+ */
+public final class WorkspaceNotificationCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspaceNotification.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspaceNotification.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementCreateWorkspaceNotification(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceNotifications()
+            .createOrUpdateWithResponse("rg1", "apimService1", "wks1",
+                NotificationName.REQUEST_PUBLISHER_NOTIFICATION_MESSAGE, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceNotification_Get
+
+```java
+import com.azure.resourcemanager.apimanagement.models.NotificationName;
+
+/**
+ * Samples for WorkspaceNotification Get.
+ */
+public final class WorkspaceNotificationGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspaceNotification.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspaceNotification.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetWorkspaceNotification(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceNotifications()
+            .getWithResponse("rg1", "apimService1", "wks1", NotificationName.REQUEST_PUBLISHER_NOTIFICATION_MESSAGE,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceNotification_ListByService
+
+```java
+/**
+ * Samples for WorkspaceNotification ListByService.
+ */
+public final class WorkspaceNotificationListByServiceSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspaceNotifications.json
+     */
+    /**
+     * Sample code: ApiManagementListWorkspaceNotifications.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListWorkspaceNotifications(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceNotifications()
+            .listByService("rg1", "apimService1", "wks1", null, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceNotificationRecipientEmail_CheckEntityExists
+
+```java
+import com.azure.resourcemanager.apimanagement.models.NotificationName;
+
+/**
+ * Samples for WorkspaceNotificationRecipientEmail CheckEntityExists.
+ */
+public final class WorkspaceNotificationRecipientEmailCheckEntityExistsSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementHeadWorkspaceNotificationRecipientEmail.json
+     */
+    /**
+     * Sample code: ApiManagementHeadWorkspaceNotificationRecipientEmail.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementHeadWorkspaceNotificationRecipientEmail(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceNotificationRecipientEmails()
+            .checkEntityExistsWithResponse("rg1", "apimService1", "wks1",
+                NotificationName.REQUEST_PUBLISHER_NOTIFICATION_MESSAGE, "contoso@live.com",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceNotificationRecipientEmail_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.apimanagement.models.NotificationName;
+
+/**
+ * Samples for WorkspaceNotificationRecipientEmail CreateOrUpdate.
+ */
+public final class WorkspaceNotificationRecipientEmailCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspaceNotificationRecipientEmail.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspaceNotificationRecipientEmail.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementCreateWorkspaceNotificationRecipientEmail(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceNotificationRecipientEmails()
+            .createOrUpdateWithResponse("rg1", "apimService1", "wks1",
+                NotificationName.REQUEST_PUBLISHER_NOTIFICATION_MESSAGE, "foobar@live.com",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceNotificationRecipientEmail_Delete
+
+```java
+import com.azure.resourcemanager.apimanagement.models.NotificationName;
+
+/**
+ * Samples for WorkspaceNotificationRecipientEmail Delete.
+ */
+public final class WorkspaceNotificationRecipientEmailDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteWorkspaceNotificationRecipientEmail.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteWorkspaceNotificationRecipientEmail.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementDeleteWorkspaceNotificationRecipientEmail(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceNotificationRecipientEmails()
+            .deleteWithResponse("rg1", "apimService1", "wks1", NotificationName.REQUEST_PUBLISHER_NOTIFICATION_MESSAGE,
+                "contoso@live.com", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceNotificationRecipientEmail_ListByNotification
+
+```java
+import com.azure.resourcemanager.apimanagement.models.NotificationName;
+
+/**
+ * Samples for WorkspaceNotificationRecipientEmail ListByNotification.
+ */
+public final class WorkspaceNotificationRecipientEmailListByNotificationSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspaceNotificationRecipientEmails.json
+     */
+    /**
+     * Sample code: ApiManagementListWorkspaceNotificationRecipientEmails.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementListWorkspaceNotificationRecipientEmails(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceNotificationRecipientEmails()
+            .listByNotificationWithResponse("rg1", "apimService1", "wks1",
+                NotificationName.REQUEST_PUBLISHER_NOTIFICATION_MESSAGE, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceNotificationRecipientUser_CheckEntityExists
+
+```java
+import com.azure.resourcemanager.apimanagement.models.NotificationName;
+
+/**
+ * Samples for WorkspaceNotificationRecipientUser CheckEntityExists.
+ */
+public final class WorkspaceNotificationRecipientUserCheckEntityExistsSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementHeadWorkspaceNotificationRecipientUser.json
+     */
+    /**
+     * Sample code: ApiManagementHeadWorkspaceNotificationRecipientUser.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementHeadWorkspaceNotificationRecipientUser(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceNotificationRecipientUsers()
+            .checkEntityExistsWithResponse("rg1", "apimService1", "wks1",
+                NotificationName.REQUEST_PUBLISHER_NOTIFICATION_MESSAGE, "576823d0a40f7e74ec07d642",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceNotificationRecipientUser_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.apimanagement.models.NotificationName;
+
+/**
+ * Samples for WorkspaceNotificationRecipientUser CreateOrUpdate.
+ */
+public final class WorkspaceNotificationRecipientUserCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspaceNotificationRecipientUser.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspaceNotificationRecipientUser.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementCreateWorkspaceNotificationRecipientUser(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceNotificationRecipientUsers()
+            .createOrUpdateWithResponse("rg1", "apimService1", "wks1",
+                NotificationName.REQUEST_PUBLISHER_NOTIFICATION_MESSAGE, "576823d0a40f7e74ec07d642",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceNotificationRecipientUser_Delete
+
+```java
+import com.azure.resourcemanager.apimanagement.models.NotificationName;
+
+/**
+ * Samples for WorkspaceNotificationRecipientUser Delete.
+ */
+public final class WorkspaceNotificationRecipientUserDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteWorkspaceNotificationRecipientUser.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteWorkspaceNotificationRecipientUser.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementDeleteWorkspaceNotificationRecipientUser(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceNotificationRecipientUsers()
+            .deleteWithResponse("rg1", "apimService1", "wks1", NotificationName.REQUEST_PUBLISHER_NOTIFICATION_MESSAGE,
+                "576823d0a40f7e74ec07d642", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceNotificationRecipientUser_ListByNotification
+
+```java
+import com.azure.resourcemanager.apimanagement.models.NotificationName;
+
+/**
+ * Samples for WorkspaceNotificationRecipientUser ListByNotification.
+ */
+public final class WorkspaceNotificationRecipientUserListByNotificationSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspaceNotificationRecipientUsers.json
+     */
+    /**
+     * Sample code: ApiManagementListWorkspaceNotificationRecipientUsers.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementListWorkspaceNotificationRecipientUsers(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceNotificationRecipientUsers()
+            .listByNotificationWithResponse("rg1", "apimService1", "wks1",
+                NotificationName.REQUEST_PUBLISHER_NOTIFICATION_MESSAGE, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspacePolicy_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.apimanagement.fluent.models.PolicyContractInner;
+import com.azure.resourcemanager.apimanagement.models.PolicyContentFormat;
+import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
+
+/**
+ * Samples for WorkspacePolicy CreateOrUpdate.
+ */
+public final class WorkspacePolicyCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspacePolicyNonXmlEncoded.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspacePolicyNonXmlEncoded.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementCreateWorkspacePolicyNonXmlEncoded(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspacePolicies()
+            .createOrUpdateWithResponse("rg1", "apimService1", "wks1", PolicyIdName.POLICY,
+                new PolicyContractInner().withValue(
+                    "<policies>\r\n     <inbound>\r\n     <base />\r\n  <set-header name=\"newvalue\" exists-action=\"override\">\r\n   <value>\"@(context.Request.Headers.FirstOrDefault(h => h.Ke==\"Via\"))\" </value>\r\n    </set-header>\r\n  </inbound>\r\n      </policies>")
+                    .withFormat(PolicyContentFormat.RAWXML),
+                "*", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspacePolicy.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspacePolicy.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementCreateWorkspacePolicy(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspacePolicies()
+            .createOrUpdateWithResponse("rg1", "apimService1", "wks1", PolicyIdName.POLICY,
+                new PolicyContractInner()
+                    .withValue(
+                        "<policies> <inbound /> <backend>    <forward-request />  </backend>  <outbound /></policies>")
+                    .withFormat(PolicyContentFormat.XML),
+                "*", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspacePolicy_Delete
+
+```java
+import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
+
+/**
+ * Samples for WorkspacePolicy Delete.
+ */
+public final class WorkspacePolicyDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteWorkspacePolicy.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteWorkspacePolicy.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementDeleteWorkspacePolicy(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspacePolicies()
+            .deleteWithResponse("rg1", "apimService1", "wks1", PolicyIdName.POLICY, "*",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspacePolicy_Get
+
+```java
+import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
+
+/**
+ * Samples for WorkspacePolicy Get.
+ */
+public final class WorkspacePolicyGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspacePolicy.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspacePolicy.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetWorkspacePolicy(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspacePolicies()
+            .getWithResponse("rg1", "apimService1", "wks1", PolicyIdName.POLICY, null,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspacePolicy_GetEntityTag
+
+```java
+import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
+
+/**
+ * Samples for WorkspacePolicy GetEntityTag.
+ */
+public final class WorkspacePolicyGetEntityTagSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementHeadWorkspacePolicy.json
+     */
+    /**
+     * Sample code: ApiManagementHeadWorkspacePolicy.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementHeadWorkspacePolicy(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspacePolicies()
+            .getEntityTagWithResponse("rg1", "apimService1", "wks1", PolicyIdName.POLICY,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspacePolicy_ListByApi
+
+```java
+/**
+ * Samples for WorkspacePolicy ListByApi.
+ */
+public final class WorkspacePolicyListByApiSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspacePolicies.json
+     */
+    /**
+     * Sample code: ApiManagementListWorkspacePolicies.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListWorkspacePolicies(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspacePolicies().listByApi("rg1", "apimService1", "wks1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspacePolicyFragment_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.apimanagement.fluent.models.PolicyFragmentContractInner;
+import com.azure.resourcemanager.apimanagement.models.PolicyFragmentContentFormat;
+
+/**
+ * Samples for WorkspacePolicyFragment CreateOrUpdate.
+ */
+public final class WorkspacePolicyFragmentCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspacePolicyFragment.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspacePolicyFragment.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementCreateWorkspacePolicyFragment(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspacePolicyFragments()
+            .createOrUpdate("rg1", "apimService1", "wks1", "policyFragment1",
+                new PolicyFragmentContractInner()
+                    .withValue("<fragment><json-to-xml apply=\"always\" consider-accept-header=\"false\" /></fragment>")
+                    .withDescription("A policy fragment example")
+                    .withFormat(PolicyFragmentContentFormat.XML),
+                null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspacePolicyFragment_Delete
+
+```java
+/**
+ * Samples for WorkspacePolicyFragment Delete.
+ */
+public final class WorkspacePolicyFragmentDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteWorkspacePolicyFragment.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteWorkspacePolicyFragment.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementDeleteWorkspacePolicyFragment(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspacePolicyFragments()
+            .deleteWithResponse("rg1", "apimService1", "wks1", "policyFragment1", "*",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspacePolicyFragment_Get
+
+```java
+import com.azure.resourcemanager.apimanagement.models.PolicyFragmentContentFormat;
+
+/**
+ * Samples for WorkspacePolicyFragment Get.
+ */
+public final class WorkspacePolicyFragmentGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspacePolicyFragment.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspacePolicyFragment.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetWorkspacePolicyFragment(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspacePolicyFragments()
+            .getWithResponse("rg1", "apimService1", "wks1", "policyFragment1", null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspacePolicyFragmentFormat.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspacePolicyFragmentFormat.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementGetWorkspacePolicyFragmentFormat(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspacePolicyFragments()
+            .getWithResponse("rg1", "apimService1", "wks1", "policyFragment1", PolicyFragmentContentFormat.RAWXML,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspacePolicyFragment_GetEntityTag
+
+```java
+/**
+ * Samples for WorkspacePolicyFragment GetEntityTag.
+ */
+public final class WorkspacePolicyFragmentGetEntityTagSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementHeadWorkspacePolicyFragment.json
+     */
+    /**
+     * Sample code: ApiManagementHeadWorkspacePolicyFragment.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementHeadWorkspacePolicyFragment(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspacePolicyFragments()
+            .getEntityTagWithResponse("rg1", "apimService1", "wks1", "policyFragment1",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspacePolicyFragment_ListByService
+
+```java
+/**
+ * Samples for WorkspacePolicyFragment ListByService.
+ */
+public final class WorkspacePolicyFragmentListByServiceSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspacePolicyFragments.json
+     */
+    /**
+     * Sample code: ApiManagementListWorkspacePolicyFragments.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementListWorkspacePolicyFragments(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspacePolicyFragments()
+            .listByService("rg1", "apimService1", "wks1", null, null, null, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspacePolicyFragment_ListReferences
+
+```java
+/**
+ * Samples for WorkspacePolicyFragment ListReferences.
+ */
+public final class WorkspacePolicyFragmentListReferencesSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspacePolicyFragmentReferences.json
+     */
+    /**
+     * Sample code: ApiManagementListWorkspacePolicyFragmentReferences.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementListWorkspacePolicyFragmentReferences(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspacePolicyFragments()
+            .listReferencesWithResponse("rg1", "apimService1", "wks1", "policyFragment1", null, null,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceProduct_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.apimanagement.fluent.models.ProductContractInner;
+
+/**
+ * Samples for WorkspaceProduct CreateOrUpdate.
+ */
+public final class WorkspaceProductCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspaceProduct.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspaceProduct.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementCreateWorkspaceProduct(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceProducts()
+            .createOrUpdateWithResponse("rg1", "apimService1", "wks1", "testproduct",
+                new ProductContractInner().withDisplayName("Test Template ProductName 4"), null,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceProduct_Delete
+
+```java
+/**
+ * Samples for WorkspaceProduct Delete.
+ */
+public final class WorkspaceProductDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteWorkspaceProduct.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteWorkspaceProduct.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementDeleteWorkspaceProduct(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceProducts()
+            .deleteWithResponse("rg1", "apimService1", "wks1", "testproduct", "*", true,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceProduct_Get
+
+```java
+/**
+ * Samples for WorkspaceProduct Get.
+ */
+public final class WorkspaceProductGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspaceProduct.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspaceProduct.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetWorkspaceProduct(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceProducts()
+            .getWithResponse("rg1", "apimService1", "wks1", "unlimited", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceProduct_GetEntityTag
+
+```java
+/**
+ * Samples for WorkspaceProduct GetEntityTag.
+ */
+public final class WorkspaceProductGetEntityTagSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementHeadWorkspaceProduct.json
+     */
+    /**
+     * Sample code: ApiManagementHeadWorkspaceProduct.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementHeadWorkspaceProduct(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceProducts()
+            .getEntityTagWithResponse("rg1", "apimService1", "wks1", "unlimited", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceProduct_ListByService
+
+```java
+/**
+ * Samples for WorkspaceProduct ListByService.
+ */
+public final class WorkspaceProductListByServiceSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspaceProducts.json
+     */
+    /**
+     * Sample code: ApiManagementListWorkspaceProducts.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListWorkspaceProducts(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceProducts()
+            .listByService("rg1", "apimService1", "wks1", null, null, null, null, null,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceProduct_Update
+
+```java
+import com.azure.resourcemanager.apimanagement.models.ProductUpdateParameters;
+
+/**
+ * Samples for WorkspaceProduct Update.
+ */
+public final class WorkspaceProductUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementUpdateWorkspaceProduct.json
+     */
+    /**
+     * Sample code: ApiManagementUpdateWorkspaceProduct.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementUpdateWorkspaceProduct(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceProducts()
+            .updateWithResponse("rg1", "apimService1", "wks1", "testproduct", "*",
+                new ProductUpdateParameters().withDisplayName("Test Template ProductName 4"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceProductApiLink_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.apimanagement.fluent.models.ProductApiLinkContractInner;
+
+/**
+ * Samples for WorkspaceProductApiLink CreateOrUpdate.
+ */
+public final class WorkspaceProductApiLinkCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspaceProductApiLink.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspaceProductApiLink.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementCreateWorkspaceProductApiLink(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceProductApiLinks()
+            .createOrUpdateWithResponse("rg1", "apimService1", "wks1", "testproduct", "link1",
+                new ProductApiLinkContractInner().withApiId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/workspaces/wks1/apis/echo-api"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceProductApiLink_Delete
+
+```java
+/**
+ * Samples for WorkspaceProductApiLink Delete.
+ */
+public final class WorkspaceProductApiLinkDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteWorkspaceProductApiLink.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteWorkspaceProductApiLink.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementDeleteWorkspaceProductApiLink(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceProductApiLinks()
+            .deleteWithResponse("rg1", "apimService1", "wks1", "testproduct", "link1",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceProductApiLink_Get
+
+```java
+/**
+ * Samples for WorkspaceProductApiLink Get.
+ */
+public final class WorkspaceProductApiLinkGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspaceProductApiLink.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspaceProductApiLink.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetWorkspaceProductApiLink(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceProductApiLinks()
+            .getWithResponse("rg1", "apimService1", "wks1", "testproduct", "link1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceProductApiLink_ListByProduct
+
+```java
+/**
+ * Samples for WorkspaceProductApiLink ListByProduct.
+ */
+public final class WorkspaceProductApiLinkListByProductSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspaceProductApiLinks.json
+     */
+    /**
+     * Sample code: ApiManagementListWorkspaceProductApiLinks.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementListWorkspaceProductApiLinks(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceProductApiLinks()
+            .listByProduct("rg1", "apimService1", "wks1", "product1", null, null, null,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceProductGroupLink_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.apimanagement.fluent.models.ProductGroupLinkContractInner;
+
+/**
+ * Samples for WorkspaceProductGroupLink CreateOrUpdate.
+ */
+public final class WorkspaceProductGroupLinkCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspaceProductGroupLink.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspaceProductGroupLink.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementCreateWorkspaceProductGroupLink(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceProductGroupLinks()
+            .createOrUpdateWithResponse("rg1", "apimService1", "wks1", "testproduct", "link1",
+                new ProductGroupLinkContractInner().withGroupId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/workspaces/wks1/groups/group1"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceProductGroupLink_Delete
+
+```java
+/**
+ * Samples for WorkspaceProductGroupLink Delete.
+ */
+public final class WorkspaceProductGroupLinkDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteWorkspaceProductGroupLink.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteWorkspaceProductGroupLink.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementDeleteWorkspaceProductGroupLink(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceProductGroupLinks()
+            .deleteWithResponse("rg1", "apimService1", "wks1", "testproduct", "link1",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceProductGroupLink_Get
+
+```java
+/**
+ * Samples for WorkspaceProductGroupLink Get.
+ */
+public final class WorkspaceProductGroupLinkGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspaceProductGroupLink.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspaceProductGroupLink.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementGetWorkspaceProductGroupLink(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceProductGroupLinks()
+            .getWithResponse("rg1", "apimService1", "wks1", "testproduct", "link1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceProductGroupLink_ListByProduct
+
+```java
+/**
+ * Samples for WorkspaceProductGroupLink ListByProduct.
+ */
+public final class WorkspaceProductGroupLinkListByProductSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspaceProductGroupLinks.json
+     */
+    /**
+     * Sample code: ApiManagementListWorkspaceProductGroupLinks.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementListWorkspaceProductGroupLinks(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceProductGroupLinks()
+            .listByProduct("rg1", "apimService1", "wks1", "product1", null, null, null,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceProductPolicy_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.apimanagement.fluent.models.PolicyContractInner;
+import com.azure.resourcemanager.apimanagement.models.PolicyContentFormat;
+import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
+
+/**
+ * Samples for WorkspaceProductPolicy CreateOrUpdate.
+ */
+public final class WorkspaceProductPolicyCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspaceProductPolicy.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspaceProductPolicy.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementCreateWorkspaceProductPolicy(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceProductPolicies()
+            .createOrUpdateWithResponse("rg1", "apimService1", "wks1", "5702e97e5157a50f48dce801", PolicyIdName.POLICY,
+                new PolicyContractInner().withValue(
+                    "<policies>\r\n  <inbound>\r\n    <rate-limit calls=\"{{call-count}}\" renewal-period=\"15\"></rate-limit>\r\n    <log-to-eventhub logger-id=\"16\">\r\n                      @( string.Join(\",\", DateTime.UtcNow, context.Deployment.ServiceName, context.RequestId, context.Request.IpAddress, context.Operation.Name) ) \r\n                  </log-to-eventhub>\r\n    <quota-by-key calls=\"40\" counter-key=\"cc\" renewal-period=\"3600\" increment-count=\"@(context.Request.Method == &quot;POST&quot; ? 1:2)\" />\r\n    <base />\r\n  </inbound>\r\n  <backend>\r\n    <base />\r\n  </backend>\r\n  <outbound>\r\n    <base />\r\n  </outbound>\r\n</policies>")
+                    .withFormat(PolicyContentFormat.XML),
+                null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceProductPolicy_Delete
+
+```java
+import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
+
+/**
+ * Samples for WorkspaceProductPolicy Delete.
+ */
+public final class WorkspaceProductPolicyDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteWorkspaceProductPolicy.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteWorkspaceProductPolicy.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementDeleteWorkspaceProductPolicy(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceProductPolicies()
+            .deleteWithResponse("rg1", "apimService1", "wks1", "testproduct", PolicyIdName.POLICY, "*",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceProductPolicy_Get
+
+```java
+import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
+
+/**
+ * Samples for WorkspaceProductPolicy Get.
+ */
+public final class WorkspaceProductPolicyGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspaceProductPolicy.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspaceProductPolicy.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetWorkspaceProductPolicy(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceProductPolicies()
+            .getWithResponse("rg1", "apimService1", "wks1", "kjoshiarmTemplateProduct4", PolicyIdName.POLICY, null,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceProductPolicy_GetEntityTag
+
+```java
+import com.azure.resourcemanager.apimanagement.models.PolicyIdName;
+
+/**
+ * Samples for WorkspaceProductPolicy GetEntityTag.
+ */
+public final class WorkspaceProductPolicyGetEntityTagSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementHeadWorkspaceProductPolicy.json
+     */
+    /**
+     * Sample code: ApiManagementHeadWorkspaceProductPolicy.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementHeadWorkspaceProductPolicy(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceProductPolicies()
+            .getEntityTagWithResponse("rg1", "apimService1", "wks1", "unlimited", PolicyIdName.POLICY,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceProductPolicy_ListByProduct
+
+```java
+/**
+ * Samples for WorkspaceProductPolicy ListByProduct.
+ */
+public final class WorkspaceProductPolicyListByProductSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspaceProductPolicies.json
+     */
+    /**
+     * Sample code: ApiManagementListWorkspaceProductPolicies.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementListWorkspaceProductPolicies(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceProductPolicies()
+            .listByProductWithResponse("rg1", "apimService1", "wks1", "armTemplateProduct4",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceSubscription_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.apimanagement.models.SubscriptionCreateParameters;
+
+/**
+ * Samples for WorkspaceSubscription CreateOrUpdate.
+ */
+public final class WorkspaceSubscriptionCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspaceSubscription.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspaceSubscription.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementCreateWorkspaceSubscription(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceSubscriptions()
+            .createOrUpdateWithResponse("rg1", "apimService1", "wks1", "testsub", new SubscriptionCreateParameters()
+                .withOwnerId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/57127d485157a511ace86ae7")
+                .withScope(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/workspaces/wks1/products/5600b59475ff190048060002")
+                .withDisplayName("testsub"), null, null, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceSubscription_Delete
+
+```java
+/**
+ * Samples for WorkspaceSubscription Delete.
+ */
+public final class WorkspaceSubscriptionDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteWorkspaceSubscription.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteWorkspaceSubscription.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementDeleteWorkspaceSubscription(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceSubscriptions()
+            .deleteWithResponse("rg1", "apimService1", "wks1", "testsub", "*", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceSubscription_Get
+
+```java
+/**
+ * Samples for WorkspaceSubscription Get.
+ */
+public final class WorkspaceSubscriptionGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspaceSubscription.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspaceSubscription.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetWorkspaceSubscription(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceSubscriptions()
+            .getWithResponse("rg1", "apimService1", "wks1", "5931a769d8d14f0ad8ce13b8",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceSubscription_GetEntityTag
+
+```java
+/**
+ * Samples for WorkspaceSubscription GetEntityTag.
+ */
+public final class WorkspaceSubscriptionGetEntityTagSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementHeadWorkspaceSubscription.json
+     */
+    /**
+     * Sample code: ApiManagementHeadWorkspaceSubscription.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementHeadWorkspaceSubscription(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceSubscriptions()
+            .getEntityTagWithResponse("rg1", "apimService1", "wks1", "5931a769d8d14f0ad8ce13b8",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceSubscription_List
+
+```java
+/**
+ * Samples for WorkspaceSubscription List.
+ */
+public final class WorkspaceSubscriptionListSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspaceSubscriptions.json
+     */
+    /**
+     * Sample code: ApiManagementListWorkspaceSubscriptions.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListWorkspaceSubscriptions(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceSubscriptions()
+            .list("rg1", "apimService1", "wks1", null, null, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceSubscription_ListSecrets
+
+```java
+/**
+ * Samples for WorkspaceSubscription ListSecrets.
+ */
+public final class WorkspaceSubscriptionListSecretsSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementWorkspaceSubscriptionListSecrets.json
+     */
+    /**
+     * Sample code: ApiManagementWorkspaceSubscriptionListSecrets.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementWorkspaceSubscriptionListSecrets(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceSubscriptions()
+            .listSecretsWithResponse("rg1", "apimService1", "wks1", "5931a769d8d14f0ad8ce13b8",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceSubscription_RegeneratePrimaryKey
+
+```java
+/**
+ * Samples for WorkspaceSubscription RegeneratePrimaryKey.
+ */
+public final class WorkspaceSubscriptionRegeneratePrimaryKeySamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementWorkspaceSubscriptionRegeneratePrimaryKey.json
+     */
+    /**
+     * Sample code: ApiManagementWorkspaceSubscriptionRegeneratePrimaryKey.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementWorkspaceSubscriptionRegeneratePrimaryKey(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceSubscriptions()
+            .regeneratePrimaryKeyWithResponse("rg1", "apimService1", "wks1", "testsub",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceSubscription_RegenerateSecondaryKey
+
+```java
+/**
+ * Samples for WorkspaceSubscription RegenerateSecondaryKey.
+ */
+public final class WorkspaceSubscriptionRegenerateSecondaryKeySamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementWorkspaceSubscriptionRegenerateSecondaryKey.json
+     */
+    /**
+     * Sample code: ApiManagementWorkspaceSubscriptionRegenerateSecondaryKey.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementWorkspaceSubscriptionRegenerateSecondaryKey(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceSubscriptions()
+            .regenerateSecondaryKeyWithResponse("rg1", "apimService1", "wks1", "testsub",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceSubscription_Update
+
+```java
+import com.azure.resourcemanager.apimanagement.models.SubscriptionUpdateParameters;
+
+/**
+ * Samples for WorkspaceSubscription Update.
+ */
+public final class WorkspaceSubscriptionUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementUpdateWorkspaceSubscription.json
+     */
+    /**
+     * Sample code: ApiManagementUpdateWorkspaceSubscription.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementUpdateWorkspaceSubscription(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceSubscriptions()
+            .updateWithResponse("rg1", "apimService1", "wks1", "testsub", "*",
+                new SubscriptionUpdateParameters().withDisplayName("testsub"), null, null,
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceTag_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.apimanagement.models.TagCreateUpdateParameters;
+
+/**
+ * Samples for WorkspaceTag CreateOrUpdate.
+ */
+public final class WorkspaceTagCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspaceTag.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspaceTag.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementCreateWorkspaceTag(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceTags()
+            .createOrUpdateWithResponse("rg1", "apimService1", "wks1", "tagId1",
+                new TagCreateUpdateParameters().withDisplayName("tag1"), null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceTag_Delete
+
+```java
+/**
+ * Samples for WorkspaceTag Delete.
+ */
+public final class WorkspaceTagDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteWorkspaceTag.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteWorkspaceTag.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementDeleteWorkspaceTag(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceTags()
+            .deleteWithResponse("rg1", "apimService1", "wks1", "tagId1", "*", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceTag_Get
+
+```java
+/**
+ * Samples for WorkspaceTag Get.
+ */
+public final class WorkspaceTagGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspaceTag.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspaceTag.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetWorkspaceTag(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceTags()
+            .getWithResponse("rg1", "apimService1", "wks1", "59306a29e4bbd510dc24e5f9",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceTag_GetEntityState
+
+```java
+/**
+ * Samples for WorkspaceTag GetEntityState.
+ */
+public final class WorkspaceTagGetEntityStateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementHeadWorkspaceTag.json
+     */
+    /**
+     * Sample code: ApiManagementHeadWorkspaceTag.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementHeadWorkspaceTag(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceTags()
+            .getEntityStateWithResponse("rg1", "apimService1", "wks1", "59306a29e4bbd510dc24e5f9",
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceTag_ListByService
+
+```java
+/**
+ * Samples for WorkspaceTag ListByService.
+ */
+public final class WorkspaceTagListByServiceSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspaceTags.json
+     */
+    /**
+     * Sample code: ApiManagementListWorkspaceTags.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListWorkspaceTags(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceTags()
+            .listByService("rg1", "apimService1", "wks1", null, null, null, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceTag_Update
+
+```java
+import com.azure.resourcemanager.apimanagement.models.TagCreateUpdateParameters;
+
+/**
+ * Samples for WorkspaceTag Update.
+ */
+public final class WorkspaceTagUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementUpdateWorkspaceTag.json
+     */
+    /**
+     * Sample code: ApiManagementUpdateWorkspaceTag.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementUpdateWorkspaceTag(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceTags()
+            .updateWithResponse("rg1", "apimService1", "wks1", "temptag", "*",
+                new TagCreateUpdateParameters().withDisplayName("temp tag"), com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceTagApiLink_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.apimanagement.fluent.models.TagApiLinkContractInner;
+
+/**
+ * Samples for WorkspaceTagApiLink CreateOrUpdate.
+ */
+public final class WorkspaceTagApiLinkCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspaceTagApiLink.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspaceTagApiLink.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementCreateWorkspaceTagApiLink(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceTagApiLinks()
+            .createOrUpdateWithResponse("rg1", "apimService1", "wks1", "tag1", "link1",
+                new TagApiLinkContractInner().withApiId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/workspaces/wks1/apis/echo-api"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceTagApiLink_Delete
+
+```java
+/**
+ * Samples for WorkspaceTagApiLink Delete.
+ */
+public final class WorkspaceTagApiLinkDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteWorkspaceTagApiLink.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteWorkspaceTagApiLink.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementDeleteWorkspaceTagApiLink(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceTagApiLinks()
+            .deleteWithResponse("rg1", "apimService1", "wks1", "tag1", "link1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceTagApiLink_Get
+
+```java
+/**
+ * Samples for WorkspaceTagApiLink Get.
+ */
+public final class WorkspaceTagApiLinkGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspaceTagApiLink.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspaceTagApiLink.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetWorkspaceTagApiLink(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceTagApiLinks()
+            .getWithResponse("rg1", "apimService1", "wks1", "tag1", "link1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceTagApiLink_ListByProduct
+
+```java
+/**
+ * Samples for WorkspaceTagApiLink ListByProduct.
+ */
+public final class WorkspaceTagApiLinkListByProductSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspaceTagApiLinks.json
+     */
+    /**
+     * Sample code: ApiManagementListWorkspaceTagApiLinks.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementListWorkspaceTagApiLinks(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceTagApiLinks()
+            .listByProduct("rg1", "apimService1", "wks1", "tag1", null, null, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceTagOperationLink_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.apimanagement.fluent.models.TagOperationLinkContractInner;
+
+/**
+ * Samples for WorkspaceTagOperationLink CreateOrUpdate.
+ */
+public final class WorkspaceTagOperationLinkCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspaceTagOperationLink.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspaceTagOperationLink.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementCreateWorkspaceTagOperationLink(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceTagOperationLinks()
+            .createOrUpdateWithResponse("rg1", "apimService1", "wks1", "tag1", "link1",
+                new TagOperationLinkContractInner().withOperationId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/workspaces/wks1/apis/echo-api/operations/op1"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceTagOperationLink_Delete
+
+```java
+/**
+ * Samples for WorkspaceTagOperationLink Delete.
+ */
+public final class WorkspaceTagOperationLinkDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteWorkspaceTagOperationLink.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteWorkspaceTagOperationLink.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementDeleteWorkspaceTagOperationLink(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceTagOperationLinks()
+            .deleteWithResponse("rg1", "apimService1", "wks1", "tag1", "link1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceTagOperationLink_Get
+
+```java
+/**
+ * Samples for WorkspaceTagOperationLink Get.
+ */
+public final class WorkspaceTagOperationLinkGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspaceTagOperationLink.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspaceTagOperationLink.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementGetWorkspaceTagOperationLink(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceTagOperationLinks()
+            .getWithResponse("rg1", "apimService1", "wks1", "tag1", "link1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceTagOperationLink_ListByProduct
+
+```java
+/**
+ * Samples for WorkspaceTagOperationLink ListByProduct.
+ */
+public final class WorkspaceTagOperationLinkListByProductSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspaceTagOperationLinks.json
+     */
+    /**
+     * Sample code: ApiManagementListWorkspaceTagOperationLinks.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementListWorkspaceTagOperationLinks(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceTagOperationLinks()
+            .listByProduct("rg1", "apimService1", "wks1", "tag1", null, null, null, com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceTagProductLink_CreateOrUpdate
+
+```java
+import com.azure.resourcemanager.apimanagement.fluent.models.TagProductLinkContractInner;
+
+/**
+ * Samples for WorkspaceTagProductLink CreateOrUpdate.
+ */
+public final class WorkspaceTagProductLinkCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementCreateWorkspaceTagProductLink.json
+     */
+    /**
+     * Sample code: ApiManagementCreateWorkspaceTagProductLink.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementCreateWorkspaceTagProductLink(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceTagProductLinks()
+            .createOrUpdateWithResponse("rg1", "apimService1", "wks1", "tag1", "link1",
+                new TagProductLinkContractInner().withProductId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/workspaces/wks1/products/product1"),
+                com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceTagProductLink_Delete
+
+```java
+/**
+ * Samples for WorkspaceTagProductLink Delete.
+ */
+public final class WorkspaceTagProductLinkDeleteSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementDeleteWorkspaceTagProductLink.json
+     */
+    /**
+     * Sample code: ApiManagementDeleteWorkspaceTagProductLink.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementDeleteWorkspaceTagProductLink(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceTagProductLinks()
+            .deleteWithResponse("rg1", "apimService1", "wks1", "tag1", "link1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceTagProductLink_Get
+
+```java
+/**
+ * Samples for WorkspaceTagProductLink Get.
+ */
+public final class WorkspaceTagProductLinkGetSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementGetWorkspaceTagProductLink.json
+     */
+    /**
+     * Sample code: ApiManagementGetWorkspaceTagProductLink.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void
+        apiManagementGetWorkspaceTagProductLink(com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceTagProductLinks()
+            .getWithResponse("rg1", "apimService1", "wks1", "tag1", "link1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### WorkspaceTagProductLink_ListByProduct
+
+```java
+/**
+ * Samples for WorkspaceTagProductLink ListByProduct.
+ */
+public final class WorkspaceTagProductLinkListByProductSamples {
+    /*
+     * x-ms-original-file:
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
+     * ApiManagementListWorkspaceTagProductLinks.json
+     */
+    /**
+     * Sample code: ApiManagementListWorkspaceTagProductLinks.
+     * 
+     * @param manager Entry point to ApiManagementManager.
+     */
+    public static void apiManagementListWorkspaceTagProductLinks(
+        com.azure.resourcemanager.apimanagement.ApiManagementManager manager) {
+        manager.workspaceTagProductLinks()
+            .listByProduct("rg1", "apimService1", "wks1", "tag1", null, null, null, com.azure.core.util.Context.NONE);
     }
 }
 ```

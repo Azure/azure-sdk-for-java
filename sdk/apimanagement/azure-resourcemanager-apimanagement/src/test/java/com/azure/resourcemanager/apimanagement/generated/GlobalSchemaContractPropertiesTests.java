@@ -13,20 +13,20 @@ public final class GlobalSchemaContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GlobalSchemaContractProperties model = BinaryData.fromString(
-            "{\"schemaType\":\"json\",\"description\":\"jqjpv\",\"value\":\"dataihxjtgzgtai\",\"document\":\"datab\"}")
+            "{\"schemaType\":\"xml\",\"description\":\"b\",\"value\":\"datauywevtjrieikmwl\",\"document\":\"dataklfnisyxgucbmt\",\"provisioningState\":\"dscnns\"}")
             .toObject(GlobalSchemaContractProperties.class);
-        Assertions.assertEquals(SchemaType.JSON, model.schemaType());
-        Assertions.assertEquals("jqjpv", model.description());
+        Assertions.assertEquals(SchemaType.XML, model.schemaType());
+        Assertions.assertEquals("b", model.description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GlobalSchemaContractProperties model = new GlobalSchemaContractProperties().withSchemaType(SchemaType.JSON)
-            .withDescription("jqjpv")
-            .withValue("dataihxjtgzgtai")
-            .withDocument("datab");
+        GlobalSchemaContractProperties model = new GlobalSchemaContractProperties().withSchemaType(SchemaType.XML)
+            .withDescription("b")
+            .withValue("datauywevtjrieikmwl")
+            .withDocument("dataklfnisyxgucbmt");
         model = BinaryData.fromObject(model).toObject(GlobalSchemaContractProperties.class);
-        Assertions.assertEquals(SchemaType.JSON, model.schemaType());
-        Assertions.assertEquals("jqjpv", model.description());
+        Assertions.assertEquals(SchemaType.XML, model.schemaType());
+        Assertions.assertEquals("b", model.description());
     }
 }

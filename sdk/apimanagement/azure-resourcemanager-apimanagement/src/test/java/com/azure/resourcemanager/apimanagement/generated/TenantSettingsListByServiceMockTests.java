@@ -7,8 +7,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.TenantSettingsContract;
@@ -22,18 +22,18 @@ public final class TenantSettingsListByServiceMockTests {
     @Test
     public void testListByService() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"settings\":{\"cgvnomlcldoyohu\":\"qu\"}},\"id\":\"fuclopnemsylwsmd\",\"name\":\"owfrgd\",\"type\":\"bgbhtpo\"}]}";
+            = "{\"value\":[{\"properties\":{\"settings\":{\"wh\":\"fvah\",\"et\":\"gu\"}},\"id\":\"bqhyszflzj\",\"name\":\"dciwxlgg\",\"type\":\"tpayfklbgshbkdp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<TenantSettingsContract> response = manager.tenantSettings()
-            .listByService("dmhzbcujdzl", "yermjemny", "hoqpbfjfcbweabpt", com.azure.core.util.Context.NONE);
+            .listByService("wksixhornv", "dxjkdsqeay", "dqttiqwixsdx", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qu", response.iterator().next().settings().get("cgvnomlcldoyohu"));
+        Assertions.assertEquals("fvah", response.iterator().next().settings().get("wh"));
     }
 }
