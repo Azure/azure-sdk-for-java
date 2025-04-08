@@ -1346,7 +1346,7 @@ public class CallAutomationEventParserAndProcessorUnitTests {
     }
 
     @Test
-    public void IncomingCallEventParsedXMSHeaderTest() {
+    public void incomingCallEventParsedXMSHeaderTest() {
         String serverCallId = "serverCallId";
         String correlationId = "correlationId";
         CommunicationIdentifier to = new PhoneNumberIdentifier("+11234567890");
@@ -1394,7 +1394,7 @@ public class CallAutomationEventParserAndProcessorUnitTests {
     }
 
     @Test
-    public void IncomingCallEventParsedXHeaderTest() {
+    public void incomingCallEventParsedXHeaderTest() {
         String serverCallId = "serverCallId";
         String correlationId = "correlationId";
         CommunicationIdentifier to = new PhoneNumberIdentifier("+11234567890");
