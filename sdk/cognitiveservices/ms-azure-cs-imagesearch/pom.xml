@@ -13,7 +13,7 @@
     </parent>
     <artifactId>azure-cognitiveservices-imagesearch</artifactId>
     <groupId>com.microsoft.azure.cognitiveservices</groupId>
-    <version>1.1.0-beta.1</version> <!-- {x-version-update;com.microsoft.azure.cognitiveservices:azure-cognitiveservices-imagesearch;current} -->
+    <version>1.0.3</version> <!-- {x-version-update;com.microsoft.azure.cognitiveservices:azure-cognitiveservices-imagesearch;current} -->
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Cognitive Service Image Search</name>
     <description>
@@ -21,7 +21,7 @@
         To continue using the Bing Image Search service on Java, the following guide is recommended:
         https://learn.microsoft.com/bing/search-apis/bing-image-search/quickstarts/rest/java
     </description>
-    <url>https://github.com/Azure/azure-sdk-for-java/cognitiveservices/data-plane/search/bingimagesearch</url>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
     <licenses>
         <license>
             <name>The MIT License (MIT)</name>

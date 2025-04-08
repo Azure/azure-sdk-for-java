@@ -21,7 +21,7 @@
         You can migrate from the LUIS service to the new Azure AI Language service by following this guide:
         https://learn.microsoft.com/azure/ai-services/language-service/conversational-language-understanding/how-to/migrate-from-luis
     </description>
-    <url>https://github.com/Azure/azure-sdk-for-java/cognitiveservices/data-plane/language/luis/authoring</url>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
     <licenses>
         <license>
             <name>The MIT License (MIT)</name>

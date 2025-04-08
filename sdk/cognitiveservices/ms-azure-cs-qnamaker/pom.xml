@@ -23,7 +23,7 @@
         You can migrate from the QnA Maker service to the new Azure AI Language service by following this guide:
         https://learn.microsoft.com/azure/ai-services/language-service/question-answering/how-to/migrate-qnamaker-to-question-answering
     </description>
-    <url>https://github.com/Azure/azure-sdk-for-java/tree/master/sdk/cognitiveservices/ms-azure-cs-qnamaker</url>
+    <url>https://github.com/Azure/azure-sdk-for-java</url>
     <licenses>
         <license>
             <name>The MIT License (MIT)</name>
