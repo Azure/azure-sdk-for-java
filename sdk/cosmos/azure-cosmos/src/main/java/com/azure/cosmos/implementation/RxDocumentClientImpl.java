@@ -5749,18 +5749,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
      * @return RxStoreModel
      */
     private RxStoreModel getStoreProxy(RxDocumentServiceRequest request) {
-        if (request.isMetadataRequest() || request.isChangeFeedRequest()) {
+        // If a request is configured to always use GATEWAY mode(in some cases when targeting .NET Core)
+        // we return the GATEWAY store model
+        if (request.isMetadataRequest() || request.useGatewayMode) {
             return this.gatewayProxy;
         }
 
         if (useThinClient(request)) {
             return this.thinProxy;
-        }
-
-        // If a request is configured to always use GATEWAY mode(in some cases when targeting .NET Core)
-        // we return the GATEWAY store model
-        if (request.useGatewayMode) {
-            return this.gatewayProxy;
         }
 
         ResourceType resourceType = request.getResourceType();
@@ -6791,6 +6787,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private boolean useThinClient(RxDocumentServiceRequest request) {
         return Configs.isThinClientEnabled()
             && this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY
+            && (request.getResourceType() == ResourceType.DatabaseAccount
+                || request.getResourceType() == ResourceType.DocumentCollection
+                || request.getResourceType() == ResourceType.PartitionKeyRange
+                || request.getResourceType() == ResourceType.Document)
             && request.getOperationType().isPointOperation();
     }
 
