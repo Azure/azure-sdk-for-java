@@ -32,7 +32,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  */
 public class ThinClientStoreModel extends RxGatewayStoreModel {
 
-    private String globalDatabaseAccountName;
+    private String globalDatabaseAccountName = null;
 
     public ThinClientStoreModel(
         DiagnosticsClientContext clientContext,
@@ -50,10 +50,6 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
             globalEndpointManager,
             httpClient,
             ApiType.SQL);
-    }
-
-    public ThinClientStoreModel(ThinClientStoreModel inner) {
-        super(inner);
     }
 
     @Override
@@ -128,18 +124,14 @@ public class ThinClientStoreModel extends RxGatewayStoreModel {
             request.properties = new HashMap<>();
         }
 
-        // todo - neharao1: no concept of a replica / service endpoint that can be passed
         RntbdRequestArgs rntbdRequestArgs = new RntbdRequestArgs(request);
 
-        // todo - neharao1: validate what HTTP headers are needed - for now have put default ThinClient HTTP headers
-        // todo - based on fabianm comment - thinClient also takes op type and resource type headers as HTTP headers
         HttpHeaders headers = this.getHttpHeaders();
         headers.set(HttpConstants.HttpHeaders.ACTIVITY_ID, request.getActivityId().toString());
 
         RntbdRequest rntbdRequest = RntbdRequest.from(rntbdRequestArgs);
         rntbdRequest.setHeaderValue(RntbdConstants.RntbdRequestHeader.EffectivePartitionKey, epk);
 
-        // todo: neharao1 - validate whether Java heap buffer is okay v/s Direct buffer
         // todo: eventually need to use pooled buffer
         ByteBuf byteBuf = Unpooled.buffer();
 

@@ -11,6 +11,7 @@ import org.testng.annotations.Test;
 import java.net.URI;
 import java.util.EnumSet;
 
+import static com.azure.cosmos.implementation.Configs.isThinClientEnabled;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class ConfigsTests {
@@ -167,13 +168,11 @@ public class ConfigsTests {
 
     @Test(groups = { "unit" })
     public void thinClientEnabledTest() {
-        Configs config = new Configs();
-        assertThat(config.isThinClientEnabled()).isFalse();
-
+        assertThat(isThinClientEnabled()).isFalse();
         System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
         try {
-            assertThat(config.isThinClientEnabled()).isTrue();
+            assertThat(isThinClientEnabled()).isTrue();
         } finally {
             System.clearProperty("COSMOS.THINCLIENT_ENABLED");
         }

@@ -6789,14 +6789,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private boolean useThinClient(RxDocumentServiceRequest request) {
-        List<OperationType> thinClientSupportedOperations = Arrays.asList(
-            OperationType.Read,
-            OperationType.Create,
-            OperationType.Delete);
-
         return Configs.isThinClientEnabled()
             && this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY
-            && thinClientSupportedOperations.contains(request.getOperationType());
+            && request.getOperationType().isPointOperation();
     }
 
     @FunctionalInterface

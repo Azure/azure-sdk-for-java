@@ -47,7 +47,7 @@ public final class RntbdResponse implements ReferenceCounted {
     private final RntbdResponseStatus frame;
 
     @JsonProperty
-    public final RntbdResponseHeaders headers;
+    private final RntbdResponseHeaders headers;
 
     private final ByteBuf message;
 
