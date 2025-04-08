@@ -136,14 +136,14 @@ public class JobTests extends BatchClientTestBase {
             job = batchClient.getJob(jobId);
             Assertions
                 .assertTrue(job.getState() == BatchJobState.DISABLED || job.getState() == BatchJobState.DISABLING);
-            Assertions.assertEquals(OnAllBatchTasksComplete.NO_ACTION, job.getAllTasksCompleteMode());
+            Assertions.assertEquals(BatchAllTasksCompleteMode.NO_ACTION, job.getAllTasksCompleteMode());
 
             // UPDATE
             BatchJobUpdateContent jobUpdateContent = new BatchJobUpdateContent();
             jobUpdateContent.setAllTasksCompleteMode(BatchAllTasksCompleteMode.TERMINATE_JOB);
             batchClient.updateJob(jobId, jobUpdateContent);
             job = batchClient.getJob(jobId);
-            Assertions.assertEquals(OnAllBatchTasksComplete.TERMINATE_JOB, job.getAllTasksCompleteMode());
+            Assertions.assertEquals(BatchAllTasksCompleteMode.TERMINATE_JOB, job.getAllTasksCompleteMode());
 
             batchClient.enableJob(jobId);
             job = batchClient.getJob(jobId);
