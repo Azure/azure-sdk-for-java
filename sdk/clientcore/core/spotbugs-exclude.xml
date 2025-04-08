@@ -79,7 +79,7 @@
       <Class name="io.clientcore.core.http.HttpPipelineBuilderJavaDocCodeSnippets" />
       <Class name="io.clientcore.core.http.pipeline.AddHeadersPolicyJavadocCodeSnippets" />
       <Class name="io.clientcore.core.http.pipeline.SetRequestIdPolicyJavadocCodeSnippets" />
-      <Class name="io.clientcore.core.http.pipeline.SetUserAgentPolicyJavadocCodeSnippets" />
+      <Class name="io.clientcore.core.http.pipeline.UserAgentPolicyJavadocCodeSnippets" />
       <Class name="io.clientcore.core.instrumentation.TelemetryForLibraryDevelopersJavaDocCodeSnippets" />
       <Class name="io.clientcore.core.models.CloudEventJavaDocCodeSnippet" />
       <Class name="io.clientcore.core.models.ContextJavaDocCodeSnippets" />
@@ -383,7 +383,7 @@
   </Match>
   <Match>
     <Bug pattern="UC_USELESS_VOID_METHOD" />
-    <Class name="io.clientcore.core.http.pipeline.SetUserAgentPolicyJavadocCodeSnippets" />
+    <Class name="io.clientcore.core.http.pipeline.UserAgentPolicyJavadocCodeSnippets" />
   </Match>
   <Match>
     <Bug pattern="UPM_UNCALLED_PRIVATE_METHOD" />

@@ -180,17 +180,17 @@ public class TelemetryJavaDocCodeSnippets {
     }
 
     static class SampleClient {
-        private static final String LIBRARY_NAME = "contoso.sample";
+        private static final String SDK_NAME = "contoso.sample";
         private final Instrumentation instrumentation;
         private final HttpPipeline httpPipeline;
         private final String serviceEndpoint;
 
         SampleClient(InstrumentationOptions instrumentationOptions, HttpPipeline httpPipeline) {
             serviceEndpoint = "https://contoso.com";
-            LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions(LIBRARY_NAME)
+            SdkInstrumentationOptions sdkOptions = new SdkInstrumentationOptions(SDK_NAME)
                 .setEndpoint(serviceEndpoint);
             this.httpPipeline = httpPipeline;
-            this.instrumentation = Instrumentation.create(instrumentationOptions, libraryOptions);
+            this.instrumentation = Instrumentation.create(instrumentationOptions, sdkOptions);
         }
 
         public Response<?> clientCall() {

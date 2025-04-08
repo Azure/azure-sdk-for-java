@@ -5,9 +5,9 @@ package io.clientcore.core.implementation.instrumentation.otel;
 
 import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.implementation.ReflectiveInvoker;
-import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
 import io.clientcore.core.implementation.instrumentation.NoopAttributes;
 import io.clientcore.core.implementation.instrumentation.NoopMeter;
+import io.clientcore.core.implementation.instrumentation.SdkInstrumentationOptionsAccessHelper;
 import io.clientcore.core.implementation.instrumentation.otel.metrics.OTelMeter;
 import io.clientcore.core.implementation.instrumentation.otel.tracing.OTelSpan;
 import io.clientcore.core.implementation.instrumentation.otel.tracing.OTelSpanContext;
@@ -16,7 +16,7 @@ import io.clientcore.core.implementation.instrumentation.otel.tracing.OTelTracer
 import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.instrumentation.InstrumentationAttributes;
 import io.clientcore.core.instrumentation.InstrumentationContext;
-import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
+import io.clientcore.core.instrumentation.SdkInstrumentationOptions;
 import io.clientcore.core.instrumentation.InstrumentationOptions;
 import io.clientcore.core.instrumentation.metrics.DoubleHistogram;
 import io.clientcore.core.instrumentation.metrics.Meter;
@@ -112,11 +112,11 @@ public class OTelInstrumentation implements Instrumentation {
      * Creates a new instance of {@link OTelInstrumentation}.
      *
      * @param applicationOptions the application options
-     * @param libraryOptions the library options
+     * @param sdkOptions the sdk instrumentation options
      * @param host the service host
      * @param port the service port
      */
-    public OTelInstrumentation(InstrumentationOptions applicationOptions, LibraryInstrumentationOptions libraryOptions,
+    public OTelInstrumentation(InstrumentationOptions applicationOptions, SdkInstrumentationOptions sdkOptions,
         String host, int port) {
         Object explicitOTel = applicationOptions == null ? null : applicationOptions.getTelemetryProvider();
         if (explicitOTel != null && !OTEL_CLASS.isInstance(explicitOTel)) {
@@ -130,13 +130,13 @@ public class OTelInstrumentation implements Instrumentation {
         Object otelInstance = explicitOTel != null ? explicitOTel : GET_GLOBAL_OTEL_INVOKER.invoke();
         this.isTracingEnabled = applicationOptions == null || applicationOptions.isTracingEnabled();
         this.isMetricsEnabled = applicationOptions == null || applicationOptions.isMetricsEnabled();
-        this.allowNestedSpans = libraryOptions != null
-            && LibraryInstrumentationOptionsAccessHelper.isSpanSuppressionDisabled(libraryOptions);
+        this.allowNestedSpans
+            = sdkOptions != null && SdkInstrumentationOptionsAccessHelper.isSpanSuppressionDisabled(sdkOptions);
 
-        this.tracer = createTracer(isTracingEnabled, libraryOptions, otelInstance);
-        this.meter = createMeter(isMetricsEnabled, libraryOptions, otelInstance);
+        this.tracer = createTracer(isTracingEnabled, sdkOptions, otelInstance);
+        this.meter = createMeter(isMetricsEnabled, sdkOptions, otelInstance);
         this.callDurationMetric
-            = createOperationDurationHistogram(libraryOptions == null ? null : libraryOptions.getLibraryName(), meter);
+            = createOperationDurationHistogram(sdkOptions == null ? null : sdkOptions.getSdkName(), meter);
         this.host = host;
         this.port = port;
     }
@@ -154,26 +154,26 @@ public class OTelInstrumentation implements Instrumentation {
         return meter;
     }
 
-    private static Tracer createTracer(boolean isTracingEnabled, LibraryInstrumentationOptions libraryOptions,
+    private static Tracer createTracer(boolean isTracingEnabled, SdkInstrumentationOptions sdkOptions,
         Object otelInstance) {
         if (isTracingEnabled && OTelInitializer.isInitialized()) {
             Object otelTracerProvider = GET_TRACER_PROVIDER_INVOKER.invoke(otelInstance);
 
             if (otelTracerProvider != null && otelTracerProvider != NOOP_PROVIDER) {
-                return new OTelTracer(otelTracerProvider, libraryOptions);
+                return new OTelTracer(otelTracerProvider, sdkOptions);
             }
         }
 
         return OTelTracer.NOOP;
     }
 
-    private static Meter createMeter(boolean isMetricsEnabled, LibraryInstrumentationOptions libraryOptions,
+    private static Meter createMeter(boolean isMetricsEnabled, SdkInstrumentationOptions sdkOptions,
         Object otelInstance) {
         if (isMetricsEnabled && OTelInitializer.isInitialized()) {
             Object otelMeterProvider = GET_METER_PROVIDER_INVOKER.invoke(otelInstance);
 
             if (otelMeterProvider != null && otelMeterProvider != NOOP_PROVIDER) {
-                return new OTelMeter(otelMeterProvider, libraryOptions);
+                return new OTelMeter(otelMeterProvider, sdkOptions);
             }
         }
 

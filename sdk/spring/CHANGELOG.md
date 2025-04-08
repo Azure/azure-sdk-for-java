@@ -1,4 +1,20 @@
 # Release History
+# (Unreleased)
+Upgrade Spring Boot dependencies version to 3.4.4 and Spring Cloud dependencies version to 2024.0.1
+
+## 5.22.0-beta.1 (Unreleased)
+
+### Spring Cloud Azure Autoconfigure
+This section includes changes in `spring-cloud-azure-autoconfigure` module.
+
+#### Features Added
+- Register a new bean `ServiceBusConsumerFactory` to support request-reply pattern of `ServiceBusTemplate`.
+
+### Spring Messaging Azure Service Bus
+This section includes changes in the `spring-messaging-azure-servicebus` module.
+
+#### Features Added
+- `ServiceBusTemplate` supports request-reply pattern.
 
 ## 5.21.0 (2025-03-20)
 - This release is compatible with Spring Boot 3.4.0-3.4.2, 3.3.0-3.3.6, 3.2.0-3.2.12, 3.1.0-3.1.12, 3.0.0-3.0.13. (Note: 3.4.x (x>2), 3.3.y (y>6) and 3.2.z (z>12) should be supported, but they aren't tested with this release.)

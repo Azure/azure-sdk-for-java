@@ -28,7 +28,7 @@ public final class ChoiceResult extends RecognizeResult {
     /**
      * Creates an instance of {@link ChoiceResult}.
      */
-    public ChoiceResult() {
+    ChoiceResult() {
     }
 
     /**

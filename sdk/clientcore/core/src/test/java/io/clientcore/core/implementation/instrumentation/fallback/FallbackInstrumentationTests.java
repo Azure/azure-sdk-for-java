@@ -9,7 +9,7 @@ import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.instrumentation.InstrumentationAttributes;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.InstrumentationOptions;
-import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
+import io.clientcore.core.instrumentation.SdkInstrumentationOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LogLevel;
 import io.clientcore.core.instrumentation.metrics.DoubleHistogram;
@@ -57,8 +57,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class FallbackInstrumentationTests {
-    private static final LibraryInstrumentationOptions DEFAULT_LIB_OPTIONS
-        = new LibraryInstrumentationOptions("test-library");
+    private static final SdkInstrumentationOptions DEFAULT_LIB_OPTIONS = new SdkInstrumentationOptions("test-library");
     private static final Instrumentation DEFAULT_INSTRUMENTATION = Instrumentation.create(null, DEFAULT_LIB_OPTIONS);
     private final AccessibleByteArrayOutputStream logCaptureStream;
 
