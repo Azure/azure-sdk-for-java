@@ -110,7 +110,7 @@ import java.util.List;
  * <pre>
  * try &#40;BinaryData binaryData = BinaryData.fromFile&#40;new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;&#41;&#41; &#123;
  *     System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
- * &#125; catch &#40;ClientCoreException ex&#41; &#123;
+ * &#125; catch &#40;CoreException ex&#41; &#123;
  *     System.out.println&#40;&quot;Error reading file: &quot; + ex&#41;;
  * &#125;
  * </pre>
@@ -377,7 +377,7 @@ public abstract class BinaryData implements Closeable {
      * <pre>
      * try &#40;BinaryData binaryData = BinaryData.fromFile&#40;new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;&#41;&#41; &#123;
      *     System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
-     * &#125; catch &#40;ClientCoreException ex&#41; &#123;
+     * &#125; catch &#40;CoreException ex&#41; &#123;
      *     System.out.println&#40;&quot;Error reading file: &quot; + ex&#41;;
      * &#125;
      * </pre>
@@ -402,7 +402,7 @@ public abstract class BinaryData implements Closeable {
      * <pre>
      * try &#40;BinaryData binaryData = BinaryData.fromFile&#40;new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;, 8092&#41;&#41; &#123;
      *     System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
-     * &#125; catch &#40;ClientCoreException ex&#41; &#123;
+     * &#125; catch &#40;CoreException ex&#41; &#123;
      *     System.out.println&#40;&quot;Error reading file: &quot; + ex&#41;;
      * &#125;
      * </pre>
@@ -436,7 +436,7 @@ public abstract class BinaryData implements Closeable {
      *
      * try &#40;BinaryData binaryData = BinaryData.fromFile&#40;new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;, position, length&#41;&#41; &#123;
      *     System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
-     * &#125; catch &#40;ClientCoreException ex&#41; &#123;
+     * &#125; catch &#40;CoreException ex&#41; &#123;
      *     System.out.println&#40;&quot;Error reading file: &quot; + ex&#41;;
      * &#125;
      *
@@ -471,7 +471,7 @@ public abstract class BinaryData implements Closeable {
      * try &#40;BinaryData binaryData = BinaryData.fromFile&#40;
      *     new File&#40;&quot;path&#47;to&#47;file&quot;&#41;.toPath&#40;&#41;, position, length, chunkSize&#41;&#41; &#123;
      *     System.out.println&#40;new String&#40;binaryData.toBytes&#40;&#41;, StandardCharsets.UTF_8&#41;&#41;;
-     * &#125; catch &#40;ClientCoreException ex&#41; &#123;
+     * &#125; catch &#40;CoreException ex&#41; &#123;
      *     System.out.println&#40;&quot;Error reading file: &quot; + ex&#41;;
      * &#125;
      *
@@ -549,7 +549,7 @@ public abstract class BinaryData implements Closeable {
      * try &#40;BinaryData binaryData = BinaryData.fromObject&#40;data&#41;&#41; &#123;
      *     Person person = binaryData.toObject&#40;Person.class&#41;;
      *     System.out.println&#40;person.getName&#40;&#41;&#41;;
-     * &#125; catch &#40;ClientCoreException e&#41; &#123;
+     * &#125; catch &#40;CoreException e&#41; &#123;
      *     System.out.println&#40;&quot;Error reading content or deserializing object: &quot; + e&#41;;
      * &#125;
      * </pre>
@@ -590,7 +590,7 @@ public abstract class BinaryData implements Closeable {
      *         &#125;
      *     &#125;&#41;;
      *     persons.forEach&#40;person -&gt; System.out.println&#40;person.getName&#40;&#41;&#41;&#41;;
-     * &#125; catch &#40;ClientCoreException e&#41; &#123;
+     * &#125; catch &#40;CoreException e&#41; &#123;
      *     System.out.println&#40;&quot;Error reading content or deserializing object: &quot; + e&#41;;
      * &#125;
      * </pre>
@@ -695,7 +695,7 @@ public abstract class BinaryData implements Closeable {
      *         inputStream.read&#40;bytes, 0, data.length&#41;;
      *         System.out.println&#40;new String&#40;bytes&#41;&#41;;
      *     &#125;
-     * &#125; catch &#40;ClientCoreException ex&#41; &#123;
+     * &#125; catch &#40;CoreException ex&#41; &#123;
      *     System.out.println&#40;&quot;Error reading BinaryData content&quot;&#41;;
      * &#125; catch &#40;IOException e&#41; &#123;
      *     System.out.println&#40;&quot;Error reading from content stream&quot;&#41;;
@@ -783,7 +783,7 @@ public abstract class BinaryData implements Closeable {
      *     final byte[] bytes = new byte[data.length];
      *     binaryData.toByteBuffer&#40;&#41;.get&#40;bytes, 0, data.length&#41;;
      *     System.out.println&#40;new String&#40;bytes&#41;&#41;;
-     * &#125; catch &#40;ClientCoreException ex&#41; &#123;
+     * &#125; catch &#40;CoreException ex&#41; &#123;
      *     System.out.println&#40;&quot;Error reading BinaryData content&quot;&#41;;
      * &#125;
      * </pre>
@@ -820,7 +820,7 @@ public abstract class BinaryData implements Closeable {
      *
      *     streamConsumer&#40;binaryData.toStream&#40;&#41;&#41;;
      *     streamConsumer&#40;binaryData.toStream&#40;&#41;&#41;;
-     * &#125; catch &#40;ClientCoreException ex&#41; &#123;
+     * &#125; catch &#40;CoreException ex&#41; &#123;
      *     System.out.println&#40;&quot;Error reading BinaryData content&quot;&#41;;
      * &#125; finally &#123;
      *     binaryData.close&#40;&#41;;
@@ -853,7 +853,7 @@ public abstract class BinaryData implements Closeable {
      *
      *     streamConsumer&#40;binaryData.toStream&#40;&#41;&#41;;
      *     streamConsumer&#40;binaryData.toStream&#40;&#41;&#41;;
-     * &#125; catch &#40;ClientCoreException ex&#41; &#123;
+     * &#125; catch &#40;CoreException ex&#41; &#123;
      *     System.out.println&#40;&quot;Error reading BinaryData content&quot;&#41;;
      * &#125; finally &#123;
      *     binaryData.close&#40;&#41;;
