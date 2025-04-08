@@ -74,7 +74,7 @@ public class CoreException extends RuntimeException {
     }
 
     /**
-     * Stupid something needs a comment here
+     * A boolean indicating whether the exception is retryable.
      */
     private final boolean isRetryable;
 
