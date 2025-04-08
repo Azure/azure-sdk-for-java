@@ -2727,7 +2727,7 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
 
         //cleanup
-        manageShareResourceWithoutDependency(shareName, true);
+        deleteFileShareWithoutDependency(shareName);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
@@ -2759,7 +2759,7 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
 
         //cleanup
-        manageShareResourceWithoutDependency(shareName, true);
+        deleteFileShareWithoutDependency(shareName);
     }
 
 }

@@ -1774,7 +1774,7 @@ public class BlockBlobApiTests extends BlobTestBase {
         TestUtils.assertArraysEqual(data, downloadedData.toByteArray());
 
         //cleanup
-        manageShareResourceWithoutDependency(shareName, true);
+        deleteFileShareWithoutDependency(shareName);
     }
 
     @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
@@ -1807,6 +1807,6 @@ public class BlockBlobApiTests extends BlobTestBase {
         TestUtils.assertArraysEqual(data, downloadedData.toByteArray());
 
         //cleanup
-        manageShareResourceWithoutDependency(shareName, true);
+        deleteFileShareWithoutDependency(shareName);
     }
 }

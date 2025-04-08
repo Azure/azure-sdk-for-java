@@ -165,10 +165,11 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected String prefix;
 
+    // used to build pipeline to management plane
     protected static final String ACCOUNT_NAME = ENVIRONMENT.getPrimaryAccount().getName();
     protected static final String RESOURCE_GROUP_NAME = ENVIRONMENT.getResourceGroupName();
     protected static final String SUBSCRIPTION_ID = ENVIRONMENT.getSubscriptionId();
-    protected static final String API_VERSION = "2024-01-01";
+    protected static final String MANAGEMENT_PLANE_API_VERSION = "2024-01-01";
 
     @Override
     public void beforeTest() {
@@ -887,7 +888,7 @@ public class BlobTestBase extends TestProxyTestBase {
             getTokenCredential(ENVIRONMENT.getTestMode()), Constants.STORAGE_SCOPE);
 
         //create share through management plane
-        manageShareResourceWithoutDependency(shareName, false);
+        createFileShareWithoutDependency(shareName);
 
         //setup headers that will be used in every request
         HttpHeaders genericHeaders = new HttpHeaders().set(X_MS_VERSION, "2025-07-05")
@@ -945,38 +946,46 @@ public class BlobTestBase extends TestProxyTestBase {
         return fileUrl;
     }
 
-    protected void manageShareResourceWithoutDependency(String shareName, Boolean deleteShare) throws IOException {
+    protected void createFileShareWithoutDependency(String shareName) throws IOException {
+        String shareID = getFileShareID(shareName);
+        Body shareBody = new Body();
+        shareBody.setId(shareID);
+        shareBody.setName(shareName);
+        shareBody.setType("Microsoft.Storage/storageAccounts/fileServices/shares");
+
+        ByteArrayOutputStream shareJson = new ByteArrayOutputStream();
+        try (JsonWriter jsonWriter = JsonProviders.createWriter(shareJson)) {
+            shareBody.toJson(jsonWriter);
+        }
+        HttpResponse response
+            = getManagementPlanePipeline().send(new HttpRequest(HttpMethod.PUT, new URL(getFileShareUri(shareID)),
+                new HttpHeaders(), Flux.just(ByteBuffer.wrap(shareJson.toByteArray())))).block();
+        assertNotNull(response);
+        assertEquals(201, response.getStatusCode());
+    }
+
+    protected void deleteFileShareWithoutDependency(String shareName) throws IOException {
+        String shareID = getFileShareID(shareName);
+        HttpResponse response = getManagementPlanePipeline()
+            .send(new HttpRequest(HttpMethod.DELETE, new URL(getFileShareUri(shareID)), new HttpHeaders()))
+            .block();
+        assertNotNull(response);
+        assertEquals(200, response.getStatusCode());
+    }
+
+    protected HttpPipeline getManagementPlanePipeline() {
         BearerTokenAuthenticationPolicy credentialPolicyManagementPlane = new BearerTokenAuthenticationPolicy(
             getTokenCredential(ENVIRONMENT.getTestMode()), "https://management.azure.com/.default");
-        HttpPipeline managementPlanePipeline
-            = new HttpPipelineBuilder().policies(credentialPolicyManagementPlane).build();
+        return new HttpPipelineBuilder().policies(credentialPolicyManagementPlane).build();
+    }
 
-        String id = String.format("/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Storage/storageAccounts/"
+    protected String getFileShareID(String shareName) {
+        return String.format("/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Storage/storageAccounts/"
             + "%s/fileServices/default/shares/%s", SUBSCRIPTION_ID, RESOURCE_GROUP_NAME, ACCOUNT_NAME, shareName);
-        String shareURL = "https://management.azure.com" + id + "?api-version=" + API_VERSION;
-        String shareType = "Microsoft.Storage/storageAccounts/fileServices/shares";
+    }
 
-        if (!deleteShare) {
-            Body shareBody = new Body();
-            shareBody.setId(id);
-            shareBody.setName(shareName);
-            shareBody.setType(shareType);
-
-            ByteArrayOutputStream shareJson = new ByteArrayOutputStream();
-            try (JsonWriter jsonWriter = JsonProviders.createWriter(shareJson)) {
-                shareBody.toJson(jsonWriter);
-            }
-            HttpResponse response = managementPlanePipeline.send(new HttpRequest(HttpMethod.PUT, new URL(shareURL),
-                new HttpHeaders(), Flux.just(ByteBuffer.wrap(shareJson.toByteArray())))).block();
-            assertNotNull(response);
-            assertEquals(201, response.getStatusCode());
-        } else {
-            HttpResponse response
-                = managementPlanePipeline.send(new HttpRequest(HttpMethod.DELETE, new URL(shareURL), new HttpHeaders()))
-                    .block();
-            assertNotNull(response);
-            assertEquals(200, response.getStatusCode());
-        }
+    protected String getFileShareUri(String fileShareID) {
+        return "https://management.azure.com" + fileShareID + "?api-version=" + MANAGEMENT_PLANE_API_VERSION;
     }
 
     public static final class Body implements JsonSerializable<Body> {

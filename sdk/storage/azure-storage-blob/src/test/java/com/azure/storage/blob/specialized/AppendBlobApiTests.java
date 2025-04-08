@@ -922,6 +922,6 @@ public class AppendBlobApiTests extends BlobTestBase {
         TestUtils.assertArraysEqual(data, downloadedData.toByteArray());
 
         //cleanup
-        manageShareResourceWithoutDependency(shareName, true);
+        deleteFileShareWithoutDependency(shareName);
     }
 }

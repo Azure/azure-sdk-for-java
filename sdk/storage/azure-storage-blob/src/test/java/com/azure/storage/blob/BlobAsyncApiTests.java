@@ -4,6 +4,7 @@
 package com.azure.storage.blob;
 
 import com.azure.core.exception.UnexpectedLengthException;
+import com.azure.core.http.HttpAuthorization;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.policy.HttpPipelinePolicy;
@@ -40,13 +41,16 @@ import com.azure.storage.blob.models.CopyStatusType;
 import com.azure.storage.blob.models.CustomerProvidedKey;
 import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
 import com.azure.storage.blob.models.DownloadRetryOptions;
+import com.azure.storage.blob.models.FileShareTokenIntent;
 import com.azure.storage.blob.models.LeaseStateType;
 import com.azure.storage.blob.models.LeaseStatusType;
 import com.azure.storage.blob.models.ObjectReplicationPolicy;
 import com.azure.storage.blob.models.ObjectReplicationStatus;
 import com.azure.storage.blob.models.ParallelTransferOptions;
 import com.azure.storage.blob.models.RehydratePriority;
+import com.azure.storage.blob.options.AppendBlobAppendBlockFromUrlOptions;
 import com.azure.storage.blob.options.BlobBeginCopyOptions;
+import com.azure.storage.blob.options.BlobCopyFromUrlOptions;
 import com.azure.storage.blob.options.BlobDownloadToFileOptions;
 import com.azure.storage.blob.options.BlobGetTagsOptions;
 import com.azure.storage.blob.options.BlobParallelUploadOptions;
@@ -57,6 +61,7 @@ import com.azure.storage.blob.sas.BlobServiceSasSignatureValues;
 import com.azure.storage.blob.specialized.AppendBlobAsyncClient;
 import com.azure.storage.blob.specialized.BlobAsyncClientBase;
 import com.azure.storage.blob.specialized.BlockBlobAsyncClient;
+import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.blob.specialized.PageBlobAsyncClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.Utility;
@@ -2844,6 +2849,37 @@ public class BlobAsyncApiTests extends BlobTestBase {
             = getBlobClientBuilderWithTokenCredential(bc.getBlobUrl()).audience(audience).buildAsyncClient();
 
         StepVerifier.create(aadBlob.exists()).expectNext(true).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
+    @Test
+    @LiveOnly
+    public void copyFromUriSourceBearerTokenFileSource() throws IOException {
+        BlobServiceAsyncClient blobServiceAsyncClient = getOAuthServiceAsyncClient();
+        BlobContainerAsyncClient containerAsyncClient
+            = blobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
+
+        byte[] data = getRandomByteArray(Constants.KB);
+
+        // Set up source URL with bearer token
+        String shareName = generateContainerName();
+        String sourceUrl = createFileAndDirectoryWithoutFileShareDependency(data, shareName);
+
+        BlockBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+
+        BlobCopyFromUrlOptions blobCopyFromUrlOptions = new BlobCopyFromUrlOptions(sourceUrl);
+        blobCopyFromUrlOptions.setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
+        blobCopyFromUrlOptions.setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()));
+
+        StepVerifier
+            .create(containerAsyncClient.create()
+                .then(destBlob.copyFromUrlWithResponse(blobCopyFromUrlOptions))
+                .then(FluxUtil.collectBytesInByteBufferStream(destBlob.downloadStream())))
+            .assertNext(downloadedData -> TestUtils.assertArraysEqual(data, downloadedData))
+            .verifyComplete();
+
+        //cleanup
+        deleteFileShareWithoutDependency(shareName);
     }
 
 }

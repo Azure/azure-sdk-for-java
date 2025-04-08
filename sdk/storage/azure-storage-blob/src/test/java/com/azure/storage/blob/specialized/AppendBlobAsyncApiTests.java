@@ -959,13 +959,13 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
         StepVerifier
             .create(containerAsyncClient.create()
                 .then(destBlob.createIfNotExists())
-                .then(destBlob.appendBlockFromUrlWithResponse(appendOptions, null))
+                .then(destBlob.appendBlockFromUrlWithResponse(appendOptions))
                 .then(FluxUtil.collectBytesInByteBufferStream(destBlob.downloadStream())))
             .assertNext(downloadedData -> TestUtils.assertArraysEqual(data, downloadedData))
             .verifyComplete();
 
         //cleanup
-        manageShareResourceWithoutDependency(shareName, true);
+        deleteFileShareWithoutDependency(shareName);
     }
 
 }

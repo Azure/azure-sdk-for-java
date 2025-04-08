@@ -1836,7 +1836,7 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
             .verifyComplete();
 
         //cleanup
-        manageShareResourceWithoutDependency(shareName, true);
+        deleteFileShareWithoutDependency(shareName);
     }
 
 }

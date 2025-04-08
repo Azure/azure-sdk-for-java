@@ -100,7 +100,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
             String url = String.format(
                 "https://management.azure.com/subscriptions/%s/resourceGroups/%s/providers/"
                     + "Microsoft.Storage/storageAccounts/%s/blobServices/default/containers/%s?api-version=%s",
-                SUBSCRIPTION_ID, RESOURCE_GROUP_NAME, ACCOUNT_NAME, vlwContainerName, API_VERSION);
+                SUBSCRIPTION_ID, RESOURCE_GROUP_NAME, ACCOUNT_NAME, vlwContainerName, MANAGEMENT_PLANE_API_VERSION);
             HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(CREDENTIAL_POLICY).build();
 
             ImmutableStorageWithVersioningTests.ImmutableStorageWithVersioning immutableStorageWithVersioning
@@ -176,7 +176,7 @@ public class ImmutableStorageWithVersioningAsyncTests extends BlobTestBase {
             String url = String.format(
                 "https://management.azure.com/subscriptions/%s/resourceGroups/%s/providers/"
                     + "Microsoft.Storage/storageAccounts/%s/blobServices/default/containers/%s?api-version=%s",
-                SUBSCRIPTION_ID, RESOURCE_GROUP_NAME, ACCOUNT_NAME, vlwContainerName, API_VERSION);
+                SUBSCRIPTION_ID, RESOURCE_GROUP_NAME, ACCOUNT_NAME, vlwContainerName, MANAGEMENT_PLANE_API_VERSION);
             HttpResponse response
                 = httpPipeline.send(new HttpRequest(HttpMethod.DELETE, new URL(url), new HttpHeaders(), Flux.empty()))
                     .block();
