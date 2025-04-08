@@ -193,8 +193,8 @@ def sdk_automation_autorest(config: dict) -> List[dict]:
                 tag=tag,
             )
             if succeeded:
-                compile_succeeded = compile_arm_package(sdk_root, module)
-                if compile_succeeded:
+                succeeded = compile_arm_package(sdk_root, module)
+                if succeeded:
                     stable_version = get_latest_ga_version(GROUP_ID, module, stable_version)
                     breaking, changelog, breaking_change_items = compare_with_maven_package(
                         sdk_root, GROUP_ID, service, stable_version, current_version, module
