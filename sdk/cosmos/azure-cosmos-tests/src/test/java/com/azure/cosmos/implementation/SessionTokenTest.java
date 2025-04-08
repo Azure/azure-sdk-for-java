@@ -16,8 +16,8 @@ import static org.assertj.core.api.Assertions.fail;
 
 public class SessionTokenTest {
 
-    @DataProvider(name = "isSessionTokenFalseProgressMergeDisabled")
-    public Object[] isSessionTokenFalseProgressMergeDisabled() {
+    @DataProvider(name = "isSessionTokenFalseProgressMergeEnabled")
+    public Object[] isSessionTokenFalseProgressMergeEnabled() {
         return new Object[] { false, true };
     }
 
@@ -126,7 +126,7 @@ public class SessionTokenTest {
         }
     }
 
-    @Test(groups = "unit", dataProvider = "isSessionTokenFalseProgressMergeDisabled")
+    @Test(groups = "unit", dataProvider = "isSessionTokenFalseProgressMergeEnabled")
     public void invalidRegionsInSessionTokenTests(boolean isSessionTokenFalseProgressMergeEnabled) {
 
         try {
@@ -161,17 +161,17 @@ public class SessionTokenTest {
                 }
             }
         } finally {
-            System.clearProperty("COSMOS.IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_DISABLED");
+            System.clearProperty("COSMOS.IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED");
         }
 
     }
 
-    @Test(groups = "unit", dataProvider = "isSessionTokenFalseProgressMergeDisabled")
-    public void mergeWithInvalidToken(boolean isSessionTokenFalseProgressMergeDisabled) {
+    @Test(groups = "unit", dataProvider = "isSessionTokenFalseProgressMergeEnabled")
+    public void mergeWithInvalidToken(boolean isSessionTokenFalseProgressMergeEnabled) {
 
         try {
 
-            System.setProperty("COSMOS.IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_DISABLED", isSessionTokenFalseProgressMergeDisabled ? "true" : "false");
+            System.setProperty("COSMOS.IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED", isSessionTokenFalseProgressMergeEnabled ? "true" : "false");
 
             // same version but different number of regions
             String sessionToken1 = "1#100#1=20#2=5#3=30";
@@ -202,7 +202,7 @@ public class SessionTokenTest {
             }
 
         } finally {
-            System.clearProperty("COSMOS.IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_DISABLED");
+            System.clearProperty("COSMOS.IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED");
         }
     }
 
@@ -211,7 +211,7 @@ public class SessionTokenTest {
 
         try {
 
-            System.setProperty("COSMOS.IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_DISABLED", "false");
+            System.setProperty("COSMOS.IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED", "true");
 
             // first seen session token at T1
             ValueHolder<ISessionToken> sessionToken1 = new ValueHolder<>(null);
@@ -219,7 +219,6 @@ public class SessionTokenTest {
             // first seen session token at T2
             // assume T2 > T1 (T1 and T2 are wall clock time)
             ValueHolder<ISessionToken> sessionToken2 = new ValueHolder<>(null);
-            ValueHolder<ISessionToken> sessionTokenMerged = new ValueHolder<>(null);
 
             // same vector clock version with GLSN increasing monotonicity violation
             VectorSessionToken.tryCreate("1#100#1=20#2=5", sessionToken1);
@@ -256,7 +255,7 @@ public class SessionTokenTest {
             assertThat(sessionToken1.v.isValid(sessionToken2.v)).isTrue();
             assertThat(sessionToken1.v.merge(sessionToken2.v).convertToString()).isEqualTo("1#197#1=23#2=15");
         }  finally {
-            System.clearProperty("COSMOS.IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_DISABLED");
+            System.clearProperty("COSMOS.IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED");
         }
     }
 }
