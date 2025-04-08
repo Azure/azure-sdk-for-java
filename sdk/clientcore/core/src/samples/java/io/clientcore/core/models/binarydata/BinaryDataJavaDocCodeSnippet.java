@@ -4,7 +4,7 @@
 package io.clientcore.core.models.binarydata;
 
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.models.ClientCoreException;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.Person;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.json.JsonSerializer;
@@ -106,7 +106,7 @@ public class BinaryDataJavaDocCodeSnippet {
         // BEGIN: io.clientcore.core.util.BinaryData.fromFile
         try (BinaryData binaryData = BinaryData.fromFile(new File("path/to/file").toPath())) {
             System.out.println(new String(binaryData.toBytes(), StandardCharsets.UTF_8));
-        } catch (ClientCoreException ex) {
+        } catch (CoreException ex) {
             System.out.println("Error reading file: " + ex);
         }
         // END: io.clientcore.core.util.BinaryData.fromFile
@@ -119,7 +119,7 @@ public class BinaryDataJavaDocCodeSnippet {
         // BEGIN: io.clientcore.core.util.BinaryData.fromFile#Path-int
         try (BinaryData binaryData = BinaryData.fromFile(new File("path/to/file").toPath(), 8092)) {
             System.out.println(new String(binaryData.toBytes(), StandardCharsets.UTF_8));
-        } catch (ClientCoreException ex) {
+        } catch (CoreException ex) {
             System.out.println("Error reading file: " + ex);
         }
         // END: io.clientcore.core.util.BinaryData.fromFile#Path-int
@@ -135,7 +135,7 @@ public class BinaryDataJavaDocCodeSnippet {
 
         try (BinaryData binaryData = BinaryData.fromFile(new File("path/to/file").toPath(), position, length)) {
             System.out.println(new String(binaryData.toBytes(), StandardCharsets.UTF_8));
-        } catch (ClientCoreException ex) {
+        } catch (CoreException ex) {
             System.out.println("Error reading file: " + ex);
         }
 
@@ -153,7 +153,7 @@ public class BinaryDataJavaDocCodeSnippet {
         try (BinaryData binaryData = BinaryData.fromFile(
             new File("path/to/file").toPath(), position, length, chunkSize)) {
             System.out.println(new String(binaryData.toBytes(), StandardCharsets.UTF_8));
-        } catch (ClientCoreException ex) {
+        } catch (CoreException ex) {
             System.out.println("Error reading file: " + ex);
         }
 
@@ -207,7 +207,7 @@ public class BinaryDataJavaDocCodeSnippet {
         try (BinaryData binaryData = BinaryData.fromObject(data)) {
             Person person = binaryData.toObject(Person.class);
             System.out.println(person.getName());
-        } catch (ClientCoreException e) {
+        } catch (CoreException e) {
             System.out.println("Error reading content or deserializing object: " + e);
         }
         // END: io.clientcore.core.util.BinaryData.toObject#Type
@@ -249,7 +249,7 @@ public class BinaryDataJavaDocCodeSnippet {
                 }
             });
             persons.forEach(person -> System.out.println(person.getName()));
-        } catch (ClientCoreException e) {
+        } catch (CoreException e) {
             System.out.println("Error reading content or deserializing object: " + e);
         }
         // END: io.clientcore.core.util.BinaryData.toObject#Type-generic
@@ -321,7 +321,7 @@ public class BinaryDataJavaDocCodeSnippet {
                 inputStream.read(bytes, 0, data.length);
                 System.out.println(new String(bytes));
             }
-        } catch (ClientCoreException ex) {
+        } catch (CoreException ex) {
             System.out.println("Error reading BinaryData content");
         } catch (IOException e) {
             System.out.println("Error reading from content stream");
@@ -341,7 +341,7 @@ public class BinaryDataJavaDocCodeSnippet {
             final byte[] bytes = new byte[data.length];
             binaryData.toByteBuffer().get(bytes, 0, data.length);
             System.out.println(new String(bytes));
-        } catch (ClientCoreException ex) {
+        } catch (CoreException ex) {
             System.out.println("Error reading BinaryData content");
         }
         // END: io.clientcore.coreutil.BinaryData.toByteBuffer
@@ -362,7 +362,7 @@ public class BinaryDataJavaDocCodeSnippet {
 
             streamConsumer(binaryData.toStream());
             streamConsumer(binaryData.toStream());
-        } catch (ClientCoreException ex) {
+        } catch (CoreException ex) {
             System.out.println("Error reading BinaryData content");
         } finally {
             binaryData.close();
