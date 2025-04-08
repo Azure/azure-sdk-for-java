@@ -1727,26 +1727,28 @@ public class PageBlobApiTests extends BlobTestBase {
     @LiveOnly
     public void uploadPagesFromUriSourceBearerTokenFilesSource() throws IOException {
         BlobServiceClient blobServiceClient = getOAuthServiceClient();
-
         BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(generateContainerName());
         containerClient.create();
 
         byte[] data = getRandomByteArray(Constants.KB);
 
+        //Create destination page blob
+        PageBlobClient destBlob = containerClient.getBlobClient(generateBlobName()).getPageBlobClient();
+        destBlob.create(Constants.KB);
+
         // Set up source URL with bearer token
         String shareName = generateContainerName();
         String sourceUrl = createFileAndDirectoryWithoutFileShareDependency(data, shareName);
 
-        PageBlobClient destBlob = cc.getBlobClient(generateBlobName()).getPageBlobClient();
-        destBlob.create(Constants.KB);
-
         PageBlobUploadPagesFromUrlOptions options
-            = new PageBlobUploadPagesFromUrlOptions(new PageRange().setStart(0).setEnd(Constants.KB - 1), sourceUrl)
-                .setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()))
-                .setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
+            = new PageBlobUploadPagesFromUrlOptions(new PageRange().setStart(0).setEnd(Constants.KB - 1), sourceUrl);
+        options.setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
+        options.setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()));
 
+        // Upload page from URL with bearer token
         destBlob.uploadPagesFromUrlWithResponse(options, null, Context.NONE);
 
+        // Validate data was appended correctly
         ByteArrayOutputStream downloadedData = new ByteArrayOutputStream();
         destBlob.downloadStream(downloadedData);
         TestUtils.assertArraysEqual(data, downloadedData.toByteArray());

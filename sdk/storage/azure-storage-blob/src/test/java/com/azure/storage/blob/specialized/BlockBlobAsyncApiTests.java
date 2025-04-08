@@ -2716,11 +2716,13 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
 
         String blockId = getBlockID();
 
+        BlockBlobStageBlockFromUrlOptions options = new BlockBlobStageBlockFromUrlOptions(blockId, sourceUrl);
+        options.setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
+        options.setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()));
+
         StepVerifier
             .create(containerAsyncClient.create()
-                .then(destBlob.stageBlockFromUrlWithResponse(new BlockBlobStageBlockFromUrlOptions(blockId, sourceUrl)
-                    .setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()))
-                    .setSourceShareTokenIntent(FileShareTokenIntent.BACKUP), null))
+                .then(destBlob.stageBlockFromUrlWithResponse(options))
                 .then(destBlob.commitBlockList(Collections.singletonList(blockId)))
                 .then(FluxUtil.collectBytesInByteBufferStream(destBlob.downloadStream())))
             .assertNext(downloadedData -> TestUtils.assertArraysEqual(data, downloadedData))
@@ -2747,9 +2749,9 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
         BlockBlobAsyncClient destBlob
             = containerAsyncClient.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
 
-        BlobUploadFromUrlOptions options = new BlobUploadFromUrlOptions(sourceUrl)
-            .setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()))
-            .setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
+        BlobUploadFromUrlOptions options = new BlobUploadFromUrlOptions(sourceUrl);
+        options.setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
+        options.setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()));
 
         StepVerifier
             .create(containerAsyncClient.create()

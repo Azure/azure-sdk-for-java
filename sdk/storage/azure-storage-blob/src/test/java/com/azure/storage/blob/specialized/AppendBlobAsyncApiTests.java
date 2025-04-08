@@ -952,14 +952,14 @@ public class AppendBlobAsyncApiTests extends BlobTestBase {
         AppendBlobAsyncClient destBlob
             = containerAsyncClient.getBlobAsyncClient(generateBlobName()).getAppendBlobAsyncClient();
 
-        AppendBlobAppendBlockFromUrlOptions appendOptions
-            = new AppendBlobAppendBlockFromUrlOptions(sourceUrl).setSourceShareTokenIntent(FileShareTokenIntent.BACKUP)
-                .setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()));
+        AppendBlobAppendBlockFromUrlOptions options = new AppendBlobAppendBlockFromUrlOptions(sourceUrl);
+        options.setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
+        options.setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()));
 
         StepVerifier
             .create(containerAsyncClient.create()
                 .then(destBlob.createIfNotExists())
-                .then(destBlob.appendBlockFromUrlWithResponse(appendOptions))
+                .then(destBlob.appendBlockFromUrlWithResponse(options))
                 .then(FluxUtil.collectBytesInByteBufferStream(destBlob.downloadStream())))
             .assertNext(downloadedData -> TestUtils.assertArraysEqual(data, downloadedData))
             .verifyComplete();

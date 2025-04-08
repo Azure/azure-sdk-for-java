@@ -1824,14 +1824,16 @@ public class PageBlobAsyncApiTests extends BlobTestBase {
         PageBlobAsyncClient destBlob
             = containerAsyncClient.getBlobAsyncClient(generateBlobName()).getPageBlobAsyncClient();
 
-        StepVerifier.create(containerAsyncClient.create()
-            .then(destBlob.create(Constants.KB))
-            .then(destBlob.uploadPagesFromUrlWithResponse(
-                new PageBlobUploadPagesFromUrlOptions(new PageRange().setStart(0).setEnd(Constants.KB - 1), sourceUrl)
-                    .setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()))
-                    .setSourceShareTokenIntent(FileShareTokenIntent.BACKUP),
-                null))
-            .then(FluxUtil.collectBytesInByteBufferStream(destBlob.downloadStream())))
+        PageBlobUploadPagesFromUrlOptions options
+            = new PageBlobUploadPagesFromUrlOptions(new PageRange().setStart(0).setEnd(Constants.KB - 1), sourceUrl);
+        options.setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
+        options.setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()));
+
+        StepVerifier
+            .create(containerAsyncClient.create()
+                .then(destBlob.create(Constants.KB))
+                .then(destBlob.uploadPagesFromUrlWithResponse(options))
+                .then(FluxUtil.collectBytesInByteBufferStream(destBlob.downloadStream())))
             .assertNext(downloadedData -> TestUtils.assertArraysEqual(data, downloadedData))
             .verifyComplete();
 

@@ -901,20 +901,19 @@ public class AppendBlobApiTests extends BlobTestBase {
         byte[] data = getRandomByteArray(Constants.KB);
 
         // Create destination append blob
-        AppendBlobClient destBlob = cc.getBlobClient(generateBlobName()).getAppendBlobClient();
+        AppendBlobClient destBlob = containerClient.getBlobClient(generateBlobName()).getAppendBlobClient();
         destBlob.createIfNotExists();
 
         // Set up source URL with bearer token
         String shareName = generateContainerName();
         String sourceUrl = createFileAndDirectoryWithoutFileShareDependency(data, shareName);
 
-        AppendBlobAppendBlockFromUrlOptions appendBlobAppendBlockFromUrlOptions
-            = new AppendBlobAppendBlockFromUrlOptions(sourceUrl);
-        appendBlobAppendBlockFromUrlOptions.setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
-        appendBlobAppendBlockFromUrlOptions.setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()));
+        AppendBlobAppendBlockFromUrlOptions options = new AppendBlobAppendBlockFromUrlOptions(sourceUrl);
+        options.setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
+        options.setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()));
 
         // Append block from URL with bearer token
-        destBlob.appendBlockFromUrlWithResponse(appendBlobAppendBlockFromUrlOptions, null, Context.NONE);
+        destBlob.appendBlockFromUrlWithResponse(options, null, Context.NONE);
 
         // Validate data was appended correctly
         ByteArrayOutputStream downloadedData = new ByteArrayOutputStream();

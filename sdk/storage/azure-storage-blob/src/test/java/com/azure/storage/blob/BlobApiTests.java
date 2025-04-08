@@ -3086,7 +3086,7 @@ public class BlobApiTests extends BlobTestBase {
         byte[] data = getRandomByteArray(Constants.KB);
 
         // Create destination blob
-        BlockBlobClient destBlob = cc.getBlobClient(generateBlobName()).getBlockBlobClient();
+        BlockBlobClient destBlob = containerClient.getBlobClient(generateBlobName()).getBlockBlobClient();
 
         // Set up source URL with bearer token
         String shareName = generateContainerName();

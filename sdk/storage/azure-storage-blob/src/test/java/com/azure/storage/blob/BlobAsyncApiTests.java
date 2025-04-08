@@ -2865,7 +2865,8 @@ public class BlobAsyncApiTests extends BlobTestBase {
         String shareName = generateContainerName();
         String sourceUrl = createFileAndDirectoryWithoutFileShareDependency(data, shareName);
 
-        BlockBlobAsyncClient destBlob = ccAsync.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+        BlockBlobAsyncClient destBlob
+            = containerAsyncClient.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
 
         BlobCopyFromUrlOptions blobCopyFromUrlOptions = new BlobCopyFromUrlOptions(sourceUrl);
         blobCopyFromUrlOptions.setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
