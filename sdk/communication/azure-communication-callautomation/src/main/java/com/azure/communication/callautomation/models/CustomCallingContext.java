@@ -91,6 +91,7 @@ public final class CustomCallingContext implements JsonSerializable<CustomCallin
      *
      * @param key custom context sip x header's key.
      * @param value custom context sip x header's value.
+     * @param prefix The prefix to use for the header.
      * @throws IllegalStateException If sipHeaders is null
      */
     public void addSipX(String key, String value, SipHeaderPrefix prefix) {
