@@ -111,12 +111,12 @@ public final class CustomCallingContext implements JsonSerializable<CustomCallin
     */
     public enum SipHeaderPrefix {
         /**
-         * Use the legacy "X-MS-Custom-" prefix.
+         * Use the generic "X-" prefix.
          */
         X,
 
         /**
-         * Use the generic "X-" prefix.
+         * Use the legacy "X-MS-Custom" prefix.
          */
         XMSCustom
     }
