@@ -110,7 +110,8 @@ public final class CustomCallingContext implements JsonSerializable<CustomCallin
     * XMSCustom is the default prefix for custom headers.
     */
     public enum SipHeaderPrefix {
-        X, XMSCustom
+        X, // Use the legacy "X-MS-Custom-" prefix
+        XMSCustom // Use the generic "X-" prefix
     }
 
     /**
