@@ -64,10 +64,7 @@ import com.azure.communication.callautomation.models.events.MediaStreamingStatus
 import com.azure.communication.callautomation.models.events.IncomingCall;
 import org.junit.jupiter.api.Test;
 
-import java.util.Dictionary;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -1349,7 +1346,7 @@ public class CallAutomationEventParserAndProcessorUnitTests {
     }
 
     @Test
-    public void IncomingCallEventParsed_XMS_Header_Test() {
+    public void IncomingCallEventParsedXMSHeaderTest() {
         String serverCallId = "serverCallId";
         String correlationId = "correlationId";
         CommunicationIdentifier to = new PhoneNumberIdentifier("+11234567890");
@@ -1397,7 +1394,7 @@ public class CallAutomationEventParserAndProcessorUnitTests {
     }
 
     @Test
-    public void IncomingCallEventParsed_X_Header_Test() {
+    public void IncomingCallEventParsedXHeaderTest() {
         String serverCallId = "serverCallId";
         String correlationId = "correlationId";
         CommunicationIdentifier to = new PhoneNumberIdentifier("+11234567890");

@@ -153,7 +153,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
-    public void transferToParticipantCall_PhoneNumberIdentifier() {
+    public void transferToParticipantCallPhoneNumberIdentifier() {
         CallConnection callConnection
             = getCallAutomationClient(new ArrayList<>(Collections.singletonList(new SimpleEntry<>(
                 serializeObject(new TransferCallResponseInternal().setOperationContext(CALL_OPERATION_CONTEXT)), 202))))
@@ -182,7 +182,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
-    public void transferToParticipantCallWithResponse_PhoneNumberIdentifier_XMSHeader() {
+    public void transferToParticipantCallWithResponsePhoneNumberIdentifierXMSHeader() {
         CallConnection callConnection
             = getCallAutomationClient(new ArrayList<>(Collections.singletonList(new SimpleEntry<>(
                 serializeObject(new TransferCallResponseInternal().setOperationContext(CALL_OPERATION_CONTEXT)), 202))))
@@ -201,7 +201,7 @@ public class CallConnectionUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
-    public void transferToParticipantCall_WithResponsePhoneNumberIdentifier_XHeader() {
+    public void transferToParticipantCallWithResponsePhoneNumberIdentifierXHeader() {
         CallConnection callConnection
             = getCallAutomationClient(new ArrayList<>(Collections.singletonList(new SimpleEntry<>(
                 serializeObject(new TransferCallResponseInternal().setOperationContext(CALL_OPERATION_CONTEXT)), 202))))
