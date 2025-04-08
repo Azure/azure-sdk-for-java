@@ -891,11 +891,11 @@ public class CosmosClientBuilder implements
     }
 
     void resetIsPerPartitionAutomaticFailoverEnabledAndEnforcePerPartitionCircuitBreakerIfNeeded() {
-        String isPerPartitionAutomaticFailoverEnabledFromEnvVarOrSysProp
+        String isPerPartitionAutomaticFailoverEnabledAsStr
             = Configs.isPerPartitionAutomaticFailoverEnabled();
 
-        if (!StringUtils.isEmpty(isPerPartitionAutomaticFailoverEnabledFromEnvVarOrSysProp)) {
-            this.isPerPartitionAutomaticFailoverEnabled = Boolean.parseBoolean(isPerPartitionAutomaticFailoverEnabledFromEnvVarOrSysProp);
+        if (!StringUtils.isEmpty(isPerPartitionAutomaticFailoverEnabledAsStr)) {
+            this.isPerPartitionAutomaticFailoverEnabled = Boolean.parseBoolean(isPerPartitionAutomaticFailoverEnabledAsStr);
         }
 
         if (this.isPerPartitionAutomaticFailoverEnabled) {
