@@ -4,6 +4,7 @@ package com.azure.compute.batch;
 
 import com.azure.compute.batch.models.BatchApplicationPackageReference;
 import com.azure.compute.batch.models.BatchClientParallelOptions;
+import com.azure.compute.batch.models.BatchErrorSourceCategory;
 import com.azure.compute.batch.models.BatchJobCreateContent;
 import com.azure.compute.batch.models.BatchPoolInfo;
 import com.azure.compute.batch.models.BatchTask;
@@ -14,7 +15,6 @@ import com.azure.compute.batch.models.BatchTaskCreateContent;
 import com.azure.compute.batch.models.BatchTaskExecutionResult;
 import com.azure.compute.batch.models.BatchTaskSlotCounts;
 import com.azure.compute.batch.models.BatchTaskStatistics;
-import com.azure.compute.batch.models.ErrorCategory;
 import com.azure.compute.batch.models.OutputFile;
 import com.azure.compute.batch.models.OutputFileBlobContainerDestination;
 import com.azure.compute.batch.models.OutputFileDestination;
@@ -576,7 +576,7 @@ public class TaskTests extends BatchClientTestBase {
                 Assertions.assertNotNull(task);
                 Assertions.assertEquals(BatchTaskExecutionResult.FAILURE, task.getExecutionInfo().getResult());
                 Assertions.assertNotNull(task.getExecutionInfo().getFailureInfo());
-                Assertions.assertEquals(ErrorCategory.USER_ERROR.toString().toLowerCase(),
+                Assertions.assertEquals(BatchErrorSourceCategory.USER_ERROR.toString().toLowerCase(),
                     task.getExecutionInfo().getFailureInfo().getCategory().toString().toLowerCase());
                 Assertions.assertEquals("FailureExitCode", task.getExecutionInfo().getFailureInfo().getCode());
 
