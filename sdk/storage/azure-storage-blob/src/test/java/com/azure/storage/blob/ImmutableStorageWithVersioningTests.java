@@ -91,6 +91,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ImmutableStorageWithVersioningTests extends BlobTestBase {
     private static String vlwContainerName;
+    private static final String ACCOUNT_NAME = ENVIRONMENT.getVersionedAccount().getName();
+    protected static final String MANAGEMENT_PLANE_API_VERSION = "2021-04-01";
     private static final TokenCredential CREDENTIAL = getTokenCredential(ENVIRONMENT.getTestMode());
     private static final BearerTokenAuthenticationPolicy CREDENTIAL_POLICY
         = new BearerTokenAuthenticationPolicy(CREDENTIAL, "https://management.azure.com/.default");

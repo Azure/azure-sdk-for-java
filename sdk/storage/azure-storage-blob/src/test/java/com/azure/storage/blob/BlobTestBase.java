@@ -166,10 +166,8 @@ public class BlobTestBase extends TestProxyTestBase {
     protected String prefix;
 
     // used to build pipeline to management plane
-    protected static final String ACCOUNT_NAME = ENVIRONMENT.getPrimaryAccount().getName();
     protected static final String RESOURCE_GROUP_NAME = ENVIRONMENT.getResourceGroupName();
     protected static final String SUBSCRIPTION_ID = ENVIRONMENT.getSubscriptionId();
-    protected static final String MANAGEMENT_PLANE_API_VERSION = "2024-01-01";
 
     @Override
     public void beforeTest() {
@@ -883,6 +881,7 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected String createFileAndDirectoryWithoutFileShareDependency(byte[] data, String shareName)
         throws IOException {
+        String accountName = ENVIRONMENT.getPrimaryAccount().getName();
         //authenticate
         BearerTokenAuthenticationPolicy credentialPolicyDataPlane = new BearerTokenAuthenticationPolicy(
             getTokenCredential(ENVIRONMENT.getTestMode()), Constants.STORAGE_SCOPE);
@@ -893,7 +892,7 @@ public class BlobTestBase extends TestProxyTestBase {
         //setup headers that will be used in every request
         HttpHeaders genericHeaders = new HttpHeaders().set(X_MS_VERSION, "2025-07-05")
             .set(HttpHeaderName.ACCEPT, "application/xml")
-            .set(HttpHeaderName.HOST, ACCOUNT_NAME + ".file.core.windows.net")
+            .set(HttpHeaderName.HOST, accountName + ".file.core.windows.net")
             .set(HttpHeaderName.CONTENT_LENGTH, "0")
             .set(HttpHeaderName.fromString("x-ms-file-request-intent"), "backup");
 
@@ -910,7 +909,7 @@ public class BlobTestBase extends TestProxyTestBase {
 
         // create directory
         String directoryName = generateBlobName();
-        String directoryUrl = String.format("https://%s.file.core.windows.net/%s/%s?restype=directory", ACCOUNT_NAME,
+        String directoryUrl = String.format("https://%s.file.core.windows.net/%s/%s?restype=directory", accountName,
             shareName, directoryName);
 
         HttpResponse directoryCreateResponse
@@ -920,7 +919,7 @@ public class BlobTestBase extends TestProxyTestBase {
 
         // create file
         String fileName = generateBlobName();
-        String fileUrl = String.format("https://%s.file.core.windows.net/%s/%s/%s", ACCOUNT_NAME, shareName,
+        String fileUrl = String.format("https://%s.file.core.windows.net/%s/%s/%s", accountName, shareName,
             directoryName, fileName);
         HttpHeaders fileHeaders = new HttpHeaders().setAllHttpHeaders(genericHeaders)
             .set(HttpHeaderName.fromString("x-ms-type"), "file")
@@ -981,11 +980,12 @@ public class BlobTestBase extends TestProxyTestBase {
 
     protected String getFileShareID(String shareName) {
         return String.format("/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Storage/storageAccounts/"
-            + "%s/fileServices/default/shares/%s", SUBSCRIPTION_ID, RESOURCE_GROUP_NAME, ACCOUNT_NAME, shareName);
+            + "%s/fileServices/default/shares/%s", SUBSCRIPTION_ID, RESOURCE_GROUP_NAME,
+            ENVIRONMENT.getPrimaryAccount().getName(), shareName);
     }
 
     protected String getFileShareUri(String fileShareID) {
-        return "https://management.azure.com" + fileShareID + "?api-version=" + MANAGEMENT_PLANE_API_VERSION;
+        return "https://management.azure.com" + fileShareID + "?api-version=2024-01-01";
     }
 
     public static final class Body implements JsonSerializable<Body> {
