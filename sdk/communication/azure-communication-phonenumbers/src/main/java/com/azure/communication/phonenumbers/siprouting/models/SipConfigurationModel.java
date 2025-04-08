@@ -7,7 +7,7 @@ package com.azure.communication.phonenumbers.siprouting.models;
 import java.util.List;
 import java.util.Map;
 
-import com.azure.communication.phonenumbers.siprouting.implementation.models.Domain;
+import com.azure.communication.phonenumbers.siprouting.implementation.models.SipDomain;
 import com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunk;
 import com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunkRoute;
 import com.azure.core.annotation.Fluent;
@@ -25,7 +25,7 @@ public final class SipConfigurationModel {
      * Validated Domains.
      * Map key is domain.
      */
-    private final Map<String, Domain> domains;
+    private final Map<String, SipDomain> domains;
 
     /*
      * SIP trunks for routing calls.
@@ -44,7 +44,7 @@ public final class SipConfigurationModel {
      * @param trunks the trunks value to set.
      * @param routes the routes value to set.
      */
-    public SipConfigurationModel(Map<String, Domain> domains, Map<String, SipTrunk> trunks,
+    public SipConfigurationModel(Map<String, SipDomain> domains, Map<String, SipTrunk> trunks,
         List<SipTrunkRoute> routes) {
         this.domains = domains;
         this.trunks = trunks;
@@ -57,7 +57,7 @@ public final class SipConfigurationModel {
      * 
      * @return the domains value.
      */
-    public Map<String, Domain> getDomains() {
+    public Map<String, SipDomain> getDomains() {
         return this.domains;
     }
 

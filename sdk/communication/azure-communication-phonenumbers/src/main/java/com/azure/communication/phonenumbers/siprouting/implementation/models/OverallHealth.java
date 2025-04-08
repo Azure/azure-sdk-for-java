@@ -24,7 +24,7 @@ public final class OverallHealth implements JsonSerializable<OverallHealth> {
     /*
      * The reason overall status of Trunk is inactive.
      */
-    private InactiveStatusReason reason;
+    private UnhealthyStatusReason reason;
 
     /**
      * Creates an instance of OverallHealth class.
@@ -57,7 +57,7 @@ public final class OverallHealth implements JsonSerializable<OverallHealth> {
      * 
      * @return the reason value.
      */
-    public InactiveStatusReason getReason() {
+    public UnhealthyStatusReason getReason() {
         return this.reason;
     }
 
@@ -67,7 +67,7 @@ public final class OverallHealth implements JsonSerializable<OverallHealth> {
      * @param reason the reason value to set.
      * @return the OverallHealth object itself.
      */
-    public OverallHealth setReason(InactiveStatusReason reason) {
+    public OverallHealth setReason(UnhealthyStatusReason reason) {
         this.reason = reason;
         return this;
     }
@@ -102,7 +102,7 @@ public final class OverallHealth implements JsonSerializable<OverallHealth> {
                 if ("status".equals(fieldName)) {
                     deserializedOverallHealth.status = OverallHealthStatus.fromString(reader.getString());
                 } else if ("reason".equals(fieldName)) {
-                    deserializedOverallHealth.reason = InactiveStatusReason.fromString(reader.getString());
+                    deserializedOverallHealth.reason = UnhealthyStatusReason.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

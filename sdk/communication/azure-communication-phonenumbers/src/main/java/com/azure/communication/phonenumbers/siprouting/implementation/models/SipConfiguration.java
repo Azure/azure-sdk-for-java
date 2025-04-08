@@ -26,7 +26,7 @@ public final class SipConfiguration implements JsonSerializable<SipConfiguration
      * Validated Domains.
      * Map key is domain.
      */
-    private Map<String, Domain> domains;
+    private Map<String, SipDomain> domains;
 
     /*
      * SIP trunks for routing calls.
@@ -51,7 +51,7 @@ public final class SipConfiguration implements JsonSerializable<SipConfiguration
      * 
      * @return the domains value.
      */
-    public Map<String, Domain> getDomains() {
+    public Map<String, SipDomain> getDomains() {
         return this.domains;
     }
 
@@ -62,7 +62,7 @@ public final class SipConfiguration implements JsonSerializable<SipConfiguration
      * @param domains the domains value to set.
      * @return the SipConfiguration object itself.
      */
-    public SipConfiguration setDomains(Map<String, Domain> domains) {
+    public SipConfiguration setDomains(Map<String, SipDomain> domains) {
         this.domains = domains;
         return this;
     }
@@ -148,7 +148,7 @@ public final class SipConfiguration implements JsonSerializable<SipConfiguration
                 reader.nextToken();
 
                 if ("domains".equals(fieldName)) {
-                    Map<String, Domain> domains = reader.readMap(reader1 -> Domain.fromJson(reader1));
+                    Map<String, SipDomain> domains = reader.readMap(reader1 -> SipDomain.fromJson(reader1));
                     deserializedSipConfiguration.domains = domains;
                 } else if ("trunks".equals(fieldName)) {
                     Map<String, SipTrunk> trunks = reader.readMap(reader1 -> SipTrunk.fromJson(reader1));

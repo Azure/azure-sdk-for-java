@@ -29,7 +29,7 @@ public final class SipTrunk implements JsonSerializable<SipTrunk> {
     /*
      * Represents health state of a SIP trunk for routing calls.
      */
-    private Health health;
+    private TrunkHealth health;
 
     /*
      * When enabled, removes Azure Communication Services from the signaling path on call transfer and sets the SIP Refer-To header to the trunk's FQDN. By default false.
@@ -97,7 +97,7 @@ public final class SipTrunk implements JsonSerializable<SipTrunk> {
      * 
      * @return the health value.
      */
-    public Health getHealth() {
+    public TrunkHealth getHealth() {
         return this.health;
     }
 
@@ -199,7 +199,7 @@ public final class SipTrunk implements JsonSerializable<SipTrunk> {
                 } else if ("enabled".equals(fieldName)) {
                     deserializedSipTrunk.enabled = reader.getNullable(JsonReader::getBoolean);
                 } else if ("health".equals(fieldName)) {
-                    deserializedSipTrunk.health = Health.fromJson(reader);
+                    deserializedSipTrunk.health = TrunkHealth.fromJson(reader);
                 } else if ("directTransfer".equals(fieldName)) {
                     deserializedSipTrunk.directTransfer = reader.getNullable(JsonReader::getBoolean);
                 } else if ("privacyHeader".equals(fieldName)) {

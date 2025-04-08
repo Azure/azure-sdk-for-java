@@ -5,7 +5,6 @@ package com.azure.communication.phonenumbers.siprouting;
 
 import com.azure.communication.phonenumbers.siprouting.models.SipTrunk;
 import com.azure.communication.phonenumbers.siprouting.models.SipTrunkRoute;
-import com.azure.communication.phonenumbers.siprouting.models.ExpandEnum;
 
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
@@ -40,7 +39,7 @@ public class SyncClientJavaDocCodeSnippets {
         SipRoutingClient sipRoutingClient = createSipRoutingClient();
 
         // BEGIN: com.azure.communication.phonenumbers.siprouting.client.listTrunks
-        PagedIterable<SipTrunk> trunks = sipRoutingClient.listTrunks(ExpandEnum.TRUNKS_HEALTH);
+        PagedIterable<SipTrunk> trunks = sipRoutingClient.listTrunks();
         for (SipTrunk trunk : trunks) {
             System.out.println("Trunk " + trunk.getFqdn() + ":" + trunk.getSipSignalingPort());
         }
@@ -72,7 +71,7 @@ public class SyncClientJavaDocCodeSnippets {
         SipRoutingClient sipRoutingClient = createSipRoutingClient();
 
         // BEGIN: com.azure.communication.phonenumbers.siprouting.client.getTrunk
-        SipTrunk trunk = sipRoutingClient.getTrunk("<trunk fqdn>", ExpandEnum.TRUNKS_HEALTH);
+        SipTrunk trunk = sipRoutingClient.getTrunk("<trunk fqdn>");
         System.out.println("Trunk " + trunk.getFqdn() + ":" + trunk.getSipSignalingPort());
         // END: com.azure.communication.phonenumbers.siprouting.client.getTrunk
 
@@ -87,7 +86,7 @@ public class SyncClientJavaDocCodeSnippets {
         SipRoutingClient sipRoutingClient = createSipRoutingClient();
 
         // BEGIN: com.azure.communication.phonenumbers.siprouting.client.getTrunkWithResponse
-        Response<SipTrunk> response = sipRoutingClient.getTrunkWithResponse("<trunk fqdn>", ExpandEnum.TRUNKS_HEALTH, Context.NONE);
+        Response<SipTrunk> response = sipRoutingClient.getTrunkWithResponse("<trunk fqdn>", Context.NONE);
         SipTrunk trunk = response.getValue();
         System.out.println("Trunk " + trunk.getFqdn() + ":" + trunk.getSipSignalingPort());
         // END: com.azure.communication.phonenumbers.siprouting.client.getTrunkWithResponse

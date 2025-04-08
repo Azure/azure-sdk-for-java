@@ -24,15 +24,14 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.azure.communication.phonenumbers.siprouting.implementation.converters.ExpandEnumConverter;
 import com.azure.communication.phonenumbers.siprouting.implementation.converters.SipConfigurationConverter;
 import static com.azure.communication.phonenumbers.siprouting.implementation.converters.SipTrunkConverter.convertFromApi;
 import static com.azure.communication.phonenumbers.siprouting.implementation.converters.SipTrunkConverter.convertToApi;
 import static com.azure.communication.phonenumbers.siprouting.implementation.converters.SipTrunkRouteConverter.convertFromApi;
 import static com.azure.communication.phonenumbers.siprouting.implementation.converters.SipTrunkRouteConverter.convertToApi;
 import static com.azure.communication.phonenumbers.siprouting.implementation.converters.RoutesForNumberConverter.convertRoutesForNumber;
+import com.azure.communication.phonenumbers.siprouting.implementation.models.ExpandEnum;
 import com.azure.communication.phonenumbers.siprouting.models.RoutesForNumber;
-import com.azure.communication.phonenumbers.siprouting.models.ExpandEnum;
 import com.azure.communication.phonenumbers.siprouting.models.SipConfigurationModel;
 
 /**
@@ -63,25 +62,23 @@ public final class SipRoutingClient {
     }
 
     /**
-     * Gets SIP Trunk by FQDN.
-     *
-     * <p>
-     * <strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.communication.phonenumbers.siprouting.client.getTrunk -->
-     * <pre>
-     * SipTrunk trunk = sipRoutingClient.getTrunk&#40;&quot;&lt;trunk fqdn&gt;&quot;, ExpandEnum.TRUNKS_HEALTH&#41;;
-     * System.out.println&#40;&quot;Trunk &quot; + trunk.getFqdn&#40;&#41; + &quot;:&quot; + trunk.getSipSignalingPort&#40;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.communication.phonenumbers.siprouting.client.getTrunk -->
-     *
-     * @param fqdn SIP Trunk FQDN.
-     * @param expand Option to retrieve detailed configuration. Optional.
-     * @return SIP Trunk if exists, null otherwise.
-     */
+    * Gets SIP Trunk by FQDN.
+    *
+    * <p><strong>Code Samples</strong></p>
+    *
+    * <!-- src_embed com.azure.communication.phonenumbers.siprouting.client.getTrunk -->
+    * <pre>
+    * SipTrunk trunk = sipRoutingClient.getTrunk&#40;&quot;&lt;trunk fqdn&gt;&quot;&#41;;
+    * System.out.println&#40;&quot;Trunk &quot; + trunk.getFqdn&#40;&#41; + &quot;:&quot; + trunk.getSipSignalingPort&#40;&#41;&#41;;
+    * </pre>
+    * <!-- end com.azure.communication.phonenumbers.siprouting.client.getTrunk -->
+    *
+    * @param fqdn SIP Trunk FQDN.
+    * @return SIP Trunk if exists, null otherwise.
+    */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SipTrunk getTrunk(String fqdn, ExpandEnum expand) {
-        return convertFromApi(getSipConfiguration(expand).getTrunks()).stream()
+    public SipTrunk getTrunk(String fqdn) {
+        return convertFromApi(getSipConfiguration(false).getTrunks()).stream()
             .filter(sipTrunk -> fqdn.equals(sipTrunk.getFqdn()))
             .findAny()
             .orElse(null);
@@ -93,32 +90,92 @@ public final class SipRoutingClient {
      * <p>
      * <strong>Code Samples</strong></p>
      *
+     * <!-- src_embed com.azure.communication.phonenumbers.siprouting.client.getTrunk -->
+     * <pre>
+     * SipTrunk trunk = sipRoutingClient.getTrunk&#40;&quot;&lt;trunk fqdn&gt;&quot;&#41;;
+     * System.out.println&#40;&quot;Trunk &quot; + trunk.getFqdn&#40;&#41; + &quot;:&quot; + trunk.getSipSignalingPort&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.communication.phonenumbers.siprouting.client.getTrunk -->
+     *
+     * @param fqdn SIP Trunk FQDN.
+     * @param includeHealth Option to retrieve detailed configuration. Optional.
+     * @return SIP Trunk if exists, null otherwise.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SipTrunk getTrunk(String fqdn, boolean includeHealth) {
+        return convertFromApi(getSipConfiguration(includeHealth).getTrunks()).stream()
+            .filter(sipTrunk -> fqdn.equals(sipTrunk.getFqdn()))
+            .findAny()
+            .orElse(null);
+    }
+
+    /**
+     * Gets SIP Trunk by FQDN.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
      * <!-- src_embed com.azure.communication.phonenumbers.siprouting.client.getTrunkWithResponse -->
      * <pre>
-     * Response&lt;SipTrunk&gt; response = sipRoutingClient.getTrunkWithResponse&#40;&quot;&lt;trunk fqdn&gt;&quot;, ExpandEnum.TRUNKS_HEALTH, Context.NONE&#41;;
+     * Response&lt;SipTrunk&gt; response = sipRoutingClient.getTrunkWithResponse&#40;&quot;&lt;trunk fqdn&gt;&quot;, Context.NONE&#41;;
      * SipTrunk trunk = response.getValue&#40;&#41;;
      * System.out.println&#40;&quot;Trunk &quot; + trunk.getFqdn&#40;&#41; + &quot;:&quot; + trunk.getSipSignalingPort&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.communication.phonenumbers.siprouting.client.getTrunkWithResponse -->
      *
      * @param fqdn SIP Trunk FQDN.
-     * @param expand Option to retrieve detailed configuration. Optional
+     * @param context the context of the request. Can also be null or Context.NONE.
+     * @return Response object with the SIP Trunk if exists, with null otherwise.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SipTrunk> getTrunkWithResponse(String fqdn, Context context) {
+        return getSipConfigurationResponse(fqdn, false, context);
+    }
+
+    /**
+     * Gets SIP Trunk by FQDN.
+     *
+     * <p>
+     * <strong>Code Samples</strong></p>
+     *
+     * <!-- src_embed com.azure.communication.phonenumbers.siprouting.client.getTrunkWithResponse -->
+     * <pre>
+     * Response&lt;SipTrunk&gt; response = sipRoutingClient.getTrunkWithResponse&#40;&quot;&lt;trunk fqdn&gt;&quot;, Context.NONE&#41;;
+     * SipTrunk trunk = response.getValue&#40;&#41;;
+     * System.out.println&#40;&quot;Trunk &quot; + trunk.getFqdn&#40;&#41; + &quot;:&quot; + trunk.getSipSignalingPort&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.communication.phonenumbers.siprouting.client.getTrunkWithResponse -->
+     *
+     * @param fqdn SIP Trunk FQDN.
+     * @param includeHealth Option to retrieve detailed configuration. Optional
      * @param context the context of the request. Can also be null or
      * Context.NONE.
      * @return Response object with the SIP Trunk if exists, with null
      * otherwise.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SipTrunk> getTrunkWithResponse(String fqdn, ExpandEnum expand, Context context) {
-        return client.getSipRoutings()
-            .getWithResponseAsync(ExpandEnumConverter.convertExpandEnum(expand), context)
-            .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
-            .map(result -> new SimpleResponse<>(result,
-                convertFromApi(result.getValue().getTrunks()).stream()
-                    .filter(sipTrunk -> fqdn.equals(sipTrunk.getFqdn()))
-                    .findAny()
-                    .orElse(null)))
-            .block();
+    public Response<SipTrunk> getTrunkWithResponse(String fqdn, boolean includeHealth, Context context) {
+        return getSipConfigurationResponse(fqdn, includeHealth, context);
+    }
+
+    /**
+    * Lists SIP Trunks.
+    *
+    * <p><strong>Code Samples</strong></p>
+    *
+    * <!-- src_embed com.azure.communication.phonenumbers.siprouting.client.listTrunks -->
+    * <pre>
+    * PagedIterable&lt;SipTrunk&gt; trunks = sipRoutingClient.listTrunks&#40;&#41;;
+    * for &#40;SipTrunk trunk : trunks&#41; &#123;
+    *     System.out.println&#40;&quot;Trunk &quot; + trunk.getFqdn&#40;&#41; + &quot;:&quot; + trunk.getSipSignalingPort&#40;&#41;&#41;;
+    * &#125;
+    * </pre>
+    * <!-- end com.azure.communication.phonenumbers.siprouting.client.listTrunks -->
+    *
+    * @return SIP Trunks.
+    */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PagedIterable<SipTrunk> listTrunks() {
+        return new PagedIterable<SipTrunk>(() -> getOnePageTrunk(false));
     }
 
     /**
@@ -129,28 +186,37 @@ public final class SipRoutingClient {
      *
      * <!-- src_embed com.azure.communication.phonenumbers.siprouting.client.listTrunks -->
      * <pre>
-     * PagedIterable&lt;SipTrunk&gt; trunks = sipRoutingClient.listTrunks&#40;ExpandEnum.TRUNKS_HEALTH&#41;;
+     * PagedIterable&lt;SipTrunk&gt; trunks = sipRoutingClient.listTrunks&#40;&#41;;
      * for &#40;SipTrunk trunk : trunks&#41; &#123;
      *     System.out.println&#40;&quot;Trunk &quot; + trunk.getFqdn&#40;&#41; + &quot;:&quot; + trunk.getSipSignalingPort&#40;&#41;&#41;;
      * &#125;
      * </pre>
      * <!-- end com.azure.communication.phonenumbers.siprouting.client.listTrunks -->
      *
-     * @param expand Option to retrieve detailed configuration. Optional
+     * @param includeHealth Option to retrieve detailed configuration. Optional
      * @return SIP Trunks.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedIterable<SipTrunk> listTrunks(ExpandEnum expand) {
-        return new PagedIterable<SipTrunk>(() -> getOnePageTrunk(expand));
+    public PagedIterable<SipTrunk> listTrunks(boolean includeHealth) {
+        return new PagedIterable<SipTrunk>(() -> getOnePageTrunk(includeHealth));
     }
 
-    private PagedResponse<SipTrunk> getOnePageTrunk(ExpandEnum expand) {
-        return client.getSipRoutings()
-            .getWithResponseAsync(ExpandEnumConverter.convertExpandEnum(expand))
-            .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
-            .map(result -> new PagedResponseBase<>(result.getRequest(), result.getStatusCode(), result.getHeaders(),
-                convertFromApi(result.getValue().getTrunks()), null, null))
-            .block();
+    private PagedResponse<SipTrunk> getOnePageTrunk(boolean includeHealth) {
+        if (includeHealth) {
+            return client.getSipRoutings()
+                .getWithResponseAsync(ExpandEnum.TRUNKS_HEALTH)
+                .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
+                .map(result -> new PagedResponseBase<>(result.getRequest(), result.getStatusCode(), result.getHeaders(),
+                    convertFromApi(result.getValue().getTrunks()), null, null))
+                .block();
+        } else {
+            return client.getSipRoutings()
+                .getWithResponseAsync(null)
+                .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
+                .map(result -> new PagedResponseBase<>(result.getRequest(), result.getStatusCode(), result.getHeaders(),
+                    convertFromApi(result.getValue().getTrunks()), null, null))
+                .block();
+        }
     }
 
     /**
@@ -233,7 +299,7 @@ public final class SipRoutingClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void setTrunks(List<SipTrunk> trunks) {
         SipConfiguration update = new SipConfiguration().setTrunks(convertToApi(trunks));
-        List<String> storedFqdns = listTrunks(null).stream().map(SipTrunk::getFqdn).collect(Collectors.toList());
+        List<String> storedFqdns = listTrunks(false).stream().map(SipTrunk::getFqdn).collect(Collectors.toList());
         Set<String> updatedFqdns = trunks.stream().map(SipTrunk::getFqdn).collect(Collectors.toSet());
         for (String storedFqdn : storedFqdns) {
             if (!updatedFqdns.contains(storedFqdn)) {
@@ -269,7 +335,7 @@ public final class SipRoutingClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> setTrunksWithResponse(List<SipTrunk> trunks, Context context) {
         SipConfiguration update = new SipConfiguration().setTrunks(convertToApi(trunks));
-        List<String> storedFqdns = listTrunks(null).stream().map(SipTrunk::getFqdn).collect(Collectors.toList());
+        List<String> storedFqdns = listTrunks(false).stream().map(SipTrunk::getFqdn).collect(Collectors.toList());
         Set<String> updatedFqdns = trunks.stream().map(SipTrunk::getFqdn).collect(Collectors.toSet());
         for (String storedFqdn : storedFqdns) {
             if (!updatedFqdns.contains(storedFqdn)) {
@@ -355,7 +421,7 @@ public final class SipRoutingClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteTrunk(String fqdn) {
-        PagedIterable<SipTrunk> trunks = listTrunks(null);
+        PagedIterable<SipTrunk> trunks = listTrunks(false);
         List<SipTrunk> deletedTrunks
             = trunks.stream().filter(trunk -> fqdn.equals(trunk.getFqdn())).collect(Collectors.toList());
 
@@ -389,7 +455,7 @@ public final class SipRoutingClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTrunkWithResponse(String fqdn, Context context) {
-        PagedIterable<SipTrunk> trunks = listTrunks(null);
+        PagedIterable<SipTrunk> trunks = listTrunks(false);
         List<SipTrunk> deletedTrunks
             = trunks.stream().filter(trunk -> fqdn.equals(trunk.getFqdn())).collect(Collectors.toList());
 
@@ -445,11 +511,42 @@ public final class SipRoutingClient {
             client.getSipRoutings().testRoutesWithNumber(targetPhoneNumber, sipConfiguration));
     }
 
-    private SipConfiguration getSipConfiguration(ExpandEnum expand) {
-        return client.getSipRoutings()
-            .getAsync(ExpandEnumConverter.convertExpandEnum(expand))
-            .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
-            .block();
+    private SipConfiguration getSipConfiguration(boolean includeHealth) {
+        if (includeHealth) {
+            return client.getSipRoutings()
+                .getAsync(ExpandEnum.TRUNKS_HEALTH)
+                .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
+                .block();
+        } else {
+            return client.getSipRoutings()
+                .getAsync(null)
+                .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
+                .block();
+        }
+    }
+
+    private Response<SipTrunk> getSipConfigurationResponse(String fqdn, boolean includeHealth, Context context) {
+        if (includeHealth) {
+            return client.getSipRoutings()
+                .getWithResponseAsync(ExpandEnum.TRUNKS_HEALTH, context)
+                .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
+                .map(result -> new SimpleResponse<>(result,
+                    convertFromApi(result.getValue().getTrunks()).stream()
+                        .filter(sipTrunk -> fqdn.equals(sipTrunk.getFqdn()))
+                        .findAny()
+                        .orElse(null)))
+                .block();
+        } else {
+            return client.getSipRoutings()
+                .getWithResponseAsync(null, context)
+                .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
+                .map(result -> new SimpleResponse<>(result,
+                    convertFromApi(result.getValue().getTrunks()).stream()
+                        .filter(sipTrunk -> fqdn.equals(sipTrunk.getFqdn()))
+                        .findAny()
+                        .orElse(null)))
+                .block();
+        }
     }
 
     private SipConfiguration setSipConfiguration(SipConfiguration update) {
