@@ -27,12 +27,6 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
     private String name;
 
     /*
-     * Operation to perform on the input documents.
-     */
-    @Generated
-    private DeidentificationOperationType operation;
-
-    /*
      * Storage location to perform the operation on.
      */
     @Generated
@@ -54,7 +48,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
      * Current status of a job.
      */
     @Generated
-    private OperationState status;
+    private OperationStatus status;
 
     /*
      * Error when job fails in it's entirety.
@@ -113,28 +107,6 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
     }
 
     /**
-     * Get the operation property: Operation to perform on the input documents.
-     *
-     * @return the operation value.
-     */
-    @Generated
-    public DeidentificationOperationType getOperation() {
-        return this.operation;
-    }
-
-    /**
-     * Set the operation property: Operation to perform on the input documents.
-     *
-     * @param operation the operation value to set.
-     * @return the DeidentificationJob object itself.
-     */
-    @Generated
-    public DeidentificationJob setOperation(DeidentificationOperationType operation) {
-        this.operation = operation;
-        return this;
-    }
-
-    /**
      * Get the sourceLocation property: Storage location to perform the operation on.
      *
      * @return the sourceLocation value.
@@ -182,7 +154,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
      * @return the status value.
      */
     @Generated
-    public OperationState getStatus() {
+    public OperationStatus getStatus() {
         return this.status;
     }
 
@@ -249,7 +221,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("sourceLocation", this.sourceLocation);
         jsonWriter.writeJsonField("targetLocation", this.targetLocation);
-        jsonWriter.writeStringField("operation", this.operation == null ? null : this.operation.toString());
+        jsonWriter.writeStringField("operation", this.operationType == null ? null : this.operationType.toString());
         jsonWriter.writeJsonField("customizations", this.customizations);
         return jsonWriter.writeEndObject();
     }
@@ -269,10 +241,10 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
             String name = null;
             SourceStorageLocation sourceLocation = null;
             TargetStorageLocation targetLocation = null;
-            OperationState status = null;
+            OperationStatus status = null;
             OffsetDateTime lastUpdatedAt = null;
             OffsetDateTime createdAt = null;
-            DeidentificationOperationType operation = null;
+            DeidentificationOperationType operationType = null;
             DeidentificationJobCustomizationOptions customizations = null;
             ResponseError error = null;
             OffsetDateTime startedAt = null;
@@ -287,7 +259,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
                 } else if ("targetLocation".equals(fieldName)) {
                     targetLocation = TargetStorageLocation.fromJson(reader);
                 } else if ("status".equals(fieldName)) {
-                    status = OperationState.fromString(reader.getString());
+                    status = OperationStatus.fromString(reader.getString());
                 } else if ("lastUpdatedAt".equals(fieldName)) {
                     lastUpdatedAt = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
@@ -295,7 +267,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
                     createdAt = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("operation".equals(fieldName)) {
-                    operation = DeidentificationOperationType.fromString(reader.getString());
+                    operationType = DeidentificationOperationType.fromString(reader.getString());
                 } else if ("customizations".equals(fieldName)) {
                     customizations = DeidentificationJobCustomizationOptions.fromJson(reader);
                 } else if ("error".equals(fieldName)) {
@@ -315,12 +287,40 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
             deserializedDeidentificationJob.status = status;
             deserializedDeidentificationJob.lastUpdatedAt = lastUpdatedAt;
             deserializedDeidentificationJob.createdAt = createdAt;
-            deserializedDeidentificationJob.operation = operation;
+            deserializedDeidentificationJob.operationType = operationType;
             deserializedDeidentificationJob.customizations = customizations;
             deserializedDeidentificationJob.error = error;
             deserializedDeidentificationJob.startedAt = startedAt;
             deserializedDeidentificationJob.summary = summary;
             return deserializedDeidentificationJob;
         });
+    }
+
+    /*
+     * Operation to perform on the input documents.
+     */
+    @Generated
+    private DeidentificationOperationType operationType;
+
+    /**
+     * Get the operationType property: Operation to perform on the input documents.
+     *
+     * @return the operationType value.
+     */
+    @Generated
+    public DeidentificationOperationType getOperationType() {
+        return this.operationType;
+    }
+
+    /**
+     * Set the operationType property: Operation to perform on the input documents.
+     *
+     * @param operationType the operationType value to set.
+     * @return the DeidentificationJob object itself.
+     */
+    @Generated
+    public DeidentificationJob setOperationType(DeidentificationOperationType operationType) {
+        this.operationType = operationType;
+        return this;
     }
 }

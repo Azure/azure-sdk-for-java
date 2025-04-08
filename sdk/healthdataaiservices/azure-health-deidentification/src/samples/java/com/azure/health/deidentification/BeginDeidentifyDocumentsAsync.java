@@ -29,7 +29,7 @@ public class BeginDeidentifyDocumentsAsync {
                 .setOverwrite(true)
         );
 
-        job.setOperation(DeidentificationOperationType.REDACT);
+        job.setOperationType(DeidentificationOperationType.REDACT);
 
         String jobName = Configuration.getGlobalConfiguration().get("DEID_JOB_NAME", "MyJob-" + Instant.now().toEpochMilli());
         Mono<DeidentificationJob> jobMono = deidentificationClient.beginDeidentifyDocuments(jobName, job)

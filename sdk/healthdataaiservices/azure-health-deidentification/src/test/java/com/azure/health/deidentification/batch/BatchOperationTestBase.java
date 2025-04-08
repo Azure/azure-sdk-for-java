@@ -34,7 +34,9 @@ public class BatchOperationTestBase extends TestProxyTestBase {
             .endpoint(Configuration.getGlobalConfiguration().get("DEID_SERVICE_ENDPOINT", "https://localhost:8080"))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (interceptorManager.isPlaybackMode()) {
-            CustomMatcher customMatcher = new CustomMatcher().setExcludedHeaders(List.of("Connection"));
+            List<String> excludedHeaders = new ArrayList<>();
+            excludedHeaders.add("Connection");
+            CustomMatcher customMatcher = new CustomMatcher().setExcludedHeaders(excludedHeaders);
             interceptorManager.addMatchers(customMatcher);
             deidentificationClientBuilder.httpClient(interceptorManager.getPlaybackClient())
                 .credential(new MockTokenCredential());

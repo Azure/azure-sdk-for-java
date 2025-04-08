@@ -87,7 +87,7 @@ DeidentificationJob job = new DeidentificationJob(
         .setOverwrite(true)
 );
 
-job.setOperation(DeidentificationOperationType.REDACT);
+job.setOperationType(DeidentificationOperationType.REDACT);
 
 String jobName = Configuration.getGlobalConfiguration().get("DEID_JOB_NAME", "MyJob-" + Instant.now().toEpochMilli());
 DeidentificationJob result = deidentificationClient.beginDeidentifyDocuments(jobName, job)
@@ -139,7 +139,7 @@ DeidentificationJob job = new DeidentificationJob(
         .setOverwrite(true)
 );
 
-job.setOperation(DeidentificationOperationType.REDACT);
+job.setOperationType(DeidentificationOperationType.REDACT);
 
 String jobName = Configuration.getGlobalConfiguration().get("DEID_JOB_NAME", "MyJob-" + Instant.now().toEpochMilli());
 DeidentificationJob result = deidentificationClient.beginDeidentifyDocuments(jobName, job)
