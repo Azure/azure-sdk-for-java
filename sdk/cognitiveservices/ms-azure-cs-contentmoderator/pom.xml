@@ -21,7 +21,7 @@
     <description>
         This package has been deprecated and will receive no further updates.
         To continue using the Azure AI Content Safety service on Java, updating to the following library is recommended:
-        https://search.maven.org/artifact/com.azure/azure-ai-contentsafety
+        https://learn.microsoft.com/java/api/overview/azure/ai-contentsafety-readme
     </description>
     <url>https://github.com/Azure/azure-sdk-for-java/cognitiveservices/data-plane/vision/contentmoderator</url>
     <licenses>
@@ -49,6 +49,13 @@
       <uniqueVersion>true</uniqueVersion>
       <layout>default</layout>
     </snapshotRepository>
+    <relocation>
+      <groupId>com.azure</groupId>
+      <artifactId>azure-ai-contentsafety</artifactId>
+      <message>
+        This package has been deprecated and will receive no further updates. We recommend updating to the new package.
+      </message>
+    </relocation>
   </distributionManagement>
   <dependencies>
     <dependency>
