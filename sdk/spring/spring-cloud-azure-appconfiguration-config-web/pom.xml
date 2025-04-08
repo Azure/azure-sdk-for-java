@@ -26,24 +26,24 @@
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-web</artifactId>
-      <version>3.4.2</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-web;external_dependency} -->
+      <version>3.4.4</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-web;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-actuator</artifactId>
-      <version>3.4.2</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
+      <version>3.4.4</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.cloud</groupId>
       <artifactId>spring-cloud-bus</artifactId>
-      <version>4.2.0</version> <!-- {x-version-update;springboot3_org.springframework.cloud:spring-cloud-bus;external_dependency} -->
+      <version>4.2.1</version> <!-- {x-version-update;springboot3_org.springframework.cloud:spring-cloud-bus;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-test</artifactId>
-      <version>3.4.2</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
+      <version>3.4.4</version> <!-- {x-version-update;springboot3_org.springframework.boot:spring-boot-starter-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -118,9 +118,9 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>org.springframework.boot:spring-boot-starter-actuator:[3.4.2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-starter-web:[3.4.2]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-starter-web;external_dependency} -->
-                <include>org.springframework.cloud:spring-cloud-bus:[4.2.0]</include> <!-- {x-include-update;springboot3_org.springframework.cloud:spring-cloud-bus;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-actuator:[3.4.4]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-starter-actuator;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-starter-web:[3.4.4]</include> <!-- {x-include-update;springboot3_org.springframework.boot:spring-boot-starter-web;external_dependency} -->
+                <include>org.springframework.cloud:spring-cloud-bus:[4.2.1]</include> <!-- {x-include-update;springboot3_org.springframework.cloud:spring-cloud-bus;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
