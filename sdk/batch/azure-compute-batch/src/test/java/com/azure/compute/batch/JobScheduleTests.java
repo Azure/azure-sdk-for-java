@@ -13,7 +13,6 @@ import com.azure.compute.batch.models.BatchMetadataItem;
 import com.azure.compute.batch.models.BatchPool;
 import com.azure.compute.batch.models.BatchPoolInfo;
 import com.azure.compute.batch.models.BatchJobSchedulesListOptions;
-import com.azure.compute.batch.models.MetadataItem;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.test.TestMode;
