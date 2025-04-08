@@ -98,7 +98,7 @@ known_content_issues:
   - ['sdk/core/README.md', '#3113']
   - ['sdk/clientcore/README.md', '#3113']
   - ['sdk/clientcore/core/README.md', '#3113']
-  - ['sdk/clientcore/http-netty/README.md', '#3113']
+  - ['sdk/clientcore/http-netty4/README.md', '#3113']
   - ['sdk/clientcore/http-okhttp3/README.md', '#3113']
   - ['sdk/clientcore/tools/annotation-processor/README.md', '#3113']
   - ['sdk/clientcore/optional-dependency-tests/README.md', '#3113']

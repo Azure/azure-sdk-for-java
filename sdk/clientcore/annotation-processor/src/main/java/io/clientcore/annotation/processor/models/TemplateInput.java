@@ -8,6 +8,7 @@ import com.github.javaparser.ast.type.Type;
 import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
 
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
@@ -157,7 +158,12 @@ public class TemplateInput {
     public String addImport(TypeMirror type) {
         String longName = type.toString();
         String shortName = null;
-
+        // Handle array types properly
+        if (type.getKind() == TypeKind.ARRAY) {
+            ArrayType arrayType = (ArrayType) type;
+            String componentType = addImport(arrayType.getComponentType()); // Recursively get the short name
+            return componentType + "[]"; // Append array brackets
+        }
         if (type.getKind().isPrimitive()) {
             return longName;
         } else if (imports.containsKey(type.toString())) {

@@ -3,7 +3,6 @@
 
 package io.clientcore.core.http.models;
 
-import io.clientcore.core.shared.TestConfigurationSource;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.configuration.Configuration;
 import io.clientcore.core.utils.configuration.ConfigurationSource;

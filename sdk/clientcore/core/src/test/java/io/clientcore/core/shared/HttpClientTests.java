@@ -80,7 +80,6 @@ public abstract class HttpClientTests {
     private static final String UTF_32BE_BOM_RESPONSE = "utf32BeBomBytes";
     private static final String UTF_32LE_BOM_RESPONSE = "utf32LeBomBytes";
     private static final String BOM_WITH_DIFFERENT_HEADER = "bomBytesWithDifferentHeader";
-    private static final String SSE_RESPONSE = "serversentevent";
 
     protected static final String ECHO_RESPONSE = "echo";
 
