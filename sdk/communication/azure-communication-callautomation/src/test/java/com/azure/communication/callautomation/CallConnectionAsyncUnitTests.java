@@ -151,7 +151,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
-    public void transferToParticipantCall_PhoneNumberIdentifier() {
+    public void transferToParticipantCallPhoneNumberIdentifier() {
         CallConnectionAsync callConnectionAsync
             = getCallAutomationAsyncClient(new ArrayList<>(Collections.singletonList(new SimpleEntry<>(
                 serializeObject(new TransferCallResponseInternal().setOperationContext(CALL_OPERATION_CONTEXT)), 202))))
@@ -181,7 +181,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
-    public void transferToParticipantCallWithResponse_PhoneNumberIdentifier_XMSHeader() {
+    public void transferToParticipantCallWithResponsePhoneNumberIdentifierXMSHeader() {
         CallConnectionAsync callConnectionAsync
             = getCallAutomationAsyncClient(new ArrayList<>(Collections.singletonList(new SimpleEntry<>(
                 serializeObject(new TransferCallResponseInternal().setOperationContext(CALL_OPERATION_CONTEXT)), 202))))
@@ -199,7 +199,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
-    public void transferToParticipantCallWithResponse_PhoneNumberIdentifier_XHeader() {
+    public void transferToParticipantCallWithResponsePhoneNumberIdentifierXHeader() {
         CallConnectionAsync callConnectionAsync
             = getCallAutomationAsyncClient(new ArrayList<>(Collections.singletonList(new SimpleEntry<>(
                 serializeObject(new TransferCallResponseInternal().setOperationContext(CALL_OPERATION_CONTEXT)), 202))))
@@ -236,7 +236,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
-    public void transferToParticipantCallWithResponse_PhoneNumberIdentifier_XMSHeader_WithTransferee() {
+    public void transferToParticipantCallWithResponsePhoneNumberIdentifierXMSHeaderWithTransferee() {
         CallConnectionAsync callConnectionAsync
             = getCallAutomationAsyncClient(new ArrayList<>(Collections.singletonList(new SimpleEntry<>(
                 serializeObject(new TransferCallResponseInternal().setOperationContext(CALL_OPERATION_CONTEXT)), 202))))
@@ -246,7 +246,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
             = new TransferCallToParticipantOptions(new PhoneNumberIdentifier(CALL_PSTN_TARGET_ID))
                 .setOperationContext(CALL_OPERATION_CONTEXT)
                 .setTransferee(new CommunicationUserIdentifier(CALL_TRANSFEREE_ID));
-                transferCallToParticipantOptions.getCustomCallingContext().addSipX("Test-Sip-Header", "Test-Sip-Value", SipHeaderPrefix.XMSCustom);
+        transferCallToParticipantOptions.getCustomCallingContext().addSipX("Test-Sip-Header", "Test-Sip-Value", SipHeaderPrefix.XMSCustom);
         Response<TransferCallResult> transferCallResultResponse
             = callConnectionAsync.transferCallToParticipantWithResponse(transferCallToParticipantOptions).block();
         assertNotNull(transferCallResultResponse);
@@ -255,7 +255,7 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
     }
 
     @Test
-    public void transferToParticipantCallWithResponse_PhoneNumberIdentifier_XHeader_WithTransferee() {
+    public void transferToParticipantCallWithResponsePhoneNumberIdentifierXHeaderWithTransferee() {
         CallConnectionAsync callConnectionAsync
             = getCallAutomationAsyncClient(new ArrayList<>(Collections.singletonList(new SimpleEntry<>(
                 serializeObject(new TransferCallResponseInternal().setOperationContext(CALL_OPERATION_CONTEXT)), 202))))
