@@ -26,6 +26,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static com.azure.openai.tests.TestUtils.AZURE_OPEN_AI;
 import static com.azure.openai.tests.TestUtils.GA;
@@ -262,20 +263,19 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertChatCompletionWithoutSensitiveContent(chatCompletion);
     }
 
-    // Azure-Only Test
-    //    @ParameterizedTest
-    //    @MethodSource("com.azure.openai.tests.TestUtils#azureOnlyClient")
-    //    public void testChatCompletionByod(String apiType, String apiVersion, String testModel) {
-    //        client = createClient(apiType, apiVersion);
-    //        ChatCompletionCreateParams params = createParamsBuilder(testModel)
-    //                .messages(asList(
-    //                        createSystemMessageParam(),
-    //                        createUserMessageParam("What languages have libraries you know about for Azure OpenAI?")))
-    //                .additionalBodyProperties(createExtraBodyForByod())
-    //                .build();
-    //        ChatCompletion completion = client.chat().completions().create(params);
-    //        assertChatCompletionByod(completion);
-    //    }
+    @ParameterizedTest
+    @MethodSource("com.azure.openai.tests.TestUtils#azureOnlyClient")
+    public void testChatCompletionByod(String apiType, String apiVersion, String testModel) {
+        client = createClient(apiType, apiVersion);
+        ChatCompletionCreateParams params = createParamsBuilder("gpt-4o-mini")
+                .messages(asList(
+                        createSystemMessageParam(),
+                        createUserMessageParam("What do most contributions require you to do?")))
+                .additionalBodyProperties(createExtraBodyForByod())
+                .build();
+        ChatCompletion completion = client.chat().completions().create(params);
+        assertChatCompletionByod(completion);
+    }
 
     @ParameterizedTest
     @MethodSource("com.azure.openai.tests.TestUtils#allApiTypeClient")
@@ -393,6 +393,26 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         client = createClient(apiType, apiVersion);
 
         ChatCompletionCreateParams params = createChatCompletionParamsWithImageUrl(testModel);
+        ChatCompletion chatCompletion = client.chat().completions().create(params);
+        assertChatCompletion(chatCompletion);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.openai.tests.TestUtils#azureOnlyClient")
+    public void chatCompletionSecurityContext(String apiType, String apiVersion, String testModel) {
+        client = createClient(apiType, apiVersion);
+
+        HashMap<String, JsonValue> userSecurityContextFields = new HashMap<>();
+        userSecurityContextFields.put("end_user_id", JsonValue.from(UUID.randomUUID().toString()));
+        userSecurityContextFields.put("source_ip", JsonValue.from("123.456.78.9"));
+
+        HashMap<String, JsonValue> userSecurityContext = new HashMap<>();
+        userSecurityContext.put("user_security_context", JsonValue.from(userSecurityContextFields));
+
+        ChatCompletionCreateParams params = createChatCompletionParamsBuilder(testModel, "Hello, world")
+                .additionalBodyProperties(userSecurityContext)
+                .build();
+
         ChatCompletion chatCompletion = client.chat().completions().create(params);
         assertChatCompletion(chatCompletion);
     }

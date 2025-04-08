@@ -43,6 +43,8 @@ import java.util.function.Supplier;
 
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -119,10 +121,14 @@ public class OpenAIOkHttpClientTestBase {
     }
 
     ChatCompletionCreateParams createChatCompletionParams(String testModel, String userMessage) {
-        return ChatCompletionCreateParams.builder()
-            .messages(asList(createSystemMessageParam(), createUserMessageParam(userMessage)))
-            .model(testModel)
+        return createChatCompletionParamsBuilder(testModel, userMessage)
             .build();
+    }
+
+    ChatCompletionCreateParams.Builder createChatCompletionParamsBuilder (String testModel, String userMessage) {
+        return ChatCompletionCreateParams.builder()
+                .messages(asList(createSystemMessageParam(), createUserMessageParam(userMessage)))
+                .model(testModel);
     }
 
     ChatCompletionCreateParams createChatCompletionParamsWithFunction(String testModel,
@@ -475,24 +481,31 @@ public class OpenAIOkHttpClientTestBase {
     }
 
     void assertChatCompletionByod(ChatCompletion chatCompletion) {
-        //        assertNotNull(chatCompletion._id());
-        //        assertEquals("extensions.chat.completion", chatCompletion.object_().toString());
-        //        assertNotNull(chatCompletion.model());
-        //        assertNotNull(chatCompletion.created());
-        //
-        //        assertEquals(1, chatCompletion.choices().size());
-        //        ChatCompletion.Choice choice = chatCompletion.choices().get(0);
-        //
-        //        assertNotNull(choice.finishReason());
-        //        assertEquals(0, choice.index());
-        //        assertTrue(choice.message().content().isPresent());
-        //        assertNotNull(choice.message().role());
-        //        JsonValue context = choice.message()._additionalProperties().get("context");
-        //        assertNotNull(context);
-        //        Map<String, JsonValue> contextMap =
-        //                (Map<String, JsonValue>) context.asObject().get();
-        //        assertNotNull(contextMap.get("citations"));
-        //        assertNotNull(contextMap.get("intent"));
+        assertNotNull(chatCompletion.id());
+        assertEquals("extensions.chat.completion", chatCompletion._object_().toString());
+        assertNotNull(chatCompletion.model());
+        assertNotNull(chatCompletion.created());
+
+        assertEquals(1, chatCompletion.choices().size());
+        ChatCompletion.Choice choice = chatCompletion.choices().get(0);
+
+        assertNotNull(choice.finishReason());
+        assertEquals(choice.finishReason(), ChatCompletion.Choice.FinishReason.STOP);
+        assertEquals(0, choice.index());
+        assertTrue(choice.message().content().isPresent());
+
+        Map<String, JsonValue> additionalProperties = choice.message()._additionalProperties();
+
+        assertTrue(additionalProperties.containsKey("end_turn"));
+        assertEquals(true, additionalProperties.get("end_turn").asBoolean().get());
+
+        assertTrue(additionalProperties.containsKey("context"));
+        Map<String, JsonValue> context = (Map<String, JsonValue>) additionalProperties.get("context").asObject().get();
+        assertNotNull(context);
+        assertTrue(context.containsKey("intent"));
+        assertFalse(CoreUtils.isNullOrEmpty((String) context.get("intent").asString().get()));
+        assertTrue(context.containsKey("citations"));
+        assertTrue(((List<JsonValue>) context.get("citations").asArray().get()).size() > 0);
     }
 
     void assertRaiContentFilter(BadRequestException e) {
