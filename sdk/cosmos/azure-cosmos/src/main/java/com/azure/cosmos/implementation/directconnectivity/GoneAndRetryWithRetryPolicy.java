@@ -283,7 +283,7 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
         }
 
         private Pair<Mono<ShouldRetryResult>, Boolean> handleGoneException(GoneException exception) {
-            logger.warn("Received gone exception, will retry, {}", exception.toString());
+            logger.debug("Received gone exception, will retry, {}", exception.toString());
             return Pair.of(null, true); // indicate we are in retry.
         }
 

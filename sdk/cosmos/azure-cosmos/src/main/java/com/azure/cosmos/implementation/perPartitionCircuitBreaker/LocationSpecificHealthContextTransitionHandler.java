@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation.perPartitionCircuitBreaker;
 
 import com.azure.cosmos.implementation.Configs;
-import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.PartitionKeyRangeWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,14 +15,9 @@ public class LocationSpecificHealthContextTransitionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(LocationSpecificHealthContextTransitionHandler.class);
 
-    private final GlobalEndpointManager globalEndpointManager;
     private final ConsecutiveExceptionBasedCircuitBreaker consecutiveExceptionBasedCircuitBreaker;
 
-    public LocationSpecificHealthContextTransitionHandler(
-        GlobalEndpointManager globalEndpointManager,
-        ConsecutiveExceptionBasedCircuitBreaker consecutiveExceptionBasedCircuitBreaker) {
-        this.globalEndpointManager = globalEndpointManager;
-
+    public LocationSpecificHealthContextTransitionHandler(ConsecutiveExceptionBasedCircuitBreaker consecutiveExceptionBasedCircuitBreaker) {
         this.consecutiveExceptionBasedCircuitBreaker = consecutiveExceptionBasedCircuitBreaker;
     }
 
@@ -180,8 +174,8 @@ public class LocationSpecificHealthContextTransitionHandler {
                             isReadOnlyRequest);
                 } else {
 
-                    if (logger.isWarnEnabled()) {
-                        logger.warn("Partition {}-{} of collection : {} marked as Unavailable from HealthyTentative for region : {}",
+                    if (logger.isDebugEnabled()) {
+                        logger.debug("Partition {}-{} of collection : {} marked as Unavailable from HealthyTentative for region : {}",
                             partitionKeyRangeWrapper.getPartitionKeyRange().getMinInclusive(),
                             partitionKeyRangeWrapper.getPartitionKeyRange().getMaxExclusive(),
                             partitionKeyRangeWrapper.getCollectionResourceId(),

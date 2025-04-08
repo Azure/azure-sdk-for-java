@@ -23,6 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Supplier;
 
@@ -66,7 +67,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     public final Map<String, CosmosException> rntbdCancelledRequestMap = new ConcurrentHashMap<>();
 
     // Track request timelines of HTTP requests which were in transit when RxGatewayStoreModel#invokeAsync pipeline is cancelled
-    public final List<GatewayRequestTimelineContext> cancelledGatewayRequestTimelineContexts = new ArrayList<>();
+    public final List<GatewayRequestTimelineContext> cancelledGatewayRequestTimelineContexts = new CopyOnWriteArrayList<>(new ArrayList<>());
 
     private volatile CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest;
 
@@ -74,8 +75,6 @@ public class DocumentServiceRequestContext implements Cloneable {
 
     private volatile PerPartitionCircuitBreakerInfoHolder perPartitionCircuitBreakerInfoHolder;
     private volatile PerPartitionFailoverInfoHolder perPartitionFailoverInfoHolder;
-
-    public volatile boolean isEndToEndOperationLatencyPolicyApplicableForRequest = false;
 
     public DocumentServiceRequestContext() {}
 

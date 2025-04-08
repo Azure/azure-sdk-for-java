@@ -9,9 +9,9 @@ public class EndToEndTimeoutErrorTracker {
 
     private final Instant failureWindowStart;
 
-    private final Integer errorCount;
+    private final int errorCount;
 
-    public EndToEndTimeoutErrorTracker(Instant failureWindowStart, Integer errorCount) {
+    public EndToEndTimeoutErrorTracker(Instant failureWindowStart, int errorCount) {
         this.failureWindowStart = failureWindowStart;
         this.errorCount = errorCount;
     }
@@ -20,7 +20,7 @@ public class EndToEndTimeoutErrorTracker {
         return this.failureWindowStart;
     }
 
-    public Integer getErrorCount() {
+    public int getErrorCount() {
         return this.errorCount;
     }
 }

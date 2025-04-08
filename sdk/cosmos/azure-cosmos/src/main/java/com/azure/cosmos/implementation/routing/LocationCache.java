@@ -258,7 +258,7 @@ public class LocationCache {
             this.locationInfo.hubRoutingContext,
             this.locationInfo.regionNameByWriteRegionalRoutingContexts,
             this.locationInfo.availableWriteRegionalRoutingContextsByRegionName,
-            this.defaultRoutingContext,
+            this.defaultRoutingContext, // fallback to default for writes
             effectiveExcludedRegions,
             unavailableRegionsForPartition);
     }
@@ -372,6 +372,7 @@ public class LocationCache {
         List<RegionalRoutingContext> endpointsRemovedByInternalExcludeRegions = new ArrayList<>();
         List<RegionalRoutingContext> applicableEndpoints = new ArrayList<>();
 
+        // exclude those regions which are user excluded first
         for (RegionalRoutingContext endpoint : regionalRoutingContexts) {
             Utils.ValueHolder<String> regionName = new Utils.ValueHolder<>();
             if (Utils.tryGetValue(regionNameByRegionalRoutingContext, endpoint, regionName)) {
@@ -381,6 +382,9 @@ public class LocationCache {
             }
         }
 
+        // exclude "internal" exclude regions (from PPCB primarily) next
+        // this is done to populate the internal exclude regions which
+        // could be added back to applicable regions
         if (internalExcludeRegions != null && !internalExcludeRegions.isEmpty()) {
             for (RegionalRoutingContext endpoint : regionalRoutingContexts) {
                 Utils.ValueHolder<String> regionName = new Utils.ValueHolder<>();
@@ -964,7 +968,6 @@ public class LocationCache {
                                                                                    Utils.ValueHolder<UnmodifiableList<String>> orderedLocations,
                                                                                    Utils.ValueHolder<UnmodifiableList<RegionalRoutingContext>> orderedEndpointsHolder,
                                                                                    Utils.ValueHolder<UnmodifiableMap<RegionalRoutingContext, String>> regionMap) {
-
         Map<String, RegionalRoutingContext> endpointsByLocation = new CaseInsensitiveMap<>();
         Map<RegionalRoutingContext, String> regionByEndpoint = new CaseInsensitiveMap<>();
         List<String> parsedLocations = new ArrayList<>();

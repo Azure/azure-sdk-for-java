@@ -6,12 +6,10 @@ package com.azure.cosmos.implementation.perPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.AvailabilityStrategyContext;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.CrossRegionAvailabilityContextForRxDocumentServiceRequest;
-import com.azure.cosmos.implementation.FeedOperationContextForCircuitBreaker;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.PartitionKeyRangeWrapper;
-import com.azure.cosmos.implementation.PointOperationContextForCircuitBreaker;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
@@ -63,7 +61,7 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
         PartitionLevelCircuitBreakerConfig partitionLevelCircuitBreakerConfig = Configs.getPartitionLevelCircuitBreakerConfig();
         this.consecutiveExceptionBasedCircuitBreaker = new ConsecutiveExceptionBasedCircuitBreaker(partitionLevelCircuitBreakerConfig);
         this.locationSpecificHealthContextTransitionHandler
-            = new LocationSpecificHealthContextTransitionHandler(this.globalEndpointManager, this.consecutiveExceptionBasedCircuitBreaker);
+            = new LocationSpecificHealthContextTransitionHandler(this.consecutiveExceptionBasedCircuitBreaker);
         this.globalAddressResolverSnapshot = new AtomicReference<>();
         this.regionalRoutingContextToRegion = new ConcurrentHashMap<>();
     }
@@ -572,37 +570,5 @@ public class GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker impleme
 
     public PartitionLevelCircuitBreakerConfig getCircuitBreakerConfig() {
         return this.consecutiveExceptionBasedCircuitBreaker.getPartitionLevelCircuitBreakerConfig();
-    }
-
-    private static String getCollectionLink(RxDocumentServiceRequest request) {
-
-        checkNotNull(request, "Argument 'request' cannot be null!");
-        checkNotNull(request.requestContext, "Argument 'request.requestContext' cannot be null!");
-
-        CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest
-            = request.requestContext.getCrossRegionAvailabilityContext();
-
-        checkNotNull(crossRegionAvailabilityContextForRequest, "Argument 'crossRegionAvailabilityContextForRequest' cannot be null!");
-
-        PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker
-            = crossRegionAvailabilityContextForRequest.getPointOperationContextForCircuitBreaker();
-        FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker
-            = crossRegionAvailabilityContextForRequest.getFeedOperationContextForCircuitBreaker();
-
-        if (pointOperationContextForCircuitBreaker != null) {
-            checkNotNull(
-                pointOperationContextForCircuitBreaker.getCollectionLink(),
-                "Argument 'pointOperationContextForCircuitBreaker.getCollectionLink()' cannot be null!");
-            return pointOperationContextForCircuitBreaker.getCollectionLink();
-        }
-
-        if (feedOperationContextForCircuitBreaker != null) {
-            checkNotNull(
-                feedOperationContextForCircuitBreaker.getCollectionLink(),
-                "Argument 'feedOperationContextForCircuitBreaker.getCollectionLink()' cannot be null!");
-            return feedOperationContextForCircuitBreaker.getCollectionLink();
-        }
-
-        throw new IllegalStateException("Both pointOperationContextForCircuitBreaker [or] feedOperationContextForCircuitBreaker cannot be null!");
     }
 }
