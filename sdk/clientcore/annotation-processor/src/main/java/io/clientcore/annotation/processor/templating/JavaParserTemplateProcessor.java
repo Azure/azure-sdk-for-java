@@ -46,6 +46,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 
 import static io.clientcore.annotation.processor.utils.ResponseHandler.generateResponseHandling;
@@ -244,10 +245,16 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                     new NodeList<>(new StringLiteralExpr("unchecked"), new StringLiteralExpr("cast")))))
             .addMarkerAnnotation(Override.class)
             .setType(TypeConverter.getAstType(method.getMethodReturnType()));
-        method.getParameters()
-            .forEach(param -> internalMethod
-                .addParameter(new Parameter(StaticJavaParser.parseType(param.getShortTypeName()), param.getName())));
 
+        method.getParameters().forEach(param -> {
+            if (param.getTypeMirror().getKind() == TypeKind.DECLARED) {
+                internalMethod
+                    .addParameter(new Parameter(StaticJavaParser.parseType(param.getShortTypeName()), param.getName()));
+            } else {
+                internalMethod.addParameter(
+                    new Parameter(StaticJavaParser.parseType(param.getTypeMirror().toString()), param.getName()));
+            }
+        });
         BlockStmt body = internalMethod.getBody().get();
 
         initializeHttpRequest(body, method);
