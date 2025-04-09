@@ -20,7 +20,7 @@ public interface HttpClient {
      * @return The response.
      * @throws CoreException If any error occurs during sending the request or receiving the response.
      */
-    Response<BinaryData> send(HttpRequest request) throws CoreException;
+    Response<BinaryData> send(HttpRequest request);
 
     /**
      * Get a new instance of the {@link HttpClient} that the {@link HttpClientProvider} loaded from the classpath is

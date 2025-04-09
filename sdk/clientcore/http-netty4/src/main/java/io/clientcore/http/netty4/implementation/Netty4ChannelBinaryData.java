@@ -72,7 +72,7 @@ final class Netty4ChannelBinaryData extends BinaryData {
     }
 
     @Override
-    public <T> T toObject(Type type, ObjectSerializer serializer) throws CoreException {
+    public <T> T toObject(Type type, ObjectSerializer serializer) {
         try {
             return serializer.deserializeFromBytes(toBytes(), type);
         } catch (IOException e) {
@@ -88,7 +88,7 @@ final class Netty4ChannelBinaryData extends BinaryData {
     }
 
     @Override
-    public void writeTo(JsonWriter jsonWriter) throws CoreException {
+    public void writeTo(JsonWriter jsonWriter) {
         Objects.requireNonNull(jsonWriter, "'jsonWriter' cannot be null");
 
         try {

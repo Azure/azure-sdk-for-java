@@ -82,7 +82,7 @@ class NettyHttpClient implements HttpClient {
     }
 
     @Override
-    public Response<BinaryData> send(HttpRequest request) throws CoreException {
+    public Response<BinaryData> send(HttpRequest request) {
         URI uri = request.getUri();
         String host = uri.getHost();
         int port = uri.getPort() == -1 ? ("https".equalsIgnoreCase(uri.getScheme()) ? 443 : 80) : uri.getPort();
