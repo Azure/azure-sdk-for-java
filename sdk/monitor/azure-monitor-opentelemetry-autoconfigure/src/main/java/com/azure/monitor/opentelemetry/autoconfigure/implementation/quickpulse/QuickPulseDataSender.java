@@ -55,7 +55,7 @@ class QuickPulseDataSender implements Runnable {
         this.instrumentationKey = instrumentationKey;
         this.configuration = configuration;
         logger.verbose("QuickPulseDataSender initialized with endpointUrl: {}, instrumentationKey: {}",
-            endpointUrl.get().toString(), instrumentationKey.get());
+            endpointUrl.get() == null ? "null" : endpointUrl.get().toString(), instrumentationKey.get());
     }
 
     @Override

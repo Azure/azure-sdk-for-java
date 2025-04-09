@@ -79,9 +79,10 @@ public class QuickPulse {
     private void initialize(HttpPipeline httpPipeline, Supplier<URL> endpointUrl, Supplier<String> instrumentationKey,
         @Nullable String roleName, @Nullable String roleInstance, String sdkVersion) {
         if (LOGGER.canLogAtLevel(LogLevel.VERBOSE)) {
+            String maskedIkey = instrumentationKey.get() == null ? "null" : IKeyMasker.mask(instrumentationKey.get());
             LOGGER.verbose(
                 "Initializing QuickPulse with instrumentation key: {} , URL {}, rolename {}, role instance {}, sdk version {}",
-                IKeyMasker.mask(instrumentationKey.get()), endpointUrl.get().toString(), roleName, roleInstance,
+                maskedIkey, endpointUrl.get() == null ? "null" : endpointUrl.get().toString(), roleName, roleInstance,
                 sdkVersion);
         }
 
