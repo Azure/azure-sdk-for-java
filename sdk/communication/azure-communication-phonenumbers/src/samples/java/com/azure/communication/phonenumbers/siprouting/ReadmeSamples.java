@@ -14,6 +14,8 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import static java.util.Arrays.asList;
 
+import com.azure.communication.phonenumbers.siprouting.models.SipDomain;
+
 public class ReadmeSamples {
 
     /**
@@ -126,6 +128,23 @@ public class ReadmeSamples {
     }
 
     /**
+     * Sample code for getting a SIP domain based on its domain name.
+     */
+    public void getDomain() {
+        SipRoutingClient sipRoutingClient = createSipRoutingClient();
+
+        // BEGIN: readme-sample-getDomain
+        String domainName = "<domain name>";
+        SipDomain domain = sipRoutingClient.getDomain(domainName);
+        if (domain != null) {
+            System.out.println("Domain " + domain.isEnabled());
+        } else {
+            System.out.println("Domain not found. " + domainName);
+        }
+        // END: readme-sample-getDomain
+    }
+
+    /**
      * Sample code for setting SIP trunks and routes.
      */
     public void setTrunksAndRoutes() {
@@ -164,4 +183,26 @@ public class ReadmeSamples {
         sipRoutingClient.deleteTrunk("<trunk fqdn>");
         // END: readme-sample-deleteTrunk
     }
+
+    /**
+     * Sample code for setting a SIP Domain.
+     */
+    public void setDomain() {
+        SipRoutingClient sipRoutingClient = createSipRoutingClient();
+
+        // BEGIN: readme-sample-setDomain
+        sipRoutingClient.setDomain(new SipDomain());
+        // END: readme-sample-setDomain
+    }
+
+    /**
+     * Sample code for deleting a SIP domain.
+     */
+    public void deleteDomain() {
+        SipRoutingClient sipRoutingClient = createSipRoutingClient();
+
+        // BEGIN: readme-sample-deleteDomain
+        sipRoutingClient.deleteDomain("<domain name>");
+        // END: readme-sample-deleteDomain
+    } 
 }
