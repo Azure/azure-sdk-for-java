@@ -979,9 +979,10 @@ public class BlobTestBase extends TestProxyTestBase {
     }
 
     protected String getFileShareID(String shareName) {
-        return String.format("/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Storage/storageAccounts/"
-            + "%s/fileServices/default/shares/%s", SUBSCRIPTION_ID, RESOURCE_GROUP_NAME,
-            ENVIRONMENT.getPrimaryAccount().getName(), shareName);
+        return String.format(
+            "/subscriptions/%s/resourceGroups/%s/providers/Microsoft.Storage/storageAccounts/"
+                + "%s/fileServices/default/shares/%s", SUBSCRIPTION_ID, RESOURCE_GROUP_NAME,
+                ENVIRONMENT.getPrimaryAccount().getName(), shareName);
     }
 
     protected String getFileShareUri(String fileShareID) {
