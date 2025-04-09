@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2025-04-04)
+## 1.0.0 (2025-04-08)
 
 This release is the first stable release of the Azure Compute Batch client library.
 
@@ -24,8 +24,18 @@ This release is the first stable release of the Azure Compute Batch client libra
 
 - On the `BatchCertificate` model, the return type of `getData()` is now `byte[]` instead of `String`.
 
-- Changed the names of the optional parameters models:
+- Made miscellaneous model name changes:
+  - `BatchJobAction` is now `BatchJobActionKind`.
+  - `BatchNodeRebootOption` is now `BatchNodeRebootKind`.
+  - `ContainerConfiguration` is now `BatchContainerConfiguration`.
+  - `ErrorCategory` is now `BatchErrorSourceCategory`.
+  - `ImageReference` is now `BatchImageReference`.
+  - `MetadataItem` is now `BatchMetadataItem`.
+  - `OnAllBatchTasksComplete` is now `BatchAllTasksCompleteMode`.
+  - `OnBatchTaskFailure` is now `BatchTaskFailureMode`.
+  - `UserAssignedIdentity` is now `BatchUserAssignedIdentity`.
 
+- Changed the names of the optional parameters models:
   - `GetBatchApplicationOptions` is now `BatchApplicationGetOptions`.
   - `ListBatchApplicationsOptions` is now `BatchApplicationsListOptions`.
   - `ListBatchPoolUsageMetricsOptions` is now `BatchPoolUsageMetricsListOptions`.
@@ -72,7 +82,7 @@ This release is the first stable release of the Azure Compute Batch client libra
   - `CreateBatchTaskOptions` is now `BatchTaskCreateOptions`.
   - `ListBatchTasksOptions` is now `BatchTasksListOptions`.
   - `CreateBatchTaskCollectionOptions` is now `BatchTaskCollectionCreateOptions`.
-  - `DeleteBatchTaskOptions` is now `BatchTaskDeleteOptions.`
+  - `DeleteBatchTaskOptions` is now `BatchTaskDeleteOptions`.
   - `GetBatchTaskOptions` is now `BatchTaskGetOptions`.
   - `ReplaceBatchTaskOptions` is now `BatchTaskReplaceOptions`.
   - `ListBatchSubTasksOptions` is now `BatchSubTasksListOptions`.
@@ -101,6 +111,9 @@ This release is the first stable release of the Azure Compute Batch client libra
   - `GetBatchNodeFileOptions` is now `BatchNodeFileGetOptions`.
   - `GetBatchNodeFilePropertiesOptions` is now `BatchNodeFilePropertiesGetOptions`.
   - `ListBatchNodeFilesOptions` is now `BatchNodeFilesListOptions`.
+
+- The type of `timeOutInSeconds` in many of the optional parameter models has changed from `Integer` to `Duration`. This affects the getter and setter methods on these models. `getTimeOutInSeconds()` now returns `Duration` instead of `Integer`. `setTimeOutInSeconds(Integer timeOutInSeconds)` is now `setTimeOutInSeconds(Duration timeOutInSeconds)`.
+  - This affects the following optional parameter models: `BatchApplicationGetOptions`, `BatchApplicationsListOptions`, `BatchCertificateCancelDeletionOptions`, `BatchCertificateCreateOptions`, `BatchCertificateDeleteOptions`, `BatchCertificateGetOptions`, `BatchCertificatesListOptions`, `BatchJobCreateOptions`, `BatchJobDeleteOptions`, `BatchJobDisableOptions`, `BatchJobEnableOptions`, `BatchJobGetOptions`, `BatchJobPreparationAndReleaseTaskStatusListOptions`, `BatchJobReplaceOptions`, `BatchJobScheduleCreateOptions`, `BatchJobScheduleDeleteOptions`, `BatchJobScheduleDisableOptions`, `BatchJobScheduleEnableOptions`, `BatchJobScheduleExistsOptions`, `BatchJobScheduleGetOptions`, `BatchJobScheduleReplaceOptions`, `BatchJobScheduleTerminateOptions`, `BatchJobScheduleUpdateOptions`, `BatchJobSchedulesListOptions`, `BatchJobTaskCountsGetOptions`, `BatchJobTerminateOptions`, `BatchJobUpdateOptions`, `BatchJobsFromScheduleListOptions`, `BatchJobsListOptions`, `BatchNodeDeallocateOptions`, `BatchNodeExtensionGetOptions`, `BatchNodeExtensionsListOptions`, `BatchNodeFileDeleteOptions`, `BatchNodeFileGetOptions`, `BatchNodeFilePropertiesGetOptions`, `BatchNodeFilesListOptions`, `BatchNodeGetOptions`, `BatchNodeLogsUploadOptions`, `BatchNodeRebootOptions`, `BatchNodeReimageOptions`, `BatchNodeRemoteLoginSettingsGetOptions`, `BatchNodeSchedulingDisableOptions`, `BatchNodeSchedulingEnableOptions`, `BatchNodeStartOptions`, `BatchNodeUserCreateOptions`, `BatchNodeUserDeleteOptions`, `BatchNodeUserReplaceOptions`, `BatchNodesListOptions`, `BatchNodesRemoveOptions`, `BatchPoolAutoScaleDisableOptions`, `BatchPoolAutoScaleEnableOptions`, `BatchPoolAutoScaleEvaluateOptions`, `BatchPoolCreateOptions`, `BatchPoolDeleteOptions`, `BatchPoolExistsOptions`, `BatchPoolGetOptions`, `BatchPoolNodeCountsListOptions`, `BatchPoolPropertiesReplaceOptions`, `BatchPoolResizeOptions`, `BatchPoolResizeStopOptions`, `BatchPoolUpdateOptions`, `BatchPoolUsageMetricsListOptions`, `BatchPoolsListOptions`, `BatchSubTasksListOptions`, `BatchTaskCollectionCreateOptions`, `BatchTaskCreateOptions`, `BatchTaskDeleteOptions`, `BatchTaskFileDeleteOptions`, `BatchTaskFileGetOptions`, `BatchTaskFilePropertiesGetOptions`, `BatchTaskFilesListOptions`, `BatchTaskGetOptions`, `BatchTaskReactivateOptions`, `BatchTaskReplaceOptions`, `BatchTaskTerminateOptions`, `BatchTasksListOptions`, and `SupportedBatchImagesListOptions`.
 
 ## 1.0.0-beta.4 (2025-03-24)
 
