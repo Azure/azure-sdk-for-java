@@ -5,17 +5,33 @@ package io.clientcore.http.netty4;
 
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.ProxyOptions;
+import io.clientcore.core.utils.AuthenticateChallenge;
+import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.configuration.Configuration;
+import io.clientcore.http.netty4.implementation.CoreHttpProxyHandler;
+import io.clientcore.http.netty4.implementation.NettyUtility;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.proxy.ProxyHandler;
+import io.netty.handler.proxy.Socks4ProxyHandler;
+import io.netty.handler.proxy.Socks5ProxyHandler;
 import io.netty.handler.ssl.SslContext;
 import io.netty.util.concurrent.DefaultThreadFactory;
 
+import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.time.Duration;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Predicate;
+import java.util.regex.Pattern;
+
+import static io.clientcore.http.netty4.implementation.NettyUtility.createCodec;
 
 /**
  * Builder for creating instances of NettyHttpClient.
@@ -154,6 +170,8 @@ public class NettyHttpClientBuilder {
         Bootstrap bootstrap = new Bootstrap().group(group)
             .channel(channelClass)
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) getTimeoutMillis(connectTimeout, 10_000));
+        // Disable auto-read as we want to control when and how data is read from the channel.
+        bootstrap.option(ChannelOption.AUTO_READ, false);
 
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
@@ -161,7 +179,39 @@ public class NettyHttpClientBuilder {
         ProxyOptions buildProxyOptions
             = (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration, true) : proxyOptions;
 
-        return new NettyHttpClient(bootstrap, sslContext, buildProxyOptions, getTimeoutMillis(readTimeout),
+        // Configure an immutable ChannelInitializer in the builder with everything that can be added on a non-per
+        // request basis.
+        AtomicReference<List<AuthenticateChallenge>> proxyChallengeHolder = new AtomicReference<>();
+        ShouldProxyPredicate shouldProxyPredicate = new ShouldProxyPredicate(buildProxyOptions);
+        bootstrap.handler(new ChannelInitializer<Channel>() {
+            @Override
+            protected void initChannel(Channel ch) {
+                // Proxying can be added globally as the Channel will have a remote address associated with it that can
+                // be used to determine non-proxying hosts.
+                if (shouldProxyPredicate.test(ch.remoteAddress())) {
+                    ProxyHandler proxyHandler;
+                    if (buildProxyOptions.getType() == ProxyOptions.Type.SOCKS4) {
+                        proxyHandler
+                            = new Socks4ProxyHandler(buildProxyOptions.getAddress(), buildProxyOptions.getUsername());
+                    } else if (buildProxyOptions.getType() == ProxyOptions.Type.SOCKS5) {
+                        proxyHandler = new Socks5ProxyHandler(buildProxyOptions.getAddress(),
+                            buildProxyOptions.getUsername(), buildProxyOptions.getPassword());
+                    } else {
+                        proxyHandler = new CoreHttpProxyHandler(buildProxyOptions, proxyChallengeHolder);
+                    }
+
+                    ch.pipeline().addFirst(proxyHandler);
+                }
+
+                // The HttpClientCodec can always be added during initialization of the Channel.
+                // Give the ChannelHandler a specific name as we may need to position other handlers around it.
+                // For example, SSL handling needs to be positioned between proxying and this codec, so position those
+                // before this handlers name.
+                ch.pipeline().addLast(NettyUtility.CODEC_HANDLER_NAME, createCodec());
+            }
+        });
+
+        return new NettyHttpClient(bootstrap, sslContext, getTimeoutMillis(readTimeout),
             getTimeoutMillis(responseTimeout), getTimeoutMillis(writeTimeout));
     }
 
@@ -179,5 +229,51 @@ public class NettyHttpClientBuilder {
         }
 
         return Math.max(1, duration.toMillis());
+    }
+
+    private static final class ShouldProxyPredicate implements Predicate<SocketAddress> {
+        private final ProxyOptions proxyOptions;
+        private final Pattern nonProxyHostsPattern;
+
+        private ShouldProxyPredicate(ProxyOptions proxyOptions) {
+            this.proxyOptions = proxyOptions;
+            if (proxyOptions == null || CoreUtils.isNullOrEmpty(proxyOptions.getNonProxyHosts())) {
+                nonProxyHostsPattern = null;
+            } else {
+                // HTTP host names are case-insensitive.
+                nonProxyHostsPattern = Pattern.compile(proxyOptions.getNonProxyHosts(), Pattern.CASE_INSENSITIVE);
+            }
+        }
+
+        @Override
+        public boolean test(SocketAddress socketAddress) {
+            // If there aren't ProxyOptions, don't proxy.
+            if (proxyOptions == null || proxyOptions.getAddress() == null) {
+                return false;
+            }
+
+            // If there aren't any non-proxy hosts, always add the proxy.
+            if (nonProxyHostsPattern == null) {
+                return true;
+            }
+
+            if (!(socketAddress instanceof InetSocketAddress)) {
+                // Cannot determine host string from non-InetSocketAddress, don't proxy.
+                return false;
+            }
+
+            InetSocketAddress inetSocketAddress = (InetSocketAddress) socketAddress;
+            String hostString = inetSocketAddress.getHostString();
+
+            return hostString != null && nonProxyHostsPattern.matcher(hostString).matches();
+        }
+    }
+
+    // For testing.
+    ProxyOptions getProxyOptions() {
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+
+        return (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration, true) : proxyOptions;
     }
 }

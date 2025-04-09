@@ -157,7 +157,7 @@ public class HttpResponseDrainsBufferTests {
         throws InterruptedException, ExecutionException {
         HttpClient httpClient = new NettyHttpClientProvider().getSharedInstance();
 
-        Semaphore limiter = new Semaphore(Runtime.getRuntime().availableProcessors());
+        Semaphore limiter = new Semaphore(Runtime.getRuntime().availableProcessors() - 1);
         List<Future<Void>> futures = SharedExecutorService.getInstance()
             .invokeAll(IntStream.range(0, 100).mapToObj(ignored -> (Callable<Void>) () -> {
                 try {

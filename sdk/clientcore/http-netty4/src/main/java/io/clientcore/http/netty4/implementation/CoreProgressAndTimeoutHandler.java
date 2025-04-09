@@ -8,8 +8,10 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufHolder;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOutboundBuffer;
+import io.netty.channel.ChannelPipeline;
 import io.netty.channel.ChannelPromise;
 import io.netty.channel.FileRegion;
 import io.netty.handler.codec.http.LastHttpContent;
@@ -28,9 +30,9 @@ import java.util.concurrent.TimeoutException;
  */
 public final class CoreProgressAndTimeoutHandler extends ChannelDuplexHandler {
     /**
-     * Name of the handler when it's added into a ChannelPipeline.
+     * Name of this {@link ChannelHandler}, used to control positioning behaviors in a {@link ChannelPipeline}.
      */
-    public static final String HANDLER_NAME = "clientCoreHandler";
+    public static final String HANDLER_NAME = "ClientCore-Progress-And-Timeout-Handler";
 
     private final long writeTimeoutMillis;
     private final ProgressReporter progressReporter;

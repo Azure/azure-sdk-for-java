@@ -6,6 +6,7 @@
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE" />
     <Or>
       <Class name="io.clientcore.http.netty4.NettyHttpClient" />
+      <Class name="io.clientcore.http.netty4.implementation.CoreHttpProxyHandler" />
       <Class name="io.clientcore.http.netty4.implementation.NettyChannelBinaryData" />
     </Or>
   </Match>
@@ -32,6 +33,7 @@
   <Match>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON" />
     <Or>
+      <Class name="io.clientcore.http.netty4.NettyHttpClientBuilder" />
       <Class name="io.clientcore.http.netty4.NettyHttpClientTests" />
       <Class name="io.clientcore.http.netty4.implementation.CoreProgressAndTimeoutHandlerTests" />
     </Or>
