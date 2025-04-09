@@ -32,7 +32,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure.resourcemanager</groupId>
     <artifactId>azure-resourcemanager-recoveryservicesbackup</artifactId>
-    <version>1.5.0</version>
+    <version>1.6.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -175,4 +175,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Frecoveryservicesbackup%2Fazure-resourcemanager-recoveryservicesbackup%2FREADME.png)
+

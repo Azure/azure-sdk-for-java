@@ -52,9 +52,6 @@ parameters:
   - name: ReleaseDependsOnLiveTests
     type: string
     default: not-specified
-  - name: IgnoreVerifyTypeSpecCodeGenerationError
-    type: boolean
-    default: false
   - name: TimeoutInMinutes
     type: number
     default: 60
@@ -90,7 +87,6 @@ extends:
               Artifacts: ${{ parameters.Artifacts }}
               ExcludePaths: ${{parameters.ExcludePaths}}
               TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
-              IgnoreVerifyTypeSpecCodeGenerationError: ${{ parameters.IgnoreVerifyTypeSpecCodeGenerationError }}
               ReleaseArtifacts:
                 - ${{ if and(eq(variables['System.TeamProject'], 'internal'), eq(variables['Build.Reason'], 'Manual')) }}:
                     - ${{ each artifact in parameters.Artifacts }}:
@@ -156,7 +152,6 @@ extends:
                     - ${{ if ne(artifact.releaseInBatch, 'false') }}:
                         - ${{ artifact }}
               TestPipeline: ${{ parameters.TestPipeline }}
-              ArtifactName: packages
               # This where the MavenBreakGlassApprovers is set for the release tasks.
               ${{ if and(in(variables['Build.Reason'], 'Manual', ''), eq(parameters.ReleaseDependsOnLiveTests, 'false')) }}:
                 Environment: 'MavenBreakGlassApprovers'

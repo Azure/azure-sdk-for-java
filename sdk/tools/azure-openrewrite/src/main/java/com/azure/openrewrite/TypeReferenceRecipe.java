@@ -22,24 +22,24 @@ import java.util.Set;
  * Before applying this recipe:
  * import com.azure.core.util.serializer.TypeReference;
  * ...
- *  result = binaryDataResponse.getValue().toObject(new TypeReference<List<TranslatedTextItem>>() { });
+ *  result = binaryDataResponse.getValue().toObject(new TypeReference&lt;List&lt;TranslatedTextItem&gt;&gt;() { });
  * --------------------------------------------------
  * After applying this recipe:
  * import java.lang.reflect.ParameterizedType;
  * import java.lang.reflect.Type;
  * ...
     result = binaryDataResponse.getValue().toObject(new ParameterizedType() {
-    @Override
+    &#64;Override
     public Type getRawType() {
     return List.class;
     }
 
-    @Override
+    &#64;Override
     public Type[] getActualTypeArguments() {
     return new Type[]{TranslatedTextItem.class};
     }
 
-    @Override
+    &#64;Override
     public Type getOwnerType() {
     return null;
     }
@@ -55,7 +55,7 @@ public class TypeReferenceRecipe extends Recipe {
 
     @Override
     public String getDescription() {
-        return "This recipe converts TypeReference<> to ParameterizedType and removes the import statement for TypeReference.";
+        return "This recipe converts TypeReference&lt;&gt; to ParameterizedType and removes the import statement for TypeReference.";
     }
 
     @Override

@@ -1,6 +1,6 @@
 # Release History
 
-## 1.21.0-beta.1 (Unreleased)
+## 1.21.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,47 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.20.6 (2025-03-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-messaging-eventhubs` from `5.20.1` to version `5.21.0-beta.2`.
+
+
+## 1.20.5 (2025-03-05)
+
+### Bugs Fixed
+
+- Fixed dependency conflict between `azure-storage-blob` and `azure-messaging-eventhubs`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-storage-blob` from `12.29.0` to version `12.29.1`.
+
+## 1.20.4 (2025-02-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-messaging-eventhubs` from `5.20.0` to version `5.20.1`.
+
+## 1.21.0-beta.1 (2025-02-21)
+
+### Features Added
+
+- Use `getOffsetString()` to persist checkpoints rather than `getOffset()`, which is deprecated.  ([44272](https://github.com/Azure/azure-sdk-for-java/pull/44272))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-messaging-eventhubs` from `5.20.0` to version `5.21.0-beta.1`.
 
 ## 1.20.3 (2025-02-11)
 
@@ -522,4 +563,4 @@ store checkpoints and balance partition load among all instances of Event Proces
 - Initial offset provider for each partition is not implemented.
 - Interoperability with Event Processors of other language SDKs like Python is not supported.
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feventhubs%2Fazure-messaging-eventhubs-checkpointstore-blob%2FCHANGELOG.png)
+

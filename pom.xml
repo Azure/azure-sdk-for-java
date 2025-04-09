@@ -22,6 +22,7 @@
     <module>sdk/appconfiguration</module>
     <module>sdk/appcontainers</module>
     <module>sdk/applicationinsights</module>
+    <module>sdk/arizeaiobservabilityeval</module>
     <module>sdk/astro</module>
     <module>sdk/attestation</module>
     <module>sdk/automanage</module>
@@ -55,11 +56,13 @@
     <module>sdk/containerservicefleet</module>
     <module>sdk/contentsafety</module>
     <module>sdk/core</module>
+    <module>sdk/corev2</module>
     <module>sdk/cosmos</module>
     <module>sdk/cosmosdbforpostgresql</module>
     <module>sdk/costmanagement</module>
     <module>sdk/customerinsights</module>
     <module>sdk/dashboard</module>
+    <module>sdk/databasewatcher</module>
     <module>sdk/databox</module>
     <module>sdk/databoxedge</module>
     <module>sdk/databricks</module>
@@ -84,6 +87,7 @@
     <module>sdk/digitaltwins</module>
     <module>sdk/dnsresolver</module>
     <module>sdk/documentintelligence</module>
+    <module>sdk/durabletask</module>
     <module>sdk/dynatrace</module>
     <module>sdk/easm</module>
     <module>sdk/edgeorder</module>
@@ -113,7 +117,9 @@
     <module>sdk/hybridkubernetes</module>
     <module>sdk/hybridnetwork</module>
     <module>sdk/identity</module>
+    <module>sdk/identity-v2</module>
     <module>sdk/imagebuilder</module>
+    <module>sdk/impactreporting</module>
     <module>sdk/informaticadatamanagement</module>
     <module>sdk/iotcentral</module>
     <module>sdk/iotfirmwaredefense</module>
@@ -138,6 +144,7 @@
     <module>sdk/marketplaceordering</module>
     <module>sdk/mediaservices</module>
     <module>sdk/metricsadvisor</module>
+    <module>sdk/migration</module>
     <module>sdk/migrationdiscoverysap</module>
     <module>sdk/mixedreality</module>
     <module>sdk/mobilenetwork</module>
@@ -229,6 +236,7 @@
     <module>sdk/vmwarecloudsimple</module>
     <module>sdk/voiceservices</module>
     <module>sdk/webpubsub</module>
+    <module>sdk/weightsandbiases</module>
     <module>sdk/workloads</module>
     <module>sdk/workloadssapvirtualinstance</module>
   </modules>

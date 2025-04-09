@@ -85,4 +85,4 @@ or contact [opencode@microsoft.com][coc_contact] with any additional questions o
 [sql_api_query]: https://learn.microsoft.com/azure/cosmos-db/sql-api-sql-query
 [quickstart]: https://learn.microsoft.com/azure/cosmos-db/create-sql-api-java?tabs=sync
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fcosmos%2Fazure-cosmos-kafka-connect%2FREADME.png)
+

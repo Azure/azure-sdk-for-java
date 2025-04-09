@@ -10,8 +10,8 @@ import com.azure.resourcemanager.trustedsigning.fluent.models.CheckNameAvailabil
 public final class CheckNameAvailabilityResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CheckNameAvailabilityResultInner model = BinaryData
-            .fromString("{\"nameAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"dvhpfxxypininm\"}")
-            .toObject(CheckNameAvailabilityResultInner.class);
+        CheckNameAvailabilityResultInner model
+            = BinaryData.fromString("{\"nameAvailable\":true,\"reason\":\"AlreadyExists\",\"message\":\"wrwjfeu\"}")
+                .toObject(CheckNameAvailabilityResultInner.class);
     }
 }

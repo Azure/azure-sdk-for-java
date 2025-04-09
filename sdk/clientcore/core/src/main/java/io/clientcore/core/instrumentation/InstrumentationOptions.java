@@ -3,6 +3,8 @@
 
 package io.clientcore.core.instrumentation;
 
+import io.clientcore.core.annotations.Metadata;
+import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
 
 /**
@@ -14,8 +16,10 @@ import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
  * it creates and, if it sets up {@link HttpInstrumentationPolicy}, it should pass
  * {@link InstrumentationOptions} to the policy.
  */
+@Metadata(properties = MetadataProperties.FLUENT)
 public class InstrumentationOptions {
     private boolean isTracingEnabled = true;
+    private boolean isMetricsEnabled = true;
     private Object telemetryProvider = null;
 
     /**
@@ -41,6 +45,31 @@ public class InstrumentationOptions {
      */
     public InstrumentationOptions setTracingEnabled(boolean isTracingEnabled) {
         this.isTracingEnabled = isTracingEnabled;
+        return this;
+    }
+
+    /**
+     * Enables or disables metrics. Metrics are enabled by default when OpenTelemetry is found on the
+     * classpath and is configured to export metrics.
+     *
+     * <p><strong>Disable metrics on a specific client instance</strong></p>
+     *
+     * <!-- src_embed io.clientcore.core.telemetry.disablemetrics -->
+     * <pre>
+     *
+     * HttpInstrumentationOptions instrumentationOptions = new HttpInstrumentationOptions&#40;&#41;
+     *     .setMetricsEnabled&#40;false&#41;;
+     *
+     * SampleClient client = new SampleClientBuilder&#40;&#41;.instrumentationOptions&#40;instrumentationOptions&#41;.build&#40;&#41;;
+     * client.clientCall&#40;&#41;;
+     *
+     * </pre>
+     * <!-- end io.clientcore.core.telemetry.disablemetrics -->
+     * @param isMetricsEnabled true to enable metrics, false to disable.
+     * @return The updated {@link InstrumentationOptions} object.
+     */
+    public InstrumentationOptions setMetricsEnabled(boolean isMetricsEnabled) {
+        this.isMetricsEnabled = isMetricsEnabled;
         return this;
     }
 
@@ -83,6 +112,15 @@ public class InstrumentationOptions {
      */
     public boolean isTracingEnabled() {
         return isTracingEnabled;
+    }
+
+    /**
+     * Returns true if metrics are enabled, false otherwise.
+     *
+     * @return true if metrics are enabled, false otherwise.
+     */
+    public boolean isMetricsEnabled() {
+        return isMetricsEnabled;
     }
 
     /**

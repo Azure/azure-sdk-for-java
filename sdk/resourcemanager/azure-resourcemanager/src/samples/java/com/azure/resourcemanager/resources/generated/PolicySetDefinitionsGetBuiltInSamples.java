@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicySetDefinitionsGetBuiltInSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
      * getBuiltInPolicySetDefinition.json
      */
     /**
@@ -22,6 +22,6 @@ public final class PolicySetDefinitionsGetBuiltInSamples {
             .manager()
             .policyClient()
             .getPolicySetDefinitions()
-            .getBuiltInWithResponse("1f3afdf9-d0c9-4c3d-847f-89da613e70a8", com.azure.core.util.Context.NONE);
+            .getBuiltInWithResponse("1f3afdf9-d0c9-4c3d-847f-89da613e70a8", null, com.azure.core.util.Context.NONE);
     }
 }

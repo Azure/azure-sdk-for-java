@@ -9,7 +9,7 @@ package com.azure.resourcemanager.resources.generated;
  */
 public final class PolicySetDefinitionsGetSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2021-06-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
      * getPolicySetDefinition.json
      */
     /**
@@ -22,6 +22,6 @@ public final class PolicySetDefinitionsGetSamples {
             .manager()
             .policyClient()
             .getPolicySetDefinitions()
-            .getWithResponse("CostManagement", com.azure.core.util.Context.NONE);
+            .getWithResponse("CostManagement", null, com.azure.core.util.Context.NONE);
     }
 }

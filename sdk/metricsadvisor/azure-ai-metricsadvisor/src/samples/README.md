@@ -118,4 +118,4 @@ Guidelines][SDK_README_CONTRIBUTING] for more information.
 [list_anomaly_alert_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/ListsAnomaliesForAlertsSample.java
 [list_anomaly_alert_async_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/metricsadvisor/azure-ai-metricsadvisor/src/samples/java/com/azure/ai/metricsadvisor/ListsAnomaliesForAlertsAsyncSample.java
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fmetricsadvisor%2Fazure-ai-metricsadvisor%2FREADME.png)
+

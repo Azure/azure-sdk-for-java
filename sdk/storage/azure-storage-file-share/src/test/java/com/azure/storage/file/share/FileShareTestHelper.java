@@ -43,6 +43,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class FileShareTestHelper {
     private static final ClientLogger LOGGER = new ClientLogger(FileShareTestHelper.class);
@@ -375,5 +376,10 @@ public class FileShareTestHelper {
     protected static Stream<Arguments> filePermissionFormatSupplier() {
         return Stream.of(Arguments.of(FilePermissionFormat.SDDL), Arguments.of(FilePermissionFormat.BINARY),
             Arguments.of((Object) null));
+    }
+
+    protected static void assertSmbPropertiesNull(FileSmbProperties smbProperties) {
+        assertNull(smbProperties.getFilePermissionKey());
+        assertNull(smbProperties.getNtfsFileAttributes());
     }
 }

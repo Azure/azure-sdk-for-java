@@ -61,4 +61,4 @@ This project welcomes contributions and suggestions. See [Contributing][sdk_read
 [sample_async_client_java_doc_code_snippets]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/tables/azure-data-tables/src/samples/java/com/azure/data/tables/codesnippets/TableServiceAsyncClientJavaDocCodeSnippets.java
 [sample_sync_client_java_doc_code_snippets]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/tables/azure-data-tables/src/samples/java/com/azure/data/tables/codesnippets/TableServiceClientJavaDocCodeSnippets.java
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%tables%2Fazure-data-tables%2Fsrc%2Fsamples%2README.png)
+

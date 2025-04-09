@@ -23,16 +23,19 @@ public final class WeatherNotification implements JsonSerializable<WeatherNotifi
 
     /*
      * A severity/hazard index.
-     *   * `0` - No hazard.
-     *   * `1` - Be informed, be aware.
-     *   * `2` - Pay attention, be prepared.
-     *   * `3` - Take action.
-     *   * `4` - Life threatening, emergency.
+     * * `0` - No hazard.
+     * * `1` - Be informed, be aware.
+     * * `2` - Pay attention, be prepared.
+     * * `3` - Take action.
+     * * `4` - Life threatening, emergency.
      */
     private HazardIndex hazardIndex;
 
     /*
-     * A unique identifier (non-displayable) for each type of hazard: LightRain, ModerateRain, HeavyRain, LightMix, ModerateMix, HeavyMix, LightSnow, ModerateSnow, HeavySnow, LightIce, ModerateIce, HeavyIce, Hail, LargeHail, SunGlare, SunGlareHigh, Lightning, SevereLightning, WindModerate, WindHigh, WindExtreme, FloodWarning, FlashFloodWarning, TornadoWarning, TsunamiWarning, SevereThunderstormWarning.
+     * A unique identifier (non-displayable) for each type of hazard: LightRain, ModerateRain, HeavyRain, LightMix,
+     * ModerateMix, HeavyMix, LightSnow, ModerateSnow, HeavySnow, LightIce, ModerateIce, HeavyIce, Hail, LargeHail,
+     * SunGlare, SunGlareHigh, Lightning, SevereLightning, WindModerate, WindHigh, WindExtreme, FloodWarning,
+     * FlashFloodWarning, TornadoWarning, TsunamiWarning, SevereThunderstormWarning.
      */
     private String hazardCode;
 
@@ -101,7 +104,7 @@ public final class WeatherNotification implements JsonSerializable<WeatherNotifi
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("type", this.type);
-        jsonWriter.writeNumberField("hazardIndex", this.hazardIndex == null ? null : this.hazardIndex.toInt());
+        jsonWriter.writeNumberField("hazardIndex", this.hazardIndex == null ? null : this.hazardIndex.getValue());
         jsonWriter.writeStringField("hazardCode", this.hazardCode);
         jsonWriter.writeStringField("shortPhrase", this.shortDescription);
         return jsonWriter.writeEndObject();
@@ -124,7 +127,7 @@ public final class WeatherNotification implements JsonSerializable<WeatherNotifi
                 if ("type".equals(fieldName)) {
                     deserializedWeatherNotification.type = reader.getString();
                 } else if ("hazardIndex".equals(fieldName)) {
-                    deserializedWeatherNotification.hazardIndex = HazardIndex.fromInt(reader.getInt());
+                    deserializedWeatherNotification.hazardIndex = HazardIndex.fromValue(reader.getInt());
                 } else if ("hazardCode".equals(fieldName)) {
                     deserializedWeatherNotification.hazardCode = reader.getString();
                 } else if ("shortPhrase".equals(fieldName)) {

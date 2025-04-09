@@ -106,6 +106,10 @@ extends:
         groupId: com.azure
         safeName: azurecore
         releaseInBatch: ${{ parameters.release_azurecore }}
+        triggeringPaths:
+        - /eng
+        - /sdk/parents/azure-sdk-parent
+        - /sdk/parents/azure-client-sdk-parent
       - name: azure-core-amqp
         groupId: com.azure
         safeName: azurecoreamqp
@@ -171,12 +175,20 @@ extends:
       - name: perf-test-core
         groupId: com.azure
 
+    # This needs to be temporarily here for the PR pipeline.
+    MatrixConfigs:
+      - Name: Java_ci_test_base
+        Path: eng/pipelines/templates/stages/platform-matrix.json
+        Selection: sparse
+        NonSparseParameters: Agent
+        GenerateVMJobs: true
     # Run separate version override tests using a different artifacts list
     # This matrix config overrides the ArtifactsJson variable
     AdditionalMatrixConfigs:
       - Name: version_overrides_tests
         Path: sdk/core/version-overrides-matrix.json
         Selection: all
+        PRBatching: false
         GenerateVMJobs: true
 
     LiveTestStages:
@@ -184,4 +196,3 @@ extends:
         parameters:
           AdditionalMatrixReplace:
             - TestFromSource=(.*)/true
-

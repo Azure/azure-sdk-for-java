@@ -48,8 +48,7 @@ public class AsyncClientFactory {
             .key(cfg.getMasterKey())
             .consistencyLevel(cfg.getConsistencyLevel())
             .throttlingRetryOptions(DEFAULT_THROTTLING_RETRY_OPTIONS)
-            .contentResponseOnWriteEnabled(cfg.isContentResponseOnWriteEnabled())
-            .clientTelemetryEnabled(cfg.isClientTelemetryEnabled());
+            .contentResponseOnWriteEnabled(cfg.isContentResponseOnWriteEnabled());
 
         // Configure the Direct/Gateway mode
         if (cfg.getConnectionMode().equals(ConnectionMode.DIRECT)) {
@@ -79,8 +78,7 @@ public class AsyncClientFactory {
             .key(cfg.getMasterKey())
             .consistencyLevel(ConsistencyLevel.EVENTUAL)
             .throttlingRetryOptions(BULKLOAD_THROTTLING_RETRY_OPTIONS)
-            .contentResponseOnWriteEnabled(cfg.isContentResponseOnWriteEnabled())
-            .clientTelemetryEnabled(cfg.isClientTelemetryEnabled());
+            .contentResponseOnWriteEnabled(cfg.isContentResponseOnWriteEnabled());
 
         // Configure the Direct/Gateway mode
         if (cfg.getConnectionMode().equals(ConnectionMode.DIRECT)) {

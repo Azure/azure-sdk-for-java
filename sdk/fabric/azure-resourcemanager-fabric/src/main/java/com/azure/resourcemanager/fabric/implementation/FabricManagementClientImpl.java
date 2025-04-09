@@ -169,7 +169,7 @@ public final class FabricManagementClientImpl implements FabricManagementClient 
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2023-11-01";
+        this.apiVersion = "2025-01-15-preview";
         this.fabricCapacities = new FabricCapacitiesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
     }

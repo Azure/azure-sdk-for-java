@@ -13,6 +13,8 @@
   ],
   "ignorePaths": [
     "eng/**",
+    "**/checkstyle-suppressions.xml",
+    "**/spotbugs-exclude.xml",
     "**/sdk/**/target/**",
     "**/session-records/**",
     "**/sdk/**/**/assets.json",
@@ -133,9 +135,11 @@
     "sdk/eventhubs/azure-messaging-eventhubs/**",
     "sdk/eventhubs/azure-messaging-eventhubs-stress/Dockerfile",
     "sdk/eventgrid/azure-messaging-eventgrid/**",
+    "sdk/healthdataaiservices/azure-health-deidentification/**",
     "sdk/cosmos/azure-cosmos/**",
     "sdk/cosmos/azure-cosmos-test/**",
     "sdk/identity/azure-identity/**",
+    "sdk/identity-v2/azure-identity/**",
     "sdk/keyvault/azure-security-keyvault-administration/**",
     "sdk/keyvault/azure-security-keyvault-certificates/**",
     "sdk/keyvault/azure-security-keyvault-jca/**",
@@ -199,7 +203,10 @@
     "sdk/devcenter/azure-developer-devcenter/**",
     "sdk/loadtesting/azure-developer-loadtesting/**",
     "sdk/clientcore/core/**",
+    "sdk/clientcore/http-netty4/**",
     "sdk/clientcore/http-okhttp3/**",
+    "sdk/clientcore/annotation-processor/**",
+    "sdk/clientcore/annotation-processor-test/**",
     "sdk/clientcore/tools/**",
     "sdk/serialization/azure-json-gson/**",
     "sdk/serialization/azure-json/**",
@@ -215,6 +222,7 @@
   ],
   "words": [
     "adal",
+    "agentic",
     "akhtabar",
     "alzimmer",
     "amqp",
@@ -312,6 +320,8 @@
     "hvac",
     "hybridkubernetes",
     "hyunwoongko",
+    "includable",
+    "includables",
     "idnum",
     "insights",
     "intellij",
@@ -1129,6 +1139,7 @@
         "saaj",
         "scalatra",
         "sctp",
+        "scylladb",
         "seleniumhq",
         "shiro",
         "signalfx",
@@ -1339,7 +1350,19 @@
         "tmpdir",
         "aarch",
         "CNCF"
-        ]
+      ]
+    },
+    {
+      "filename": "sdk/corev2/**",
+      "words": [
+        "aarch",
+        "junitextensions",
+        "tmpdir",
+        "urllistofbytes",
+        "urllistoflistofbytes",
+        "urlmapofbytes",
+        "xffffffffffff"
+      ]
     },
     {
       "filename": "sdk/translation/azure-ai-translation-document/**",
@@ -1350,6 +1373,15 @@
         "returnsthestatusofasingledocumentinabatchtranslationrequest",
         "submitadocumenttranslationrequesttothedocumenttranslationservice",
         "translateasingledocument"
+      ]
+    },
+    {
+      "filename": "sdk/eventgrid/**",
+      "words": [
+        "mqtt",
+        "rservice", // appears in the name SignalRService
+        "gcch",
+        "updation" // current typo in a swagger
       ]
     }
   ],

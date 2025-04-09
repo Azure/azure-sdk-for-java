@@ -6,6 +6,10 @@ package com.azure.messaging.servicebus;
 import com.azure.core.amqp.exception.AmqpResponseCode;
 import com.azure.core.amqp.implementation.ConnectionStringProperties;
 import com.azure.core.credential.TokenCredential;
+import com.azure.core.test.models.CustomMatcher;
+import com.azure.core.test.models.TestProxyRequestMatcher;
+import com.azure.core.test.models.TestProxySanitizer;
+import com.azure.core.test.models.TestProxySanitizerType;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
@@ -33,6 +37,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
+import java.util.Arrays;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.Date;
@@ -101,16 +106,32 @@ public class TestUtils {
     // An application property key to identify where in the stream this message was created.
     static final String MESSAGE_POSITION_ID = "message-position";
 
+    /**
+     * Sanitizer to remove header values for ServiceBusDlqSupplementaryAuthorization and
+     * ServiceBusSupplementaryAuthorization.
+     */
+    public static final TestProxySanitizer AUTHORIZATION_HEADER;
+
+    public static final List<TestProxySanitizer> TEST_PROXY_SANITIZERS;
+
+    public static final List<TestProxyRequestMatcher> TEST_PROXY_REQUEST_MATCHERS;
+
     static {
         APPLICATION_PROPERTIES.put("test-name", ServiceBusMessage.class.getName());
         APPLICATION_PROPERTIES.put("a-number", 10L);
         APPLICATION_PROPERTIES.put("status-code", AmqpResponseCode.OK.getValue());
-    }
 
-    /**
-     * Namespace used to record tests.
-     */
-    public static final String TEST_NAMESPACE = "sb-java-conniey-sb1";
+        AUTHORIZATION_HEADER = new TestProxySanitizer("SupplementaryAuthorization", null,
+            "SharedAccessSignature sr=https%3A%2F%2Ffoo.servicebus.windows.net&sig=dummyValue%3D&se=1687267490&skn=dummyKey",
+            TestProxySanitizerType.HEADER);
+        TEST_PROXY_SANITIZERS = Collections.singletonList(AUTHORIZATION_HEADER);
+
+        final List<String> skippedHeaders
+            = Arrays.asList("ServiceBusDlqSupplementaryAuthorization", "ServiceBusSupplementaryAuthorization");
+        final CustomMatcher customMatcher = new CustomMatcher().setExcludedHeaders(skippedHeaders);
+
+        TEST_PROXY_REQUEST_MATCHERS = Collections.singletonList(customMatcher);
+    }
 
     /**
      * Gets the namespace connection string.
