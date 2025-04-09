@@ -9,6 +9,7 @@
   <suppress files="com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.security.keyvault.keys.cryptography.implementation.LocalKeyCryptographyClient.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.security.keyvault.keys.implementation.DeletedKeyHelper.java" checks="MissingJavadocMethodCheck" />
+  <suppress files="com.azure.security.keyvault.keys.implementation.KeyAttestationHelper.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.security.keyvault.keys.implementation.KeyClientImpl.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.security.keyvault.keys.implementation.KeyPropertiesHelper.java" checks="MissingJavadocMethodCheck" />
   <suppress files="com.azure.security.keyvault.keys.implementation.KeyRotationLifetimeActionHelper.java" checks="MissingJavadocMethodCheck" />
