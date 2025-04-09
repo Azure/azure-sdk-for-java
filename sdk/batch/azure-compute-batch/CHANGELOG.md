@@ -10,29 +10,28 @@ This release is the first stable release of the Azure Compute Batch client libra
 
   - On `BatchJobNetworkConfiguration`, `isSkipWithdrawFromVNet()` is now `isSkipWithdrawFromVnet()`.
   - On `BatchPoolResourceStatistics`, `getDiskReadIOps()` is now `getDiskReadIops()` and `getDiskWriteIOps()` is now `getDiskWriteIops()`.
-  - On `NetworkConfiguration`, `getDynamicVNetAssignmentScope()` is now `getDynamicVnetAssignmentScope()` and `setDynamicVNetAssignmentScope(DynamicVNetAssignmentScope dynamicVNetAssignmentScope)` is now `setDynamicVnetAssignmentScope(DynamicVNetAssignmentScope dynamicVnetAssignmentScope)`.
+  - On `NetworkConfiguration`, `getDynamicVNetAssignmentScope()` is now `getDynamicVnetAssignmentScope()` and `setDynamicVNetAssignmentScope` is now `setDynamicVnetAssignmentScope`.
   - On `BatchTaskStatistics`, `getReadIOps()` is now `getReadIops()`, `getWriteIOps()` is now `getWriteIops()`, `getReadIOGiB()` is now `getReadIoGiB()`, and `getWriteIOGiB()` is now `getWriteIoGiB()`.
   - `VMDiskSecurityProfile` has now been changed to `VmDiskSecurityProfile`.
   - On `BatchJobStatistics`, `getNumSucceededTasks()` is now `getSucceededTasksCount()`, `getNumFailedTasks()` is now `getFailedTasksCount()`, `getNumTaskRetries()` is now `getTaskRetriesCount()`, `getReadIOps()` is now `getReadIops()`, `getWriteIOps()` is now `getWriteIops()`, `getReadIOGiB()` is now `getReadIoGiB()`, and `getWriteIOGiB()` is now `getWriteIoGiB()`
   - On `BatchJobScheduleStatistics`, `getNumSucceededTasks()` is now `getSucceededTasksCount()`, `getNumFailedTasks()` is now `getFailedTasksCount()`, `getNumTaskRetries()` is now `getTaskRetriesCount()`, `getReadIOps()` is now `getReadIops()`, `getWriteIOps()` is now `getWriteIops()`, `getReadIOGiB()` is now `getReadIoGiB()`, and `getWriteIOGiB()` is now `getWriteIoGiB()`.
   - On `BatchClientParallelOptions`, `getMaxDegreeOfParallelism()` is now `getMaxConcurrency()`.
   - On the `BatchClient` (synchronous client), `getNodeFileProperties` and `getTaskFileProperties` now return `BatchFileProperties` instead of `FileResponseHeaderProperties`. On `BatchAsyncClient` (asynchronous methods), `getNodeFileProperties` and `getTaskFileProperties` now return `Mono<BatchFileProperties>` instead of `Mono<FileResponseHeaderProperties>`.
-  - `AccessScope` is now `BatchAccessScope`. On `AuthenticationTokenSettings`, `getAccess()` now returns `List<BatchAccessScope>` instead of `List<AccessScope>` and `setAccess` takes in a parameter of type `List<BatchAccessScope>` rather than `List<AccessScope>`.
-  - `AffinityInfo` is now `BatchAffinityInfo`. On `BatchTask` and `BatchTaskCreateContent`, `getAffinityInfo()` now returns `BatchAffinityInfo` instead of `AffinityInfo`.
-  - `HttpHeader` has been changed to `OutputFileUploadHeader`.
-  - In `OutputFileBlobContainerDestination`, `getUploadHeaders()` returns `List<OutputFileUploadHeader>` instead of `List<HttpHeader>` and `setUploadHeaders` takes in a parameter of `List<OutputFileUploadHeader>` rather than `List<HttpHeader>`
-  - In `BatchCreateTaskCollectionResult`, `getValue()` is now `getValues()`.
-  - In `BatchJob`, `getOnAllTasksComplete()` is now named `getAllTasksCompleteMode()`. `setOnAllTasksComplete` is now `setAllTasksCompleteMode`. `getStats()` is now named `getJobStatistics()`. `getOnTaskFailure()` is now `getTaskFailureMode()`.
-  - In `BatchJobCreateContent`, `getOnAllTasksComplete()` is now named `getAllTasksCompleteMode()`. `setOnAllTasksComplete` is now `setTaskFailureMode`. `getOnTaskFailure()` is now `getTaskFailureMode()`.
-  - In `BatchJobSchedule`, `getStats()` is now named `getJobScheduleStatistics()`.
-  - In `BatchJobSpecification`, `getOnAllTasksComplete()` is now named `getAllTasksCompleteMode()`. `setOnAllTasksComplete` is now `setAllTasksCompleteMode`. `getOnTaskFailure()` is now `getTaskFailureMode()`. `setOnAllTasksComplete` is now `setTaskFailureMode`.
-  - In `BatchJobUpdateContent`, `getOnAllTasksComplete()` is now named `getAllTasksCompleteMode()`. `setOnAllTasksComplete` is now `setAllTasksCompleteMode`.
-  - In `BatchNodeRebootContent`, `getNodeRebootOption()` is now `getNodeRebootKind()`. `setNodeRebootOption` is now `setNodeRebootKind`.
-  - In `BatchNodeRemoveContent`, `getNodeList()` is now `getNodeIds()`.
-  - In `BatchPool`, `getStats()` is now `getPoolStatistics()`.
-  - In `BatchPoolStatistics`, `getUsageStats()` is now `getUsageStatistics()` and `getResourceStats()` is now `getResourceStatistics()`.
-  - In `BatchTask`, `getStats()` is now `getTaskStatistics()`.
-  - In `BatchTaskGroup`, `getValue()` is now `getValues()`.
+  - `AccessScope` is now `BatchAccessScope`.
+  - `AffinityInfo` is now `BatchAffinityInfo`.
+  - `HttpHeader` is now `OutputFileUploadHeader`.
+  - On `BatchCreateTaskCollectionResult`, `getValue()` is now `getValues()`.
+  - On `BatchJob`, `getOnAllTasksComplete()` is now named `getAllTasksCompleteMode()`. `setOnAllTasksComplete` is now `setAllTasksCompleteMode`. `getStats()` is now named `getJobStatistics()`. `getOnTaskFailure()` is now `getTaskFailureMode()`.
+  - On `BatchJobCreateContent`, `getOnAllTasksComplete()` is now named `getAllTasksCompleteMode()`. `setOnAllTasksComplete` is now `setTaskFailureMode`. `getOnTaskFailure()` is now `getTaskFailureMode()`.
+  - On `BatchJobSchedule`, `getStats()` is now named `getJobScheduleStatistics()`.
+  - On `BatchJobSpecification`, `getOnAllTasksComplete()` is now named `getAllTasksCompleteMode()`. `setOnAllTasksComplete` is now `setAllTasksCompleteMode`. `getOnTaskFailure()` is now `getTaskFailureMode()`. `setOnAllTasksComplete` is now `setTaskFailureMode`.
+  - On `BatchJobUpdateContent`, `getOnAllTasksComplete()` is now named `getAllTasksCompleteMode()`. `setOnAllTasksComplete` is now `setAllTasksCompleteMode`.
+  - On `BatchNodeRebootContent`, `getNodeRebootOption()` is now `getNodeRebootKind()`. `setNodeRebootOption` is now `setNodeRebootKind`.
+  - On `BatchNodeRemoveContent`, `getNodeList()` is now `getNodeIds()`.
+  - On `BatchPool`, `getStats()` is now `getPoolStatistics()`.
+  - On `BatchPoolStatistics`, `getUsageStats()` is now `getUsageStatistics()` and `getResourceStats()` is now `getResourceStatistics()`.
+  - On `BatchTask`, `getStats()` is now `getTaskStatistics()`.
+  - On `BatchTaskGroup`, `getValue()` is now `getValues()`.
 
 - On the `BatchCertificate` model, the return type of `getData()` is now `byte[]` instead of `String`.
 
