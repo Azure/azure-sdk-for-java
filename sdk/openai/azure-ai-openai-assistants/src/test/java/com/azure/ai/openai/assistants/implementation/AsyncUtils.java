@@ -13,7 +13,6 @@ public class AsyncUtils {
     private AssistantThread thread;
     private OpenAIFile file;
 
-
     public Assistant getAssistant() {
         return assistant;
     }

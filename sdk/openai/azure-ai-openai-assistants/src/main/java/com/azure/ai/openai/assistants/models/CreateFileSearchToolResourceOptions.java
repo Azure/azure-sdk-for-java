@@ -76,14 +76,15 @@ public final class CreateFileSearchToolResourceOptions {
             return null;
         }
         try {
-            CreateFileSearchToolResourceVectorStoreIds vectorStoreIds = responseFormatBinaryData.toObject(CreateFileSearchToolResourceVectorStoreIds.class);
+            CreateFileSearchToolResourceVectorStoreIds vectorStoreIds
+                = responseFormatBinaryData.toObject(CreateFileSearchToolResourceVectorStoreIds.class);
             if (vectorStoreIds != null) {
                 return new CreateFileSearchToolResourceOptions(vectorStoreIds);
             }
 
         } catch (UncheckedIOException e) {
-            CreateFileSearchToolResourceVectorStoreOptionsList vectorStoreOptions =
-                responseFormatBinaryData.toObject(CreateFileSearchToolResourceVectorStoreOptionsList.class);
+            CreateFileSearchToolResourceVectorStoreOptionsList vectorStoreOptions
+                = responseFormatBinaryData.toObject(CreateFileSearchToolResourceVectorStoreOptionsList.class);
             if (vectorStoreOptions != null) {
                 return new CreateFileSearchToolResourceOptions(vectorStoreOptions);
             }

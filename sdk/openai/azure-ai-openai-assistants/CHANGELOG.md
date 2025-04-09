@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.6 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,56 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.5 (2025-02-21)
+
+### Features Added
+
+- Added `include[]` query parameter for `getRunStep` methods to specify additional fields for the request. Currently only files are supported.
+  - Results added to run step details file search tool calls instances
+- Added more `VectorStoreFileErrorCode`s. Specifically, `server_error`, `unsupported_file` and `invalid_file`.
+- Added `AssistantsApiResponseFormatJsonSchema` as a possible value (previously, `text` and `json_object` where the only supported ones).
+- Added Azure OpenAI services labels: `V2024_09_01_PREVIEW`, `V2024_10_01_PREVIEW`, `V2025_01_01_PREVIEW`.
+
+### Breaking Changes
+
+- Removed `AssistantsApiResponseFormatMode.NONE`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-json` to version `1.4.0`.
+- Upgraded `azure-core` to version `1.55.2`.
+- Upgraded `azure-core-http-netty` to version `1.15.10`.
+
+## 1.0.0-beta.4 (2024-08-29)
+
+### Features Added
+
+- `file_search` tool definitions now have the ability to configure `max_num_results` via the matching, named inner options object
+   Previously, only a stubbed `{ "type": "file_search" }` was valid. Now, e.g.: `{ "type": "file_search", "file_search": { "max_num_results": 20 } }`
+  - Added a new property `FileSearchToolDefinitionDetails fileSearch` to `FileSearchToolDefinition` model.
+  - Added new class `FileSearchToolDefinitionDetails` to represent the details of a file search tool.
+
+- `chunking_strategy` is added as a new optional property when creating a vector store (either via the vector store creation operation
+  or the helper when creating an assistant) -- this allows customization of the chunk size and overlap used when ingesting data.
+  See the OpenAI reference for full details.
+  - Added a new property `VectorStoreChunkingStrategyRequest chunkingStrategy` to `VectorStoreOptions` model.
+  - Added a new property `VectorStoreChunkingStrategyResponse chunkingStrategy` to `VectorStoreFile` model.
+  - Added new enum `VectorStoreChunkingStrategyRequestType` and `VectorStoreChunkingStrategyResponseType` to represent the chunking strategy `type` for vector stores.
+  - Added new class `VectorStoreChunkingStrategyRequest` and `VectorStoreChunkingStrategyResponse` to represent the chunking strategy for vector stores.
+  - Added new class `VectorStoreAutoChunkingStrategyRequest` and `VectorStoreAutoChunkingStrategyResponse` to represent the `auto` chunking strategy for vector stores.
+  - Added new class `VectorStoreStaticChunkingStrategyOptions`, `VectorStoreStaticChunkingStrategyRequest` and `VectorStoreStaticChunkingStrategyResponse` 
+    to represent the `static` chunking strategy for vector stores.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to version `1.51.0`.
+- Upgraded `azure-core-http-netty` to version `1.15.3`.
+
 
 ## 1.0.0-beta.3 (2024-06-06)
 

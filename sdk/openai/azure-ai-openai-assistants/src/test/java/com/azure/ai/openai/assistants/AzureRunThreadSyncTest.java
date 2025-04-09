@@ -37,7 +37,8 @@ public class AzureRunThreadSyncTest extends AssistantsClientTestBase {
         String mathTutorAssistantId = createMathTutorAssistant(client);
         String threadId = createThread(client);
         submitMessageAndRunRunner(message -> {
-            ThreadMessage threadMessage = client.createMessage(threadId, new ThreadMessageOptions(MessageRole.USER, message));
+            ThreadMessage threadMessage
+                = client.createMessage(threadId, new ThreadMessageOptions(MessageRole.USER, message));
             validateThreadMessage(threadMessage, threadId);
             // Submit the message and run
             ThreadRun run = client.createRun(threadId, new CreateRunOptions(mathTutorAssistantId));
@@ -74,12 +75,12 @@ public class AzureRunThreadSyncTest extends AssistantsClientTestBase {
         String mathTutorAssistantId = createMathTutorAssistant(client);
         String threadId = createThread(client);
         submitMessageAndRunRunner(message -> {
-            ThreadMessage threadMessage = client.createMessage(threadId, new ThreadMessageOptions(MessageRole.USER, message));
+            ThreadMessage threadMessage
+                = client.createMessage(threadId, new ThreadMessageOptions(MessageRole.USER, message));
             validateThreadMessage(threadMessage, threadId);
             // Submit the message and run
             Response<BinaryData> runWithResponse = client.createRunWithResponse(threadId,
-                    BinaryData.fromObject(new CreateRunOptions(mathTutorAssistantId)),
-                    new RequestOptions());
+                BinaryData.fromObject(new CreateRunOptions(mathTutorAssistantId)), new RequestOptions());
             ThreadRun run = assertAndGetValueFromResponse(runWithResponse, ThreadRun.class, 200);
             assertNotNull(run.getId());
             assertNotNull(run.getCreatedAt());
@@ -151,8 +152,8 @@ public class AzureRunThreadSyncTest extends AssistantsClientTestBase {
         String mathTutorAssistantId = createMathTutorAssistant(client);
         createThreadAndRunRunner(createAndRunThreadOptions -> {
             // Create a simple thread without a message
-            Response<BinaryData> response = client.createThreadAndRunWithResponse(BinaryData.fromObject(createAndRunThreadOptions),
-                    new RequestOptions());
+            Response<BinaryData> response = client
+                .createThreadAndRunWithResponse(BinaryData.fromObject(createAndRunThreadOptions), new RequestOptions());
             ThreadRun run = assertAndGetValueFromResponse(response, ThreadRun.class, 200);
             String threadId = run.getThreadId();
             assertNotNull(run.getId());
@@ -242,8 +243,8 @@ public class AzureRunThreadSyncTest extends AssistantsClientTestBase {
             validateThreadRun(run, data.get(0));
             // List runs with response
             Response<BinaryData> response = client.listRunsWithResponse(threadId, new RequestOptions());
-            PageableList<ThreadRun> runsWithResponse = asserAndGetPageableListFromResponse(response, 200,
-                reader -> reader.readArray(ThreadRun::fromJson));
+            PageableList<ThreadRun> runsWithResponse
+                = asserAndGetPageableListFromResponse(response, 200, reader -> reader.readArray(ThreadRun::fromJson));
             List<ThreadRun> dataWithResponse = runsWithResponse.getData();
             assertNotNull(dataWithResponse);
             assertEquals(1, dataWithResponse.size());
@@ -292,16 +293,16 @@ public class AzureRunThreadSyncTest extends AssistantsClientTestBase {
 
             // List run steps with response
             Response<BinaryData> response = client.listRunStepsWithResponse(threadId, runId, new RequestOptions());
-            PageableList<RunStep> runStepsWithResponse = asserAndGetPageableListFromResponse(response, 200,
-                reader -> reader.readArray(RunStep::fromJson));
+            PageableList<RunStep> runStepsWithResponse
+                = asserAndGetPageableListFromResponse(response, 200, reader -> reader.readArray(RunStep::fromJson));
             assertNotNull(runStepsWithResponse);
             List<RunStep> runStepsDataWithResponse = runStepsWithResponse.getData();
             assertNotNull(runStepsDataWithResponse);
             assertFalse(runStepsDataWithResponse.isEmpty());
             assertEquals("list", runSteps.getObject());
             // Get run step with response
-            Response<BinaryData> getRunStepResponse = client.getRunStepWithResponse(threadId, run.getId(),
-                    runStepId, new RequestOptions());
+            Response<BinaryData> getRunStepResponse
+                = client.getRunStepWithResponse(threadId, run.getId(), runStepId, new RequestOptions());
             RunStep retrievedStepResponse = assertAndGetValueFromResponse(getRunStepResponse, RunStep.class, 200);
             assertNotNull(retrievedStepResponse);
             validateRunStep(runStep, retrievedStep);

@@ -25,7 +25,7 @@ Use this library to:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-openai-assistants</artifactId>
-    <version>1.0.0-beta.3</version>
+    <version>1.0.0-beta.6</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -168,7 +168,8 @@ CreateToolResourcesOptions createToolResourcesOptions = new CreateToolResourcesO
 createToolResourcesOptions.setFileSearch(
     new CreateFileSearchToolResourceOptions(
         new CreateFileSearchToolResourceVectorStoreOptionsList(
-            Arrays.asList(new CreateFileSearchToolResourceVectorStoreOptions(Arrays.asList(openAIFile.getId()))))));
+            Arrays.asList(new CreateFileSearchToolResourceVectorStoreOptions(
+                Arrays.asList(openAIFile.getId()))))));
 
 Assistant assistant = client.createAssistant(
     new AssistantCreationOptions(deploymentOrModelId)
@@ -321,7 +322,7 @@ be found here: [log levels][logLevels].
 ### Default HTTP Client
 All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure
 the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
-[HTTP clients wiki](https://github.com/Azure/azure-sdk-for-java/wiki/HTTP-clients).
+[HTTP clients wiki](https://learn.microsoft.com/azure/developer/java/sdk/http-client-pipeline#http-clients).
 
 ### Default SSL library
 All client libraries, by default, use the Tomcat-native Boring SSL library to enable native-level performance for SSL
@@ -353,4 +354,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 [function_tool_call_full_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai-assistants/src/samples/java/com/azure/ai/openai/assistants/FunctionToolCallSample.java
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fopenai%2Fassistants%2Fazure-ai-openai-assistants%2FREADME.png)
+

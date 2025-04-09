@@ -47,7 +47,8 @@ public class CreateFileSearchToolResourceOptionsSerializerTests {
     public void assistantCreationOptionCodeInterpreter() {
         AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions("gpt-4");
         CreateToolResourcesOptions toolResourcesOptions = new CreateToolResourcesOptions();
-        CreateCodeInterpreterToolResourceOptions codeInterpreterToolResources = new CreateCodeInterpreterToolResourceOptions();
+        CreateCodeInterpreterToolResourceOptions codeInterpreterToolResources
+            = new CreateCodeInterpreterToolResourceOptions();
         codeInterpreterToolResources.setFileIds(Arrays.asList("file1", "file2"));
         toolResourcesOptions.setCodeInterpreter(codeInterpreterToolResources);
         assistantCreationOptions.setToolResources(toolResourcesOptions);
@@ -63,16 +64,16 @@ public class CreateFileSearchToolResourceOptionsSerializerTests {
     public void assistantCreationOptionFileSearchVectorStoreIDs() {
         AssistantCreationOptions assistantCreationOptions = new AssistantCreationOptions("gpt-4");
         CreateToolResourcesOptions toolResourcesOptions = new CreateToolResourcesOptions();
-        CreateFileSearchToolResourceOptions codeInterpreterToolResources =
-            new CreateFileSearchToolResourceOptions(
-                new CreateFileSearchToolResourceVectorStoreIds(Arrays.asList("vectorStoreId1", "vectorStoreId2")));
+        CreateFileSearchToolResourceOptions codeInterpreterToolResources = new CreateFileSearchToolResourceOptions(
+            new CreateFileSearchToolResourceVectorStoreIds(Arrays.asList("vectorStoreId1", "vectorStoreId2")));
         toolResourcesOptions.setFileSearch(codeInterpreterToolResources);
         assistantCreationOptions.setToolResources(toolResourcesOptions);
 
         BinaryData jsonBinaryData = BinaryData.fromObject(assistantCreationOptions);
         String json = jsonBinaryData.toString();
 
-        assertTrue(json.contains("\"tool_resources\":{\"file_search\":{\"vector_store_ids\":[\"vectorStoreId1\",\"vectorStoreId2\"]}}"));
+        assertTrue(json.contains(
+            "\"tool_resources\":{\"file_search\":{\"vector_store_ids\":[\"vectorStoreId1\",\"vectorStoreId2\"]}}"));
         assertTrue(json.contains("\"model\":\"gpt-4\""));
     }
 
@@ -102,7 +103,8 @@ public class CreateFileSearchToolResourceOptionsSerializerTests {
     public void assistantThreadCreationOptionCodeInterpreter() {
         AssistantThreadCreationOptions assistantThreadCreationOptions = new AssistantThreadCreationOptions();
         CreateToolResourcesOptions toolResourcesOptions = new CreateToolResourcesOptions();
-        CreateCodeInterpreterToolResourceOptions codeInterpreterToolResources = new CreateCodeInterpreterToolResourceOptions();
+        CreateCodeInterpreterToolResourceOptions codeInterpreterToolResources
+            = new CreateCodeInterpreterToolResourceOptions();
         codeInterpreterToolResources.setFileIds(Arrays.asList("file1", "file2"));
         toolResourcesOptions.setCodeInterpreter(codeInterpreterToolResources);
         assistantThreadCreationOptions.setToolResources(toolResourcesOptions);
@@ -117,15 +119,15 @@ public class CreateFileSearchToolResourceOptionsSerializerTests {
     public void assistantThreadCreationOptionFileSearchVectorStoreIDs() {
         AssistantThreadCreationOptions assistantThreadCreationOptions = new AssistantThreadCreationOptions();
         CreateToolResourcesOptions toolResourcesOptions = new CreateToolResourcesOptions();
-        CreateFileSearchToolResourceOptions codeInterpreterToolResources =
-            new CreateFileSearchToolResourceOptions(
-                new CreateFileSearchToolResourceVectorStoreIds(Arrays.asList("vectorStoreId1", "vectorStoreId2")));
+        CreateFileSearchToolResourceOptions codeInterpreterToolResources = new CreateFileSearchToolResourceOptions(
+            new CreateFileSearchToolResourceVectorStoreIds(Arrays.asList("vectorStoreId1", "vectorStoreId2")));
         toolResourcesOptions.setFileSearch(codeInterpreterToolResources);
         assistantThreadCreationOptions.setToolResources(toolResourcesOptions);
 
         BinaryData jsonBinaryData = BinaryData.fromObject(assistantThreadCreationOptions);
         String json = jsonBinaryData.toString();
 
-        assertTrue(json.contains("\"tool_resources\":{\"file_search\":{\"vector_store_ids\":[\"vectorStoreId1\",\"vectorStoreId2\"]}}"));
+        assertTrue(json.contains(
+            "\"tool_resources\":{\"file_search\":{\"vector_store_ids\":[\"vectorStoreId1\",\"vectorStoreId2\"]}}"));
     }
 }

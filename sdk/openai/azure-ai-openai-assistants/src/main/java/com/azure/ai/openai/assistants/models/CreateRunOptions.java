@@ -214,6 +214,7 @@ public final class CreateRunOptions implements JsonSerializable<CreateRunOptions
         jsonWriter.writeArrayField("additional_messages", this.additionalMessages,
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("tools", this.tools, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeBooleanField("parallel_tool_calls", this.parallelToolCalls);
         jsonWriter.writeBooleanField("stream", this.stream);
         jsonWriter.writeNumberField("temperature", this.temperature);
         jsonWriter.writeNumberField("top_p", this.topP);
@@ -221,10 +222,12 @@ public final class CreateRunOptions implements JsonSerializable<CreateRunOptions
         jsonWriter.writeNumberField("max_completion_tokens", this.maxCompletionTokens);
         jsonWriter.writeJsonField("truncation_strategy", this.truncationStrategy);
         if (this.toolChoice != null) {
-            jsonWriter.writeUntypedField("tool_choice", this.toolChoice.toObject(Object.class));
+            jsonWriter.writeFieldName("tool_choice");
+            this.toolChoice.writeTo(jsonWriter);
         }
         if (this.responseFormat != null) {
-            jsonWriter.writeUntypedField("response_format", this.responseFormat.toObject(Object.class));
+            jsonWriter.writeFieldName("response_format");
+            this.responseFormat.writeTo(jsonWriter);
         }
         jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
@@ -248,6 +251,7 @@ public final class CreateRunOptions implements JsonSerializable<CreateRunOptions
             String additionalInstructions = null;
             List<ThreadMessage> additionalMessages = null;
             List<ToolDefinition> tools = null;
+            Boolean parallelToolCalls = null;
             Boolean stream = null;
             Double temperature = null;
             Double topP = null;
@@ -272,6 +276,8 @@ public final class CreateRunOptions implements JsonSerializable<CreateRunOptions
                     additionalMessages = reader.readArray(reader1 -> ThreadMessage.fromJson(reader1));
                 } else if ("tools".equals(fieldName)) {
                     tools = reader.readArray(reader1 -> ToolDefinition.fromJson(reader1));
+                } else if ("parallel_tool_calls".equals(fieldName)) {
+                    parallelToolCalls = reader.getNullable(JsonReader::getBoolean);
                 } else if ("stream".equals(fieldName)) {
                     stream = reader.getNullable(JsonReader::getBoolean);
                 } else if ("temperature".equals(fieldName)) {
@@ -302,6 +308,7 @@ public final class CreateRunOptions implements JsonSerializable<CreateRunOptions
             deserializedCreateRunOptions.additionalInstructions = additionalInstructions;
             deserializedCreateRunOptions.additionalMessages = additionalMessages;
             deserializedCreateRunOptions.tools = tools;
+            deserializedCreateRunOptions.parallelToolCalls = parallelToolCalls;
             deserializedCreateRunOptions.stream = stream;
             deserializedCreateRunOptions.temperature = temperature;
             deserializedCreateRunOptions.topP = topP;
@@ -616,6 +623,34 @@ public final class CreateRunOptions implements JsonSerializable<CreateRunOptions
         } else {
             this.responseFormat = null;
         }
+        return this;
+    }
+
+    /*
+     * Whether to enable parallel function calling during tool use.
+     */
+    @Generated
+    private Boolean parallelToolCalls;
+
+    /**
+     * Get the parallelToolCalls property: Whether to enable parallel function calling during tool use.
+     *
+     * @return the parallelToolCalls value.
+     */
+    @Generated
+    public Boolean isParallelToolCalls() {
+        return this.parallelToolCalls;
+    }
+
+    /**
+     * Set the parallelToolCalls property: Whether to enable parallel function calling during tool use.
+     *
+     * @param parallelToolCalls the parallelToolCalls value to set.
+     * @return the CreateRunOptions object itself.
+     */
+    @Generated
+    public CreateRunOptions setParallelToolCalls(Boolean parallelToolCalls) {
+        this.parallelToolCalls = parallelToolCalls;
         return this;
     }
 }

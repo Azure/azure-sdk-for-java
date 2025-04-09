@@ -65,31 +65,6 @@ public final class VectorStoreFile implements JsonSerializable<VectorStoreFile> 
     private final VectorStoreFileError lastError;
 
     /**
-     * Creates an instance of VectorStoreFile class.
-     *
-     * @param id the id value to set.
-     * @param usageBytes the usageBytes value to set.
-     * @param createdAt the createdAt value to set.
-     * @param vectorStoreId the vectorStoreId value to set.
-     * @param status the status value to set.
-     * @param lastError the lastError value to set.
-     */
-    @Generated
-    private VectorStoreFile(String id, int usageBytes, OffsetDateTime createdAt, String vectorStoreId,
-        VectorStoreFileStatus status, VectorStoreFileError lastError) {
-        this.id = id;
-        this.usageBytes = usageBytes;
-        if (createdAt == null) {
-            this.createdAt = 0L;
-        } else {
-            this.createdAt = createdAt.toEpochSecond();
-        }
-        this.vectorStoreId = vectorStoreId;
-        this.status = status;
-        this.lastError = lastError;
-    }
-
-    /**
      * Get the id property: The identifier, which can be referenced in API endpoints.
      *
      * @return the id value.
@@ -177,6 +152,7 @@ public final class VectorStoreFile implements JsonSerializable<VectorStoreFile> 
         jsonWriter.writeStringField("vector_store_id", this.vectorStoreId);
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
         jsonWriter.writeJsonField("last_error", this.lastError);
+        jsonWriter.writeJsonField("chunking_strategy", this.chunkingStrategy);
         return jsonWriter.writeEndObject();
     }
 
@@ -198,6 +174,7 @@ public final class VectorStoreFile implements JsonSerializable<VectorStoreFile> 
             String vectorStoreId = null;
             VectorStoreFileStatus status = null;
             VectorStoreFileError lastError = null;
+            VectorStoreChunkingStrategyResponse chunkingStrategy = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -213,11 +190,57 @@ public final class VectorStoreFile implements JsonSerializable<VectorStoreFile> 
                     status = VectorStoreFileStatus.fromString(reader.getString());
                 } else if ("last_error".equals(fieldName)) {
                     lastError = VectorStoreFileError.fromJson(reader);
+                } else if ("chunking_strategy".equals(fieldName)) {
+                    chunkingStrategy = VectorStoreChunkingStrategyResponse.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            return new VectorStoreFile(id, usageBytes, createdAt, vectorStoreId, status, lastError);
+            return new VectorStoreFile(id, usageBytes, createdAt, vectorStoreId, status, lastError, chunkingStrategy);
         });
+    }
+
+    /*
+     * The strategy used to chunk the file.
+     */
+    @Generated
+    private final VectorStoreChunkingStrategyResponse chunkingStrategy;
+
+    /**
+     * Creates an instance of VectorStoreFile class.
+     *
+     * @param id the id value to set.
+     * @param usageBytes the usageBytes value to set.
+     * @param createdAt the createdAt value to set.
+     * @param vectorStoreId the vectorStoreId value to set.
+     * @param status the status value to set.
+     * @param lastError the lastError value to set.
+     * @param chunkingStrategy the chunkingStrategy value to set.
+     */
+    @Generated
+    private VectorStoreFile(String id, int usageBytes, OffsetDateTime createdAt, String vectorStoreId,
+        VectorStoreFileStatus status, VectorStoreFileError lastError,
+        VectorStoreChunkingStrategyResponse chunkingStrategy) {
+        this.id = id;
+        this.usageBytes = usageBytes;
+        if (createdAt == null) {
+            this.createdAt = 0L;
+        } else {
+            this.createdAt = createdAt.toEpochSecond();
+        }
+        this.vectorStoreId = vectorStoreId;
+        this.status = status;
+        this.lastError = lastError;
+        this.chunkingStrategy = chunkingStrategy;
+    }
+
+    /**
+     * Get the chunkingStrategy property: The strategy used to chunk the file.
+     *
+     * @return the chunkingStrategy value.
+     */
+    @Generated
+    public VectorStoreChunkingStrategyResponse getChunkingStrategy() {
+        return this.chunkingStrategy;
     }
 }
