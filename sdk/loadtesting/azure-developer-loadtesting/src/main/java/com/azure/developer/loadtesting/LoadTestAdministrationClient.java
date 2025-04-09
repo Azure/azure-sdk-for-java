@@ -1368,7 +1368,7 @@ public final class LoadTestAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TestFileInfo uploadTestFile(String testId, String fileName, BinaryData body) {
+    TestFileInfo uploadTestFile(String testId, String fileName, BinaryData body) {
         // Generated convenience method for uploadTestFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return uploadTestFileWithResponse(testId, fileName, body, requestOptions).getValue()
@@ -1617,7 +1617,7 @@ public final class LoadTestAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TestFileInfo uploadTestFile(String testId, String fileName, BinaryData body, LoadTestingFileType fileType) {
+    TestFileInfo uploadTestFile(String testId, String fileName, BinaryData body, LoadTestingFileType fileType) {
         // Generated convenience method for uploadTestFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (fileType != null) {

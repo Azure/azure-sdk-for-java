@@ -1441,7 +1441,7 @@ public final class LoadTestAdministrationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TestFileInfo> uploadTestFile(String testId, String fileName, BinaryData body) {
+    Mono<TestFileInfo> uploadTestFile(String testId, String fileName, BinaryData body) {
         // Generated convenience method for uploadTestFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return uploadTestFileWithResponse(testId, fileName, body, requestOptions).flatMap(FluxUtil::toMono)
@@ -1741,8 +1741,7 @@ public final class LoadTestAdministrationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TestFileInfo> uploadTestFile(String testId, String fileName, BinaryData body,
-        LoadTestingFileType fileType) {
+    Mono<TestFileInfo> uploadTestFile(String testId, String fileName, BinaryData body, LoadTestingFileType fileType) {
         // Generated convenience method for uploadTestFileWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (fileType != null) {

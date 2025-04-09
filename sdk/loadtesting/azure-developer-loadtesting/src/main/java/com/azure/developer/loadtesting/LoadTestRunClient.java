@@ -19,8 +19,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.developer.loadtesting.implementation.JsonMergePatchHelper;
 import com.azure.developer.loadtesting.models.LoadTestRun;
-import com.azure.developer.loadtesting.models.MetricDefinitionCollection;
-import com.azure.developer.loadtesting.models.MetricNamespaceCollection;
+import com.azure.developer.loadtesting.models.MetricDefinitions;
+import com.azure.developer.loadtesting.models.MetricNamespaces;
 import com.azure.developer.loadtesting.models.TestProfileRun;
 import com.azure.developer.loadtesting.models.TestRunAppComponents;
 import com.azure.developer.loadtesting.models.TestRunFileInfo;
@@ -1469,7 +1469,7 @@ public final class LoadTestRunClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createOrUpdateTestProfileRunWithResponse(String testProfileRunId, BinaryData body,
+    Response<BinaryData> createOrUpdateTestProfileRunWithResponse(String testProfileRunId, BinaryData body,
         RequestOptions requestOptions) {
         return this.client.createOrUpdateTestProfileRunWithResponse(testProfileRunId, body, requestOptions).block();
     }
@@ -1958,11 +1958,11 @@ public final class LoadTestRunClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MetricDefinitionCollection getMetricDefinitions(String testRunId, String metricNamespace) {
+    public MetricDefinitions getMetricDefinitions(String testRunId, String metricNamespace) {
         // Generated convenience method for getMetricDefinitionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getMetricDefinitionsWithResponse(testRunId, metricNamespace, requestOptions).getValue()
-            .toObject(MetricDefinitionCollection.class);
+            .toObject(MetricDefinitions.class);
     }
 
     /**
@@ -1980,11 +1980,10 @@ public final class LoadTestRunClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MetricNamespaceCollection getMetricNamespaces(String testRunId) {
+    public MetricNamespaces getMetricNamespaces(String testRunId) {
         // Generated convenience method for getMetricNamespacesWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getMetricNamespacesWithResponse(testRunId, requestOptions).getValue()
-            .toObject(MetricNamespaceCollection.class);
+        return getMetricNamespacesWithResponse(testRunId, requestOptions).getValue().toObject(MetricNamespaces.class);
     }
 
     /**
@@ -2071,7 +2070,7 @@ public final class LoadTestRunClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TestProfileRun createOrUpdateTestProfileRun(String testProfileRunId, TestProfileRun body) {
+    TestProfileRun createOrUpdateTestProfileRun(String testProfileRunId, TestProfileRun body) {
         // Generated convenience method for createOrUpdateTestProfileRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
         JsonMergePatchHelper.getTestProfileRunAccessor().prepareModelForJsonMergePatch(body, true);
@@ -2299,7 +2298,7 @@ public final class LoadTestRunClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LoadTestRun createOrUpdateTestRun(String testRunId, LoadTestRun body, String oldTestRunId) {
+    LoadTestRun createOrUpdateTestRun(String testRunId, LoadTestRun body, String oldTestRunId) {
         // Generated convenience method for createOrUpdateTestRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (oldTestRunId != null) {
@@ -2330,7 +2329,7 @@ public final class LoadTestRunClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public LoadTestRun createOrUpdateTestRun(String testRunId, LoadTestRun body) {
+    LoadTestRun createOrUpdateTestRun(String testRunId, LoadTestRun body) {
         // Generated convenience method for createOrUpdateTestRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
         JsonMergePatchHelper.getLoadTestRunAccessor().prepareModelForJsonMergePatch(body, true);

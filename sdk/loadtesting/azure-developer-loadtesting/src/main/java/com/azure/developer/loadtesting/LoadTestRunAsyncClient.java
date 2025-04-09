@@ -23,8 +23,8 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.developer.loadtesting.implementation.JsonMergePatchHelper;
 import com.azure.developer.loadtesting.implementation.LoadTestRunClientImpl;
 import com.azure.developer.loadtesting.models.LoadTestRun;
-import com.azure.developer.loadtesting.models.MetricDefinitionCollection;
-import com.azure.developer.loadtesting.models.MetricNamespaceCollection;
+import com.azure.developer.loadtesting.models.MetricDefinitions;
+import com.azure.developer.loadtesting.models.MetricNamespaces;
 import com.azure.developer.loadtesting.models.TestProfileRun;
 import com.azure.developer.loadtesting.models.TestRunAppComponents;
 import com.azure.developer.loadtesting.models.TestRunFileInfo;
@@ -1470,7 +1470,7 @@ public final class LoadTestRunAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> createOrUpdateTestProfileRunWithResponse(String testProfileRunId, BinaryData body,
+    Mono<Response<BinaryData>> createOrUpdateTestProfileRunWithResponse(String testProfileRunId, BinaryData body,
         RequestOptions requestOptions) {
         return this.serviceClient.createOrUpdateTestProfileRunWithResponseAsync(testProfileRunId, body, requestOptions);
     }
@@ -1968,11 +1968,11 @@ public final class LoadTestRunAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MetricDefinitionCollection> getMetricDefinitions(String testRunId, String metricNamespace) {
+    public Mono<MetricDefinitions> getMetricDefinitions(String testRunId, String metricNamespace) {
         // Generated convenience method for getMetricDefinitionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getMetricDefinitionsWithResponse(testRunId, metricNamespace, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(MetricDefinitionCollection.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(MetricDefinitions.class));
     }
 
     /**
@@ -1990,11 +1990,11 @@ public final class LoadTestRunAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<MetricNamespaceCollection> getMetricNamespaces(String testRunId) {
+    public Mono<MetricNamespaces> getMetricNamespaces(String testRunId) {
         // Generated convenience method for getMetricNamespacesWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getMetricNamespacesWithResponse(testRunId, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(MetricNamespaceCollection.class));
+            .map(protocolMethodData -> protocolMethodData.toObject(MetricNamespaces.class));
     }
 
     /**
@@ -2126,7 +2126,7 @@ public final class LoadTestRunAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TestProfileRun> createOrUpdateTestProfileRun(String testProfileRunId, TestProfileRun body) {
+    Mono<TestProfileRun> createOrUpdateTestProfileRun(String testProfileRunId, TestProfileRun body) {
         // Generated convenience method for createOrUpdateTestProfileRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
         JsonMergePatchHelper.getTestProfileRunAccessor().prepareModelForJsonMergePatch(body, true);
@@ -2421,7 +2421,7 @@ public final class LoadTestRunAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LoadTestRun> createOrUpdateTestRun(String testRunId, LoadTestRun body, String oldTestRunId) {
+    Mono<LoadTestRun> createOrUpdateTestRun(String testRunId, LoadTestRun body, String oldTestRunId) {
         // Generated convenience method for createOrUpdateTestRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
         if (oldTestRunId != null) {
@@ -2452,7 +2452,7 @@ public final class LoadTestRunAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<LoadTestRun> createOrUpdateTestRun(String testRunId, LoadTestRun body) {
+    Mono<LoadTestRun> createOrUpdateTestRun(String testRunId, LoadTestRun body) {
         // Generated convenience method for createOrUpdateTestRunWithResponse
         RequestOptions requestOptions = new RequestOptions();
         JsonMergePatchHelper.getLoadTestRunAccessor().prepareModelForJsonMergePatch(body, true);

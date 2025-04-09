@@ -7,7 +7,7 @@ package com.azure.developer.loadtesting.generated;
 import com.azure.core.util.Configuration;
 import com.azure.developer.loadtesting.LoadTestRunClient;
 import com.azure.developer.loadtesting.LoadTestRunClientBuilder;
-import com.azure.developer.loadtesting.models.MetricDefinitionCollection;
+import com.azure.developer.loadtesting.models.MetricDefinitions;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ListTheMetricDefinitionsForALoadTestRun {
@@ -17,7 +17,7 @@ public class ListTheMetricDefinitionsForALoadTestRun {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.developer.loadtesting.generated.getmetricdefinitions.listthemetricdefinitionsforaloadtestrun
-        MetricDefinitionCollection response
+        MetricDefinitions response
             = loadTestRunClient.getMetricDefinitions("12316678-1234-1234-1234-122451189012", "LoadTestRunMetrics");
         // END:com.azure.developer.loadtesting.generated.getmetricdefinitions.listthemetricdefinitionsforaloadtestrun
     }

@@ -7,7 +7,7 @@ package com.azure.developer.loadtesting.generated;
 import com.azure.core.util.Configuration;
 import com.azure.developer.loadtesting.LoadTestRunClient;
 import com.azure.developer.loadtesting.LoadTestRunClientBuilder;
-import com.azure.developer.loadtesting.models.MetricNamespaceCollection;
+import com.azure.developer.loadtesting.models.MetricNamespaces;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 public class ListTheMetricNamespacesForALoadTestRun {
@@ -17,8 +17,7 @@ public class ListTheMetricNamespacesForALoadTestRun {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.developer.loadtesting.generated.getmetricnamespaces.listthemetricnamespacesforaloadtestrun
-        MetricNamespaceCollection response
-            = loadTestRunClient.getMetricNamespaces("12316678-1234-1234-1234-122451189012");
+        MetricNamespaces response = loadTestRunClient.getMetricNamespaces("12316678-1234-1234-1234-122451189012");
         // END:com.azure.developer.loadtesting.generated.getmetricnamespaces.listthemetricnamespacesforaloadtestrun
     }
 }
