@@ -6,9 +6,9 @@ extends:
     PreSteps:
       - template: ./../../../../../sdk/openai/openai-build.yml
     Artifacts:
-      - name: azure-ai-openai
+      - name: azure-ai-openai-stainless
         groupId: com.azure
-        safeName: azureaiopenai
+        safeName: azureaiopenaistainless
     CloudConfig:
       Public:
         ServiceConnection: azure-sdk-tests-openai

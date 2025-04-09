@@ -11,10 +11,12 @@ trigger:
       - sdk/openai/ci.yml
       - sdk/openai/azure-ai-openai/
       - sdk/openai/azure-ai-openai-assistants/
+      - sdk/openai/azure-ai-openai-realtime/
     exclude:
       - sdk/openai/pom.xml
       - sdk/openai/azure-ai-openai/pom.xml
       - sdk/openai/azure-ai-openai-assistants/pom.xml
+      - sdk/openai/azure-ai-openai-realtime/pom.xml
 
 pr:
   branches:
@@ -28,10 +30,12 @@ pr:
       - sdk/openai/ci.yml
       - sdk/openai/azure-ai-openai/
       - sdk/openai/azure-ai-openai-assistants/
+      - sdk/openai/azure-ai-openai-realtime/
     exclude:
       - sdk/openai/pom.xml
       - sdk/openai/azure-ai-openai/pom.xml
       - sdk/openai/azure-ai-openai-assistants/pom.xml
+      - sdk/openai/azure-ai-openai-realtime/pom.xml
 
 parameters:
   - name: release_azureaiopenai
@@ -42,6 +46,10 @@ parameters:
     displayName: 'azure-ai-openai-assistants'
     type: boolean
     default: true
+  - name: release_azureaiopenairealtime
+    displayName: 'azure-ai-openai-realtime'
+    type: boolean
+    default: false
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -56,3 +64,7 @@ extends:
         groupId: com.azure
         safeName: azureaiopenaiassistants
         releaseInBatch: ${{ parameters.release_azureaiopenaiassistants }}
+      - name: azure-ai-openai-realtime
+        groupId: com.azure
+        safeName: azureaiopenairealtime
+        releaseInBatch: ${{ parameters.release_azureaiopenairealtime }}
