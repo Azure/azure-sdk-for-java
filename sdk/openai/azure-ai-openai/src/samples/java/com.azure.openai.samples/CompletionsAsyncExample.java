@@ -1,13 +1,18 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.openai.samples;
+
 import com.azure.identity.AuthenticationUtil;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClientAsync;
 import com.openai.client.okhttp.OpenAIOkHttpClientAsync;
 import com.openai.credential.BearerTokenCredential;
-import com.openai.models.embeddings.EmbeddingCreateParams;
-import com.openai.models.embeddings.EmbeddingModel;
+import com.openai.models.ChatModel;
+import com.openai.models.chat.completions.ChatCompletionCreateParams;
 
-public final class EmbeddingsAsyncExample {
-    private EmbeddingsAsyncExample() {}
+public final class CompletionsAsyncExample {
+    private CompletionsAsyncExample() {}
 
     public static void main(String[] args) {
         // Configures using one of:
@@ -27,11 +32,20 @@ public final class EmbeddingsAsyncExample {
         // All code from this line down is general-purpose OpenAI code
         OpenAIClientAsync client = clientBuilder.build();
 
-        EmbeddingCreateParams createParams = EmbeddingCreateParams.builder()
-                .input("The quick brown fox jumped over the lazy dog")
-                .model(EmbeddingModel.TEXT_EMBEDDING_ADA_002)
+
+        ChatCompletionCreateParams createParams = ChatCompletionCreateParams.builder()
+                .model(ChatModel.GPT_4O)
+                .maxCompletionTokens(2048)
+                .addDeveloperMessage("Make sure you mention Stainless!")
+                .addUserMessage("Tell me a story about building the best SDK!")
                 .build();
 
-        client.embeddings().create(createParams).thenAccept(System.out::println).join();
+        client.chat()
+                .completions()
+                .create(createParams)
+                .thenAccept(completion -> completion.choices().stream()
+                        .flatMap(choice -> choice.message().content().stream())
+                        .forEach(System.out::println))
+                .join();
     }
 }

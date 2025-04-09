@@ -1,3 +1,8 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.openai.samples;
+
 import static com.openai.core.ObjectMappers.jsonMapper;
 
 import com.azure.identity.AuthenticationUtil;

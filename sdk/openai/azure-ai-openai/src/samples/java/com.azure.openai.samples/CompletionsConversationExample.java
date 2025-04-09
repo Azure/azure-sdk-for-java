@@ -1,3 +1,8 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.openai.samples;
+
 import static java.util.stream.Collectors.toList;
 
 import com.azure.identity.AuthenticationUtil;
