@@ -3,14 +3,14 @@
 
 package io.clientcore.core.implementation.instrumentation.fallback;
 
-import io.clientcore.core.http.models.RequestOptions;
-import io.clientcore.core.implementation.instrumentation.LibraryInstrumentationOptionsAccessHelper;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.implementation.instrumentation.NoopMeter;
+import io.clientcore.core.implementation.instrumentation.SdkInstrumentationOptionsAccessHelper;
 import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.instrumentation.InstrumentationAttributes;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.InstrumentationOptions;
-import io.clientcore.core.instrumentation.LibraryInstrumentationOptions;
+import io.clientcore.core.instrumentation.SdkInstrumentationOptions;
 import io.clientcore.core.instrumentation.metrics.Meter;
 import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.SpanBuilder;
@@ -44,16 +44,16 @@ public class FallbackInstrumentation implements Instrumentation {
     /**
      * Creates a new instance of {@link FallbackInstrumentation}.
      * @param instrumentationOptions the application instrumentation options
-     * @param libraryOptions the library instrumentation options
+     * @param sdkOptions the library instrumentation options
      * @param host the service host
      * @param port the service port
      */
-    public FallbackInstrumentation(InstrumentationOptions instrumentationOptions,
-        LibraryInstrumentationOptions libraryOptions, String host, int port) {
-        this.allowNestedSpans = libraryOptions != null
-            && LibraryInstrumentationOptionsAccessHelper.isSpanSuppressionDisabled(libraryOptions);
+    public FallbackInstrumentation(InstrumentationOptions instrumentationOptions, SdkInstrumentationOptions sdkOptions,
+        String host, int port) {
+        this.allowNestedSpans
+            = sdkOptions != null && SdkInstrumentationOptionsAccessHelper.isSpanSuppressionDisabled(sdkOptions);
         this.isTracingEnabled = instrumentationOptions == null || instrumentationOptions.isTracingEnabled();
-        this.tracer = new FallbackTracer(instrumentationOptions, libraryOptions);
+        this.tracer = new FallbackTracer(instrumentationOptions, sdkOptions);
         this.serviceHost = host;
         this.servicePort = port;
     }
@@ -95,36 +95,32 @@ public class FallbackInstrumentation implements Instrumentation {
     }
 
     @Override
-    public <TResponse> TResponse instrumentWithResponse(String operationName, RequestOptions requestOptions,
-        Function<RequestOptions, TResponse> operation) {
+    public <TResponse> TResponse instrumentWithResponse(String operationName, RequestContext requestContext,
+        Function<RequestContext, TResponse> operation) {
         Objects.requireNonNull(operationName, "'operationName' cannot be null");
         Objects.requireNonNull(operation, "'operation' cannot be null");
 
-        if (!shouldInstrument(SpanKind.CLIENT,
-            requestOptions == null ? null : requestOptions.getInstrumentationContext())) {
-            return operation.apply(requestOptions);
-        }
+        requestContext = requestContext == null ? RequestContext.none() : requestContext;
+        InstrumentationContext context = requestContext.getInstrumentationContext();
 
-        if (requestOptions == null || requestOptions == RequestOptions.none()) {
-            requestOptions = new RequestOptions();
+        if (!shouldInstrument(SpanKind.CLIENT, context)) {
+            return operation.apply(requestContext);
         }
 
         SpanBuilder builder
-            = tracer.spanBuilder(operationName, SpanKind.CLIENT, requestOptions.getInstrumentationContext())
-                .setAttribute(SERVER_ADDRESS_KEY, serviceHost);
+            = tracer.spanBuilder(operationName, SpanKind.CLIENT, context).setAttribute(SERVER_ADDRESS_KEY, serviceHost);
 
         if (servicePort > 0) {
             builder.setAttribute(SERVER_PORT_KEY, servicePort);
         }
 
         Span span = builder.startSpan();
-        if (span.getInstrumentationContext().isValid()) {
-            requestOptions.setInstrumentationContext(span.getInstrumentationContext());
-        }
 
+        RequestContext childContext
+            = requestContext.toBuilder().setInstrumentationContext(span.getInstrumentationContext()).build();
         TracingScope scope = span.makeCurrent();
         try {
-            TResponse response = operation.apply(requestOptions);
+            TResponse response = operation.apply(childContext);
             span.end();
             return response;
         } catch (RuntimeException t) {

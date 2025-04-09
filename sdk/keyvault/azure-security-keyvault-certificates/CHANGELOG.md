@@ -1,6 +1,6 @@
 # Release History
 
-## 4.8.0-beta.1 (2025-03-24)
+## 4.8.0-beta.1 (2025-04-09)
 
 ### Features Added
 - Added support for preserving the order of the certificate chain when creating or importing certificates. ([#44788](https://github.com/Azure/azure-sdk-for-java/pull/44788)
@@ -12,6 +12,17 @@
 - Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
 - Upgraded `azure-json` from `1.4.0` to version `1.5.0`.
 - Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+
+## 4.7.4 (2025-03-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-json` from `1.4.0` to version `1.5.0`.
+- Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
+
 
 ## 4.7.3 (2025-03-04)
 

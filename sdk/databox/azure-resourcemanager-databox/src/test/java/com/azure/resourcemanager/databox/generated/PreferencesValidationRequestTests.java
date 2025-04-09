@@ -8,6 +8,7 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.databox.models.DoubleEncryption;
 import com.azure.resourcemanager.databox.models.EncryptionPreferences;
 import com.azure.resourcemanager.databox.models.HardwareEncryption;
+import com.azure.resourcemanager.databox.models.ModelName;
 import com.azure.resourcemanager.databox.models.Preferences;
 import com.azure.resourcemanager.databox.models.PreferencesValidationRequest;
 import com.azure.resourcemanager.databox.models.SkuName;
@@ -20,45 +21,48 @@ public final class PreferencesValidationRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PreferencesValidationRequest model = BinaryData.fromString(
-            "{\"validationType\":\"ValidatePreferences\",\"preference\":{\"preferredDataCenterRegion\":[\"fwpracstwi\",\"ykhevxccedcpnmdy\",\"dnwzxltjcvnhltiu\"],\"transportPreferences\":{\"preferredShipmentType\":\"CustomerManaged\",\"isUpdated\":false},\"reverseTransportPreferences\":{\"preferredShipmentType\":\"MicrosoftManaged\",\"isUpdated\":false},\"encryptionPreferences\":{\"doubleEncryption\":\"Enabled\",\"hardwareEncryption\":\"Disabled\"},\"storageAccountAccessTierPreferences\":[\"y\",\"wxwlmdjrkvfgb\",\"fvpdbo\",\"acizsjqlhkrr\"]},\"deviceType\":\"DataBoxHeavy\"}")
+            "{\"validationType\":\"ValidatePreferences\",\"preference\":{\"preferredDataCenterRegion\":[\"ejhzisxg\",\"pelol\"],\"transportPreferences\":{\"preferredShipmentType\":\"CustomerManaged\",\"isUpdated\":false},\"reverseTransportPreferences\":{\"preferredShipmentType\":\"MicrosoftManaged\",\"isUpdated\":false},\"encryptionPreferences\":{\"doubleEncryption\":\"Enabled\",\"hardwareEncryption\":\"Enabled\"},\"storageAccountAccessTierPreferences\":[\"twdw\",\"ftswibyrcdlbhsh\",\"wpracstwitykhev\",\"c\"]},\"deviceType\":\"DataBoxCustomerDisk\",\"model\":\"DataBoxCustomerDisk\"}")
             .toObject(PreferencesValidationRequest.class);
-        Assertions.assertEquals("fwpracstwi", model.preference().preferredDataCenterRegion().get(0));
+        Assertions.assertEquals("ejhzisxg", model.preference().preferredDataCenterRegion().get(0));
         Assertions.assertEquals(TransportShipmentTypes.CUSTOMER_MANAGED,
             model.preference().transportPreferences().preferredShipmentType());
         Assertions.assertEquals(TransportShipmentTypes.MICROSOFT_MANAGED,
             model.preference().reverseTransportPreferences().preferredShipmentType());
         Assertions.assertEquals(DoubleEncryption.ENABLED,
             model.preference().encryptionPreferences().doubleEncryption());
-        Assertions.assertEquals(HardwareEncryption.DISABLED,
+        Assertions.assertEquals(HardwareEncryption.ENABLED,
             model.preference().encryptionPreferences().hardwareEncryption());
-        Assertions.assertEquals("y", model.preference().storageAccountAccessTierPreferences().get(0));
-        Assertions.assertEquals(SkuName.DATA_BOX_HEAVY, model.deviceType());
+        Assertions.assertEquals("twdw", model.preference().storageAccountAccessTierPreferences().get(0));
+        Assertions.assertEquals(SkuName.DATA_BOX_CUSTOMER_DISK, model.deviceType());
+        Assertions.assertEquals(ModelName.DATA_BOX_CUSTOMER_DISK, model.model());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PreferencesValidationRequest model = new PreferencesValidationRequest()
-            .withPreference(new Preferences()
-                .withPreferredDataCenterRegion(Arrays.asList("fwpracstwi", "ykhevxccedcpnmdy", "dnwzxltjcvnhltiu"))
+            .withPreference(new Preferences().withPreferredDataCenterRegion(Arrays.asList("ejhzisxg", "pelol"))
                 .withTransportPreferences(
                     new TransportPreferences().withPreferredShipmentType(TransportShipmentTypes.CUSTOMER_MANAGED))
                 .withReverseTransportPreferences(
                     new TransportPreferences().withPreferredShipmentType(TransportShipmentTypes.MICROSOFT_MANAGED))
                 .withEncryptionPreferences(new EncryptionPreferences().withDoubleEncryption(DoubleEncryption.ENABLED)
-                    .withHardwareEncryption(HardwareEncryption.DISABLED))
-                .withStorageAccountAccessTierPreferences(Arrays.asList("y", "wxwlmdjrkvfgb", "fvpdbo", "acizsjqlhkrr")))
-            .withDeviceType(SkuName.DATA_BOX_HEAVY);
+                    .withHardwareEncryption(HardwareEncryption.ENABLED))
+                .withStorageAccountAccessTierPreferences(
+                    Arrays.asList("twdw", "ftswibyrcdlbhsh", "wpracstwitykhev", "c")))
+            .withDeviceType(SkuName.DATA_BOX_CUSTOMER_DISK)
+            .withModel(ModelName.DATA_BOX_CUSTOMER_DISK);
         model = BinaryData.fromObject(model).toObject(PreferencesValidationRequest.class);
-        Assertions.assertEquals("fwpracstwi", model.preference().preferredDataCenterRegion().get(0));
+        Assertions.assertEquals("ejhzisxg", model.preference().preferredDataCenterRegion().get(0));
         Assertions.assertEquals(TransportShipmentTypes.CUSTOMER_MANAGED,
             model.preference().transportPreferences().preferredShipmentType());
         Assertions.assertEquals(TransportShipmentTypes.MICROSOFT_MANAGED,
             model.preference().reverseTransportPreferences().preferredShipmentType());
         Assertions.assertEquals(DoubleEncryption.ENABLED,
             model.preference().encryptionPreferences().doubleEncryption());
-        Assertions.assertEquals(HardwareEncryption.DISABLED,
+        Assertions.assertEquals(HardwareEncryption.ENABLED,
             model.preference().encryptionPreferences().hardwareEncryption());
-        Assertions.assertEquals("y", model.preference().storageAccountAccessTierPreferences().get(0));
-        Assertions.assertEquals(SkuName.DATA_BOX_HEAVY, model.deviceType());
+        Assertions.assertEquals("twdw", model.preference().storageAccountAccessTierPreferences().get(0));
+        Assertions.assertEquals(SkuName.DATA_BOX_CUSTOMER_DISK, model.deviceType());
+        Assertions.assertEquals(ModelName.DATA_BOX_CUSTOMER_DISK, model.model());
     }
 }

@@ -3,7 +3,7 @@
 
 package io.clientcore.core.instrumentation;
 
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.implementation.instrumentation.fallback.FallbackInstrumentation;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInstrumentation;
@@ -34,12 +34,12 @@ public interface Instrumentation {
      * <!-- src_embed io.clientcore.core.instrumentation.gettracer -->
      * <pre>
      *
-     * LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions&#40;&quot;sample&quot;&#41;
-     *     .setLibraryVersion&#40;&quot;1.0.0&quot;&#41;
+     * SdkInstrumentationOptions sdkOptions = new SdkInstrumentationOptions&#40;&quot;sample&quot;&#41;
+     *     .setSdkVersion&#40;&quot;1.0.0&quot;&#41;
      *     .setSchemaUrl&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.29.0&quot;&#41;;
      *
      * InstrumentationOptions instrumentationOptions = new InstrumentationOptions&#40;&#41;;
-     * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, libraryOptions&#41;;
+     * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, sdkOptions&#41;;
      *
      * Tracer tracer = instrumentation.getTracer&#40;&#41;;
      *
@@ -61,12 +61,12 @@ public interface Instrumentation {
      * <!-- src_embed io.clientcore.core.instrumentation.getmeter -->
      * <pre>
      *
-     * LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions&#40;&quot;sample&quot;&#41;
-     *     .setLibraryVersion&#40;&quot;1.0.0&quot;&#41;
+     * SdkInstrumentationOptions sdkOptions = new SdkInstrumentationOptions&#40;&quot;sample&quot;&#41;
+     *     .setSdkVersion&#40;&quot;1.0.0&quot;&#41;
      *     .setSchemaUrl&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.29.0&quot;&#41;;
      *
      * InstrumentationOptions instrumentationOptions = new InstrumentationOptions&#40;&#41;;
-     * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, libraryOptions&#41;;
+     * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, sdkOptions&#41;;
      * Meter meter = instrumentation.getMeter&#40;&#41;;
      *
      * </pre>
@@ -84,13 +84,13 @@ public interface Instrumentation {
      * should use OpenTelemetry API directly</strong></p>
      * <!-- src_embed io.clientcore.core.instrumentation.createattributes -->
      * <pre>
-     * LibraryInstrumentationOptions libraryOptions = new LibraryInstrumentationOptions&#40;&quot;sample&quot;&#41;
-     *     .setLibraryVersion&#40;&quot;1.0.0&quot;&#41;
+     * SdkInstrumentationOptions sdkOptions = new SdkInstrumentationOptions&#40;&quot;sample&quot;&#41;
+     *     .setSdkVersion&#40;&quot;1.0.0&quot;&#41;
      *     .setSchemaUrl&#40;&quot;https:&#47;&#47;opentelemetry.io&#47;schemas&#47;1.29.0&quot;&#41;;
      *
      * InstrumentationOptions instrumentationOptions = new InstrumentationOptions&#40;&#41;;
      *
-     * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, libraryOptions&#41;;
+     * Instrumentation instrumentation = Instrumentation.create&#40;instrumentationOptions, sdkOptions&#41;;
      * InstrumentationAttributes attributes = instrumentation
      *     .createAttributes&#40;Collections.singletonMap&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
      *
@@ -116,44 +116,44 @@ public interface Instrumentation {
      * Instruments a client call which includes distributed tracing and duration metric.
      * Created span becomes current and is used to correlate all telemetry reported under it such as other spans, logs, or metrics exemplars.
      * <p>
-     * The method updates the {@link RequestOptions} object with the instrumentation context that should be used for the call.
+     * The method updates the {@link RequestContext} object with the instrumentation context that should be used for the call.
      * <!-- src_embed io.clientcore.core.instrumentation.instrumentwithresponse -->
      * <pre>
-     * return instrumentation.instrumentWithResponse&#40;&quot;Sample.download&quot;, options, this::downloadImpl&#41;;
+     * return instrumentation.instrumentWithResponse&#40;&quot;Sample.download&quot;, context, this::downloadImpl&#41;;
      * </pre>
      * <!-- end io.clientcore.core.instrumentation.instrumentwithresponse -->
      *
      * @param operationName the name of the operation, it should be fully-qualified, language-agnostic method definition name such as TypeSpec's crossLanguageDefinitionId
      *                      or OpenAPI operationId.
-     * @param requestOptions the initial request options.
+     * @param requestContext the request options.
      * @param operation the operation to instrument. Note: the operation is executed in the scope of the instrumentation and should use updated request options passed to it.
      * @param <TResponse> the type of the response.
      * @return the response.
      * @throws RuntimeException if the call throws a runtime exception.
      */
-    <TResponse> TResponse instrumentWithResponse(String operationName, RequestOptions requestOptions,
-        Function<RequestOptions, TResponse> operation);
+    <TResponse> TResponse instrumentWithResponse(String operationName, RequestContext requestContext,
+        Function<RequestContext, TResponse> operation);
 
     /**
      * Instruments a client call which includes distributed tracing and duration metric.
      * Created span becomes current and is used to correlate all telemetry reported under it such as other spans, logs, or metrics exemplars.
      * <p>
-     * The method updates the {@link RequestOptions} object with the instrumentation context that should be used for the call.
+     * The method updates the {@link RequestContext} object with the instrumentation context that should be used for the call.
      * <!-- src_embed io.clientcore.core.instrumentation.instrument -->
      * <pre>
-     * instrumentation.instrument&#40;&quot;Sample.create&quot;, options, this::createImpl&#41;;
+     * instrumentation.instrument&#40;&quot;Sample.create&quot;, context, this::createImpl&#41;;
      * </pre>
      * <!-- end io.clientcore.core.instrumentation.instrument -->
      *
      * @param operationName the name of the operation, it should be fully-qualified, language-agnostic method definition name such as TypeSpec's crossLanguageDefinitionId
      *                      or OpenAPI operationId.
-     * @param requestOptions the initial request options.
+     * @param requestContext the request options.
      * @param operation the operation to instrument. Note: the operation is executed in the scope of the instrumentation and should use updated request options passed to it.
      * @throws RuntimeException if the call throws a runtime exception.
      */
-    default void instrument(String operationName, RequestOptions requestOptions, Consumer<RequestOptions> operation) {
-        instrumentWithResponse(operationName, requestOptions, options -> {
-            operation.accept(options);
+    default void instrument(String operationName, RequestContext requestContext, Consumer<RequestContext> operation) {
+        instrumentWithResponse(operationName, requestContext, updatedContext -> {
+            operation.accept(updatedContext);
             return null;
         });
     }
@@ -165,25 +165,24 @@ public interface Instrumentation {
      * should use OpenTelemetry API directly</strong></p>
      *
      * @param applicationOptions Telemetry collection options provided by the application.
-     * @param libraryOptions Library-specific telemetry collection options.
+     * @param sdkOptions Library-specific instrumentation options.
      * @return The instance of telemetry provider implementation.
      */
-    static Instrumentation create(InstrumentationOptions applicationOptions,
-        LibraryInstrumentationOptions libraryOptions) {
-        Objects.requireNonNull(libraryOptions, "'libraryOptions' cannot be null");
+    static Instrumentation create(InstrumentationOptions applicationOptions, SdkInstrumentationOptions sdkOptions) {
+        Objects.requireNonNull(sdkOptions, "'sdkOptions' cannot be null");
 
         String host = null;
         int port = -1;
-        if (libraryOptions.getEndpoint() != null) {
-            URI uri = URI.create(libraryOptions.getEndpoint());
+        if (sdkOptions.getEndpoint() != null) {
+            URI uri = URI.create(sdkOptions.getEndpoint());
             host = uri.getHost();
             port = getServerPort(uri);
         }
 
         if (OTelInitializer.isInitialized()) {
-            return new OTelInstrumentation(applicationOptions, libraryOptions, host, port);
+            return new OTelInstrumentation(applicationOptions, sdkOptions, host, port);
         } else {
-            return new FallbackInstrumentation(applicationOptions, libraryOptions, host, port);
+            return new FallbackInstrumentation(applicationOptions, sdkOptions, host, port);
         }
     }
 
@@ -195,11 +194,12 @@ public interface Instrumentation {
      *
      * SampleClient client = new SampleClientBuilder&#40;&#41;.build&#40;&#41;;
      *
-     * RequestOptions options = new RequestOptions&#40;&#41;
-     *     .setInstrumentationContext&#40;new MyInstrumentationContext&#40;&quot;e4eaaaf2d48f4bf3b299a8a2a2a77ad7&quot;, &quot;5e0c63257de34c56&quot;&#41;&#41;;
+     * RequestContext context = RequestContext.builder&#40;&#41;
+     *     .setInstrumentationContext&#40;new MyInstrumentationContext&#40;&quot;e4eaaaf2d48f4bf3b299a8a2a2a77ad7&quot;, &quot;5e0c63257de34c56&quot;&#41;&#41;
+     *     .build&#40;&#41;;
      *
      * &#47;&#47; run on another thread
-     * client.downloadContent&#40;options&#41;;
+     * client.downloadContent&#40;context&#41;;
      *
      * </pre>
      * <!-- end io.clientcore.core.telemetry.fallback.correlationwithexplicitcontext -->
@@ -216,14 +216,15 @@ public interface Instrumentation {
      * SampleClient client = new SampleClientBuilder&#40;&#41;.build&#40;&#41;;
      *
      * &#47;&#47; Propagating context implicitly is preferred way in synchronous code.
-     * &#47;&#47; However, in asynchronous code, context may need to be propagated explicitly using RequestOptions
+     * &#47;&#47; However, in asynchronous code, context may need to be propagated explicitly using RequestContext
      * &#47;&#47; and explicit io.clientcore.core.util.Context.
      *
-     * RequestOptions options = new RequestOptions&#40;&#41;
-     *     .setInstrumentationContext&#40;Instrumentation.createInstrumentationContext&#40;span&#41;&#41;;
+     * RequestContext context = RequestContext.builder&#40;&#41;
+     *     .setInstrumentationContext&#40;Instrumentation.createInstrumentationContext&#40;span&#41;&#41;
+     *     .build&#40;&#41;;
      *
      * &#47;&#47; run on another thread - all telemetry will be correlated with the span created above
-     * client.clientCall&#40;options&#41;;
+     * client.clientCall&#40;context&#41;;
      *
      * </pre>
      * <!-- end io.clientcore.core.telemetry.fallback.correlationwithexplicitcontext -->

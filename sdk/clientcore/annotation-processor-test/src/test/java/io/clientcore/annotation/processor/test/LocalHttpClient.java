@@ -23,7 +23,7 @@ public final class LocalHttpClient implements HttpClient {
     @Override
     public Response<BinaryData> send(HttpRequest request) {
         lastHttpRequest = request;
-        boolean success = request.getUri().getPath().equals("/my/uri/path");
+        boolean success = request.getUri().getPath().equals("my/uri/path");
 
         if (request.getHttpMethod().equals(HttpMethod.POST)) {
             success &= "application/json".equals(request.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
