@@ -4,6 +4,7 @@
 module com.azure.communication.phonenumbers {
 
     requires transitive com.azure.communication.common;
+    requires com.azure.core;
 
     // public API surface area
     exports com.azure.communication.phonenumbers;

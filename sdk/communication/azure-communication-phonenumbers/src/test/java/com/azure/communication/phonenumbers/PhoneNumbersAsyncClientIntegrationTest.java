@@ -687,6 +687,40 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
             .getReservationAsync(reservationId)).verifyError();
     }
 
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void purchaseWithoutAgreementToNotResellFails(HttpClient httpClient) {
+        PhoneNumbersBrowseRequest browseRequest
+            = new PhoneNumbersBrowseRequest().setPhoneNumberType(PhoneNumberType.TOLL_FREE)
+                .setAssignmentType(PhoneNumberAssignmentType.APPLICATION);
+
+        PhoneNumbersBrowseResult result = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
+            .browseAvailableNumbersAsync("FR", browseRequest)
+            .block(); // Blocking to retrieve the result synchronously
+
+        reservation.addPhoneNumber(result.getPhoneNumbers().get(0));
+
+        StepVerifier.create(this.getClientWithConnectionString(httpClient, "purchasePhoneNumberReservation")
+            .beginPurchaseReservation(reservationId)).verifyError();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void purchaseWithoutAgreementToNotResellFailsWithAAD(HttpClient httpClient) {
+        PhoneNumbersBrowseRequest browseRequest
+            = new PhoneNumbersBrowseRequest().setPhoneNumberType(PhoneNumberType.TOLL_FREE)
+                .setAssignmentType(PhoneNumberAssignmentType.APPLICATION);
+
+        PhoneNumbersBrowseResult result = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers")
+            .browseAvailableNumbersAsync("FR", browseRequest)
+            .block(); // Blocking to retrieve the result synchronously
+
+        reservation.addPhoneNumber(result.getPhoneNumbers().get(0));
+
+        StepVerifier.create(this.getClientWithManagedIdentity(httpClient, "purchasePhoneNumberReservation")
+            .beginPurchaseReservation(reservationId)).verifyError();
+    }
+
     private PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult>
         beginSearchAvailablePhoneNumbersHelper(PhoneNumbersAsyncClient client, boolean withOptions) {
         PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();

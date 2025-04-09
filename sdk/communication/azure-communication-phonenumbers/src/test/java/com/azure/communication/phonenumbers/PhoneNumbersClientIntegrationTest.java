@@ -507,7 +507,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
                     new PhoneNumberBrowseCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
                         .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
-        PhoneNumbersClient client = this.getClientWithConnectionString(httpClient, "listAvailableAreaCodes");
+        PhoneNumbersClient client = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers");
 
         assertThrows(RuntimeException.class,
             () -> client.browseAvailableNumbers("INVALID", browseRequest).getPhoneNumbers().iterator().next(),
@@ -540,7 +540,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
                     new PhoneNumberBrowseCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
                         .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
-        PhoneNumbersClient client = this.getClientWithManagedIdentity(httpClient, "listAvailableAreaCodes");
+        PhoneNumbersClient client = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers");
 
         assertThrows(RuntimeException.class,
             () -> client.browseAvailableNumbers("INVALID", browseRequest).getPhoneNumbers().iterator().next(),
@@ -641,6 +641,42 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PhoneNumbersClient client = this.getClientWithManagedIdentity(httpClient, "getPhoneNumberReservation");
         assertThrows(CommunicationErrorResponseException.class, () -> client.getReservation(reservationId),
             "No reservation was found for the given ID.");
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void purchaseWithoutAgreementToNotResellFails(HttpClient httpClient) {
+        PhoneNumbersBrowseRequest browseRequest
+            = new PhoneNumbersBrowseRequest().setPhoneNumberType(PhoneNumberType.TOLL_FREE)
+                .setAssignmentType(PhoneNumberAssignmentType.APPLICATION);
+
+        PhoneNumbersClient client = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers");
+
+        PhoneNumbersBrowseResult result = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
+            .browseAvailableNumbers("FR", browseRequest);
+
+        reservation.addPhoneNumber(result.getPhoneNumbers().get(0));
+
+        assertThrows(RuntimeException.class, () -> client.beginReservationPurchase(reservationId),
+            "Missing agreement to not resell.");
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void purchaseWithoutAgreementToNotResellFailsWithAAD(HttpClient httpClient) {
+        PhoneNumbersBrowseRequest browseRequest
+            = new PhoneNumbersBrowseRequest().setPhoneNumberType(PhoneNumberType.TOLL_FREE)
+                .setAssignmentType(PhoneNumberAssignmentType.APPLICATION);
+
+        PhoneNumbersClient client = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers");
+
+        PhoneNumbersBrowseResult result = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers")
+            .browseAvailableNumbers("FR", browseRequest);
+
+        reservation.addPhoneNumber(result.getPhoneNumbers().get(0));
+
+        assertThrows(RuntimeException.class, () -> client.beginReservationPurchase(reservationId),
+            "Missing agreement to not resell.");
     }
 
     private SyncPoller<PhoneNumberOperation, PhoneNumberSearchResult>
