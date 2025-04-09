@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.openai.tests;
+package com.azure.ai.openai.stainless;
 
 import org.junit.jupiter.params.provider.Arguments;
 
