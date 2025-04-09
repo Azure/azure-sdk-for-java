@@ -168,7 +168,7 @@ class OpenAIClientBuilderTest {
     @Test
     public void testClientOptionsSetterReturnsBuilderInstance() {
         OpenAIClientBuilder builder = new OpenAIClientBuilder();
-        ClientOptions options = new ClientOptions(); // You can mock or use real instance
+        ClientOptions options = new ClientOptions();
         OpenAIClientBuilder returnedBuilder = builder.clientOptions(options);
 
         assertSame(builder, returnedBuilder, "Method should return the same builder instance");
