@@ -5,6 +5,7 @@ package io.clientcore.core.http.models;
 
 import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.MetadataProperties;
+import io.clientcore.core.implementation.http.RetryUtils;
 import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 
@@ -32,7 +33,7 @@ public class HttpResponseException extends CoreException {
      * @param value The deserialized response value.
      */
     public HttpResponseException(final String message, final Response<BinaryData> response, final Object value) {
-        super(message, null, isRetryable(response.getStatusCode()));
+        super(message, null, isRetryable(response, null));
 
         this.value = value;
         this.response = response;
@@ -46,7 +47,7 @@ public class HttpResponseException extends CoreException {
      * @param cause The {@link Throwable} which caused the creation of this exception.
      */
     public HttpResponseException(final String message, final Response<BinaryData> response, final Throwable cause) {
-        super(message, cause, isRetryable(response.getStatusCode()));
+        super(message, cause, isRetryable(response, cause));
 
         this.value = null;
         this.response = response;
@@ -70,8 +71,7 @@ public class HttpResponseException extends CoreException {
         return value;
     }
 
-    private static boolean isRetryable(int code) {
-        // TODO: Add more specific definitely non-retryable codes
-        return (code != 401);
+    private static boolean isRetryable(Response<BinaryData> response, Throwable cause) {
+        return response != null ? RetryUtils.isRetryable(response.getStatusCode()) : RetryUtils.isRetryable(cause);
     }
 }

@@ -3,8 +3,8 @@
 
 package io.clientcore.core.models;
 
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import io.clientcore.core.implementation.http.RetryUtils;
+
 import java.io.UncheckedIOException;
 
 /**
@@ -37,7 +37,7 @@ public class CoreException extends RuntimeException {
      * @return the {@link CoreException} that was created
      */
     public static CoreException from(String message, Throwable cause) {
-        return from(message, cause, isRetryableException(cause));
+        return from(message, cause, RetryUtils.isRetryable(cause));
     }
 
     /**
@@ -59,18 +59,23 @@ public class CoreException extends RuntimeException {
      * @param isRetryable whether the exception is retryable. When in doubt, set to {@code true}.
      * @return the {@link CoreException} that was created
      */
-    public static CoreException from(String message, Throwable cause, boolean isRetryable) {
+    static CoreException from(String message, Throwable cause, boolean isRetryable) {
+        String updatedMessage = message;
+        Throwable updatedCause = cause;
         if (cause instanceof CoreException) {
             CoreException e = (CoreException) cause;
             if (e.isRetryable() == isRetryable && message == null) {
                 return e;
             }
 
-            return new CoreException(message, e.getCause(), isRetryable);
+            updatedMessage = getMessage(message, cause);
+            updatedCause = cause.getCause();
         } else if (cause instanceof UncheckedIOException) {
-            return new CoreException(message == null ? cause.getMessage() : message, cause.getCause(), isRetryable);
+            updatedMessage = getMessage(message, cause);
+            updatedCause = cause.getCause();
         }
-        return new CoreException(message, cause, isRetryable);
+
+        return new CoreException(updatedMessage, updatedCause, isRetryable);
     }
 
     /**
@@ -97,20 +102,6 @@ public class CoreException extends RuntimeException {
      */
     public boolean isRetryable() {
         return isRetryable;
-    }
-
-    private static boolean isRetryableException(Throwable e) {
-        if (e instanceof CoreException) {
-            return ((CoreException) e).isRetryable();
-        } else if (e instanceof UncheckedIOException) {
-            return isRetryableException(e.getCause());
-        } else if (e instanceof IOException) {
-            // TODO: Add more specific non-retryable exceptions
-            return !(e instanceof FileNotFoundException);
-        }
-
-        // Assume exceptions are retryable by default
-        return true;
     }
 
     private static String getMessage(String message, Throwable cause) {

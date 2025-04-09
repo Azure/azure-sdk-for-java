@@ -13,7 +13,6 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -50,8 +49,6 @@ public class ReadmeSamples {
                 .setUri("http://bing.com"))) {
                 // Validate test results.
                 assertEquals(200, response.getStatusCode());
-            } catch (IOException ex) {
-                throw new UncheckedIOException(ex);
             }
         }
         // END: readme-sample-createATestClass
@@ -90,8 +87,6 @@ public class ReadmeSamples {
                 .setUri("http://bing.com"))) {
                 // Validate test results.
                 assertEquals(200, response.getStatusCode());
-            } catch (IOException ex) {
-                throw new UncheckedIOException(ex);
             }
         }
     }
