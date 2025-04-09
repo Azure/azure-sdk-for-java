@@ -1,8 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.specialized;
-
 import com.azure.core.http.RequestConditions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
@@ -23,6 +21,8 @@ import com.azure.storage.blob.models.PageList;
 import com.azure.storage.blob.models.PageRange;
 import com.azure.storage.blob.models.SequenceNumberActionType;
 import com.azure.storage.blob.options.PageBlobUploadPagesFromUrlOptions;
+import com.azure.storage.blob.specialized.PageBlobClient;
+import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;

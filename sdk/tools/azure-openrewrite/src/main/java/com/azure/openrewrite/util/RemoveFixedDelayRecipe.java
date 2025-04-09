@@ -1,6 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.openrewrite;
+package com.azure.openrewrite.util;
 
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.Recipe;
