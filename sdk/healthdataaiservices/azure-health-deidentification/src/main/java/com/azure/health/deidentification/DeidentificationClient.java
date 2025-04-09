@@ -319,7 +319,7 @@ public final class DeidentificationClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -355,6 +355,7 @@ public final class DeidentificationClient {
      * @return paged collection of DeidentificationDocumentDetails items as paginated response with
      * {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listJobDocuments(String jobName, RequestOptions requestOptions) {
         return this.serviceClient.listJobDocuments(jobName, requestOptions);
@@ -647,6 +648,7 @@ public final class DeidentificationClient {
      * @return paged collection of DeidentificationDocumentDetails items as paginated response with
      * {@link PagedIterable}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeidentificationDocumentDetails> listJobDocuments(String jobName) {
         // Generated convenience method for listJobDocuments

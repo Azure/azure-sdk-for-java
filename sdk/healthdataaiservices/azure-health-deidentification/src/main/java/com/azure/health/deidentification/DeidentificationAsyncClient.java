@@ -325,7 +325,7 @@ public final class DeidentificationAsyncClient {
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p><strong>Response Body Schema</strong></p>
-     *
+     * 
      * <pre>
      * {@code
      * {
@@ -360,6 +360,7 @@ public final class DeidentificationAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return paged collection of DeidentificationDocumentDetails items as paginated response with {@link PagedFlux}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listJobDocuments(String jobName, RequestOptions requestOptions) {
         return this.serviceClient.listJobDocumentsAsync(jobName, requestOptions);
@@ -688,6 +689,7 @@ public final class DeidentificationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DeidentificationDocumentDetails items as paginated response with {@link PagedFlux}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DeidentificationDocumentDetails> listJobDocuments(String jobName) {
         // Generated convenience method for listJobDocuments
