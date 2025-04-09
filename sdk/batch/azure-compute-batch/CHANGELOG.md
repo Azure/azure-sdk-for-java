@@ -21,6 +21,18 @@ This release is the first stable release of the Azure Compute Batch client libra
   - `AffinityInfo` is now `BatchAffinityInfo`. On `BatchTask` and `BatchTaskCreateContent`, `getAffinityInfo()` now returns `BatchAffinityInfo` instead of `AffinityInfo`.
   - `HttpHeader` has been changed to `OutputFileUploadHeader`.
   - In `OutputFileBlobContainerDestination`, `getUploadHeaders()` returns `List<OutputFileUploadHeader>` instead of `List<HttpHeader>` and `setUploadHeaders` takes in a parameter of `List<OutputFileUploadHeader>` rather than `List<HttpHeader>`
+  - In `BatchCreateTaskCollectionResult`, `getValue()` is now `getValues()`.
+  - In `BatchJob`, `getOnAllTasksComplete()` is now named `getAllTasksCompleteMode()`. `setOnAllTasksComplete` is now `setAllTasksCompleteMode`. `getStats()` is now named `getJobStatistics()`. `getOnTaskFailure()` is now `getTaskFailureMode()`.
+  - In `BatchJobCreateContent`, `getOnAllTasksComplete()` is now named `getAllTasksCompleteMode()`. `setOnAllTasksComplete` is now `setTaskFailureMode`. `getOnTaskFailure()` is now `getTaskFailureMode()`.
+  - In `BatchJobSchedule`, `getStats()` is now named `getJobScheduleStatistics()`.
+  - In `BatchJobSpecification`, `getOnAllTasksComplete()` is now named `getAllTasksCompleteMode()`. `setOnAllTasksComplete` is now `setAllTasksCompleteMode`. `getOnTaskFailure()` is now `getTaskFailureMode()`. `setOnAllTasksComplete` is now `setTaskFailureMode`.
+  - In `BatchJobUpdateContent`, `getOnAllTasksComplete()` is now named `getAllTasksCompleteMode()`. `setOnAllTasksComplete` is now `setAllTasksCompleteMode`.
+  - In `BatchNodeRebootContent`, `getNodeRebootOption()` is now `getNodeRebootKind()`. `setNodeRebootOption` is now `setNodeRebootKind`.
+  - In `BatchNodeRemoveContent`, `getNodeList()` is now `getNodeIds()`.
+  - In `BatchPool`, `getStats()` is now `getPoolStatistics()`.
+  - In `BatchPoolStatistics`, `getUsageStats()` is now `getUsageStatistics()` and `getResourceStats()` is now `getResourceStatistics()`.
+  - In `BatchTask`, `getStats()` is now `getTaskStatistics()`.
+  - In `BatchTaskGroup`, `getValue()` is now `getValues()`.
 
 - On the `BatchCertificate` model, the return type of `getData()` is now `byte[]` instead of `String`.
 
