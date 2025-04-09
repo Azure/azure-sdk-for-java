@@ -164,7 +164,7 @@ public final class DefaultServiceBusNamespaceConsumerFactory implements ServiceB
      *
      * @param customizer the provided builder customizer.
      */
-    public void addCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder> customizer) {
+    public void addServiceBusClientBuilderCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder> customizer) {
         if (customizer == null) {
             LOGGER.debug("The provided '{}' customizer is null, will ignore it.", ServiceBusClientBuilder.class.getName());
         } else {
@@ -177,7 +177,7 @@ public final class DefaultServiceBusNamespaceConsumerFactory implements ServiceB
      * customizer to customize all the session clients created from this factory.
      * @param customizer the provided builder customizer.
      */
-    public void addSessionReceiverCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder> customizer) {
+    public void addBuilderCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder> customizer) {
         if (customizer == null) {
             LOGGER.debug("The provided '{}' customizer is null, will ignore it.",
                 ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder.class.getName());
@@ -193,8 +193,8 @@ public final class DefaultServiceBusNamespaceConsumerFactory implements ServiceB
      * @param entityName the entity name of the client.
      * @param customizer the provided customizer.
      */
-    public void addDedicatedSessionReceiverCustomizer(String entityName,
-                                               AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder> customizer) {
+    public void addBuilderCustomizer(String entityName,
+                                     AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder> customizer) {
         if (customizer == null) {
             LOGGER.debug("The provided '{}' dedicated customizer is null, will ignore it.",
                 ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder.class.getName());
