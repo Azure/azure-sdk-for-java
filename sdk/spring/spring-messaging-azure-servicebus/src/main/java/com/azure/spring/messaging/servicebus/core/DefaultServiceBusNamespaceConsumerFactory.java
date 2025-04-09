@@ -98,7 +98,7 @@ public final class DefaultServiceBusNamespaceConsumerFactory implements ServiceB
     @Override
     public void destroy() {
         clients.forEach((name, receiver) -> {
-            listeners.forEach(l -> l.receiverRemoved(name, receiver));
+            listeners.forEach(l -> l.consumerRemoved(name, receiver));
             receiver.close();
         });
         this.clients.clear();
@@ -130,7 +130,7 @@ public final class DefaultServiceBusNamespaceConsumerFactory implements ServiceB
 
                 receiverClient = builder.buildClient();
 
-                this.listeners.forEach(l -> l.receiverAdded(entityName, receiverClient));
+                this.listeners.forEach(l -> l.consumerAdded(entityName, receiverClient));
             } else {
                 receiverClient = null;
                 LOGGER.warn("Receiver client is null. Define a bean PropertiesSupplier<ConsumerIdentifier, ConsumerProperties> to enable consumer 'session-enabled'.");
