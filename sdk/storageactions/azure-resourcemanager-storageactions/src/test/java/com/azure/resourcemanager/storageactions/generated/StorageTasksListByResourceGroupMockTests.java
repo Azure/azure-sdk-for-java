@@ -7,8 +7,8 @@ package com.azure.resourcemanager.storageactions.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.storageactions.StorageActionsManager;
 import com.azure.resourcemanager.storageactions.models.ManagedServiceIdentityType;
@@ -24,14 +24,14 @@ public final class StorageTasksListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"identity\":{\"principalId\":\"be9f13b5-b2e7-4a5c-8a49-223e6b37cc35\",\"tenantId\":\"8fcedcd3-0d9a-4af7-8aa8-82ff16a5b9d2\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"pbh\":{\"principalId\":\"8d0b8ab6-d73e-4f23-8cce-c76f1bac1178\",\"clientId\":\"8ae28a47-747d-4147-8269-72d46eeb43dd\"},\"tkcxywnytnrsy\":{\"principalId\":\"0f47c83b-3283-4ef3-97c5-f9941b061a93\",\"clientId\":\"eadd77f7-4eae-4f1f-98ef-ba4d1fc85ef7\"}}},\"properties\":{\"taskVersion\":7976782507588786268,\"enabled\":true,\"description\":\"ybyxc\",\"action\":{\"if\":{\"condition\":\"fclhaaxdbabphlwr\",\"operations\":[{\"name\":\"SetBlobTier\"},{\"name\":\"SetBlobTier\"}]},\"else\":{\"operations\":[{\"name\":\"SetBlobImmutabilityPolicy\"},{\"name\":\"SetBlobLegalHold\"}]}},\"provisioningState\":\"Canceled\",\"creationTimeInUtc\":\"2021-12-06T09:51:12Z\"},\"location\":\"mnyyazt\",\"tags\":{\"uedck\":\"wwrq\",\"bxu\":\"ywbiexzfeyueax\"},\"id\":\"wbhqwal\",\"name\":\"uzyoxaep\",\"type\":\"kzjancuxrhdwbav\"}]}";
+            = "{\"value\":[{\"identity\":{\"principalId\":\"b21f5dcf-79af-4115-836c-f370d3cb7fb1\",\"tenantId\":\"3ba7a4f9-1ec3-4026-9670-fcc4b056ee61\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"pbh\":{\"principalId\":\"cb89506b-4c18-4d20-b317-8598da2525b9\",\"clientId\":\"f239f6e6-6f9b-485f-835e-fb3e82ab58c2\"},\"tkcxywnytnrsy\":{\"principalId\":\"450c1ca2-ee65-4bcd-bcc5-a8809450fd7a\",\"clientId\":\"bc2ebf49-ed3d-4d9f-83a8-e140b8f942f9\"}}},\"properties\":{\"taskVersion\":7976782507588786268,\"enabled\":true,\"description\":\"ybyxc\",\"action\":{\"if\":{\"condition\":\"fclhaaxdbabphlwr\",\"operations\":[{\"name\":\"SetBlobTier\"},{\"name\":\"SetBlobTier\"}]},\"else\":{\"operations\":[{\"name\":\"SetBlobImmutabilityPolicy\"},{\"name\":\"SetBlobLegalHold\"}]}},\"provisioningState\":\"ValidateSubscriptionQuotaEnd\",\"creationTimeInUtc\":\"2021-12-06T09:51:12Z\"},\"location\":\"mnyyazt\",\"tags\":{\"uedck\":\"wwrq\",\"bxu\":\"ywbiexzfeyueax\"},\"id\":\"wbhqwal\",\"name\":\"uzyoxaep\",\"type\":\"kzjancuxrhdwbav\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         StorageActionsManager manager = StorageActionsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<StorageTask> response
             = manager.storageTasks().listByResourceGroup("ttdbhrbnl", com.azure.core.util.Context.NONE);

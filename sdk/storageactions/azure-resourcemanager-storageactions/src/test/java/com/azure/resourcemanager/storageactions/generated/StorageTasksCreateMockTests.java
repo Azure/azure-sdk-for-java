@@ -6,8 +6,8 @@ package com.azure.resourcemanager.storageactions.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.storageactions.StorageActionsManager;
 import com.azure.resourcemanager.storageactions.models.ElseCondition;
@@ -33,14 +33,14 @@ public final class StorageTasksCreateMockTests {
     @Test
     public void testCreate() throws Exception {
         String responseStr
-            = "{\"identity\":{\"principalId\":\"1b510eb5-6c9f-4b8f-9ff7-78353843d48c\",\"tenantId\":\"262137ad-8f80-476e-8c7a-51b65844b07b\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ilovnot\":{\"principalId\":\"0d06c126-2c34-41d9-a026-f8a348e8283d\",\"clientId\":\"553049a2-2ba6-4495-ae9c-a892d1be2abc\"}}},\"properties\":{\"taskVersion\":4609095733155720227,\"enabled\":true,\"description\":\"njbkcnxdhbttkph\",\"action\":{\"if\":{\"condition\":\"wpn\",\"operations\":[{\"name\":\"UndeleteBlob\"},{\"name\":\"UndeleteBlob\"}]},\"else\":{\"operations\":[{\"name\":\"DeleteBlob\"},{\"name\":\"SetBlobExpiry\"}]}},\"provisioningState\":\"Succeeded\",\"creationTimeInUtc\":\"2021-09-12T23:58:43Z\"},\"location\":\"lphox\",\"tags\":{\"epsbjtazqu\":\"rpabg\",\"jidsuyonobglaoc\":\"xywpmueefjzwfqkq\"},\"id\":\"xtccmg\",\"name\":\"udxytlmoyrx\",\"type\":\"wfudwpzntxhdzhl\"}";
+            = "{\"identity\":{\"principalId\":\"b4fcbbf2-059a-4324-b780-80a177f80d42\",\"tenantId\":\"8fac3c53-3bc5-4c6a-8e38-39e4eee4a2fd\",\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"ilovnot\":{\"principalId\":\"9320d5d5-4db6-4c16-8ffb-3316ad4604af\",\"clientId\":\"124273cc-08e3-47dc-8726-5ce7d20c0ccd\"}}},\"properties\":{\"taskVersion\":4609095733155720227,\"enabled\":true,\"description\":\"njbkcnxdhbttkph\",\"action\":{\"if\":{\"condition\":\"wpn\",\"operations\":[{\"name\":\"UndeleteBlob\"},{\"name\":\"UndeleteBlob\"}]},\"else\":{\"operations\":[{\"name\":\"DeleteBlob\"},{\"name\":\"SetBlobExpiry\"}]}},\"provisioningState\":\"Succeeded\",\"creationTimeInUtc\":\"2021-09-12T23:58:43Z\"},\"location\":\"lphox\",\"tags\":{\"epsbjtazqu\":\"rpabg\",\"jidsuyonobglaoc\":\"xywpmueefjzwfqkq\"},\"id\":\"xtccmg\",\"name\":\"udxytlmoyrx\",\"type\":\"wfudwpzntxhdzhl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         StorageActionsManager manager = StorageActionsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         StorageTask response
             = manager.storageTasks()
