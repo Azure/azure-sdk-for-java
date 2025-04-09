@@ -108,4 +108,47 @@ final class PollingUtils {
 
         return new PollResponse<>(lroStatus, testRunBinary);
     }
+
+    static PollResponse<BinaryData> getTestProfileRunStatus(BinaryData testProfileRunBinary) throws RuntimeException {
+        String status;
+
+        try (JsonReader jsonReader = JsonProviders.createReader(testProfileRunBinary.toBytes())) {
+            Map<String, Object> jsonTree = jsonReader.readMap(JsonReader::readUntyped);
+
+            status = jsonTree.get("status").toString();
+        } catch (IOException e) {
+            throw new RuntimeException("Encountered exception while retrieving test profile run status", e);
+        }
+
+        LongRunningOperationStatus lroStatus;
+
+        switch (status) {
+            case "NOTSTARTED":
+                lroStatus = LongRunningOperationStatus.NOT_STARTED;
+
+                break;
+
+            case "DONE":
+                lroStatus = LongRunningOperationStatus.SUCCESSFULLY_COMPLETED;
+
+                break;
+
+            case "FAILED":
+                lroStatus = LongRunningOperationStatus.FAILED;
+
+                break;
+
+            case "CANCELLED":
+                lroStatus = LongRunningOperationStatus.USER_CANCELLED;
+
+                break;
+
+            default:
+                lroStatus = LongRunningOperationStatus.IN_PROGRESS;
+
+                break;
+        }
+
+        return new PollResponse<>(lroStatus, testProfileRunBinary);
+    }
 }
