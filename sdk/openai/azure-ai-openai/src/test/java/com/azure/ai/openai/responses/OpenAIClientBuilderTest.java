@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.ai.openai.responses;
 
 import com.azure.ai.openai.OpenAIClient;
@@ -49,7 +51,6 @@ class OpenAIClientBuilderTest {
         OpenAIClient client = builder.buildClient();
         assertNotNull(client, "The client should not be null");
 
-        // Access private fields using reflection
         Field endpointField = OpenAIClientBuilder.class.getDeclaredField("endpoint");
         endpointField.setAccessible(true);
         String endpoint = (String) endpointField.get(builder);
