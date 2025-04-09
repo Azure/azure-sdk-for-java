@@ -749,6 +749,157 @@
           "code" : "java.method.removed",
           "old" : "method com.azure.resourcemanager.containerservice.models.ManagedClusterNatGatewayProfile com.azure.resourcemanager.containerservice.models.ManagedClusterNatGatewayProfile::withEffectiveOutboundIPs(java.util.List<com.azure.resourcemanager.containerservice.models.ResourceReference>)",
           "justification": "The effectiveOutboundIPs was never a client-side modifiable property."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.apimanagement.models.ApiManagementServiceResource com.azure.resourcemanager.apimanagement.models.ApiManagementServiceResource::migrateToStv2(com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.apimanagement.models.ApiManagementServiceResource com.azure.resourcemanager.apimanagement.models.ApiManagementServiceResource::migrateToStv2(com.azure.resourcemanager.apimanagement.models.MigrateToStv2Contract, com.azure.core.util.Context)",
+          "justification" : "The number of parameters of the method have changed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method com.azure.resourcemanager.apimanagement.models.ApiManagementServiceResource com.azure.resourcemanager.apimanagement.models.ApiManagementServices::migrateToStv2(java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "new" : "method com.azure.resourcemanager.apimanagement.models.ApiManagementServiceResource com.azure.resourcemanager.apimanagement.models.ApiManagementServices::migrateToStv2(java.lang.String, java.lang.String, com.azure.resourcemanager.apimanagement.models.MigrateToStv2Contract, com.azure.core.util.Context)",
+          "justification" : "The number of parameters of the method have changed."
+        },
+        {
+          "ignore": true,
+          "old" : "method com.azure.core.http.rest.Response<java.lang.Void> com.azure.resourcemanager.apimanagement.models.Apis::deleteByIdWithResponse(java.lang.String, java.lang.String, java.lang.Boolean, com.azure.core.util.Context)",
+          "new" : "method void com.azure.resourcemanager.apimanagement.models.Apis::deleteByIdWithResponse(java.lang.String, java.lang.String, java.lang.Boolean, com.azure.core.util.Context)",
+          "justification" : "The return type changed from 'com.azure.core.http.rest.Response<java.lang.Void>' to  'void'."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.core.http.rest.Response<java.lang.Void> com.azure.resourcemanager.apimanagement.models.Apis::deleteWithResponse(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean, com.azure.core.util.Context)",
+          "justification" : "Method was removed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.returnTypeChanged",
+          "old" : "method com.azure.core.management.exception.ManagementError com.azure.resourcemanager.apimanagement.models.OperationResultContract::error()",
+          "new" : "method com.azure.resourcemanager.apimanagement.models.ErrorResponseBody com.azure.resourcemanager.apimanagement.models.OperationResultContract::error()",
+          "justification" : "The return type changed from 'com.azure.core.management.exception.ManagementError' to  'com.azure.resourcemanager.apimanagement.models.ErrorResponseBody'."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.returnTypeChanged",
+          "old" : "method com.azure.resourcemanager.apimanagement.models.PolicyCollection com.azure.resourcemanager.apimanagement.models.Policies::listByService(java.lang.String, java.lang.String)",
+          "new" : "method com.azure.core.http.rest.PagedIterable<com.azure.resourcemanager.apimanagement.models.PolicyContract> com.azure.resourcemanager.apimanagement.models.Policies::listByService(java.lang.String, java.lang.String)",
+          "justification" : "The return type changed from 'com.azure.resourcemanager.apimanagement.models.PolicyCollection' to  'com.azure.core.http.rest.PagedIterable<com.azure.resourcemanager.apimanagement.models.PolicyContract>'."
+        },
+        {
+          "ignore": true,
+          "old" : "method com.azure.core.http.rest.Response<com.azure.resourcemanager.apimanagement.models.PolicyCollection> com.azure.resourcemanager.apimanagement.models.Policies::listByServiceWithResponse(java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "justification" : "Method was removed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.kindChanged",
+          "old" : "interface com.azure.resourcemanager.apimanagement.models.PolicyFragmentCollection",
+          "new" : "class com.azure.resourcemanager.apimanagement.models.PolicyFragmentCollection",
+          "justification" : "Class kind changed from 'interface' to 'class'."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.nowFinal",
+          "old" : "interface com.azure.resourcemanager.apimanagement.models.PolicyFragmentCollection",
+          "new" : "class com.azure.resourcemanager.apimanagement.models.PolicyFragmentCollection",
+          "justification" : "Class is now final."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.apimanagement.fluent.models.PolicyFragmentCollectionInner com.azure.resourcemanager.apimanagement.models.PolicyFragmentCollection::innerModel()",
+          "justification" : "Method was removed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.returnTypeTypeParametersChanged",
+          "old" : "method java.util.List<com.azure.resourcemanager.apimanagement.models.PolicyFragmentContract> com.azure.resourcemanager.apimanagement.models.PolicyFragmentCollection::value()",
+          "new" : "method java.util.List<com.azure.resourcemanager.apimanagement.fluent.models.PolicyFragmentContractInner> com.azure.resourcemanager.apimanagement.models.PolicyFragmentCollection::value()",
+          "justification" : "The return type changed from 'java.util.List<com.azure.resourcemanager.apimanagement.models.PolicyFragmentContract>' to 'java.util.List<com.azure.resourcemanager.apimanagement.fluent.models.PolicyFragmentContractInner>'."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.returnTypeChanged",
+          "old" : "method com.azure.resourcemanager.apimanagement.models.PolicyFragmentCollection com.azure.resourcemanager.apimanagement.models.PolicyFragments::listByService(java.lang.String, java.lang.String)",
+          "new" : "method com.azure.core.http.rest.PagedIterable<com.azure.resourcemanager.apimanagement.models.PolicyFragmentContract> com.azure.resourcemanager.apimanagement.models.PolicyFragments::listByService(java.lang.String, java.lang.String)",
+          "justification" : "The return type changed from 'com.azure.resourcemanager.apimanagement.models.PolicyFragmentCollection' to  'com.azure.core.http.rest.PagedIterable<com.azure.resourcemanager.apimanagement.models.PolicyFragmentContract>'."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.core.http.rest.Response<com.azure.resourcemanager.apimanagement.models.PolicyFragmentCollection> com.azure.resourcemanager.apimanagement.models.PolicyFragments::listByServiceWithResponse(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.Integer, java.lang.Integer, com.azure.core.util.Context)",
+          "justification" : "Method was removed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.kindChanged",
+          "old" : "interface com.azure.resourcemanager.apimanagement.models.PortalConfigCollection",
+          "new" : "class com.azure.resourcemanager.apimanagement.models.PortalConfigCollection",
+          "justification" : "Class kind changed from 'interface' to 'class'."
+        },
+        {
+          "ignore": true,
+          "code" : "java.class.nowFinal",
+          "old" : "interface com.azure.resourcemanager.apimanagement.models.PortalConfigCollection",
+          "new" : "class com.azure.resourcemanager.apimanagement.models.PortalConfigCollection",
+          "justification" : "Class is now final."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.apimanagement.fluent.models.PortalConfigCollectionInner com.azure.resourcemanager.apimanagement.models.PortalConfigCollection::innerModel()",
+          "justification" : "Method was removed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.returnTypeTypeParametersChanged",
+          "old" : "method java.util.List<com.azure.resourcemanager.apimanagement.models.PortalConfigContract> com.azure.resourcemanager.apimanagement.models.PortalConfigCollection::value()",
+          "new" : "method java.util.List<com.azure.resourcemanager.apimanagement.fluent.models.PortalConfigContractInner> com.azure.resourcemanager.apimanagement.models.PortalConfigCollection::value()",
+          "justification" : "The return type changed from 'java.util.List<com.azure.resourcemanager.apimanagement.models.PortalConfigContract>' to 'java.util.List<com.azure.resourcemanager.apimanagement.fluent.models.PortalConfigContractInner>'."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.returnTypeChanged",
+          "old" : "method com.azure.resourcemanager.apimanagement.models.PortalConfigCollection com.azure.resourcemanager.apimanagement.models.PortalConfigs::listByService(java.lang.String, java.lang.String)",
+          "new" : "method com.azure.core.http.rest.PagedIterable<com.azure.resourcemanager.apimanagement.models.PortalConfigContract> com.azure.resourcemanager.apimanagement.models.PortalConfigs::listByService(java.lang.String, java.lang.String)",
+          "justification" : "The return type changed from 'com.azure.resourcemanager.apimanagement.models.PortalConfigCollection' to  'com.azure.core.http.rest.PagedIterable<com.azure.resourcemanager.apimanagement.models.PortalConfigContract>'."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.core.http.rest.Response<com.azure.resourcemanager.apimanagement.models.PortalConfigCollection> com.azure.resourcemanager.apimanagement.models.PortalConfigs::listByServiceWithResponse(java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "justification" : "Method was removed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.returnTypeChanged",
+          "old" : "method com.azure.resourcemanager.apimanagement.models.PolicyCollection com.azure.resourcemanager.apimanagement.models.ProductPolicies::listByProduct(java.lang.String, java.lang.String, java.lang.String)",
+          "new" : "method com.azure.core.http.rest.PagedIterable<com.azure.resourcemanager.apimanagement.models.PolicyContract> com.azure.resourcemanager.apimanagement.models.ProductPolicies::listByProduct(java.lang.String, java.lang.String, java.lang.String)",
+          "justification" : "The return type changed from 'com.azure.resourcemanager.apimanagement.models.PolicyCollection' to  'com.azure.core.http.rest.PagedIterable<com.azure.resourcemanager.apimanagement.models.PolicyContract>'."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.core.http.rest.Response<com.azure.resourcemanager.apimanagement.models.PolicyCollection> com.azure.resourcemanager.apimanagement.models.ProductPolicies::listByProductWithResponse(java.lang.String, java.lang.String, java.lang.String, com.azure.core.util.Context)",
+          "justification" : "Method was removed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.returnTypeChanged",
+          "old" : "method com.azure.core.http.rest.Response<java.lang.Void> com.azure.resourcemanager.apimanagement.models.Users::deleteByIdWithResponse(java.lang.String, java.lang.String, java.lang.Boolean, java.lang.Boolean, com.azure.resourcemanager.apimanagement.models.AppType, com.azure.core.util.Context)",
+          "new" : "method void com.azure.resourcemanager.apimanagement.models.Users::deleteByIdWithResponse(java.lang.String, java.lang.String, java.lang.Boolean, java.lang.Boolean, com.azure.resourcemanager.apimanagement.models.AppType, com.azure.core.util.Context)",
+          "justification" : "The return type changed from 'com.azure.core.http.rest.Response<java.lang.Void>' to  'void'."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.core.http.rest.Response<java.lang.Void> com.azure.resourcemanager.apimanagement.models.Users::deleteWithResponse(java.lang.String, java.lang.String, java.lang.String, java.lang.String, java.lang.Boolean, java.lang.Boolean, com.azure.resourcemanager.apimanagement.models.AppType, com.azure.core.util.Context)",
+          "justification" : "Method was removed."
         }
       ]
     }
