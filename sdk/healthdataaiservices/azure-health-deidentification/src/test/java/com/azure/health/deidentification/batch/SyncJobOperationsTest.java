@@ -53,7 +53,7 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
             .getValue();
 
         assertNotNull(result);
-        assertEquals(jobName, result.getName());
+        assertEquals(jobName, result.getJobName());
         assertNotNull(result.getCreatedAt());
         assertNotNull(result.getLastUpdatedAt());
         assertNull(result.getStartedAt());
@@ -94,7 +94,7 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
         boolean jobFound = false;
         while (iterator.hasNext()) {
             DeidentificationJob currentJob = iterator.next();
-            if (currentJob.getName().equals(jobName)) {
+            if (currentJob.getJobName().equals(jobName)) {
                 jobFound = true;
                 assertNotNull(currentJob.getCreatedAt());
                 assertNotNull(currentJob.getLastUpdatedAt());

@@ -50,7 +50,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
             .getValue();
 
         assertNotNull(result);
-        assertEquals(jobName, result.getName());
+        assertEquals(jobName, result.getJobName());
         assertNotNull(result.getCreatedAt());
         assertNotNull(result.getLastUpdatedAt());
         assertNull(result.getStartedAt());
@@ -87,7 +87,7 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
         PagedFlux<DeidentificationJob> jobs = deidentificationAsyncClient.listJobs();
         jobs.byPage() // Retrieves Flux<PagedResponse<T>>, where each PagedResponse<T> represents a page
             .flatMap(page -> Flux.fromIterable(page.getElements())) // Converts each page into a Flux<T> of its items
-            .filter(item -> item.getName().equals(jobName))
+            .filter(item -> item.getJobName().equals(jobName))
             .next() // Gets the first item that matches the condition
             .subscribe(item -> {
                 assertNotNull(item.getCreatedAt());

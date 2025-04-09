@@ -22,7 +22,7 @@ public class CancelDeidentificationJobAsync {
         Mono<DeidentificationJob> jobMono = deidentificationClient.cancelJob(jobName);
 
         jobMono.subscribe(
-            jobResult -> System.out.println(jobResult.getName() + " - " + jobResult.getStatus()),
+            jobResult -> System.out.println(jobResult.getJobName() + " - " + jobResult.getStatus()),
             error -> System.err.println("Error: " + error)
         );
         // END:com.azure.health.deidentification.cancel_deidentification_job_async

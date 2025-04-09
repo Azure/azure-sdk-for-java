@@ -45,7 +45,7 @@ public class BeginDeidentifyDocumentsAsync {
             });
 
         jobMono.subscribe(
-            jobResult -> System.out.println(jobResult.getName() + " - " + jobResult.getStatus()),
+            jobResult -> System.out.println(jobResult.getJobName() + " - " + jobResult.getStatus()),
             error -> System.err.println("Error: " + error)
         );
         // END:com.azure.health.deidentification.samples.begin_deidentify_documents_async

@@ -21,12 +21,6 @@ import java.time.OffsetDateTime;
 public final class DeidentificationJob implements JsonSerializable<DeidentificationJob> {
 
     /*
-     * The name of a job.
-     */
-    @Generated
-    private String name;
-
-    /*
      * Storage location to perform the operation on.
      */
     @Generated
@@ -94,16 +88,6 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
     public DeidentificationJob(SourceStorageLocation sourceLocation, TargetStorageLocation targetLocation) {
         this.sourceLocation = sourceLocation;
         this.targetLocation = targetLocation;
-    }
-
-    /**
-     * Get the name property: The name of a job.
-     *
-     * @return the name value.
-     */
-    @Generated
-    public String getName() {
-        return this.name;
     }
 
     /**
@@ -238,7 +222,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
     @Generated
     public static DeidentificationJob fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            String name = null;
+            String jobName = null;
             SourceStorageLocation sourceLocation = null;
             TargetStorageLocation targetLocation = null;
             OperationStatus status = null;
@@ -253,7 +237,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("name".equals(fieldName)) {
-                    name = reader.getString();
+                    jobName = reader.getString();
                 } else if ("sourceLocation".equals(fieldName)) {
                     sourceLocation = SourceStorageLocation.fromJson(reader);
                 } else if ("targetLocation".equals(fieldName)) {
@@ -283,7 +267,7 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
             }
             DeidentificationJob deserializedDeidentificationJob
                 = new DeidentificationJob(sourceLocation, targetLocation);
-            deserializedDeidentificationJob.name = name;
+            deserializedDeidentificationJob.jobName = jobName;
             deserializedDeidentificationJob.status = status;
             deserializedDeidentificationJob.lastUpdatedAt = lastUpdatedAt;
             deserializedDeidentificationJob.createdAt = createdAt;
@@ -322,5 +306,21 @@ public final class DeidentificationJob implements JsonSerializable<Deidentificat
     public DeidentificationJob setOperationType(DeidentificationOperationType operationType) {
         this.operationType = operationType;
         return this;
+    }
+
+    /*
+     * The name of a job.
+     */
+    @Generated
+    private String jobName;
+
+    /**
+     * Get the jobName property: The name of a job.
+     *
+     * @return the jobName value.
+     */
+    @Generated
+    public String getJobName() {
+        return this.jobName;
     }
 }

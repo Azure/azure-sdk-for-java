@@ -161,7 +161,7 @@ System.out.println(jobName + " - " + result.getStatus());
 ```java com.azure.health.deidentification.samples.list_deidentification_jobs
 PagedIterable<DeidentificationJob> result = deidentificationClient.listJobs();
 for (DeidentificationJob job : result) {
-    System.out.println(job.getName() + " - " + job.getStatus());
+    System.out.println(job.getJobName() + " - " + job.getStatus());
 }
 ```
 
