@@ -168,7 +168,7 @@ class NettyHttpClient implements HttpClient {
 
             sendRequest(request, channel).addListener((ChannelFutureListener) future -> {
                 if (!future.isSuccess()) {
-                    LOGGER.atError().log("Failed to send request", future.cause());
+                    LOGGER.atError().setThrowable(future.cause()).log("Failed to send request");
                     errorReference.set(future.cause());
                     future.channel().close();
                     latch.countDown();
