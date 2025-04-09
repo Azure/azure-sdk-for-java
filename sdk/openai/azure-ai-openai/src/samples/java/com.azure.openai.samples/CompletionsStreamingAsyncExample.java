@@ -1,21 +1,24 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.openai.samples;
+
 import com.azure.identity.AuthenticationUtil;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.openai.client.OpenAIClient;
-import com.openai.client.okhttp.OpenAIOkHttpClient;
-import com.openai.core.http.StreamResponse;
+import com.openai.client.OpenAIClientAsync;
+import com.openai.client.okhttp.OpenAIOkHttpClientAsync;
 import com.openai.credential.BearerTokenCredential;
 import com.openai.models.ChatModel;
-import com.openai.models.chat.completions.ChatCompletionChunk;
 import com.openai.models.chat.completions.ChatCompletionCreateParams;
 
-public final class CompletionsStreamingExample {
-    private CompletionsStreamingExample() {}
+public final class CompletionsStreamingAsyncExample {
+    private CompletionsStreamingAsyncExample() {}
 
     public static void main(String[] args) {
         // Configures using one of:
         // - The `OPENAI_API_KEY` environment variable
         // - The `AZURE_OPENAI_ENDPOINT` and `AZURE_OPENAI_KEY` environment variables
-        OpenAIOkHttpClient.Builder clientBuilder = OpenAIOkHttpClient.builder();
+        OpenAIOkHttpClientAsync.Builder clientBuilder = OpenAIOkHttpClientAsync.builder();
 
         /* Azure-specific code starts here */
         // You can either set 'endpoint' or 'apiKey' directly in the builder.
@@ -27,7 +30,8 @@ public final class CompletionsStreamingExample {
         /* Azure-specific code ends here */
 
         // All code from this line down is general-purpose OpenAI code
-        OpenAIClient client = clientBuilder.build();
+        OpenAIClientAsync client = clientBuilder.build();
+
 
         ChatCompletionCreateParams createParams = ChatCompletionCreateParams.builder()
                 .model(ChatModel.GPT_4O)
@@ -36,12 +40,13 @@ public final class CompletionsStreamingExample {
                 .addUserMessage("Tell me a story about building the best SDK!")
                 .build();
 
-        try (StreamResponse<ChatCompletionChunk> streamResponse =
-                client.chat().completions().createStreaming(createParams)) {
-            streamResponse.stream()
-                    .flatMap(completion -> completion.choices().stream())
-                    .flatMap(choice -> choice.delta().content().stream())
-                    .forEach(System.out::print);
-        }
+        client.chat()
+                .completions()
+                .createStreaming(createParams)
+                .subscribe(completion -> completion.choices().stream()
+                        .flatMap(choice -> choice.delta().content().stream())
+                        .forEach(System.out::print))
+                .onCompleteFuture()
+                .join();
     }
 }

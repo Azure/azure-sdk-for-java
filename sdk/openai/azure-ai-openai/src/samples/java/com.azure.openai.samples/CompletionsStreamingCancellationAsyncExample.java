@@ -1,13 +1,20 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.openai.samples;
+
 import com.azure.identity.AuthenticationUtil;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClientAsync;
 import com.openai.client.okhttp.OpenAIOkHttpClientAsync;
+import com.openai.core.http.AsyncStreamResponse;
 import com.openai.credential.BearerTokenCredential;
 import com.openai.models.ChatModel;
+import com.openai.models.chat.completions.ChatCompletionChunk;
 import com.openai.models.chat.completions.ChatCompletionCreateParams;
 
-public final class CompletionsStreamingAsyncExample {
-    private CompletionsStreamingAsyncExample() {}
+public final class CompletionsStreamingCancellationAsyncExample {
+    private CompletionsStreamingCancellationAsyncExample() {}
 
     public static void main(String[] args) {
         // Configures using one of:
@@ -35,12 +42,18 @@ public final class CompletionsStreamingAsyncExample {
                 .addUserMessage("Tell me a story about building the best SDK!")
                 .build();
 
-        client.chat()
-                .completions()
-                .createStreaming(createParams)
+        AsyncStreamResponse<ChatCompletionChunk> streamResponse =
+                client.chat().completions().createStreaming(createParams);
+        streamResponse
                 .subscribe(completion -> completion.choices().stream()
                         .flatMap(choice -> choice.delta().content().stream())
-                        .forEach(System.out::print))
+                        .forEach(text -> {
+                            System.out.print(text);
+                            if (text.contains("SDK")) {
+                                // Close the stream early.
+                                streamResponse.close();
+                            }
+                        }))
                 .onCompleteFuture()
                 .join();
     }

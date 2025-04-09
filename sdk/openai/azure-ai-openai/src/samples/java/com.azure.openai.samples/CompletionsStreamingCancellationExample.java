@@ -1,18 +1,20 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.openai.samples;
+
 import com.azure.identity.AuthenticationUtil;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
-import com.openai.core.JsonValue;
+import com.openai.core.http.StreamResponse;
 import com.openai.credential.BearerTokenCredential;
 import com.openai.models.ChatModel;
-import com.openai.models.ResponseFormatJsonSchema;
-import com.openai.models.ResponseFormatJsonSchema.JsonSchema;
+import com.openai.models.chat.completions.ChatCompletionChunk;
 import com.openai.models.chat.completions.ChatCompletionCreateParams;
 
-import java.util.Map;
-
-public final class StructuredOutputsExample {
-    private StructuredOutputsExample() {}
+public final class CompletionsStreamingCancellationExample {
+    private CompletionsStreamingCancellationExample() {}
 
     public static void main(String[] args) {
         // Configures using one of:
@@ -32,26 +34,25 @@ public final class StructuredOutputsExample {
         // All code from this line down is general-purpose OpenAI code
         OpenAIClient client = clientBuilder.build();
 
-        // TODO: Update this once we support extracting JSON schemas from Java classes
-        JsonSchema.Schema schema = JsonSchema.Schema.builder()
-                .putAdditionalProperty("type", JsonValue.from("object"))
-                .putAdditionalProperty(
-                        "properties", JsonValue.from(Map.of("employees", Map.of("items", Map.of("type", "string")))))
-                .build();
         ChatCompletionCreateParams createParams = ChatCompletionCreateParams.builder()
                 .model(ChatModel.GPT_4O)
                 .maxCompletionTokens(2048)
-                .responseFormat(ResponseFormatJsonSchema.builder()
-                        .jsonSchema(JsonSchema.builder()
-                                .name("employee-list")
-                                .schema(schema)
-                                .build())
-                        .build())
-                .addUserMessage("Who works at OpenAI?")
+                .addDeveloperMessage("Make sure you mention Stainless!")
+                .addUserMessage("Tell me a story about building the best SDK!")
                 .build();
 
-        client.chat().completions().create(createParams).choices().stream()
-                .flatMap(choice -> choice.message().content().stream())
-                .forEach(System.out::println);
+        try (StreamResponse<ChatCompletionChunk> streamResponse =
+                client.chat().completions().createStreaming(createParams)) {
+            streamResponse.stream()
+                    .flatMap(completion -> completion.choices().stream())
+                    .flatMap(choice -> choice.delta().content().stream())
+                    .forEach(text -> {
+                        System.out.print(text);
+                        if (text.contains("SDK")) {
+                            // Close the stream early.
+                            streamResponse.close();
+                        }
+                    });
+        }
     }
 }

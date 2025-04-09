@@ -1,24 +1,28 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.openai.samples;
+
 import com.azure.identity.AuthenticationUtil;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.azure.AzureOpenAIServiceVersion;
-import com.openai.client.OpenAIClientAsync;
-import com.openai.client.okhttp.OpenAIOkHttpClientAsync;
+import com.openai.client.OpenAIClient;
+import com.openai.client.okhttp.OpenAIOkHttpClient;
+import com.openai.core.http.StreamResponse;
 import com.openai.credential.BearerTokenCredential;
 import com.openai.models.ChatModel;
 import com.openai.models.responses.ResponseCreateParams;
+import com.openai.models.responses.ResponseStreamEvent;
 
-public final class ResponsesAsyncExample {
-    private ResponsesAsyncExample() {}
+public final class ResponsesStreamingExample {
+    private ResponsesStreamingExample() {}
 
     public static void main(String[] args) {
         // Configures using one of:
         // - The `OPENAI_API_KEY` environment variable
         // - The `AZURE_OPENAI_ENDPOINT` and `AZURE_OPENAI_KEY` environment variables
-        OpenAIClientAsync client = OpenAIOkHttpClientAsync.builder()
+        OpenAIClient client = OpenAIOkHttpClient.builder()
             .azureServiceVersion(AzureOpenAIServiceVersion.latestPreviewVersion())
-//            .apiKey(System.getenv("NON_AZURE_OPENAI_KEY"))
-
-
             // Gets the API key from the `AZURE_OPENAI_KEY` environment variable
             .baseUrl(System.getenv("AZURE_OPENAI_ENDPOINT"))
             // Set the Azure Entra ID
@@ -27,17 +31,15 @@ public final class ResponsesAsyncExample {
             .build();
 
         ResponseCreateParams createParams = ResponseCreateParams.builder()
-            .input("Tell me a story about building the best SDK!")
-            .model(ChatModel.GPT_4O_MINI)
-            .build();
+                .input("Tell me a story about building the best SDK!")
+                .model(ChatModel.GPT_4O)
+                .build();
 
-        client.responses()
-                .create(createParams)
-                .thenAccept(response -> response.output().stream()
-                        .flatMap(item -> item.message().stream())
-                        .flatMap(message -> message.content().stream())
-                        .flatMap(content -> content.outputText().stream())
-                        .forEach(outputText -> System.out.println(outputText.text())))
-                .join();
+        try (StreamResponse<ResponseStreamEvent> streamResponse =
+                client.responses().createStreaming(createParams)) {
+            streamResponse.stream()
+                    .flatMap(event -> event.outputTextDelta().stream())
+                    .forEach(textEvent -> System.out.print(textEvent.delta()));
+        }
     }
 }

@@ -1,18 +1,20 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.openai.samples;
+
 import com.azure.identity.AuthenticationUtil;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.credential.BearerTokenCredential;
-import com.openai.models.ChatModel;
-import com.openai.models.chat.completions.ChatCompletionCreateParams;
+import com.openai.models.embeddings.EmbeddingCreateParams;
+import com.openai.models.embeddings.EmbeddingModel;
 
-public final class CompletionsExample {
-    private CompletionsExample() {}
+public final class EmbeddingsExample {
+    private EmbeddingsExample() {}
 
     public static void main(String[] args) {
-        // Configures using one of:
-        // - The `OPENAI_API_KEY` environment variable
-        // - The `AZURE_OPENAI_ENDPOINT` and `AZURE_OPENAI_KEY` environment variables
         // Configures using one of:
         // - The `OPENAI_API_KEY` environment variable
         // - The `AZURE_OPENAI_ENDPOINT` and `AZURE_OPENAI_KEY` environment variables
@@ -29,15 +31,12 @@ public final class CompletionsExample {
 
         // All code from this line down is general-purpose OpenAI code
         OpenAIClient client = clientBuilder.build();
-        ChatCompletionCreateParams createParams = ChatCompletionCreateParams.builder()
-                .model(ChatModel.GPT_4O)
-                .maxCompletionTokens(2048)
-                .addDeveloperMessage("Make sure you mention Stainless!")
-                .addUserMessage("Tell me a story about building the best SDK!")
+
+        EmbeddingCreateParams createParams = EmbeddingCreateParams.builder()
+                .input("The quick brown fox jumped over the lazy dog")
+                .model(EmbeddingModel.TEXT_EMBEDDING_ADA_002)
                 .build();
 
-        client.chat().completions().create(createParams).choices().stream()
-                .flatMap(choice -> choice.message().content().stream())
-                .forEach(System.out::println);
+        System.out.println(client.embeddings().create(createParams));
     }
 }
