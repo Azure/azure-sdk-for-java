@@ -148,8 +148,7 @@ public class FileBinaryData extends BinaryData {
         try {
             return new SliceInputStream(new BufferedInputStream(getFileInputStream(), chunkSize), position, length);
         } catch (FileNotFoundException e) {
-            // TODO: we can assume all FileNotFoundException are not retryable by default
-            throw LOGGER.logThrowableAsError(CoreException.from("File not found " + file, e, false));
+            throw LOGGER.logThrowableAsError(CoreException.from("File not found " + file, e));
         }
     }
 

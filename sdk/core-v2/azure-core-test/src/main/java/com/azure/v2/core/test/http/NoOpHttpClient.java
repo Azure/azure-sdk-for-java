@@ -8,8 +8,6 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.models.binarydata.BinaryData;
 
-import java.io.IOException;
-
 /**
  * An HttpClient instance that does not do anything.
  */
@@ -21,7 +19,7 @@ public class NoOpHttpClient implements HttpClient {
     }
 
     @Override
-    public Response<BinaryData> send(HttpRequest request) throws IOException {
+    public Response<BinaryData> send(HttpRequest request) {
         return null;
     }
 }

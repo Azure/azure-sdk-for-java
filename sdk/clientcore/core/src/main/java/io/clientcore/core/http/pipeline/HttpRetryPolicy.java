@@ -10,6 +10,7 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpRequestAccessHelper;
+import io.clientcore.core.implementation.http.RetryUtils;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LoggingEvent;
@@ -20,7 +21,6 @@ import io.clientcore.core.utils.DateTimeRfc1123;
 import io.clientcore.core.utils.configuration.Configuration;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.time.DateTimeException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -57,11 +57,6 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
     private static final Duration DEFAULT_BASE_DELAY = Duration.ofMillis(800);
     private static final Duration DEFAULT_MAX_DELAY = Duration.ofSeconds(8);
     private static final double JITTER_FACTOR = 0.05;
-
-    /**
-     * HTTP response status code for {@code Too Many Requests}.
-     */
-    private static final int HTTP_STATUS_TOO_MANY_REQUESTS = 429;
 
     static {
         String envDefaultMaxRetries = Configuration.getGlobalConfiguration().get(MAX_RETRY_ATTEMPTS);
@@ -327,12 +322,7 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
 
     private boolean defaultShouldRetryCondition(HttpRetryCondition requestRetryCondition) {
         if (requestRetryCondition.getResponse() != null) {
-            int code = requestRetryCondition.getResponse().getStatusCode();
-            return (code == HttpURLConnection.HTTP_CLIENT_TIMEOUT
-                || code == HTTP_STATUS_TOO_MANY_REQUESTS
-                || (code >= HttpURLConnection.HTTP_INTERNAL_ERROR
-                    && code != HttpURLConnection.HTTP_NOT_IMPLEMENTED
-                    && code != HttpURLConnection.HTTP_VERSION));
+            return RetryUtils.isRetryable(requestRetryCondition.getResponse().getStatusCode());
         } else {
             Exception ex = requestRetryCondition.getException();
             if (ex instanceof CoreException) {

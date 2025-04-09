@@ -230,15 +230,11 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
      * @throws IllegalArgumentException if testProxyRecordingOptions cannot be serialized
      */
     public void setRecordingOptions(TestProxyRecordingOptions testProxyRecordingOptions) {
-        try {
-            HttpRequest request = new HttpRequest().setMethod(HttpMethod.POST)
-                .setUri(proxyUri + "/admin/setrecordingoptions")
-                .setBody(BinaryData.fromObject(testProxyRecordingOptions));
-            request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
-            client.send(request).close();
-        } catch (IOException ex) {
-            throw new IllegalArgumentException("Failed to process JSON input", ex);
-        }
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.POST)
+            .setUri(proxyUri + "/admin/setrecordingoptions")
+            .setBody(BinaryData.fromObject(testProxyRecordingOptions));
+        request.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
+        client.send(request).close();
     }
 
     @Override
