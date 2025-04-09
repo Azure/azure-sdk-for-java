@@ -940,6 +940,22 @@ public final class PhoneNumbersClient {
      *         representing phone number reservations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PhoneNumbersReservation> listReservations() {
+        return client.listReservations(100);
+    }
+
+    /**
+     * Lists all reservations.
+     * 
+     * Retrieves a paginated list of all phone number reservations. Note that the reservations will not be populated
+     * with the phone numbers associated with them.
+     * 
+     * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
+     * value is 100.
+     * @return A {@link PagedIterable} of {@link PhoneNumbersReservation} instances
+     *         representing phone number reservations.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PhoneNumbersReservation> listReservations(Integer maxPageSize) {
         return client.listReservations(maxPageSize);
     }
@@ -1007,13 +1023,12 @@ public final class PhoneNumbersClient {
      * expiration time of the reservation to 15 minutes after the last change, up to a maximum of 2 hours from creation
      * time. Partial success is possible, in which case the response will have a 207 status code.
      * 
-     * @param reservationId The id of the reservation.
      * @param reservation A representation of the desired state of the reservation.}
      * @return represents a reservation for phone numbers {@link PhoneNumbersReservation}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PhoneNumbersReservation createOrUpdateReservation(UUID reservationId, PhoneNumbersReservation reservation) {
-        return client.createOrUpdateReservation(reservationId, reservation);
+    public PhoneNumbersReservation createOrUpdateReservation(PhoneNumbersReservation reservation) {
+        return client.createOrUpdateReservation(reservation.getId(), reservation);
     }
 
     /**
@@ -1027,15 +1042,14 @@ public final class PhoneNumbersClient {
      * expiration time of the reservation to 15 minutes after the last change, up to a maximum of 2 hours from creation
      * time. Partial success is possible, in which case the response will have a 207 status code.
      * 
-     * @param reservationId The id of the reservation.
      * @param reservation A representation of the desired state of the reservation.
      * @param context The context to associate with this operation.
      * @return represents a reservation for phone numbers along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PhoneNumbersReservation> createOrUpdateReservationWithResponse(UUID reservationId,
-        PhoneNumbersReservation reservation, Context context) {
-        return client.createOrUpdateReservationWithResponse(reservationId, reservation, context);
+    public Response<PhoneNumbersReservation> createOrUpdateReservationWithResponse(PhoneNumbersReservation reservation,
+        Context context) {
+        return client.createOrUpdateReservationWithResponse(reservation.getId(), reservation, context);
     }
 
     /**

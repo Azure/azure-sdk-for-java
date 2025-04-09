@@ -935,6 +935,19 @@ public final class PhoneNumbersAsyncClient {
      * 
      * Retrieves a paginated list of all phone number reservations. Note that the reservations will not be populated
      * with the phone numbers associated with them.
+     * @return A {@link PagedFlux} of {@link PhoneNumbersReservation} instances
+     *         representing phone number reservations.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedFlux<PhoneNumbersReservation> listReservationsAsync() {
+        return client.listReservationsAsync(100);
+    }
+
+    /**
+     * Lists all reservations.
+     * 
+     * Retrieves a paginated list of all phone number reservations. Note that the reservations will not be populated
+     * with the phone numbers associated with them.
      * 
      * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
      * value is 100.
@@ -1009,14 +1022,12 @@ public final class PhoneNumbersAsyncClient {
      * expiration time of the reservation to 15 minutes after the last change, up to a maximum of 2 hours from creation
      * time. Partial success is possible, in which case the response will have a 207 status code.
      * 
-     * @param reservationId The id of the reservation.
      * @param reservation A representation of the desired state of the reservation.}
      * @return represents a reservation for phone numbers on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersReservation> createOrUpdateReservationAsync(UUID reservationId,
-        PhoneNumbersReservation reservation) {
-        return client.createOrUpdateReservationAsync(reservationId, reservation);
+    public Mono<PhoneNumbersReservation> createOrUpdateReservationAsync(PhoneNumbersReservation reservation) {
+        return client.createOrUpdateReservationAsync(reservation.getId(), reservation);
     }
 
     /**
@@ -1030,15 +1041,14 @@ public final class PhoneNumbersAsyncClient {
      * expiration time of the reservation to 15 minutes after the last change, up to a maximum of 2 hours from creation
      * time. Partial success is possible, in which case the response will have a 207 status code.
      * 
-     * @param reservationId The id of the reservation.
      * @param reservation A representation of the desired state of the reservation.
      * @param context The context to associate with this operation.
      * @return represents a reservation for phone numbers on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersReservation> createOrUpdateReservationAsync(UUID reservationId,
-        PhoneNumbersReservation reservation, Context context) {
-        return client.createOrUpdateReservationAsync(reservationId, reservation, context);
+    public Mono<PhoneNumbersReservation> createOrUpdateReservationAsync(PhoneNumbersReservation reservation,
+        Context context) {
+        return client.createOrUpdateReservationAsync(reservation.getId(), reservation, context);
     }
 
     /**
