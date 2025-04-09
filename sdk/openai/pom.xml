@@ -7,20 +7,6 @@
   <groupId>com.azure</groupId>
   <artifactId>azure-openai-service</artifactId>
   <packaging>pom</packaging>
-  <dependencies>
-    <dependency>
-      <groupId>com.openai</groupId>
-      <artifactId>openai-java-client-okhttp</artifactId>
-      <version>0.43.0</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-identity</artifactId>
-      <version>1.15.4</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
   <version>1.0.0</version>  <!-- Need not change for every release-->
 
   <modules>
