@@ -74,6 +74,7 @@
     <module>sdk/dataprotection</module>
     <module>sdk/defendereasm</module>
     <module>sdk/delegatednetwork</module>
+    <module>sdk/dependencymap</module>
     <module>sdk/deploymentmanager</module>
     <module>sdk/desktopvirtualization</module>
     <module>sdk/devcenter</module>
