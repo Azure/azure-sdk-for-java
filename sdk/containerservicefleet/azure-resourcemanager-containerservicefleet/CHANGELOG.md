@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0 (2025-04-03)
+## 1.2.0 (2025-04-10)
 
 - Azure Resource Manager Container Service Fleet client library for Java. This package contains Microsoft Azure SDK for Container Service Fleet Management SDK. Azure Kubernetes Fleet Manager api client. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
