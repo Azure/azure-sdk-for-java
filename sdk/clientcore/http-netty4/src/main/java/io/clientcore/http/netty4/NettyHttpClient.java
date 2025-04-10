@@ -11,11 +11,12 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.models.binarydata.FileBinaryData;
 import io.clientcore.core.models.binarydata.InputStreamBinaryData;
+import io.clientcore.core.utils.AuthenticateChallenge;
 import io.clientcore.core.utils.ProgressReporter;
+import io.clientcore.http.netty4.implementation.ChannelInitializationProxyHandler;
 import io.clientcore.http.netty4.implementation.CoreProgressAndTimeoutHandler;
 import io.clientcore.http.netty4.implementation.CoreResponseHandler;
 import io.clientcore.http.netty4.implementation.CoreSslInitializationHandler;
-import io.clientcore.http.netty4.implementation.NettyUtility;
 import io.clientcore.http.netty4.implementation.WrappedHttpHeaders;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
@@ -23,6 +24,7 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelInitializer;
 import io.netty.channel.EventLoopGroup;
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.DefaultHttpRequest;
@@ -35,13 +37,16 @@ import io.netty.handler.stream.ChunkedNioFile;
 import io.netty.handler.stream.ChunkedStream;
 import io.netty.handler.stream.ChunkedWriteHandler;
 
+import javax.net.ssl.SSLException;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.channels.FileChannel;
 import java.nio.file.StandardOpenOption;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static io.clientcore.http.netty4.implementation.NettyUtility.createCodec;
 import static io.netty.handler.codec.http.DefaultHttpHeadersFactory.trailersFactory;
 
 /**
@@ -52,14 +57,19 @@ class NettyHttpClient implements HttpClient {
 
     private final Bootstrap bootstrap;
     private final SslContext sslContext;
+    private final ChannelInitializationProxyHandler channelInitializationProxyHandler;
+    private final AtomicReference<List<AuthenticateChallenge>> proxyChallengeHolder;
     private final long readTimeoutMillis;
     private final long responseTimeoutMillis;
     private final long writeTimeoutMillis;
 
-    NettyHttpClient(Bootstrap bootstrap, SslContext sslContext, long readTimeoutMillis, long responseTimeoutMillis,
-        long writeTimeoutMillis) {
+    NettyHttpClient(Bootstrap bootstrap, SslContext sslContext,
+        ChannelInitializationProxyHandler channelInitializationProxyHandler, long readTimeoutMillis,
+        long responseTimeoutMillis, long writeTimeoutMillis) {
         this.bootstrap = bootstrap;
         this.sslContext = sslContext;
+        this.channelInitializationProxyHandler = channelInitializationProxyHandler;
+        this.proxyChallengeHolder = new AtomicReference<>();
         this.readTimeoutMillis = readTimeoutMillis;
         this.responseTimeoutMillis = responseTimeoutMillis;
         this.writeTimeoutMillis = writeTimeoutMillis;
@@ -81,24 +91,37 @@ class NettyHttpClient implements HttpClient {
         boolean addProgressAndTimeoutHandler
             = progressReporter != null || writeTimeoutMillis > 0 || responseTimeoutMillis > 0 || readTimeoutMillis > 0;
 
+        // Configure an immutable ChannelInitializer in the builder with everything that can be added on a non-per
+        // request basis.
+        bootstrap.handler(new ChannelInitializer<Channel>() {
+            @Override
+            protected void initChannel(Channel ch) throws SSLException {
+                // Test whether proxying should be applied to this Channel. If so, add it.
+                if (channelInitializationProxyHandler.test(ch.remoteAddress())) {
+                    ch.pipeline().addFirst(channelInitializationProxyHandler.createProxy(proxyChallengeHolder));
+                }
+
+                // Add SSL handling if the request is HTTPS.
+                if (isHttps) {
+                    SslContext ssl = (sslContext != null)
+                        ? sslContext
+                        : SslContextBuilder.forClient().endpointIdentificationAlgorithm("HTTPS").build();
+                    // SSL handling is added last here. This is done as proxying could require SSL handling too.
+                    ch.pipeline().addLast(ssl.newHandler(ch.alloc(), host, port), new CoreSslInitializationHandler());
+                }
+
+                // Finally add the HttpClientCodec last as it will need to handle processing request and response
+                // writes and reads for not only the actual request but any proxy or SSL handling.
+                ch.pipeline().addLast(createCodec());
+            }
+        });
+
         AtomicReference<Response<BinaryData>> responseReference = new AtomicReference<>();
         AtomicReference<Throwable> errorReference = new AtomicReference<>();
         CountDownLatch latch = new CountDownLatch(1);
 
         try {
             Channel channel = bootstrap.connect(host, port).sync().channel();
-
-            // SSL handling cannot be done in a context unaware way as HTTPS isn't a single port and will be determined
-            // based on the URI.
-            // This should be added right before the HttpClientCodec.
-            if (isHttps) {
-                SslContext ssl = (sslContext != null)
-                    ? sslContext
-                    : SslContextBuilder.forClient().endpointIdentificationAlgorithm("HTTPS").build();
-                channel.pipeline()
-                    .addBefore(NettyUtility.CODEC_HANDLER_NAME, null, ssl.newHandler(channel.alloc(), host, port));
-                channel.pipeline().addBefore(NettyUtility.CODEC_HANDLER_NAME, null, new CoreSslInitializationHandler());
-            }
 
             // Only add CoreProgressAndTimeoutHandler if it will do anything, ex it is reporting progress or is
             // applying timeouts.
@@ -111,7 +134,7 @@ class NettyHttpClient implements HttpClient {
             }
 
             CoreResponseHandler responseHandler = new CoreResponseHandler(request, responseReference, latch);
-            future.channel().pipeline().addLast(responseHandler);
+            channel.pipeline().addLast(responseHandler);
 
             sendRequest(request, channel, addProgressAndTimeoutHandler).addListener((ChannelFutureListener) future -> {
                 if (!future.isSuccess()) {
