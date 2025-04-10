@@ -5,18 +5,14 @@ package io.clientcore.annotation.processor.templating;
 
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
-import com.github.javaparser.ast.stmt.BlockStmt;
 import io.clientcore.annotation.processor.mocks.MockTypeMirror;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.core.http.models.HttpMethod;
 import javax.lang.model.type.TypeKind;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Verify the formation of the HTTP request URL in the code generation.
@@ -71,38 +67,5 @@ public class HttpRequestInitializerTest {
 
         // Assert: Compare the generated code with the expected code
         assertEquals(expectedCompilationUnit, generatedCode);
-    }
-
-    @Test
-    public void testAddStaticHeaders() {
-        BlockStmt body = new BlockStmt();
-        HttpRequestContext method = new HttpRequestContext();
-        method.setHeaders(
-            new String[] { "MyHeader:MyHeaderValue", "MyOtherHeader:My,Header,Value", "Accept:AcceptValue" });
-
-        JavaParserTemplateProcessor processor = new JavaParserTemplateProcessor();
-        processor.addStaticHeaders(body, method);
-
-        String normalizedBody = body.toString().replaceAll("\\s+", " ").trim();
-
-        // Ensure headers are set correctly
-        String expectedHeaderStatement
-            = "httpRequest.getHeaders().set(HttpHeaderName.fromString(\"MyHeader\"), \"MyHeaderValue\").set(HttpHeaderName.fromString(\"MyOtherHeader\"), Arrays.asList(\"My\", \"Header\", \"Value\")).set(HttpHeaderName.ACCEPT, \"AcceptValue\");";
-        assertTrue(normalizedBody.contains(expectedHeaderStatement));
-    }
-
-    @Test
-    public void addStaticHeadersThrowsOnMissingColon() {
-        BlockStmt body = new BlockStmt();
-        HttpRequestContext method = new HttpRequestContext();
-        method.setHeaders(new String[] { "InvalidHeaderWithoutColon" });
-        JavaParserTemplateProcessor processor = new JavaParserTemplateProcessor();
-
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            processor.addStaticHeaders(body, method);
-        });
-
-        assertEquals("Invalid HTTP header: missing ':' separator for InvalidHeaderWithoutColon",
-            exception.getMessage());
     }
 }

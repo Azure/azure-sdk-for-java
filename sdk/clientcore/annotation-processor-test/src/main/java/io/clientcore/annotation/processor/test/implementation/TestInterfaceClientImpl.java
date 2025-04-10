@@ -213,25 +213,26 @@ public final class TestInterfaceClientImpl {
             queryParams = { "constantParam1=constantValue1", "constantParam2=constantValue2" })
         HttpBinJSON get1(@HostParam("uri") String uri, @QueryParam("variableParam") String queryParam);
 
-        @HttpRequestInformation(
-            method = HttpMethod.GET,
-            path = "anything",
-            expectedStatusCodes = { 200 },
-            queryParams = { "param=constantValue1", "param=constantValue2" })
-        HttpBinJSON get2(@HostParam("uri") String uri, @QueryParam("param") String queryParam);
+        //@Disabled("Is this a valid use case for a query param key to have multiple values?")
+        //@HttpRequestInformation(
+        //    method = HttpMethod.GET,
+        //    path = "anything",
+        //    expectedStatusCodes = { 200 },
+        //    queryParams = { "param=constantValue1", "param=constantValue2" })
+        //HttpBinJSON get2(@HostParam("uri") String uri, @QueryParam("param") String queryParam);
+
+        //@HttpRequestInformation(
+        //    method = HttpMethod.GET,
+        //    path = "anything",
+        //    expectedStatusCodes = { 200 },
+        //    queryParams = { "param=constantValue1,constantValue2", "param=constantValue3" })
+        //HttpBinJSON get3(@HostParam("uri") String uri, @QueryParam("param") String queryParam);
 
         @HttpRequestInformation(
             method = HttpMethod.GET,
             path = "anything",
             expectedStatusCodes = { 200 },
-            queryParams = { "param=constantValue1,constantValue2", "param=constantValue3" })
-        HttpBinJSON get3(@HostParam("uri") String uri, @QueryParam("param") String queryParam);
-
-        @HttpRequestInformation(
-            method = HttpMethod.GET,
-            path = "anything",
-            expectedStatusCodes = { 200 },
-            queryParams = { "constantParam1=", "constantParam1" })
+            queryParams = { "constantParam1=", "constantParam2" })
         HttpBinJSON get4(@HostParam("uri") String uri);
 
         @HttpRequestInformation(

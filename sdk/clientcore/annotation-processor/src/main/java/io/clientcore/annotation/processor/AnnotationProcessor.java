@@ -149,8 +149,9 @@ public class AnnotationProcessor extends AbstractProcessor {
         method.setHttpMethod(httpRequestInfo.method());
         method.setExpectedStatusCodes(httpRequestInfo.expectedStatusCodes());
         method.setHeaders(httpRequestInfo.headers());
-
+        method.setQueryParams(httpRequestInfo.queryParams());
         method.setMethodReturnType(requestMethod.getReturnType());
+
         // Process parameters
         for (VariableElement param : requestMethod.getParameters()) {
             // Cache annotations for each parameter
@@ -171,9 +172,11 @@ public class AnnotationProcessor extends AbstractProcessor {
                 }
                 method.addSubstitution(
                     new Substitution(pathParam.value(), param.getSimpleName().toString(), !pathParam.encoded()));
-            } else if (headerParam != null) {
-                method.addHeaderParam(headerParam.value(), param.getSimpleName().toString());
-            } else if (queryParam != null) {
+            } else if (headerParam != null && httpRequestInfo.headers().length == 0) {
+                // Only add header if no static headers are defined in the annotation
+                method.addHeader(headerParam.value(), param.getSimpleName().toString());
+            } else if (queryParam != null && httpRequestInfo.queryParams().length == 0) {
+                // Only add query param if no static query params are defined in the annotation
                 method.addQueryParam(queryParam.value(), param.getSimpleName().toString(),
                     queryParam.multipleQueryParams(), !queryParam.encoded());
             } else if (bodyParam != null) {

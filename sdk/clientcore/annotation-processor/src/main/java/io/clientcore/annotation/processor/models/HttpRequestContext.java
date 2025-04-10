@@ -33,9 +33,8 @@ public final class HttpRequestContext {
     // It will likely have one or more substitutions in it, which will be replaced with the appropriate parameter values
     // annotated with @PathParam.
     private String path;
-    private String[] headers;
 
-    private final Map<String, String> headerParams;
+    private final Map<String, String> headers;
     private final Map<String, QueryParameter> queryParams;
 
     private final Map<String, Substitution> substitutions;
@@ -47,10 +46,9 @@ public final class HttpRequestContext {
      */
     public HttpRequestContext() {
         this.parameters = new ArrayList<>();
-        this.headerParams = new HashMap<>();
+        this.headers = new HashMap<>();
         this.queryParams = new LinkedHashMap<>();
         this.substitutions = new HashMap<>();
-        headers = new String[0];
     }
 
     private Body body;
@@ -164,12 +162,12 @@ public final class HttpRequestContext {
     }
 
     /**
-     * Gets the headerParams.
+     * Gets the headers.
      *
-     * @return the headerParams.
+     * @return the headers.
      */
-    public Map<String, String> getHeaderParams() {
-        return headerParams;
+    public Map<String, String> getHeaders() {
+        return headers;
     }
 
     /**
@@ -178,17 +176,8 @@ public final class HttpRequestContext {
      * @param key the header key.
      * @param value the header value.
      */
-    public void addHeaderParam(String key, String value) {
-        headerParams.put(key, value);
-    }
-
-    /**
-     * Sets the static headers.
-     *
-     * @param headers the static headers
-     */
-    public void setHeaders(String[] headers) {
-        this.headers = headers;
+    public void addHeader(String key, String value) {
+        headers.put(key, value);
     }
 
     /**
@@ -302,11 +291,57 @@ public final class HttpRequestContext {
     }
 
     /**
-     * Gets the static headers.
-     * @return the static headers.
+     * Sets the static headers from an array of strings.
+     *
+     * @param headers the array of headers to set.
      */
-    public String[] getHeaders() {
-        return headers;
+    public void setHeaders(String[] headers) {
+        // if the headers are null or empty, return
+        if (headers == null || headers.length == 0) {
+            return;
+        }
+        // if this method is called, we need to clear the headers map first
+        this.headers.clear();
+        // take the headers and split them into key value pairs
+        for (String header : headers) {
+            String[] parts = header.split(":");
+            // if ":" is not found, we need to add the header as a key with an empty value
+            if (parts.length == 1) {
+                addHeader(parts[0].trim(), "");
+                continue;
+            }
+            String key = parts[0].trim();
+            String value = "\"" + parts[1].trim() + "\""; // Surround the value with quotes
+            addHeader(key, value);
+        }
+    }
+
+    /**
+     * Sets the static query parameters from an array of strings.
+     *
+     * @param queryParams the array of query parameters to set.
+     */
+    public void setQueryParams(String[] queryParams) {
+        // if the query params are null or empty, return
+        if (queryParams == null || queryParams.length == 0) {
+            return;
+        }
+        // if this method is called, we need to clear the query params map first
+        this.queryParams.clear();
+        // take the query params and split them into key value pairs
+        for (String queryParam : queryParams) {
+            // only look for the first "=" in the string, so we can support query params with "=" in them
+            // e.g. "key=val1=val2" will be split into "key" and "val1=val2"
+            String[] parts = queryParam.split("=", 2);
+            // if "=" is not found, we need to add the query param as a key with an empty value
+            if (parts.length == 1) {
+                addQueryParam(parts[0].trim(), "", false, true);
+                continue;
+            }
+            String key = parts[0].trim();
+            String value = "\"" + parts[1].trim() + "\""; // Surround the value with quotes
+            addQueryParam(key, value, false, true);
+        }
     }
 
     /**
