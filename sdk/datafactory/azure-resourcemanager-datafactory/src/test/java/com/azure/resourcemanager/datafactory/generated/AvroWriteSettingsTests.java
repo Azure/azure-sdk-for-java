@@ -12,20 +12,20 @@ public final class AvroWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AvroWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"AvroWriteSettings\",\"recordName\":\"ieeoc\",\"recordNamespace\":\"rvsfzgcsco\",\"maxRowsPerFile\":\"datafsgilwisqxzpz\",\"fileNamePrefix\":\"dataustrtrfvogk\",\"\":{\"irbrvz\":\"datashmpcjqtuz\"}}")
+            "{\"type\":\"AvroWriteSettings\",\"recordName\":\"gcjssqpk\",\"recordNamespace\":\"ryhvshkvupbzqwwt\",\"maxRowsPerFile\":\"datajyiwuve\",\"fileNamePrefix\":\"dataavbjv\",\"\":{\"yyvdjoorbuuhbcc\":\"datagupshoofas\",\"asvghphlbk\":\"databcvtelmdr\",\"mviaasdexsrglxlj\":\"datauhmblni\",\"spdipdxq\":\"datayvkkpovz\"}}")
             .toObject(AvroWriteSettings.class);
-        Assertions.assertEquals("ieeoc", model.recordName());
-        Assertions.assertEquals("rvsfzgcsco", model.recordNamespace());
+        Assertions.assertEquals("gcjssqpk", model.recordName());
+        Assertions.assertEquals("ryhvshkvupbzqwwt", model.recordNamespace());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AvroWriteSettings model = new AvroWriteSettings().withRecordName("ieeoc")
-            .withRecordNamespace("rvsfzgcsco")
-            .withMaxRowsPerFile("datafsgilwisqxzpz")
-            .withFileNamePrefix("dataustrtrfvogk");
+        AvroWriteSettings model = new AvroWriteSettings().withRecordName("gcjssqpk")
+            .withRecordNamespace("ryhvshkvupbzqwwt")
+            .withMaxRowsPerFile("datajyiwuve")
+            .withFileNamePrefix("dataavbjv");
         model = BinaryData.fromObject(model).toObject(AvroWriteSettings.class);
-        Assertions.assertEquals("ieeoc", model.recordName());
-        Assertions.assertEquals("rvsfzgcsco", model.recordNamespace());
+        Assertions.assertEquals("gcjssqpk", model.recordName());
+        Assertions.assertEquals("ryhvshkvupbzqwwt", model.recordNamespace());
     }
 }

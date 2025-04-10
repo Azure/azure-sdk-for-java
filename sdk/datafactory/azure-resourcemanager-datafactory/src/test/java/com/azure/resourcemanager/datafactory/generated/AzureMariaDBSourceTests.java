@@ -11,19 +11,19 @@ public final class AzureMariaDBSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureMariaDBSource model = BinaryData.fromString(
-            "{\"type\":\"AzureMariaDBSource\",\"query\":\"dataqngpvvnbu\",\"queryTimeout\":\"datavkutl\",\"additionalColumns\":\"dataxuuqb\",\"sourceRetryCount\":\"datapbeswgkreozpufk\",\"sourceRetryWait\":\"datamzcbzgi\",\"maxConcurrentConnections\":\"dataqpegcgdndpb\",\"disableMetricsCollection\":\"dataeymmcbiktetzvqt\",\"\":{\"pdnbzqweohmlkzhx\":\"datavcsbyimygswdu\",\"haerhxd\":\"datadmauanxzrqt\",\"bqmoguy\":\"datahkbrkhjjbwelicrx\",\"dxljjzdbzk\":\"datamselwszqveak\"}}")
+            "{\"type\":\"AzureMariaDBSource\",\"query\":\"datatowjzoopzaenl\",\"queryTimeout\":\"dataxztgduwun\",\"additionalColumns\":\"datavaol\",\"sourceRetryCount\":\"datavtczzvqzhtmeu\",\"sourceRetryWait\":\"datatudwchsrps\",\"maxConcurrentConnections\":\"dataq\",\"disableMetricsCollection\":\"databjuakt\",\"\":{\"drjdeyfnqanbadkz\":\"dataupcio\",\"kjexqnrnzlalug\":\"dataqctupl\",\"ovarfqverx\":\"dataeftrbxoma\"}}")
             .toObject(AzureMariaDBSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureMariaDBSource model = new AzureMariaDBSource().withSourceRetryCount("datapbeswgkreozpufk")
-            .withSourceRetryWait("datamzcbzgi")
-            .withMaxConcurrentConnections("dataqpegcgdndpb")
-            .withDisableMetricsCollection("dataeymmcbiktetzvqt")
-            .withQueryTimeout("datavkutl")
-            .withAdditionalColumns("dataxuuqb")
-            .withQuery("dataqngpvvnbu");
+        AzureMariaDBSource model = new AzureMariaDBSource().withSourceRetryCount("datavtczzvqzhtmeu")
+            .withSourceRetryWait("datatudwchsrps")
+            .withMaxConcurrentConnections("dataq")
+            .withDisableMetricsCollection("databjuakt")
+            .withQueryTimeout("dataxztgduwun")
+            .withAdditionalColumns("datavaol")
+            .withQuery("datatowjzoopzaenl");
         model = BinaryData.fromObject(model).toObject(AzureMariaDBSource.class);
     }
 }

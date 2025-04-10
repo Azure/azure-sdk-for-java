@@ -51,7 +51,7 @@ public final class AzureSearchIndexDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzureSearchIndexDatasetTypeProperties innerTypeProperties() {
+    AzureSearchIndexDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

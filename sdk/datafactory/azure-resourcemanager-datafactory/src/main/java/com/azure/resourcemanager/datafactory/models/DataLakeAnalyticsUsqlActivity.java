@@ -52,7 +52,7 @@ public final class DataLakeAnalyticsUsqlActivity extends ExecutionActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private DataLakeAnalyticsUsqlActivityTypeProperties innerTypeProperties() {
+    DataLakeAnalyticsUsqlActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
