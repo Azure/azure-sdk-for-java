@@ -721,6 +721,42 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
             .beginPurchaseReservation(reservationId)).verifyError();
     }
 
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void purchaseWithSearchWithoutAgreementToNotResellFails(HttpClient httpClient) {
+        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
+        capabilities.setCalling(PhoneNumberCapabilityType.INBOUND);
+        capabilities.setSms(PhoneNumberCapabilityType.NONE);
+        PhoneNumberSearchOptions searchOptions = new PhoneNumberSearchOptions().setQuantity(1);
+        PhoneNumbersAsyncClient client
+            = this.getClientWithConnectionString(httpClient, "beginSearchAvailablePhoneNumbers");
+        PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> poller
+            = setPollInterval(client.beginSearchAvailablePhoneNumbers("FR", PhoneNumberType.TOLL_FREE,
+                PhoneNumberAssignmentType.APPLICATION, capabilities, searchOptions));
+        PhoneNumberSearchResult searchResult = poller.blockLast().getFinalResult().block();
+
+        StepVerifier.create(this.getClientWithConnectionString(httpClient, "beginPurchasePhoneNumbers")
+            .beginPurchasePhoneNumbers(searchResult.getSearchId())).verifyError();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void purchaseWithSearchWithoutAgreementToNotResellWithAADFails(HttpClient httpClient) {
+        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
+        capabilities.setCalling(PhoneNumberCapabilityType.INBOUND);
+        capabilities.setSms(PhoneNumberCapabilityType.NONE);
+        PhoneNumberSearchOptions searchOptions = new PhoneNumberSearchOptions().setQuantity(1);
+        PhoneNumbersAsyncClient client
+            = this.getClientWithManagedIdentity(httpClient, "beginSearchAvailablePhoneNumbers");
+        PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> poller
+            = setPollInterval(client.beginSearchAvailablePhoneNumbers("FR", PhoneNumberType.TOLL_FREE,
+                PhoneNumberAssignmentType.APPLICATION, capabilities, searchOptions));
+        PhoneNumberSearchResult searchResult = poller.blockLast().getFinalResult().block();
+
+        StepVerifier.create(this.getClientWithManagedIdentity(httpClient, "beginPurchasePhoneNumbers")
+            .beginPurchasePhoneNumbers(searchResult.getSearchId())).verifyError();
+    }
+
     private PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult>
         beginSearchAvailablePhoneNumbersHelper(PhoneNumbersAsyncClient client, boolean withOptions) {
         PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();

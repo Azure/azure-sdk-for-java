@@ -14,6 +14,7 @@ import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCountry;
 import com.azure.communication.phonenumbers.models.PhoneNumberError;
+import com.azure.communication.phonenumbers.models.PhoneNumberErrorResponseException;
 import com.azure.communication.phonenumbers.models.PhoneNumberLocality;
 import com.azure.communication.phonenumbers.models.PhoneNumberOffering;
 import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
@@ -677,6 +678,58 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
         assertThrows(RuntimeException.class, () -> client.beginReservationPurchase(reservationId),
             "Missing agreement to not resell.");
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void purchaseWithSearchWithoutAgreementToNotResellFails(HttpClient httpClient) {
+        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
+        capabilities.setSms(PhoneNumberCapabilityType.NONE);
+        capabilities.setCalling(PhoneNumberCapabilityType.INBOUND);
+        PhoneNumberSearchOptions searchOptions = new PhoneNumberSearchOptions().setQuantity(1);
+
+        SyncPoller<PhoneNumberOperation, PhoneNumberSearchResult> poller
+            = setPollInterval(getClientWithConnectionString(httpClient, "purchaseWithSearchWithoutAgreement")
+                .beginSearchAvailablePhoneNumbers("FR", PhoneNumberType.TOLL_FREE,
+                    PhoneNumberAssignmentType.APPLICATION, capabilities, searchOptions, Context.NONE));
+        PollResponse<PhoneNumberOperation> response = poller.waitForCompletion();
+
+        if (LongRunningOperationStatus.SUCCESSFULLY_COMPLETED == response.getStatus()) {
+            PhoneNumberSearchResult searchResult = poller.getFinalResult();
+
+            assertThrows(
+                PhoneNumberErrorResponseException.class, () -> beginPurchasePhoneNumbersHelper(httpClient,
+                    searchResult.getSearchId(), "beginPurchasePhoneNumbersSync", true).waitForCompletion(),
+                "Missing agreement to not resell.");
+        } else {
+            fail("Long Running Operation Status was not successfully completed");
+        }
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void purchaseWithSearchWithoutAgreementToNotResellWithAADFails(HttpClient httpClient) {
+        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
+        capabilities.setSms(PhoneNumberCapabilityType.NONE);
+        capabilities.setCalling(PhoneNumberCapabilityType.INBOUND);
+        PhoneNumberSearchOptions searchOptions = new PhoneNumberSearchOptions().setQuantity(1);
+
+        SyncPoller<PhoneNumberOperation, PhoneNumberSearchResult> poller
+            = setPollInterval(getClientWithManagedIdentity(httpClient, "purchaseWithSearchWithoutAgreement")
+                .beginSearchAvailablePhoneNumbers("FR", PhoneNumberType.TOLL_FREE,
+                    PhoneNumberAssignmentType.APPLICATION, capabilities, searchOptions, Context.NONE));
+        PollResponse<PhoneNumberOperation> response = poller.waitForCompletion();
+
+        if (LongRunningOperationStatus.SUCCESSFULLY_COMPLETED == response.getStatus()) {
+            PhoneNumberSearchResult searchResult = poller.getFinalResult();
+
+            assertThrows(
+                PhoneNumberErrorResponseException.class, () -> beginPurchasePhoneNumbersHelper(httpClient,
+                    searchResult.getSearchId(), "beginPurchasePhoneNumbersSync", true).waitForCompletion(),
+                "Missing agreement to not resell.");
+        } else {
+            fail("Long Running Operation Status was not successfully completed");
+        }
     }
 
     private SyncPoller<PhoneNumberOperation, PhoneNumberSearchResult>
