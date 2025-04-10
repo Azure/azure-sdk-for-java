@@ -14,7 +14,6 @@ import io.clientcore.core.implementation.http.RetryUtils;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.instrumentation.logging.LoggingEvent;
-import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.DateTimeRfc1123;
@@ -323,14 +322,9 @@ public final class HttpRetryPolicy implements HttpPipelinePolicy {
     private boolean defaultShouldRetryCondition(HttpRetryCondition requestRetryCondition) {
         if (requestRetryCondition.getResponse() != null) {
             return RetryUtils.isRetryable(requestRetryCondition.getResponse().getStatusCode());
-        } else {
-            Exception ex = requestRetryCondition.getException();
-            if (ex instanceof CoreException) {
-                return ((CoreException) ex).isRetryable();
-            }
-
-            return ex != null;
         }
+
+        return RetryUtils.isRetryable(requestRetryCondition.getException());
     }
 
     private ClientLogger getLogger(HttpRequest httpRequest) {
