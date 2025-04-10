@@ -18,7 +18,7 @@ import java.io.UncheckedIOException;
  * <p>
  * Client libraries should implement their own exceptions that extend this class.
  */
-public class CoreException extends RuntimeException {
+public abstract class CoreException extends RuntimeException {
     /**
      * Translates a {@link Throwable} into a {@link CoreException}.
      *
@@ -75,7 +75,7 @@ public class CoreException extends RuntimeException {
             updatedCause = cause.getCause();
         }
 
-        return new CoreException(updatedMessage, updatedCause, isRetryable);
+        return new CoreExceptionImpl(updatedMessage, updatedCause, isRetryable);
     }
 
     /**
@@ -109,5 +109,12 @@ public class CoreException extends RuntimeException {
             return cause == null ? null : cause.getMessage();
         }
         return message;
+    }
+
+    private static class CoreExceptionImpl extends CoreException {
+
+        CoreExceptionImpl(String message, Throwable cause, boolean isRetryable) {
+            super(message, cause, isRetryable);
+        }
     }
 }
