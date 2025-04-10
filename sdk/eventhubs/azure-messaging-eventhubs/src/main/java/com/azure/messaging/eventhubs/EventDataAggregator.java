@@ -239,10 +239,12 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
          * @param alwaysPublish {@code true} to always push batch downstream. {@code false}, otherwise.
          */
         private void updateOrPublishBatch(EventData eventData, boolean alwaysPublish) {
-            if (alwaysPublish) {
-                publishDownstream();
+            final boolean isFlush = isFlushSignal(eventData);
+            if (alwaysPublish || isFlush) {
+                publishDownstream(isFlush);
                 return;
-            } else if (eventData == null) {
+            }
+            if (eventData == null) {
                 // EventData will be null in the case when options.maxWaitTime() has elapsed  and we want to push the
                 // batch downstream.
                 return;
@@ -256,7 +258,7 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
                     return;
                 }
 
-                publishDownstream();
+                publishDownstream(false);
                 added = currentBatch.tryAdd(eventData);
             }
 
@@ -271,19 +273,24 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
         /**
          * Publishes batch downstream if there are events in the batch and updates it.
          */
-        private void publishDownstream() {
+        private void publishDownstream(boolean isFlush) {
             EventDataBatch previous = null;
-
             try {
                 synchronized (lock) {
                     previous = this.currentBatch;
-
                     if (previous == null) {
                         logger.warning("Batch should not be null, setting a new batch.");
-
                         this.currentBatch = batchSupplier.get();
+                        if (isFlush) {
+                            downstream.onNext(EventDataBatch.EMPTY);
+                        }
                         return;
                     } else if (previous.getEvents().isEmpty()) {
+                        if (isFlush) {
+                            // Even if the batch is empty, we'll push EMPTY on a flush signal.
+                            // This ensures any flush related flags set at the call site are reset.
+                            downstream.onNext(EventDataBatch.EMPTY);
+                        }
                         return;
                     }
 
@@ -331,6 +338,10 @@ class EventDataAggregator extends FluxOperator<EventData, EventDataBatch> {
                     onError(error);
                 }
             }
+        }
+
+        private static boolean isFlushSignal(EventData eventData) {
+            return eventData instanceof FlushSignal;
         }
     }
 }
