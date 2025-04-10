@@ -24,6 +24,7 @@ public class KeysCustomizations extends Customization {
         customizePackageInfos(editor);
         customizeClientImpl(libraryCustomization);
         customizeKeyCurveName(libraryCustomization);
+        customizeReleaseKeyResult(libraryCustomization);
     }
 
     private static void removeFiles(Editor editor) {
@@ -72,6 +73,16 @@ public class KeysCustomizations extends Customization {
         replaceInFile(classCustomization, classPath,
             new String[] { " For valid values, see JsonWebKeyCurveName." },
             new String[] { "" });
+    }
+
+    private static void customizeReleaseKeyResult(LibraryCustomization libraryCustomization) {
+        ClassCustomization classCustomization = libraryCustomization
+            .getPackage("com.azure.security.keyvault.keys.models")
+            .getClass("ReleaseKeyResult");
+        String classPath = "src/main/java/com/azure/security/keyvault/keys/models/ReleaseKeyResult.java";
+
+        replaceInFile(classCustomization, classPath,
+            new String[] { "private ReleaseKeyResult()" }, new String[] { "public ReleaseKeyResult()" });
     }
 
     /**

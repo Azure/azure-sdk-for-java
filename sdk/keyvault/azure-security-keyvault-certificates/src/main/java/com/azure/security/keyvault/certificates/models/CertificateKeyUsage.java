@@ -50,12 +50,6 @@ public final class CertificateKeyUsage extends ExpandableStringEnum<CertificateK
     public static final CertificateKeyUsage KEY_CERT_SIGN = fromString("keyCertSign");
 
     /**
-     * Indicates that the certificate key can be used to sign a certificate revocation list.
-     */
-    @Generated
-    public static final CertificateKeyUsage C_RLSIGN = fromString("cRLSign");
-
-    /**
      * Indicates that the certificate key can be used for encryption only.
      */
     @Generated
@@ -97,4 +91,10 @@ public final class CertificateKeyUsage extends ExpandableStringEnum<CertificateK
     public static Collection<CertificateKeyUsage> values() {
         return values(CertificateKeyUsage.class);
     }
+
+    /**
+     * Indicates that the certificate key can be used to sign a certificate revocation list.
+     */
+    @Generated
+    public static final CertificateKeyUsage CRL_SIGN = fromString("cRLSign");
 }

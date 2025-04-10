@@ -18,8 +18,9 @@ public class CertificatesCustomizations extends Customization {
         removeFiles(editor);
         customizeModuleInfo(editor);
         customizePackageInfos(editor);
-        customizeError(libraryCustomization);
         customizeClientImpl(libraryCustomization);
+        customizeError(libraryCustomization);
+        customizeCertificateKeyUsage(libraryCustomization);
     }
 
     private static void removeFiles(Editor editor) {
@@ -67,15 +68,23 @@ public class CertificatesCustomizations extends Customization {
             new String[] { "CertificateOperationError" });
     }
 
+    private static void customizeCertificateKeyUsage(LibraryCustomization libraryCustomization) {
+        ClassCustomization classCustomization = libraryCustomization
+            .getPackage("com.azure.security.keyvault.certificates.models")
+            .getClass("CertificateKeyUsage");
+        String classPath =
+            "src/main/java/com/azure/security/keyvault/certificates/models/CertificateKeyUsage.java";
+
+        replaceInFile(classCustomization, classPath, new String[] { "C_RLSIGN" }, new String[] { "CRL_SIGN" });
+    }
+
     private static void customizeClientImpl(LibraryCustomization libraryCustomization) {
-        // Rename the class.
         ClassCustomization classCustomization = libraryCustomization
             .getPackage("com.azure.security.keyvault.certificates.implementation")
             .getClass("CertificateClientImpl");
         String classPath =
             "src/main/java/com/azure/security/keyvault/certificates/implementation/CertificateClientImpl.java";
 
-        // Rename class references and add imports.
         replaceInFile(classCustomization, classPath, new String[] { "KeyVault" }, new String[] { "Certificate" });
     }
 
