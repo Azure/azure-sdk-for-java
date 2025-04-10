@@ -1,6 +1,6 @@
 # Release History
 
-## 4.10.0-beta.1 (2025-04-09)
+## 4.10.0-beta.1 (2025-04-10)
 
 ### Features Added
 - Added new key wrapping algorithms: `CKM_AES_KEY_WRAP` and `CKM_AES_KEY_WRAP_PAD`. ([#44788](https://github.com/Azure/azure-sdk-for-java/pull/44788)

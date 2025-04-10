@@ -1,6 +1,6 @@
 # Release History
 
-## 4.8.0-beta.1 (2025-04-09)
+## 4.8.0-beta.1 (2025-04-10)
 
 ### Features Added
 - Added support for preserving the order of the certificate chain when creating or importing certificates. ([#44788](https://github.com/Azure/azure-sdk-for-java/pull/44788)

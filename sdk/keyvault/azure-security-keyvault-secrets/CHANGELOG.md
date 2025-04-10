@@ -1,6 +1,6 @@
 # Release History
 
-## 4.10.0-beta.1 (2025-04-09)
+## 4.10.0-beta.1 (2025-04-10)
 
 ### Other Changes
 
