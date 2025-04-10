@@ -1,14 +1,86 @@
 # Release History
 
-## 1.2.0-beta.2 (Unreleased)
+## 1.2.0-beta.2 (2025-04-10)
 
-### Features Added
+- Azure Resource Manager Container Service Fleet client library for Java. This package contains Microsoft Azure SDK for Container Service Fleet Management SDK. Azure Kubernetes Fleet Manager api client. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.FleetMemberListResult` was removed
 
-### Other Changes
+#### `models.UpdateRunListResult` was removed
+
+#### `models.AutoUpgradeProfileListResult` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.FleetUpdateStrategyListResult` was removed
+
+#### `models.FleetListResult` was removed
+
+#### `models.UserAssignedIdentity` was modified
+
+* `java.util.UUID clientId()` -> `java.lang.String clientId()`
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+
+#### `models.ManagedServiceIdentity` was modified
+
+* `java.util.UUID principalId()` -> `java.lang.String principalId()`
+* `java.util.UUID tenantId()` -> `java.lang.String tenantId()`
+
+### Features Added
+
+* `implementation.models.OperationListResult` was added
+
+* `models.FleetStatus` was added
+
+* `models.FleetMemberStatus` was added
+
+* `implementation.models.FleetMemberListResult` was added
+
+* `implementation.models.UpdateRunListResult` was added
+
+* `implementation.models.FleetListResult` was added
+
+* `models.AutoUpgradeProfileOperations` was added
+
+* `implementation.models.AutoUpgradeProfileListResult` was added
+
+* `models.AutoUpgradeLastTriggerStatus` was added
+
+* `implementation.models.FleetUpdateStrategyListResult` was added
+
+* `models.GenerateResponse` was added
+
+* `models.AutoUpgradeProfileStatus` was added
+
+#### `models.AutoUpgradeProfile$Update` was modified
+
+* `withAutoUpgradeProfileStatus(models.AutoUpgradeProfileStatus)` was added
+
+#### `ContainerServiceFleetManager` was modified
+
+* `autoUpgradeProfileOperations()` was added
+
+#### `models.AutoUpgradeProfile$Definition` was modified
+
+* `withAutoUpgradeProfileStatus(models.AutoUpgradeProfileStatus)` was added
+
+#### `models.FleetMember` was modified
+
+* `status()` was added
+
+#### `models.Fleet` was modified
+
+* `status()` was added
+
+#### `models.AutoUpgradeProfile` was modified
+
+* `autoUpgradeProfileStatus()` was added
+
+#### `models.UpdateRun` was modified
+
+* `autoUpgradeProfileId()` was added
 
 ## 1.2.0-beta.1 (2024-10-17)
 
