@@ -6,7 +6,6 @@
     "Agent": {
       "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" },
       "windows-2022": { "OSVmImage": "env:WINDOWSVMIMAGE", "Pool": "env:WINDOWSPOOL" },
-      "macos-11": { "OSVmImage": "env:MACVMIMAGE", "Pool": "env:MACPOOL" }
     },
     "JavaTestVersion": [ "1.8", "1.21" ],
     "AZURE_TEST_HTTP_CLIENTS": [ "okhttp", "netty" ],
@@ -17,7 +16,7 @@
   },
   "exclude": [
     {
-      "Pool": "env:WINDOWSPOOL",
+      "Pool": "env:LINUXPOOL",
       "JavaTestVersion": "1.21"
     }
   ],
@@ -35,7 +34,7 @@
     },
     {
       "Agent": {
-        "windows-2022": { "OSVmImage": "env:WINDOWSVMIMAGE", "Pool": "env:WINDOWSPOOL" }
+        "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
       },
       "JavaTestVersion": "1.21",
       "AZURE_TEST_HTTP_CLIENTS": "netty",
