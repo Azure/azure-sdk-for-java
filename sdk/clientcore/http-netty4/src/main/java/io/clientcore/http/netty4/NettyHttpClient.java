@@ -118,7 +118,13 @@ class NettyHttpClient implements HttpClient {
                     latch.countDown();
                 } else {
                     CoreResponseHandler responseHandler = new CoreResponseHandler(request, responseReference, latch);
-                    future.channel().pipeline().addLast(responseHandler);
+                    if (addProgressAndTimeoutHandler) {
+                        future.channel()
+                            .pipeline()
+                            .addBefore(CoreProgressAndTimeoutHandler.HANDLER_NAME, null, responseHandler);
+                    } else {
+                        future.channel().pipeline().addLast(responseHandler);
+                    }
                     future.channel().read();
                 }
             });
