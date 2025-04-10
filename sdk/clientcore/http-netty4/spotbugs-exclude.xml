@@ -19,6 +19,14 @@
     <Class name="io.clientcore.http.netty4.implementation.NettyHttpClientLocalTestServer" />
   </Match>
   <Match>
+    <Bug pattern="NP_NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS" />
+    <Class name="io.clientcore.http.netty4.implementation.WrappedHttpHeadersTests" />
+  </Match>
+  <Match>
+    <Bug pattern="NP_NULL_PARAM_DEREF_NONVIRTUAL" />
+    <Class name="io.clientcore.http.netty4.implementation.WrappedHttpHeadersTests" />
+  </Match>
+  <Match>
     <Bug pattern="OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE" />
     <Class name="io.clientcore.http.netty4.NettyHttpClientTests" />
   </Match>
@@ -33,7 +41,6 @@
   <Match>
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON" />
     <Or>
-      <Class name="io.clientcore.http.netty4.NettyHttpClientBuilder" />
       <Class name="io.clientcore.http.netty4.NettyHttpClientTests" />
       <Class name="io.clientcore.http.netty4.implementation.CoreProgressAndTimeoutHandlerTests" />
     </Or>
