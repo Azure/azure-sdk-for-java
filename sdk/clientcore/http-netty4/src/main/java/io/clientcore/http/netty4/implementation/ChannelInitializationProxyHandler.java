@@ -72,19 +72,19 @@ public final class ChannelInitializationProxyHandler implements Predicate<Socket
     /**
      * Creates the {@link ProxyHandler} that will be added to the {@link ChannelPipeline}.
      *
-     * @param proxyChallengeHolder The holder for {@link AuthenticateChallenge}s across requests. Used to calculate
-     * {@code Proxy-Authorization} eagerly if the {@link HttpClient} previously received {@code Proxy-Authenticate}
-     * headers from the proxy.
+     * @param proxyChallenges The holder for {@link AuthenticateChallenge}s across requests. Used to calculate
+     * {@code Proxy-Authorization} eagerly if the {@link HttpClient} that passed the {@link AtomicReference} previously
+     * received {@code Proxy-Authenticate} headers from the proxy.
      * @return The {@link ProxyHandler} that will handle proxying.
      */
-    public ProxyHandler createProxy(AtomicReference<List<AuthenticateChallenge>> proxyChallengeHolder) {
+    public ProxyHandler createProxy(AtomicReference<List<AuthenticateChallenge>> proxyChallenges) {
         if (proxyOptions.getType() == ProxyOptions.Type.SOCKS4) {
             return new Socks4ProxyHandler(proxyOptions.getAddress(), proxyOptions.getUsername());
         } else if (proxyOptions.getType() == ProxyOptions.Type.SOCKS5) {
             return new Socks5ProxyHandler(proxyOptions.getAddress(), proxyOptions.getUsername(),
                 proxyOptions.getPassword());
         } else {
-            return new CoreHttpProxyHandler(proxyOptions, proxyChallengeHolder);
+            return new Netty4HttpProxyHandler(proxyOptions, proxyChallenges);
         }
     }
 }

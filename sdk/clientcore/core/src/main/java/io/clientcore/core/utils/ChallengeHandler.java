@@ -67,7 +67,7 @@ public interface ChallengeHandler {
         List<AuthenticateChallenge> challenges);
 
     /**
-     * Validate if this ChallengeHandle can handle any of the provided {@link AuthenticateChallenge}s.
+     * Validate if this ChallengeHandler can handle any of the provided {@link AuthenticateChallenge}s.
      * <p>
      * This method is meant for scenarios where authenticate headers are processed into {@link AuthenticateChallenge}s
      * externally, normally using {@link AuthUtils#parseAuthenticateHeader(String)}.

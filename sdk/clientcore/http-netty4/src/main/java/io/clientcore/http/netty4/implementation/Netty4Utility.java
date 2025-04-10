@@ -30,8 +30,8 @@ import java.util.concurrent.CountDownLatch;
 /**
  * Helper class containing utility methods.
  */
-public final class NettyUtility {
-    private static final ClientLogger LOGGER = new ClientLogger(NettyUtility.class);
+public final class Netty4Utility {
+    private static final ClientLogger LOGGER = new ClientLogger(Netty4Utility.class);
 
     static final String PROPERTIES_FILE_NAME = "http-netty.properties";
     static final String NETTY_VERSION_PROPERTY = "netty-version";
@@ -46,9 +46,10 @@ public final class NettyUtility {
         .asList("netty-transport-native-unix-common", "netty-transport-native-epoll", "netty-transport-native-kqueue");
 
     /**
-     * Name given to the {@link HttpClientCodec} used in the {@link ChannelPipeline} created by {@code NettyHttpClient}.
+     * Name given to the {@link Netty4ProgressAndTimeoutHandler} used in the {@link ChannelPipeline} created by
+     * {@code NettyHttpClient}.
      */
-    public static final String CODEC_HANDLER_NAME = "ClientCore-Codec-Handler";
+    public static final String PROGRESS_AND_TIMEOUT_HANDLER_NAME = "Netty4-Progress-And-Timeout-Handler";
 
     /**
      * Converts Netty HttpHeaders to ClientCore HttpHeaders.
@@ -218,7 +219,7 @@ public final class NettyUtility {
     static NettyVersionLogInformation createNettyVersionLogInformation(String nettyVersion) {
         Map<String, String> classpathNettyVersions = new LinkedHashMap<>();
 
-        Map<String, Version> nettyVersions = Version.identify(NettyUtility.class.getClassLoader());
+        Map<String, Version> nettyVersions = Version.identify(Netty4Utility.class.getClassLoader());
 
         for (String artifact : REQUIRED_NETTY_VERSION_ARTIFACTS) {
             Version version = nettyVersions.get(artifact);
@@ -272,6 +273,6 @@ public final class NettyUtility {
         }
     }
 
-    private NettyUtility() {
+    private Netty4Utility() {
     }
 }

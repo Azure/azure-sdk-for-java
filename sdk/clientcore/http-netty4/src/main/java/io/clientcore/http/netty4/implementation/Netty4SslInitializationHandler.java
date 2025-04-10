@@ -10,13 +10,13 @@ import io.netty.handler.ssl.SslHandshakeCompletionEvent;
 /**
  * {@link ChannelInboundHandler} implementation that manages the SSL handshake process.
  */
-public final class CoreSslInitializationHandler extends ChannelInboundHandlerAdapter {
+public final class Netty4SslInitializationHandler extends ChannelInboundHandlerAdapter {
     private boolean sslHandshakeComplete;
 
     /**
-     * Creates a new instance of {@link CoreSslInitializationHandler}.
+     * Creates a new instance of {@link Netty4SslInitializationHandler}.
      */
-    public CoreSslInitializationHandler() {
+    public Netty4SslInitializationHandler() {
     }
 
     @Override

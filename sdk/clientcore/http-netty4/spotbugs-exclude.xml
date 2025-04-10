@@ -6,8 +6,8 @@
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE" />
     <Or>
       <Class name="io.clientcore.http.netty4.NettyHttpClient" />
-      <Class name="io.clientcore.http.netty4.implementation.CoreHttpProxyHandler" />
-      <Class name="io.clientcore.http.netty4.implementation.NettyChannelBinaryData" />
+      <Class name="io.clientcore.http.netty4.implementation.Netty4ChannelBinaryData" />
+      <Class name="io.clientcore.http.netty4.implementation.Netty4HttpProxyHandler" />
     </Or>
   </Match>
   <Match>
@@ -42,7 +42,7 @@
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON" />
     <Or>
       <Class name="io.clientcore.http.netty4.NettyHttpClientTests" />
-      <Class name="io.clientcore.http.netty4.implementation.CoreProgressAndTimeoutHandlerTests" />
+      <Class name="io.clientcore.http.netty4.implementation.Netty4ProgressAndTimeoutHandlerTests" />
     </Or>
   </Match>
   <Match>
@@ -51,6 +51,6 @@
   </Match>
   <Match>
     <Bug pattern="VO_VOLATILE_REFERENCE_TO_ARRAY" />
-    <Class name="io.clientcore.http.netty4.implementation.NettyChannelBinaryData" />
+    <Class name="io.clientcore.http.netty4.implementation.Netty4ChannelBinaryData" />
   </Match>
 </FindBugsFilter>

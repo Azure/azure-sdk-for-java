@@ -27,180 +27,186 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Timeout(value = 3, unit = TimeUnit.MINUTES)
-public class CoreProgressAndTimeoutHandlerTests {
+public class Netty4ProgressAndTimeoutHandlerTests {
     @Test
     public void readNoTimeoutDoesNotAddWatcher() {
-        CoreProgressAndTimeoutHandler coreProgressAndTimeoutHandler = new CoreProgressAndTimeoutHandler(null, 0, 0, 0);
+        Netty4ProgressAndTimeoutHandler netty4ProgressAndTimeoutHandler
+            = new Netty4ProgressAndTimeoutHandler(null, 0, 0, 0);
 
         MockEventExecutor eventExecutor = new MockEventExecutor();
         ChannelHandlerContext ctx = new MockChannelHandlerContext(eventExecutor);
 
-        coreProgressAndTimeoutHandler.startReadTracking(ctx);
+        netty4ProgressAndTimeoutHandler.startReadTracking(ctx);
 
         assertEquals(0, eventExecutor.getScheduleAtFixedRateCallCount());
     }
 
     @Test
     public void readTimeoutAddsWatcher() {
-        CoreProgressAndTimeoutHandler coreProgressAndTimeoutHandler = new CoreProgressAndTimeoutHandler(null, 0, 0, 1);
+        Netty4ProgressAndTimeoutHandler netty4ProgressAndTimeoutHandler
+            = new Netty4ProgressAndTimeoutHandler(null, 0, 0, 1);
 
         MockEventExecutor eventExecutor = new MockEventExecutor();
         ChannelHandlerContext ctx = new MockChannelHandlerContext(eventExecutor);
 
-        coreProgressAndTimeoutHandler.startReadTracking(ctx);
+        netty4ProgressAndTimeoutHandler.startReadTracking(ctx);
 
         assertEquals(1, eventExecutor.getScheduleAtFixedRateCallCount(1, 1));
     }
 
     @Test
     public void readRemovingHandlerCancelsTimeout() {
-        CoreProgressAndTimeoutHandler coreProgressAndTimeoutHandler
-            = new CoreProgressAndTimeoutHandler(null, 0, 0, 100);
+        Netty4ProgressAndTimeoutHandler netty4ProgressAndTimeoutHandler
+            = new Netty4ProgressAndTimeoutHandler(null, 0, 0, 100);
 
         ChannelHandlerContext ctx = new MockChannelHandlerContext(new DefaultEventExecutor());
 
-        coreProgressAndTimeoutHandler.startReadTracking(ctx);
-        coreProgressAndTimeoutHandler.handlerRemoved(ctx);
+        netty4ProgressAndTimeoutHandler.startReadTracking(ctx);
+        netty4ProgressAndTimeoutHandler.handlerRemoved(ctx);
 
-        assertNull(coreProgressAndTimeoutHandler.getReadTimeoutWatcher());
+        assertNull(netty4ProgressAndTimeoutHandler.getReadTimeoutWatcher());
     }
 
     @Test
     public void readTimesOut() {
-        CoreProgressAndTimeoutHandler coreProgressAndTimeoutHandler
-            = new CoreProgressAndTimeoutHandler(null, 0, 0, 100);
+        Netty4ProgressAndTimeoutHandler netty4ProgressAndTimeoutHandler
+            = new Netty4ProgressAndTimeoutHandler(null, 0, 0, 100);
 
         MockChannelHandlerContext ctx = new MockChannelHandlerContext(new DefaultEventExecutor());
 
         // Fake that the scheduled timer completed before any read operations happened.
-        coreProgressAndTimeoutHandler.readTimeoutRunnable(ctx);
+        netty4ProgressAndTimeoutHandler.readTimeoutRunnable(ctx);
 
         assertTrue(ctx.getFireExceptionCaughtCallCount() >= 1);
     }
 
     @Test
     public void readingUpdatesTimeout() {
-        CoreProgressAndTimeoutHandler coreProgressAndTimeoutHandler
-            = new CoreProgressAndTimeoutHandler(null, 0, 0, 500);
+        Netty4ProgressAndTimeoutHandler netty4ProgressAndTimeoutHandler
+            = new Netty4ProgressAndTimeoutHandler(null, 0, 0, 500);
 
         MockChannelHandlerContext ctx = new MockChannelHandlerContext(new DefaultEventExecutor());
 
-        coreProgressAndTimeoutHandler.channelReadComplete(ctx);
+        netty4ProgressAndTimeoutHandler.channelReadComplete(ctx);
 
         // Fake that the scheduled timer completed before after a read operation happened.
-        coreProgressAndTimeoutHandler.readTimeoutRunnable(ctx);
+        netty4ProgressAndTimeoutHandler.readTimeoutRunnable(ctx);
 
-        coreProgressAndTimeoutHandler.handlerRemoved(ctx);
+        netty4ProgressAndTimeoutHandler.handlerRemoved(ctx);
 
         assertEquals(0, ctx.getFireExceptionCaughtCallCount());
     }
 
     @Test
     public void responseNoTimeoutDoesNotAddWatcher() {
-        CoreProgressAndTimeoutHandler coreProgressAndTimeoutHandler = new CoreProgressAndTimeoutHandler(null, 0, 0, 0);
+        Netty4ProgressAndTimeoutHandler netty4ProgressAndTimeoutHandler
+            = new Netty4ProgressAndTimeoutHandler(null, 0, 0, 0);
 
         MockEventExecutor eventExecutor = new MockEventExecutor();
         ChannelHandlerContext ctx = new MockChannelHandlerContext(eventExecutor);
 
-        coreProgressAndTimeoutHandler.startResponseTracking(ctx);
+        netty4ProgressAndTimeoutHandler.startResponseTracking(ctx);
 
         assertEquals(0, eventExecutor.getScheduleCallCount());
     }
 
     @Test
     public void timeoutAddsWatcher() {
-        CoreProgressAndTimeoutHandler coreProgressAndTimeoutHandler = new CoreProgressAndTimeoutHandler(null, 0, 1, 0);
+        Netty4ProgressAndTimeoutHandler netty4ProgressAndTimeoutHandler
+            = new Netty4ProgressAndTimeoutHandler(null, 0, 1, 0);
 
         MockEventExecutor eventExecutor = new MockEventExecutor();
         ChannelHandlerContext ctx = new MockChannelHandlerContext(eventExecutor);
 
-        coreProgressAndTimeoutHandler.startResponseTracking(ctx);
+        netty4ProgressAndTimeoutHandler.startResponseTracking(ctx);
 
         assertEquals(1, eventExecutor.getScheduleCallCount(1));
     }
 
     @Test
     public void responseRemovingHandlerCancelsTimeout() {
-        CoreProgressAndTimeoutHandler coreProgressAndTimeoutHandler
-            = new CoreProgressAndTimeoutHandler(null, 0, 100, 0);
+        Netty4ProgressAndTimeoutHandler netty4ProgressAndTimeoutHandler
+            = new Netty4ProgressAndTimeoutHandler(null, 0, 100, 0);
 
         ChannelHandlerContext ctx = new MockChannelHandlerContext(new DefaultEventExecutor());
 
-        coreProgressAndTimeoutHandler.startResponseTracking(ctx);
-        coreProgressAndTimeoutHandler.handlerRemoved(ctx);
+        netty4ProgressAndTimeoutHandler.startResponseTracking(ctx);
+        netty4ProgressAndTimeoutHandler.handlerRemoved(ctx);
 
-        assertNull(coreProgressAndTimeoutHandler.getResponseTimeoutWatcher());
+        assertNull(netty4ProgressAndTimeoutHandler.getResponseTimeoutWatcher());
     }
 
     @Test
     public void responseTimesOut() {
-        CoreProgressAndTimeoutHandler coreProgressAndTimeoutHandler
-            = new CoreProgressAndTimeoutHandler(null, 0, 100, 0);
+        Netty4ProgressAndTimeoutHandler netty4ProgressAndTimeoutHandler
+            = new Netty4ProgressAndTimeoutHandler(null, 0, 100, 0);
 
         MockChannelHandlerContext ctx = new MockChannelHandlerContext(new DefaultEventExecutor());
 
         // Fake that the scheduled timer completed before any response is received.
-        coreProgressAndTimeoutHandler.responseTimedOut(ctx);
+        netty4ProgressAndTimeoutHandler.responseTimedOut(ctx);
 
         assertTrue(ctx.getFireExceptionCaughtCallCount() >= 1);
     }
 
     @Test
     public void writeNoTimeoutDoesNotStartWatcher() {
-        CoreProgressAndTimeoutHandler coreProgressAndTimeoutHandler = new CoreProgressAndTimeoutHandler(null, 0, 0, 0);
+        Netty4ProgressAndTimeoutHandler netty4ProgressAndTimeoutHandler
+            = new Netty4ProgressAndTimeoutHandler(null, 0, 0, 0);
 
         MockEventExecutor eventExecutor = new MockEventExecutor();
         ChannelHandlerContext ctx = new MockChannelHandlerContext(eventExecutor);
 
-        coreProgressAndTimeoutHandler.startWriteTracking(ctx);
+        netty4ProgressAndTimeoutHandler.startWriteTracking(ctx);
 
-        assertNull(coreProgressAndTimeoutHandler.getWriteTimeoutWatcher());
+        assertNull(netty4ProgressAndTimeoutHandler.getWriteTimeoutWatcher());
     }
 
     @Test
     public void writeTimeoutAddsWatcher() {
-        CoreProgressAndTimeoutHandler coreProgressAndTimeoutHandler = new CoreProgressAndTimeoutHandler(null, 1, 0, 0);
+        Netty4ProgressAndTimeoutHandler netty4ProgressAndTimeoutHandler
+            = new Netty4ProgressAndTimeoutHandler(null, 1, 0, 0);
 
         MockEventExecutor eventExecutor = new MockEventExecutor();
         ChannelHandlerContext ctx = new MockChannelHandlerContext(eventExecutor);
 
-        coreProgressAndTimeoutHandler.startWriteTracking(ctx);
+        netty4ProgressAndTimeoutHandler.startWriteTracking(ctx);
 
         assertEquals(1, eventExecutor.getScheduleAtFixedRateCallCount(1, 1));
     }
 
     @Test
     public void writeRemovingHandlerCancelsTimeout() {
-        CoreProgressAndTimeoutHandler coreProgressAndTimeoutHandler
-            = new CoreProgressAndTimeoutHandler(null, 100, 0, 0);
+        Netty4ProgressAndTimeoutHandler netty4ProgressAndTimeoutHandler
+            = new Netty4ProgressAndTimeoutHandler(null, 100, 0, 0);
 
         ChannelHandlerContext ctx = new MockChannelHandlerContext(new DefaultEventExecutor());
 
-        coreProgressAndTimeoutHandler.startWriteTracking(ctx);
-        coreProgressAndTimeoutHandler.handlerRemoved(ctx);
+        netty4ProgressAndTimeoutHandler.startWriteTracking(ctx);
+        netty4ProgressAndTimeoutHandler.handlerRemoved(ctx);
 
         // When the handler is removed the timer is nulled out.
-        assertNull(coreProgressAndTimeoutHandler.getWriteTimeoutWatcher());
+        assertNull(netty4ProgressAndTimeoutHandler.getWriteTimeoutWatcher());
     }
 
     @Test
     public void writeTimesOut() {
-        CoreProgressAndTimeoutHandler coreProgressAndTimeoutHandler
-            = new CoreProgressAndTimeoutHandler(null, 100, 0, 0);
+        Netty4ProgressAndTimeoutHandler netty4ProgressAndTimeoutHandler
+            = new Netty4ProgressAndTimeoutHandler(null, 100, 0, 0);
 
         Channel channel = new MockChannel(new MockUnsafe());
         MockChannelHandlerContext ctx = new MockChannelHandlerContext(channel, new MockEventExecutor());
 
         // Fake that the scheduled timer completed before any write operations happened.
-        coreProgressAndTimeoutHandler.writeTimeoutRunnable(ctx);
+        netty4ProgressAndTimeoutHandler.writeTimeoutRunnable(ctx);
 
         assertTrue(ctx.getFireExceptionCaughtCallCount() >= 1);
     }
 
     @Test
     public void writingUpdatesTimeout() throws Exception {
-        CoreProgressAndTimeoutHandler coreProgressAndTimeoutHandler
-            = new CoreProgressAndTimeoutHandler(null, 500, 0, 0);
+        Netty4ProgressAndTimeoutHandler netty4ProgressAndTimeoutHandler
+            = new Netty4ProgressAndTimeoutHandler(null, 500, 0, 0);
 
         Channel channel = new MockChannel(new MockUnsafe());
         EventExecutor eventExecutor = new DefaultEventLoop();
@@ -226,13 +232,13 @@ public class CoreProgressAndTimeoutHandlerTests {
             }
         };
 
-        coreProgressAndTimeoutHandler.startWriteTracking(ctx);
+        netty4ProgressAndTimeoutHandler.startWriteTracking(ctx);
 
         // Fake that the scheduled timer completed before after a write operation happened.
-        coreProgressAndTimeoutHandler.write(ctx, LastHttpContent.EMPTY_LAST_CONTENT, channelPromise);
-        coreProgressAndTimeoutHandler.writeTimeoutRunnable(ctx);
+        netty4ProgressAndTimeoutHandler.write(ctx, LastHttpContent.EMPTY_LAST_CONTENT, channelPromise);
+        netty4ProgressAndTimeoutHandler.writeTimeoutRunnable(ctx);
 
-        coreProgressAndTimeoutHandler.handlerRemoved(ctx);
+        netty4ProgressAndTimeoutHandler.handlerRemoved(ctx);
 
         assertEquals(0, ctx.getFireExceptionCaughtCallCount());
     }

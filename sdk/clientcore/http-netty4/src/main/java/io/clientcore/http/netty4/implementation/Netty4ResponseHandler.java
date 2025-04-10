@@ -27,8 +27,8 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static io.clientcore.core.http.models.HttpMethod.HEAD;
-import static io.clientcore.http.netty4.implementation.NettyUtility.awaitLatch;
-import static io.clientcore.http.netty4.implementation.NettyUtility.readByteBufIntoOutputStream;
+import static io.clientcore.http.netty4.implementation.Netty4Utility.awaitLatch;
+import static io.clientcore.http.netty4.implementation.Netty4Utility.readByteBufIntoOutputStream;
 
 /**
  * A {@link ChannelInboundHandler} implementation that appropriately handles the response reading from the server based
@@ -37,7 +37,7 @@ import static io.clientcore.http.netty4.implementation.NettyUtility.readByteBufI
  * When used with {@code NettyHttpClient} this handler must be added to the pipeline so that the {@link HttpClientCodec}
  * is able to decode the data of the response.
  */
-public final class CoreResponseHandler extends ChannelInboundHandlerAdapter {
+public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
     private final HttpRequest request;
     private final AtomicReference<Response<BinaryData>> responseReference;
     private final CountDownLatch latch;
@@ -54,7 +54,7 @@ public final class CoreResponseHandler extends ChannelInboundHandlerAdapter {
     private boolean complete;
 
     /**
-     * Creates an instance of {@link CoreResponseHandler}.
+     * Creates an instance of {@link Netty4ResponseHandler}.
      *
      * @param request The request that resulted in the response.
      * @param responseReference The reference to the {@link Response} that will be created from the response headers and
@@ -62,7 +62,7 @@ public final class CoreResponseHandler extends ChannelInboundHandlerAdapter {
      * @param latch The latch to wait for the response to be processed.
      * @throws NullPointerException If {@code request}, {@code responseReference}, or {@code latch} is null.
      */
-    public CoreResponseHandler(HttpRequest request, AtomicReference<Response<BinaryData>> responseReference,
+    public Netty4ResponseHandler(HttpRequest request, AtomicReference<Response<BinaryData>> responseReference,
         CountDownLatch latch) {
         this.request = Objects.requireNonNull(request,
             "Cannot create an instance of CoreResponseHandler with a null 'request'.");
@@ -129,7 +129,7 @@ public final class CoreResponseHandler extends ChannelInboundHandlerAdapter {
             this.statusCode = response.status().code();
             this.headers = (response.headers() instanceof WrappedHttpHeaders)
                 ? ((WrappedHttpHeaders) response.headers()).getCoreHeaders()
-                : NettyUtility.convertHeaders(response.headers());
+                : Netty4Utility.convertHeaders(response.headers());
 
             if (msg instanceof FullHttpResponse) {
                 complete = true;
@@ -193,7 +193,7 @@ public final class CoreResponseHandler extends ChannelInboundHandlerAdapter {
                 // We're ignoring the response content.
                 CountDownLatch latch = new CountDownLatch(1);
                 eagerContent = null;
-                ctx.pipeline().addLast(new EagerConsumeNetworkResponseHandler(latch, ignored -> {
+                ctx.pipeline().addLast(new Netty4EagerConsumeNetworkResponseHandler(latch, ignored -> {
                 }));
                 awaitLatch(latch);
             } else if (bodyHandling == BodyHandling.STREAM) {
@@ -211,11 +211,11 @@ public final class CoreResponseHandler extends ChannelInboundHandlerAdapter {
                     }
                 }
 
-                body = new NettyChannelBinaryData(eagerContent, ctx.channel(), length);
+                body = new Netty4ChannelBinaryData(eagerContent, ctx.channel(), length);
             } else {
                 // All cases otherwise assume BUFFER.
                 CountDownLatch latch = new CountDownLatch(1);
-                ctx.pipeline().addLast(new EagerConsumeNetworkResponseHandler(latch, buf -> {
+                ctx.pipeline().addLast(new Netty4EagerConsumeNetworkResponseHandler(latch, buf -> {
                     try {
                         buf.readBytes(eagerContent, buf.readableBytes());
                     } catch (IOException ex) {

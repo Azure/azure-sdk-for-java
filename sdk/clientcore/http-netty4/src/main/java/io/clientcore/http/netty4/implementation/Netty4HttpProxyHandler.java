@@ -34,12 +34,12 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static io.clientcore.core.utils.AuthUtils.parseAuthenticationOrAuthorizationHeader;
-import static io.clientcore.http.netty4.implementation.NettyUtility.createCodec;
+import static io.clientcore.http.netty4.implementation.Netty4Utility.createCodec;
 
 /**
  * This class handles authorizing requests being sent through a proxy which require authentication.
  */
-public final class CoreHttpProxyHandler extends ProxyHandler {
+public final class Netty4HttpProxyHandler extends ProxyHandler {
     private static final String VALIDATION_ERROR_TEMPLATE = "The '%s' returned in the 'Proxy-Authentication-Info' "
         + "header doesn't match the value sent in the 'Proxy-Authorization' header. Sent: %s, received: %s.";
 
@@ -54,13 +54,13 @@ public final class CoreHttpProxyHandler extends ProxyHandler {
     private static final String NC = "nc";
 
     // CoreHttpProxyHandler will be created for each network request that is using proxy, use a static logger.
-    private static final ClientLogger LOGGER = new ClientLogger(CoreHttpProxyHandler.class);
+    private static final ClientLogger LOGGER = new ClientLogger(Netty4HttpProxyHandler.class);
 
     private final ProxyOptions proxyOptions;
     private final AtomicReference<List<AuthenticateChallenge>> proxyChallengeHolder;
     private final HttpClientCodec codec;
 
-    private String authScheme = null;
+    private String authScheme = NONE;
     private String lastUsedAuthorizationHeader;
 
     private HttpResponseStatus status;
@@ -72,7 +72,7 @@ public final class CoreHttpProxyHandler extends ProxyHandler {
      * @param proxyOptions The configured {@link ProxyOptions} that will dictate the behavior of proxying.
      * @param proxyChallengeHolder An {@link AtomicReference} containing parsed {@code Proxy-Authenticate} challenges.
      */
-    public CoreHttpProxyHandler(ProxyOptions proxyOptions,
+    public Netty4HttpProxyHandler(ProxyOptions proxyOptions,
         AtomicReference<List<AuthenticateChallenge>> proxyChallengeHolder) {
         super(proxyOptions.getAddress());
 
@@ -94,12 +94,12 @@ public final class CoreHttpProxyHandler extends ProxyHandler {
 
     @Override
     public String authScheme() {
-        return (authScheme == null) ? NONE : authScheme;
+        return authScheme;
     }
 
     @Override
     protected void addCodec(ChannelHandlerContext ctx) {
-        ctx.pipeline().addBefore(ctx.name(), "Proxy-Codec", this.codec);
+        ctx.pipeline().addBefore(ctx.name(), "Netty4-Proxy-Codec", this.codec);
     }
 
     @Override
@@ -180,7 +180,7 @@ public final class CoreHttpProxyHandler extends ProxyHandler {
                  * This header is used by the server to validate to the client that it received the correct request.
                  */
                 validateProxyAuthenticationInfo(
-                    NettyUtility.get(response.headers(), PROXY_AUTHENTICATION_INFO, PROXY_AUTHENTICATION_INFO_NAME),
+                    Netty4Utility.get(response.headers(), PROXY_AUTHENTICATION_INFO, PROXY_AUTHENTICATION_INFO_NAME),
                     lastUsedAuthorizationHeader);
             }
         }
@@ -204,7 +204,7 @@ public final class CoreHttpProxyHandler extends ProxyHandler {
      */
     private static List<AuthenticateChallenge> extractChallengesFromHeaders(HttpHeaders headers) {
         List<String> proxyAuthenticateValues
-            = NettyUtility.getAll(headers, HttpHeaderNames.PROXY_AUTHENTICATE, HttpHeaderName.PROXY_AUTHENTICATE);
+            = Netty4Utility.getAll(headers, HttpHeaderNames.PROXY_AUTHENTICATE, HttpHeaderName.PROXY_AUTHENTICATE);
 
         List<AuthenticateChallenge> challenges = new ArrayList<>();
         for (String proxyAuthenticateValue : proxyAuthenticateValues) {
@@ -219,8 +219,9 @@ public final class CoreHttpProxyHandler extends ProxyHandler {
      * header. This header is an optional return by the server so this validation is guaranteed to happen.
      */
     private void validateProxyAuthenticationInfo(String infoHeader, String authorizationHeader) {
-        // Server didn't return a 'Proxy-Authentication-Info' header, nothing to consume.
-        if (CoreUtils.isNullOrEmpty(infoHeader)) {
+        // Client didn't send 'Proxy-Authorization' or server didn't return a 'Proxy-Authentication-Info' header,
+        // nothing to validate.
+        if (CoreUtils.isNullOrEmpty(authorizationHeader) || CoreUtils.isNullOrEmpty(infoHeader)) {
             return;
         }
 

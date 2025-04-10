@@ -28,7 +28,7 @@ import java.util.concurrent.TimeoutException;
  * added to the ChannelPipeline and stop working when removed from the channel pipeline this handler used start and end
  * methods. This reduces the number of mutations that happen to the ChannelPipeline when sending a request.
  */
-public final class CoreProgressAndTimeoutHandler extends ChannelDuplexHandler {
+public final class Netty4ProgressAndTimeoutHandler extends ChannelDuplexHandler {
     /**
      * Name of this {@link ChannelHandler}, used to control positioning behaviors in a {@link ChannelPipeline}.
      */
@@ -62,7 +62,7 @@ public final class CoreProgressAndTimeoutHandler extends ChannelDuplexHandler {
      * @param responseTimeoutMillis The period of milliseconds before a channel's response is considered timed out.
      * @param readTimeoutMillis The period of milliseconds before a channel's read is considered timed out.
      */
-    public CoreProgressAndTimeoutHandler(ProgressReporter progressReporter, long writeTimeoutMillis,
+    public Netty4ProgressAndTimeoutHandler(ProgressReporter progressReporter, long writeTimeoutMillis,
         long responseTimeoutMillis, long readTimeoutMillis) {
         this.progressReporter = progressReporter;
         this.writeTimeoutMillis = writeTimeoutMillis;

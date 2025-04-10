@@ -15,19 +15,19 @@ import java.util.function.Consumer;
  * {@link ChannelInboundHandlerAdapter} that eagerly consumes the network response body using a {@link ByteBuf}
  * {@link Consumer}.
  */
-public final class EagerConsumeNetworkResponseHandler extends ChannelInboundHandlerAdapter {
+public final class Netty4EagerConsumeNetworkResponseHandler extends ChannelInboundHandlerAdapter {
     private final CountDownLatch latch;
     private final Consumer<ByteBuf> byteBufConsumer;
 
     private boolean lastRead;
 
     /**
-     * Creates a new instance of {@link EagerConsumeNetworkResponseHandler}.
+     * Creates a new instance of {@link Netty4EagerConsumeNetworkResponseHandler}.
      *
      * @param latch The latch to count down when the response is fully read, or an exception occurs.
      * @param byteBufConsumer The consumer to process the {@link ByteBuf ByteBufs} as they are read.
      */
-    public EagerConsumeNetworkResponseHandler(CountDownLatch latch, Consumer<ByteBuf> byteBufConsumer) {
+    public Netty4EagerConsumeNetworkResponseHandler(CountDownLatch latch, Consumer<ByteBuf> byteBufConsumer) {
         this.latch = latch;
         this.byteBufConsumer = byteBufConsumer;
     }
