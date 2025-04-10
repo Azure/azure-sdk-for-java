@@ -110,6 +110,9 @@ class NettyHttpClient implements HttpClient {
                         progressReporter, writeTimeoutMillis, responseTimeoutMillis, readTimeoutMillis));
             }
 
+            CoreResponseHandler responseHandler = new CoreResponseHandler(request, responseReference, latch);
+            future.channel().pipeline().addLast(responseHandler);
+
             sendRequest(request, channel, addProgressAndTimeoutHandler).addListener((ChannelFutureListener) future -> {
                 if (!future.isSuccess()) {
                     LOGGER.atError().setThrowable(future.cause()).log("Failed to send request");
@@ -117,14 +120,6 @@ class NettyHttpClient implements HttpClient {
                     future.channel().close();
                     latch.countDown();
                 } else {
-                    CoreResponseHandler responseHandler = new CoreResponseHandler(request, responseReference, latch);
-                    if (addProgressAndTimeoutHandler) {
-                        future.channel()
-                            .pipeline()
-                            .addBefore(CoreProgressAndTimeoutHandler.HANDLER_NAME, null, responseHandler);
-                    } else {
-                        future.channel().pipeline().addLast(responseHandler);
-                    }
                     future.channel().read();
                 }
             });
