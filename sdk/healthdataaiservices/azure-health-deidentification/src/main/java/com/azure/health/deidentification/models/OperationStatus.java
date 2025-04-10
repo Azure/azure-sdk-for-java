@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Operation states for a de-identification job.
+ * Enum describing allowed operation states.
  */
 public final class OperationStatus extends ExpandableStringEnum<OperationStatus> {
 
