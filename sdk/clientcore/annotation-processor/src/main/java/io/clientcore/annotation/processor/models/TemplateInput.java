@@ -6,12 +6,6 @@ package io.clientcore.annotation.processor.models;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.type.Type;
 import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
-
-import javax.lang.model.element.TypeElement;
-import javax.lang.model.type.ArrayType;
-import javax.lang.model.type.DeclaredType;
-import javax.lang.model.type.TypeKind;
-import javax.lang.model.type.TypeMirror;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
