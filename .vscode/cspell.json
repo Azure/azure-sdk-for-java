@@ -1353,7 +1353,7 @@
       ]
     },
     {
-      "filename": "sdk/corev2/**",
+      "filename": "sdk/core-v2/**",
       "words": [
         "aarch",
         "junitextensions",

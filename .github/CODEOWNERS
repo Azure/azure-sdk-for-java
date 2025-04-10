@@ -38,7 +38,7 @@
 # AzureSdkOwners:                                    @alzimmermsft @samvaity
 
 # PRLabel: %Azure.Core.V2
-/sdk/corev2/                                         @alzimmermsft @samvaity @srnagar @anuchandy @lmolkova @vcolin7 @mssfang @jonathangiles @billwert
+/sdk/core-v2/                                         @alzimmermsft @samvaity @srnagar @anuchandy @lmolkova @vcolin7 @mssfang @jonathangiles @billwert
 
 # ServiceLabel: %Azure.Core.V2
 # AzureSdkOwners:                                    @alzimmermsft @samvaity

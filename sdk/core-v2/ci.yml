@@ -8,7 +8,7 @@ trigger:
       - release/*
   paths:
     include:
-      - sdk/corev2/
+      - sdk/core-v2/
       - sdk/parents/azure-client-sdk-parent-v2/
 
 pr:
@@ -20,7 +20,7 @@ pr:
       - release/*
   paths:
     include:
-      - sdk/corev2/
+      - sdk/core-v2/
       - sdk/parents/azure-client-sdk-parent-v2/
 
 parameters:
@@ -40,7 +40,7 @@ parameters:
 extends:
   template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
-    ServiceDirectory: corev2
+    ServiceDirectory: core-v2
     TimeoutInMinutes: 90
     ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
     Artifacts:
