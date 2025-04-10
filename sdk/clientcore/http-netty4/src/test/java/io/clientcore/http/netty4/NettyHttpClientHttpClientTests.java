@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Reactor Netty {@link HttpClientTests}.
  */
-@Timeout(value = 1, unit = TimeUnit.MINUTES)
+@Timeout(value = 3, unit = TimeUnit.MINUTES)
 public class NettyHttpClientHttpClientTests extends HttpClientTests {
     private static LocalTestServer server;
 

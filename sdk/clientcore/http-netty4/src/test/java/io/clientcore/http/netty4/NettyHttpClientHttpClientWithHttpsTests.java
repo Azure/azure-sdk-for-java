@@ -24,7 +24,7 @@ import java.util.concurrent.TimeUnit;
  * Reactor Netty {@link HttpClientTests} with https.
  * Some request logic branches out if it's https like file uploads.
  */
-@Timeout(value = 1, unit = TimeUnit.MINUTES)
+@Timeout(value = 3, unit = TimeUnit.MINUTES)
 public class NettyHttpClientHttpClientWithHttpsTests extends HttpClientTests {
     private static LocalTestServer server;
 

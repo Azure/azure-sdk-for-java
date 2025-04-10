@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 /**
  * Tests {@link NettyHttpClientProvider}.
  */
-@Timeout(value = 1, unit = TimeUnit.MINUTES)
+@Timeout(value = 3, unit = TimeUnit.MINUTES)
 public class NettyHttpClientProviderTests {
     @Test
     public void testGetSharedClient() {

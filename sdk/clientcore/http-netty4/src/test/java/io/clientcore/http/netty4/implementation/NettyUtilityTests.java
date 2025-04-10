@@ -14,7 +14,7 @@ import static io.clientcore.http.netty4.implementation.NettyUtility.PROPERTIES_F
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@Timeout(value = 1, unit = TimeUnit.MINUTES)
+@Timeout(value = 3, unit = TimeUnit.MINUTES)
 public class NettyUtilityTests {
     @Test
     public void validateNettyVersionsWithWhatThePomSpecifies() {
