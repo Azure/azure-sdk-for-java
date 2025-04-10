@@ -25,6 +25,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.RecommendationsClient;
 import com.azure.resourcemanager.appservice.fluent.models.RecommendationInner;
 import com.azure.resourcemanager.appservice.fluent.models.RecommendationRuleInner;
@@ -74,10 +75,27 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<RecommendationCollection> listSync(@HostParam("$host") String endpoint,
+            @QueryParam("featured") Boolean featured, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @QueryParam(value = "$filter", encoded = true) String filter,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations/reset")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> resetAllFilters(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations/reset")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<Void> resetAllFiltersSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -90,10 +108,29 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Web/recommendations/{name}/disable")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<Void> disableRecommendationForSubscriptionSync(@HostParam("$host") String endpoint,
+            @PathParam("name") String name, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{hostingEnvironmentName}/recommendationHistory")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<RecommendationCollection>> listHistoryForHostingEnvironment(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("hostingEnvironmentName") String hostingEnvironmentName,
+            @QueryParam("expiredOnly") Boolean expiredOnly, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @QueryParam(value = "$filter", encoded = true) String filter,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{hostingEnvironmentName}/recommendationHistory")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<RecommendationCollection> listHistoryForHostingEnvironmentSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("hostingEnvironmentName") String hostingEnvironmentName,
             @QueryParam("expiredOnly") Boolean expiredOnly, @PathParam("subscriptionId") String subscriptionId,
@@ -112,10 +149,32 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{hostingEnvironmentName}/recommendations")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<RecommendationCollection> listRecommendedRulesForHostingEnvironmentSync(
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("hostingEnvironmentName") String hostingEnvironmentName,
+            @QueryParam("featured") Boolean featured, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @QueryParam(value = "$filter", encoded = true) String filter,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{hostingEnvironmentName}/recommendations/disable")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> disableAllForHostingEnvironment(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("environmentName") String environmentName,
+            @PathParam("hostingEnvironmentName") String hostingEnvironmentName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{hostingEnvironmentName}/recommendations/disable")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<Void> disableAllForHostingEnvironmentSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @QueryParam("environmentName") String environmentName,
             @PathParam("hostingEnvironmentName") String hostingEnvironmentName,
@@ -134,10 +193,32 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{hostingEnvironmentName}/recommendations/reset")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<Void> resetAllFiltersForHostingEnvironmentSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("environmentName") String environmentName,
+            @PathParam("hostingEnvironmentName") String hostingEnvironmentName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{hostingEnvironmentName}/recommendations/{name}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<RecommendationRuleInner>> getRuleDetailsByHostingEnvironment(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("hostingEnvironmentName") String hostingEnvironmentName, @PathParam("name") String name,
+            @QueryParam("updateSeen") Boolean updateSeen, @QueryParam("recommendationId") String recommendationId,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{hostingEnvironmentName}/recommendations/{name}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<RecommendationRuleInner> getRuleDetailsByHostingEnvironmentSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("hostingEnvironmentName") String hostingEnvironmentName, @PathParam("name") String name,
             @QueryParam("updateSeen") Boolean updateSeen, @QueryParam("recommendationId") String recommendationId,
@@ -156,10 +237,31 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{hostingEnvironmentName}/recommendations/{name}/disable")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<Void> disableRecommendationForHostingEnvironmentSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("environmentName") String environmentName, @PathParam("name") String name,
+            @PathParam("hostingEnvironmentName") String hostingEnvironmentName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendationHistory")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<RecommendationCollection>> listHistoryForWebApp(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
+            @QueryParam("expiredOnly") Boolean expiredOnly, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @QueryParam(value = "$filter", encoded = true) String filter,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendationHistory")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<RecommendationCollection> listHistoryForWebAppSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
             @QueryParam("expiredOnly") Boolean expiredOnly, @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion, @QueryParam(value = "$filter", encoded = true) String filter,
@@ -176,6 +278,16 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<RecommendationCollection> listRecommendedRulesForWebAppSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
+            @QueryParam("featured") Boolean featured, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @QueryParam(value = "$filter", encoded = true) String filter,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations/disable")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
@@ -185,10 +297,28 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations/disable")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<Void> disableAllForWebAppSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations/reset")
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> resetAllFiltersForWebApp(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations/reset")
+        @ExpectedResponses({ 204 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<Void> resetAllFiltersForWebAppSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
@@ -204,10 +334,29 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations/{name}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<RecommendationRuleInner> getRuleDetailsByWebAppSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
+            @PathParam("name") String name, @QueryParam("updateSeen") Boolean updateSeen,
+            @QueryParam("recommendationId") String recommendationId, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations/{name}/disable")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> disableRecommendationForSite(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
+            @PathParam("name") String name, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/recommendations/{name}/disable")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<Void> disableRecommendationForSiteSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
             @PathParam("name") String name, @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
@@ -224,7 +373,22 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<RecommendationCollection> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<RecommendationCollection>> listHistoryForHostingEnvironmentNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<RecommendationCollection> listHistoryForHostingEnvironmentNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -240,6 +404,14 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<RecommendationCollection> listRecommendedRulesForHostingEnvironmentNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<RecommendationCollection>> listHistoryForWebAppNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
@@ -248,7 +420,23 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<RecommendationCollection> listHistoryForWebAppNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<RecommendationCollection>> listRecommendedRulesForWebAppNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<RecommendationCollection> listRecommendedRulesForWebAppNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -285,42 +473,6 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             .<PagedResponse<RecommendationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * List all recommendations for a subscription.
-     * 
-     * Description for List all recommendations for a subscription.
-     * 
-     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The
-     * default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
-     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
-     * 'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
-     * duration'[PT1H|PT1M|P1D].
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RecommendationInner>> listSinglePageAsync(Boolean featured, String filter,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), featured, this.client.getSubscriptionId(), this.client.getApiVersion(),
-                filter, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -371,16 +523,63 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
      * 'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
      * duration'[PT1H|PT1M|P1D].
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<RecommendationInner> listSinglePage(Boolean featured, String filter) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<RecommendationCollection> res = service.listSync(this.client.getEndpoint(), featured,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), filter, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List all recommendations for a subscription.
+     * 
+     * Description for List all recommendations for a subscription.
+     * 
+     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The
+     * default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
+     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
+     * 'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
+     * duration'[PT1H|PT1M|P1D].
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations as paginated response with {@link PagedFlux}.
+     * @return collection of recommendations along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RecommendationInner> listAsync(Boolean featured, String filter, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(featured, filter, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<RecommendationInner> listSinglePage(Boolean featured, String filter, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<RecommendationCollection> res = service.listSync(this.client.getEndpoint(), featured,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), filter, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -396,7 +595,7 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     public PagedIterable<RecommendationInner> list() {
         final Boolean featured = null;
         final String filter = null;
-        return new PagedIterable<>(listAsync(featured, filter));
+        return new PagedIterable<>(() -> listSinglePage(featured, filter), nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -417,7 +616,8 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecommendationInner> list(Boolean featured, String filter, Context context) {
-        return new PagedIterable<>(listAsync(featured, filter, context));
+        return new PagedIterable<>(() -> listSinglePage(featured, filter, context),
+            nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
@@ -451,33 +651,6 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * 
      * Description for Reset all recommendation opt-out settings for a subscription.
      * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> resetAllFiltersWithResponseAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.resetAllFilters(this.client.getEndpoint(), this.client.getSubscriptionId(),
-            this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Reset all recommendation opt-out settings for a subscription.
-     * 
-     * Description for Reset all recommendation opt-out settings for a subscription.
-     * 
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
@@ -500,7 +673,19 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resetAllFiltersWithResponse(Context context) {
-        return resetAllFiltersWithResponseAsync(context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.resetAllFiltersSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -553,37 +738,6 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * Description for Disables the specified rule so it will not apply to a subscription in the future.
      * 
      * @param name Rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> disableRecommendationForSubscriptionWithResponseAsync(String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.disableRecommendationForSubscription(this.client.getEndpoint(), name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Disables the specified rule so it will not apply to a subscription in the future.
-     * 
-     * Description for Disables the specified rule so it will not apply to a subscription in the future.
-     * 
-     * @param name Rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -608,7 +762,22 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disableRecommendationForSubscriptionWithResponse(String name, Context context) {
-        return disableRecommendationForSubscriptionWithResponseAsync(name, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.disableRecommendationForSubscriptionSync(this.client.getEndpoint(), name,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -684,52 +853,6 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
      * 'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
      * duration'[PT1H|PT1M|P1D].
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RecommendationInner>> listHistoryForHostingEnvironmentSinglePageAsync(
-        String resourceGroupName, String hostingEnvironmentName, Boolean expiredOnly, String filter, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (hostingEnvironmentName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listHistoryForHostingEnvironment(this.client.getEndpoint(), resourceGroupName, hostingEnvironmentName,
-                expiredOnly, this.client.getSubscriptionId(), this.client.getApiVersion(), filter, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Get past recommendations for an app, optionally specified by the time range.
-     * 
-     * Description for Get past recommendations for an app, optionally specified by the time range.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param hostingEnvironmentName Name of the hosting environment.
-     * @param expiredOnly Specify &lt;code&gt;false&lt;/code&gt; to return all recommendations. The default is
-     * &lt;code&gt;true&lt;/code&gt;, which returns only expired recommendations.
-     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
-     * 'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
-     * duration'[PT1H|PT1M|P1D].
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -777,19 +900,85 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
      * 'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
      * duration'[PT1H|PT1M|P1D].
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<RecommendationInner> listHistoryForHostingEnvironmentSinglePage(String resourceGroupName,
+        String hostingEnvironmentName, Boolean expiredOnly, String filter) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (hostingEnvironmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<RecommendationCollection> res = service.listHistoryForHostingEnvironmentSync(this.client.getEndpoint(),
+            resourceGroupName, hostingEnvironmentName, expiredOnly, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), filter, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get past recommendations for an app, optionally specified by the time range.
+     * 
+     * Description for Get past recommendations for an app, optionally specified by the time range.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the hosting environment.
+     * @param expiredOnly Specify &lt;code&gt;false&lt;/code&gt; to return all recommendations. The default is
+     * &lt;code&gt;true&lt;/code&gt;, which returns only expired recommendations.
+     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
+     * 'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
+     * duration'[PT1H|PT1M|P1D].
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations as paginated response with {@link PagedFlux}.
+     * @return collection of recommendations along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RecommendationInner> listHistoryForHostingEnvironmentAsync(String resourceGroupName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<RecommendationInner> listHistoryForHostingEnvironmentSinglePage(String resourceGroupName,
         String hostingEnvironmentName, Boolean expiredOnly, String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listHistoryForHostingEnvironmentSinglePageAsync(resourceGroupName, hostingEnvironmentName,
-                expiredOnly, filter, context),
-            nextLink -> listHistoryForHostingEnvironmentNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (hostingEnvironmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<RecommendationCollection> res = service.listHistoryForHostingEnvironmentSync(this.client.getEndpoint(),
+            resourceGroupName, hostingEnvironmentName, expiredOnly, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), filter, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -809,8 +998,9 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
         String hostingEnvironmentName) {
         final Boolean expiredOnly = null;
         final String filter = null;
-        return new PagedIterable<>(
-            listHistoryForHostingEnvironmentAsync(resourceGroupName, hostingEnvironmentName, expiredOnly, filter));
+        return new PagedIterable<>(() -> listHistoryForHostingEnvironmentSinglePage(resourceGroupName,
+            hostingEnvironmentName, expiredOnly, filter),
+            nextLink -> listHistoryForHostingEnvironmentNextSinglePage(nextLink));
     }
 
     /**
@@ -834,8 +1024,9 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecommendationInner> listHistoryForHostingEnvironment(String resourceGroupName,
         String hostingEnvironmentName, Boolean expiredOnly, String filter, Context context) {
-        return new PagedIterable<>(listHistoryForHostingEnvironmentAsync(resourceGroupName, hostingEnvironmentName,
-            expiredOnly, filter, context));
+        return new PagedIterable<>(() -> listHistoryForHostingEnvironmentSinglePage(resourceGroupName,
+            hostingEnvironmentName, expiredOnly, filter, context),
+            nextLink -> listHistoryForHostingEnvironmentNextSinglePage(nextLink, context));
     }
 
     /**
@@ -881,52 +1072,6 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             .<PagedResponse<RecommendationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get all recommendations for a hosting environment.
-     * 
-     * Description for Get all recommendations for a hosting environment.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param hostingEnvironmentName Name of the app.
-     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The
-     * default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
-     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example:
-     * $filter=channel eq 'Api' or channel eq 'Notification'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RecommendationInner>> listRecommendedRulesForHostingEnvironmentSinglePageAsync(
-        String resourceGroupName, String hostingEnvironmentName, Boolean featured, String filter, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (hostingEnvironmentName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listRecommendedRulesForHostingEnvironment(this.client.getEndpoint(), resourceGroupName,
-                hostingEnvironmentName, featured, this.client.getSubscriptionId(), this.client.getApiVersion(), filter,
-                accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -986,19 +1131,84 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
      * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example:
      * $filter=channel eq 'Api' or channel eq 'Notification'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<RecommendationInner> listRecommendedRulesForHostingEnvironmentSinglePage(
+        String resourceGroupName, String hostingEnvironmentName, Boolean featured, String filter) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (hostingEnvironmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<RecommendationCollection> res = service.listRecommendedRulesForHostingEnvironmentSync(
+            this.client.getEndpoint(), resourceGroupName, hostingEnvironmentName, featured,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), filter, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get all recommendations for a hosting environment.
+     * 
+     * Description for Get all recommendations for a hosting environment.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param hostingEnvironmentName Name of the app.
+     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The
+     * default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
+     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example:
+     * $filter=channel eq 'Api' or channel eq 'Notification'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations as paginated response with {@link PagedFlux}.
+     * @return collection of recommendations along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RecommendationInner> listRecommendedRulesForHostingEnvironmentAsync(String resourceGroupName,
-        String hostingEnvironmentName, Boolean featured, String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listRecommendedRulesForHostingEnvironmentSinglePageAsync(resourceGroupName, hostingEnvironmentName,
-                featured, filter, context),
-            nextLink -> listRecommendedRulesForHostingEnvironmentNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<RecommendationInner> listRecommendedRulesForHostingEnvironmentSinglePage(
+        String resourceGroupName, String hostingEnvironmentName, Boolean featured, String filter, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (hostingEnvironmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<RecommendationCollection> res = service.listRecommendedRulesForHostingEnvironmentSync(
+            this.client.getEndpoint(), resourceGroupName, hostingEnvironmentName, featured,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), filter, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1018,8 +1228,9 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
         String hostingEnvironmentName) {
         final Boolean featured = null;
         final String filter = null;
-        return new PagedIterable<>(listRecommendedRulesForHostingEnvironmentAsync(resourceGroupName,
-            hostingEnvironmentName, featured, filter));
+        return new PagedIterable<>(() -> listRecommendedRulesForHostingEnvironmentSinglePage(resourceGroupName,
+            hostingEnvironmentName, featured, filter),
+            nextLink -> listRecommendedRulesForHostingEnvironmentNextSinglePage(nextLink));
     }
 
     /**
@@ -1042,8 +1253,10 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RecommendationInner> listRecommendedRulesForHostingEnvironment(String resourceGroupName,
         String hostingEnvironmentName, Boolean featured, String filter, Context context) {
-        return new PagedIterable<>(listRecommendedRulesForHostingEnvironmentAsync(resourceGroupName,
-            hostingEnvironmentName, featured, filter, context));
+        return new PagedIterable<>(
+            () -> listRecommendedRulesForHostingEnvironmentSinglePage(resourceGroupName, hostingEnvironmentName,
+                featured, filter, context),
+            nextLink -> listRecommendedRulesForHostingEnvironmentNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1098,49 +1311,6 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param environmentName Name of the app.
      * @param hostingEnvironmentName The hostingEnvironmentName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> disableAllForHostingEnvironmentWithResponseAsync(String resourceGroupName,
-        String environmentName, String hostingEnvironmentName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (hostingEnvironmentName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.disableAllForHostingEnvironment(this.client.getEndpoint(), resourceGroupName, environmentName,
-            hostingEnvironmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Disable all recommendations for an app.
-     * 
-     * Description for Disable all recommendations for an app.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param environmentName Name of the app.
-     * @param hostingEnvironmentName The hostingEnvironmentName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1170,8 +1340,32 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disableAllForHostingEnvironmentWithResponse(String resourceGroupName, String environmentName,
         String hostingEnvironmentName, Context context) {
-        return disableAllForHostingEnvironmentWithResponseAsync(resourceGroupName, environmentName,
-            hostingEnvironmentName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (hostingEnvironmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.disableAllForHostingEnvironmentSync(this.client.getEndpoint(), resourceGroupName,
+            environmentName, hostingEnvironmentName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+            accept, context);
     }
 
     /**
@@ -1245,50 +1439,6 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param environmentName Name of the app.
      * @param hostingEnvironmentName The hostingEnvironmentName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> resetAllFiltersForHostingEnvironmentWithResponseAsync(String resourceGroupName,
-        String environmentName, String hostingEnvironmentName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (hostingEnvironmentName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.resetAllFiltersForHostingEnvironment(this.client.getEndpoint(), resourceGroupName,
-            environmentName, hostingEnvironmentName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            accept, context);
-    }
-
-    /**
-     * Reset all recommendation opt-out settings for an app.
-     * 
-     * Description for Reset all recommendation opt-out settings for an app.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param environmentName Name of the app.
-     * @param hostingEnvironmentName The hostingEnvironmentName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1318,8 +1468,32 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resetAllFiltersForHostingEnvironmentWithResponse(String resourceGroupName,
         String environmentName, String hostingEnvironmentName, Context context) {
-        return resetAllFiltersForHostingEnvironmentWithResponseAsync(resourceGroupName, environmentName,
-            hostingEnvironmentName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (hostingEnvironmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.resetAllFiltersForHostingEnvironmentSync(this.client.getEndpoint(), resourceGroupName,
+            environmentName, hostingEnvironmentName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+            accept, context);
     }
 
     /**
@@ -1398,55 +1572,6 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param hostingEnvironmentName Name of the hosting environment.
      * @param name Name of the recommendation.
-     * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation
-     * object.
-     * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to
-     * specify it to query an active entry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a recommendation rule that the recommendation engine can perform along with {@link Response}
-     * on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RecommendationRuleInner>> getRuleDetailsByHostingEnvironmentWithResponseAsync(
-        String resourceGroupName, String hostingEnvironmentName, String name, Boolean updateSeen,
-        String recommendationId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (hostingEnvironmentName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getRuleDetailsByHostingEnvironment(this.client.getEndpoint(), resourceGroupName,
-            hostingEnvironmentName, name, updateSeen, recommendationId, this.client.getSubscriptionId(),
-            this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get a recommendation rule for an app.
-     * 
-     * Description for Get a recommendation rule for an app.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param hostingEnvironmentName Name of the hosting environment.
-     * @param name Name of the recommendation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1483,8 +1608,31 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecommendationRuleInner> getRuleDetailsByHostingEnvironmentWithResponse(String resourceGroupName,
         String hostingEnvironmentName, String name, Boolean updateSeen, String recommendationId, Context context) {
-        return getRuleDetailsByHostingEnvironmentWithResponseAsync(resourceGroupName, hostingEnvironmentName, name,
-            updateSeen, recommendationId, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (hostingEnvironmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getRuleDetailsByHostingEnvironmentSync(this.client.getEndpoint(), resourceGroupName,
+            hostingEnvironmentName, name, updateSeen, recommendationId, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1566,54 +1714,6 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @param environmentName Site name.
      * @param name Rule name.
      * @param hostingEnvironmentName The hostingEnvironmentName parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> disableRecommendationForHostingEnvironmentWithResponseAsync(String resourceGroupName,
-        String environmentName, String name, String hostingEnvironmentName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (hostingEnvironmentName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.disableRecommendationForHostingEnvironment(this.client.getEndpoint(), resourceGroupName,
-            environmentName, name, hostingEnvironmentName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            accept, context);
-    }
-
-    /**
-     * Disables the specific rule for a web site permanently.
-     * 
-     * Description for Disables the specific rule for a web site permanently.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param environmentName Site name.
-     * @param name Rule name.
-     * @param hostingEnvironmentName The hostingEnvironmentName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1644,8 +1744,35 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disableRecommendationForHostingEnvironmentWithResponse(String resourceGroupName,
         String environmentName, String name, String hostingEnvironmentName, Context context) {
-        return disableRecommendationForHostingEnvironmentWithResponseAsync(resourceGroupName, environmentName, name,
-            hostingEnvironmentName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (hostingEnvironmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter hostingEnvironmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.disableRecommendationForHostingEnvironmentSync(this.client.getEndpoint(), resourceGroupName,
+            environmentName, name, hostingEnvironmentName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+            accept, context);
     }
 
     /**
@@ -1724,51 +1851,6 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
      * 'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
      * duration'[PT1H|PT1M|P1D].
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RecommendationInner>> listHistoryForWebAppSinglePageAsync(String resourceGroupName,
-        String siteName, Boolean expiredOnly, String filter, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listHistoryForWebApp(this.client.getEndpoint(), resourceGroupName, siteName, expiredOnly,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), filter, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Get past recommendations for an app, optionally specified by the time range.
-     * 
-     * Description for Get past recommendations for an app, optionally specified by the time range.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
-     * @param expiredOnly Specify &lt;code&gt;false&lt;/code&gt; to return all recommendations. The default is
-     * &lt;code&gt;true&lt;/code&gt;, which returns only expired recommendations.
-     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
-     * 'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
-     * duration'[PT1H|PT1M|P1D].
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1815,18 +1897,85 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
      * 'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
      * duration'[PT1H|PT1M|P1D].
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<RecommendationInner> listHistoryForWebAppSinglePage(String resourceGroupName, String siteName,
+        Boolean expiredOnly, String filter) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<RecommendationCollection> res
+            = service.listHistoryForWebAppSync(this.client.getEndpoint(), resourceGroupName, siteName, expiredOnly,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), filter, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get past recommendations for an app, optionally specified by the time range.
+     * 
+     * Description for Get past recommendations for an app, optionally specified by the time range.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @param expiredOnly Specify &lt;code&gt;false&lt;/code&gt; to return all recommendations. The default is
+     * &lt;code&gt;true&lt;/code&gt;, which returns only expired recommendations.
+     * @param filter Filter is specified by using OData syntax. Example: $filter=channel eq 'Api' or channel eq
+     * 'Notification' and startTime eq 2014-01-01T00:00:00Z and endTime eq 2014-12-31T23:59:59Z and timeGrain eq
+     * duration'[PT1H|PT1M|P1D].
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations as paginated response with {@link PagedFlux}.
+     * @return collection of recommendations along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RecommendationInner> listHistoryForWebAppAsync(String resourceGroupName, String siteName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<RecommendationInner> listHistoryForWebAppSinglePage(String resourceGroupName, String siteName,
         Boolean expiredOnly, String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listHistoryForWebAppSinglePageAsync(resourceGroupName, siteName, expiredOnly, filter, context),
-            nextLink -> listHistoryForWebAppNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<RecommendationCollection> res
+            = service.listHistoryForWebAppSync(this.client.getEndpoint(), resourceGroupName, siteName, expiredOnly,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), filter, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1845,7 +1994,9 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     public PagedIterable<RecommendationInner> listHistoryForWebApp(String resourceGroupName, String siteName) {
         final Boolean expiredOnly = null;
         final String filter = null;
-        return new PagedIterable<>(listHistoryForWebAppAsync(resourceGroupName, siteName, expiredOnly, filter));
+        return new PagedIterable<>(
+            () -> listHistoryForWebAppSinglePage(resourceGroupName, siteName, expiredOnly, filter),
+            nextLink -> listHistoryForWebAppNextSinglePage(nextLink));
     }
 
     /**
@@ -1870,7 +2021,8 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     public PagedIterable<RecommendationInner> listHistoryForWebApp(String resourceGroupName, String siteName,
         Boolean expiredOnly, String filter, Context context) {
         return new PagedIterable<>(
-            listHistoryForWebAppAsync(resourceGroupName, siteName, expiredOnly, filter, context));
+            () -> listHistoryForWebAppSinglePage(resourceGroupName, siteName, expiredOnly, filter, context),
+            nextLink -> listHistoryForWebAppNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1915,50 +2067,6 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
             .<PagedResponse<RecommendationInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
-    }
-
-    /**
-     * Get all recommendations for an app.
-     * 
-     * Description for Get all recommendations for an app.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
-     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The
-     * default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
-     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example:
-     * $filter=channel eq 'Api' or channel eq 'Notification'.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RecommendationInner>> listRecommendedRulesForWebAppSinglePageAsync(
-        String resourceGroupName, String siteName, Boolean featured, String filter, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listRecommendedRulesForWebApp(this.client.getEndpoint(), resourceGroupName, siteName, featured,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), filter, accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
@@ -2018,18 +2126,84 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
      * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example:
      * $filter=channel eq 'Api' or channel eq 'Notification'.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<RecommendationInner> listRecommendedRulesForWebAppSinglePage(String resourceGroupName,
+        String siteName, Boolean featured, String filter) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<RecommendationCollection> res
+            = service.listRecommendedRulesForWebAppSync(this.client.getEndpoint(), resourceGroupName, siteName,
+                featured, this.client.getSubscriptionId(), this.client.getApiVersion(), filter, accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get all recommendations for an app.
+     * 
+     * Description for Get all recommendations for an app.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Name of the app.
+     * @param featured Specify &lt;code&gt;true&lt;/code&gt; to return only the most critical recommendations. The
+     * default is &lt;code&gt;false&lt;/code&gt;, which returns all recommendations.
+     * @param filter Return only channels specified in the filter. Filter is specified by using OData syntax. Example:
+     * $filter=channel eq 'Api' or channel eq 'Notification'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations as paginated response with {@link PagedFlux}.
+     * @return collection of recommendations along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RecommendationInner> listRecommendedRulesForWebAppAsync(String resourceGroupName, String siteName,
-        Boolean featured, String filter, Context context) {
-        return new PagedFlux<>(
-            () -> listRecommendedRulesForWebAppSinglePageAsync(resourceGroupName, siteName, featured, filter, context),
-            nextLink -> listRecommendedRulesForWebAppNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<RecommendationInner> listRecommendedRulesForWebAppSinglePage(String resourceGroupName,
+        String siteName, Boolean featured, String filter, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<RecommendationCollection> res
+            = service.listRecommendedRulesForWebAppSync(this.client.getEndpoint(), resourceGroupName, siteName,
+                featured, this.client.getSubscriptionId(), this.client.getApiVersion(), filter, accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -2048,7 +2222,9 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     public PagedIterable<RecommendationInner> listRecommendedRulesForWebApp(String resourceGroupName, String siteName) {
         final Boolean featured = null;
         final String filter = null;
-        return new PagedIterable<>(listRecommendedRulesForWebAppAsync(resourceGroupName, siteName, featured, filter));
+        return new PagedIterable<>(
+            () -> listRecommendedRulesForWebAppSinglePage(resourceGroupName, siteName, featured, filter),
+            nextLink -> listRecommendedRulesForWebAppNextSinglePage(nextLink));
     }
 
     /**
@@ -2072,7 +2248,8 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     public PagedIterable<RecommendationInner> listRecommendedRulesForWebApp(String resourceGroupName, String siteName,
         Boolean featured, String filter, Context context) {
         return new PagedIterable<>(
-            listRecommendedRulesForWebAppAsync(resourceGroupName, siteName, featured, filter, context));
+            () -> listRecommendedRulesForWebAppSinglePage(resourceGroupName, siteName, featured, filter, context),
+            nextLink -> listRecommendedRulesForWebAppNextSinglePage(nextLink, context));
     }
 
     /**
@@ -2118,43 +2295,6 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> disableAllForWebAppWithResponseAsync(String resourceGroupName, String siteName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.disableAllForWebApp(this.client.getEndpoint(), resourceGroupName, siteName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Disable all recommendations for an app.
-     * 
-     * Description for Disable all recommendations for an app.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2180,7 +2320,27 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disableAllForWebAppWithResponse(String resourceGroupName, String siteName, Context context) {
-        return disableAllForWebAppWithResponseAsync(resourceGroupName, siteName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.disableAllForWebAppSync(this.client.getEndpoint(), resourceGroupName, siteName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -2242,43 +2402,6 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> resetAllFiltersForWebAppWithResponseAsync(String resourceGroupName, String siteName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.resetAllFiltersForWebApp(this.client.getEndpoint(), resourceGroupName, siteName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Reset all recommendation opt-out settings for an app.
-     * 
-     * Description for Reset all recommendation opt-out settings for an app.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2305,7 +2428,27 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resetAllFiltersForWebAppWithResponse(String resourceGroupName, String siteName,
         Context context) {
-        return resetAllFiltersForWebAppWithResponseAsync(resourceGroupName, siteName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.resetAllFiltersForWebAppSync(this.client.getEndpoint(), resourceGroupName, siteName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -2379,52 +2522,6 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Name of the app.
      * @param name Name of the recommendation.
-     * @param updateSeen Specify &lt;code&gt;true&lt;/code&gt; to update the last-seen timestamp of the recommendation
-     * object.
-     * @param recommendationId The GUID of the recommendation object if you query an expired one. You don't need to
-     * specify it to query an active entry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents a recommendation rule that the recommendation engine can perform along with {@link Response}
-     * on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RecommendationRuleInner>> getRuleDetailsByWebAppWithResponseAsync(String resourceGroupName,
-        String siteName, String name, Boolean updateSeen, String recommendationId, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getRuleDetailsByWebApp(this.client.getEndpoint(), resourceGroupName, siteName, name, updateSeen,
-            recommendationId, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get a recommendation rule for an app.
-     * 
-     * Description for Get a recommendation rule for an app.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Name of the app.
-     * @param name Name of the recommendation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2461,8 +2558,31 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RecommendationRuleInner> getRuleDetailsByWebAppWithResponse(String resourceGroupName,
         String siteName, String name, Boolean updateSeen, String recommendationId, Context context) {
-        return getRuleDetailsByWebAppWithResponseAsync(resourceGroupName, siteName, name, updateSeen, recommendationId,
-            context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getRuleDetailsByWebAppSync(this.client.getEndpoint(), resourceGroupName, siteName, name,
+            updateSeen, recommendationId, this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
+            context);
     }
 
     /**
@@ -2535,47 +2655,6 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site name.
      * @param name Rule name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> disableRecommendationForSiteWithResponseAsync(String resourceGroupName,
-        String siteName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.disableRecommendationForSite(this.client.getEndpoint(), resourceGroupName, siteName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Disables the specific rule for a web site permanently.
-     * 
-     * Description for Disables the specific rule for a web site permanently.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Site name.
-     * @param name Rule name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2604,7 +2683,30 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> disableRecommendationForSiteWithResponse(String resourceGroupName, String siteName,
         String name, Context context) {
-        return disableRecommendationForSiteWithResponseAsync(resourceGroupName, siteName, name, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.disableRecommendationForSiteSync(this.client.getEndpoint(), resourceGroupName, siteName, name,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -2653,26 +2755,55 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<RecommendationInner> listNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<RecommendationCollection> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return collection of recommendations along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RecommendationInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<RecommendationInner> listNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<RecommendationCollection> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -2707,27 +2838,56 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<RecommendationInner> listHistoryForHostingEnvironmentNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<RecommendationCollection> res = service.listHistoryForHostingEnvironmentNextSync(nextLink,
+            this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return collection of recommendations along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RecommendationInner>>
-        listHistoryForHostingEnvironmentNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<RecommendationInner> listHistoryForHostingEnvironmentNextSinglePage(String nextLink,
+        Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listHistoryForHostingEnvironmentNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<RecommendationCollection> res
+            = service.listHistoryForHostingEnvironmentNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -2762,28 +2922,57 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<RecommendationInner>
+        listRecommendedRulesForHostingEnvironmentNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<RecommendationCollection> res = service.listRecommendedRulesForHostingEnvironmentNextSync(nextLink,
+            this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return collection of recommendations along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RecommendationInner>>
-        listRecommendedRulesForHostingEnvironmentNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<RecommendationInner> listRecommendedRulesForHostingEnvironmentNextSinglePage(String nextLink,
+        Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listRecommendedRulesForHostingEnvironmentNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<RecommendationCollection> res = service.listRecommendedRulesForHostingEnvironmentNextSync(nextLink,
+            this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -2817,27 +3006,55 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<RecommendationInner> listHistoryForWebAppNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<RecommendationCollection> res
+            = service.listHistoryForWebAppNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return collection of recommendations along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RecommendationInner>> listHistoryForWebAppNextSinglePageAsync(String nextLink,
-        Context context) {
+    private PagedResponse<RecommendationInner> listHistoryForWebAppNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listHistoryForWebAppNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<RecommendationCollection> res
+            = service.listHistoryForWebAppNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -2870,26 +3087,57 @@ public final class RecommendationsClientImpl implements RecommendationsClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of recommendations along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<RecommendationInner> listRecommendedRulesForWebAppNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<RecommendationCollection> res
+            = service.listRecommendedRulesForWebAppNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of recommendations along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return collection of recommendations along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RecommendationInner>> listRecommendedRulesForWebAppNextSinglePageAsync(String nextLink,
+    private PagedResponse<RecommendationInner> listRecommendedRulesForWebAppNextSinglePage(String nextLink,
         Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listRecommendedRulesForWebAppNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<RecommendationCollection> res
+            = service.listRecommendedRulesForWebAppNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(RecommendationsClientImpl.class);
 }

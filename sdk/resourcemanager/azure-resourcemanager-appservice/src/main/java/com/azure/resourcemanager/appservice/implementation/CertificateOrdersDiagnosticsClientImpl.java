@@ -24,6 +24,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.CertificateOrdersDiagnosticsClient;
 import com.azure.resourcemanager.appservice.fluent.models.DetectorResponseInner;
 import com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException;
@@ -74,6 +75,16 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/detectors")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DetectorResponseCollection> listAppServiceCertificateOrderDetectorResponseSync(
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("certificateOrderName") String certificateOrderName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/detectors/{detectorName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
@@ -86,10 +97,30 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CertificateRegistration/certificateOrders/{certificateOrderName}/detectors/{detectorName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DetectorResponseInner> getAppServiceCertificateOrderDetectorResponseSync(
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("certificateOrderName") String certificateOrderName,
+            @PathParam("detectorName") String detectorName, @QueryParam("startTime") OffsetDateTime startTime,
+            @QueryParam("endTime") OffsetDateTime endTime, @QueryParam("timeGrain") String timeGrain,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DetectorResponseCollection>> listAppServiceCertificateOrderDetectorResponseNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DetectorResponseCollection> listAppServiceCertificateOrderDetectorResponseNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -143,48 +174,6 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName The certificate order name for which the response is needed.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of detector responses along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DetectorResponseInner>> listAppServiceCertificateOrderDetectorResponseSinglePageAsync(
-        String resourceGroupName, String certificateOrderName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (certificateOrderName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listAppServiceCertificateOrderDetectorResponse(this.client.getEndpoint(), resourceGroupName,
-                certificateOrderName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
-     * Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName The certificate order name for which the response is needed.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -206,19 +195,80 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName The certificate order name for which the response is needed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of detector responses along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DetectorResponseInner> listAppServiceCertificateOrderDetectorResponseSinglePage(
+        String resourceGroupName, String certificateOrderName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (certificateOrderName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DetectorResponseCollection> res = service.listAppServiceCertificateOrderDetectorResponseSync(
+            this.client.getEndpoint(), resourceGroupName, certificateOrderName, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Microsoft.CertificateRegistration to get the list of detectors for this RP.
+     * 
+     * Description for Microsoft.CertificateRegistration to get the list of detectors for this RP.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param certificateOrderName The certificate order name for which the response is needed.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of detector responses as paginated response with {@link PagedFlux}.
+     * @return collection of detector responses along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DetectorResponseInner> listAppServiceCertificateOrderDetectorResponseAsync(
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DetectorResponseInner> listAppServiceCertificateOrderDetectorResponseSinglePage(
         String resourceGroupName, String certificateOrderName, Context context) {
-        return new PagedFlux<>(
-            () -> listAppServiceCertificateOrderDetectorResponseSinglePageAsync(resourceGroupName, certificateOrderName,
-                context),
-            nextLink -> listAppServiceCertificateOrderDetectorResponseNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (certificateOrderName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DetectorResponseCollection> res
+            = service.listAppServiceCertificateOrderDetectorResponseSync(this.client.getEndpoint(), resourceGroupName,
+                certificateOrderName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -237,7 +287,8 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
     public PagedIterable<DetectorResponseInner> listAppServiceCertificateOrderDetectorResponse(String resourceGroupName,
         String certificateOrderName) {
         return new PagedIterable<>(
-            listAppServiceCertificateOrderDetectorResponseAsync(resourceGroupName, certificateOrderName));
+            () -> listAppServiceCertificateOrderDetectorResponseSinglePage(resourceGroupName, certificateOrderName),
+            nextLink -> listAppServiceCertificateOrderDetectorResponseNextSinglePage(nextLink));
     }
 
     /**
@@ -256,8 +307,9 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DetectorResponseInner> listAppServiceCertificateOrderDetectorResponse(String resourceGroupName,
         String certificateOrderName, Context context) {
-        return new PagedIterable<>(
-            listAppServiceCertificateOrderDetectorResponseAsync(resourceGroupName, certificateOrderName, context));
+        return new PagedIterable<>(() -> listAppServiceCertificateOrderDetectorResponseSinglePage(resourceGroupName,
+            certificateOrderName, context),
+            nextLink -> listAppServiceCertificateOrderDetectorResponseNextSinglePage(nextLink, context));
     }
 
     /**
@@ -316,54 +368,6 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param certificateOrderName The certificate order name for which the response is needed.
      * @param detectorName The detector name which needs to be run.
-     * @param startTime The start time for detector response.
-     * @param endTime The end time for the detector response.
-     * @param timeGrain The time grain for the detector response.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Response from Detector along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DetectorResponseInner>> getAppServiceCertificateOrderDetectorResponseWithResponseAsync(
-        String resourceGroupName, String certificateOrderName, String detectorName, OffsetDateTime startTime,
-        OffsetDateTime endTime, String timeGrain, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (certificateOrderName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null."));
-        }
-        if (detectorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getAppServiceCertificateOrderDetectorResponse(this.client.getEndpoint(), resourceGroupName,
-            certificateOrderName, detectorName, startTime, endTime, timeGrain, this.client.getSubscriptionId(),
-            this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Microsoft.CertificateRegistration call to get a detector response from App Lens.
-     * 
-     * Description for Microsoft.CertificateRegistration call to get a detector response from App Lens.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param certificateOrderName The certificate order name for which the response is needed.
-     * @param detectorName The detector name which needs to be run.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -400,8 +404,32 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
     public Response<DetectorResponseInner> getAppServiceCertificateOrderDetectorResponseWithResponse(
         String resourceGroupName, String certificateOrderName, String detectorName, OffsetDateTime startTime,
         OffsetDateTime endTime, String timeGrain, Context context) {
-        return getAppServiceCertificateOrderDetectorResponseWithResponseAsync(resourceGroupName, certificateOrderName,
-            detectorName, startTime, endTime, timeGrain, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (certificateOrderName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter certificateOrderName is required and cannot be null."));
+        }
+        if (detectorName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getAppServiceCertificateOrderDetectorResponseSync(this.client.getEndpoint(), resourceGroupName,
+            certificateOrderName, detectorName, startTime, endTime, timeGrain, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -460,28 +488,58 @@ public final class CertificateOrdersDiagnosticsClientImpl implements Certificate
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of detector responses along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DetectorResponseInner>
+        listAppServiceCertificateOrderDetectorResponseNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DetectorResponseCollection> res = service.listAppServiceCertificateOrderDetectorResponseNextSync(
+            nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of detector responses along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return collection of detector responses along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DetectorResponseInner>>
-        listAppServiceCertificateOrderDetectorResponseNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<DetectorResponseInner>
+        listAppServiceCertificateOrderDetectorResponseNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listAppServiceCertificateOrderDetectorResponseNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<DetectorResponseCollection> res = service.listAppServiceCertificateOrderDetectorResponseNextSync(
+            nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(CertificateOrdersDiagnosticsClientImpl.class);
 }

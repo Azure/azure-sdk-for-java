@@ -28,8 +28,10 @@ import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.polling.PollResult;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.appservice.fluent.StaticSitesClient;
@@ -118,10 +120,28 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Web/locations/{location}/previewStaticSiteWorkflowFile")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSitesWorkflowPreviewInner> previewWorkflowSync(@HostParam("$host") String endpoint,
+            @PathParam("location") String location, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") StaticSitesWorkflowPreviewRequest staticSitesWorkflowPreviewRequest,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/staticSites")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<StaticSiteCollection>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Web/staticSites")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteCollection> listSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -135,10 +155,28 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteCollection> listByResourceGroupSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<StaticSiteArmResourceInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteArmResourceInner> getByResourceGroupSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
@@ -154,10 +192,29 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<BinaryData> createOrUpdateStaticSiteSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") StaticSiteArmResourceInner staticSiteEnvelope,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<BinaryData> deleteSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
@@ -173,6 +230,16 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteArmResourceInner> updateStaticSiteSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") StaticSitePatchResource staticSiteEnvelope,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/authproviders/{authprovider}/listUsers")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
@@ -182,10 +249,29 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/authproviders/{authprovider}/listUsers")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteUserCollection> listStaticSiteUsersSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("authprovider") String authprovider, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/authproviders/{authprovider}/users/{userid}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> deleteStaticSiteUser(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("authprovider") String authprovider, @PathParam("userid") String userid,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/authproviders/{authprovider}/users/{userid}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<Void> deleteStaticSiteUserSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("authprovider") String authprovider, @PathParam("userid") String userid,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
@@ -203,10 +289,30 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/authproviders/{authprovider}/users/{userid}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteUserArmResourceInner> updateStaticSiteUserSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("authprovider") String authprovider, @PathParam("userid") String userid,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") StaticSiteUserArmResourceInner staticSiteUserEnvelope,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<StaticSiteBuildCollection>> getStaticSiteBuilds(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteBuildCollection> getStaticSiteBuildsSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
@@ -221,6 +327,15 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteBuildArmResourceInner> getStaticSiteBuildSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("environmentName") String environmentName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
@@ -230,10 +345,30 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<BinaryData> deleteStaticSiteBuildSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("environmentName") String environmentName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/config/appsettings")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<StringDictionaryInner>> createOrUpdateStaticSiteBuildAppSettings(
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name, @PathParam("environmentName") String environmentName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") StringDictionaryInner appSettings, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/config/appsettings")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StringDictionaryInner> createOrUpdateStaticSiteBuildAppSettingsSync(
             @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name, @PathParam("environmentName") String environmentName,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
@@ -252,6 +387,17 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/config/functionappsettings")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StringDictionaryInner> createOrUpdateStaticSiteBuildFunctionAppSettingsSync(
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name, @PathParam("environmentName") String environmentName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") StringDictionaryInner appSettings, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/databaseConnections")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
@@ -261,10 +407,30 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/databaseConnections")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DatabaseConnectionCollection> getBuildDatabaseConnectionsSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("environmentName") String environmentName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/databaseConnections/{databaseConnectionName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DatabaseConnectionInner>> getBuildDatabaseConnection(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("environmentName") String environmentName,
+            @PathParam("databaseConnectionName") String databaseConnectionName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/databaseConnections/{databaseConnectionName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DatabaseConnectionInner> getBuildDatabaseConnectionSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("environmentName") String environmentName,
             @PathParam("databaseConnectionName") String databaseConnectionName,
@@ -284,10 +450,33 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/databaseConnections/{databaseConnectionName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DatabaseConnectionInner> createOrUpdateBuildDatabaseConnectionSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("environmentName") String environmentName,
+            @PathParam("databaseConnectionName") String databaseConnectionName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") DatabaseConnectionInner databaseConnectionRequestEnvelope,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/databaseConnections/{databaseConnectionName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> deleteBuildDatabaseConnection(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("environmentName") String environmentName,
+            @PathParam("databaseConnectionName") String databaseConnectionName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/databaseConnections/{databaseConnectionName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<Void> deleteBuildDatabaseConnectionSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("environmentName") String environmentName,
             @PathParam("databaseConnectionName") String databaseConnectionName,
@@ -307,12 +496,35 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/databaseConnections/{databaseConnectionName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DatabaseConnectionInner> updateBuildDatabaseConnectionSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("environmentName") String environmentName,
+            @PathParam("databaseConnectionName") String databaseConnectionName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") DatabaseConnectionPatchRequest databaseConnectionRequestEnvelope,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/databaseConnections/{databaseConnectionName}/show")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DatabaseConnectionInner>> getBuildDatabaseConnectionWithDetails(
             @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name, @PathParam("environmentName") String environmentName,
+            @PathParam("databaseConnectionName") String databaseConnectionName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/databaseConnections/{databaseConnectionName}/show")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DatabaseConnectionInner> getBuildDatabaseConnectionWithDetailsSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("environmentName") String environmentName,
             @PathParam("databaseConnectionName") String databaseConnectionName,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
@@ -328,10 +540,29 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/functions")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteFunctionOverviewCollection> listStaticSiteBuildFunctionsSync(
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name, @PathParam("environmentName") String environmentName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/listAppSettings")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<StringDictionaryInner>> listStaticSiteBuildAppSettings(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("environmentName") String environmentName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/listAppSettings")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StringDictionaryInner> listStaticSiteBuildAppSettingsSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("environmentName") String environmentName, @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
@@ -347,10 +578,29 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/listFunctionAppSettings")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StringDictionaryInner> listStaticSiteBuildFunctionAppSettingsSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("environmentName") String environmentName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/showDatabaseConnections")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DatabaseConnectionCollection>> getBuildDatabaseConnectionsWithDetails(
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name, @PathParam("environmentName") String environmentName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/showDatabaseConnections")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DatabaseConnectionCollection> getBuildDatabaseConnectionsWithDetailsSync(
             @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name, @PathParam("environmentName") String environmentName,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
@@ -367,10 +617,30 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/userProvidedFunctionApps")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteUserProvidedFunctionAppsCollection> getUserProvidedFunctionAppsForStaticSiteBuildSync(
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name, @PathParam("environmentName") String environmentName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/userProvidedFunctionApps/{functionAppName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<StaticSiteUserProvidedFunctionAppArmResourceInner>> getUserProvidedFunctionAppForStaticSiteBuild(
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name, @PathParam("environmentName") String environmentName,
+            @PathParam("functionAppName") String functionAppName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/userProvidedFunctionApps/{functionAppName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteUserProvidedFunctionAppArmResourceInner> getUserProvidedFunctionAppForStaticSiteBuildSync(
             @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name, @PathParam("environmentName") String environmentName,
             @PathParam("functionAppName") String functionAppName, @PathParam("subscriptionId") String subscriptionId,
@@ -389,10 +659,32 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/userProvidedFunctionApps/{functionAppName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<BinaryData> registerUserProvidedFunctionAppWithStaticSiteBuildSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("environmentName") String environmentName, @PathParam("functionAppName") String functionAppName,
+            @QueryParam("isForced") Boolean isForced, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/userProvidedFunctionApps/{functionAppName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> detachUserProvidedFunctionAppFromStaticSiteBuild(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("environmentName") String environmentName, @PathParam("functionAppName") String functionAppName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/userProvidedFunctionApps/{functionAppName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<Void> detachUserProvidedFunctionAppFromStaticSiteBuildSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("environmentName") String environmentName, @PathParam("functionAppName") String functionAppName,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
@@ -410,10 +702,31 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/zipdeploy")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<BinaryData> createZipDeploymentForStaticSiteBuildSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("environmentName") String environmentName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/config/appsettings")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<StringDictionaryInner>> createOrUpdateStaticSiteAppSettings(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") StringDictionaryInner appSettings, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/config/appsettings")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StringDictionaryInner> createOrUpdateStaticSiteAppSettingsSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") StringDictionaryInner appSettings, @HeaderParam("Accept") String accept,
@@ -429,6 +742,15 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/basicAuth")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteBasicAuthPropertiesCollection> listBasicAuthSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/basicAuth/{basicAuthName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
@@ -438,10 +760,30 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/basicAuth/{basicAuthName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteBasicAuthPropertiesArmResourceInner> getBasicAuthSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("basicAuthName") BasicAuthName basicAuthName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/basicAuth/{basicAuthName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<StaticSiteBasicAuthPropertiesArmResourceInner>> createOrUpdateBasicAuth(
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name, @PathParam("basicAuthName") BasicAuthName basicAuthName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") StaticSiteBasicAuthPropertiesArmResourceInner basicAuthEnvelope,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/basicAuth/{basicAuthName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteBasicAuthPropertiesArmResourceInner> createOrUpdateBasicAuthSync(
             @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name, @PathParam("basicAuthName") BasicAuthName basicAuthName,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
@@ -460,10 +802,32 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/config/functionappsettings")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StringDictionaryInner> createOrUpdateStaticSiteFunctionAppSettingsSync(
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") StringDictionaryInner appSettings, @HeaderParam("Accept") String accept,
+            Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/createUserInvitation")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<StaticSiteUserInvitationResponseResourceInner>> createUserRolesInvitationLink(
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") StaticSiteUserInvitationRequestResource staticSiteUserRolesInvitationEnvelope,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/createUserInvitation")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteUserInvitationResponseResourceInner> createUserRolesInvitationLinkSync(
             @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name, @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion,
@@ -480,10 +844,29 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/customDomains")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteCustomDomainOverviewCollection> listStaticSiteCustomDomainsSync(
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/customDomains/{domainName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<StaticSiteCustomDomainOverviewArmResourceInner>> getStaticSiteCustomDomain(
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name, @PathParam("domainName") String domainName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/customDomains/{domainName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteCustomDomainOverviewArmResourceInner> getStaticSiteCustomDomainSync(
             @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name, @PathParam("domainName") String domainName,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
@@ -501,10 +884,30 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/customDomains/{domainName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<BinaryData> createOrUpdateStaticSiteCustomDomainSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("domainName") String domainName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/customDomains/{domainName}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> deleteStaticSiteCustomDomain(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("domainName") String domainName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/customDomains/{domainName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<BinaryData> deleteStaticSiteCustomDomainSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("domainName") String domainName, @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
@@ -521,6 +924,17 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/customDomains/{domainName}/validate")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<BinaryData> validateCustomDomainCanBeAddedToStaticSiteSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("domainName") String domainName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/databaseConnections")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
@@ -530,10 +944,29 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/databaseConnections")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DatabaseConnectionCollection> getDatabaseConnectionsSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/databaseConnections/{databaseConnectionName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DatabaseConnectionInner>> getDatabaseConnection(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("databaseConnectionName") String databaseConnectionName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/databaseConnections/{databaseConnectionName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DatabaseConnectionInner> getDatabaseConnectionSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("databaseConnectionName") String databaseConnectionName,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
@@ -551,10 +984,31 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/databaseConnections/{databaseConnectionName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DatabaseConnectionInner> createOrUpdateDatabaseConnectionSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("databaseConnectionName") String databaseConnectionName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") DatabaseConnectionInner databaseConnectionRequestEnvelope,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/databaseConnections/{databaseConnectionName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> deleteDatabaseConnection(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("databaseConnectionName") String databaseConnectionName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/databaseConnections/{databaseConnectionName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<Void> deleteDatabaseConnectionSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("databaseConnectionName") String databaseConnectionName,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
@@ -572,10 +1026,31 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/databaseConnections/{databaseConnectionName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DatabaseConnectionInner> updateDatabaseConnectionSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("databaseConnectionName") String databaseConnectionName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") DatabaseConnectionPatchRequest databaseConnectionRequestEnvelope,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/databaseConnections/{databaseConnectionName}/show")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DatabaseConnectionInner>> getDatabaseConnectionWithDetails(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("databaseConnectionName") String databaseConnectionName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/databaseConnections/{databaseConnectionName}/show")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DatabaseConnectionInner> getDatabaseConnectionWithDetailsSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("databaseConnectionName") String databaseConnectionName,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
@@ -591,6 +1066,15 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/detach")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<BinaryData> detachStaticSiteSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/functions")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
@@ -600,10 +1084,28 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/functions")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteFunctionOverviewCollection> listStaticSiteFunctionsSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/listAppSettings")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<StringDictionaryInner>> listStaticSiteAppSettings(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/listAppSettings")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StringDictionaryInner> listStaticSiteAppSettingsSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
@@ -618,10 +1120,28 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/listConfiguredRoles")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StringListInner> listStaticSiteConfiguredRolesSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/listFunctionAppSettings")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<StringDictionaryInner>> listStaticSiteFunctionAppSettings(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/listFunctionAppSettings")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StringDictionaryInner> listStaticSiteFunctionAppSettingsSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
@@ -636,6 +1156,15 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/listSecrets")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StringDictionaryInner> listStaticSiteSecretsSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/privateEndpointConnections")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
@@ -645,10 +1174,30 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/privateEndpointConnections")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<PrivateEndpointConnectionCollection> getPrivateEndpointConnectionListSync(
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<RemotePrivateEndpointConnectionArmResourceInner>> getPrivateEndpointConnection(
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name,
+            @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<RemotePrivateEndpointConnectionArmResourceInner> getPrivateEndpointConnectionSync(
             @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
@@ -667,10 +1216,31 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<BinaryData> approveOrRejectPrivateEndpointConnectionSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/privateEndpointConnections/{privateEndpointConnectionName}")
         @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> deletePrivateEndpointConnection(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/privateEndpointConnections/{privateEndpointConnectionName}")
+        @ExpectedResponses({ 200, 202, 204 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<BinaryData> deletePrivateEndpointConnectionSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("privateEndpointConnectionName") String privateEndpointConnectionName,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
@@ -686,10 +1256,29 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/privateLinkResources")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<PrivateLinkResourcesWrapperInner> getPrivateLinkResourcesSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/resetapikey")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> resetStaticSiteApiKey(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") StaticSiteResetPropertiesArmResource resetPropertiesEnvelope,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/resetapikey")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<Void> resetStaticSiteApiKeySync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") StaticSiteResetPropertiesArmResource resetPropertiesEnvelope,
@@ -705,6 +1294,15 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/showDatabaseConnections")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DatabaseConnectionCollection> getDatabaseConnectionsWithDetailsSync(
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/userProvidedFunctionApps")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
@@ -714,10 +1312,29 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/userProvidedFunctionApps")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteUserProvidedFunctionAppsCollection> getUserProvidedFunctionAppsForStaticSiteSync(
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/userProvidedFunctionApps/{functionAppName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<StaticSiteUserProvidedFunctionAppArmResourceInner>> getUserProvidedFunctionAppForStaticSite(
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name, @PathParam("functionAppName") String functionAppName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/userProvidedFunctionApps/{functionAppName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteUserProvidedFunctionAppArmResourceInner> getUserProvidedFunctionAppForStaticSiteSync(
             @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("name") String name, @PathParam("functionAppName") String functionAppName,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
@@ -736,10 +1353,30 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/userProvidedFunctionApps/{functionAppName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<BinaryData> registerUserProvidedFunctionAppWithStaticSiteSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("functionAppName") String functionAppName, @QueryParam("isForced") Boolean isForced,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/userProvidedFunctionApps/{functionAppName}")
         @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Void>> detachUserProvidedFunctionAppFromStaticSite(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("functionAppName") String functionAppName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/userProvidedFunctionApps/{functionAppName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<Void> detachUserProvidedFunctionAppFromStaticSiteSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("functionAppName") String functionAppName, @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
@@ -755,10 +1392,31 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/zipdeploy")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<BinaryData> createZipDeploymentForStaticSiteSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/linkedBackends/{linkedBackendName}/validate")
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> validateBackend(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("linkedBackendName") String linkedBackendName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/linkedBackends/{linkedBackendName}/validate")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<BinaryData> validateBackendSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("linkedBackendName") String linkedBackendName,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
@@ -778,10 +1436,31 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/linkedBackends/{linkedBackendName}/validate")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<BinaryData> validateBackendForBuildSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("environmentName") String environmentName,
+            @PathParam("linkedBackendName") String linkedBackendName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/linkedBackends")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<StaticSiteLinkedBackendsCollection>> getLinkedBackends(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/linkedBackends")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteLinkedBackendsCollection> getLinkedBackendsSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
@@ -797,6 +1476,15 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/linkedBackends")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteLinkedBackendsCollection> getLinkedBackendsForBuildSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("environmentName") String environmentName, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/linkedBackends/{linkedBackendName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
@@ -807,10 +1495,31 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/linkedBackends/{linkedBackendName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("linkedBackendName") String linkedBackendName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/linkedBackends/{linkedBackendName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> linkBackend(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("linkedBackendName") String linkedBackendName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/linkedBackends/{linkedBackendName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<BinaryData> linkBackendSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("linkedBackendName") String linkedBackendName,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
@@ -829,6 +1538,17 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/linkedBackends/{linkedBackendName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<Void> unlinkBackendSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("linkedBackendName") String linkedBackendName,
+            @QueryParam("isCleaningAuthConfig") Boolean isCleaningAuthConfig,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/linkedBackends/{linkedBackendName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
@@ -840,10 +1560,33 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/linkedBackends/{linkedBackendName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendForBuildSync(
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name, @PathParam("environmentName") String environmentName,
+            @PathParam("linkedBackendName") String linkedBackendName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/linkedBackends/{linkedBackendName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<Flux<ByteBuffer>>> linkBackendToBuild(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("environmentName") String environmentName,
+            @PathParam("linkedBackendName") String linkedBackendName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/linkedBackends/{linkedBackendName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<BinaryData> linkBackendToBuildSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("environmentName") String environmentName,
             @PathParam("linkedBackendName") String linkedBackendName,
@@ -864,6 +1607,18 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/staticSites/{name}/builds/{environmentName}/linkedBackends/{linkedBackendName}")
+        @ExpectedResponses({ 200, 204 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<Void> unlinkBackendFromBuildSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("environmentName") String environmentName,
+            @PathParam("linkedBackendName") String linkedBackendName,
+            @QueryParam("isCleaningAuthConfig") Boolean isCleaningAuthConfig,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
@@ -874,7 +1629,22 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteCollection> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<StaticSiteCollection>> getStaticSitesByResourceGroupNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteCollection> getStaticSitesByResourceGroupNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -890,7 +1660,23 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteUserCollection> listStaticSiteUsersNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<StaticSiteBuildCollection>> getStaticSiteBuildsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteBuildCollection> getStaticSiteBuildsNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -906,7 +1692,23 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DatabaseConnectionCollection> getBuildDatabaseConnectionsNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<StaticSiteFunctionOverviewCollection>> listStaticSiteBuildFunctionsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteFunctionOverviewCollection> listStaticSiteBuildFunctionsNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -922,7 +1724,23 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DatabaseConnectionCollection> getBuildDatabaseConnectionsWithDetailsNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<StaticSiteUserProvidedFunctionAppsCollection>> getUserProvidedFunctionAppsForStaticSiteBuildNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteUserProvidedFunctionAppsCollection> getUserProvidedFunctionAppsForStaticSiteBuildNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -938,7 +1756,23 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteBasicAuthPropertiesCollection> listBasicAuthNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<StaticSiteCustomDomainOverviewCollection>> listStaticSiteCustomDomainsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteCustomDomainOverviewCollection> listStaticSiteCustomDomainsNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -954,7 +1788,23 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DatabaseConnectionCollection> getDatabaseConnectionsNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<StaticSiteFunctionOverviewCollection>> listStaticSiteFunctionsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteFunctionOverviewCollection> listStaticSiteFunctionsNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -970,7 +1820,23 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<PrivateEndpointConnectionCollection> getPrivateEndpointConnectionListNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DatabaseConnectionCollection>> getDatabaseConnectionsWithDetailsNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DatabaseConnectionCollection> getDatabaseConnectionsWithDetailsNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -986,6 +1852,14 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteUserProvidedFunctionAppsCollection> getUserProvidedFunctionAppsForStaticSiteNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<StaticSiteLinkedBackendsCollection>> getLinkedBackendsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
@@ -994,7 +1868,23 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteLinkedBackendsCollection> getLinkedBackendsNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<StaticSiteLinkedBackendsCollection>> getLinkedBackendsForBuildNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<StaticSiteLinkedBackendsCollection> getLinkedBackendsForBuildNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -1049,47 +1939,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param location Location where you plan to create the static site.
      * @param staticSitesWorkflowPreviewRequest A JSON representation of the StaticSitesWorkflowPreviewRequest
      * properties. See example.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return preview for the Static Site Workflow to be generated along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StaticSitesWorkflowPreviewInner>> previewWorkflowWithResponseAsync(String location,
-        StaticSitesWorkflowPreviewRequest staticSitesWorkflowPreviewRequest, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (location == null) {
-            return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (staticSitesWorkflowPreviewRequest == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter staticSitesWorkflowPreviewRequest is required and cannot be null."));
-        } else {
-            staticSitesWorkflowPreviewRequest.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.previewWorkflow(this.client.getEndpoint(), location, this.client.getSubscriptionId(),
-            this.client.getApiVersion(), staticSitesWorkflowPreviewRequest, accept, context);
-    }
-
-    /**
-     * Generates a preview workflow file for the static site
-     * 
-     * Description for Generates a preview workflow file for the static site.
-     * 
-     * @param location Location where you plan to create the static site.
-     * @param staticSitesWorkflowPreviewRequest A JSON representation of the StaticSitesWorkflowPreviewRequest
-     * properties. See example.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1119,7 +1968,30 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StaticSitesWorkflowPreviewInner> previewWorkflowWithResponse(String location,
         StaticSitesWorkflowPreviewRequest staticSitesWorkflowPreviewRequest, Context context) {
-        return previewWorkflowWithResponseAsync(location, staticSitesWorkflowPreviewRequest, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (location == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter location is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (staticSitesWorkflowPreviewRequest == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter staticSitesWorkflowPreviewRequest is required and cannot be null."));
+        } else {
+            staticSitesWorkflowPreviewRequest.validate();
+        }
+        final String accept = "application/json";
+        return service.previewWorkflowSync(this.client.getEndpoint(), location, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), staticSitesWorkflowPreviewRequest, accept, context);
     }
 
     /**
@@ -1174,36 +2046,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * Description for Get all Static Sites for a subscription.
      * 
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static sites along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteArmResourceInner>> listSinglePageAsync(Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
-                context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Get all Static Sites for a subscription.
-     * 
-     * Description for Get all Static Sites for a subscription.
-     * 
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of static sites as paginated response with {@link PagedFlux}.
@@ -1218,16 +2060,57 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * Description for Get all Static Sites for a subscription.
      * 
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static sites along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteArmResourceInner> listSinglePage() {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteCollection> res = service.listSync(this.client.getEndpoint(),
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get all Static Sites for a subscription.
+     * 
+     * Description for Get all Static Sites for a subscription.
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static sites as paginated response with {@link PagedFlux}.
+     * @return collection of static sites along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StaticSiteArmResourceInner> listAsync(Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteArmResourceInner> listSinglePage(Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteCollection> res = service.listSync(this.client.getEndpoint(),
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1241,7 +2124,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteArmResourceInner> list() {
-        return new PagedIterable<>(listAsync());
+        return new PagedIterable<>(() -> listSinglePage(), nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -1257,7 +2140,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteArmResourceInner> list(Context context) {
-        return new PagedIterable<>(listAsync(context));
+        return new PagedIterable<>(() -> listSinglePage(context), nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1301,42 +2184,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * Description for Gets all static sites in the specified resource group.
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static sites along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteArmResourceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Gets all static sites in the specified resource group.
-     * 
-     * Description for Gets all static sites in the specified resource group.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1354,16 +2201,68 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * Description for Gets all static sites in the specified resource group.
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static sites along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteArmResourceInner> listByResourceGroupSinglePage(String resourceGroupName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteCollection> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+            resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Gets all static sites in the specified resource group.
+     * 
+     * Description for Gets all static sites in the specified resource group.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static sites as paginated response with {@link PagedFlux}.
+     * @return collection of static sites along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StaticSiteArmResourceInner> listByResourceGroupAsync(String resourceGroupName, Context context) {
-        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, context),
-            nextLink -> getStaticSitesByResourceGroupNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteArmResourceInner> listByResourceGroupSinglePage(String resourceGroupName,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteCollection> res = service.listByResourceGroupSync(this.client.getEndpoint(),
+            resourceGroupName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1379,7 +2278,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteArmResourceInner> listByResourceGroup(String resourceGroupName) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName),
+            nextLink -> getStaticSitesByResourceGroupNextSinglePage(nextLink));
     }
 
     /**
@@ -1396,7 +2296,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteArmResourceInner> listByResourceGroup(String resourceGroupName, Context context) {
-        return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, context));
+        return new PagedIterable<>(() -> listByResourceGroupSinglePage(resourceGroupName, context),
+            nextLink -> getStaticSitesByResourceGroupNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1443,43 +2344,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site ARM resource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StaticSiteArmResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
-        String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Gets the details of a static site.
-     * 
-     * Description for Gets the details of a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1507,7 +2371,26 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StaticSiteArmResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String name,
         Context context) {
-        return getByResourceGroupWithResponseAsync(resourceGroupName, name, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getByResourceGroupSync(this.client.getEndpoint(), resourceGroupName, name,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1579,39 +2462,84 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to create or update.
      * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site ARM resource along with {@link Response} on successful completion of {@link Mono}.
+     * @return static Site ARM resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateStaticSiteWithResponseAsync(String resourceGroupName,
-        String name, StaticSiteArmResourceInner staticSiteEnvelope, Context context) {
+    private Response<BinaryData> createOrUpdateStaticSiteWithResponse(String resourceGroupName, String name,
+        StaticSiteArmResourceInner staticSiteEnvelope) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (staticSiteEnvelope == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter staticSiteEnvelope is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter staticSiteEnvelope is required and cannot be null."));
         } else {
             staticSiteEnvelope.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdateStaticSite(this.client.getEndpoint(), resourceGroupName, name,
+        return service.createOrUpdateStaticSiteSync(this.client.getEndpoint(), resourceGroupName, name,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), staticSiteEnvelope, accept, Context.NONE);
+    }
+
+    /**
+     * Creates a new static site in an existing resource group, or updates an existing static site.
+     * 
+     * Description for Creates a new static site in an existing resource group, or updates an existing static site.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site to create or update.
+     * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site ARM resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateStaticSiteWithResponse(String resourceGroupName, String name,
+        StaticSiteArmResourceInner staticSiteEnvelope, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (staticSiteEnvelope == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter staticSiteEnvelope is required and cannot be null."));
+        } else {
+            staticSiteEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateStaticSiteSync(this.client.getEndpoint(), resourceGroupName, name,
             this.client.getSubscriptionId(), this.client.getApiVersion(), staticSiteEnvelope, accept, context);
     }
 
@@ -1647,31 +2575,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to create or update.
      * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of static Site ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<StaticSiteArmResourceInner>, StaticSiteArmResourceInner>
-        beginCreateOrUpdateStaticSiteAsync(String resourceGroupName, String name,
-            StaticSiteArmResourceInner staticSiteEnvelope, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = createOrUpdateStaticSiteWithResponseAsync(resourceGroupName, name, staticSiteEnvelope, context);
-        return this.client.<StaticSiteArmResourceInner, StaticSiteArmResourceInner>getLroResult(mono,
-            this.client.getHttpPipeline(), StaticSiteArmResourceInner.class, StaticSiteArmResourceInner.class, context);
-    }
-
-    /**
-     * Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
-     * Description for Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site to create or update.
-     * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1680,7 +2583,10 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StaticSiteArmResourceInner>, StaticSiteArmResourceInner> beginCreateOrUpdateStaticSite(
         String resourceGroupName, String name, StaticSiteArmResourceInner staticSiteEnvelope) {
-        return this.beginCreateOrUpdateStaticSiteAsync(resourceGroupName, name, staticSiteEnvelope).getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateStaticSiteWithResponse(resourceGroupName, name, staticSiteEnvelope);
+        return this.client.<StaticSiteArmResourceInner, StaticSiteArmResourceInner>getLroResult(response,
+            StaticSiteArmResourceInner.class, StaticSiteArmResourceInner.class, Context.NONE);
     }
 
     /**
@@ -1700,8 +2606,10 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StaticSiteArmResourceInner>, StaticSiteArmResourceInner> beginCreateOrUpdateStaticSite(
         String resourceGroupName, String name, StaticSiteArmResourceInner staticSiteEnvelope, Context context) {
-        return this.beginCreateOrUpdateStaticSiteAsync(resourceGroupName, name, staticSiteEnvelope, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createOrUpdateStaticSiteWithResponse(resourceGroupName, name, staticSiteEnvelope, context);
+        return this.client.<StaticSiteArmResourceInner, StaticSiteArmResourceInner>getLroResult(response,
+            StaticSiteArmResourceInner.class, StaticSiteArmResourceInner.class, context);
     }
 
     /**
@@ -1732,27 +2640,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to create or update.
      * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site ARM resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StaticSiteArmResourceInner> createOrUpdateStaticSiteAsync(String resourceGroupName, String name,
-        StaticSiteArmResourceInner staticSiteEnvelope, Context context) {
-        return beginCreateOrUpdateStaticSiteAsync(resourceGroupName, name, staticSiteEnvelope, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
-     * Description for Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site to create or update.
-     * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1761,7 +2648,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StaticSiteArmResourceInner createOrUpdateStaticSite(String resourceGroupName, String name,
         StaticSiteArmResourceInner staticSiteEnvelope) {
-        return createOrUpdateStaticSiteAsync(resourceGroupName, name, staticSiteEnvelope).block();
+        return beginCreateOrUpdateStaticSite(resourceGroupName, name, staticSiteEnvelope).getFinalResult();
     }
 
     /**
@@ -1781,7 +2668,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StaticSiteArmResourceInner createOrUpdateStaticSite(String resourceGroupName, String name,
         StaticSiteArmResourceInner staticSiteEnvelope, Context context) {
-        return createOrUpdateStaticSiteAsync(resourceGroupName, name, staticSiteEnvelope, context).block();
+        return beginCreateOrUpdateStaticSite(resourceGroupName, name, staticSiteEnvelope, context).getFinalResult();
     }
 
     /**
@@ -1827,33 +2714,69 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String name) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteSync(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Deletes a static site.
+     * 
+     * Description for Deletes a static site.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String name,
-        Context context) {
+    private Response<BinaryData> deleteWithResponse(String resourceGroupName, String name, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
+        return service.deleteSync(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
             this.client.getApiVersion(), accept, context);
     }
 
@@ -1883,28 +2806,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, name, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Deletes a static site.
-     * 
-     * Description for Deletes a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1912,7 +2813,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name) {
-        return this.beginDeleteAsync(resourceGroupName, name).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, name);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -1930,7 +2832,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, name, context).getSyncPoller();
+        Response<BinaryData> response = deleteWithResponse(resourceGroupName, name, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -1957,31 +2860,13 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String name, Context context) {
-        return beginDeleteAsync(resourceGroupName, name, context).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes a static site.
-     * 
-     * Description for Deletes a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String name) {
-        deleteAsync(resourceGroupName, name).block();
+        beginDelete(resourceGroupName, name).getFinalResult();
     }
 
     /**
@@ -1998,7 +2883,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String name, Context context) {
-        deleteAsync(resourceGroupName, name, context).block();
+        beginDelete(resourceGroupName, name, context).getFinalResult();
     }
 
     /**
@@ -2053,50 +2938,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to create or update.
      * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site ARM resource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StaticSiteArmResourceInner>> updateStaticSiteWithResponseAsync(String resourceGroupName,
-        String name, StaticSitePatchResource staticSiteEnvelope, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (staticSiteEnvelope == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter staticSiteEnvelope is required and cannot be null."));
-        } else {
-            staticSiteEnvelope.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.updateStaticSite(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), staticSiteEnvelope, accept, context);
-    }
-
-    /**
-     * Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
-     * Description for Creates a new static site in an existing resource group, or updates an existing static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site to create or update.
-     * @param staticSiteEnvelope A JSON representation of the staticsite properties. See example.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2126,7 +2967,32 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StaticSiteArmResourceInner> updateStaticSiteWithResponse(String resourceGroupName, String name,
         StaticSitePatchResource staticSiteEnvelope, Context context) {
-        return updateStaticSiteWithResponseAsync(resourceGroupName, name, staticSiteEnvelope, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (staticSiteEnvelope == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter staticSiteEnvelope is required and cannot be null."));
+        } else {
+            staticSiteEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return service.updateStaticSiteSync(this.client.getEndpoint(), resourceGroupName, name,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), staticSiteEnvelope, accept, context);
     }
 
     /**
@@ -2200,51 +3066,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param authprovider The auth provider for the users.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site custom users along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteUserArmResourceInner>> listStaticSiteUsersSinglePageAsync(
-        String resourceGroupName, String name, String authprovider, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (authprovider == null) {
-            return Mono.error(new IllegalArgumentException("Parameter authprovider is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listStaticSiteUsers(this.client.getEndpoint(), resourceGroupName, name, authprovider,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Gets the list of users of a static site.
-     * 
-     * Description for Gets the list of users of a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param authprovider The auth provider for the users.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2265,17 +3086,87 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param authprovider The auth provider for the users.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site custom users along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteUserArmResourceInner> listStaticSiteUsersSinglePage(String resourceGroupName,
+        String name, String authprovider) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (authprovider == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter authprovider is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteUserCollection> res
+            = service.listStaticSiteUsersSync(this.client.getEndpoint(), resourceGroupName, name, authprovider,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Gets the list of users of a static site.
+     * 
+     * Description for Gets the list of users of a static site.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param authprovider The auth provider for the users.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site custom users as paginated response with {@link PagedFlux}.
+     * @return collection of static site custom users along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StaticSiteUserArmResourceInner> listStaticSiteUsersAsync(String resourceGroupName, String name,
-        String authprovider, Context context) {
-        return new PagedFlux<>(() -> listStaticSiteUsersSinglePageAsync(resourceGroupName, name, authprovider, context),
-            nextLink -> listStaticSiteUsersNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteUserArmResourceInner> listStaticSiteUsersSinglePage(String resourceGroupName,
+        String name, String authprovider, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (authprovider == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter authprovider is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteUserCollection> res
+            = service.listStaticSiteUsersSync(this.client.getEndpoint(), resourceGroupName, name, authprovider,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -2294,7 +3185,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteUserArmResourceInner> listStaticSiteUsers(String resourceGroupName, String name,
         String authprovider) {
-        return new PagedIterable<>(listStaticSiteUsersAsync(resourceGroupName, name, authprovider));
+        return new PagedIterable<>(() -> listStaticSiteUsersSinglePage(resourceGroupName, name, authprovider),
+            nextLink -> listStaticSiteUsersNextSinglePage(nextLink));
     }
 
     /**
@@ -2314,7 +3206,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteUserArmResourceInner> listStaticSiteUsers(String resourceGroupName, String name,
         String authprovider, Context context) {
-        return new PagedIterable<>(listStaticSiteUsersAsync(resourceGroupName, name, authprovider, context));
+        return new PagedIterable<>(() -> listStaticSiteUsersSinglePage(resourceGroupName, name, authprovider, context),
+            nextLink -> listStaticSiteUsersNextSinglePage(nextLink, context));
     }
 
     /**
@@ -2371,51 +3264,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param name Name of the staticsite.
      * @param authprovider The auth provider for this user.
      * @param userid The user id of the user.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteStaticSiteUserWithResponseAsync(String resourceGroupName, String name,
-        String authprovider, String userid, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (authprovider == null) {
-            return Mono.error(new IllegalArgumentException("Parameter authprovider is required and cannot be null."));
-        }
-        if (userid == null) {
-            return Mono.error(new IllegalArgumentException("Parameter userid is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.deleteStaticSiteUser(this.client.getEndpoint(), resourceGroupName, name, authprovider, userid,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Deletes the user entry from the static site.
-     * 
-     * Description for Deletes the user entry from the static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the staticsite.
-     * @param authprovider The auth provider for this user.
-     * @param userid The user id of the user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2446,7 +3294,34 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteStaticSiteUserWithResponse(String resourceGroupName, String name, String authprovider,
         String userid, Context context) {
-        return deleteStaticSiteUserWithResponseAsync(resourceGroupName, name, authprovider, userid, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (authprovider == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter authprovider is required and cannot be null."));
+        }
+        if (userid == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter userid is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteStaticSiteUserSync(this.client.getEndpoint(), resourceGroupName, name, authprovider,
+            userid, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -2531,59 +3406,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param authprovider The auth provider for this user.
      * @param userid The user id of the user.
      * @param staticSiteUserEnvelope A JSON representation of the StaticSiteUser properties. See example.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User ARM resource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StaticSiteUserArmResourceInner>> updateStaticSiteUserWithResponseAsync(
-        String resourceGroupName, String name, String authprovider, String userid,
-        StaticSiteUserArmResourceInner staticSiteUserEnvelope, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (authprovider == null) {
-            return Mono.error(new IllegalArgumentException("Parameter authprovider is required and cannot be null."));
-        }
-        if (userid == null) {
-            return Mono.error(new IllegalArgumentException("Parameter userid is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (staticSiteUserEnvelope == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter staticSiteUserEnvelope is required and cannot be null."));
-        } else {
-            staticSiteUserEnvelope.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.updateStaticSiteUser(this.client.getEndpoint(), resourceGroupName, name, authprovider, userid,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), staticSiteUserEnvelope, accept, context);
-    }
-
-    /**
-     * Updates a user entry with the listed roles
-     * 
-     * Description for Updates a user entry with the listed roles.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param authprovider The auth provider for this user.
-     * @param userid The user id of the user.
-     * @param staticSiteUserEnvelope A JSON representation of the StaticSiteUser properties. See example.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2616,8 +3438,41 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public Response<StaticSiteUserArmResourceInner> updateStaticSiteUserWithResponse(String resourceGroupName,
         String name, String authprovider, String userid, StaticSiteUserArmResourceInner staticSiteUserEnvelope,
         Context context) {
-        return updateStaticSiteUserWithResponseAsync(resourceGroupName, name, authprovider, userid,
-            staticSiteUserEnvelope, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (authprovider == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter authprovider is required and cannot be null."));
+        }
+        if (userid == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter userid is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (staticSiteUserEnvelope == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter staticSiteUserEnvelope is required and cannot be null."));
+        } else {
+            staticSiteUserEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return service.updateStaticSiteUserSync(this.client.getEndpoint(), resourceGroupName, name, authprovider,
+            userid, this.client.getSubscriptionId(), this.client.getApiVersion(), staticSiteUserEnvelope, accept,
+            context);
     }
 
     /**
@@ -2689,47 +3544,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site builds along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteBuildArmResourceInner>>
-        getStaticSiteBuildsSinglePageAsync(String resourceGroupName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .getStaticSiteBuilds(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Gets all static site builds for a particular static site.
-     * 
-     * Description for Gets all static site builds for a particular static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2748,17 +3562,77 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site builds along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteBuildArmResourceInner> getStaticSiteBuildsSinglePage(String resourceGroupName,
+        String name) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteBuildCollection> res
+            = service.getStaticSiteBuildsSync(this.client.getEndpoint(), resourceGroupName, name,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Gets all static site builds for a particular static site.
+     * 
+     * Description for Gets all static site builds for a particular static site.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site builds as paginated response with {@link PagedFlux}.
+     * @return collection of static site builds along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StaticSiteBuildArmResourceInner> getStaticSiteBuildsAsync(String resourceGroupName, String name,
-        Context context) {
-        return new PagedFlux<>(() -> getStaticSiteBuildsSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> getStaticSiteBuildsNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteBuildArmResourceInner> getStaticSiteBuildsSinglePage(String resourceGroupName,
+        String name, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteBuildCollection> res = service.getStaticSiteBuildsSync(this.client.getEndpoint(),
+            resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -2775,7 +3649,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteBuildArmResourceInner> getStaticSiteBuilds(String resourceGroupName, String name) {
-        return new PagedIterable<>(getStaticSiteBuildsAsync(resourceGroupName, name));
+        return new PagedIterable<>(() -> getStaticSiteBuildsSinglePage(resourceGroupName, name),
+            nextLink -> getStaticSiteBuildsNextSinglePage(nextLink));
     }
 
     /**
@@ -2794,7 +3669,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteBuildArmResourceInner> getStaticSiteBuilds(String resourceGroupName, String name,
         Context context) {
-        return new PagedIterable<>(getStaticSiteBuildsAsync(resourceGroupName, name, context));
+        return new PagedIterable<>(() -> getStaticSiteBuildsSinglePage(resourceGroupName, name, context),
+            nextLink -> getStaticSiteBuildsNextSinglePage(nextLink, context));
     }
 
     /**
@@ -2847,48 +3723,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Build ARM resource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StaticSiteBuildArmResourceInner>> getStaticSiteBuildWithResponseAsync(
-        String resourceGroupName, String name, String environmentName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getStaticSiteBuild(this.client.getEndpoint(), resourceGroupName, name, environmentName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Gets the details of a static site build.
-     * 
-     * Description for Gets the details of a static site build.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2918,7 +3752,30 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StaticSiteBuildArmResourceInner> getStaticSiteBuildWithResponse(String resourceGroupName,
         String name, String environmentName, Context context) {
-        return getStaticSiteBuildWithResponseAsync(resourceGroupName, name, environmentName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getStaticSiteBuildSync(this.client.getEndpoint(), resourceGroupName, name, environmentName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -2990,37 +3847,80 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteStaticSiteBuildWithResponse(String resourceGroupName, String name,
+        String environmentName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteStaticSiteBuildSync(this.client.getEndpoint(), resourceGroupName, name, environmentName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Deletes a static site build.
+     * 
+     * Description for Deletes a static site build.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteStaticSiteBuildWithResponseAsync(String resourceGroupName,
-        String name, String environmentName, Context context) {
+    private Response<BinaryData> deleteStaticSiteBuildWithResponse(String resourceGroupName, String name,
+        String environmentName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.deleteStaticSiteBuild(this.client.getEndpoint(), resourceGroupName, name, environmentName,
+        return service.deleteStaticSiteBuildSync(this.client.getEndpoint(), resourceGroupName, name, environmentName,
             this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
@@ -3054,30 +3954,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteStaticSiteBuildAsync(String resourceGroupName, String name,
-        String environmentName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteStaticSiteBuildWithResponseAsync(resourceGroupName, name, environmentName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Deletes a static site build.
-     * 
-     * Description for Deletes a static site build.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3086,7 +3962,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteStaticSiteBuild(String resourceGroupName, String name,
         String environmentName) {
-        return this.beginDeleteStaticSiteBuildAsync(resourceGroupName, name, environmentName).getSyncPoller();
+        Response<BinaryData> response = deleteStaticSiteBuildWithResponse(resourceGroupName, name, environmentName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -3106,7 +3983,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteStaticSiteBuild(String resourceGroupName, String name,
         String environmentName, Context context) {
-        return this.beginDeleteStaticSiteBuildAsync(resourceGroupName, name, environmentName, context).getSyncPoller();
+        Response<BinaryData> response
+            = deleteStaticSiteBuildWithResponse(resourceGroupName, name, environmentName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -3136,34 +4015,13 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteStaticSiteBuildAsync(String resourceGroupName, String name, String environmentName,
-        Context context) {
-        return beginDeleteStaticSiteBuildAsync(resourceGroupName, name, environmentName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes a static site build.
-     * 
-     * Description for Deletes a static site build.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteStaticSiteBuild(String resourceGroupName, String name, String environmentName) {
-        deleteStaticSiteBuildAsync(resourceGroupName, name, environmentName).block();
+        beginDeleteStaticSiteBuild(resourceGroupName, name, environmentName).getFinalResult();
     }
 
     /**
@@ -3181,7 +4039,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteStaticSiteBuild(String resourceGroupName, String name, String environmentName, Context context) {
-        deleteStaticSiteBuildAsync(resourceGroupName, name, environmentName, context).block();
+        beginDeleteStaticSiteBuild(resourceGroupName, name, environmentName, context).getFinalResult();
     }
 
     /**
@@ -3242,56 +4100,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
      * @param appSettings The dictionary containing the static site app settings to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StringDictionaryInner>> createOrUpdateStaticSiteBuildAppSettingsWithResponseAsync(
-        String resourceGroupName, String name, String environmentName, StringDictionaryInner appSettings,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (appSettings == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appSettings is required and cannot be null."));
-        } else {
-            appSettings.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdateStaticSiteBuildAppSettings(this.client.getEndpoint(), resourceGroupName, name,
-            environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), appSettings, accept,
-            context);
-    }
-
-    /**
-     * Creates or updates the app settings of a static site build.
-     * 
-     * Description for Creates or updates the app settings of a static site build.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param appSettings The dictionary containing the static site app settings to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3323,8 +4131,37 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public Response<StringDictionaryInner> createOrUpdateStaticSiteBuildAppSettingsWithResponse(
         String resourceGroupName, String name, String environmentName, StringDictionaryInner appSettings,
         Context context) {
-        return createOrUpdateStaticSiteBuildAppSettingsWithResponseAsync(resourceGroupName, name, environmentName,
-            appSettings, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (appSettings == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter appSettings is required and cannot be null."));
+        } else {
+            appSettings.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateStaticSiteBuildAppSettingsSync(this.client.getEndpoint(), resourceGroupName, name,
+            environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), appSettings, accept,
+            context);
     }
 
     /**
@@ -3406,56 +4243,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
      * @param appSettings The dictionary containing the static site function app settings to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StringDictionaryInner>> createOrUpdateStaticSiteBuildFunctionAppSettingsWithResponseAsync(
-        String resourceGroupName, String name, String environmentName, StringDictionaryInner appSettings,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (appSettings == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appSettings is required and cannot be null."));
-        } else {
-            appSettings.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdateStaticSiteBuildFunctionAppSettings(this.client.getEndpoint(), resourceGroupName,
-            name, environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), appSettings, accept,
-            context);
-    }
-
-    /**
-     * Creates or updates the function app settings of a static site build.
-     * 
-     * Description for Creates or updates the function app settings of a static site build.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param appSettings The dictionary containing the static site function app settings to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3487,8 +4274,37 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public Response<StringDictionaryInner> createOrUpdateStaticSiteBuildFunctionAppSettingsWithResponse(
         String resourceGroupName, String name, String environmentName, StringDictionaryInner appSettings,
         Context context) {
-        return createOrUpdateStaticSiteBuildFunctionAppSettingsWithResponseAsync(resourceGroupName, name,
-            environmentName, appSettings, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (appSettings == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter appSettings is required and cannot be null."));
+        } else {
+            appSettings.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateStaticSiteBuildFunctionAppSettingsSync(this.client.getEndpoint(),
+            resourceGroupName, name, environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+            appSettings, accept, context);
     }
 
     /**
@@ -3561,50 +4377,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site database connections along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatabaseConnectionInner>> getBuildDatabaseConnectionsSinglePageAsync(
-        String resourceGroupName, String name, String environmentName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .getBuildDatabaseConnections(this.client.getEndpoint(), resourceGroupName, name, environmentName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Returns overviews of database connections for a static site build.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3624,18 +4396,85 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site database connections along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DatabaseConnectionInner> getBuildDatabaseConnectionsSinglePage(String resourceGroupName,
+        String name, String environmentName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DatabaseConnectionCollection> res
+            = service.getBuildDatabaseConnectionsSync(this.client.getEndpoint(), resourceGroupName, name,
+                environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Returns overviews of database connections for a static site build.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site database connections as paginated response with {@link PagedFlux}.
+     * @return collection of static site database connections along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DatabaseConnectionInner> getBuildDatabaseConnectionsAsync(String resourceGroupName, String name,
-        String environmentName, Context context) {
-        return new PagedFlux<>(
-            () -> getBuildDatabaseConnectionsSinglePageAsync(resourceGroupName, name, environmentName, context),
-            nextLink -> getBuildDatabaseConnectionsNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DatabaseConnectionInner> getBuildDatabaseConnectionsSinglePage(String resourceGroupName,
+        String name, String environmentName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DatabaseConnectionCollection> res
+            = service.getBuildDatabaseConnectionsSync(this.client.getEndpoint(), resourceGroupName, name,
+                environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -3652,7 +4491,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseConnectionInner> getBuildDatabaseConnections(String resourceGroupName, String name,
         String environmentName) {
-        return new PagedIterable<>(getBuildDatabaseConnectionsAsync(resourceGroupName, name, environmentName));
+        return new PagedIterable<>(
+            () -> getBuildDatabaseConnectionsSinglePage(resourceGroupName, name, environmentName),
+            nextLink -> getBuildDatabaseConnectionsNextSinglePage(nextLink));
     }
 
     /**
@@ -3670,7 +4511,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseConnectionInner> getBuildDatabaseConnections(String resourceGroupName, String name,
         String environmentName, Context context) {
-        return new PagedIterable<>(getBuildDatabaseConnectionsAsync(resourceGroupName, name, environmentName, context));
+        return new PagedIterable<>(
+            () -> getBuildDatabaseConnectionsSinglePage(resourceGroupName, name, environmentName, context),
+            nextLink -> getBuildDatabaseConnectionsNextSinglePage(nextLink, context));
     }
 
     /**
@@ -3727,52 +4570,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
      * @param databaseConnectionName Name of the database connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatabaseConnectionInner>> getBuildDatabaseConnectionWithResponseAsync(
-        String resourceGroupName, String name, String environmentName, String databaseConnectionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (databaseConnectionName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter databaseConnectionName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getBuildDatabaseConnection(this.client.getEndpoint(), resourceGroupName, name, environmentName,
-            databaseConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Returns overview of a database connection for a static site build by name.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param databaseConnectionName Name of the database connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3801,8 +4598,35 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatabaseConnectionInner> getBuildDatabaseConnectionWithResponse(String resourceGroupName,
         String name, String environmentName, String databaseConnectionName, Context context) {
-        return getBuildDatabaseConnectionWithResponseAsync(resourceGroupName, name, environmentName,
-            databaseConnectionName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (databaseConnectionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter databaseConnectionName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getBuildDatabaseConnectionSync(this.client.getEndpoint(), resourceGroupName, name,
+            environmentName, databaseConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+            accept, context);
     }
 
     /**
@@ -3891,63 +4715,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param environmentName The stage site identifier.
      * @param databaseConnectionName Name of the database connection.
      * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatabaseConnectionInner>> createOrUpdateBuildDatabaseConnectionWithResponseAsync(
-        String resourceGroupName, String name, String environmentName, String databaseConnectionName,
-        DatabaseConnectionInner databaseConnectionRequestEnvelope, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (databaseConnectionName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter databaseConnectionName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (databaseConnectionRequestEnvelope == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter databaseConnectionRequestEnvelope is required and cannot be null."));
-        } else {
-            databaseConnectionRequestEnvelope.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdateBuildDatabaseConnection(this.client.getEndpoint(), resourceGroupName, name,
-            environmentName, databaseConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            databaseConnectionRequestEnvelope, accept, context);
-    }
-
-    /**
-     * Create or update a database connection for a static site build
-     * 
-     * Description for Create or update a database connection for a static site build.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param databaseConnectionName Name of the database connection.
-     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3981,8 +4748,42 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public Response<DatabaseConnectionInner> createOrUpdateBuildDatabaseConnectionWithResponse(String resourceGroupName,
         String name, String environmentName, String databaseConnectionName,
         DatabaseConnectionInner databaseConnectionRequestEnvelope, Context context) {
-        return createOrUpdateBuildDatabaseConnectionWithResponseAsync(resourceGroupName, name, environmentName,
-            databaseConnectionName, databaseConnectionRequestEnvelope, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (databaseConnectionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter databaseConnectionName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (databaseConnectionRequestEnvelope == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter databaseConnectionRequestEnvelope is required and cannot be null."));
+        } else {
+            databaseConnectionRequestEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateBuildDatabaseConnectionSync(this.client.getEndpoint(), resourceGroupName, name,
+            environmentName, databaseConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+            databaseConnectionRequestEnvelope, accept, context);
     }
 
     /**
@@ -4061,52 +4862,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
      * @param databaseConnectionName Name of the database connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteBuildDatabaseConnectionWithResponseAsync(String resourceGroupName, String name,
-        String environmentName, String databaseConnectionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (databaseConnectionName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter databaseConnectionName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.deleteBuildDatabaseConnection(this.client.getEndpoint(), resourceGroupName, name,
-            environmentName, databaseConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            accept, context);
-    }
-
-    /**
-     * Delete a database connection for a static site build.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param databaseConnectionName Name of the database connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4135,8 +4890,35 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteBuildDatabaseConnectionWithResponse(String resourceGroupName, String name,
         String environmentName, String databaseConnectionName, Context context) {
-        return deleteBuildDatabaseConnectionWithResponseAsync(resourceGroupName, name, environmentName,
-            databaseConnectionName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (databaseConnectionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter databaseConnectionName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteBuildDatabaseConnectionSync(this.client.getEndpoint(), resourceGroupName, name,
+            environmentName, databaseConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+            accept, context);
     }
 
     /**
@@ -4224,63 +5006,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param environmentName The stage site identifier.
      * @param databaseConnectionName Name of the database connection.
      * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatabaseConnectionInner>> updateBuildDatabaseConnectionWithResponseAsync(
-        String resourceGroupName, String name, String environmentName, String databaseConnectionName,
-        DatabaseConnectionPatchRequest databaseConnectionRequestEnvelope, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (databaseConnectionName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter databaseConnectionName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (databaseConnectionRequestEnvelope == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter databaseConnectionRequestEnvelope is required and cannot be null."));
-        } else {
-            databaseConnectionRequestEnvelope.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.updateBuildDatabaseConnection(this.client.getEndpoint(), resourceGroupName, name,
-            environmentName, databaseConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            databaseConnectionRequestEnvelope, accept, context);
-    }
-
-    /**
-     * Create or update a database connection for a static site build
-     * 
-     * Description for Create or update a database connection for a static site build.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param databaseConnectionName Name of the database connection.
-     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4314,8 +5039,42 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public Response<DatabaseConnectionInner> updateBuildDatabaseConnectionWithResponse(String resourceGroupName,
         String name, String environmentName, String databaseConnectionName,
         DatabaseConnectionPatchRequest databaseConnectionRequestEnvelope, Context context) {
-        return updateBuildDatabaseConnectionWithResponseAsync(resourceGroupName, name, environmentName,
-            databaseConnectionName, databaseConnectionRequestEnvelope, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (databaseConnectionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter databaseConnectionName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (databaseConnectionRequestEnvelope == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter databaseConnectionRequestEnvelope is required and cannot be null."));
+        } else {
+            databaseConnectionRequestEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return service.updateBuildDatabaseConnectionSync(this.client.getEndpoint(), resourceGroupName, name,
+            environmentName, databaseConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+            databaseConnectionRequestEnvelope, accept, context);
     }
 
     /**
@@ -4395,53 +5154,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
      * @param databaseConnectionName Name of the database connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatabaseConnectionInner>> getBuildDatabaseConnectionWithDetailsWithResponseAsync(
-        String resourceGroupName, String name, String environmentName, String databaseConnectionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (databaseConnectionName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter databaseConnectionName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getBuildDatabaseConnectionWithDetails(this.client.getEndpoint(), resourceGroupName, name,
-            environmentName, databaseConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            accept, context);
-    }
-
-    /**
-     * Returns details of a database connection for a static site build by name.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param databaseConnectionName Name of the database connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4470,8 +5182,35 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatabaseConnectionInner> getBuildDatabaseConnectionWithDetailsWithResponse(String resourceGroupName,
         String name, String environmentName, String databaseConnectionName, Context context) {
-        return getBuildDatabaseConnectionWithDetailsWithResponseAsync(resourceGroupName, name, environmentName,
-            databaseConnectionName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (databaseConnectionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter databaseConnectionName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getBuildDatabaseConnectionWithDetailsSync(this.client.getEndpoint(), resourceGroupName, name,
+            environmentName, databaseConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+            accept, context);
     }
 
     /**
@@ -4547,52 +5286,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site functions along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteFunctionOverviewArmResourceInner>> listStaticSiteBuildFunctionsSinglePageAsync(
-        String resourceGroupName, String name, String environmentName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listStaticSiteBuildFunctions(this.client.getEndpoint(), resourceGroupName, name, environmentName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Gets the functions of a particular static site build.
-     * 
-     * Description for Gets the functions of a particular static site build.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4614,18 +5307,87 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site functions along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteFunctionOverviewArmResourceInner>
+        listStaticSiteBuildFunctionsSinglePage(String resourceGroupName, String name, String environmentName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteFunctionOverviewCollection> res
+            = service.listStaticSiteBuildFunctionsSync(this.client.getEndpoint(), resourceGroupName, name,
+                environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Gets the functions of a particular static site build.
+     * 
+     * Description for Gets the functions of a particular static site build.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site functions as paginated response with {@link PagedFlux}.
+     * @return collection of static site functions along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StaticSiteFunctionOverviewArmResourceInner> listStaticSiteBuildFunctionsAsync(
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteFunctionOverviewArmResourceInner> listStaticSiteBuildFunctionsSinglePage(
         String resourceGroupName, String name, String environmentName, Context context) {
-        return new PagedFlux<>(
-            () -> listStaticSiteBuildFunctionsSinglePageAsync(resourceGroupName, name, environmentName, context),
-            nextLink -> listStaticSiteBuildFunctionsNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteFunctionOverviewCollection> res
+            = service.listStaticSiteBuildFunctionsSync(this.client.getEndpoint(), resourceGroupName, name,
+                environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -4644,7 +5406,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteFunctionOverviewArmResourceInner>
         listStaticSiteBuildFunctions(String resourceGroupName, String name, String environmentName) {
-        return new PagedIterable<>(listStaticSiteBuildFunctionsAsync(resourceGroupName, name, environmentName));
+        return new PagedIterable<>(
+            () -> listStaticSiteBuildFunctionsSinglePage(resourceGroupName, name, environmentName),
+            nextLink -> listStaticSiteBuildFunctionsNextSinglePage(nextLink));
     }
 
     /**
@@ -4665,7 +5429,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public PagedIterable<StaticSiteFunctionOverviewArmResourceInner>
         listStaticSiteBuildFunctions(String resourceGroupName, String name, String environmentName, Context context) {
         return new PagedIterable<>(
-            listStaticSiteBuildFunctionsAsync(resourceGroupName, name, environmentName, context));
+            () -> listStaticSiteBuildFunctionsSinglePage(resourceGroupName, name, environmentName, context),
+            nextLink -> listStaticSiteBuildFunctionsNextSinglePage(nextLink, context));
     }
 
     /**
@@ -4718,48 +5483,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StringDictionaryInner>> listStaticSiteBuildAppSettingsWithResponseAsync(
-        String resourceGroupName, String name, String environmentName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listStaticSiteBuildAppSettings(this.client.getEndpoint(), resourceGroupName, name,
-            environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Gets the application settings of a static site build.
-     * 
-     * Description for Gets the application settings of a static site build.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4789,8 +5512,30 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StringDictionaryInner> listStaticSiteBuildAppSettingsWithResponse(String resourceGroupName,
         String name, String environmentName, Context context) {
-        return listStaticSiteBuildAppSettingsWithResponseAsync(resourceGroupName, name, environmentName, context)
-            .block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.listStaticSiteBuildAppSettingsSync(this.client.getEndpoint(), resourceGroupName, name,
+            environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -4864,48 +5609,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StringDictionaryInner>> listStaticSiteBuildFunctionAppSettingsWithResponseAsync(
-        String resourceGroupName, String name, String environmentName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listStaticSiteBuildFunctionAppSettings(this.client.getEndpoint(), resourceGroupName, name,
-            environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Gets the application settings of a static site build.
-     * 
-     * Description for Gets the application settings of a static site build.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4935,8 +5638,30 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StringDictionaryInner> listStaticSiteBuildFunctionAppSettingsWithResponse(String resourceGroupName,
         String name, String environmentName, Context context) {
-        return listStaticSiteBuildFunctionAppSettingsWithResponseAsync(resourceGroupName, name, environmentName,
-            context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.listStaticSiteBuildFunctionAppSettingsSync(this.client.getEndpoint(), resourceGroupName, name,
+            environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -5009,50 +5734,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site database connections along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatabaseConnectionInner>> getBuildDatabaseConnectionsWithDetailsSinglePageAsync(
-        String resourceGroupName, String name, String environmentName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .getBuildDatabaseConnectionsWithDetails(this.client.getEndpoint(), resourceGroupName, name, environmentName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Returns details of database connections for a static site build.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5072,18 +5753,85 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site database connections along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DatabaseConnectionInner> getBuildDatabaseConnectionsWithDetailsSinglePage(
+        String resourceGroupName, String name, String environmentName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DatabaseConnectionCollection> res
+            = service.getBuildDatabaseConnectionsWithDetailsSync(this.client.getEndpoint(), resourceGroupName, name,
+                environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Returns details of database connections for a static site build.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site database connections as paginated response with {@link PagedFlux}.
+     * @return collection of static site database connections along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DatabaseConnectionInner> getBuildDatabaseConnectionsWithDetailsAsync(String resourceGroupName,
-        String name, String environmentName, Context context) {
-        return new PagedFlux<>(() -> getBuildDatabaseConnectionsWithDetailsSinglePageAsync(resourceGroupName, name,
-            environmentName, context),
-            nextLink -> getBuildDatabaseConnectionsWithDetailsNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DatabaseConnectionInner> getBuildDatabaseConnectionsWithDetailsSinglePage(
+        String resourceGroupName, String name, String environmentName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DatabaseConnectionCollection> res
+            = service.getBuildDatabaseConnectionsWithDetailsSync(this.client.getEndpoint(), resourceGroupName, name,
+                environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -5101,7 +5849,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public PagedIterable<DatabaseConnectionInner> getBuildDatabaseConnectionsWithDetails(String resourceGroupName,
         String name, String environmentName) {
         return new PagedIterable<>(
-            getBuildDatabaseConnectionsWithDetailsAsync(resourceGroupName, name, environmentName));
+            () -> getBuildDatabaseConnectionsWithDetailsSinglePage(resourceGroupName, name, environmentName),
+            nextLink -> getBuildDatabaseConnectionsWithDetailsNextSinglePage(nextLink));
     }
 
     /**
@@ -5120,7 +5869,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public PagedIterable<DatabaseConnectionInner> getBuildDatabaseConnectionsWithDetails(String resourceGroupName,
         String name, String environmentName, Context context) {
         return new PagedIterable<>(
-            getBuildDatabaseConnectionsWithDetailsAsync(resourceGroupName, name, environmentName, context));
+            () -> getBuildDatabaseConnectionsWithDetailsSinglePage(resourceGroupName, name, environmentName, context),
+            nextLink -> getBuildDatabaseConnectionsWithDetailsNextSinglePage(nextLink, context));
     }
 
     /**
@@ -5179,53 +5929,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site user provided function apps along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteUserProvidedFunctionAppArmResourceInner>>
-        getUserProvidedFunctionAppsForStaticSiteBuildSinglePageAsync(String resourceGroupName, String name,
-            String environmentName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .getUserProvidedFunctionAppsForStaticSiteBuild(this.client.getEndpoint(), resourceGroupName, name,
-                environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Gets the details of the user provided function apps registered with a static site build
-     * 
-     * Description for Gets the details of the user provided function apps registered with a static site build.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5249,20 +5952,89 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site user provided function apps along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteUserProvidedFunctionAppArmResourceInner>
+        getUserProvidedFunctionAppsForStaticSiteBuildSinglePage(String resourceGroupName, String name,
+            String environmentName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteUserProvidedFunctionAppsCollection> res = service
+            .getUserProvidedFunctionAppsForStaticSiteBuildSync(this.client.getEndpoint(), resourceGroupName, name,
+                environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Gets the details of the user provided function apps registered with a static site build
+     * 
+     * Description for Gets the details of the user provided function apps registered with a static site build.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site user provided function apps as paginated response with {@link PagedFlux}.
+     * @return collection of static site user provided function apps along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StaticSiteUserProvidedFunctionAppArmResourceInner>
-        getUserProvidedFunctionAppsForStaticSiteBuildAsync(String resourceGroupName, String name,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteUserProvidedFunctionAppArmResourceInner>
+        getUserProvidedFunctionAppsForStaticSiteBuildSinglePage(String resourceGroupName, String name,
             String environmentName, Context context) {
-        return new PagedFlux<>(
-            () -> getUserProvidedFunctionAppsForStaticSiteBuildSinglePageAsync(resourceGroupName, name, environmentName,
-                context),
-            nextLink -> getUserProvidedFunctionAppsForStaticSiteBuildNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteUserProvidedFunctionAppsCollection> res
+            = service.getUserProvidedFunctionAppsForStaticSiteBuildSync(this.client.getEndpoint(), resourceGroupName,
+                name, environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -5282,7 +6054,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public PagedIterable<StaticSiteUserProvidedFunctionAppArmResourceInner>
         getUserProvidedFunctionAppsForStaticSiteBuild(String resourceGroupName, String name, String environmentName) {
         return new PagedIterable<>(
-            getUserProvidedFunctionAppsForStaticSiteBuildAsync(resourceGroupName, name, environmentName));
+            () -> getUserProvidedFunctionAppsForStaticSiteBuildSinglePage(resourceGroupName, name, environmentName),
+            nextLink -> getUserProvidedFunctionAppsForStaticSiteBuildNextSinglePage(nextLink));
     }
 
     /**
@@ -5303,8 +6076,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public PagedIterable<StaticSiteUserProvidedFunctionAppArmResourceInner>
         getUserProvidedFunctionAppsForStaticSiteBuild(String resourceGroupName, String name, String environmentName,
             Context context) {
-        return new PagedIterable<>(
-            getUserProvidedFunctionAppsForStaticSiteBuildAsync(resourceGroupName, name, environmentName, context));
+        return new PagedIterable<>(() -> getUserProvidedFunctionAppsForStaticSiteBuildSinglePage(resourceGroupName,
+            name, environmentName, context),
+            nextLink -> getUserProvidedFunctionAppsForStaticSiteBuildNextSinglePage(nextLink, context));
     }
 
     /**
@@ -5366,56 +6140,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
      * @param functionAppName Name of the function app registered with the static site build.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StaticSiteUserProvidedFunctionAppArmResourceInner>>
-        getUserProvidedFunctionAppForStaticSiteBuildWithResponseAsync(String resourceGroupName, String name,
-            String environmentName, String functionAppName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (functionAppName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter functionAppName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getUserProvidedFunctionAppForStaticSiteBuild(this.client.getEndpoint(), resourceGroupName, name,
-            environmentName, functionAppName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
-            context);
-    }
-
-    /**
-     * Gets the details of the user provided function app registered with a static site build
-     * 
-     * Description for Gets the details of the user provided function app registered with a static site build.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param functionAppName Name of the function app registered with the static site build.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5447,8 +6171,35 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public Response<StaticSiteUserProvidedFunctionAppArmResourceInner>
         getUserProvidedFunctionAppForStaticSiteBuildWithResponse(String resourceGroupName, String name,
             String environmentName, String functionAppName, Context context) {
-        return getUserProvidedFunctionAppForStaticSiteBuildWithResponseAsync(resourceGroupName, name, environmentName,
-            functionAppName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (functionAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter functionAppName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getUserProvidedFunctionAppForStaticSiteBuildSync(this.client.getEndpoint(), resourceGroupName,
+            name, environmentName, functionAppName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+            accept, context);
     }
 
     /**
@@ -5548,51 +6299,113 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param isForced Specify &lt;code&gt;true&lt;/code&gt; to force the update of the auth configuration on the
      * function app even if an AzureStaticWebApps provider is already configured on the function app. The default is
      * &lt;code&gt;false&lt;/code&gt;.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource along with {@link Response} on successful completion
-     * of {@link Mono}.
+     * @return static Site User Provided Function App ARM resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> registerUserProvidedFunctionAppWithStaticSiteBuildWithResponseAsync(
+    private Response<BinaryData> registerUserProvidedFunctionAppWithStaticSiteBuildWithResponse(
         String resourceGroupName, String name, String environmentName, String functionAppName,
-        StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced,
-        Context context) {
+        StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
         }
         if (functionAppName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter functionAppName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter functionAppName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (staticSiteUserProvidedFunctionEnvelope == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter staticSiteUserProvidedFunctionEnvelope is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter staticSiteUserProvidedFunctionEnvelope is required and cannot be null."));
         } else {
             staticSiteUserProvidedFunctionEnvelope.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.registerUserProvidedFunctionAppWithStaticSiteBuild(this.client.getEndpoint(), resourceGroupName,
-            name, environmentName, functionAppName, isForced, this.client.getSubscriptionId(),
+        return service.registerUserProvidedFunctionAppWithStaticSiteBuildSync(this.client.getEndpoint(),
+            resourceGroupName, name, environmentName, functionAppName, isForced, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), staticSiteUserProvidedFunctionEnvelope, accept, Context.NONE);
+    }
+
+    /**
+     * Register a user provided function app with a static site build
+     * 
+     * Description for Register a user provided function app with a static site build.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param functionAppName Name of the function app to register with the static site build.
+     * @param staticSiteUserProvidedFunctionEnvelope A JSON representation of the user provided function app properties.
+     * See example.
+     * @param isForced Specify &lt;code&gt;true&lt;/code&gt; to force the update of the auth configuration on the
+     * function app even if an AzureStaticWebApps provider is already configured on the function app. The default is
+     * &lt;code&gt;false&lt;/code&gt;.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site User Provided Function App ARM resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> registerUserProvidedFunctionAppWithStaticSiteBuildWithResponse(
+        String resourceGroupName, String name, String environmentName, String functionAppName,
+        StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (functionAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter functionAppName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (staticSiteUserProvidedFunctionEnvelope == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter staticSiteUserProvidedFunctionEnvelope is required and cannot be null."));
+        } else {
+            staticSiteUserProvidedFunctionEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return service.registerUserProvidedFunctionAppWithStaticSiteBuildSync(this.client.getEndpoint(),
+            resourceGroupName, name, environmentName, functionAppName, isForced, this.client.getSubscriptionId(),
             this.client.getApiVersion(), staticSiteUserProvidedFunctionEnvelope, accept, context);
     }
 
@@ -5677,27 +6490,25 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param isForced Specify &lt;code&gt;true&lt;/code&gt; to force the update of the auth configuration on the
      * function app even if an AzureStaticWebApps provider is already configured on the function app. The default is
      * &lt;code&gt;false&lt;/code&gt;.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of static Site User Provided Function App ARM resource.
+     * @return the {@link SyncPoller} for polling of static Site User Provided Function App ARM resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private
-        PollerFlux<PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>, StaticSiteUserProvidedFunctionAppArmResourceInner>
-        beginRegisterUserProvidedFunctionAppWithStaticSiteBuildAsync(String resourceGroupName, String name,
+    public
+        SyncPoller<PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>, StaticSiteUserProvidedFunctionAppArmResourceInner>
+        beginRegisterUserProvidedFunctionAppWithStaticSiteBuild(String resourceGroupName, String name,
             String environmentName, String functionAppName,
-            StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced,
-            Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = registerUserProvidedFunctionAppWithStaticSiteBuildWithResponseAsync(resourceGroupName, name,
-                environmentName, functionAppName, staticSiteUserProvidedFunctionEnvelope, isForced, context);
+            StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope,
+            Boolean isForced) {
+        Response<BinaryData> response
+            = registerUserProvidedFunctionAppWithStaticSiteBuildWithResponse(resourceGroupName, name, environmentName,
+                functionAppName, staticSiteUserProvidedFunctionEnvelope, isForced);
         return this.client
             .<StaticSiteUserProvidedFunctionAppArmResourceInner, StaticSiteUserProvidedFunctionAppArmResourceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), StaticSiteUserProvidedFunctionAppArmResourceInner.class,
-                StaticSiteUserProvidedFunctionAppArmResourceInner.class, context);
+                response, StaticSiteUserProvidedFunctionAppArmResourceInner.class,
+                StaticSiteUserProvidedFunctionAppArmResourceInner.class, Context.NONE);
     }
 
     /**
@@ -5723,10 +6534,13 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             String environmentName, String functionAppName,
             StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope) {
         final Boolean isForced = null;
-        return this
-            .beginRegisterUserProvidedFunctionAppWithStaticSiteBuildAsync(resourceGroupName, name, environmentName,
-                functionAppName, staticSiteUserProvidedFunctionEnvelope, isForced)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = registerUserProvidedFunctionAppWithStaticSiteBuildWithResponse(resourceGroupName, name, environmentName,
+                functionAppName, staticSiteUserProvidedFunctionEnvelope, isForced);
+        return this.client
+            .<StaticSiteUserProvidedFunctionAppArmResourceInner, StaticSiteUserProvidedFunctionAppArmResourceInner>getLroResult(
+                response, StaticSiteUserProvidedFunctionAppArmResourceInner.class,
+                StaticSiteUserProvidedFunctionAppArmResourceInner.class, Context.NONE);
     }
 
     /**
@@ -5756,10 +6570,13 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             String environmentName, String functionAppName,
             StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced,
             Context context) {
-        return this
-            .beginRegisterUserProvidedFunctionAppWithStaticSiteBuildAsync(resourceGroupName, name, environmentName,
-                functionAppName, staticSiteUserProvidedFunctionEnvelope, isForced, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = registerUserProvidedFunctionAppWithStaticSiteBuildWithResponse(resourceGroupName, name, environmentName,
+                functionAppName, staticSiteUserProvidedFunctionEnvelope, isForced, context);
+        return this.client
+            .<StaticSiteUserProvidedFunctionAppArmResourceInner, StaticSiteUserProvidedFunctionAppArmResourceInner>getLroResult(
+                response, StaticSiteUserProvidedFunctionAppArmResourceInner.class,
+                StaticSiteUserProvidedFunctionAppArmResourceInner.class, context);
     }
 
     /**
@@ -5830,37 +6647,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param functionAppName Name of the function app to register with the static site build.
      * @param staticSiteUserProvidedFunctionEnvelope A JSON representation of the user provided function app properties.
      * See example.
-     * @param isForced Specify &lt;code&gt;true&lt;/code&gt; to force the update of the auth configuration on the
-     * function app even if an AzureStaticWebApps provider is already configured on the function app. The default is
-     * &lt;code&gt;false&lt;/code&gt;.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StaticSiteUserProvidedFunctionAppArmResourceInner>
-        registerUserProvidedFunctionAppWithStaticSiteBuildAsync(String resourceGroupName, String name,
-            String environmentName, String functionAppName,
-            StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced,
-            Context context) {
-        return beginRegisterUserProvidedFunctionAppWithStaticSiteBuildAsync(resourceGroupName, name, environmentName,
-            functionAppName, staticSiteUserProvidedFunctionEnvelope, isForced, context).last()
-                .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Register a user provided function app with a static site build
-     * 
-     * Description for Register a user provided function app with a static site build.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param functionAppName Name of the function app to register with the static site build.
-     * @param staticSiteUserProvidedFunctionEnvelope A JSON representation of the user provided function app properties.
-     * See example.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -5871,8 +6657,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         String resourceGroupName, String name, String environmentName, String functionAppName,
         StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope) {
         final Boolean isForced = null;
-        return registerUserProvidedFunctionAppWithStaticSiteBuildAsync(resourceGroupName, name, environmentName,
-            functionAppName, staticSiteUserProvidedFunctionEnvelope, isForced).block();
+        return beginRegisterUserProvidedFunctionAppWithStaticSiteBuild(resourceGroupName, name, environmentName,
+            functionAppName, staticSiteUserProvidedFunctionEnvelope, isForced).getFinalResult();
     }
 
     /**
@@ -5900,8 +6686,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         String resourceGroupName, String name, String environmentName, String functionAppName,
         StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced,
         Context context) {
-        return registerUserProvidedFunctionAppWithStaticSiteBuildAsync(resourceGroupName, name, environmentName,
-            functionAppName, staticSiteUserProvidedFunctionEnvelope, isForced, context).block();
+        return beginRegisterUserProvidedFunctionAppWithStaticSiteBuild(resourceGroupName, name, environmentName,
+            functionAppName, staticSiteUserProvidedFunctionEnvelope, isForced, context).getFinalResult();
     }
 
     /**
@@ -5961,54 +6747,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
      * @param functionAppName Name of the function app registered with the static site build.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> detachUserProvidedFunctionAppFromStaticSiteBuildWithResponseAsync(
-        String resourceGroupName, String name, String environmentName, String functionAppName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (functionAppName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter functionAppName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.detachUserProvidedFunctionAppFromStaticSiteBuild(this.client.getEndpoint(), resourceGroupName,
-            name, environmentName, functionAppName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            accept, context);
-    }
-
-    /**
-     * Detach the user provided function app from the static site build
-     * 
-     * Description for Detach the user provided function app from the static site build.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param functionAppName Name of the function app registered with the static site build.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6039,8 +6777,35 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> detachUserProvidedFunctionAppFromStaticSiteBuildWithResponse(String resourceGroupName,
         String name, String environmentName, String functionAppName, Context context) {
-        return detachUserProvidedFunctionAppFromStaticSiteBuildWithResponseAsync(resourceGroupName, name,
-            environmentName, functionAppName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (functionAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter functionAppName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.detachUserProvidedFunctionAppFromStaticSiteBuildSync(this.client.getEndpoint(),
+            resourceGroupName, name, environmentName, functionAppName, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -6125,44 +6890,98 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param environmentName Name of the environment.
      * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
      * example.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createZipDeploymentForStaticSiteBuildWithResponseAsync(
-        String resourceGroupName, String name, String environmentName,
-        StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope, Context context) {
+    private Response<BinaryData> createZipDeploymentForStaticSiteBuildWithResponse(String resourceGroupName,
+        String name, String environmentName, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (staticSiteZipDeploymentEnvelope == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter staticSiteZipDeploymentEnvelope is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter staticSiteZipDeploymentEnvelope is required and cannot be null."));
         } else {
             staticSiteZipDeploymentEnvelope.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createZipDeploymentForStaticSiteBuild(this.client.getEndpoint(), resourceGroupName, name,
+        return service.createZipDeploymentForStaticSiteBuildSync(this.client.getEndpoint(), resourceGroupName, name,
+            environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+            staticSiteZipDeploymentEnvelope, accept, Context.NONE);
+    }
+
+    /**
+     * Deploys zipped content to a specific environment of a static site.
+     * 
+     * Description for Deploys zipped content to a specific environment of a static site.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName Name of the environment.
+     * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
+     * example.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createZipDeploymentForStaticSiteBuildWithResponse(String resourceGroupName,
+        String name, String environmentName, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (staticSiteZipDeploymentEnvelope == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter staticSiteZipDeploymentEnvelope is required and cannot be null."));
+        } else {
+            staticSiteZipDeploymentEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return service.createZipDeploymentForStaticSiteBuildSync(this.client.getEndpoint(), resourceGroupName, name,
             environmentName, this.client.getSubscriptionId(), this.client.getApiVersion(),
             staticSiteZipDeploymentEnvelope, accept, context);
     }
@@ -6201,33 +7020,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param environmentName Name of the environment.
      * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
      * example.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSiteBuildAsync(String resourceGroupName,
-        String name, String environmentName, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createZipDeploymentForStaticSiteBuildWithResponseAsync(
-            resourceGroupName, name, environmentName, staticSiteZipDeploymentEnvelope, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Deploys zipped content to a specific environment of a static site.
-     * 
-     * Description for Deploys zipped content to a specific environment of a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName Name of the environment.
-     * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
-     * example.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6236,10 +7028,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSiteBuild(String resourceGroupName,
         String name, String environmentName, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope) {
-        return this
-            .beginCreateZipDeploymentForStaticSiteBuildAsync(resourceGroupName, name, environmentName,
-                staticSiteZipDeploymentEnvelope)
-            .getSyncPoller();
+        Response<BinaryData> response = createZipDeploymentForStaticSiteBuildWithResponse(resourceGroupName, name,
+            environmentName, staticSiteZipDeploymentEnvelope);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -6262,10 +7053,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public SyncPoller<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSiteBuild(String resourceGroupName,
         String name, String environmentName, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope,
         Context context) {
-        return this
-            .beginCreateZipDeploymentForStaticSiteBuildAsync(resourceGroupName, name, environmentName,
-                staticSiteZipDeploymentEnvelope, context)
-            .getSyncPoller();
+        Response<BinaryData> response = createZipDeploymentForStaticSiteBuildWithResponse(resourceGroupName, name,
+            environmentName, staticSiteZipDeploymentEnvelope, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -6300,29 +7090,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param environmentName Name of the environment.
      * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
      * example.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> createZipDeploymentForStaticSiteBuildAsync(String resourceGroupName, String name,
-        String environmentName, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope, Context context) {
-        return beginCreateZipDeploymentForStaticSiteBuildAsync(resourceGroupName, name, environmentName,
-            staticSiteZipDeploymentEnvelope, context).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deploys zipped content to a specific environment of a static site.
-     * 
-     * Description for Deploys zipped content to a specific environment of a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName Name of the environment.
-     * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
-     * example.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6330,8 +7097,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void createZipDeploymentForStaticSiteBuild(String resourceGroupName, String name, String environmentName,
         StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope) {
-        createZipDeploymentForStaticSiteBuildAsync(resourceGroupName, name, environmentName,
-            staticSiteZipDeploymentEnvelope).block();
+        beginCreateZipDeploymentForStaticSiteBuild(resourceGroupName, name, environmentName,
+            staticSiteZipDeploymentEnvelope).getFinalResult();
     }
 
     /**
@@ -6352,8 +7119,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void createZipDeploymentForStaticSiteBuild(String resourceGroupName, String name, String environmentName,
         StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope, Context context) {
-        createZipDeploymentForStaticSiteBuildAsync(resourceGroupName, name, environmentName,
-            staticSiteZipDeploymentEnvelope, context).block();
+        beginCreateZipDeploymentForStaticSiteBuild(resourceGroupName, name, environmentName,
+            staticSiteZipDeploymentEnvelope, context).getFinalResult();
     }
 
     /**
@@ -6408,49 +7175,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param appSettings The dictionary containing the static site app settings to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StringDictionaryInner>> createOrUpdateStaticSiteAppSettingsWithResponseAsync(
-        String resourceGroupName, String name, StringDictionaryInner appSettings, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (appSettings == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appSettings is required and cannot be null."));
-        } else {
-            appSettings.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdateStaticSiteAppSettings(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), appSettings, accept, context);
-    }
-
-    /**
-     * Creates or updates the app settings of a static site.
-     * 
-     * Description for Creates or updates the app settings of a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param appSettings The dictionary containing the static site app settings to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6480,8 +7204,32 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StringDictionaryInner> createOrUpdateStaticSiteAppSettingsWithResponse(String resourceGroupName,
         String name, StringDictionaryInner appSettings, Context context) {
-        return createOrUpdateStaticSiteAppSettingsWithResponseAsync(resourceGroupName, name, appSettings, context)
-            .block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (appSettings == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter appSettings is required and cannot be null."));
+        } else {
+            appSettings.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateStaticSiteAppSettingsSync(this.client.getEndpoint(), resourceGroupName, name,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), appSettings, accept, context);
     }
 
     /**
@@ -6552,47 +7300,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site basic auth along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteBasicAuthPropertiesArmResourceInner>>
-        listBasicAuthSinglePageAsync(String resourceGroupName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listBasicAuth(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Gets the basic auth properties for a static site as a collection.
-     * 
-     * Description for Gets the basic auth properties for a static site as a collection.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6612,17 +7319,77 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site basic auth along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteBasicAuthPropertiesArmResourceInner>
+        listBasicAuthSinglePage(String resourceGroupName, String name) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteBasicAuthPropertiesCollection> res
+            = service.listBasicAuthSync(this.client.getEndpoint(), resourceGroupName, name,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Gets the basic auth properties for a static site as a collection.
+     * 
+     * Description for Gets the basic auth properties for a static site as a collection.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site basic auth as paginated response with {@link PagedFlux}.
+     * @return collection of static site basic auth along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StaticSiteBasicAuthPropertiesArmResourceInner> listBasicAuthAsync(String resourceGroupName,
-        String name, Context context) {
-        return new PagedFlux<>(() -> listBasicAuthSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> listBasicAuthNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteBasicAuthPropertiesArmResourceInner>
+        listBasicAuthSinglePage(String resourceGroupName, String name, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteBasicAuthPropertiesCollection> res = service.listBasicAuthSync(this.client.getEndpoint(),
+            resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -6640,7 +7407,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteBasicAuthPropertiesArmResourceInner> listBasicAuth(String resourceGroupName,
         String name) {
-        return new PagedIterable<>(listBasicAuthAsync(resourceGroupName, name));
+        return new PagedIterable<>(() -> listBasicAuthSinglePage(resourceGroupName, name),
+            nextLink -> listBasicAuthNextSinglePage(nextLink));
     }
 
     /**
@@ -6659,7 +7427,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteBasicAuthPropertiesArmResourceInner> listBasicAuth(String resourceGroupName,
         String name, Context context) {
-        return new PagedIterable<>(listBasicAuthAsync(resourceGroupName, name, context));
+        return new PagedIterable<>(() -> listBasicAuthSinglePage(resourceGroupName, name, context),
+            nextLink -> listBasicAuthNextSinglePage(nextLink, context));
     }
 
     /**
@@ -6712,48 +7481,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param basicAuthName name of the basic auth entry.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static site basic auth properties ARM resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StaticSiteBasicAuthPropertiesArmResourceInner>> getBasicAuthWithResponseAsync(
-        String resourceGroupName, String name, BasicAuthName basicAuthName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (basicAuthName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter basicAuthName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getBasicAuth(this.client.getEndpoint(), resourceGroupName, name, basicAuthName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Gets the basic auth properties for a static site.
-     * 
-     * Description for Gets the basic auth properties for a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param basicAuthName name of the basic auth entry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6783,7 +7510,30 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StaticSiteBasicAuthPropertiesArmResourceInner> getBasicAuthWithResponse(String resourceGroupName,
         String name, BasicAuthName basicAuthName, Context context) {
-        return getBasicAuthWithResponseAsync(resourceGroupName, name, basicAuthName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (basicAuthName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter basicAuthName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getBasicAuthSync(this.client.getEndpoint(), resourceGroupName, name, basicAuthName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -6865,56 +7615,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param name Name of the static site.
      * @param basicAuthName name of the basic auth entry.
      * @param basicAuthEnvelope A JSON representation of the basic auth properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static site basic auth properties ARM resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StaticSiteBasicAuthPropertiesArmResourceInner>> createOrUpdateBasicAuthWithResponseAsync(
-        String resourceGroupName, String name, BasicAuthName basicAuthName,
-        StaticSiteBasicAuthPropertiesArmResourceInner basicAuthEnvelope, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (basicAuthName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter basicAuthName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (basicAuthEnvelope == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter basicAuthEnvelope is required and cannot be null."));
-        } else {
-            basicAuthEnvelope.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdateBasicAuth(this.client.getEndpoint(), resourceGroupName, name, basicAuthName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), basicAuthEnvelope, accept, context);
-    }
-
-    /**
-     * Adds or updates basic auth for a static site.
-     * 
-     * Description for Adds or updates basic auth for a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param basicAuthName name of the basic auth entry.
-     * @param basicAuthEnvelope A JSON representation of the basic auth properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -6946,8 +7646,36 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public Response<StaticSiteBasicAuthPropertiesArmResourceInner> createOrUpdateBasicAuthWithResponse(
         String resourceGroupName, String name, BasicAuthName basicAuthName,
         StaticSiteBasicAuthPropertiesArmResourceInner basicAuthEnvelope, Context context) {
-        return createOrUpdateBasicAuthWithResponseAsync(resourceGroupName, name, basicAuthName, basicAuthEnvelope,
-            context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (basicAuthName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter basicAuthName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (basicAuthEnvelope == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter basicAuthEnvelope is required and cannot be null."));
+        } else {
+            basicAuthEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateBasicAuthSync(this.client.getEndpoint(), resourceGroupName, name, basicAuthName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), basicAuthEnvelope, accept, context);
     }
 
     /**
@@ -7023,49 +7751,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param appSettings The dictionary containing the static site function app settings to update.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StringDictionaryInner>> createOrUpdateStaticSiteFunctionAppSettingsWithResponseAsync(
-        String resourceGroupName, String name, StringDictionaryInner appSettings, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (appSettings == null) {
-            return Mono.error(new IllegalArgumentException("Parameter appSettings is required and cannot be null."));
-        } else {
-            appSettings.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdateStaticSiteFunctionAppSettings(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), appSettings, accept, context);
-    }
-
-    /**
-     * Creates or updates the function app settings of a static site.
-     * 
-     * Description for Creates or updates the function app settings of a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param appSettings The dictionary containing the static site function app settings to update.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -7095,8 +7780,32 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StringDictionaryInner> createOrUpdateStaticSiteFunctionAppSettingsWithResponse(
         String resourceGroupName, String name, StringDictionaryInner appSettings, Context context) {
-        return createOrUpdateStaticSiteFunctionAppSettingsWithResponseAsync(resourceGroupName, name, appSettings,
-            context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (appSettings == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter appSettings is required and cannot be null."));
+        } else {
+            appSettings.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateStaticSiteFunctionAppSettingsSync(this.client.getEndpoint(), resourceGroupName,
+            name, this.client.getSubscriptionId(), this.client.getApiVersion(), appSettings, accept, context);
     }
 
     /**
@@ -7174,53 +7883,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param staticSiteUserRolesInvitationEnvelope The staticSiteUserRolesInvitationEnvelope parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static sites user roles invitation link resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StaticSiteUserInvitationResponseResourceInner>>
-        createUserRolesInvitationLinkWithResponseAsync(String resourceGroupName, String name,
-            StaticSiteUserInvitationRequestResource staticSiteUserRolesInvitationEnvelope, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (staticSiteUserRolesInvitationEnvelope == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter staticSiteUserRolesInvitationEnvelope is required and cannot be null."));
-        } else {
-            staticSiteUserRolesInvitationEnvelope.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createUserRolesInvitationLink(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), staticSiteUserRolesInvitationEnvelope, accept,
-            context);
-    }
-
-    /**
-     * Creates an invitation link for a user with the role
-     * 
-     * Description for Creates an invitation link for a user with the role.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param staticSiteUserRolesInvitationEnvelope The staticSiteUserRolesInvitationEnvelope parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -7252,8 +7914,34 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public Response<StaticSiteUserInvitationResponseResourceInner> createUserRolesInvitationLinkWithResponse(
         String resourceGroupName, String name,
         StaticSiteUserInvitationRequestResource staticSiteUserRolesInvitationEnvelope, Context context) {
-        return createUserRolesInvitationLinkWithResponseAsync(resourceGroupName, name,
-            staticSiteUserRolesInvitationEnvelope, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (staticSiteUserRolesInvitationEnvelope == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter staticSiteUserRolesInvitationEnvelope is required and cannot be null."));
+        } else {
+            staticSiteUserRolesInvitationEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return service.createUserRolesInvitationLinkSync(this.client.getEndpoint(), resourceGroupName, name,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), staticSiteUserRolesInvitationEnvelope, accept,
+            context);
     }
 
     /**
@@ -7324,47 +8012,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site resource to search in.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site custom domains along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteCustomDomainOverviewArmResourceInner>>
-        listStaticSiteCustomDomainsSinglePageAsync(String resourceGroupName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listStaticSiteCustomDomains(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Gets all static site custom domains for a particular static site.
-     * 
-     * Description for Gets all static site custom domains for a particular static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site resource to search in.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -7384,17 +8031,78 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site resource to search in.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site custom domains along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteCustomDomainOverviewArmResourceInner>
+        listStaticSiteCustomDomainsSinglePage(String resourceGroupName, String name) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteCustomDomainOverviewCollection> res
+            = service.listStaticSiteCustomDomainsSync(this.client.getEndpoint(), resourceGroupName, name,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Gets all static site custom domains for a particular static site.
+     * 
+     * Description for Gets all static site custom domains for a particular static site.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site resource to search in.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site custom domains as paginated response with {@link PagedFlux}.
+     * @return collection of static site custom domains along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StaticSiteCustomDomainOverviewArmResourceInner>
-        listStaticSiteCustomDomainsAsync(String resourceGroupName, String name, Context context) {
-        return new PagedFlux<>(() -> listStaticSiteCustomDomainsSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> listStaticSiteCustomDomainsNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteCustomDomainOverviewArmResourceInner>
+        listStaticSiteCustomDomainsSinglePage(String resourceGroupName, String name, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteCustomDomainOverviewCollection> res
+            = service.listStaticSiteCustomDomainsSync(this.client.getEndpoint(), resourceGroupName, name,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -7412,7 +8120,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteCustomDomainOverviewArmResourceInner>
         listStaticSiteCustomDomains(String resourceGroupName, String name) {
-        return new PagedIterable<>(listStaticSiteCustomDomainsAsync(resourceGroupName, name));
+        return new PagedIterable<>(() -> listStaticSiteCustomDomainsSinglePage(resourceGroupName, name),
+            nextLink -> listStaticSiteCustomDomainsNextSinglePage(nextLink));
     }
 
     /**
@@ -7431,7 +8140,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteCustomDomainOverviewArmResourceInner>
         listStaticSiteCustomDomains(String resourceGroupName, String name, Context context) {
-        return new PagedIterable<>(listStaticSiteCustomDomainsAsync(resourceGroupName, name, context));
+        return new PagedIterable<>(() -> listStaticSiteCustomDomainsSinglePage(resourceGroupName, name, context),
+            nextLink -> listStaticSiteCustomDomainsNextSinglePage(nextLink, context));
     }
 
     /**
@@ -7484,48 +8194,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site resource to search in.
      * @param domainName The custom domain name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Custom Domain Overview ARM resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StaticSiteCustomDomainOverviewArmResourceInner>> getStaticSiteCustomDomainWithResponseAsync(
-        String resourceGroupName, String name, String domainName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getStaticSiteCustomDomain(this.client.getEndpoint(), resourceGroupName, name, domainName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Gets an existing custom domain for a particular static site.
-     * 
-     * Description for Gets an existing custom domain for a particular static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site resource to search in.
-     * @param domainName The custom domain name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -7555,7 +8223,30 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StaticSiteCustomDomainOverviewArmResourceInner> getStaticSiteCustomDomainWithResponse(
         String resourceGroupName, String name, String domainName, Context context) {
-        return getStaticSiteCustomDomainWithResponseAsync(resourceGroupName, name, domainName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (domainName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getStaticSiteCustomDomainSync(this.client.getEndpoint(), resourceGroupName, name, domainName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -7639,45 +8330,100 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param domainName The custom domain to create.
      * @param staticSiteCustomDomainRequestPropertiesEnvelope A JSON representation of the static site custom domain
      * request properties. See example.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Custom Domain Overview ARM resource along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return static Site Custom Domain Overview ARM resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateStaticSiteCustomDomainWithResponseAsync(
-        String resourceGroupName, String name, String domainName,
-        StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope,
-        Context context) {
+    private Response<BinaryData> createOrUpdateStaticSiteCustomDomainWithResponse(String resourceGroupName, String name,
+        String domainName,
+        StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (staticSiteCustomDomainRequestPropertiesEnvelope == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter staticSiteCustomDomainRequestPropertiesEnvelope is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter staticSiteCustomDomainRequestPropertiesEnvelope is required and cannot be null."));
         } else {
             staticSiteCustomDomainRequestPropertiesEnvelope.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdateStaticSiteCustomDomain(this.client.getEndpoint(), resourceGroupName, name,
+        return service.createOrUpdateStaticSiteCustomDomainSync(this.client.getEndpoint(), resourceGroupName, name,
+            domainName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+            staticSiteCustomDomainRequestPropertiesEnvelope, accept, Context.NONE);
+    }
+
+    /**
+     * Creates a new static site custom domain in an existing resource group and static site.
+     * 
+     * Description for Creates a new static site custom domain in an existing resource group and static site.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param domainName The custom domain to create.
+     * @param staticSiteCustomDomainRequestPropertiesEnvelope A JSON representation of the static site custom domain
+     * request properties. See example.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Custom Domain Overview ARM resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createOrUpdateStaticSiteCustomDomainWithResponse(String resourceGroupName, String name,
+        String domainName,
+        StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (domainName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (staticSiteCustomDomainRequestPropertiesEnvelope == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter staticSiteCustomDomainRequestPropertiesEnvelope is required and cannot be null."));
+        } else {
+            staticSiteCustomDomainRequestPropertiesEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateStaticSiteCustomDomainSync(this.client.getEndpoint(), resourceGroupName, name,
             domainName, this.client.getSubscriptionId(), this.client.getApiVersion(),
             staticSiteCustomDomainRequestPropertiesEnvelope, accept, context);
     }
@@ -7720,37 +8466,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param domainName The custom domain to create.
      * @param staticSiteCustomDomainRequestPropertiesEnvelope A JSON representation of the static site custom domain
      * request properties. See example.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of static Site Custom Domain Overview ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private
-        PollerFlux<PollResult<StaticSiteCustomDomainOverviewArmResourceInner>, StaticSiteCustomDomainOverviewArmResourceInner>
-        beginCreateOrUpdateStaticSiteCustomDomainAsync(String resourceGroupName, String name, String domainName,
-            StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope,
-            Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateStaticSiteCustomDomainWithResponseAsync(resourceGroupName,
-            name, domainName, staticSiteCustomDomainRequestPropertiesEnvelope, context);
-        return this.client
-            .<StaticSiteCustomDomainOverviewArmResourceInner, StaticSiteCustomDomainOverviewArmResourceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), StaticSiteCustomDomainOverviewArmResourceInner.class,
-                StaticSiteCustomDomainOverviewArmResourceInner.class, context);
-    }
-
-    /**
-     * Creates a new static site custom domain in an existing resource group and static site.
-     * 
-     * Description for Creates a new static site custom domain in an existing resource group and static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param domainName The custom domain to create.
-     * @param staticSiteCustomDomainRequestPropertiesEnvelope A JSON representation of the static site custom domain
-     * request properties. See example.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -7761,10 +8476,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         SyncPoller<PollResult<StaticSiteCustomDomainOverviewArmResourceInner>, StaticSiteCustomDomainOverviewArmResourceInner>
         beginCreateOrUpdateStaticSiteCustomDomain(String resourceGroupName, String name, String domainName,
             StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope) {
-        return this
-            .beginCreateOrUpdateStaticSiteCustomDomainAsync(resourceGroupName, name, domainName,
-                staticSiteCustomDomainRequestPropertiesEnvelope)
-            .getSyncPoller();
+        Response<BinaryData> response = createOrUpdateStaticSiteCustomDomainWithResponse(resourceGroupName, name,
+            domainName, staticSiteCustomDomainRequestPropertiesEnvelope);
+        return this.client
+            .<StaticSiteCustomDomainOverviewArmResourceInner, StaticSiteCustomDomainOverviewArmResourceInner>getLroResult(
+                response, StaticSiteCustomDomainOverviewArmResourceInner.class,
+                StaticSiteCustomDomainOverviewArmResourceInner.class, Context.NONE);
     }
 
     /**
@@ -7789,10 +8506,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         beginCreateOrUpdateStaticSiteCustomDomain(String resourceGroupName, String name, String domainName,
             StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope,
             Context context) {
-        return this
-            .beginCreateOrUpdateStaticSiteCustomDomainAsync(resourceGroupName, name, domainName,
-                staticSiteCustomDomainRequestPropertiesEnvelope, context)
-            .getSyncPoller();
+        Response<BinaryData> response = createOrUpdateStaticSiteCustomDomainWithResponse(resourceGroupName, name,
+            domainName, staticSiteCustomDomainRequestPropertiesEnvelope, context);
+        return this.client
+            .<StaticSiteCustomDomainOverviewArmResourceInner, StaticSiteCustomDomainOverviewArmResourceInner>getLroResult(
+                response, StaticSiteCustomDomainOverviewArmResourceInner.class,
+                StaticSiteCustomDomainOverviewArmResourceInner.class, context);
     }
 
     /**
@@ -7828,32 +8547,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param domainName The custom domain to create.
      * @param staticSiteCustomDomainRequestPropertiesEnvelope A JSON representation of the static site custom domain
      * request properties. See example.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Custom Domain Overview ARM resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StaticSiteCustomDomainOverviewArmResourceInner> createOrUpdateStaticSiteCustomDomainAsync(
-        String resourceGroupName, String name, String domainName,
-        StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope,
-        Context context) {
-        return beginCreateOrUpdateStaticSiteCustomDomainAsync(resourceGroupName, name, domainName,
-            staticSiteCustomDomainRequestPropertiesEnvelope, context).last()
-                .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Creates a new static site custom domain in an existing resource group and static site.
-     * 
-     * Description for Creates a new static site custom domain in an existing resource group and static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param domainName The custom domain to create.
-     * @param staticSiteCustomDomainRequestPropertiesEnvelope A JSON representation of the static site custom domain
-     * request properties. See example.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -7863,8 +8556,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public StaticSiteCustomDomainOverviewArmResourceInner createOrUpdateStaticSiteCustomDomain(String resourceGroupName,
         String name, String domainName,
         StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope) {
-        return createOrUpdateStaticSiteCustomDomainAsync(resourceGroupName, name, domainName,
-            staticSiteCustomDomainRequestPropertiesEnvelope).block();
+        return beginCreateOrUpdateStaticSiteCustomDomain(resourceGroupName, name, domainName,
+            staticSiteCustomDomainRequestPropertiesEnvelope).getFinalResult();
     }
 
     /**
@@ -7888,8 +8581,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         String name, String domainName,
         StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope,
         Context context) {
-        return createOrUpdateStaticSiteCustomDomainAsync(resourceGroupName, name, domainName,
-            staticSiteCustomDomainRequestPropertiesEnvelope, context).block();
+        return beginCreateOrUpdateStaticSiteCustomDomain(resourceGroupName, name, domainName,
+            staticSiteCustomDomainRequestPropertiesEnvelope, context).getFinalResult();
     }
 
     /**
@@ -7941,36 +8634,80 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to delete.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deleteStaticSiteCustomDomainWithResponse(String resourceGroupName, String name,
+        String domainName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (domainName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteStaticSiteCustomDomainSync(this.client.getEndpoint(), resourceGroupName, name, domainName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Deletes a custom domain.
+     * 
+     * Description for Deletes a custom domain.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param domainName The custom domain to delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteStaticSiteCustomDomainWithResponseAsync(String resourceGroupName,
-        String name, String domainName, Context context) {
+    private Response<BinaryData> deleteStaticSiteCustomDomainWithResponse(String resourceGroupName, String name,
+        String domainName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.deleteStaticSiteCustomDomain(this.client.getEndpoint(), resourceGroupName, name, domainName,
+        return service.deleteStaticSiteCustomDomainSync(this.client.getEndpoint(), resourceGroupName, name, domainName,
             this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
@@ -8004,30 +8741,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteStaticSiteCustomDomainAsync(String resourceGroupName,
-        String name, String domainName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteStaticSiteCustomDomainWithResponseAsync(resourceGroupName, name, domainName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Deletes a custom domain.
-     * 
-     * Description for Deletes a custom domain.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param domainName The custom domain to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -8036,7 +8749,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteStaticSiteCustomDomain(String resourceGroupName, String name,
         String domainName) {
-        return this.beginDeleteStaticSiteCustomDomainAsync(resourceGroupName, name, domainName).getSyncPoller();
+        Response<BinaryData> response = deleteStaticSiteCustomDomainWithResponse(resourceGroupName, name, domainName);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -8056,8 +8770,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteStaticSiteCustomDomain(String resourceGroupName, String name,
         String domainName, Context context) {
-        return this.beginDeleteStaticSiteCustomDomainAsync(resourceGroupName, name, domainName, context)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = deleteStaticSiteCustomDomainWithResponse(resourceGroupName, name, domainName, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -8087,34 +8802,13 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param domainName The custom domain to delete.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteStaticSiteCustomDomainAsync(String resourceGroupName, String name, String domainName,
-        Context context) {
-        return beginDeleteStaticSiteCustomDomainAsync(resourceGroupName, name, domainName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes a custom domain.
-     * 
-     * Description for Deletes a custom domain.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param domainName The custom domain to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteStaticSiteCustomDomain(String resourceGroupName, String name, String domainName) {
-        deleteStaticSiteCustomDomainAsync(resourceGroupName, name, domainName).block();
+        beginDeleteStaticSiteCustomDomain(resourceGroupName, name, domainName).getFinalResult();
     }
 
     /**
@@ -8133,7 +8827,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void deleteStaticSiteCustomDomain(String resourceGroupName, String name, String domainName,
         Context context) {
-        deleteStaticSiteCustomDomainAsync(resourceGroupName, name, domainName, context).block();
+        beginDeleteStaticSiteCustomDomain(resourceGroupName, name, domainName, context).getFinalResult();
     }
 
     /**
@@ -8197,45 +8891,101 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param domainName The custom domain to validate.
      * @param staticSiteCustomDomainRequestPropertiesEnvelope A JSON representation of the static site custom domain
      * request properties. See example.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> validateCustomDomainCanBeAddedToStaticSiteWithResponseAsync(
-        String resourceGroupName, String name, String domainName,
-        StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope,
-        Context context) {
+    private Response<BinaryData> validateCustomDomainCanBeAddedToStaticSiteWithResponse(String resourceGroupName,
+        String name, String domainName,
+        StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (domainName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (staticSiteCustomDomainRequestPropertiesEnvelope == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter staticSiteCustomDomainRequestPropertiesEnvelope is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter staticSiteCustomDomainRequestPropertiesEnvelope is required and cannot be null."));
         } else {
             staticSiteCustomDomainRequestPropertiesEnvelope.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.validateCustomDomainCanBeAddedToStaticSite(this.client.getEndpoint(), resourceGroupName, name,
-            domainName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+        return service.validateCustomDomainCanBeAddedToStaticSiteSync(this.client.getEndpoint(), resourceGroupName,
+            name, domainName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+            staticSiteCustomDomainRequestPropertiesEnvelope, accept, Context.NONE);
+    }
+
+    /**
+     * Validates a particular custom domain can be added to a static site.
+     * 
+     * Description for Validates a particular custom domain can be added to a static site.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param domainName The custom domain to validate.
+     * @param staticSiteCustomDomainRequestPropertiesEnvelope A JSON representation of the static site custom domain
+     * request properties. See example.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> validateCustomDomainCanBeAddedToStaticSiteWithResponse(String resourceGroupName,
+        String name, String domainName,
+        StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (domainName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter domainName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (staticSiteCustomDomainRequestPropertiesEnvelope == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter staticSiteCustomDomainRequestPropertiesEnvelope is required and cannot be null."));
+        } else {
+            staticSiteCustomDomainRequestPropertiesEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return service.validateCustomDomainCanBeAddedToStaticSiteSync(this.client.getEndpoint(), resourceGroupName,
+            name, domainName, this.client.getSubscriptionId(), this.client.getApiVersion(),
             staticSiteCustomDomainRequestPropertiesEnvelope, accept, context);
     }
 
@@ -8274,34 +9024,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param domainName The custom domain to validate.
      * @param staticSiteCustomDomainRequestPropertiesEnvelope A JSON representation of the static site custom domain
      * request properties. See example.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginValidateCustomDomainCanBeAddedToStaticSiteAsync(
-        String resourceGroupName, String name, String domainName,
-        StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = validateCustomDomainCanBeAddedToStaticSiteWithResponseAsync(
-            resourceGroupName, name, domainName, staticSiteCustomDomainRequestPropertiesEnvelope, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Validates a particular custom domain can be added to a static site.
-     * 
-     * Description for Validates a particular custom domain can be added to a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param domainName The custom domain to validate.
-     * @param staticSiteCustomDomainRequestPropertiesEnvelope A JSON representation of the static site custom domain
-     * request properties. See example.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -8311,10 +9033,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public SyncPoller<PollResult<Void>, Void> beginValidateCustomDomainCanBeAddedToStaticSite(String resourceGroupName,
         String name, String domainName,
         StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope) {
-        return this
-            .beginValidateCustomDomainCanBeAddedToStaticSiteAsync(resourceGroupName, name, domainName,
-                staticSiteCustomDomainRequestPropertiesEnvelope)
-            .getSyncPoller();
+        Response<BinaryData> response = validateCustomDomainCanBeAddedToStaticSiteWithResponse(resourceGroupName, name,
+            domainName, staticSiteCustomDomainRequestPropertiesEnvelope);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -8338,10 +9059,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         String name, String domainName,
         StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope,
         Context context) {
-        return this
-            .beginValidateCustomDomainCanBeAddedToStaticSiteAsync(resourceGroupName, name, domainName,
-                staticSiteCustomDomainRequestPropertiesEnvelope, context)
-            .getSyncPoller();
+        Response<BinaryData> response = validateCustomDomainCanBeAddedToStaticSiteWithResponse(resourceGroupName, name,
+            domainName, staticSiteCustomDomainRequestPropertiesEnvelope, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -8377,32 +9097,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param domainName The custom domain to validate.
      * @param staticSiteCustomDomainRequestPropertiesEnvelope A JSON representation of the static site custom domain
      * request properties. See example.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> validateCustomDomainCanBeAddedToStaticSiteAsync(String resourceGroupName, String name,
-        String domainName,
-        StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope,
-        Context context) {
-        return beginValidateCustomDomainCanBeAddedToStaticSiteAsync(resourceGroupName, name, domainName,
-            staticSiteCustomDomainRequestPropertiesEnvelope, context).last()
-                .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Validates a particular custom domain can be added to a static site.
-     * 
-     * Description for Validates a particular custom domain can be added to a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param domainName The custom domain to validate.
-     * @param staticSiteCustomDomainRequestPropertiesEnvelope A JSON representation of the static site custom domain
-     * request properties. See example.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -8410,8 +9104,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void validateCustomDomainCanBeAddedToStaticSite(String resourceGroupName, String name, String domainName,
         StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope) {
-        validateCustomDomainCanBeAddedToStaticSiteAsync(resourceGroupName, name, domainName,
-            staticSiteCustomDomainRequestPropertiesEnvelope).block();
+        beginValidateCustomDomainCanBeAddedToStaticSite(resourceGroupName, name, domainName,
+            staticSiteCustomDomainRequestPropertiesEnvelope).getFinalResult();
     }
 
     /**
@@ -8433,8 +9127,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public void validateCustomDomainCanBeAddedToStaticSite(String resourceGroupName, String name, String domainName,
         StaticSiteCustomDomainRequestPropertiesArmResource staticSiteCustomDomainRequestPropertiesEnvelope,
         Context context) {
-        validateCustomDomainCanBeAddedToStaticSiteAsync(resourceGroupName, name, domainName,
-            staticSiteCustomDomainRequestPropertiesEnvelope, context).block();
+        beginValidateCustomDomainCanBeAddedToStaticSite(resourceGroupName, name, domainName,
+            staticSiteCustomDomainRequestPropertiesEnvelope, context).getFinalResult();
     }
 
     /**
@@ -8480,45 +9174,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site database connections along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatabaseConnectionInner>> getDatabaseConnectionsSinglePageAsync(String resourceGroupName,
-        String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .getDatabaseConnections(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Returns overviews of database connections for a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -8535,17 +9190,75 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site database connections along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DatabaseConnectionInner> getDatabaseConnectionsSinglePage(String resourceGroupName,
+        String name) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DatabaseConnectionCollection> res
+            = service.getDatabaseConnectionsSync(this.client.getEndpoint(), resourceGroupName, name,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Returns overviews of database connections for a static site.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site database connections as paginated response with {@link PagedFlux}.
+     * @return collection of static site database connections along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DatabaseConnectionInner> getDatabaseConnectionsAsync(String resourceGroupName, String name,
-        Context context) {
-        return new PagedFlux<>(() -> getDatabaseConnectionsSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> getDatabaseConnectionsNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DatabaseConnectionInner> getDatabaseConnectionsSinglePage(String resourceGroupName,
+        String name, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DatabaseConnectionCollection> res = service.getDatabaseConnectionsSync(this.client.getEndpoint(),
+            resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -8560,7 +9273,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseConnectionInner> getDatabaseConnections(String resourceGroupName, String name) {
-        return new PagedIterable<>(getDatabaseConnectionsAsync(resourceGroupName, name));
+        return new PagedIterable<>(() -> getDatabaseConnectionsSinglePage(resourceGroupName, name),
+            nextLink -> getDatabaseConnectionsNextSinglePage(nextLink));
     }
 
     /**
@@ -8577,7 +9291,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseConnectionInner> getDatabaseConnections(String resourceGroupName, String name,
         Context context) {
-        return new PagedIterable<>(getDatabaseConnectionsAsync(resourceGroupName, name, context));
+        return new PagedIterable<>(() -> getDatabaseConnectionsSinglePage(resourceGroupName, name, context),
+            nextLink -> getDatabaseConnectionsNextSinglePage(nextLink, context));
     }
 
     /**
@@ -8627,47 +9342,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param databaseConnectionName Name of the database connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatabaseConnectionInner>> getDatabaseConnectionWithResponseAsync(String resourceGroupName,
-        String name, String databaseConnectionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (databaseConnectionName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter databaseConnectionName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getDatabaseConnection(this.client.getEndpoint(), resourceGroupName, name, databaseConnectionName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Returns overview of a database connection for a static site by name.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param databaseConnectionName Name of the database connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -8695,7 +9369,30 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatabaseConnectionInner> getDatabaseConnectionWithResponse(String resourceGroupName, String name,
         String databaseConnectionName, Context context) {
-        return getDatabaseConnectionWithResponseAsync(resourceGroupName, name, databaseConnectionName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (databaseConnectionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter databaseConnectionName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getDatabaseConnectionSync(this.client.getEndpoint(), resourceGroupName, name,
+            databaseConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -8777,58 +9474,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param name Name of the static site.
      * @param databaseConnectionName Name of the database connection.
      * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatabaseConnectionInner>> createOrUpdateDatabaseConnectionWithResponseAsync(
-        String resourceGroupName, String name, String databaseConnectionName,
-        DatabaseConnectionInner databaseConnectionRequestEnvelope, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (databaseConnectionName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter databaseConnectionName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (databaseConnectionRequestEnvelope == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter databaseConnectionRequestEnvelope is required and cannot be null."));
-        } else {
-            databaseConnectionRequestEnvelope.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createOrUpdateDatabaseConnection(this.client.getEndpoint(), resourceGroupName, name,
-            databaseConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            databaseConnectionRequestEnvelope, accept, context);
-    }
-
-    /**
-     * Create or update a database connection for a static site
-     * 
-     * Description for Create or update a database connection for a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param databaseConnectionName Name of the database connection.
-     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -8860,8 +9505,38 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public Response<DatabaseConnectionInner> createOrUpdateDatabaseConnectionWithResponse(String resourceGroupName,
         String name, String databaseConnectionName, DatabaseConnectionInner databaseConnectionRequestEnvelope,
         Context context) {
-        return createOrUpdateDatabaseConnectionWithResponseAsync(resourceGroupName, name, databaseConnectionName,
-            databaseConnectionRequestEnvelope, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (databaseConnectionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter databaseConnectionName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (databaseConnectionRequestEnvelope == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter databaseConnectionRequestEnvelope is required and cannot be null."));
+        } else {
+            databaseConnectionRequestEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return service.createOrUpdateDatabaseConnectionSync(this.client.getEndpoint(), resourceGroupName, name,
+            databaseConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+            databaseConnectionRequestEnvelope, accept, context);
     }
 
     /**
@@ -8931,46 +9606,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param databaseConnectionName Name of the database connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> deleteDatabaseConnectionWithResponseAsync(String resourceGroupName, String name,
-        String databaseConnectionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (databaseConnectionName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter databaseConnectionName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.deleteDatabaseConnection(this.client.getEndpoint(), resourceGroupName, name,
-            databaseConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Delete a database connection for a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param databaseConnectionName Name of the database connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -8998,8 +9633,30 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteDatabaseConnectionWithResponse(String resourceGroupName, String name,
         String databaseConnectionName, Context context) {
-        return deleteDatabaseConnectionWithResponseAsync(resourceGroupName, name, databaseConnectionName, context)
-            .block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (databaseConnectionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter databaseConnectionName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deleteDatabaseConnectionSync(this.client.getEndpoint(), resourceGroupName, name,
+            databaseConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -9077,58 +9734,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param name Name of the static site.
      * @param databaseConnectionName Name of the database connection.
      * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatabaseConnectionInner>> updateDatabaseConnectionWithResponseAsync(String resourceGroupName,
-        String name, String databaseConnectionName, DatabaseConnectionPatchRequest databaseConnectionRequestEnvelope,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (databaseConnectionName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter databaseConnectionName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (databaseConnectionRequestEnvelope == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter databaseConnectionRequestEnvelope is required and cannot be null."));
-        } else {
-            databaseConnectionRequestEnvelope.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.updateDatabaseConnection(this.client.getEndpoint(), resourceGroupName, name,
-            databaseConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            databaseConnectionRequestEnvelope, accept, context);
-    }
-
-    /**
-     * Create or update a database connection for a static site
-     * 
-     * Description for Create or update a database connection for a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param databaseConnectionName Name of the database connection.
-     * @param databaseConnectionRequestEnvelope A JSON representation of the database connection request properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -9160,8 +9765,38 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public Response<DatabaseConnectionInner> updateDatabaseConnectionWithResponse(String resourceGroupName, String name,
         String databaseConnectionName, DatabaseConnectionPatchRequest databaseConnectionRequestEnvelope,
         Context context) {
-        return updateDatabaseConnectionWithResponseAsync(resourceGroupName, name, databaseConnectionName,
-            databaseConnectionRequestEnvelope, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (databaseConnectionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter databaseConnectionName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (databaseConnectionRequestEnvelope == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter databaseConnectionRequestEnvelope is required and cannot be null."));
+        } else {
+            databaseConnectionRequestEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return service.updateDatabaseConnectionSync(this.client.getEndpoint(), resourceGroupName, name,
+            databaseConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+            databaseConnectionRequestEnvelope, accept, context);
     }
 
     /**
@@ -9233,47 +9868,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param databaseConnectionName Name of the database connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Database Connection resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DatabaseConnectionInner>> getDatabaseConnectionWithDetailsWithResponseAsync(
-        String resourceGroupName, String name, String databaseConnectionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (databaseConnectionName == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter databaseConnectionName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getDatabaseConnectionWithDetails(this.client.getEndpoint(), resourceGroupName, name,
-            databaseConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Returns details of a database connection for a static site by name.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param databaseConnectionName Name of the database connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -9301,8 +9895,30 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DatabaseConnectionInner> getDatabaseConnectionWithDetailsWithResponse(String resourceGroupName,
         String name, String databaseConnectionName, Context context) {
-        return getDatabaseConnectionWithDetailsWithResponseAsync(resourceGroupName, name, databaseConnectionName,
-            context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (databaseConnectionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter databaseConnectionName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getDatabaseConnectionWithDetailsSync(this.client.getEndpoint(), resourceGroupName, name,
+            databaseConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -9366,33 +9982,69 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to detach.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> detachStaticSiteWithResponse(String resourceGroupName, String name) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.detachStaticSiteSync(this.client.getEndpoint(), resourceGroupName, name,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, Context.NONE);
+    }
+
+    /**
+     * Detaches a static site.
+     * 
+     * Description for Detaches a static site.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site to detach.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> detachStaticSiteWithResponseAsync(String resourceGroupName, String name,
-        Context context) {
+    private Response<BinaryData> detachStaticSiteWithResponse(String resourceGroupName, String name, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.detachStaticSite(this.client.getEndpoint(), resourceGroupName, name,
+        return service.detachStaticSiteSync(this.client.getEndpoint(), resourceGroupName, name,
             this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
@@ -9422,28 +10074,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to detach.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDetachStaticSiteAsync(String resourceGroupName, String name,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = detachStaticSiteWithResponseAsync(resourceGroupName, name, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Detaches a static site.
-     * 
-     * Description for Detaches a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site to detach.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -9451,7 +10081,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDetachStaticSite(String resourceGroupName, String name) {
-        return this.beginDetachStaticSiteAsync(resourceGroupName, name).getSyncPoller();
+        Response<BinaryData> response = detachStaticSiteWithResponse(resourceGroupName, name);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -9470,7 +10101,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDetachStaticSite(String resourceGroupName, String name,
         Context context) {
-        return this.beginDetachStaticSiteAsync(resourceGroupName, name, context).getSyncPoller();
+        Response<BinaryData> response = detachStaticSiteWithResponse(resourceGroupName, name, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -9498,32 +10130,13 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site to detach.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> detachStaticSiteAsync(String resourceGroupName, String name, Context context) {
-        return beginDetachStaticSiteAsync(resourceGroupName, name, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Detaches a static site.
-     * 
-     * Description for Detaches a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site to detach.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void detachStaticSite(String resourceGroupName, String name) {
-        detachStaticSiteAsync(resourceGroupName, name).block();
+        beginDetachStaticSite(resourceGroupName, name).getFinalResult();
     }
 
     /**
@@ -9540,7 +10153,7 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void detachStaticSite(String resourceGroupName, String name, Context context) {
-        detachStaticSiteAsync(resourceGroupName, name, context).block();
+        beginDetachStaticSite(resourceGroupName, name, context).getFinalResult();
     }
 
     /**
@@ -9591,47 +10204,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site functions along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteFunctionOverviewArmResourceInner>>
-        listStaticSiteFunctionsSinglePageAsync(String resourceGroupName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listStaticSiteFunctions(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Gets the functions of a static site.
-     * 
-     * Description for Gets the functions of a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -9651,17 +10223,78 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site functions along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteFunctionOverviewArmResourceInner>
+        listStaticSiteFunctionsSinglePage(String resourceGroupName, String name) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteFunctionOverviewCollection> res
+            = service.listStaticSiteFunctionsSync(this.client.getEndpoint(), resourceGroupName, name,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Gets the functions of a static site.
+     * 
+     * Description for Gets the functions of a static site.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site functions as paginated response with {@link PagedFlux}.
+     * @return collection of static site functions along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StaticSiteFunctionOverviewArmResourceInner> listStaticSiteFunctionsAsync(String resourceGroupName,
-        String name, Context context) {
-        return new PagedFlux<>(() -> listStaticSiteFunctionsSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> listStaticSiteFunctionsNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteFunctionOverviewArmResourceInner>
+        listStaticSiteFunctionsSinglePage(String resourceGroupName, String name, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteFunctionOverviewCollection> res
+            = service.listStaticSiteFunctionsSync(this.client.getEndpoint(), resourceGroupName, name,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -9679,7 +10312,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteFunctionOverviewArmResourceInner> listStaticSiteFunctions(String resourceGroupName,
         String name) {
-        return new PagedIterable<>(listStaticSiteFunctionsAsync(resourceGroupName, name));
+        return new PagedIterable<>(() -> listStaticSiteFunctionsSinglePage(resourceGroupName, name),
+            nextLink -> listStaticSiteFunctionsNextSinglePage(nextLink));
     }
 
     /**
@@ -9698,7 +10332,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteFunctionOverviewArmResourceInner> listStaticSiteFunctions(String resourceGroupName,
         String name, Context context) {
-        return new PagedIterable<>(listStaticSiteFunctionsAsync(resourceGroupName, name, context));
+        return new PagedIterable<>(() -> listStaticSiteFunctionsSinglePage(resourceGroupName, name, context),
+            nextLink -> listStaticSiteFunctionsNextSinglePage(nextLink, context));
     }
 
     /**
@@ -9745,43 +10380,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StringDictionaryInner>> listStaticSiteAppSettingsWithResponseAsync(String resourceGroupName,
-        String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listStaticSiteAppSettings(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Gets the application settings of a static site.
-     * 
-     * Description for Gets the application settings of a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -9809,7 +10407,26 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StringDictionaryInner> listStaticSiteAppSettingsWithResponse(String resourceGroupName, String name,
         Context context) {
-        return listStaticSiteAppSettingsWithResponseAsync(resourceGroupName, name, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.listStaticSiteAppSettingsSync(this.client.getEndpoint(), resourceGroupName, name,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -9873,43 +10490,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string list resource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StringListInner>> listStaticSiteConfiguredRolesWithResponseAsync(String resourceGroupName,
-        String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listStaticSiteConfiguredRoles(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Lists the roles configured for the static site.
-     * 
-     * Description for Lists the roles configured for the static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -9937,7 +10517,26 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StringListInner> listStaticSiteConfiguredRolesWithResponse(String resourceGroupName, String name,
         Context context) {
-        return listStaticSiteConfiguredRolesWithResponseAsync(resourceGroupName, name, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.listStaticSiteConfiguredRolesSync(this.client.getEndpoint(), resourceGroupName, name,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -10001,43 +10600,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StringDictionaryInner>>
-        listStaticSiteFunctionAppSettingsWithResponseAsync(String resourceGroupName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listStaticSiteFunctionAppSettings(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Gets the application settings of a static site.
-     * 
-     * Description for Gets the application settings of a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -10065,7 +10627,26 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StringDictionaryInner> listStaticSiteFunctionAppSettingsWithResponse(String resourceGroupName,
         String name, Context context) {
-        return listStaticSiteFunctionAppSettingsWithResponseAsync(resourceGroupName, name, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.listStaticSiteFunctionAppSettingsSync(this.client.getEndpoint(), resourceGroupName, name,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -10129,43 +10710,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StringDictionaryInner>> listStaticSiteSecretsWithResponseAsync(String resourceGroupName,
-        String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listStaticSiteSecrets(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Lists the secrets for an existing static site.
-     * 
-     * Description for Lists the secrets for an existing static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -10193,7 +10737,26 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StringDictionaryInner> listStaticSiteSecretsWithResponse(String resourceGroupName, String name,
         Context context) {
-        return listStaticSiteSecretsWithResponseAsync(resourceGroupName, name, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.listStaticSiteSecretsSync(this.client.getEndpoint(), resourceGroupName, name,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -10260,46 +10823,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RemotePrivateEndpointConnectionArmResourceInner>>
-        getPrivateEndpointConnectionListSinglePageAsync(String resourceGroupName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .getPrivateEndpointConnectionList(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Gets the list of private endpoint connections associated with a static site
-     * 
-     * Description for Gets the list of private endpoint connections associated with a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -10319,17 +10842,78 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<RemotePrivateEndpointConnectionArmResourceInner>
+        getPrivateEndpointConnectionListSinglePage(String resourceGroupName, String name) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<PrivateEndpointConnectionCollection> res
+            = service.getPrivateEndpointConnectionListSync(this.client.getEndpoint(), resourceGroupName, name,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Gets the list of private endpoint connections associated with a static site
+     * 
+     * Description for Gets the list of private endpoint connections associated with a static site.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the paginated response with {@link PagedFlux}.
+     * @return the response body along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RemotePrivateEndpointConnectionArmResourceInner>
-        getPrivateEndpointConnectionListAsync(String resourceGroupName, String name, Context context) {
-        return new PagedFlux<>(() -> getPrivateEndpointConnectionListSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> getPrivateEndpointConnectionListNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<RemotePrivateEndpointConnectionArmResourceInner>
+        getPrivateEndpointConnectionListSinglePage(String resourceGroupName, String name, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<PrivateEndpointConnectionCollection> res
+            = service.getPrivateEndpointConnectionListSync(this.client.getEndpoint(), resourceGroupName, name,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -10347,7 +10931,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RemotePrivateEndpointConnectionArmResourceInner>
         getPrivateEndpointConnectionList(String resourceGroupName, String name) {
-        return new PagedIterable<>(getPrivateEndpointConnectionListAsync(resourceGroupName, name));
+        return new PagedIterable<>(() -> getPrivateEndpointConnectionListSinglePage(resourceGroupName, name),
+            nextLink -> getPrivateEndpointConnectionListNextSinglePage(nextLink));
     }
 
     /**
@@ -10366,7 +10951,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RemotePrivateEndpointConnectionArmResourceInner>
         getPrivateEndpointConnectionList(String resourceGroupName, String name, Context context) {
-        return new PagedIterable<>(getPrivateEndpointConnectionListAsync(resourceGroupName, name, context));
+        return new PagedIterable<>(() -> getPrivateEndpointConnectionListSinglePage(resourceGroupName, name, context),
+            nextLink -> getPrivateEndpointConnectionListNextSinglePage(nextLink, context));
     }
 
     /**
@@ -10422,51 +11008,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remote Private Endpoint Connection ARM resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RemotePrivateEndpointConnectionArmResourceInner>>
-        getPrivateEndpointConnectionWithResponseAsync(String resourceGroupName, String name,
-            String privateEndpointConnectionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (privateEndpointConnectionName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter privateEndpointConnectionName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getPrivateEndpointConnection(this.client.getEndpoint(), resourceGroupName, name,
-            privateEndpointConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
-            context);
-    }
-
-    /**
-     * Gets a private endpoint connection
-     * 
-     * Description for Gets a private endpoint connection.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param privateEndpointConnectionName Name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -10496,8 +11037,32 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RemotePrivateEndpointConnectionArmResourceInner> getPrivateEndpointConnectionWithResponse(
         String resourceGroupName, String name, String privateEndpointConnectionName, Context context) {
-        return getPrivateEndpointConnectionWithResponseAsync(resourceGroupName, name, privateEndpointConnectionName,
-            context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getPrivateEndpointConnectionSync(this.client.getEndpoint(), resourceGroupName, name,
+            privateEndpointConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
+            context);
     }
 
     /**
@@ -10581,45 +11146,98 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param name Name of the static site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
      * @param privateEndpointWrapper Request body.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remote Private Endpoint Connection ARM resource along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return remote Private Endpoint Connection ARM resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> approveOrRejectPrivateEndpointConnectionWithResponseAsync(
-        String resourceGroupName, String name, String privateEndpointConnectionName,
-        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper, Context context) {
+    private Response<BinaryData> approveOrRejectPrivateEndpointConnectionWithResponse(String resourceGroupName,
+        String name, String privateEndpointConnectionName,
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter privateEndpointConnectionName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (privateEndpointWrapper == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter privateEndpointWrapper is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter privateEndpointWrapper is required and cannot be null."));
         } else {
             privateEndpointWrapper.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.approveOrRejectPrivateEndpointConnection(this.client.getEndpoint(), resourceGroupName, name,
+        return service.approveOrRejectPrivateEndpointConnectionSync(this.client.getEndpoint(), resourceGroupName, name,
+            privateEndpointConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+            privateEndpointWrapper, accept, Context.NONE);
+    }
+
+    /**
+     * Approves or rejects a private endpoint connection
+     * 
+     * Description for Approves or rejects a private endpoint connection.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param privateEndpointConnectionName Name of the private endpoint connection.
+     * @param privateEndpointWrapper Request body.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return remote Private Endpoint Connection ARM resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> approveOrRejectPrivateEndpointConnectionWithResponse(String resourceGroupName,
+        String name, String privateEndpointConnectionName,
+        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (privateEndpointWrapper == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter privateEndpointWrapper is required and cannot be null."));
+        } else {
+            privateEndpointWrapper.validate();
+        }
+        final String accept = "application/json";
+        return service.approveOrRejectPrivateEndpointConnectionSync(this.client.getEndpoint(), resourceGroupName, name,
             privateEndpointConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(),
             privateEndpointWrapper, accept, context);
     }
@@ -10661,36 +11279,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param name Name of the static site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
      * @param privateEndpointWrapper Request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of remote Private Endpoint Connection ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private
-        PollerFlux<PollResult<RemotePrivateEndpointConnectionArmResourceInner>, RemotePrivateEndpointConnectionArmResourceInner>
-        beginApproveOrRejectPrivateEndpointConnectionAsync(String resourceGroupName, String name,
-            String privateEndpointConnectionName,
-            RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = approveOrRejectPrivateEndpointConnectionWithResponseAsync(
-            resourceGroupName, name, privateEndpointConnectionName, privateEndpointWrapper, context);
-        return this.client
-            .<RemotePrivateEndpointConnectionArmResourceInner, RemotePrivateEndpointConnectionArmResourceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), RemotePrivateEndpointConnectionArmResourceInner.class,
-                RemotePrivateEndpointConnectionArmResourceInner.class, context);
-    }
-
-    /**
-     * Approves or rejects a private endpoint connection
-     * 
-     * Description for Approves or rejects a private endpoint connection.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param privateEndpointConnectionName Name of the private endpoint connection.
-     * @param privateEndpointWrapper Request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -10702,10 +11290,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         beginApproveOrRejectPrivateEndpointConnection(String resourceGroupName, String name,
             String privateEndpointConnectionName,
             RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper) {
-        return this
-            .beginApproveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name, privateEndpointConnectionName,
-                privateEndpointWrapper)
-            .getSyncPoller();
+        Response<BinaryData> response = approveOrRejectPrivateEndpointConnectionWithResponse(resourceGroupName, name,
+            privateEndpointConnectionName, privateEndpointWrapper);
+        return this.client
+            .<RemotePrivateEndpointConnectionArmResourceInner, RemotePrivateEndpointConnectionArmResourceInner>getLroResult(
+                response, RemotePrivateEndpointConnectionArmResourceInner.class,
+                RemotePrivateEndpointConnectionArmResourceInner.class, Context.NONE);
     }
 
     /**
@@ -10729,10 +11319,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         beginApproveOrRejectPrivateEndpointConnection(String resourceGroupName, String name,
             String privateEndpointConnectionName,
             RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper, Context context) {
-        return this
-            .beginApproveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name, privateEndpointConnectionName,
-                privateEndpointWrapper, context)
-            .getSyncPoller();
+        Response<BinaryData> response = approveOrRejectPrivateEndpointConnectionWithResponse(resourceGroupName, name,
+            privateEndpointConnectionName, privateEndpointWrapper, context);
+        return this.client
+            .<RemotePrivateEndpointConnectionArmResourceInner, RemotePrivateEndpointConnectionArmResourceInner>getLroResult(
+                response, RemotePrivateEndpointConnectionArmResourceInner.class,
+                RemotePrivateEndpointConnectionArmResourceInner.class, context);
     }
 
     /**
@@ -10767,30 +11359,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param name Name of the static site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
      * @param privateEndpointWrapper Request body.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return remote Private Endpoint Connection ARM resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RemotePrivateEndpointConnectionArmResourceInner> approveOrRejectPrivateEndpointConnectionAsync(
-        String resourceGroupName, String name, String privateEndpointConnectionName,
-        RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper, Context context) {
-        return beginApproveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name,
-            privateEndpointConnectionName, privateEndpointWrapper, context).last()
-                .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Approves or rejects a private endpoint connection
-     * 
-     * Description for Approves or rejects a private endpoint connection.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param privateEndpointConnectionName Name of the private endpoint connection.
-     * @param privateEndpointWrapper Request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -10800,8 +11368,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public RemotePrivateEndpointConnectionArmResourceInner approveOrRejectPrivateEndpointConnection(
         String resourceGroupName, String name, String privateEndpointConnectionName,
         RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper) {
-        return approveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name, privateEndpointConnectionName,
-            privateEndpointWrapper).block();
+        return beginApproveOrRejectPrivateEndpointConnection(resourceGroupName, name, privateEndpointConnectionName,
+            privateEndpointWrapper).getFinalResult();
     }
 
     /**
@@ -10823,8 +11391,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public RemotePrivateEndpointConnectionArmResourceInner approveOrRejectPrivateEndpointConnection(
         String resourceGroupName, String name, String privateEndpointConnectionName,
         RemotePrivateEndpointConnectionArmResourceInner privateEndpointWrapper, Context context) {
-        return approveOrRejectPrivateEndpointConnectionAsync(resourceGroupName, name, privateEndpointConnectionName,
-            privateEndpointWrapper, context).block();
+        return beginApproveOrRejectPrivateEndpointConnection(resourceGroupName, name, privateEndpointConnectionName,
+            privateEndpointWrapper, context).getFinalResult();
     }
 
     /**
@@ -10878,37 +11446,83 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return any object along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> deletePrivateEndpointConnectionWithResponse(String resourceGroupName, String name,
+        String privateEndpointConnectionName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (privateEndpointConnectionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter privateEndpointConnectionName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.deletePrivateEndpointConnectionSync(this.client.getEndpoint(), resourceGroupName, name,
+            privateEndpointConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
+            Context.NONE);
+    }
+
+    /**
+     * Deletes a private endpoint connection
+     * 
+     * Description for Deletes a private endpoint connection.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param privateEndpointConnectionName Name of the private endpoint connection.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object along with {@link Response} on successful completion of {@link Mono}.
+     * @return any object along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deletePrivateEndpointConnectionWithResponseAsync(String resourceGroupName,
-        String name, String privateEndpointConnectionName, Context context) {
+    private Response<BinaryData> deletePrivateEndpointConnectionWithResponse(String resourceGroupName, String name,
+        String privateEndpointConnectionName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (privateEndpointConnectionName == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter privateEndpointConnectionName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter privateEndpointConnectionName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.deletePrivateEndpointConnection(this.client.getEndpoint(), resourceGroupName, name,
+        return service.deletePrivateEndpointConnectionSync(this.client.getEndpoint(), resourceGroupName, name,
             privateEndpointConnectionName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
             context);
     }
@@ -10943,30 +11557,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of any object.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Object>, Object> beginDeletePrivateEndpointConnectionAsync(String resourceGroupName,
-        String name, String privateEndpointConnectionName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deletePrivateEndpointConnectionWithResponseAsync(resourceGroupName,
-            name, privateEndpointConnectionName, context);
-        return this.client.<Object, Object>getLroResult(mono, this.client.getHttpPipeline(), Object.class, Object.class,
-            context);
-    }
-
-    /**
-     * Deletes a private endpoint connection
-     * 
-     * Description for Deletes a private endpoint connection.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param privateEndpointConnectionName Name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -10975,8 +11565,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Object>, Object> beginDeletePrivateEndpointConnection(String resourceGroupName,
         String name, String privateEndpointConnectionName) {
-        return this.beginDeletePrivateEndpointConnectionAsync(resourceGroupName, name, privateEndpointConnectionName)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = deletePrivateEndpointConnectionWithResponse(resourceGroupName, name, privateEndpointConnectionName);
+        return this.client.<Object, Object>getLroResult(response, Object.class, Object.class, Context.NONE);
     }
 
     /**
@@ -10996,9 +11587,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Object>, Object> beginDeletePrivateEndpointConnection(String resourceGroupName,
         String name, String privateEndpointConnectionName, Context context) {
-        return this
-            .beginDeletePrivateEndpointConnectionAsync(resourceGroupName, name, privateEndpointConnectionName, context)
-            .getSyncPoller();
+        Response<BinaryData> response = deletePrivateEndpointConnectionWithResponse(resourceGroupName, name,
+            privateEndpointConnectionName, context);
+        return this.client.<Object, Object>getLroResult(response, Object.class, Object.class, context);
     }
 
     /**
@@ -11029,27 +11620,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param privateEndpointConnectionName Name of the private endpoint connection.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return any object on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Object> deletePrivateEndpointConnectionAsync(String resourceGroupName, String name,
-        String privateEndpointConnectionName, Context context) {
-        return beginDeletePrivateEndpointConnectionAsync(resourceGroupName, name, privateEndpointConnectionName,
-            context).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deletes a private endpoint connection
-     * 
-     * Description for Deletes a private endpoint connection.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param privateEndpointConnectionName Name of the private endpoint connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -11058,7 +11628,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Object deletePrivateEndpointConnection(String resourceGroupName, String name,
         String privateEndpointConnectionName) {
-        return deletePrivateEndpointConnectionAsync(resourceGroupName, name, privateEndpointConnectionName).block();
+        return beginDeletePrivateEndpointConnection(resourceGroupName, name, privateEndpointConnectionName)
+            .getFinalResult();
     }
 
     /**
@@ -11078,8 +11649,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Object deletePrivateEndpointConnection(String resourceGroupName, String name,
         String privateEndpointConnectionName, Context context) {
-        return deletePrivateEndpointConnectionAsync(resourceGroupName, name, privateEndpointConnectionName, context)
-            .block();
+        return beginDeletePrivateEndpointConnection(resourceGroupName, name, privateEndpointConnectionName, context)
+            .getFinalResult();
     }
 
     /**
@@ -11127,44 +11698,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return wrapper for a collection of private link resources along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateLinkResourcesWrapperInner>>
-        getPrivateLinkResourcesWithResponseAsync(String resourceGroupName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getPrivateLinkResources(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Gets the private link resources
-     * 
-     * Description for Gets the private link resources.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -11192,7 +11725,26 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PrivateLinkResourcesWrapperInner> getPrivateLinkResourcesWithResponse(String resourceGroupName,
         String name, Context context) {
-        return getPrivateLinkResourcesWithResponseAsync(resourceGroupName, name, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getPrivateLinkResourcesSync(this.client.getEndpoint(), resourceGroupName, name,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -11264,50 +11816,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param resetPropertiesEnvelope The resetPropertiesEnvelope parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> resetStaticSiteApiKeyWithResponseAsync(String resourceGroupName, String name,
-        StaticSiteResetPropertiesArmResource resetPropertiesEnvelope, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resetPropertiesEnvelope == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter resetPropertiesEnvelope is required and cannot be null."));
-        } else {
-            resetPropertiesEnvelope.validate();
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.resetStaticSiteApiKey(this.client.getEndpoint(), resourceGroupName, name,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), resetPropertiesEnvelope, accept, context);
-    }
-
-    /**
-     * Resets the api key for an existing static site.
-     * 
-     * Description for Resets the api key for an existing static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param resetPropertiesEnvelope The resetPropertiesEnvelope parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -11337,8 +11845,32 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> resetStaticSiteApiKeyWithResponse(String resourceGroupName, String name,
         StaticSiteResetPropertiesArmResource resetPropertiesEnvelope, Context context) {
-        return resetStaticSiteApiKeyWithResponseAsync(resourceGroupName, name, resetPropertiesEnvelope, context)
-            .block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resetPropertiesEnvelope == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resetPropertiesEnvelope is required and cannot be null."));
+        } else {
+            resetPropertiesEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return service.resetStaticSiteApiKeySync(this.client.getEndpoint(), resourceGroupName, name,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), resetPropertiesEnvelope, accept, context);
     }
 
     /**
@@ -11402,45 +11934,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site database connections along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatabaseConnectionInner>>
-        getDatabaseConnectionsWithDetailsSinglePageAsync(String resourceGroupName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .getDatabaseConnectionsWithDetails(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Returns details of database connections for a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -11458,17 +11951,76 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site database connections along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DatabaseConnectionInner> getDatabaseConnectionsWithDetailsSinglePage(String resourceGroupName,
+        String name) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DatabaseConnectionCollection> res
+            = service.getDatabaseConnectionsWithDetailsSync(this.client.getEndpoint(), resourceGroupName, name,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Returns details of database connections for a static site.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site database connections as paginated response with {@link PagedFlux}.
+     * @return collection of static site database connections along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DatabaseConnectionInner> getDatabaseConnectionsWithDetailsAsync(String resourceGroupName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DatabaseConnectionInner> getDatabaseConnectionsWithDetailsSinglePage(String resourceGroupName,
         String name, Context context) {
-        return new PagedFlux<>(() -> getDatabaseConnectionsWithDetailsSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> getDatabaseConnectionsWithDetailsNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DatabaseConnectionCollection> res
+            = service.getDatabaseConnectionsWithDetailsSync(this.client.getEndpoint(), resourceGroupName, name,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -11484,7 +12036,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseConnectionInner> getDatabaseConnectionsWithDetails(String resourceGroupName,
         String name) {
-        return new PagedIterable<>(getDatabaseConnectionsWithDetailsAsync(resourceGroupName, name));
+        return new PagedIterable<>(() -> getDatabaseConnectionsWithDetailsSinglePage(resourceGroupName, name),
+            nextLink -> getDatabaseConnectionsWithDetailsNextSinglePage(nextLink));
     }
 
     /**
@@ -11501,7 +12054,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DatabaseConnectionInner> getDatabaseConnectionsWithDetails(String resourceGroupName,
         String name, Context context) {
-        return new PagedIterable<>(getDatabaseConnectionsWithDetailsAsync(resourceGroupName, name, context));
+        return new PagedIterable<>(() -> getDatabaseConnectionsWithDetailsSinglePage(resourceGroupName, name, context),
+            nextLink -> getDatabaseConnectionsWithDetailsNextSinglePage(nextLink, context));
     }
 
     /**
@@ -11552,48 +12106,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site user provided function apps along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteUserProvidedFunctionAppArmResourceInner>>
-        getUserProvidedFunctionAppsForStaticSiteSinglePageAsync(String resourceGroupName, String name,
-            Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .getUserProvidedFunctionAppsForStaticSite(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Gets the details of the user provided function apps registered with a static site
-     * 
-     * Description for Gets the details of the user provided function apps registered with a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -11613,18 +12125,78 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site user provided function apps along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteUserProvidedFunctionAppArmResourceInner>
+        getUserProvidedFunctionAppsForStaticSiteSinglePage(String resourceGroupName, String name) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteUserProvidedFunctionAppsCollection> res
+            = service.getUserProvidedFunctionAppsForStaticSiteSync(this.client.getEndpoint(), resourceGroupName, name,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Gets the details of the user provided function apps registered with a static site
+     * 
+     * Description for Gets the details of the user provided function apps registered with a static site.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site user provided function apps as paginated response with {@link PagedFlux}.
+     * @return collection of static site user provided function apps along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StaticSiteUserProvidedFunctionAppArmResourceInner>
-        getUserProvidedFunctionAppsForStaticSiteAsync(String resourceGroupName, String name, Context context) {
-        return new PagedFlux<>(
-            () -> getUserProvidedFunctionAppsForStaticSiteSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> getUserProvidedFunctionAppsForStaticSiteNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteUserProvidedFunctionAppArmResourceInner>
+        getUserProvidedFunctionAppsForStaticSiteSinglePage(String resourceGroupName, String name, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteUserProvidedFunctionAppsCollection> res
+            = service.getUserProvidedFunctionAppsForStaticSiteSync(this.client.getEndpoint(), resourceGroupName, name,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -11642,7 +12214,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteUserProvidedFunctionAppArmResourceInner>
         getUserProvidedFunctionAppsForStaticSite(String resourceGroupName, String name) {
-        return new PagedIterable<>(getUserProvidedFunctionAppsForStaticSiteAsync(resourceGroupName, name));
+        return new PagedIterable<>(() -> getUserProvidedFunctionAppsForStaticSiteSinglePage(resourceGroupName, name),
+            nextLink -> getUserProvidedFunctionAppsForStaticSiteNextSinglePage(nextLink));
     }
 
     /**
@@ -11661,7 +12234,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteUserProvidedFunctionAppArmResourceInner>
         getUserProvidedFunctionAppsForStaticSite(String resourceGroupName, String name, Context context) {
-        return new PagedIterable<>(getUserProvidedFunctionAppsForStaticSiteAsync(resourceGroupName, name, context));
+        return new PagedIterable<>(
+            () -> getUserProvidedFunctionAppsForStaticSiteSinglePage(resourceGroupName, name, context),
+            nextLink -> getUserProvidedFunctionAppsForStaticSiteNextSinglePage(nextLink, context));
     }
 
     /**
@@ -11717,50 +12292,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param functionAppName Name of the function app registered with the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StaticSiteUserProvidedFunctionAppArmResourceInner>>
-        getUserProvidedFunctionAppForStaticSiteWithResponseAsync(String resourceGroupName, String name,
-            String functionAppName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (functionAppName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter functionAppName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getUserProvidedFunctionAppForStaticSite(this.client.getEndpoint(), resourceGroupName, name,
-            functionAppName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Gets the details of the user provided function app registered with a static site
-     * 
-     * Description for Gets the details of the user provided function app registered with a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param functionAppName Name of the function app registered with the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -11791,8 +12322,30 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public Response<StaticSiteUserProvidedFunctionAppArmResourceInner>
         getUserProvidedFunctionAppForStaticSiteWithResponse(String resourceGroupName, String name,
             String functionAppName, Context context) {
-        return getUserProvidedFunctionAppForStaticSiteWithResponseAsync(resourceGroupName, name, functionAppName,
-            context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (functionAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter functionAppName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getUserProvidedFunctionAppForStaticSiteSync(this.client.getEndpoint(), resourceGroupName, name,
+            functionAppName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -11884,47 +12437,104 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param isForced Specify &lt;code&gt;true&lt;/code&gt; to force the update of the auth configuration on the
      * function app even if an AzureStaticWebApps provider is already configured on the function app. The default is
      * &lt;code&gt;false&lt;/code&gt;.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource along with {@link Response} on successful completion
-     * of {@link Mono}.
+     * @return static Site User Provided Function App ARM resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> registerUserProvidedFunctionAppWithStaticSiteWithResponseAsync(
-        String resourceGroupName, String name, String functionAppName,
-        StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced,
-        Context context) {
+    private Response<BinaryData> registerUserProvidedFunctionAppWithStaticSiteWithResponse(String resourceGroupName,
+        String name, String functionAppName,
+        StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (functionAppName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter functionAppName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter functionAppName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (staticSiteUserProvidedFunctionEnvelope == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter staticSiteUserProvidedFunctionEnvelope is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter staticSiteUserProvidedFunctionEnvelope is required and cannot be null."));
         } else {
             staticSiteUserProvidedFunctionEnvelope.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.registerUserProvidedFunctionAppWithStaticSite(this.client.getEndpoint(), resourceGroupName, name,
-            functionAppName, isForced, this.client.getSubscriptionId(), this.client.getApiVersion(),
+        return service.registerUserProvidedFunctionAppWithStaticSiteSync(this.client.getEndpoint(), resourceGroupName,
+            name, functionAppName, isForced, this.client.getSubscriptionId(), this.client.getApiVersion(),
+            staticSiteUserProvidedFunctionEnvelope, accept, Context.NONE);
+    }
+
+    /**
+     * Register a user provided function app with a static site
+     * 
+     * Description for Register a user provided function app with a static site.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param functionAppName Name of the function app to register with the static site.
+     * @param staticSiteUserProvidedFunctionEnvelope A JSON representation of the user provided function app properties.
+     * See example.
+     * @param isForced Specify &lt;code&gt;true&lt;/code&gt; to force the update of the auth configuration on the
+     * function app even if an AzureStaticWebApps provider is already configured on the function app. The default is
+     * &lt;code&gt;false&lt;/code&gt;.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site User Provided Function App ARM resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> registerUserProvidedFunctionAppWithStaticSiteWithResponse(String resourceGroupName,
+        String name, String functionAppName,
+        StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (functionAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter functionAppName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (staticSiteUserProvidedFunctionEnvelope == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter staticSiteUserProvidedFunctionEnvelope is required and cannot be null."));
+        } else {
+            staticSiteUserProvidedFunctionEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return service.registerUserProvidedFunctionAppWithStaticSiteSync(this.client.getEndpoint(), resourceGroupName,
+            name, functionAppName, isForced, this.client.getSubscriptionId(), this.client.getApiVersion(),
             staticSiteUserProvidedFunctionEnvelope, accept, context);
     }
 
@@ -12004,26 +12614,24 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param isForced Specify &lt;code&gt;true&lt;/code&gt; to force the update of the auth configuration on the
      * function app even if an AzureStaticWebApps provider is already configured on the function app. The default is
      * &lt;code&gt;false&lt;/code&gt;.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of static Site User Provided Function App ARM resource.
+     * @return the {@link SyncPoller} for polling of static Site User Provided Function App ARM resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private
-        PollerFlux<PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>, StaticSiteUserProvidedFunctionAppArmResourceInner>
-        beginRegisterUserProvidedFunctionAppWithStaticSiteAsync(String resourceGroupName, String name,
+    public
+        SyncPoller<PollResult<StaticSiteUserProvidedFunctionAppArmResourceInner>, StaticSiteUserProvidedFunctionAppArmResourceInner>
+        beginRegisterUserProvidedFunctionAppWithStaticSite(String resourceGroupName, String name,
             String functionAppName,
-            StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced,
-            Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = registerUserProvidedFunctionAppWithStaticSiteWithResponseAsync(
-            resourceGroupName, name, functionAppName, staticSiteUserProvidedFunctionEnvelope, isForced, context);
+            StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope,
+            Boolean isForced) {
+        Response<BinaryData> response = registerUserProvidedFunctionAppWithStaticSiteWithResponse(resourceGroupName,
+            name, functionAppName, staticSiteUserProvidedFunctionEnvelope, isForced);
         return this.client
             .<StaticSiteUserProvidedFunctionAppArmResourceInner, StaticSiteUserProvidedFunctionAppArmResourceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), StaticSiteUserProvidedFunctionAppArmResourceInner.class,
-                StaticSiteUserProvidedFunctionAppArmResourceInner.class, context);
+                response, StaticSiteUserProvidedFunctionAppArmResourceInner.class,
+                StaticSiteUserProvidedFunctionAppArmResourceInner.class, Context.NONE);
     }
 
     /**
@@ -12048,10 +12656,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             String functionAppName,
             StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope) {
         final Boolean isForced = null;
-        return this
-            .beginRegisterUserProvidedFunctionAppWithStaticSiteAsync(resourceGroupName, name, functionAppName,
-                staticSiteUserProvidedFunctionEnvelope, isForced)
-            .getSyncPoller();
+        Response<BinaryData> response = registerUserProvidedFunctionAppWithStaticSiteWithResponse(resourceGroupName,
+            name, functionAppName, staticSiteUserProvidedFunctionEnvelope, isForced);
+        return this.client
+            .<StaticSiteUserProvidedFunctionAppArmResourceInner, StaticSiteUserProvidedFunctionAppArmResourceInner>getLroResult(
+                response, StaticSiteUserProvidedFunctionAppArmResourceInner.class,
+                StaticSiteUserProvidedFunctionAppArmResourceInner.class, Context.NONE);
     }
 
     /**
@@ -12080,10 +12690,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
             String functionAppName,
             StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced,
             Context context) {
-        return this
-            .beginRegisterUserProvidedFunctionAppWithStaticSiteAsync(resourceGroupName, name, functionAppName,
-                staticSiteUserProvidedFunctionEnvelope, isForced, context)
-            .getSyncPoller();
+        Response<BinaryData> response = registerUserProvidedFunctionAppWithStaticSiteWithResponse(resourceGroupName,
+            name, functionAppName, staticSiteUserProvidedFunctionEnvelope, isForced, context);
+        return this.client
+            .<StaticSiteUserProvidedFunctionAppArmResourceInner, StaticSiteUserProvidedFunctionAppArmResourceInner>getLroResult(
+                response, StaticSiteUserProvidedFunctionAppArmResourceInner.class,
+                StaticSiteUserProvidedFunctionAppArmResourceInner.class, context);
     }
 
     /**
@@ -12146,35 +12758,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param functionAppName Name of the function app to register with the static site.
      * @param staticSiteUserProvidedFunctionEnvelope A JSON representation of the user provided function app properties.
      * See example.
-     * @param isForced Specify &lt;code&gt;true&lt;/code&gt; to force the update of the auth configuration on the
-     * function app even if an AzureStaticWebApps provider is already configured on the function app. The default is
-     * &lt;code&gt;false&lt;/code&gt;.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site User Provided Function App ARM resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StaticSiteUserProvidedFunctionAppArmResourceInner> registerUserProvidedFunctionAppWithStaticSiteAsync(
-        String resourceGroupName, String name, String functionAppName,
-        StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced,
-        Context context) {
-        return beginRegisterUserProvidedFunctionAppWithStaticSiteAsync(resourceGroupName, name, functionAppName,
-            staticSiteUserProvidedFunctionEnvelope, isForced, context).last()
-                .flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Register a user provided function app with a static site
-     * 
-     * Description for Register a user provided function app with a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param functionAppName Name of the function app to register with the static site.
-     * @param staticSiteUserProvidedFunctionEnvelope A JSON representation of the user provided function app properties.
-     * See example.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -12185,8 +12768,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         String resourceGroupName, String name, String functionAppName,
         StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope) {
         final Boolean isForced = null;
-        return registerUserProvidedFunctionAppWithStaticSiteAsync(resourceGroupName, name, functionAppName,
-            staticSiteUserProvidedFunctionEnvelope, isForced).block();
+        return beginRegisterUserProvidedFunctionAppWithStaticSite(resourceGroupName, name, functionAppName,
+            staticSiteUserProvidedFunctionEnvelope, isForced).getFinalResult();
     }
 
     /**
@@ -12213,8 +12796,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
         String resourceGroupName, String name, String functionAppName,
         StaticSiteUserProvidedFunctionAppArmResourceInner staticSiteUserProvidedFunctionEnvelope, Boolean isForced,
         Context context) {
-        return registerUserProvidedFunctionAppWithStaticSiteAsync(resourceGroupName, name, functionAppName,
-            staticSiteUserProvidedFunctionEnvelope, isForced, context).block();
+        return beginRegisterUserProvidedFunctionAppWithStaticSite(resourceGroupName, name, functionAppName,
+            staticSiteUserProvidedFunctionEnvelope, isForced, context).getFinalResult();
     }
 
     /**
@@ -12268,48 +12851,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param functionAppName Name of the function app registered with the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> detachUserProvidedFunctionAppFromStaticSiteWithResponseAsync(String resourceGroupName,
-        String name, String functionAppName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (functionAppName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter functionAppName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.detachUserProvidedFunctionAppFromStaticSite(this.client.getEndpoint(), resourceGroupName, name,
-            functionAppName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Detach the user provided function app from the static site
-     * 
-     * Description for Detach the user provided function app from the static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param functionAppName Name of the function app registered with the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -12339,8 +12880,30 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> detachUserProvidedFunctionAppFromStaticSiteWithResponse(String resourceGroupName, String name,
         String functionAppName, Context context) {
-        return detachUserProvidedFunctionAppFromStaticSiteWithResponseAsync(resourceGroupName, name, functionAppName,
-            context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (functionAppName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter functionAppName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.detachUserProvidedFunctionAppFromStaticSiteSync(this.client.getEndpoint(), resourceGroupName,
+            name, functionAppName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -12416,39 +12979,88 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param name Name of the static site.
      * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
      * example.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createZipDeploymentForStaticSiteWithResponseAsync(String resourceGroupName,
-        String name, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope, Context context) {
+    private Response<BinaryData> createZipDeploymentForStaticSiteWithResponse(String resourceGroupName, String name,
+        StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (staticSiteZipDeploymentEnvelope == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter staticSiteZipDeploymentEnvelope is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter staticSiteZipDeploymentEnvelope is required and cannot be null."));
         } else {
             staticSiteZipDeploymentEnvelope.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.createZipDeploymentForStaticSite(this.client.getEndpoint(), resourceGroupName, name,
+        return service.createZipDeploymentForStaticSiteSync(this.client.getEndpoint(), resourceGroupName, name,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), staticSiteZipDeploymentEnvelope, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Deploys zipped content to a static site.
+     * 
+     * Description for Deploys zipped content to a static site.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
+     * example.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> createZipDeploymentForStaticSiteWithResponse(String resourceGroupName, String name,
+        StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (staticSiteZipDeploymentEnvelope == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter staticSiteZipDeploymentEnvelope is required and cannot be null."));
+        } else {
+            staticSiteZipDeploymentEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return service.createZipDeploymentForStaticSiteSync(this.client.getEndpoint(), resourceGroupName, name,
             this.client.getSubscriptionId(), this.client.getApiVersion(), staticSiteZipDeploymentEnvelope, accept,
             context);
     }
@@ -12485,31 +13097,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param name Name of the static site.
      * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
      * example.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSiteAsync(String resourceGroupName,
-        String name, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createZipDeploymentForStaticSiteWithResponseAsync(resourceGroupName,
-            name, staticSiteZipDeploymentEnvelope, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Deploys zipped content to a static site.
-     * 
-     * Description for Deploys zipped content to a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
-     * example.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -12518,8 +13105,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSite(String resourceGroupName,
         String name, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope) {
-        return this.beginCreateZipDeploymentForStaticSiteAsync(resourceGroupName, name, staticSiteZipDeploymentEnvelope)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = createZipDeploymentForStaticSiteWithResponse(resourceGroupName, name, staticSiteZipDeploymentEnvelope);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -12540,10 +13128,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginCreateZipDeploymentForStaticSite(String resourceGroupName,
         String name, StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope, Context context) {
-        return this
-            .beginCreateZipDeploymentForStaticSiteAsync(resourceGroupName, name, staticSiteZipDeploymentEnvelope,
-                context)
-            .getSyncPoller();
+        Response<BinaryData> response = createZipDeploymentForStaticSiteWithResponse(resourceGroupName, name,
+            staticSiteZipDeploymentEnvelope, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -12577,28 +13164,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param name Name of the static site.
      * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
      * example.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> createZipDeploymentForStaticSiteAsync(String resourceGroupName, String name,
-        StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope, Context context) {
-        return beginCreateZipDeploymentForStaticSiteAsync(resourceGroupName, name, staticSiteZipDeploymentEnvelope,
-            context).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Deploys zipped content to a static site.
-     * 
-     * Description for Deploys zipped content to a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param staticSiteZipDeploymentEnvelope A JSON representation of the StaticSiteZipDeployment properties. See
-     * example.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -12606,7 +13171,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void createZipDeploymentForStaticSite(String resourceGroupName, String name,
         StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope) {
-        createZipDeploymentForStaticSiteAsync(resourceGroupName, name, staticSiteZipDeploymentEnvelope).block();
+        beginCreateZipDeploymentForStaticSite(resourceGroupName, name, staticSiteZipDeploymentEnvelope)
+            .getFinalResult();
     }
 
     /**
@@ -12626,8 +13192,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void createZipDeploymentForStaticSite(String resourceGroupName, String name,
         StaticSiteZipDeploymentArmResource staticSiteZipDeploymentEnvelope, Context context) {
-        createZipDeploymentForStaticSiteAsync(resourceGroupName, name, staticSiteZipDeploymentEnvelope, context)
-            .block();
+        beginCreateZipDeploymentForStaticSite(resourceGroupName, name, staticSiteZipDeploymentEnvelope, context)
+            .getFinalResult();
     }
 
     /**
@@ -12685,44 +13251,95 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param name Name of the static site.
      * @param linkedBackendName Name of the linked backend that should be retrieved.
      * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> validateBackendWithResponseAsync(String resourceGroupName, String name,
-        String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
-        Context context) {
+    private Response<BinaryData> validateBackendWithResponse(String resourceGroupName, String name,
+        String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (linkedBackendName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (staticSiteLinkedBackendEnvelope == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter staticSiteLinkedBackendEnvelope is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter staticSiteLinkedBackendEnvelope is required and cannot be null."));
         } else {
             staticSiteLinkedBackendEnvelope.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.validateBackend(this.client.getEndpoint(), resourceGroupName, name, linkedBackendName,
+        return service.validateBackendSync(this.client.getEndpoint(), resourceGroupName, name, linkedBackendName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), staticSiteLinkedBackendEnvelope, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Validates that a backend can be linked to a static site.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> validateBackendWithResponse(String resourceGroupName, String name,
+        String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (linkedBackendName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (staticSiteLinkedBackendEnvelope == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter staticSiteLinkedBackendEnvelope is required and cannot be null."));
+        } else {
+            staticSiteLinkedBackendEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return service.validateBackendSync(this.client.getEndpoint(), resourceGroupName, name, linkedBackendName,
             this.client.getSubscriptionId(), this.client.getApiVersion(), staticSiteLinkedBackendEnvelope, accept,
             context);
     }
@@ -12755,30 +13372,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param name Name of the static site.
      * @param linkedBackendName Name of the linked backend that should be retrieved.
      * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginValidateBackendAsync(String resourceGroupName, String name,
-        String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
-        Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = validateBackendWithResponseAsync(resourceGroupName, name,
-            linkedBackendName, staticSiteLinkedBackendEnvelope, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Validates that a backend can be linked to a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -12787,9 +13380,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginValidateBackend(String resourceGroupName, String name,
         String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
-        return this
-            .beginValidateBackendAsync(resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = validateBackendWithResponse(resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -12809,10 +13402,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public SyncPoller<PollResult<Void>, Void> beginValidateBackend(String resourceGroupName, String name,
         String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
         Context context) {
-        return this
-            .beginValidateBackendAsync(resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope,
-                context)
-            .getSyncPoller();
+        Response<BinaryData> response = validateBackendWithResponse(resourceGroupName, name, linkedBackendName,
+            staticSiteLinkedBackendEnvelope, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -12842,26 +13434,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param name Name of the static site.
      * @param linkedBackendName Name of the linked backend that should be retrieved.
      * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> validateBackendAsync(String resourceGroupName, String name, String linkedBackendName,
-        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope, Context context) {
-        return beginValidateBackendAsync(resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope,
-            context).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Validates that a backend can be linked to a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -12869,7 +13441,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void validateBackend(String resourceGroupName, String name, String linkedBackendName,
         StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
-        validateBackendAsync(resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope).block();
+        beginValidateBackend(resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope)
+            .getFinalResult();
     }
 
     /**
@@ -12887,8 +13460,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void validateBackend(String resourceGroupName, String name, String linkedBackendName,
         StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope, Context context) {
-        validateBackendAsync(resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope, context)
-            .block();
+        beginValidateBackend(resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope, context)
+            .getFinalResult();
     }
 
     /**
@@ -12953,48 +13526,105 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param environmentName The stage site identifier.
      * @param linkedBackendName Name of the linked backend that should be retrieved.
      * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> validateBackendForBuildWithResponseAsync(String resourceGroupName,
-        String name, String environmentName, String linkedBackendName,
-        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope, Context context) {
+    private Response<BinaryData> validateBackendForBuildWithResponse(String resourceGroupName, String name,
+        String environmentName, String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
         }
         if (linkedBackendName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (staticSiteLinkedBackendEnvelope == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter staticSiteLinkedBackendEnvelope is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter staticSiteLinkedBackendEnvelope is required and cannot be null."));
         } else {
             staticSiteLinkedBackendEnvelope.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.validateBackendForBuild(this.client.getEndpoint(), resourceGroupName, name, environmentName,
+        return service.validateBackendForBuildSync(this.client.getEndpoint(), resourceGroupName, name, environmentName,
+            linkedBackendName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+            staticSiteLinkedBackendEnvelope, accept, Context.NONE);
+    }
+
+    /**
+     * Validates that a backend can be linked to a static site build.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the linked backend that should be retrieved.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> validateBackendForBuildWithResponse(String resourceGroupName, String name,
+        String environmentName, String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (linkedBackendName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (staticSiteLinkedBackendEnvelope == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter staticSiteLinkedBackendEnvelope is required and cannot be null."));
+        } else {
+            staticSiteLinkedBackendEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return service.validateBackendForBuildSync(this.client.getEndpoint(), resourceGroupName, name, environmentName,
             linkedBackendName, this.client.getSubscriptionId(), this.client.getApiVersion(),
             staticSiteLinkedBackendEnvelope, accept, context);
     }
@@ -13030,31 +13660,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param environmentName The stage site identifier.
      * @param linkedBackendName Name of the linked backend that should be retrieved.
      * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginValidateBackendForBuildAsync(String resourceGroupName, String name,
-        String environmentName, String linkedBackendName,
-        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = validateBackendForBuildWithResponseAsync(resourceGroupName, name,
-            environmentName, linkedBackendName, staticSiteLinkedBackendEnvelope, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Validates that a backend can be linked to a static site build.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -13064,10 +13669,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public SyncPoller<PollResult<Void>, Void> beginValidateBackendForBuild(String resourceGroupName, String name,
         String environmentName, String linkedBackendName,
         StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
-        return this
-            .beginValidateBackendForBuildAsync(resourceGroupName, name, environmentName, linkedBackendName,
-                staticSiteLinkedBackendEnvelope)
-            .getSyncPoller();
+        Response<BinaryData> response = validateBackendForBuildWithResponse(resourceGroupName, name, environmentName,
+            linkedBackendName, staticSiteLinkedBackendEnvelope);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, Context.NONE);
     }
 
     /**
@@ -13088,10 +13692,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public SyncPoller<PollResult<Void>, Void> beginValidateBackendForBuild(String resourceGroupName, String name,
         String environmentName, String linkedBackendName,
         StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope, Context context) {
-        return this
-            .beginValidateBackendForBuildAsync(resourceGroupName, name, environmentName, linkedBackendName,
-                staticSiteLinkedBackendEnvelope, context)
-            .getSyncPoller();
+        Response<BinaryData> response = validateBackendForBuildWithResponse(resourceGroupName, name, environmentName,
+            linkedBackendName, staticSiteLinkedBackendEnvelope, context);
+        return this.client.<Void, Void>getLroResult(response, Void.class, Void.class, context);
     }
 
     /**
@@ -13122,28 +13725,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param environmentName The stage site identifier.
      * @param linkedBackendName Name of the linked backend that should be retrieved.
      * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> validateBackendForBuildAsync(String resourceGroupName, String name, String environmentName,
-        String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
-        Context context) {
-        return beginValidateBackendForBuildAsync(resourceGroupName, name, environmentName, linkedBackendName,
-            staticSiteLinkedBackendEnvelope, context).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Validates that a backend can be linked to a static site build.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -13151,8 +13732,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void validateBackendForBuild(String resourceGroupName, String name, String environmentName,
         String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
-        validateBackendForBuildAsync(resourceGroupName, name, environmentName, linkedBackendName,
-            staticSiteLinkedBackendEnvelope).block();
+        beginValidateBackendForBuild(resourceGroupName, name, environmentName, linkedBackendName,
+            staticSiteLinkedBackendEnvelope).getFinalResult();
     }
 
     /**
@@ -13172,8 +13753,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public void validateBackendForBuild(String resourceGroupName, String name, String environmentName,
         String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
         Context context) {
-        validateBackendForBuildAsync(resourceGroupName, name, environmentName, linkedBackendName,
-            staticSiteLinkedBackendEnvelope, context).block();
+        beginValidateBackendForBuild(resourceGroupName, name, environmentName, linkedBackendName,
+            staticSiteLinkedBackendEnvelope, context).getFinalResult();
     }
 
     /**
@@ -13220,45 +13801,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site linked backends along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteLinkedBackendArmResourceInner>>
-        getLinkedBackendsSinglePageAsync(String resourceGroupName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .getLinkedBackends(this.client.getEndpoint(), resourceGroupName, name, this.client.getSubscriptionId(),
-                this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Returns details of all backends linked to a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -13276,17 +13818,75 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site linked backends along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendsSinglePage(String resourceGroupName,
+        String name) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteLinkedBackendsCollection> res
+            = service.getLinkedBackendsSync(this.client.getEndpoint(), resourceGroupName, name,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Returns details of all backends linked to a static site.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site linked backends as paginated response with {@link PagedFlux}.
+     * @return collection of static site linked backends along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendsAsync(String resourceGroupName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendsSinglePage(String resourceGroupName,
         String name, Context context) {
-        return new PagedFlux<>(() -> getLinkedBackendsSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> getLinkedBackendsNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteLinkedBackendsCollection> res = service.getLinkedBackendsSync(this.client.getEndpoint(),
+            resourceGroupName, name, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -13302,7 +13902,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteLinkedBackendArmResourceInner> getLinkedBackends(String resourceGroupName,
         String name) {
-        return new PagedIterable<>(getLinkedBackendsAsync(resourceGroupName, name));
+        return new PagedIterable<>(() -> getLinkedBackendsSinglePage(resourceGroupName, name),
+            nextLink -> getLinkedBackendsNextSinglePage(nextLink));
     }
 
     /**
@@ -13319,7 +13920,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteLinkedBackendArmResourceInner> getLinkedBackends(String resourceGroupName,
         String name, Context context) {
-        return new PagedIterable<>(getLinkedBackendsAsync(resourceGroupName, name, context));
+        return new PagedIterable<>(() -> getLinkedBackendsSinglePage(resourceGroupName, name, context),
+            nextLink -> getLinkedBackendsNextSinglePage(nextLink, context));
     }
 
     /**
@@ -13372,50 +13974,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site linked backends along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteLinkedBackendArmResourceInner>> getLinkedBackendsForBuildSinglePageAsync(
-        String resourceGroupName, String name, String environmentName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .getLinkedBackendsForBuild(this.client.getEndpoint(), resourceGroupName, name, environmentName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Returns details of all backends linked to a static site build.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -13434,18 +13992,85 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site linked backends along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteLinkedBackendArmResourceInner>
+        getLinkedBackendsForBuildSinglePage(String resourceGroupName, String name, String environmentName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteLinkedBackendsCollection> res
+            = service.getLinkedBackendsForBuildSync(this.client.getEndpoint(), resourceGroupName, name, environmentName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Returns details of all backends linked to a static site build.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site linked backends as paginated response with {@link PagedFlux}.
+     * @return collection of static site linked backends along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendsForBuildAsync(String resourceGroupName,
-        String name, String environmentName, Context context) {
-        return new PagedFlux<>(
-            () -> getLinkedBackendsForBuildSinglePageAsync(resourceGroupName, name, environmentName, context),
-            nextLink -> getLinkedBackendsForBuildNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendsForBuildSinglePage(
+        String resourceGroupName, String name, String environmentName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteLinkedBackendsCollection> res
+            = service.getLinkedBackendsForBuildSync(this.client.getEndpoint(), resourceGroupName, name, environmentName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -13462,7 +14087,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendsForBuild(String resourceGroupName,
         String name, String environmentName) {
-        return new PagedIterable<>(getLinkedBackendsForBuildAsync(resourceGroupName, name, environmentName));
+        return new PagedIterable<>(() -> getLinkedBackendsForBuildSinglePage(resourceGroupName, name, environmentName),
+            nextLink -> getLinkedBackendsForBuildNextSinglePage(nextLink));
     }
 
     /**
@@ -13480,7 +14106,9 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendsForBuild(String resourceGroupName,
         String name, String environmentName, Context context) {
-        return new PagedIterable<>(getLinkedBackendsForBuildAsync(resourceGroupName, name, environmentName, context));
+        return new PagedIterable<>(
+            () -> getLinkedBackendsForBuildSinglePage(resourceGroupName, name, environmentName, context),
+            nextLink -> getLinkedBackendsForBuildNextSinglePage(nextLink, context));
     }
 
     /**
@@ -13530,47 +14158,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Linked Backend ARM resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StaticSiteLinkedBackendArmResourceInner>> getLinkedBackendWithResponseAsync(
-        String resourceGroupName, String name, String linkedBackendName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (linkedBackendName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getLinkedBackend(this.client.getEndpoint(), resourceGroupName, name, linkedBackendName,
-            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Returns the details of a linked backend linked to a static site by name.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -13598,7 +14185,30 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendWithResponse(String resourceGroupName,
         String name, String linkedBackendName, Context context) {
-        return getLinkedBackendWithResponseAsync(resourceGroupName, name, linkedBackendName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (linkedBackendName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getLinkedBackendSync(this.client.getEndpoint(), resourceGroupName, name, linkedBackendName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -13674,45 +14284,95 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param name Name of the static site.
      * @param linkedBackendName Name of the backend to link to the static site.
      * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Linked Backend ARM resource along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return static Site Linked Backend ARM resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> linkBackendWithResponseAsync(String resourceGroupName, String name,
-        String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
-        Context context) {
+    private Response<BinaryData> linkBackendWithResponse(String resourceGroupName, String name,
+        String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (linkedBackendName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (staticSiteLinkedBackendEnvelope == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter staticSiteLinkedBackendEnvelope is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter staticSiteLinkedBackendEnvelope is required and cannot be null."));
         } else {
             staticSiteLinkedBackendEnvelope.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.linkBackend(this.client.getEndpoint(), resourceGroupName, name, linkedBackendName,
+        return service.linkBackendSync(this.client.getEndpoint(), resourceGroupName, name, linkedBackendName,
+            this.client.getSubscriptionId(), this.client.getApiVersion(), staticSiteLinkedBackendEnvelope, accept,
+            Context.NONE);
+    }
+
+    /**
+     * Link backend to a static site.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param linkedBackendName Name of the backend to link to the static site.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Linked Backend ARM resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> linkBackendWithResponse(String resourceGroupName, String name,
+        String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
+        Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (linkedBackendName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (staticSiteLinkedBackendEnvelope == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter staticSiteLinkedBackendEnvelope is required and cannot be null."));
+        } else {
+            staticSiteLinkedBackendEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return service.linkBackendSync(this.client.getEndpoint(), resourceGroupName, name, linkedBackendName,
             this.client.getSubscriptionId(), this.client.getApiVersion(), staticSiteLinkedBackendEnvelope, accept,
             context);
     }
@@ -13748,32 +14408,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param name Name of the static site.
      * @param linkedBackendName Name of the backend to link to the static site.
      * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of static Site Linked Backend ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<StaticSiteLinkedBackendArmResourceInner>, StaticSiteLinkedBackendArmResourceInner>
-        beginLinkBackendAsync(String resourceGroupName, String name, String linkedBackendName,
-            StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = linkBackendWithResponseAsync(resourceGroupName, name, linkedBackendName,
-            staticSiteLinkedBackendEnvelope, context);
-        return this.client
-            .<StaticSiteLinkedBackendArmResourceInner, StaticSiteLinkedBackendArmResourceInner>getLroResult(mono,
-                this.client.getHttpPipeline(), StaticSiteLinkedBackendArmResourceInner.class,
-                StaticSiteLinkedBackendArmResourceInner.class, context);
-    }
-
-    /**
-     * Link backend to a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param linkedBackendName Name of the backend to link to the static site.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -13783,8 +14417,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public SyncPoller<PollResult<StaticSiteLinkedBackendArmResourceInner>, StaticSiteLinkedBackendArmResourceInner>
         beginLinkBackend(String resourceGroupName, String name, String linkedBackendName,
             StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
-        return this.beginLinkBackendAsync(resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope)
-            .getSyncPoller();
+        Response<BinaryData> response
+            = linkBackendWithResponse(resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope);
+        return this.client
+            .<StaticSiteLinkedBackendArmResourceInner, StaticSiteLinkedBackendArmResourceInner>getLroResult(response,
+                StaticSiteLinkedBackendArmResourceInner.class, StaticSiteLinkedBackendArmResourceInner.class,
+                Context.NONE);
     }
 
     /**
@@ -13804,9 +14442,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public SyncPoller<PollResult<StaticSiteLinkedBackendArmResourceInner>, StaticSiteLinkedBackendArmResourceInner>
         beginLinkBackend(String resourceGroupName, String name, String linkedBackendName,
             StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope, Context context) {
-        return this
-            .beginLinkBackendAsync(resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope, context)
-            .getSyncPoller();
+        Response<BinaryData> response = linkBackendWithResponse(resourceGroupName, name, linkedBackendName,
+            staticSiteLinkedBackendEnvelope, context);
+        return this.client
+            .<StaticSiteLinkedBackendArmResourceInner, StaticSiteLinkedBackendArmResourceInner>getLroResult(response,
+                StaticSiteLinkedBackendArmResourceInner.class, StaticSiteLinkedBackendArmResourceInner.class, context);
     }
 
     /**
@@ -13835,27 +14475,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param name Name of the static site.
      * @param linkedBackendName Name of the backend to link to the static site.
      * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Linked Backend ARM resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StaticSiteLinkedBackendArmResourceInner> linkBackendAsync(String resourceGroupName, String name,
-        String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
-        Context context) {
-        return beginLinkBackendAsync(resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope,
-            context).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Link backend to a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param linkedBackendName Name of the backend to link to the static site.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -13864,7 +14483,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public StaticSiteLinkedBackendArmResourceInner linkBackend(String resourceGroupName, String name,
         String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
-        return linkBackendAsync(resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope).block();
+        return beginLinkBackend(resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope)
+            .getFinalResult();
     }
 
     /**
@@ -13884,8 +14504,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public StaticSiteLinkedBackendArmResourceInner linkBackend(String resourceGroupName, String name,
         String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
         Context context) {
-        return linkBackendAsync(resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope, context)
-            .block();
+        return beginLinkBackend(resourceGroupName, name, linkedBackendName, staticSiteLinkedBackendEnvelope, context)
+            .getFinalResult();
     }
 
     /**
@@ -13936,47 +14556,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the static site.
      * @param linkedBackendName Name of the backend linked to the static site.
-     * @param isCleaningAuthConfig Decides if Easy Auth configuration will be removed from backend configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> unlinkBackendWithResponseAsync(String resourceGroupName, String name,
-        String linkedBackendName, Boolean isCleaningAuthConfig, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (linkedBackendName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.unlinkBackend(this.client.getEndpoint(), resourceGroupName, name, linkedBackendName,
-            isCleaningAuthConfig, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Unlink a backend from a static site.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param linkedBackendName Name of the backend linked to the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -14005,8 +14584,30 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> unlinkBackendWithResponse(String resourceGroupName, String name, String linkedBackendName,
         Boolean isCleaningAuthConfig, Context context) {
-        return unlinkBackendWithResponseAsync(resourceGroupName, name, linkedBackendName, isCleaningAuthConfig, context)
-            .block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (linkedBackendName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.unlinkBackendSync(this.client.getEndpoint(), resourceGroupName, name, linkedBackendName,
+            isCleaningAuthConfig, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -14079,52 +14680,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
      * @param linkedBackendName Name of the linked backend that should be retrieved.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Linked Backend ARM resource along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StaticSiteLinkedBackendArmResourceInner>> getLinkedBackendForBuildWithResponseAsync(
-        String resourceGroupName, String name, String environmentName, String linkedBackendName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (linkedBackendName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getLinkedBackendForBuild(this.client.getEndpoint(), resourceGroupName, name, environmentName,
-            linkedBackendName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Returns the details of a linked backend linked to a static site build by name.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param linkedBackendName Name of the linked backend that should be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -14153,8 +14708,34 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendForBuildWithResponse(
         String resourceGroupName, String name, String environmentName, String linkedBackendName, Context context) {
-        return getLinkedBackendForBuildWithResponseAsync(resourceGroupName, name, environmentName, linkedBackendName,
-            context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (linkedBackendName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getLinkedBackendForBuildSync(this.client.getEndpoint(), resourceGroupName, name, environmentName,
+            linkedBackendName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -14239,49 +14820,105 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param environmentName The stage site identifier.
      * @param linkedBackendName Name of the backend to link to the static site.
      * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Linked Backend ARM resource along with {@link Response} on successful completion of
-     * {@link Mono}.
+     * @return static Site Linked Backend ARM resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> linkBackendToBuildWithResponseAsync(String resourceGroupName, String name,
+    private Response<BinaryData> linkBackendToBuildWithResponse(String resourceGroupName, String name,
         String environmentName, String linkedBackendName,
-        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope, Context context) {
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
         }
         if (linkedBackendName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (staticSiteLinkedBackendEnvelope == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter staticSiteLinkedBackendEnvelope is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter staticSiteLinkedBackendEnvelope is required and cannot be null."));
         } else {
             staticSiteLinkedBackendEnvelope.validate();
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.linkBackendToBuild(this.client.getEndpoint(), resourceGroupName, name, environmentName,
+        return service.linkBackendToBuildSync(this.client.getEndpoint(), resourceGroupName, name, environmentName,
+            linkedBackendName, this.client.getSubscriptionId(), this.client.getApiVersion(),
+            staticSiteLinkedBackendEnvelope, accept, Context.NONE);
+    }
+
+    /**
+     * Link backend to a static site build.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the static site.
+     * @param environmentName The stage site identifier.
+     * @param linkedBackendName Name of the backend to link to the static site.
+     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return static Site Linked Backend ARM resource along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Response<BinaryData> linkBackendToBuildWithResponse(String resourceGroupName, String name,
+        String environmentName, String linkedBackendName,
+        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (linkedBackendName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (staticSiteLinkedBackendEnvelope == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter staticSiteLinkedBackendEnvelope is required and cannot be null."));
+        } else {
+            staticSiteLinkedBackendEnvelope.validate();
+        }
+        final String accept = "application/json";
+        return service.linkBackendToBuildSync(this.client.getEndpoint(), resourceGroupName, name, environmentName,
             linkedBackendName, this.client.getSubscriptionId(), this.client.getApiVersion(),
             staticSiteLinkedBackendEnvelope, accept, context);
     }
@@ -14319,34 +14956,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param environmentName The stage site identifier.
      * @param linkedBackendName Name of the backend to link to the static site.
      * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of static Site Linked Backend ARM resource.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<StaticSiteLinkedBackendArmResourceInner>, StaticSiteLinkedBackendArmResourceInner>
-        beginLinkBackendToBuildAsync(String resourceGroupName, String name, String environmentName,
-            String linkedBackendName, StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope,
-            Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = linkBackendToBuildWithResponseAsync(resourceGroupName, name,
-            environmentName, linkedBackendName, staticSiteLinkedBackendEnvelope, context);
-        return this.client
-            .<StaticSiteLinkedBackendArmResourceInner, StaticSiteLinkedBackendArmResourceInner>getLroResult(mono,
-                this.client.getHttpPipeline(), StaticSiteLinkedBackendArmResourceInner.class,
-                StaticSiteLinkedBackendArmResourceInner.class, context);
-    }
-
-    /**
-     * Link backend to a static site build.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param linkedBackendName Name of the backend to link to the static site.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -14356,10 +14965,12 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public SyncPoller<PollResult<StaticSiteLinkedBackendArmResourceInner>, StaticSiteLinkedBackendArmResourceInner>
         beginLinkBackendToBuild(String resourceGroupName, String name, String environmentName, String linkedBackendName,
             StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
-        return this
-            .beginLinkBackendToBuildAsync(resourceGroupName, name, environmentName, linkedBackendName,
-                staticSiteLinkedBackendEnvelope)
-            .getSyncPoller();
+        Response<BinaryData> response = linkBackendToBuildWithResponse(resourceGroupName, name, environmentName,
+            linkedBackendName, staticSiteLinkedBackendEnvelope);
+        return this.client
+            .<StaticSiteLinkedBackendArmResourceInner, StaticSiteLinkedBackendArmResourceInner>getLroResult(response,
+                StaticSiteLinkedBackendArmResourceInner.class, StaticSiteLinkedBackendArmResourceInner.class,
+                Context.NONE);
     }
 
     /**
@@ -14380,10 +14991,11 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public SyncPoller<PollResult<StaticSiteLinkedBackendArmResourceInner>, StaticSiteLinkedBackendArmResourceInner>
         beginLinkBackendToBuild(String resourceGroupName, String name, String environmentName, String linkedBackendName,
             StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope, Context context) {
-        return this
-            .beginLinkBackendToBuildAsync(resourceGroupName, name, environmentName, linkedBackendName,
-                staticSiteLinkedBackendEnvelope, context)
-            .getSyncPoller();
+        Response<BinaryData> response = linkBackendToBuildWithResponse(resourceGroupName, name, environmentName,
+            linkedBackendName, staticSiteLinkedBackendEnvelope, context);
+        return this.client
+            .<StaticSiteLinkedBackendArmResourceInner, StaticSiteLinkedBackendArmResourceInner>getLroResult(response,
+                StaticSiteLinkedBackendArmResourceInner.class, StaticSiteLinkedBackendArmResourceInner.class, context);
     }
 
     /**
@@ -14415,28 +15027,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param environmentName The stage site identifier.
      * @param linkedBackendName Name of the backend to link to the static site.
      * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return static Site Linked Backend ARM resource on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StaticSiteLinkedBackendArmResourceInner> linkBackendToBuildAsync(String resourceGroupName, String name,
-        String environmentName, String linkedBackendName,
-        StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope, Context context) {
-        return beginLinkBackendToBuildAsync(resourceGroupName, name, environmentName, linkedBackendName,
-            staticSiteLinkedBackendEnvelope, context).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Link backend to a static site build.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param linkedBackendName Name of the backend to link to the static site.
-     * @param staticSiteLinkedBackendEnvelope A JSON representation of the linked backend request properties.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -14446,8 +15036,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public StaticSiteLinkedBackendArmResourceInner linkBackendToBuild(String resourceGroupName, String name,
         String environmentName, String linkedBackendName,
         StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope) {
-        return linkBackendToBuildAsync(resourceGroupName, name, environmentName, linkedBackendName,
-            staticSiteLinkedBackendEnvelope).block();
+        return beginLinkBackendToBuild(resourceGroupName, name, environmentName, linkedBackendName,
+            staticSiteLinkedBackendEnvelope).getFinalResult();
     }
 
     /**
@@ -14468,8 +15058,8 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     public StaticSiteLinkedBackendArmResourceInner linkBackendToBuild(String resourceGroupName, String name,
         String environmentName, String linkedBackendName,
         StaticSiteLinkedBackendArmResourceInner staticSiteLinkedBackendEnvelope, Context context) {
-        return linkBackendToBuildAsync(resourceGroupName, name, environmentName, linkedBackendName,
-            staticSiteLinkedBackendEnvelope, context).block();
+        return beginLinkBackendToBuild(resourceGroupName, name, environmentName, linkedBackendName,
+            staticSiteLinkedBackendEnvelope, context).getFinalResult();
     }
 
     /**
@@ -14526,53 +15116,6 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * @param name Name of the static site.
      * @param environmentName The stage site identifier.
      * @param linkedBackendName Name of the backend linked to the static site.
-     * @param isCleaningAuthConfig Decides if auth will be removed from backend configuration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> unlinkBackendFromBuildWithResponseAsync(String resourceGroupName, String name,
-        String environmentName, String linkedBackendName, Boolean isCleaningAuthConfig, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (environmentName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
-        }
-        if (linkedBackendName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.unlinkBackendFromBuild(this.client.getEndpoint(), resourceGroupName, name, environmentName,
-            linkedBackendName, isCleaningAuthConfig, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            accept, context);
-    }
-
-    /**
-     * Unlink a backend from a static site build.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the static site.
-     * @param environmentName The stage site identifier.
-     * @param linkedBackendName Name of the backend linked to the static site.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -14603,8 +15146,35 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> unlinkBackendFromBuildWithResponse(String resourceGroupName, String name,
         String environmentName, String linkedBackendName, Boolean isCleaningAuthConfig, Context context) {
-        return unlinkBackendFromBuildWithResponseAsync(resourceGroupName, name, environmentName, linkedBackendName,
-            isCleaningAuthConfig, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (environmentName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter environmentName is required and cannot be null."));
+        }
+        if (linkedBackendName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter linkedBackendName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.unlinkBackendFromBuildSync(this.client.getEndpoint(), resourceGroupName, name, environmentName,
+            linkedBackendName, isCleaningAuthConfig, this.client.getSubscriptionId(), this.client.getApiVersion(),
+            accept, context);
     }
 
     /**
@@ -14655,26 +15225,54 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static sites along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteArmResourceInner> listNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteCollection> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static sites along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return collection of static sites along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteArmResourceInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<StaticSiteArmResourceInner> listNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<StaticSiteCollection> res = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -14708,27 +15306,56 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static sites along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteArmResourceInner> getStaticSitesByResourceGroupNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteCollection> res
+            = service.getStaticSitesByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static sites along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return collection of static sites along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteArmResourceInner>>
-        getStaticSitesByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<StaticSiteArmResourceInner> getStaticSitesByResourceGroupNextSinglePage(String nextLink,
+        Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getStaticSitesByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<StaticSiteCollection> res
+            = service.getStaticSitesByResourceGroupNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -14764,28 +15391,56 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site custom users along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteUserArmResourceInner> listStaticSiteUsersNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteUserCollection> res
+            = service.listStaticSiteUsersNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site custom users along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return collection of static site custom users along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteUserArmResourceInner>> listStaticSiteUsersNextSinglePageAsync(String nextLink,
+    private PagedResponse<StaticSiteUserArmResourceInner> listStaticSiteUsersNextSinglePage(String nextLink,
         Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listStaticSiteUsersNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<StaticSiteUserCollection> res
+            = service.listStaticSiteUsersNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -14821,28 +15476,56 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site builds along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteBuildArmResourceInner> getStaticSiteBuildsNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteBuildCollection> res
+            = service.getStaticSiteBuildsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site builds along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return collection of static site builds along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteBuildArmResourceInner>> getStaticSiteBuildsNextSinglePageAsync(String nextLink,
+    private PagedResponse<StaticSiteBuildArmResourceInner> getStaticSiteBuildsNextSinglePage(String nextLink,
         Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getStaticSiteBuildsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<StaticSiteBuildCollection> res
+            = service.getStaticSiteBuildsNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -14877,28 +15560,56 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site database connections along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DatabaseConnectionInner> getBuildDatabaseConnectionsNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DatabaseConnectionCollection> res
+            = service.getBuildDatabaseConnectionsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site database connections along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return collection of static site database connections along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatabaseConnectionInner>> getBuildDatabaseConnectionsNextSinglePageAsync(String nextLink,
+    private PagedResponse<DatabaseConnectionInner> getBuildDatabaseConnectionsNextSinglePage(String nextLink,
         Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getBuildDatabaseConnectionsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<DatabaseConnectionCollection> res
+            = service.getBuildDatabaseConnectionsNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -14934,28 +15645,57 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site functions along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteFunctionOverviewArmResourceInner>
+        listStaticSiteBuildFunctionsNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteFunctionOverviewCollection> res
+            = service.listStaticSiteBuildFunctionsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site functions along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return collection of static site functions along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteFunctionOverviewArmResourceInner>>
-        listStaticSiteBuildFunctionsNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<StaticSiteFunctionOverviewArmResourceInner>
+        listStaticSiteBuildFunctionsNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listStaticSiteBuildFunctionsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<StaticSiteFunctionOverviewCollection> res
+            = service.listStaticSiteBuildFunctionsNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -14991,28 +15731,57 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site database connections along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DatabaseConnectionInner>
+        getBuildDatabaseConnectionsWithDetailsNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DatabaseConnectionCollection> res = service.getBuildDatabaseConnectionsWithDetailsNextSync(nextLink,
+            this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site database connections along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return collection of static site database connections along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatabaseConnectionInner>>
-        getBuildDatabaseConnectionsWithDetailsNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<DatabaseConnectionInner> getBuildDatabaseConnectionsWithDetailsNextSinglePage(String nextLink,
+        Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getBuildDatabaseConnectionsWithDetailsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<DatabaseConnectionCollection> res = service.getBuildDatabaseConnectionsWithDetailsNextSync(nextLink,
+            this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -15049,29 +15818,59 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site user provided function apps along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteUserProvidedFunctionAppArmResourceInner>
+        getUserProvidedFunctionAppsForStaticSiteBuildNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteUserProvidedFunctionAppsCollection> res
+            = service.getUserProvidedFunctionAppsForStaticSiteBuildNextSync(nextLink, this.client.getEndpoint(), accept,
+                Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site user provided function apps along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return collection of static site user provided function apps along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteUserProvidedFunctionAppArmResourceInner>>
-        getUserProvidedFunctionAppsForStaticSiteBuildNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<StaticSiteUserProvidedFunctionAppArmResourceInner>
+        getUserProvidedFunctionAppsForStaticSiteBuildNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .getUserProvidedFunctionAppsForStaticSiteBuildNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<StaticSiteUserProvidedFunctionAppsCollection> res
+            = service.getUserProvidedFunctionAppsForStaticSiteBuildNextSync(nextLink, this.client.getEndpoint(), accept,
+                context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -15107,28 +15906,56 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site basic auth along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteBasicAuthPropertiesArmResourceInner> listBasicAuthNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteBasicAuthPropertiesCollection> res
+            = service.listBasicAuthNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site basic auth along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return collection of static site basic auth along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteBasicAuthPropertiesArmResourceInner>>
-        listBasicAuthNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<StaticSiteBasicAuthPropertiesArmResourceInner> listBasicAuthNextSinglePage(String nextLink,
+        Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listBasicAuthNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<StaticSiteBasicAuthPropertiesCollection> res
+            = service.listBasicAuthNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -15164,28 +15991,57 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site custom domains along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteCustomDomainOverviewArmResourceInner>
+        listStaticSiteCustomDomainsNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteCustomDomainOverviewCollection> res
+            = service.listStaticSiteCustomDomainsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site custom domains along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return collection of static site custom domains along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteCustomDomainOverviewArmResourceInner>>
-        listStaticSiteCustomDomainsNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<StaticSiteCustomDomainOverviewArmResourceInner>
+        listStaticSiteCustomDomainsNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listStaticSiteCustomDomainsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<StaticSiteCustomDomainOverviewCollection> res
+            = service.listStaticSiteCustomDomainsNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -15220,28 +16076,56 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site database connections along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DatabaseConnectionInner> getDatabaseConnectionsNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DatabaseConnectionCollection> res
+            = service.getDatabaseConnectionsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site database connections along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return collection of static site database connections along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatabaseConnectionInner>> getDatabaseConnectionsNextSinglePageAsync(String nextLink,
+    private PagedResponse<DatabaseConnectionInner> getDatabaseConnectionsNextSinglePage(String nextLink,
         Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getDatabaseConnectionsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<DatabaseConnectionCollection> res
+            = service.getDatabaseConnectionsNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -15278,28 +16162,57 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site functions along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteFunctionOverviewArmResourceInner>
+        listStaticSiteFunctionsNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteFunctionOverviewCollection> res
+            = service.listStaticSiteFunctionsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site functions along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return collection of static site functions along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteFunctionOverviewArmResourceInner>>
-        listStaticSiteFunctionsNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<StaticSiteFunctionOverviewArmResourceInner>
+        listStaticSiteFunctionsNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listStaticSiteFunctionsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<StaticSiteFunctionOverviewCollection> res
+            = service.listStaticSiteFunctionsNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -15335,27 +16248,57 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response body along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<RemotePrivateEndpointConnectionArmResourceInner>
+        getPrivateEndpointConnectionListNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<PrivateEndpointConnectionCollection> res = service.getPrivateEndpointConnectionListNextSync(nextLink,
+            this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response body along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * @return the response body along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RemotePrivateEndpointConnectionArmResourceInner>>
-        getPrivateEndpointConnectionListNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<RemotePrivateEndpointConnectionArmResourceInner>
+        getPrivateEndpointConnectionListNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getPrivateEndpointConnectionListNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<PrivateEndpointConnectionCollection> res
+            = service.getPrivateEndpointConnectionListNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -15391,28 +16334,56 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site database connections along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DatabaseConnectionInner> getDatabaseConnectionsWithDetailsNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DatabaseConnectionCollection> res = service.getDatabaseConnectionsWithDetailsNextSync(nextLink,
+            this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site database connections along with {@link PagedResponse} on successful completion
-     * of {@link Mono}.
+     * @return collection of static site database connections along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DatabaseConnectionInner>>
-        getDatabaseConnectionsWithDetailsNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<DatabaseConnectionInner> getDatabaseConnectionsWithDetailsNextSinglePage(String nextLink,
+        Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getDatabaseConnectionsWithDetailsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<DatabaseConnectionCollection> res
+            = service.getDatabaseConnectionsWithDetailsNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -15449,29 +16420,58 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site user provided function apps along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteUserProvidedFunctionAppArmResourceInner>
+        getUserProvidedFunctionAppsForStaticSiteNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteUserProvidedFunctionAppsCollection> res
+            = service.getUserProvidedFunctionAppsForStaticSiteNextSync(nextLink, this.client.getEndpoint(), accept,
+                Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site user provided function apps along with {@link PagedResponse} on successful
-     * completion of {@link Mono}.
+     * @return collection of static site user provided function apps along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteUserProvidedFunctionAppArmResourceInner>>
-        getUserProvidedFunctionAppsForStaticSiteNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<StaticSiteUserProvidedFunctionAppArmResourceInner>
+        getUserProvidedFunctionAppsForStaticSiteNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .getUserProvidedFunctionAppsForStaticSiteNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<StaticSiteUserProvidedFunctionAppsCollection> res = service
+            .getUserProvidedFunctionAppsForStaticSiteNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -15507,28 +16507,56 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site linked backends along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendsNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteLinkedBackendsCollection> res
+            = service.getLinkedBackendsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site linked backends along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return collection of static site linked backends along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteLinkedBackendArmResourceInner>>
-        getLinkedBackendsNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<StaticSiteLinkedBackendArmResourceInner> getLinkedBackendsNextSinglePage(String nextLink,
+        Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getLinkedBackendsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<StaticSiteLinkedBackendsCollection> res
+            = service.getLinkedBackendsNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -15565,27 +16593,58 @@ public final class StaticSitesClientImpl implements InnerSupportsGet<StaticSiteA
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of static site linked backends along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<StaticSiteLinkedBackendArmResourceInner>
+        getLinkedBackendsForBuildNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<StaticSiteLinkedBackendsCollection> res
+            = service.getLinkedBackendsForBuildNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of static site linked backends along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return collection of static site linked backends along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StaticSiteLinkedBackendArmResourceInner>>
-        getLinkedBackendsForBuildNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<StaticSiteLinkedBackendArmResourceInner>
+        getLinkedBackendsForBuildNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getLinkedBackendsForBuildNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<StaticSiteLinkedBackendsCollection> res
+            = service.getLinkedBackendsForBuildNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(StaticSitesClientImpl.class);
 }

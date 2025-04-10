@@ -25,6 +25,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.DiagnosticsClient;
 import com.azure.resourcemanager.appservice.fluent.models.AnalysisDefinitionInner;
 import com.azure.resourcemanager.appservice.fluent.models.DetectorDefinitionResourceInner;
@@ -82,10 +83,30 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/detectors")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DetectorResponseCollection> listHostingEnvironmentDetectorResponsesSync(
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/detectors/{detectorName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DetectorResponseInner>> getHostingEnvironmentDetectorResponse(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("detectorName") String detectorName, @QueryParam("startTime") OffsetDateTime startTime,
+            @QueryParam("endTime") OffsetDateTime endTime, @QueryParam("timeGrain") String timeGrain,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/hostingEnvironments/{name}/detectors/{detectorName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DetectorResponseInner> getHostingEnvironmentDetectorResponseSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("detectorName") String detectorName, @QueryParam("startTime") OffsetDateTime startTime,
             @QueryParam("endTime") OffsetDateTime endTime, @QueryParam("timeGrain") String timeGrain,
@@ -102,10 +123,30 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/detectors")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DetectorResponseCollection> listSiteDetectorResponsesSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/detectors/{detectorName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DetectorResponseInner>> getSiteDetectorResponse(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
+            @PathParam("detectorName") String detectorName, @QueryParam("startTime") OffsetDateTime startTime,
+            @QueryParam("endTime") OffsetDateTime endTime, @QueryParam("timeGrain") String timeGrain,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/detectors/{detectorName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DetectorResponseInner> getSiteDetectorResponseSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
             @PathParam("detectorName") String detectorName, @QueryParam("startTime") OffsetDateTime startTime,
             @QueryParam("endTime") OffsetDateTime endTime, @QueryParam("timeGrain") String timeGrain,
@@ -122,10 +163,29 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/diagnostics")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DiagnosticCategoryCollection> listSiteDiagnosticCategoriesSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/diagnostics/{diagnosticCategory}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DiagnosticCategoryInner>> getSiteDiagnosticCategory(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
+            @PathParam("diagnosticCategory") String diagnosticCategory,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/diagnostics/{diagnosticCategory}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DiagnosticCategoryInner> getSiteDiagnosticCategorySync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
             @PathParam("diagnosticCategory") String diagnosticCategory,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
@@ -142,10 +202,30 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/diagnostics/{diagnosticCategory}/analyses")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DiagnosticAnalysisCollection> listSiteAnalysesSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
+            @PathParam("diagnosticCategory") String diagnosticCategory,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/diagnostics/{diagnosticCategory}/analyses/{analysisName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<AnalysisDefinitionInner>> getSiteAnalysis(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
+            @PathParam("diagnosticCategory") String diagnosticCategory, @PathParam("analysisName") String analysisName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/diagnostics/{diagnosticCategory}/analyses/{analysisName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<AnalysisDefinitionInner> getSiteAnalysisSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
             @PathParam("diagnosticCategory") String diagnosticCategory, @PathParam("analysisName") String analysisName,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
@@ -163,6 +243,17 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/diagnostics/{diagnosticCategory}/analyses/{analysisName}/execute")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DiagnosticAnalysisInner> executeSiteAnalysisSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
+            @PathParam("diagnosticCategory") String diagnosticCategory, @PathParam("analysisName") String analysisName,
+            @QueryParam("startTime") OffsetDateTime startTime, @QueryParam("endTime") OffsetDateTime endTime,
+            @QueryParam("timeGrain") String timeGrain, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/diagnostics/{diagnosticCategory}/detectors")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
@@ -173,10 +264,30 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/diagnostics/{diagnosticCategory}/detectors")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DiagnosticDetectorCollection> listSiteDetectorsSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
+            @PathParam("diagnosticCategory") String diagnosticCategory,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/diagnostics/{diagnosticCategory}/detectors/{detectorName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DetectorDefinitionResourceInner>> getSiteDetector(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
+            @PathParam("diagnosticCategory") String diagnosticCategory, @PathParam("detectorName") String detectorName,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/diagnostics/{diagnosticCategory}/detectors/{detectorName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DetectorDefinitionResourceInner> getSiteDetectorSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
             @PathParam("diagnosticCategory") String diagnosticCategory, @PathParam("detectorName") String detectorName,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
@@ -194,6 +305,17 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/diagnostics/{diagnosticCategory}/detectors/{detectorName}/execute")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DiagnosticDetectorResponseInner> executeSiteDetectorSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
+            @PathParam("detectorName") String detectorName, @PathParam("diagnosticCategory") String diagnosticCategory,
+            @QueryParam("startTime") OffsetDateTime startTime, @QueryParam("endTime") OffsetDateTime endTime,
+            @QueryParam("timeGrain") String timeGrain, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/detectors")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
@@ -203,10 +325,30 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/detectors")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DetectorResponseCollection> listSiteDetectorResponsesSlotSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
+            @PathParam("slot") String slot, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/detectors/{detectorName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DetectorResponseInner>> getSiteDetectorResponseSlot(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
+            @PathParam("detectorName") String detectorName, @PathParam("slot") String slot,
+            @QueryParam("startTime") OffsetDateTime startTime, @QueryParam("endTime") OffsetDateTime endTime,
+            @QueryParam("timeGrain") String timeGrain, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/detectors/{detectorName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DetectorResponseInner> getSiteDetectorResponseSlotSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
             @PathParam("detectorName") String detectorName, @PathParam("slot") String slot,
             @QueryParam("startTime") OffsetDateTime startTime, @QueryParam("endTime") OffsetDateTime endTime,
@@ -224,10 +366,29 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/diagnostics")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DiagnosticCategoryCollection> listSiteDiagnosticCategoriesSlotSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
+            @PathParam("slot") String slot, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/diagnostics/{diagnosticCategory}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DiagnosticCategoryInner>> getSiteDiagnosticCategorySlot(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
+            @PathParam("diagnosticCategory") String diagnosticCategory, @PathParam("slot") String slot,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/diagnostics/{diagnosticCategory}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DiagnosticCategoryInner> getSiteDiagnosticCategorySlotSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
             @PathParam("diagnosticCategory") String diagnosticCategory, @PathParam("slot") String slot,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
@@ -244,10 +405,30 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/diagnostics/{diagnosticCategory}/analyses")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DiagnosticAnalysisCollection> listSiteAnalysesSlotSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
+            @PathParam("diagnosticCategory") String diagnosticCategory, @PathParam("slot") String slot,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/diagnostics/{diagnosticCategory}/analyses/{analysisName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<AnalysisDefinitionInner>> getSiteAnalysisSlot(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
+            @PathParam("diagnosticCategory") String diagnosticCategory, @PathParam("analysisName") String analysisName,
+            @PathParam("slot") String slot, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/diagnostics/{diagnosticCategory}/analyses/{analysisName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<AnalysisDefinitionInner> getSiteAnalysisSlotSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
             @PathParam("diagnosticCategory") String diagnosticCategory, @PathParam("analysisName") String analysisName,
             @PathParam("slot") String slot, @PathParam("subscriptionId") String subscriptionId,
@@ -266,10 +447,32 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/diagnostics/{diagnosticCategory}/analyses/{analysisName}/execute")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DiagnosticAnalysisInner> executeSiteAnalysisSlotSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
+            @PathParam("diagnosticCategory") String diagnosticCategory, @PathParam("analysisName") String analysisName,
+            @PathParam("slot") String slot, @QueryParam("startTime") OffsetDateTime startTime,
+            @QueryParam("endTime") OffsetDateTime endTime, @QueryParam("timeGrain") String timeGrain,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/diagnostics/{diagnosticCategory}/detectors")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DiagnosticDetectorCollection>> listSiteDetectorsSlot(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
+            @PathParam("diagnosticCategory") String diagnosticCategory, @PathParam("slot") String slot,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/diagnostics/{diagnosticCategory}/detectors")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DiagnosticDetectorCollection> listSiteDetectorsSlotSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
             @PathParam("diagnosticCategory") String diagnosticCategory, @PathParam("slot") String slot,
             @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
@@ -286,10 +489,32 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/diagnostics/{diagnosticCategory}/detectors/{detectorName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DetectorDefinitionResourceInner> getSiteDetectorSlotSync(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
+            @PathParam("diagnosticCategory") String diagnosticCategory, @PathParam("detectorName") String detectorName,
+            @PathParam("slot") String slot, @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/diagnostics/{diagnosticCategory}/detectors/{detectorName}/execute")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DiagnosticDetectorResponseInner>> executeSiteDetectorSlot(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
+            @PathParam("detectorName") String detectorName, @PathParam("diagnosticCategory") String diagnosticCategory,
+            @PathParam("slot") String slot, @QueryParam("startTime") OffsetDateTime startTime,
+            @QueryParam("endTime") OffsetDateTime endTime, @QueryParam("timeGrain") String timeGrain,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{siteName}/slots/{slot}/diagnostics/{diagnosticCategory}/detectors/{detectorName}/execute")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DiagnosticDetectorResponseInner> executeSiteDetectorSlotSync(@HostParam("$host") String endpoint,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("siteName") String siteName,
             @PathParam("detectorName") String detectorName, @PathParam("diagnosticCategory") String diagnosticCategory,
             @PathParam("slot") String slot, @QueryParam("startTime") OffsetDateTime startTime,
@@ -309,7 +534,23 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DetectorResponseCollection> listHostingEnvironmentDetectorResponsesNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DetectorResponseCollection>> listSiteDetectorResponsesNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DetectorResponseCollection> listSiteDetectorResponsesNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -325,7 +566,23 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DiagnosticCategoryCollection> listSiteDiagnosticCategoriesNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DiagnosticAnalysisCollection>> listSiteAnalysesNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DiagnosticAnalysisCollection> listSiteAnalysesNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -341,7 +598,23 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DiagnosticDetectorCollection> listSiteDetectorsNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DetectorResponseCollection>> listSiteDetectorResponsesSlotNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DetectorResponseCollection> listSiteDetectorResponsesSlotNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -357,6 +630,14 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DiagnosticCategoryCollection> listSiteDiagnosticCategoriesSlotNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DiagnosticAnalysisCollection>> listSiteAnalysesSlotNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
@@ -365,7 +646,23 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DiagnosticAnalysisCollection> listSiteAnalysesSlotNextSync(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
         Mono<Response<DiagnosticDetectorCollection>> listSiteDetectorsSlotNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(DefaultErrorResponseErrorException.class)
+        Response<DiagnosticDetectorCollection> listSiteDetectorsSlotNextSync(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -417,47 +714,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of detector responses along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DetectorResponseInner>>
-        listHostingEnvironmentDetectorResponsesSinglePageAsync(String resourceGroupName, String name, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listHostingEnvironmentDetectorResponses(this.client.getEndpoint(), resourceGroupName, name,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * List Hosting Environment Detector Responses
-     * 
-     * Description for List Hosting Environment Detector Responses.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Site Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -477,18 +733,78 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Site Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of detector responses along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DetectorResponseInner>
+        listHostingEnvironmentDetectorResponsesSinglePage(String resourceGroupName, String name) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DetectorResponseCollection> res
+            = service.listHostingEnvironmentDetectorResponsesSync(this.client.getEndpoint(), resourceGroupName, name,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List Hosting Environment Detector Responses
+     * 
+     * Description for List Hosting Environment Detector Responses.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of detector responses as paginated response with {@link PagedFlux}.
+     * @return collection of detector responses along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DetectorResponseInner> listHostingEnvironmentDetectorResponsesAsync(String resourceGroupName,
-        String name, Context context) {
-        return new PagedFlux<>(
-            () -> listHostingEnvironmentDetectorResponsesSinglePageAsync(resourceGroupName, name, context),
-            nextLink -> listHostingEnvironmentDetectorResponsesNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DetectorResponseInner>
+        listHostingEnvironmentDetectorResponsesSinglePage(String resourceGroupName, String name, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DetectorResponseCollection> res
+            = service.listHostingEnvironmentDetectorResponsesSync(this.client.getEndpoint(), resourceGroupName, name,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -506,7 +822,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DetectorResponseInner> listHostingEnvironmentDetectorResponses(String resourceGroupName,
         String name) {
-        return new PagedIterable<>(listHostingEnvironmentDetectorResponsesAsync(resourceGroupName, name));
+        return new PagedIterable<>(() -> listHostingEnvironmentDetectorResponsesSinglePage(resourceGroupName, name),
+            nextLink -> listHostingEnvironmentDetectorResponsesNextSinglePage(nextLink));
     }
 
     /**
@@ -525,7 +842,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DetectorResponseInner> listHostingEnvironmentDetectorResponses(String resourceGroupName,
         String name, Context context) {
-        return new PagedIterable<>(listHostingEnvironmentDetectorResponsesAsync(resourceGroupName, name, context));
+        return new PagedIterable<>(
+            () -> listHostingEnvironmentDetectorResponsesSinglePage(resourceGroupName, name, context),
+            nextLink -> listHostingEnvironmentDetectorResponsesNextSinglePage(nextLink, context));
     }
 
     /**
@@ -583,53 +902,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name App Service Environment Name.
      * @param detectorName Detector Resource Name.
-     * @param startTime Start Time.
-     * @param endTime End Time.
-     * @param timeGrain Time Grain.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Response from Detector along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DetectorResponseInner>> getHostingEnvironmentDetectorResponseWithResponseAsync(
-        String resourceGroupName, String name, String detectorName, OffsetDateTime startTime, OffsetDateTime endTime,
-        String timeGrain, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (detectorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getHostingEnvironmentDetectorResponse(this.client.getEndpoint(), resourceGroupName, name,
-            detectorName, startTime, endTime, timeGrain, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            accept, context);
-    }
-
-    /**
-     * Get Hosting Environment Detector Response
-     * 
-     * Description for Get Hosting Environment Detector Response.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name App Service Environment Name.
-     * @param detectorName Detector Resource Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -666,8 +938,31 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     public Response<DetectorResponseInner> getHostingEnvironmentDetectorResponseWithResponse(String resourceGroupName,
         String name, String detectorName, OffsetDateTime startTime, OffsetDateTime endTime, String timeGrain,
         Context context) {
-        return getHostingEnvironmentDetectorResponseWithResponseAsync(resourceGroupName, name, detectorName, startTime,
-            endTime, timeGrain, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (detectorName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getHostingEnvironmentDetectorResponseSync(this.client.getEndpoint(), resourceGroupName, name,
+            detectorName, startTime, endTime, timeGrain, this.client.getSubscriptionId(), this.client.getApiVersion(),
+            accept, context);
     }
 
     /**
@@ -740,47 +1035,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of detector responses along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DetectorResponseInner>>
-        listSiteDetectorResponsesSinglePageAsync(String resourceGroupName, String siteName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listSiteDetectorResponses(this.client.getEndpoint(), resourceGroupName, siteName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * List Site Detector Responses
-     * 
-     * Description for List Site Detector Responses.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Site Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -799,17 +1053,79 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of detector responses along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DetectorResponseInner> listSiteDetectorResponsesSinglePage(String resourceGroupName,
+        String siteName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DetectorResponseCollection> res
+            = service.listSiteDetectorResponsesSync(this.client.getEndpoint(), resourceGroupName, siteName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List Site Detector Responses
+     * 
+     * Description for List Site Detector Responses.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Site Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of detector responses as paginated response with {@link PagedFlux}.
+     * @return collection of detector responses along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DetectorResponseInner> listSiteDetectorResponsesAsync(String resourceGroupName, String siteName,
-        Context context) {
-        return new PagedFlux<>(() -> listSiteDetectorResponsesSinglePageAsync(resourceGroupName, siteName, context),
-            nextLink -> listSiteDetectorResponsesNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DetectorResponseInner> listSiteDetectorResponsesSinglePage(String resourceGroupName,
+        String siteName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DetectorResponseCollection> res = service.listSiteDetectorResponsesSync(this.client.getEndpoint(),
+            resourceGroupName, siteName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -826,7 +1142,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DetectorResponseInner> listSiteDetectorResponses(String resourceGroupName, String siteName) {
-        return new PagedIterable<>(listSiteDetectorResponsesAsync(resourceGroupName, siteName));
+        return new PagedIterable<>(() -> listSiteDetectorResponsesSinglePage(resourceGroupName, siteName),
+            nextLink -> listSiteDetectorResponsesNextSinglePage(nextLink));
     }
 
     /**
@@ -845,7 +1162,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DetectorResponseInner> listSiteDetectorResponses(String resourceGroupName, String siteName,
         Context context) {
-        return new PagedIterable<>(listSiteDetectorResponsesAsync(resourceGroupName, siteName, context));
+        return new PagedIterable<>(() -> listSiteDetectorResponsesSinglePage(resourceGroupName, siteName, context),
+            nextLink -> listSiteDetectorResponsesNextSinglePage(nextLink, context));
     }
 
     /**
@@ -902,53 +1220,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param detectorName Detector Resource Name.
-     * @param startTime Start Time.
-     * @param endTime End Time.
-     * @param timeGrain Time Grain.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Response from Detector along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DetectorResponseInner>> getSiteDetectorResponseWithResponseAsync(String resourceGroupName,
-        String siteName, String detectorName, OffsetDateTime startTime, OffsetDateTime endTime, String timeGrain,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (detectorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getSiteDetectorResponse(this.client.getEndpoint(), resourceGroupName, siteName, detectorName,
-            startTime, endTime, timeGrain, this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
-            context);
-    }
-
-    /**
-     * Get site detector response
-     * 
-     * Description for Get site detector response.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Site Name.
-     * @param detectorName Detector Resource Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -985,8 +1256,32 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     public Response<DetectorResponseInner> getSiteDetectorResponseWithResponse(String resourceGroupName,
         String siteName, String detectorName, OffsetDateTime startTime, OffsetDateTime endTime, String timeGrain,
         Context context) {
-        return getSiteDetectorResponseWithResponseAsync(resourceGroupName, siteName, detectorName, startTime, endTime,
-            timeGrain, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (detectorName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSiteDetectorResponseSync(this.client.getEndpoint(), resourceGroupName, siteName, detectorName,
+            startTime, endTime, timeGrain, this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
+            context);
     }
 
     /**
@@ -1059,47 +1354,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Categories along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DiagnosticCategoryInner>>
-        listSiteDiagnosticCategoriesSinglePageAsync(String resourceGroupName, String siteName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listSiteDiagnosticCategories(this.client.getEndpoint(), resourceGroupName, siteName,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Get Diagnostics Categories
-     * 
-     * Description for Get Diagnostics Categories.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Site Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1119,17 +1373,79 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * 
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of Diagnostic Categories along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DiagnosticCategoryInner> listSiteDiagnosticCategoriesSinglePage(String resourceGroupName,
+        String siteName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DiagnosticCategoryCollection> res
+            = service.listSiteDiagnosticCategoriesSync(this.client.getEndpoint(), resourceGroupName, siteName,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get Diagnostics Categories
+     * 
+     * Description for Get Diagnostics Categories.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Site Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Categories as paginated response with {@link PagedFlux}.
+     * @return collection of Diagnostic Categories along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DiagnosticCategoryInner> listSiteDiagnosticCategoriesAsync(String resourceGroupName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DiagnosticCategoryInner> listSiteDiagnosticCategoriesSinglePage(String resourceGroupName,
         String siteName, Context context) {
-        return new PagedFlux<>(() -> listSiteDiagnosticCategoriesSinglePageAsync(resourceGroupName, siteName, context),
-            nextLink -> listSiteDiagnosticCategoriesNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DiagnosticCategoryCollection> res = service.listSiteDiagnosticCategoriesSync(this.client.getEndpoint(),
+            resourceGroupName, siteName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1147,7 +1463,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiagnosticCategoryInner> listSiteDiagnosticCategories(String resourceGroupName,
         String siteName) {
-        return new PagedIterable<>(listSiteDiagnosticCategoriesAsync(resourceGroupName, siteName));
+        return new PagedIterable<>(() -> listSiteDiagnosticCategoriesSinglePage(resourceGroupName, siteName),
+            nextLink -> listSiteDiagnosticCategoriesNextSinglePage(nextLink));
     }
 
     /**
@@ -1166,7 +1483,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiagnosticCategoryInner> listSiteDiagnosticCategories(String resourceGroupName,
         String siteName, Context context) {
-        return new PagedIterable<>(listSiteDiagnosticCategoriesAsync(resourceGroupName, siteName, context));
+        return new PagedIterable<>(() -> listSiteDiagnosticCategoriesSinglePage(resourceGroupName, siteName, context),
+            nextLink -> listSiteDiagnosticCategoriesNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1221,49 +1539,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing detector definition along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DiagnosticCategoryInner>> getSiteDiagnosticCategoryWithResponseAsync(String resourceGroupName,
-        String siteName, String diagnosticCategory, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (diagnosticCategory == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getSiteDiagnosticCategory(this.client.getEndpoint(), resourceGroupName, siteName,
-            diagnosticCategory, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get Diagnostics Category
-     * 
-     * Description for Get Diagnostics Category.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Site Name.
-     * @param diagnosticCategory Diagnostic Category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1293,8 +1568,31 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DiagnosticCategoryInner> getSiteDiagnosticCategoryWithResponse(String resourceGroupName,
         String siteName, String diagnosticCategory, Context context) {
-        return getSiteDiagnosticCategoryWithResponseAsync(resourceGroupName, siteName, diagnosticCategory, context)
-            .block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (diagnosticCategory == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSiteDiagnosticCategorySync(this.client.getEndpoint(), resourceGroupName, siteName,
+            diagnosticCategory, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1370,52 +1668,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Analyses along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AnalysisDefinitionInner>> listSiteAnalysesSinglePageAsync(String resourceGroupName,
-        String siteName, String diagnosticCategory, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (diagnosticCategory == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listSiteAnalyses(this.client.getEndpoint(), resourceGroupName, siteName, diagnosticCategory,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Get Site Analyses
-     * 
-     * Description for Get Site Analyses.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Site Name.
-     * @param diagnosticCategory Diagnostic Category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1436,18 +1688,89 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of Diagnostic Analyses along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AnalysisDefinitionInner> listSiteAnalysesSinglePage(String resourceGroupName, String siteName,
+        String diagnosticCategory) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (diagnosticCategory == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DiagnosticAnalysisCollection> res
+            = service.listSiteAnalysesSync(this.client.getEndpoint(), resourceGroupName, siteName, diagnosticCategory,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get Site Analyses
+     * 
+     * Description for Get Site Analyses.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Site Name.
+     * @param diagnosticCategory Diagnostic Category.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Analyses as paginated response with {@link PagedFlux}.
+     * @return collection of Diagnostic Analyses along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AnalysisDefinitionInner> listSiteAnalysesAsync(String resourceGroupName, String siteName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AnalysisDefinitionInner> listSiteAnalysesSinglePage(String resourceGroupName, String siteName,
         String diagnosticCategory, Context context) {
-        return new PagedFlux<>(
-            () -> listSiteAnalysesSinglePageAsync(resourceGroupName, siteName, diagnosticCategory, context),
-            nextLink -> listSiteAnalysesNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (diagnosticCategory == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DiagnosticAnalysisCollection> res
+            = service.listSiteAnalysesSync(this.client.getEndpoint(), resourceGroupName, siteName, diagnosticCategory,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1466,7 +1789,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AnalysisDefinitionInner> listSiteAnalyses(String resourceGroupName, String siteName,
         String diagnosticCategory) {
-        return new PagedIterable<>(listSiteAnalysesAsync(resourceGroupName, siteName, diagnosticCategory));
+        return new PagedIterable<>(() -> listSiteAnalysesSinglePage(resourceGroupName, siteName, diagnosticCategory),
+            nextLink -> listSiteAnalysesNextSinglePage(nextLink));
     }
 
     /**
@@ -1486,7 +1810,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AnalysisDefinitionInner> listSiteAnalyses(String resourceGroupName, String siteName,
         String diagnosticCategory, Context context) {
-        return new PagedIterable<>(listSiteAnalysesAsync(resourceGroupName, siteName, diagnosticCategory, context));
+        return new PagedIterable<>(
+            () -> listSiteAnalysesSinglePage(resourceGroupName, siteName, diagnosticCategory, context),
+            nextLink -> listSiteAnalysesNextSinglePage(nextLink, context));
     }
 
     /**
@@ -1545,52 +1871,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param analysisName Analysis Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of Analysis along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AnalysisDefinitionInner>> getSiteAnalysisWithResponseAsync(String resourceGroupName,
-        String siteName, String diagnosticCategory, String analysisName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (diagnosticCategory == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
-        }
-        if (analysisName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter analysisName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getSiteAnalysis(this.client.getEndpoint(), resourceGroupName, siteName, diagnosticCategory,
-            analysisName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get Site Analysis
-     * 
-     * Description for Get Site Analysis.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Site Name.
-     * @param diagnosticCategory Diagnostic Category.
-     * @param analysisName Analysis Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1621,8 +1901,35 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AnalysisDefinitionInner> getSiteAnalysisWithResponse(String resourceGroupName, String siteName,
         String diagnosticCategory, String analysisName, Context context) {
-        return getSiteAnalysisWithResponseAsync(resourceGroupName, siteName, diagnosticCategory, analysisName, context)
-            .block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (diagnosticCategory == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
+        }
+        if (analysisName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter analysisName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSiteAnalysisSync(this.client.getEndpoint(), resourceGroupName, siteName, diagnosticCategory,
+            analysisName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1707,58 +2014,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @param siteName Site Name.
      * @param diagnosticCategory Category Name.
      * @param analysisName Analysis Resource Name.
-     * @param startTime Start Time.
-     * @param endTime End Time.
-     * @param timeGrain Time Grain.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a diagnostic analysis done on an application along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DiagnosticAnalysisInner>> executeSiteAnalysisWithResponseAsync(String resourceGroupName,
-        String siteName, String diagnosticCategory, String analysisName, OffsetDateTime startTime,
-        OffsetDateTime endTime, String timeGrain, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (diagnosticCategory == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
-        }
-        if (analysisName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter analysisName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.executeSiteAnalysis(this.client.getEndpoint(), resourceGroupName, siteName, diagnosticCategory,
-            analysisName, startTime, endTime, timeGrain, this.client.getSubscriptionId(), this.client.getApiVersion(),
-            accept, context);
-    }
-
-    /**
-     * Execute Analysis
-     * 
-     * Description for Execute Analysis.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Site Name.
-     * @param diagnosticCategory Category Name.
-     * @param analysisName Analysis Resource Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1796,8 +2051,36 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     public Response<DiagnosticAnalysisInner> executeSiteAnalysisWithResponse(String resourceGroupName, String siteName,
         String diagnosticCategory, String analysisName, OffsetDateTime startTime, OffsetDateTime endTime,
         String timeGrain, Context context) {
-        return executeSiteAnalysisWithResponseAsync(resourceGroupName, siteName, diagnosticCategory, analysisName,
-            startTime, endTime, timeGrain, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (diagnosticCategory == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
+        }
+        if (analysisName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter analysisName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.executeSiteAnalysisSync(this.client.getEndpoint(), resourceGroupName, siteName,
+            diagnosticCategory, analysisName, startTime, endTime, timeGrain, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -1877,52 +2160,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Detectors along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DetectorDefinitionResourceInner>> listSiteDetectorsSinglePageAsync(
-        String resourceGroupName, String siteName, String diagnosticCategory, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (diagnosticCategory == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listSiteDetectors(this.client.getEndpoint(), resourceGroupName, siteName, diagnosticCategory,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Get Detectors
-     * 
-     * Description for Get Detectors.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Site Name.
-     * @param diagnosticCategory Diagnostic Category.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1943,18 +2180,89 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of Diagnostic Detectors along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DetectorDefinitionResourceInner> listSiteDetectorsSinglePage(String resourceGroupName,
+        String siteName, String diagnosticCategory) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (diagnosticCategory == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DiagnosticDetectorCollection> res
+            = service.listSiteDetectorsSync(this.client.getEndpoint(), resourceGroupName, siteName, diagnosticCategory,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get Detectors
+     * 
+     * Description for Get Detectors.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Site Name.
+     * @param diagnosticCategory Diagnostic Category.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Detectors as paginated response with {@link PagedFlux}.
+     * @return collection of Diagnostic Detectors along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DetectorDefinitionResourceInner> listSiteDetectorsAsync(String resourceGroupName, String siteName,
-        String diagnosticCategory, Context context) {
-        return new PagedFlux<>(
-            () -> listSiteDetectorsSinglePageAsync(resourceGroupName, siteName, diagnosticCategory, context),
-            nextLink -> listSiteDetectorsNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DetectorDefinitionResourceInner> listSiteDetectorsSinglePage(String resourceGroupName,
+        String siteName, String diagnosticCategory, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (diagnosticCategory == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DiagnosticDetectorCollection> res
+            = service.listSiteDetectorsSync(this.client.getEndpoint(), resourceGroupName, siteName, diagnosticCategory,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -1973,7 +2281,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DetectorDefinitionResourceInner> listSiteDetectors(String resourceGroupName, String siteName,
         String diagnosticCategory) {
-        return new PagedIterable<>(listSiteDetectorsAsync(resourceGroupName, siteName, diagnosticCategory));
+        return new PagedIterable<>(() -> listSiteDetectorsSinglePage(resourceGroupName, siteName, diagnosticCategory),
+            nextLink -> listSiteDetectorsNextSinglePage(nextLink));
     }
 
     /**
@@ -1993,7 +2302,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DetectorDefinitionResourceInner> listSiteDetectors(String resourceGroupName, String siteName,
         String diagnosticCategory, Context context) {
-        return new PagedIterable<>(listSiteDetectorsAsync(resourceGroupName, siteName, diagnosticCategory, context));
+        return new PagedIterable<>(
+            () -> listSiteDetectorsSinglePage(resourceGroupName, siteName, diagnosticCategory, context),
+            nextLink -> listSiteDetectorsNextSinglePage(nextLink, context));
     }
 
     /**
@@ -2053,53 +2364,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param detectorName Detector Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return aRM resource for a detector definition along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DetectorDefinitionResourceInner>> getSiteDetectorWithResponseAsync(String resourceGroupName,
-        String siteName, String diagnosticCategory, String detectorName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (diagnosticCategory == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
-        }
-        if (detectorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getSiteDetector(this.client.getEndpoint(), resourceGroupName, siteName, diagnosticCategory,
-            detectorName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get Detector
-     * 
-     * Description for Get Detector.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Site Name.
-     * @param diagnosticCategory Diagnostic Category.
-     * @param detectorName Detector Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2130,8 +2394,35 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DetectorDefinitionResourceInner> getSiteDetectorWithResponse(String resourceGroupName,
         String siteName, String diagnosticCategory, String detectorName, Context context) {
-        return getSiteDetectorWithResponseAsync(resourceGroupName, siteName, diagnosticCategory, detectorName, context)
-            .block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (diagnosticCategory == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
+        }
+        if (detectorName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSiteDetectorSync(this.client.getEndpoint(), resourceGroupName, siteName, diagnosticCategory,
+            detectorName, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -2216,58 +2507,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @param siteName Site Name.
      * @param detectorName Detector Resource Name.
      * @param diagnosticCategory Category Name.
-     * @param startTime Start Time.
-     * @param endTime End Time.
-     * @param timeGrain Time Grain.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Response from Diagnostic Detectors along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DiagnosticDetectorResponseInner>> executeSiteDetectorWithResponseAsync(
-        String resourceGroupName, String siteName, String detectorName, String diagnosticCategory,
-        OffsetDateTime startTime, OffsetDateTime endTime, String timeGrain, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (detectorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
-        }
-        if (diagnosticCategory == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.executeSiteDetector(this.client.getEndpoint(), resourceGroupName, siteName, detectorName,
-            diagnosticCategory, startTime, endTime, timeGrain, this.client.getSubscriptionId(),
-            this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Execute Detector
-     * 
-     * Description for Execute Detector.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Site Name.
-     * @param detectorName Detector Resource Name.
-     * @param diagnosticCategory Category Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2305,8 +2544,36 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     public Response<DiagnosticDetectorResponseInner> executeSiteDetectorWithResponse(String resourceGroupName,
         String siteName, String detectorName, String diagnosticCategory, OffsetDateTime startTime,
         OffsetDateTime endTime, String timeGrain, Context context) {
-        return executeSiteDetectorWithResponseAsync(resourceGroupName, siteName, detectorName, diagnosticCategory,
-            startTime, endTime, timeGrain, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (detectorName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
+        }
+        if (diagnosticCategory == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.executeSiteDetectorSync(this.client.getEndpoint(), resourceGroupName, siteName, detectorName,
+            diagnosticCategory, startTime, endTime, timeGrain, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -2385,51 +2652,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param slot Slot Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of detector responses along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DetectorResponseInner>> listSiteDetectorResponsesSlotSinglePageAsync(
-        String resourceGroupName, String siteName, String slot, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (slot == null) {
-            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listSiteDetectorResponsesSlot(this.client.getEndpoint(), resourceGroupName, siteName, slot,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * List Site Detector Responses
-     * 
-     * Description for List Site Detector Responses.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Site Name.
-     * @param slot Slot Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2450,18 +2672,87 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param slot Slot Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of detector responses along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DetectorResponseInner> listSiteDetectorResponsesSlotSinglePage(String resourceGroupName,
+        String siteName, String slot) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (slot == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DetectorResponseCollection> res
+            = service.listSiteDetectorResponsesSlotSync(this.client.getEndpoint(), resourceGroupName, siteName, slot,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List Site Detector Responses
+     * 
+     * Description for List Site Detector Responses.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Site Name.
+     * @param slot Slot Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of detector responses as paginated response with {@link PagedFlux}.
+     * @return collection of detector responses along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DetectorResponseInner> listSiteDetectorResponsesSlotAsync(String resourceGroupName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DetectorResponseInner> listSiteDetectorResponsesSlotSinglePage(String resourceGroupName,
         String siteName, String slot, Context context) {
-        return new PagedFlux<>(
-            () -> listSiteDetectorResponsesSlotSinglePageAsync(resourceGroupName, siteName, slot, context),
-            nextLink -> listSiteDetectorResponsesSlotNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (slot == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DetectorResponseCollection> res
+            = service.listSiteDetectorResponsesSlotSync(this.client.getEndpoint(), resourceGroupName, siteName, slot,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -2480,7 +2771,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DetectorResponseInner> listSiteDetectorResponsesSlot(String resourceGroupName, String siteName,
         String slot) {
-        return new PagedIterable<>(listSiteDetectorResponsesSlotAsync(resourceGroupName, siteName, slot));
+        return new PagedIterable<>(() -> listSiteDetectorResponsesSlotSinglePage(resourceGroupName, siteName, slot),
+            nextLink -> listSiteDetectorResponsesSlotNextSinglePage(nextLink));
     }
 
     /**
@@ -2500,7 +2792,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DetectorResponseInner> listSiteDetectorResponsesSlot(String resourceGroupName, String siteName,
         String slot, Context context) {
-        return new PagedIterable<>(listSiteDetectorResponsesSlotAsync(resourceGroupName, siteName, slot, context));
+        return new PagedIterable<>(
+            () -> listSiteDetectorResponsesSlotSinglePage(resourceGroupName, siteName, slot, context),
+            nextLink -> listSiteDetectorResponsesSlotNextSinglePage(nextLink, context));
     }
 
     /**
@@ -2563,57 +2857,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @param siteName Site Name.
      * @param detectorName Detector Resource Name.
      * @param slot Slot Name.
-     * @param startTime Start Time.
-     * @param endTime End Time.
-     * @param timeGrain Time Grain.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Response from Detector along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DetectorResponseInner>> getSiteDetectorResponseSlotWithResponseAsync(String resourceGroupName,
-        String siteName, String detectorName, String slot, OffsetDateTime startTime, OffsetDateTime endTime,
-        String timeGrain, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (detectorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
-        }
-        if (slot == null) {
-            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getSiteDetectorResponseSlot(this.client.getEndpoint(), resourceGroupName, siteName, detectorName,
-            slot, startTime, endTime, timeGrain, this.client.getSubscriptionId(), this.client.getApiVersion(), accept,
-            context);
-    }
-
-    /**
-     * Get site detector response
-     * 
-     * Description for Get site detector response.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Site Name.
-     * @param detectorName Detector Resource Name.
-     * @param slot Slot Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2651,8 +2894,35 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     public Response<DetectorResponseInner> getSiteDetectorResponseSlotWithResponse(String resourceGroupName,
         String siteName, String detectorName, String slot, OffsetDateTime startTime, OffsetDateTime endTime,
         String timeGrain, Context context) {
-        return getSiteDetectorResponseSlotWithResponseAsync(resourceGroupName, siteName, detectorName, slot, startTime,
-            endTime, timeGrain, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (detectorName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
+        }
+        if (slot == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSiteDetectorResponseSlotSync(this.client.getEndpoint(), resourceGroupName, siteName,
+            detectorName, slot, startTime, endTime, timeGrain, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -2732,51 +3002,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param slot Slot Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Categories along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DiagnosticCategoryInner>> listSiteDiagnosticCategoriesSlotSinglePageAsync(
-        String resourceGroupName, String siteName, String slot, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (slot == null) {
-            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listSiteDiagnosticCategoriesSlot(this.client.getEndpoint(), resourceGroupName, siteName, slot,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Get Diagnostics Categories
-     * 
-     * Description for Get Diagnostics Categories.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Site Name.
-     * @param slot Slot Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2797,18 +3022,87 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param siteName Site Name.
      * @param slot Slot Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of Diagnostic Categories along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DiagnosticCategoryInner> listSiteDiagnosticCategoriesSlotSinglePage(String resourceGroupName,
+        String siteName, String slot) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (slot == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DiagnosticCategoryCollection> res
+            = service.listSiteDiagnosticCategoriesSlotSync(this.client.getEndpoint(), resourceGroupName, siteName, slot,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get Diagnostics Categories
+     * 
+     * Description for Get Diagnostics Categories.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Site Name.
+     * @param slot Slot Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Categories as paginated response with {@link PagedFlux}.
+     * @return collection of Diagnostic Categories along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DiagnosticCategoryInner> listSiteDiagnosticCategoriesSlotAsync(String resourceGroupName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DiagnosticCategoryInner> listSiteDiagnosticCategoriesSlotSinglePage(String resourceGroupName,
         String siteName, String slot, Context context) {
-        return new PagedFlux<>(
-            () -> listSiteDiagnosticCategoriesSlotSinglePageAsync(resourceGroupName, siteName, slot, context),
-            nextLink -> listSiteDiagnosticCategoriesSlotNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (slot == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DiagnosticCategoryCollection> res
+            = service.listSiteDiagnosticCategoriesSlotSync(this.client.getEndpoint(), resourceGroupName, siteName, slot,
+                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -2827,7 +3121,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiagnosticCategoryInner> listSiteDiagnosticCategoriesSlot(String resourceGroupName,
         String siteName, String slot) {
-        return new PagedIterable<>(listSiteDiagnosticCategoriesSlotAsync(resourceGroupName, siteName, slot));
+        return new PagedIterable<>(() -> listSiteDiagnosticCategoriesSlotSinglePage(resourceGroupName, siteName, slot),
+            nextLink -> listSiteDiagnosticCategoriesSlotNextSinglePage(nextLink));
     }
 
     /**
@@ -2847,7 +3142,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiagnosticCategoryInner> listSiteDiagnosticCategoriesSlot(String resourceGroupName,
         String siteName, String slot, Context context) {
-        return new PagedIterable<>(listSiteDiagnosticCategoriesSlotAsync(resourceGroupName, siteName, slot, context));
+        return new PagedIterable<>(
+            () -> listSiteDiagnosticCategoriesSlotSinglePage(resourceGroupName, siteName, slot, context),
+            nextLink -> listSiteDiagnosticCategoriesSlotNextSinglePage(nextLink, context));
     }
 
     /**
@@ -2907,53 +3204,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param slot Slot Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing detector definition along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DiagnosticCategoryInner>> getSiteDiagnosticCategorySlotWithResponseAsync(
-        String resourceGroupName, String siteName, String diagnosticCategory, String slot, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (diagnosticCategory == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
-        }
-        if (slot == null) {
-            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getSiteDiagnosticCategorySlot(this.client.getEndpoint(), resourceGroupName, siteName,
-            diagnosticCategory, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get Diagnostics Category
-     * 
-     * Description for Get Diagnostics Category.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Site Name.
-     * @param diagnosticCategory Diagnostic Category.
-     * @param slot Slot Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2984,8 +3234,34 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DiagnosticCategoryInner> getSiteDiagnosticCategorySlotWithResponse(String resourceGroupName,
         String siteName, String diagnosticCategory, String slot, Context context) {
-        return getSiteDiagnosticCategorySlotWithResponseAsync(resourceGroupName, siteName, diagnosticCategory, slot,
-            context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (diagnosticCategory == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
+        }
+        if (slot == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSiteDiagnosticCategorySlotSync(this.client.getEndpoint(), resourceGroupName, siteName,
+            diagnosticCategory, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -3068,56 +3344,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param slot Slot Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Analyses along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AnalysisDefinitionInner>> listSiteAnalysesSlotSinglePageAsync(String resourceGroupName,
-        String siteName, String diagnosticCategory, String slot, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (diagnosticCategory == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
-        }
-        if (slot == null) {
-            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listSiteAnalysesSlot(this.client.getEndpoint(), resourceGroupName, siteName, diagnosticCategory, slot,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Get Site Analyses
-     * 
-     * Description for Get Site Analyses.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Site Name.
-     * @param diagnosticCategory Diagnostic Category.
-     * @param slot Slot Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3140,18 +3366,96 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param slot Slot Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of Diagnostic Analyses along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AnalysisDefinitionInner> listSiteAnalysesSlotSinglePage(String resourceGroupName,
+        String siteName, String diagnosticCategory, String slot) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (diagnosticCategory == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
+        }
+        if (slot == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DiagnosticAnalysisCollection> res = service.listSiteAnalysesSlotSync(this.client.getEndpoint(),
+            resourceGroupName, siteName, diagnosticCategory, slot, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get Site Analyses
+     * 
+     * Description for Get Site Analyses.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Site Name.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param slot Slot Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Analyses as paginated response with {@link PagedFlux}.
+     * @return collection of Diagnostic Analyses along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<AnalysisDefinitionInner> listSiteAnalysesSlotAsync(String resourceGroupName, String siteName,
-        String diagnosticCategory, String slot, Context context) {
-        return new PagedFlux<>(
-            () -> listSiteAnalysesSlotSinglePageAsync(resourceGroupName, siteName, diagnosticCategory, slot, context),
-            nextLink -> listSiteAnalysesSlotNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AnalysisDefinitionInner> listSiteAnalysesSlotSinglePage(String resourceGroupName,
+        String siteName, String diagnosticCategory, String slot, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (diagnosticCategory == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
+        }
+        if (slot == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DiagnosticAnalysisCollection> res = service.listSiteAnalysesSlotSync(this.client.getEndpoint(),
+            resourceGroupName, siteName, diagnosticCategory, slot, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -3171,7 +3475,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<AnalysisDefinitionInner> listSiteAnalysesSlot(String resourceGroupName, String siteName,
         String diagnosticCategory, String slot) {
-        return new PagedIterable<>(listSiteAnalysesSlotAsync(resourceGroupName, siteName, diagnosticCategory, slot));
+        return new PagedIterable<>(
+            () -> listSiteAnalysesSlotSinglePage(resourceGroupName, siteName, diagnosticCategory, slot),
+            nextLink -> listSiteAnalysesSlotNextSinglePage(nextLink));
     }
 
     /**
@@ -3193,7 +3499,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     public PagedIterable<AnalysisDefinitionInner> listSiteAnalysesSlot(String resourceGroupName, String siteName,
         String diagnosticCategory, String slot, Context context) {
         return new PagedIterable<>(
-            listSiteAnalysesSlotAsync(resourceGroupName, siteName, diagnosticCategory, slot, context));
+            () -> listSiteAnalysesSlotSinglePage(resourceGroupName, siteName, diagnosticCategory, slot, context),
+            nextLink -> listSiteAnalysesSlotNextSinglePage(nextLink, context));
     }
 
     /**
@@ -3257,56 +3564,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @param diagnosticCategory Diagnostic Category.
      * @param analysisName Analysis Name.
      * @param slot Slot - optional.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return definition of Analysis along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<AnalysisDefinitionInner>> getSiteAnalysisSlotWithResponseAsync(String resourceGroupName,
-        String siteName, String diagnosticCategory, String analysisName, String slot, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (diagnosticCategory == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
-        }
-        if (analysisName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter analysisName is required and cannot be null."));
-        }
-        if (slot == null) {
-            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getSiteAnalysisSlot(this.client.getEndpoint(), resourceGroupName, siteName, diagnosticCategory,
-            analysisName, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get Site Analysis
-     * 
-     * Description for Get Site Analysis.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Site Name.
-     * @param diagnosticCategory Diagnostic Category.
-     * @param analysisName Analysis Name.
-     * @param slot Slot - optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3338,8 +3595,39 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<AnalysisDefinitionInner> getSiteAnalysisSlotWithResponse(String resourceGroupName, String siteName,
         String diagnosticCategory, String analysisName, String slot, Context context) {
-        return getSiteAnalysisSlotWithResponseAsync(resourceGroupName, siteName, diagnosticCategory, analysisName, slot,
-            context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (diagnosticCategory == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
+        }
+        if (analysisName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter analysisName is required and cannot be null."));
+        }
+        if (slot == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSiteAnalysisSlotSync(this.client.getEndpoint(), resourceGroupName, siteName,
+            diagnosticCategory, analysisName, slot, this.client.getSubscriptionId(), this.client.getApiVersion(),
+            accept, context);
     }
 
     /**
@@ -3430,62 +3718,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @param diagnosticCategory Category Name.
      * @param analysisName Analysis Resource Name.
      * @param slot Slot Name.
-     * @param startTime Start Time.
-     * @param endTime End Time.
-     * @param timeGrain Time Grain.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing a diagnostic analysis done on an application along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DiagnosticAnalysisInner>> executeSiteAnalysisSlotWithResponseAsync(String resourceGroupName,
-        String siteName, String diagnosticCategory, String analysisName, String slot, OffsetDateTime startTime,
-        OffsetDateTime endTime, String timeGrain, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (diagnosticCategory == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
-        }
-        if (analysisName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter analysisName is required and cannot be null."));
-        }
-        if (slot == null) {
-            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.executeSiteAnalysisSlot(this.client.getEndpoint(), resourceGroupName, siteName,
-            diagnosticCategory, analysisName, slot, startTime, endTime, timeGrain, this.client.getSubscriptionId(),
-            this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Execute Analysis
-     * 
-     * Description for Execute Analysis.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Site Name.
-     * @param diagnosticCategory Category Name.
-     * @param analysisName Analysis Resource Name.
-     * @param slot Slot Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3524,8 +3756,39 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     public Response<DiagnosticAnalysisInner> executeSiteAnalysisSlotWithResponse(String resourceGroupName,
         String siteName, String diagnosticCategory, String analysisName, String slot, OffsetDateTime startTime,
         OffsetDateTime endTime, String timeGrain, Context context) {
-        return executeSiteAnalysisSlotWithResponseAsync(resourceGroupName, siteName, diagnosticCategory, analysisName,
-            slot, startTime, endTime, timeGrain, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (diagnosticCategory == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
+        }
+        if (analysisName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter analysisName is required and cannot be null."));
+        }
+        if (slot == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.executeSiteAnalysisSlotSync(this.client.getEndpoint(), resourceGroupName, siteName,
+            diagnosticCategory, analysisName, slot, startTime, endTime, timeGrain, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -3612,56 +3875,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param slot Slot Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Detectors along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DetectorDefinitionResourceInner>> listSiteDetectorsSlotSinglePageAsync(
-        String resourceGroupName, String siteName, String diagnosticCategory, String slot, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (diagnosticCategory == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
-        }
-        if (slot == null) {
-            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .listSiteDetectorsSlot(this.client.getEndpoint(), resourceGroupName, siteName, diagnosticCategory, slot,
-                this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * Get Detectors
-     * 
-     * Description for Get Detectors.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Site Name.
-     * @param diagnosticCategory Diagnostic Category.
-     * @param slot Slot Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3684,18 +3897,96 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @param siteName Site Name.
      * @param diagnosticCategory Diagnostic Category.
      * @param slot Slot Name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of Diagnostic Detectors along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DetectorDefinitionResourceInner> listSiteDetectorsSlotSinglePage(String resourceGroupName,
+        String siteName, String diagnosticCategory, String slot) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (diagnosticCategory == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
+        }
+        if (slot == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DiagnosticDetectorCollection> res = service.listSiteDetectorsSlotSync(this.client.getEndpoint(),
+            resourceGroupName, siteName, diagnosticCategory, slot, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get Detectors
+     * 
+     * Description for Get Detectors.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param siteName Site Name.
+     * @param diagnosticCategory Diagnostic Category.
+     * @param slot Slot Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Detectors as paginated response with {@link PagedFlux}.
+     * @return collection of Diagnostic Detectors along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DetectorDefinitionResourceInner> listSiteDetectorsSlotAsync(String resourceGroupName,
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DetectorDefinitionResourceInner> listSiteDetectorsSlotSinglePage(String resourceGroupName,
         String siteName, String diagnosticCategory, String slot, Context context) {
-        return new PagedFlux<>(
-            () -> listSiteDetectorsSlotSinglePageAsync(resourceGroupName, siteName, diagnosticCategory, slot, context),
-            nextLink -> listSiteDetectorsSlotNextSinglePageAsync(nextLink, context));
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (diagnosticCategory == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
+        }
+        if (slot == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DiagnosticDetectorCollection> res = service.listSiteDetectorsSlotSync(this.client.getEndpoint(),
+            resourceGroupName, siteName, diagnosticCategory, slot, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -3715,7 +4006,9 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DetectorDefinitionResourceInner> listSiteDetectorsSlot(String resourceGroupName,
         String siteName, String diagnosticCategory, String slot) {
-        return new PagedIterable<>(listSiteDetectorsSlotAsync(resourceGroupName, siteName, diagnosticCategory, slot));
+        return new PagedIterable<>(
+            () -> listSiteDetectorsSlotSinglePage(resourceGroupName, siteName, diagnosticCategory, slot),
+            nextLink -> listSiteDetectorsSlotNextSinglePage(nextLink));
     }
 
     /**
@@ -3737,7 +4030,8 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     public PagedIterable<DetectorDefinitionResourceInner> listSiteDetectorsSlot(String resourceGroupName,
         String siteName, String diagnosticCategory, String slot, Context context) {
         return new PagedIterable<>(
-            listSiteDetectorsSlotAsync(resourceGroupName, siteName, diagnosticCategory, slot, context));
+            () -> listSiteDetectorsSlotSinglePage(resourceGroupName, siteName, diagnosticCategory, slot, context),
+            nextLink -> listSiteDetectorsSlotNextSinglePage(nextLink, context));
     }
 
     /**
@@ -3802,58 +4096,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @param diagnosticCategory Diagnostic Category.
      * @param detectorName Detector Name.
      * @param slot Slot Name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return aRM resource for a detector definition along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DetectorDefinitionResourceInner>> getSiteDetectorSlotWithResponseAsync(
-        String resourceGroupName, String siteName, String diagnosticCategory, String detectorName, String slot,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (diagnosticCategory == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
-        }
-        if (detectorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
-        }
-        if (slot == null) {
-            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.getSiteDetectorSlot(this.client.getEndpoint(), resourceGroupName, siteName, diagnosticCategory,
-            detectorName, slot, this.client.getSubscriptionId(), this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Get Detector
-     * 
-     * Description for Get Detector.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Site Name.
-     * @param diagnosticCategory Diagnostic Category.
-     * @param detectorName Detector Name.
-     * @param slot Slot Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3885,8 +4127,39 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DetectorDefinitionResourceInner> getSiteDetectorSlotWithResponse(String resourceGroupName,
         String siteName, String diagnosticCategory, String detectorName, String slot, Context context) {
-        return getSiteDetectorSlotWithResponseAsync(resourceGroupName, siteName, diagnosticCategory, detectorName, slot,
-            context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (diagnosticCategory == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
+        }
+        if (detectorName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
+        }
+        if (slot == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSiteDetectorSlotSync(this.client.getEndpoint(), resourceGroupName, siteName,
+            diagnosticCategory, detectorName, slot, this.client.getSubscriptionId(), this.client.getApiVersion(),
+            accept, context);
     }
 
     /**
@@ -3977,62 +4250,6 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * @param detectorName Detector Resource Name.
      * @param diagnosticCategory Category Name.
      * @param slot Slot Name.
-     * @param startTime Start Time.
-     * @param endTime End Time.
-     * @param timeGrain Time Grain.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return class representing Response from Diagnostic Detectors along with {@link Response} on successful
-     * completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DiagnosticDetectorResponseInner>> executeSiteDetectorSlotWithResponseAsync(
-        String resourceGroupName, String siteName, String detectorName, String diagnosticCategory, String slot,
-        OffsetDateTime startTime, OffsetDateTime endTime, String timeGrain, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (siteName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
-        }
-        if (detectorName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
-        }
-        if (diagnosticCategory == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
-        }
-        if (slot == null) {
-            return Mono.error(new IllegalArgumentException("Parameter slot is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.executeSiteDetectorSlot(this.client.getEndpoint(), resourceGroupName, siteName, detectorName,
-            diagnosticCategory, slot, startTime, endTime, timeGrain, this.client.getSubscriptionId(),
-            this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Execute Detector
-     * 
-     * Description for Execute Detector.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param siteName Site Name.
-     * @param detectorName Detector Resource Name.
-     * @param diagnosticCategory Category Name.
-     * @param slot Slot Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -4071,8 +4288,39 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
     public Response<DiagnosticDetectorResponseInner> executeSiteDetectorSlotWithResponse(String resourceGroupName,
         String siteName, String detectorName, String diagnosticCategory, String slot, OffsetDateTime startTime,
         OffsetDateTime endTime, String timeGrain, Context context) {
-        return executeSiteDetectorSlotWithResponseAsync(resourceGroupName, siteName, detectorName, diagnosticCategory,
-            slot, startTime, endTime, timeGrain, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (siteName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter siteName is required and cannot be null."));
+        }
+        if (detectorName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter detectorName is required and cannot be null."));
+        }
+        if (diagnosticCategory == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter diagnosticCategory is required and cannot be null."));
+        }
+        if (slot == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter slot is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.executeSiteDetectorSlotSync(this.client.getEndpoint(), resourceGroupName, siteName, detectorName,
+            diagnosticCategory, slot, startTime, endTime, timeGrain, this.client.getSubscriptionId(),
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -4133,28 +4381,57 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of detector responses along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DetectorResponseInner>
+        listHostingEnvironmentDetectorResponsesNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DetectorResponseCollection> res = service.listHostingEnvironmentDetectorResponsesNextSync(nextLink,
+            this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of detector responses along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return collection of detector responses along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DetectorResponseInner>>
-        listHostingEnvironmentDetectorResponsesNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<DetectorResponseInner> listHostingEnvironmentDetectorResponsesNextSinglePage(String nextLink,
+        Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listHostingEnvironmentDetectorResponsesNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<DetectorResponseCollection> res = service.listHostingEnvironmentDetectorResponsesNextSync(nextLink,
+            this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -4189,28 +4466,56 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of detector responses along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DetectorResponseInner> listSiteDetectorResponsesNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DetectorResponseCollection> res
+            = service.listSiteDetectorResponsesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of detector responses along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return collection of detector responses along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DetectorResponseInner>> listSiteDetectorResponsesNextSinglePageAsync(String nextLink,
+    private PagedResponse<DetectorResponseInner> listSiteDetectorResponsesNextSinglePage(String nextLink,
         Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listSiteDetectorResponsesNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<DetectorResponseCollection> res
+            = service.listSiteDetectorResponsesNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -4245,28 +4550,56 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of Diagnostic Categories along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DiagnosticCategoryInner> listSiteDiagnosticCategoriesNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DiagnosticCategoryCollection> res
+            = service.listSiteDiagnosticCategoriesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Categories along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return collection of Diagnostic Categories along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DiagnosticCategoryInner>>
-        listSiteDiagnosticCategoriesNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<DiagnosticCategoryInner> listSiteDiagnosticCategoriesNextSinglePage(String nextLink,
+        Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listSiteDiagnosticCategoriesNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<DiagnosticCategoryCollection> res
+            = service.listSiteDiagnosticCategoriesNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -4300,28 +4633,55 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of Diagnostic Analyses along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AnalysisDefinitionInner> listSiteAnalysesNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DiagnosticAnalysisCollection> res
+            = service.listSiteAnalysesNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Analyses along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return collection of Diagnostic Analyses along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AnalysisDefinitionInner>> listSiteAnalysesNextSinglePageAsync(String nextLink,
-        Context context) {
+    private PagedResponse<AnalysisDefinitionInner> listSiteAnalysesNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listSiteAnalysesNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<DiagnosticAnalysisCollection> res
+            = service.listSiteAnalysesNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -4355,28 +4715,56 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of Diagnostic Detectors along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DetectorDefinitionResourceInner> listSiteDetectorsNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DiagnosticDetectorCollection> res
+            = service.listSiteDetectorsNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Detectors along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return collection of Diagnostic Detectors along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DetectorDefinitionResourceInner>> listSiteDetectorsNextSinglePageAsync(String nextLink,
+    private PagedResponse<DetectorDefinitionResourceInner> listSiteDetectorsNextSinglePage(String nextLink,
         Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listSiteDetectorsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<DiagnosticDetectorCollection> res
+            = service.listSiteDetectorsNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -4411,28 +4799,56 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of detector responses along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DetectorResponseInner> listSiteDetectorResponsesSlotNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DetectorResponseCollection> res
+            = service.listSiteDetectorResponsesSlotNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of detector responses along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return collection of detector responses along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DetectorResponseInner>> listSiteDetectorResponsesSlotNextSinglePageAsync(String nextLink,
+    private PagedResponse<DetectorResponseInner> listSiteDetectorResponsesSlotNextSinglePage(String nextLink,
         Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listSiteDetectorResponsesSlotNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<DetectorResponseCollection> res
+            = service.listSiteDetectorResponsesSlotNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -4468,28 +4884,56 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of Diagnostic Categories along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DiagnosticCategoryInner> listSiteDiagnosticCategoriesSlotNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DiagnosticCategoryCollection> res = service.listSiteDiagnosticCategoriesSlotNextSync(nextLink,
+            this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Categories along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return collection of Diagnostic Categories along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DiagnosticCategoryInner>>
-        listSiteDiagnosticCategoriesSlotNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<DiagnosticCategoryInner> listSiteDiagnosticCategoriesSlotNextSinglePage(String nextLink,
+        Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listSiteDiagnosticCategoriesSlotNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<DiagnosticCategoryCollection> res
+            = service.listSiteDiagnosticCategoriesSlotNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -4524,28 +4968,56 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of Diagnostic Analyses along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<AnalysisDefinitionInner> listSiteAnalysesSlotNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DiagnosticAnalysisCollection> res
+            = service.listSiteAnalysesSlotNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Analyses along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return collection of Diagnostic Analyses along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<AnalysisDefinitionInner>> listSiteAnalysesSlotNextSinglePageAsync(String nextLink,
+    private PagedResponse<AnalysisDefinitionInner> listSiteAnalysesSlotNextSinglePage(String nextLink,
         Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listSiteAnalysesSlotNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<DiagnosticAnalysisCollection> res
+            = service.listSiteAnalysesSlotNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -4581,27 +5053,57 @@ public final class DiagnosticsClientImpl implements DiagnosticsClient {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return collection of Diagnostic Detectors along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<DetectorDefinitionResourceInner> listSiteDetectorsSlotNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<DiagnosticDetectorCollection> res
+            = service.listSiteDetectorsSlotNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of Diagnostic Detectors along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return collection of Diagnostic Detectors along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DetectorDefinitionResourceInner>>
-        listSiteDetectorsSlotNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<DetectorDefinitionResourceInner> listSiteDetectorsSlotNextSinglePage(String nextLink,
+        Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listSiteDetectorsSlotNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<DiagnosticDetectorCollection> res
+            = service.listSiteDetectorsSlotNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(DiagnosticsClientImpl.class);
 }
