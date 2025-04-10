@@ -1139,6 +1139,7 @@
         "saaj",
         "scalatra",
         "sctp",
+        "scylladb",
         "seleniumhq",
         "shiro",
         "signalfx",
@@ -1352,7 +1353,7 @@
       ]
     },
     {
-      "filename": "sdk/corev2/**",
+      "filename": "sdk/core-v2/**",
       "words": [
         "aarch",
         "junitextensions",

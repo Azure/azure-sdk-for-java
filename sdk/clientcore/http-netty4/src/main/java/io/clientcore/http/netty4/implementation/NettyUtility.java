@@ -200,8 +200,9 @@ public final class NettyUtility {
             validateNettyVersionsInternal();
         } catch (Exception ex) {
             LOGGER.atInfo()
+                .setThrowable(ex)
                 .log("Unable to load Netty version information. If Netty version validation is required, "
-                    + "please review this exception. Otherwise, this log message can be ignored.", ex);
+                    + "please review this exception. Otherwise, this log message can be ignored.");
         }
     }
 
