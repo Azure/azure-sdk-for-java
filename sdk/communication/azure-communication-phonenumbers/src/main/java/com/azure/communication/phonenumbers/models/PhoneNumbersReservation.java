@@ -47,10 +47,14 @@ public final class PhoneNumbersReservation implements JsonSerializable<PhoneNumb
      * Creates an instance of PhoneNumbersReservation class.
      */
     public PhoneNumbersReservation() {
+        this.id = UUID.randomUUID();
+        phoneNumbers = new java.util.HashMap<>();
     }
 
     /**
      * Creates an instance of PhoneNumbersReservation class with given reservationId.
+     * 
+     * @param reservationId the reservationId that will be assigned to the reservation.
      */
     public PhoneNumbersReservation(UUID reservationId) {
         this.id = reservationId;
@@ -122,7 +126,7 @@ public final class PhoneNumbersReservation implements JsonSerializable<PhoneNumb
     /**
      * Removes a phone number from the reservation.
      * 
-     * @param phoneNumber the phoneNumbers to be removed.
+     * @param phoneNumberId the phoneNumber to be removed.
      */
     public void removePhoneNumber(String phoneNumberId) {
         this.phoneNumbers.replace(phoneNumberId, null);

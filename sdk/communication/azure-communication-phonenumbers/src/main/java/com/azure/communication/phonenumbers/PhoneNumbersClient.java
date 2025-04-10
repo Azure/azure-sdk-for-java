@@ -161,6 +161,7 @@ public final class PhoneNumbersClient {
      * Retrieves the reservation with the given ID, including all of the phone numbers associated with it.
      * 
      * @param reservationId The id of the reservation.
+     * @param context The context to associate with this operation.
      * @return represents a reservation for phone numbers along with {@link Response}.
      * @throws NullPointerException if {@code reservationId} is null.
      */
@@ -250,6 +251,7 @@ public final class PhoneNumbersClient {
      * 
      * @param countryCode The ISO 3166-2 country code, e.g. US.
      * @param phoneNumbersBrowseRequest An object defining the criteria to browse for available phone numbers.
+     * @param context The context to associate with this operation.
      * @return the result of a phone number browse operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -934,8 +936,6 @@ public final class PhoneNumbersClient {
      * Retrieves a paginated list of all phone number reservations. Note that the reservations will not be populated
      * with the phone numbers associated with them.
      * 
-     * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
-     * value is 100.
      * @return A {@link PagedIterable} of {@link PhoneNumbersReservation} instances
      *         representing phone number reservations.
      */
@@ -1072,6 +1072,7 @@ public final class PhoneNumbersClient {
      * available for others to purchase. Only reservations with 'active' status can be deleted.
      * 
      * @param reservationId The id of the reservation that's going to be deleted.
+     * @param context The context to associate with this operation.
      * @return a {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)

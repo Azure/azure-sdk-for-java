@@ -193,6 +193,7 @@ public final class PhoneNumbersAsyncClient {
      * Retrieves the reservation with the given ID, including all of the phone numbers associated with it.
      * 
      * @param reservationId The id of the reservation.
+     * @param context A {@link Context} representing the request context.
      * @return represents a reservation for phone numbers on successful completion of {@link Mono}.
      * @throws NullPointerException if {@code reservationId} is null.
      */
@@ -259,6 +260,7 @@ public final class PhoneNumbersAsyncClient {
      * 
      * @param countryCode The ISO 3166-2 country code, e.g. US.
      * @param phoneNumbersBrowseRequest An object defining the criteria to browse for available phone numbers.
+     * @param context A {@link Context} representing the request context.
      * @return the result of a phone number browse operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -593,7 +595,6 @@ public final class PhoneNumbersAsyncClient {
      * an 'Operation-Location' header that can be used to query the status of the operation.
      * 
      * @param reservationId The id of the reservation.
-     * @param reservationPurchaseRequest The phone number search purchase request.
      * @throws NullPointerException if {@code reservationId} is null.
      * @throws RuntimeException if purchase operation fails.
      * @return A {@link PollerFlux} object.
@@ -1072,6 +1073,7 @@ public final class PhoneNumbersAsyncClient {
      * available for others to purchase. Only reservations with 'active' status can be deleted.
      * 
      * @param reservationId The id of the reservation that's going to be deleted.
+     * @param context The context to associate with this operation.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
