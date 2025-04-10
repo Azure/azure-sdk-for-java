@@ -1,12 +1,9 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
+## 1.2.0 (2025-04-10)
 
 ### Bugs Fixed
+- Fixed a bug causing logs to be instrumented. Verbose logs would lead to recursive logging. ([#44828](https://github.com/Azure/azure-sdk-for-java/pull/44828))
 
 ### Other Changes
 
