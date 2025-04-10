@@ -5,7 +5,7 @@ package com.azure.communication.phonenumbers;
 import com.azure.communication.phonenumbers.implementation.converters.PhoneNumberErrorConverter;
 import com.azure.communication.phonenumbers.implementation.models.CommunicationError;
 import com.azure.communication.phonenumbers.implementation.models.CommunicationErrorResponseException;
-import com.azure.communication.phonenumbers.implementation.models.PhoneNumberBrowseCapabilitiesRequest;
+import com.azure.communication.phonenumbers.models.PhoneNumberBrowseCapabilitiesRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberAdministrativeDivision;
 import com.azure.communication.phonenumbers.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;

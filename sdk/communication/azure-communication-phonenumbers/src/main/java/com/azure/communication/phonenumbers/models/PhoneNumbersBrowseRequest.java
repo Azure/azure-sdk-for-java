@@ -4,7 +4,6 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.communication.phonenumbers.implementation.models.PhoneNumberBrowseCapabilitiesRequest;
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;

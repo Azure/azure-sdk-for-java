@@ -4,7 +4,7 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * The incurred cost for a single phone number.
  */
-@Immutable
+@Fluent
 public class PhoneNumberCost implements JsonSerializable<PhoneNumberCost> {
     /*
      * The cost amount.

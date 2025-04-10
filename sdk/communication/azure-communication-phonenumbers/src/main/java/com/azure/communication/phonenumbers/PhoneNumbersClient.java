@@ -573,7 +573,7 @@ public final class PhoneNumbersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PhoneNumberOperation, PurchaseReservationResult> beginReservationPurchase(UUID reservationId,
         Context context) {
-        return asyncClient.beginPurchaseReservation(reservationId, context).getSyncPoller();
+        return asyncClient.beginPurchaseReservation(reservationId, false, context).getSyncPoller();
     }
 
     /**

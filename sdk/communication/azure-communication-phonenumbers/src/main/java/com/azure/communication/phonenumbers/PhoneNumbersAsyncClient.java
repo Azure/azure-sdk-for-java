@@ -182,25 +182,9 @@ public final class PhoneNumbersAsyncClient {
      * @throws NullPointerException if {@code reservationId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersReservation> getReservationAsync(UUID reservationId) {
+    public Mono<PhoneNumbersReservation> getReservation(UUID reservationId) {
         Objects.requireNonNull(reservationId, "'reservationId' cannot be null.");
         return client.getReservationAsync(reservationId);
-    }
-
-    /**
-     * Gets a reservation by its ID.
-     * 
-     * Retrieves the reservation with the given ID, including all of the phone numbers associated with it.
-     * 
-     * @param reservationId The id of the reservation.
-     * @param context A {@link Context} representing the request context.
-     * @return represents a reservation for phone numbers on successful completion of {@link Mono}.
-     * @throws NullPointerException if {@code reservationId} is null.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersReservation> getReservationAsync(UUID reservationId, Context context) {
-        Objects.requireNonNull(reservationId, "'reservationId' cannot be null.");
-        return client.getReservationAsync(reservationId, context);
     }
 
     /**
@@ -246,27 +230,9 @@ public final class PhoneNumbersAsyncClient {
      * @return the result of a phone number browse operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersBrowseResult> browseAvailableNumbersAsync(String countryCode,
+    public Mono<PhoneNumbersBrowseResult> browseAvailableNumbers(String countryCode,
         PhoneNumbersBrowseRequest phoneNumbersBrowseRequest) {
         return client.browseAvailableNumbersAsync(countryCode, phoneNumbersBrowseRequest);
-    }
-
-    /**
-     * Browses for available phone numbers to purchase.
-     * 
-     * Browses for available phone numbers to purchase. The response will be a randomized list of phone numbers
-     * available to purchase matching the browsing criteria. This operation is not paginated. Since the results are
-     * randomized, repeating the same request will not guarantee the same results.
-     * 
-     * @param countryCode The ISO 3166-2 country code, e.g. US.
-     * @param phoneNumbersBrowseRequest An object defining the criteria to browse for available phone numbers.
-     * @param context A {@link Context} representing the request context.
-     * @return the result of a phone number browse operation on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersBrowseResult> browseAvailableNumbersAsync(String countryCode,
-        PhoneNumbersBrowseRequest phoneNumbersBrowseRequest, Context context) {
-        return client.browseAvailableNumbersAsync(countryCode, phoneNumbersBrowseRequest, context);
     }
 
     /**
@@ -506,22 +472,6 @@ public final class PhoneNumbersAsyncClient {
     }
 
     /**
-    * Starts the purchase of the phone number(s) in the search result associated
-    * with a given id.
-    *
-    * @param searchId ID of the search.
-    * @param context A {@link Context} representing the request context.
-    * @return A {@link PollerFlux} object.
-    * @throws NullPointerException if {@code searchId} is null.
-    * @throws RuntimeException if purchase operation fails.
-    */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId,
-        Context context) {
-        return beginPurchasePhoneNumbers(searchId, false, context);
-    }
-
-    /**
      * Starts the purchase of the phone number(s) in the search result associated
      * with a given id.
      *
@@ -622,26 +572,6 @@ public final class PhoneNumbersAsyncClient {
     public PollerFlux<PhoneNumberOperation, PurchaseReservationResult> beginPurchaseReservation(UUID reservationId,
         Boolean agreeToNotResell) {
         return beginPurchaseReservation(reservationId, agreeToNotResell, null);
-    }
-
-    /**
-     * Starts the purchase of all phone numbers in the reservation.
-     * 
-     * Starts a long running operation to purchase all of the phone numbers in the reservation. Purchase can only be
-     * started for active reservations that at least one phone number. If any of the phone numbers in the reservation is
-     * from a country where reselling is not permitted, do not resell agreement is required. The response will include
-     * an 'Operation-Location' header that can be used to query the status of the operation.
-     * 
-     * @param reservationId The id of the reservation.
-     * @param context A {@link Context} representing the request context.
-     * @throws NullPointerException if {@code reservationId} is null.
-     * @throws RuntimeException if purchase operation fails.
-     * @return A {@link PollerFlux} object.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PhoneNumberOperation, PurchaseReservationResult> beginPurchaseReservation(UUID reservationId,
-        Context context) {
-        return beginPurchaseReservation(reservationId, false, context);
     }
 
     PollerFlux<PhoneNumberOperation, PurchaseReservationResult> beginPurchaseReservation(UUID reservationId,
@@ -940,7 +870,7 @@ public final class PhoneNumbersAsyncClient {
      *         representing phone number reservations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PhoneNumbersReservation> listReservationsAsync() {
+    public PagedFlux<PhoneNumbersReservation> listReservations() {
         return client.listReservationsAsync(100);
     }
 
@@ -956,25 +886,8 @@ public final class PhoneNumbersAsyncClient {
      *         representing phone number reservations.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PhoneNumbersReservation> listReservationsAsync(Integer maxPageSize) {
+    public PagedFlux<PhoneNumbersReservation> listReservations(Integer maxPageSize) {
         return client.listReservationsAsync(maxPageSize);
-    }
-
-    /**
-     * Lists all reservations.
-     * 
-     * Retrieves a paginated list of all phone number reservations. Note that the reservations will not be populated
-     * with the phone numbers associated with them.
-     * 
-     * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
-     * value is 100.
-     * @param context A {@link Context} representing the request context.
-     * @return A {@link PagedFlux} of {@link PhoneNumbersReservation} instances
-     *         representing phone number reservations.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PhoneNumbersReservation> listReservationsAsync(Integer maxPageSize, Context context) {
-        return client.listReservationsAsync(maxPageSize, context);
     }
 
     /**
@@ -1027,32 +940,11 @@ public final class PhoneNumbersAsyncClient {
      * @return represents a reservation for phone numbers on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersReservation> createOrUpdateReservationAsync(PhoneNumbersReservation reservation) {
+    public Mono<PhoneNumbersReservation> createOrUpdateReservation(PhoneNumbersReservation reservation) {
         return client.createOrUpdateReservationAsync(reservation.getId(), reservation);
     }
 
     /**
-     * Creates or updates a reservation by its ID.
-     * 
-     * Adds and removes phone numbers from the reservation with the given ID. The response will be the updated state of
-     * the reservation. Phone numbers can be reserved by including them in the payload. If a number is already in the
-     * reservation, it will be ignored. To remove a phone number, set it explicitly to null in the request payload. This
-     * operation is idempotent. If a reservation with the same ID already exists, it will be updated, otherwise a new
-     * one is created. Only reservations with 'active' status can be updated. Updating a reservation will extend the
-     * expiration time of the reservation to 15 minutes after the last change, up to a maximum of 2 hours from creation
-     * time. Partial success is possible, in which case the response will have a 207 status code.
-     * 
-     * @param reservation A representation of the desired state of the reservation.
-     * @param context The context to associate with this operation.
-     * @return represents a reservation for phone numbers on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersReservation> createOrUpdateReservationAsync(PhoneNumbersReservation reservation,
-        Context context) {
-        return client.createOrUpdateReservationAsync(reservation.getId(), reservation, context);
-    }
-
-    /**
      * Deletes a reservation by its ID.
      * 
      * Deletes the reservation with the given ID. Any phone number in the reservation will be released and made
@@ -1062,23 +954,8 @@ public final class PhoneNumbersAsyncClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteReservationAsync(UUID reservationId) {
+    public Mono<Void> deleteReservation(UUID reservationId) {
         return client.deleteReservationAsync(reservationId);
-    }
-
-    /**
-     * Deletes a reservation by its ID.
-     *
-     * Deletes the reservation with the given ID. Any phone number in the reservation will be released and made
-     * available for others to purchase. Only reservations with 'active' status can be deleted.
-     * 
-     * @param reservationId The id of the reservation that's going to be deleted.
-     * @param context The context to associate with this operation.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteReservationAsync(UUID reservationId, Context context) {
-        return client.deleteReservationAsync(reservationId, context);
     }
 
     private Mono<PhoneNumberOperation> getOperation(String operationId) {

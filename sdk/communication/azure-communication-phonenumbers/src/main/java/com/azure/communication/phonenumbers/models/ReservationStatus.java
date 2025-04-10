@@ -5,57 +5,36 @@
 package com.azure.communication.phonenumbers.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-
 import java.util.Collection;
 
 /**
- * @deprecated Defines values for ReservationStatus.
+ * Represents the status of the reservation. Possible values include: 'active', 'submitted', 'completed', 'expired'.
  */
-@Deprecated
 public final class ReservationStatus extends ExpandableStringEnum<ReservationStatus> {
-    /** Static value Pending for ReservationStatus. */
-    public static final ReservationStatus PENDING = fromString("Pending");
-
-    /** Static value InProgress for ReservationStatus. */
-    public static final ReservationStatus IN_PROGRESS = fromString("InProgress");
-
-    /** Static value Reserved for ReservationStatus. */
-    public static final ReservationStatus RESERVED = fromString("Reserved");
-
-    /** Static value Expired for ReservationStatus. */
-    public static final ReservationStatus EXPIRED = fromString("Expired");
-
-    /** Static value Expiring for ReservationStatus. */
-    public static final ReservationStatus EXPIRING = fromString("Expiring");
-
-    /** Static value Completing for ReservationStatus. */
-    public static final ReservationStatus COMPLETING = fromString("Completing");
-
-    /** Static value Refreshing for ReservationStatus. */
-    public static final ReservationStatus REFRESHING = fromString("Refreshing");
-
-    /** Static value Success for ReservationStatus. */
-    public static final ReservationStatus SUCCESS = fromString("Success");
-
-    /** Static value Manual for ReservationStatus. */
-    public static final ReservationStatus MANUAL = fromString("Manual");
-
-    /** Static value Cancelled for ReservationStatus. */
-    public static final ReservationStatus CANCELLED = fromString("Cancelled");
-
-    /** Static value Cancelling for ReservationStatus. */
-    public static final ReservationStatus CANCELLING = fromString("Cancelling");
-
-    /** Static value Error for ReservationStatus. */
-    public static final ReservationStatus ERROR = fromString("Error");
-
-    /** Static value PurchasePending for ReservationStatus. */
-    public static final ReservationStatus PURCHASE_PENDING = fromString("PurchasePending");
+    /**
+     * Static value active for ReservationStatus.
+     */
+    public static final ReservationStatus ACTIVE = fromString("active");
 
     /**
-     * Creates an instance of {@link ReservationStatus} with no string value.
-     *
-     * @deprecated Use {@link #fromString(String)} to create or get an instance of {@link ReservationStatus} instead.
+     * Static value submitted for ReservationStatus.
+     */
+    public static final ReservationStatus SUBMITTED = fromString("submitted");
+
+    /**
+     * Static value completed for ReservationStatus.
+     */
+    public static final ReservationStatus COMPLETED = fromString("completed");
+
+    /**
+     * Static value expired for ReservationStatus.
+     */
+    public static final ReservationStatus EXPIRED = fromString("expired");
+
+    /**
+     * Creates a new instance of ReservationStatus value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
     public ReservationStatus() {
@@ -63,7 +42,7 @@ public final class ReservationStatus extends ExpandableStringEnum<ReservationSta
 
     /**
      * Creates or finds a ReservationStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ReservationStatus.
      */
@@ -72,8 +51,8 @@ public final class ReservationStatus extends ExpandableStringEnum<ReservationSta
     }
 
     /**
-     * Gives a Collection of ReservationStatus values.
-     *
+     * Gets known ReservationStatus values.
+     * 
      * @return known ReservationStatus values.
      */
     public static Collection<ReservationStatus> values() {

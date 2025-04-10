@@ -4,14 +4,13 @@ package com.azure.communication.phonenumbers;
 
 import com.azure.communication.phonenumbers.implementation.converters.PhoneNumberErrorConverter;
 import com.azure.communication.phonenumbers.implementation.models.CommunicationError;
-import com.azure.communication.phonenumbers.implementation.models.CommunicationErrorResponseException;
-import com.azure.communication.phonenumbers.implementation.models.PhoneNumberBrowseCapabilitiesRequest;
 import com.azure.communication.phonenumbers.models.BillingFrequency;
 import com.azure.communication.phonenumbers.models.PhoneNumberAdministrativeDivision;
 import com.azure.communication.phonenumbers.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.models.OperatorInformationOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
+import com.azure.communication.phonenumbers.models.PhoneNumberBrowseCapabilitiesRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCountry;
@@ -31,7 +30,6 @@ import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.communication.phonenumbers.models.ReleasePhoneNumberResult;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -50,7 +48,6 @@ import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrationTestBase {
@@ -514,7 +511,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                         .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
         StepVerifier.create(this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
-            .browseAvailableNumbersAsync("US", browseRequest)).assertNext((result) -> {
+            .browseAvailableNumbers("US", browseRequest)).assertNext((result) -> {
                 assertEquals(PhoneNumberType.TOLL_FREE, result.getPhoneNumbers().get(0).getPhoneNumberType());
                 assertEquals(PhoneNumberAssignmentType.APPLICATION,
                     result.getPhoneNumbers().get(0).getAssignmentType());
@@ -532,7 +529,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                         .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
         StepVerifier.create(this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
-            .browseAvailableNumbersAsync("INVALID", browseRequest)).verifyError();
+            .browseAvailableNumbers("INVALID", browseRequest)).verifyError();
     }
 
     @ParameterizedTest
@@ -546,7 +543,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                         .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
         StepVerifier.create(this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers")
-            .browseAvailableNumbersAsync("US", browseRequest)).assertNext((result) -> {
+            .browseAvailableNumbers("US", browseRequest)).assertNext((result) -> {
                 assertEquals(PhoneNumberType.TOLL_FREE, result.getPhoneNumbers().get(0).getPhoneNumberType());
                 assertEquals(PhoneNumberAssignmentType.APPLICATION,
                     result.getPhoneNumbers().get(0).getAssignmentType());
@@ -564,7 +561,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                         .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
         StepVerifier.create(this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers")
-            .browseAvailableNumbersAsync("INVALID", browseRequest)).verifyError();
+            .browseAvailableNumbers("INVALID", browseRequest)).verifyError();
     }
 
     @ParameterizedTest
@@ -578,7 +575,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                         .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
         PhoneNumbersBrowseResult result = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
-            .browseAvailableNumbersAsync("US", browseRequest)
+            .browseAvailableNumbers("US", browseRequest)
             .block(); // Blocking to retrieve the result synchronously
 
         assertNotNull(result);
@@ -589,7 +586,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
 
         PhoneNumbersReservation reservationResponse
             = this.getClientWithConnectionString(httpClient, "updatePhoneNumberReservation")
-                .createOrUpdateReservationAsync(reservation)
+                .createOrUpdateReservation(reservation)
                 .block();
 
         assertEquals(reservationId, reservationResponse.getId());
@@ -597,13 +594,13 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         assertTrue(reservationResponse.getPhoneNumbers().containsKey(result.getPhoneNumbers().get(0).getId()));
 
         reservationResponse = this.getClientWithConnectionString(httpClient, "getPhoneNumberReservation")
-            .getReservationAsync(reservationId)
+            .getReservation(reservationId)
             .block();
 
         assertEquals(reservationId, reservationResponse.getId());
 
         PagedFlux<PhoneNumbersReservation> reservationsList
-            = this.getClientWithConnectionString(httpClient, "listPhoneNumberReservations").listReservationsAsync();
+            = this.getClientWithConnectionString(httpClient, "listPhoneNumberReservations").listReservations();
 
         StepVerifier.create(reservationsList.collectList()).assertNext(reservations -> {
             boolean containsReservation
@@ -614,17 +611,19 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         reservation.removePhoneNumber(result.getPhoneNumbers().get(0).getId());
 
         reservationResponse = this.getClientWithConnectionString(httpClient, "updatePhoneNumberReservation")
-            .createOrUpdateReservationAsync(reservation)
+            .createOrUpdateReservation(reservation)
             .block();
         assertEquals(reservationId, reservationResponse.getId());
         assertFalse(reservationResponse.getPhoneNumbers().containsKey(result.getPhoneNumbers().get(0).getId()));
 
         this.getClientWithConnectionString(httpClient, "deletePhoneNumberReservation")
-            .deleteReservationAsync(reservationId)
+            .deleteReservation(reservationId)
             .block();
 
-        StepVerifier.create(this.getClientWithConnectionString(httpClient, "getPhoneNumberReservation")
-            .getReservationAsync(reservationId)).verifyError();
+        StepVerifier
+            .create(this.getClientWithConnectionString(httpClient, "getPhoneNumberReservation")
+                .getReservation(reservationId))
+            .verifyError();
     }
 
     @ParameterizedTest
@@ -638,7 +637,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                         .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
         PhoneNumbersBrowseResult result = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers")
-            .browseAvailableNumbersAsync("US", browseRequest)
+            .browseAvailableNumbers("US", browseRequest)
             .block(); // Blocking to retrieve the result synchronously
 
         assertNotNull(result);
@@ -649,7 +648,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
 
         PhoneNumbersReservation reservationResponse
             = this.getClientWithManagedIdentity(httpClient, "updatePhoneNumberReservation")
-                .createOrUpdateReservationAsync(reservation)
+                .createOrUpdateReservation(reservation)
                 .block();
 
         assertEquals(reservationId, reservationResponse.getId());
@@ -657,13 +656,13 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         assertTrue(reservationResponse.getPhoneNumbers().containsKey(result.getPhoneNumbers().get(0).getId()));
 
         reservationResponse = this.getClientWithManagedIdentity(httpClient, "getPhoneNumberReservation")
-            .getReservationAsync(reservationId)
+            .getReservation(reservationId)
             .block();
 
         assertEquals(reservationId, reservationResponse.getId());
 
         PagedFlux<PhoneNumbersReservation> reservationsList
-            = this.getClientWithManagedIdentity(httpClient, "listPhoneNumberReservations").listReservationsAsync();
+            = this.getClientWithManagedIdentity(httpClient, "listPhoneNumberReservations").listReservations();
 
         StepVerifier.create(reservationsList.collectList()).assertNext(reservations -> {
             boolean containsReservation
@@ -674,17 +673,19 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         reservation.removePhoneNumber(result.getPhoneNumbers().get(0).getId());
 
         reservationResponse = this.getClientWithManagedIdentity(httpClient, "updatePhoneNumberReservation")
-            .createOrUpdateReservationAsync(reservation)
+            .createOrUpdateReservation(reservation)
             .block();
         assertEquals(reservationId, reservationResponse.getId());
         assertFalse(reservationResponse.getPhoneNumbers().containsKey(result.getPhoneNumbers().get(0).getId()));
 
         this.getClientWithManagedIdentity(httpClient, "deletePhoneNumberReservation")
-            .deleteReservationAsync(reservationId)
+            .deleteReservation(reservationId)
             .block();
 
-        StepVerifier.create(this.getClientWithManagedIdentity(httpClient, "getPhoneNumberReservation")
-            .getReservationAsync(reservationId)).verifyError();
+        StepVerifier
+            .create(this.getClientWithManagedIdentity(httpClient, "getPhoneNumberReservation")
+                .getReservation(reservationId))
+            .verifyError();
     }
 
     @ParameterizedTest
@@ -695,7 +696,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                 .setAssignmentType(PhoneNumberAssignmentType.APPLICATION);
 
         PhoneNumbersBrowseResult result = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
-            .browseAvailableNumbersAsync("FR", browseRequest)
+            .browseAvailableNumbers("FR", browseRequest)
             .block(); // Blocking to retrieve the result synchronously
 
         reservation.addPhoneNumber(result.getPhoneNumbers().get(0));
@@ -712,7 +713,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                 .setAssignmentType(PhoneNumberAssignmentType.APPLICATION);
 
         PhoneNumbersBrowseResult result = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers")
-            .browseAvailableNumbersAsync("FR", browseRequest)
+            .browseAvailableNumbers("FR", browseRequest)
             .block(); // Blocking to retrieve the result synchronously
 
         reservation.addPhoneNumber(result.getPhoneNumbers().get(0));
