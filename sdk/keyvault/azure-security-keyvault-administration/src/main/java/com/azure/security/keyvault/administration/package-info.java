@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 /**
  * <!-- @formatter:off -->
  * <a href="https://learn.microsoft.com/azure/key-vault/managed-hsm/">Azure Key Vault Managed HSM</a> is a

@@ -1,6 +1,5 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-
 /**
  * <!-- @formatter:off -->
  * <p><a href="https://learn.microsoft.com/azure/key-vault/general/">Azure Key Vault</a> is a cloud-based service

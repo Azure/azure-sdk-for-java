@@ -2864,7 +2864,7 @@ public final class KeyClientImpl {
      * to asymmetric and symmetric keys stored in Azure Key Vault since it uses the private portion of the key. This
      * operation requires the keys/decrypt permission. Microsoft recommends not to use CBC algorithms for decryption
      * without first ensuring the integrity of the ciphertext using an HMAC, for example. See
-     * https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
+     * https://learn.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -2922,7 +2922,7 @@ public final class KeyClientImpl {
      * to asymmetric and symmetric keys stored in Azure Key Vault since it uses the private portion of the key. This
      * operation requires the keys/decrypt permission. Microsoft recommends not to use CBC algorithms for decryption
      * without first ensuring the integrity of the ciphertext using an HMAC, for example. See
-     * https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
+     * https://learn.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode for more information.
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
