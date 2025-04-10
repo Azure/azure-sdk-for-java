@@ -47,7 +47,7 @@ ConfidentialLedgerClient confidentialLedgerClient =
     new ConfidentialLedgerClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .httpClient(httpClient)
-            .ledgerEndpoint("https://my-ledger.confidential-ledger.azure.com")
+            .endpoint("https://my-ledger.confidential-ledger.azure.com")
             .buildClient();
 ```
 

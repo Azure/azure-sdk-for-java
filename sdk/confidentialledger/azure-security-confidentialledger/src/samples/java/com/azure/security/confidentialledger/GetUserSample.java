@@ -15,7 +15,7 @@ public class GetUserSample {
         ConfidentialLedgerClient confidentialLedgerClient =
                 new ConfidentialLedgerClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
-                        .ledgerEndpoint("https://my-ledger.confidential-ledger.azure.com")
+                        .endpoint("https://my-ledger.confidential-ledger.azure.com")
                         .buildClient();
         RequestOptions requestOptions = new RequestOptions();
 

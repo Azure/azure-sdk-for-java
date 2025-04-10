@@ -16,11 +16,11 @@ public class GetLedgerEntry {
     public static void main(String[] args) {
         ConfidentialLedgerClient confidentialLedgerClient
             = new ConfidentialLedgerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
-                .ledgerEndpoint(Configuration.getGlobalConfiguration().get("LEDGERENDPOINT"))
+                .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.security.confidentialledger.generated.getledgerentry.getledgerentry
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = confidentialLedgerClient.getLedgerEntryWithResponse("3.14", requestOptions);
+        Response<BinaryData> response = confidentialLedgerClient.getLedgerEntryWithResponse("2.15", requestOptions);
         // END:com.azure.security.confidentialledger.generated.getledgerentry.getledgerentry
     }
 }

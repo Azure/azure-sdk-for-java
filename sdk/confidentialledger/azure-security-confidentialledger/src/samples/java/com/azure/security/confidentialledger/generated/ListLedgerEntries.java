@@ -16,11 +16,11 @@ public class ListLedgerEntries {
     public static void main(String[] args) {
         ConfidentialLedgerClient confidentialLedgerClient
             = new ConfidentialLedgerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
-                .ledgerEndpoint(Configuration.getGlobalConfiguration().get("LEDGERENDPOINT"))
+                .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.security.confidentialledger.generated.listledgerentries.listledgerentries
         RequestOptions requestOptions
-            = new RequestOptions().addQueryParam("fromTransactionId", "3.14").addQueryParam("toTransactionId", "3.42");
+            = new RequestOptions().addQueryParam("fromTransactionId", "2.15").addQueryParam("toTransactionId", "2.20");
         PagedIterable<BinaryData> response = confidentialLedgerClient.listLedgerEntries(requestOptions);
         // END:com.azure.security.confidentialledger.generated.listledgerentries.listledgerentries
     }

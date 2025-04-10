@@ -11,9 +11,9 @@ import com.azure.core.util.ServiceVersion;
  */
 public enum ConfidentialLedgerServiceVersion implements ServiceVersion {
     /**
-     * Enum value 2022-05-13.
+     * Enum value 2024-12-09-preview.
      */
-    V2022_05_13("2022-05-13");
+    V2024_12_09_PREVIEW("2024-12-09-preview");
 
     private final String version;
 
@@ -35,6 +35,6 @@ public enum ConfidentialLedgerServiceVersion implements ServiceVersion {
      * @return The latest {@link ConfidentialLedgerServiceVersion}.
      */
     public static ConfidentialLedgerServiceVersion getLatest() {
-        return V2022_05_13;
+        return V2024_12_09_PREVIEW;
     }
 }

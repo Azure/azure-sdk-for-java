@@ -103,9 +103,9 @@ class ConfidentialLedgerClientTestBase extends TestProxyTestBase {
 
         HttpClient httpClient = new NettyAsyncHttpClientBuilder(reactorClient).wiretap(true).build();
 
-        confidentialLedgerClientBuilder = new ConfidentialLedgerClientBuilder()
-            .ledgerEndpoint(ConfidentialLedgerEnvironment.getConfidentialLedgerUrl())
-            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
+        confidentialLedgerClientBuilder
+            = new ConfidentialLedgerClientBuilder().endpoint(ConfidentialLedgerEnvironment.getConfidentialLedgerUrl())
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
 
         if (getTestMode() == TestMode.PLAYBACK) {
             confidentialLedgerClientBuilder.httpClient(interceptorManager.getPlaybackClient())

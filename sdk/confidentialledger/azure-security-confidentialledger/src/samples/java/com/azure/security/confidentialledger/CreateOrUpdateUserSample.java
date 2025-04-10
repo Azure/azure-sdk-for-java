@@ -13,7 +13,7 @@ public class CreateOrUpdateUserSample {
         ConfidentialLedgerClient confidentialLedgerClient =
                 new ConfidentialLedgerClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
-                        .ledgerEndpoint("https://my-ledger.confidential-ledger.azure.com")
+                        .endpoint("https://my-ledger.confidential-ledger.azure.com")
                         .buildClient();
         BinaryData userDetails = BinaryData.fromString("{\"assignedRole\":\"Reader\"}");
         RequestOptions requestOptions = new RequestOptions();
