@@ -502,6 +502,19 @@ public final class PhoneNumbersAsyncClient {
         return beginPurchasePhoneNumbers(searchId, agreeToNotResell, null);
     }
 
+    PollerFlux<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId, Context context) {
+        try {
+            Objects.requireNonNull(searchId, "'searchId' cannot be null.");
+            return new PollerFlux<>(defaultPollInterval,
+                purchaseNumbersInitOperation(searchId, false, context), pollOperation(),
+                (pollingContext, firstResponse) -> Mono
+                    .error(logger.logExceptionAsError(new RuntimeException("Cancellation is not supported"))),
+                (pollingContext) -> Mono.just(new PurchasePhoneNumbersResult()));
+        } catch (RuntimeException ex) {
+            return PollerFlux.error(ex);
+        }
+    }
+
     PollerFlux<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId,
         Boolean agreeToNotResell, Context context) {
         try {

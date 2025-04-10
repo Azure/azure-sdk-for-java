@@ -39,7 +39,7 @@ public final class PhoneNumbersReservation implements JsonSerializable<PhoneNumb
     /*
      * Represents the status of the reservation. Possible values include: 'active', 'submitted', 'completed', 'expired'.
      */
-    private ReservationStatus status;
+    private PhoneNumbersReservationStatus status;
 
     /**
      * Creates an instance of PhoneNumbersReservation class.
@@ -108,7 +108,7 @@ public final class PhoneNumbersReservation implements JsonSerializable<PhoneNumb
      * 
      * @return the status value.
      */
-    public ReservationStatus getStatus() {
+    public PhoneNumbersReservationStatus getStatus() {
         return this.status;
     }
 
@@ -166,7 +166,8 @@ public final class PhoneNumbersReservation implements JsonSerializable<PhoneNumb
                         = reader.readMap(reader1 -> AvailablePhoneNumber.fromJson(reader1));
                     deserializedPhoneNumbersReservation.phoneNumbers = phoneNumbers;
                 } else if ("status".equals(fieldName)) {
-                    deserializedPhoneNumbersReservation.status = ReservationStatus.fromString(reader.getString());
+                    deserializedPhoneNumbersReservation.status
+                        = PhoneNumbersReservationStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

@@ -4,7 +4,7 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
@@ -14,7 +14,7 @@ import java.io.IOException;
 /**
  * The incurred cost for a single phone number.
  */
-@Fluent
+@Immutable
 public class PhoneNumberCost implements JsonSerializable<PhoneNumberCost> {
     /*
      * The cost amount.
@@ -52,7 +52,7 @@ public class PhoneNumberCost implements JsonSerializable<PhoneNumberCost> {
      * @param amount the amount value to set.
      * @return the PhoneNumberCost object itself.
      */
-    protected PhoneNumberCost setAmount(double amount) {
+    PhoneNumberCost setAmount(double amount) {
         this.amount = amount;
         return this;
     }
@@ -72,7 +72,7 @@ public class PhoneNumberCost implements JsonSerializable<PhoneNumberCost> {
      * @param currencyCode the currencyCode value to set.
      * @return the PhoneNumberCost object itself.
      */
-    protected PhoneNumberCost setCurrencyCode(String currencyCode) {
+    PhoneNumberCost setCurrencyCode(String currencyCode) {
         this.currencyCode = currencyCode;
         return this;
     }
@@ -92,7 +92,7 @@ public class PhoneNumberCost implements JsonSerializable<PhoneNumberCost> {
      * @param billingFrequency the billingFrequency value to set.
      * @return the PhoneNumberCost object itself.
      */
-    protected PhoneNumberCost setBillingFrequency(BillingFrequency billingFrequency) {
+    PhoneNumberCost setBillingFrequency(BillingFrequency billingFrequency) {
         this.billingFrequency = billingFrequency;
         return this;
     }
