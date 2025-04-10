@@ -257,6 +257,17 @@ def sdk_automation_typespec(config: dict) -> List[dict]:
     return packages
 
 
+def verify_self_serve_parameters(api_version, sdk_release_type):
+    if sdk_release_type and sdk_release_type not in ["stable", "beta"]:
+        raise ValueError(f"Invalid SDK release type [{sdk_release_type}], only support 'stable' or 'beta'.")
+    if api_version and sdk_release_type:
+        if api_version.endswith("-preview") and sdk_release_type == "stable":
+            raise ValueError(f"SDK release type is [stable], but API version [{api_version}] is preview.")
+        logging.info(f"[SelfServe] Generate with apiVersion: {api_version} and sdkReleaseType: {sdk_release_type}")
+    elif api_version or sdk_release_type:
+        raise ValueError("Both [API version] and [SDK release type] parameters are required for self-serve SDK generation.")
+
+
 def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
 
     base_dir = os.path.abspath(os.path.dirname(sys.argv[0]))
@@ -266,15 +277,12 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
     repo_url: str = config["repoHttpsUrl"]
     sdk_release_type: str = config["sdkReleaseType"] if "sdkReleaseType" in config else None
     api_version = config["apiVersion"] if "apiVersion" in config else None
-    beta: bool = not sdk_release_type or sdk_release_type == "beta"
+    release_beta_sdk: bool = not sdk_release_type or sdk_release_type == "beta"
     breaking: bool = False
     changelog = ""
     breaking_change_items = []
 
-    if sdk_release_type and sdk_release_type not in ["stable", "beta"]:
-        raise ValueError(f"Invalid sdkReleaseType [{sdk_release_type}], only support 'stable' or 'beta'.")
-    if api_version and sdk_release_type:
-        logging.info(f"[SelfServe] Generate with apiVersion: {api_version} and sdkReleaseType: {sdk_release_type}")
+    verify_self_serve_parameters(api_version, sdk_release_type)
 
     succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
         tsp_project,
@@ -285,6 +293,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
         remove_before_regen=True,
         group_id=GROUP_ID,
         api_version=api_version,
+        generate_beta_sdk=release_beta_sdk
     )
 
     if succeeded:
@@ -293,7 +302,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
             update_service_files_for_new_lib(sdk_root, service, GROUP_ID, module)
             update_root_pom(sdk_root, service)
 
-        stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module, preview=beta)
+        stable_version, current_version = set_or_increase_version(sdk_root, GROUP_ID, module, preview=release_beta_sdk)
         update_parameters(None)
         output_folder = OUTPUT_FOLDER_FORMAT.format(service)
         update_version(sdk_root, output_folder)
