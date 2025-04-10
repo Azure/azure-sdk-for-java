@@ -10,66 +10,66 @@ import java.util.Collection;
 /**
  * Enum describing allowed operation states.
  */
-public final class OperationState extends ExpandableStringEnum<OperationState> {
+public final class OperationStatus extends ExpandableStringEnum<OperationStatus> {
 
     /**
      * The operation has not started.
      */
     @Generated
-    public static final OperationState NOT_STARTED = fromString("NotStarted");
+    public static final OperationStatus NOT_STARTED = fromString("NotStarted");
 
     /**
      * The operation is in progress.
      */
     @Generated
-    public static final OperationState RUNNING = fromString("Running");
+    public static final OperationStatus RUNNING = fromString("Running");
 
     /**
      * The operation has completed successfully.
      */
     @Generated
-    public static final OperationState SUCCEEDED = fromString("Succeeded");
+    public static final OperationStatus SUCCEEDED = fromString("Succeeded");
 
     /**
      * The operation has failed.
      */
     @Generated
-    public static final OperationState FAILED = fromString("Failed");
+    public static final OperationStatus FAILED = fromString("Failed");
 
     /**
      * The operation has been canceled by the user.
      */
     @Generated
-    public static final OperationState CANCELED = fromString("Canceled");
+    public static final OperationStatus CANCELED = fromString("Canceled");
 
     /**
-     * Creates a new instance of OperationState value.
+     * Creates a new instance of OperationStatus value.
      *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
     @Deprecated
-    public OperationState() {
+    public OperationStatus() {
     }
 
     /**
-     * Creates or finds a OperationState from its string representation.
+     * Creates or finds a OperationStatus from its string representation.
      *
      * @param name a name to look for.
-     * @return the corresponding OperationState.
+     * @return the corresponding OperationStatus.
      */
     @Generated
-    public static OperationState fromString(String name) {
-        return fromString(name, OperationState.class);
+    public static OperationStatus fromString(String name) {
+        return fromString(name, OperationStatus.class);
     }
 
     /**
-     * Gets known OperationState values.
+     * Gets known OperationStatus values.
      *
-     * @return known OperationState values.
+     * @return known OperationStatus values.
      */
     @Generated
-    public static Collection<OperationState> values() {
-        return values(OperationState.class);
+    public static Collection<OperationStatus> values() {
+        return values(OperationStatus.class);
     }
 }
