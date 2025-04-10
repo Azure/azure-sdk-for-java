@@ -1,3 +1,7 @@
+##################################################################
+# This script is used for testing openai-build.yml locally only. #
+##################################################################
+
 # Define repository details
 $repoUrl = "https://github.com/openai/openai-java.git"
 $branchName = "release-please--branches--main--changes--next"
