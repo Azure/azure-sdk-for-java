@@ -1,6 +1,9 @@
 # Release History
 
-## 4.20.0-beta.1 (Unreleased)
+## 4.20.0 (2025-04-11)
+
+Please refer to [spring/CHANGELOG.md](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CHANGELOG.md#4200-2025-04-11) for more details.
+
 
 ## 4.19.0 (2024-06-03)
 
