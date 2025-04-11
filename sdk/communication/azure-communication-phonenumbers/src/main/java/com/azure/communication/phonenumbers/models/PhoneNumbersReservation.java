@@ -48,7 +48,7 @@ public final class PhoneNumbersReservation implements JsonSerializable<PhoneNumb
      * Represents the status of the reservation. Possible values include: 'active',
      * 'submitted', 'completed', 'expired'.
      */
-    public PhoneNumbersReservationStatus status;
+    private PhoneNumbersReservationStatus status;
 
     /**
      * Creates an instance of PhoneNumbersReservation class.
