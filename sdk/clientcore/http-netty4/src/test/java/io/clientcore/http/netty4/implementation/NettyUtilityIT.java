@@ -11,7 +11,7 @@ import java.security.URIParameter;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 /**
- * Integration tests for {@link NettyUtility}.
+ * Integration tests for {@link Netty4Utility}.
  */
 @SuppressWarnings("removal")
 @Isolated("Mutates the global SecurityManager")
@@ -26,7 +26,7 @@ public class NettyUtilityIT {
         // Set the System property codebase.netty-http to the location of NettyUtility's codebase.
         // This gets picked up by the policy setting to prevent needing to hardcode the code base location.
         System.setProperty("codebase.http-netty4",
-            NettyUtility.class.getProtectionDomain().getCodeSource().getLocation().toString());
+            Netty4Utility.class.getProtectionDomain().getCodeSource().getLocation().toString());
     }
 
     public void revertDefaultConfigurations() {
@@ -45,7 +45,7 @@ public class NettyUtilityIT {
             java.security.Policy.setPolicy(java.security.Policy.getInstance("JavaPolicy", getUriParameter()));
             System.setSecurityManager(new SecurityManager());
 
-            assertDoesNotThrow(NettyUtility::validateNettyVersionsInternal);
+            assertDoesNotThrow(Netty4Utility::validateNettyVersionsInternal);
         } finally {
             revertDefaultConfigurations();
         }

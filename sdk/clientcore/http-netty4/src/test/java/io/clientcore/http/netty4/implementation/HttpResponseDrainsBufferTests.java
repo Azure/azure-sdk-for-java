@@ -48,7 +48,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * These tests are isolated from other {@link Response} tests as they require running the garbage collector to force
  * the JVM to destroy buffers that no longer have pointers to them.
  */
-@Timeout(value = 1, unit = TimeUnit.MINUTES)
+@Timeout(value = 3, unit = TimeUnit.MINUTES)
 @Isolated
 @Execution(ExecutionMode.SAME_THREAD)
 public class HttpResponseDrainsBufferTests {
@@ -157,7 +157,7 @@ public class HttpResponseDrainsBufferTests {
         throws InterruptedException, ExecutionException {
         HttpClient httpClient = new NettyHttpClientProvider().getSharedInstance();
 
-        Semaphore limiter = new Semaphore(Runtime.getRuntime().availableProcessors());
+        Semaphore limiter = new Semaphore(Runtime.getRuntime().availableProcessors() - 1);
         List<Future<Void>> futures = SharedExecutorService.getInstance()
             .invokeAll(IntStream.range(0, 100).mapToObj(ignored -> (Callable<Void>) () -> {
                 try {

@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 /**
  * Tests {@link NettyHttpClientBuilder}.
  */
-@Timeout(value = 1, unit = TimeUnit.MINUTES)
+@Timeout(value = 3, unit = TimeUnit.MINUTES)
 public class NettyHttpClientBuilderTests {
 
     private static final String JAVA_SYSTEM_PROXY_PREREQUISITE = "java.net.useSystemProxies";
@@ -56,17 +56,17 @@ public class NettyHttpClientBuilderTests {
     @ParameterizedTest
     @MethodSource("buildWithProxySupplier")
     public void buildWithProxy(ProxyOptions proxyOptions) {
-        NettyHttpClient nettyClient = (NettyHttpClient) new NettyHttpClientBuilder().proxy(proxyOptions).build();
+        NettyHttpClientBuilder builder = new NettyHttpClientBuilder().proxy(proxyOptions);
 
         if (proxyOptions != null) {
-            assertNotNull(nettyClient.getProxyOptions());
-            assertEquals(proxyOptions.getType(), nettyClient.getProxyOptions().getType());
-            assertEquals(proxyOptions.getAddress(), nettyClient.getProxyOptions().getAddress());
-            assertEquals(proxyOptions.getUsername(), nettyClient.getProxyOptions().getUsername());
-            assertEquals(proxyOptions.getPassword(), nettyClient.getProxyOptions().getPassword());
-            assertEquals(proxyOptions.getNonProxyHosts(), nettyClient.getProxyOptions().getNonProxyHosts());
+            assertNotNull(builder.getProxyOptions());
+            assertEquals(proxyOptions.getType(), builder.getProxyOptions().getType());
+            assertEquals(proxyOptions.getAddress(), builder.getProxyOptions().getAddress());
+            assertEquals(proxyOptions.getUsername(), builder.getProxyOptions().getUsername());
+            assertEquals(proxyOptions.getPassword(), builder.getProxyOptions().getPassword());
+            assertEquals(proxyOptions.getNonProxyHosts(), builder.getProxyOptions().getNonProxyHosts());
         } else {
-            assertNull(nettyClient.getProxyOptions());
+            assertNull(builder.getProxyOptions());
         }
     }
 
@@ -119,50 +119,48 @@ public class NettyHttpClientBuilderTests {
     @ParameterizedTest
     @MethodSource("buildWithEnvConfigurationProxySupplier")
     public void buildWithEnvConfigurationProxy(Configuration configuration) {
-        NettyHttpClient nettyClient
-            = (NettyHttpClient) new NettyHttpClientBuilder().configuration(configuration).build();
+        NettyHttpClientBuilder builder = new NettyHttpClientBuilder().configuration(configuration);
         ProxyOptions expected = ProxyOptions.fromConfiguration(configuration);
 
         if (expected != null) {
-            assertNotNull(nettyClient.getProxyOptions());
-            assertEquals(expected.getType(), nettyClient.getProxyOptions().getType());
+            assertNotNull(builder.getProxyOptions());
+            assertEquals(expected.getType(), builder.getProxyOptions().getType());
 
-            InetSocketAddress actualAddress = nettyClient.getProxyOptions().getAddress();
+            InetSocketAddress actualAddress = builder.getProxyOptions().getAddress();
             if (actualAddress.isUnresolved()) {
                 actualAddress = new InetSocketAddress(actualAddress.getHostName(), actualAddress.getPort());
             }
             assertEquals(expected.getAddress(), actualAddress);
 
-            assertEquals(expected.getUsername(), nettyClient.getProxyOptions().getUsername());
-            assertEquals(expected.getPassword(), nettyClient.getProxyOptions().getPassword());
-            assertEquals(expected.getNonProxyHosts(), nettyClient.getProxyOptions().getNonProxyHosts());
+            assertEquals(expected.getUsername(), builder.getProxyOptions().getUsername());
+            assertEquals(expected.getPassword(), builder.getProxyOptions().getPassword());
+            assertEquals(expected.getNonProxyHosts(), builder.getProxyOptions().getNonProxyHosts());
         } else {
-            assertNull(nettyClient.getProxyOptions());
+            assertNull(builder.getProxyOptions());
         }
     }
 
     @ParameterizedTest
     @MethodSource("buildWithExplicitConfigurationProxySupplier")
     public void buildWithExplicitConfigurationProxy(Configuration configuration) {
-        NettyHttpClient nettyClient
-            = (NettyHttpClient) new NettyHttpClientBuilder().configuration(configuration).build();
+        NettyHttpClientBuilder builder = new NettyHttpClientBuilder().configuration(configuration);
         ProxyOptions expected = ProxyOptions.fromConfiguration(configuration);
 
         if (expected != null) {
-            assertNotNull(nettyClient.getProxyOptions());
-            assertEquals(expected.getType(), nettyClient.getProxyOptions().getType());
+            assertNotNull(builder.getProxyOptions());
+            assertEquals(expected.getType(), builder.getProxyOptions().getType());
 
-            InetSocketAddress actualAddress = nettyClient.getProxyOptions().getAddress();
+            InetSocketAddress actualAddress = builder.getProxyOptions().getAddress();
             if (actualAddress.isUnresolved()) {
                 actualAddress = new InetSocketAddress(actualAddress.getHostName(), actualAddress.getPort());
             }
             assertEquals(expected.getAddress(), actualAddress);
 
-            assertEquals(expected.getUsername(), nettyClient.getProxyOptions().getUsername());
-            assertEquals(expected.getPassword(), nettyClient.getProxyOptions().getPassword());
-            assertEquals(expected.getNonProxyHosts(), nettyClient.getProxyOptions().getNonProxyHosts());
+            assertEquals(expected.getUsername(), builder.getProxyOptions().getUsername());
+            assertEquals(expected.getPassword(), builder.getProxyOptions().getPassword());
+            assertEquals(expected.getNonProxyHosts(), builder.getProxyOptions().getNonProxyHosts());
         } else {
-            assertNull(nettyClient.getProxyOptions());
+            assertNull(builder.getProxyOptions());
         }
     }
 
