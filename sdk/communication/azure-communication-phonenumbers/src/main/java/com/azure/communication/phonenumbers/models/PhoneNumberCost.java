@@ -15,7 +15,7 @@ import java.io.IOException;
  * The incurred cost for a single phone number.
  */
 @Immutable
-public final class PhoneNumberCost implements JsonSerializable<PhoneNumberCost> {
+public class PhoneNumberCost implements JsonSerializable<PhoneNumberCost> {
     /*
      * The cost amount.
      */
@@ -47,6 +47,17 @@ public final class PhoneNumberCost implements JsonSerializable<PhoneNumberCost> 
     }
 
     /**
+     * Set the amount property: The cost amount.
+     * 
+     * @param amount the amount value to set.
+     * @return the PhoneNumberCost object itself.
+     */
+    PhoneNumberCost setAmount(double amount) {
+        this.amount = amount;
+        return this;
+    }
+
+    /**
      * Get the currencyCode property: The ISO 4217 currency code for the cost amount, e.g. USD.
      * 
      * @return the currencyCode value.
@@ -56,12 +67,34 @@ public final class PhoneNumberCost implements JsonSerializable<PhoneNumberCost> 
     }
 
     /**
+     * Set the currencyCode property: The ISO 4217 currency code for the cost amount, e.g. USD.
+     * 
+     * @param currencyCode the currencyCode value to set.
+     * @return the PhoneNumberCost object itself.
+     */
+    PhoneNumberCost setCurrencyCode(String currencyCode) {
+        this.currencyCode = currencyCode;
+        return this;
+    }
+
+    /**
      * Get the billingFrequency property: The frequency with which the cost gets billed.
      * 
      * @return the billingFrequency value.
      */
     public BillingFrequency getBillingFrequency() {
         return this.billingFrequency;
+    }
+
+    /**
+     * Set the billingFrequency property: The frequency with which the cost gets billed.
+     * 
+     * @param billingFrequency the billingFrequency value to set.
+     * @return the PhoneNumberCost object itself.
+     */
+    PhoneNumberCost setBillingFrequency(BillingFrequency billingFrequency) {
+        this.billingFrequency = billingFrequency;
+        return this;
     }
 
     /**

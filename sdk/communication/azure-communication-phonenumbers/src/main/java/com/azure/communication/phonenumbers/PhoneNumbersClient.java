@@ -4,10 +4,15 @@ package com.azure.communication.phonenumbers;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClientImpl;
 import com.azure.communication.phonenumbers.implementation.PhoneNumbersImpl;
 import com.azure.communication.phonenumbers.implementation.models.OperatorInformationRequest;
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersReservationInternal;
 import com.azure.communication.phonenumbers.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.models.OperatorInformationOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
@@ -20,17 +25,29 @@ import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
+import com.azure.communication.phonenumbers.models.PhoneNumbersBrowseRequest;
+import com.azure.communication.phonenumbers.models.PhoneNumbersBrowseResult;
+import com.azure.communication.phonenumbers.models.PhoneNumbersReservation;
 import com.azure.communication.phonenumbers.models.PurchasePhoneNumbersResult;
+import com.azure.communication.phonenumbers.models.PurchaseReservationResult;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.communication.phonenumbers.models.ReleasePhoneNumberResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.paging.PageRetriever;
 import com.azure.core.util.polling.SyncPoller;
+
+import reactor.core.publisher.Flux;
 
 /**
  * Synchronous client for Communication service phone number operations.
@@ -136,6 +153,40 @@ public final class PhoneNumbersClient {
     }
 
     /**
+     * Gets a reservation by its ID.
+        PhoneNumbersReservationInternal internalReservation = client.getReservation(reservationId);
+        return mapToPhoneNumbersReservation(internalReservation);
+     * Retrieves the reservation with the given ID, including all of the phone numbers associated with it.
+     * 
+     * @param reservationId The id of the reservation.
+     * @return {@link PhoneNumbersReservation} represents a reservation for phone numbers.
+     * @throws NullPointerException if {@code reservationId} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PhoneNumbersReservation getReservation(UUID reservationId) {
+        Objects.requireNonNull(reservationId, "'reservationId' cannot be null.");
+        return mapToPhoneNumbersReservation(client.getReservation(reservationId));
+    }
+
+    /**
+     * Gets a reservation by its ID.
+     * 
+     * Retrieves the reservation with the given ID, including all of the phone numbers associated with it.
+     * 
+     * @param reservationId The id of the reservation.
+     * @param context The context to associate with this operation.
+     * @return represents a reservation for phone numbers along with {@link Response}.
+     * @throws NullPointerException if {@code reservationId} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PhoneNumbersReservation> getReservationWithResponse(UUID reservationId, Context context) {
+        Objects.requireNonNull(reservationId, "'reservationId' cannot be null.");
+        Response<PhoneNumbersReservationInternal> internalResponse
+            = client.getReservationWithResponse(reservationId, context);
+        return mapToPhoneNumbersReservationResponse(internalResponse);
+    }
+
+    /**
      * Gets the list of the purchased phone numbers.
      *
      * <p>
@@ -187,6 +238,41 @@ public final class PhoneNumbersClient {
     public PagedIterable<PurchasedPhoneNumber> listPurchasedPhoneNumbers(Context context) {
         context = context == null ? Context.NONE : context;
         return client.listPhoneNumbers(null, null, context);
+    }
+
+    /**
+     * Browses for available phone numbers to purchase.
+     * 
+     * Browses for available phone numbers to purchase. The response will be a randomized list of phone numbers
+     * available to purchase matching the browsing criteria. This operation is not paginated. Since the results are
+     * randomized, repeating the same request will not guarantee the same results.
+     * 
+     * @param countryCode The ISO 3166-2 country code, e.g. US.
+     * @param phoneNumbersBrowseRequest An object defining the criteria to browse for available phone numbers.
+     * @return the result of a phone number browse operation {@link PhoneNumbersBrowseResult}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PhoneNumbersBrowseResult browseAvailableNumbers(String countryCode,
+        PhoneNumbersBrowseRequest phoneNumbersBrowseRequest) {
+        return client.browseAvailableNumbers(countryCode, phoneNumbersBrowseRequest);
+    }
+
+    /**
+     * Browses for available phone numbers to purchase.
+     * 
+     * Browses for available phone numbers to purchase. The response will be a randomized list of phone numbers
+     * available to purchase matching the browsing criteria. This operation is not paginated. Since the results are
+     * randomized, repeating the same request will not guarantee the same results.
+     * 
+     * @param countryCode The ISO 3166-2 country code, e.g. US.
+     * @param phoneNumbersBrowseRequest An object defining the criteria to browse for available phone numbers.
+     * @param context The context to associate with this operation.
+     * @return the result of a phone number browse operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PhoneNumbersBrowseResult> browseAvailableNumbersWithResponse(String countryCode,
+        PhoneNumbersBrowseRequest phoneNumbersBrowseRequest, Context context) {
+        return client.browseAvailableNumbersWithResponse(countryCode, phoneNumbersBrowseRequest, context);
     }
 
     /**
@@ -331,7 +417,38 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId) {
-        return asyncClient.beginPurchasePhoneNumbers(searchId).getSyncPoller();
+        return asyncClient.beginPurchasePhoneNumbers(searchId, false).getSyncPoller();
+    }
+
+    /**
+     * Starts the purchase of the phone number(s) in the search result associated
+     * with a given id.
+     *
+     * This function returns a Long Running Operation poller that allows you to wait
+     * indefinitely until the
+     * operation is complete.
+     *
+     * <p>
+     * <strong>Code Samples</strong>
+     * </p>
+     *
+     * <!-- src_embed com.azure.communication.phonenumbers.client.beginPurchase -->
+     * <pre>
+     * PollResponse&lt;PhoneNumberOperation&gt; purchaseResponse =
+     *     phoneNumberClient.beginPurchasePhoneNumbers&#40;searchId&#41;.waitForCompletion&#40;&#41;;
+     * System.out.println&#40;&quot;Purchase phone numbers is complete: &quot; + purchaseResponse.getStatus&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.communication.phonenumbers.client.beginPurchase -->
+     *
+     * @param searchId ID of the search
+     * @param agreeToNotResell Parameter indicating agreement to not resell the phone numbers.
+     * @return A {@link SyncPoller} object with PurchasePhoneNumbersResult.
+     * @throws NullPointerException if {@code searchId} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId,
+        Boolean agreeToNotResell) {
+        return asyncClient.beginPurchasePhoneNumbers(searchId, agreeToNotResell).getSyncPoller();
     }
 
     /**
@@ -366,7 +483,133 @@ public final class PhoneNumbersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId,
         Context context) {
-        return asyncClient.beginPurchasePhoneNumbers(searchId, context).getSyncPoller();
+        return asyncClient.beginPurchasePhoneNumbers(searchId, false, context).getSyncPoller();
+    }
+
+    /**
+     * Starts the purchase of the phone number(s) in the search result associated
+     * with a given id.
+     *
+     * This function returns a Long Running Operation poller that allows you to wait
+     * indefinitely until the
+     * operation is complete.
+     *
+     * <p>
+     * <strong>Code Samples</strong>
+     * </p>
+     *
+     * <!-- src_embed
+     * com.azure.communication.phonenumbers.client.beginPurchaseWithContext -->
+     *
+     * <pre>
+     * PollResponse&lt;PhoneNumberOperation&gt; purchaseResponse = phoneNumberClient
+     *         .beginPurchasePhoneNumbers&#40;searchId, Context.NONE&#41;.waitForCompletion&#40;&#41;;
+     * System.out.println&#40;&quot;Purchase phone numbers is complete: &quot; + purchaseResponse.getStatus&#40;&#41;&#41;;
+     * </pre>
+     *
+     * <!-- end com.azure.communication.phonenumbers.client.beginPurchaseWithContext
+     * -->
+     *
+     * @param searchId ID of the search
+     * @param agreeToNotResell Parameter indicating agreement to not resell the phone numbers.
+     * @param context A {@link Context} representing the request context.
+     * @return A {@link SyncPoller} object with PurchasePhoneNumbersResult.
+     * @throws NullPointerException if {@code searchId} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId,
+        Boolean agreeToNotResell, Context context) {
+        return asyncClient.beginPurchasePhoneNumbers(searchId, agreeToNotResell, context).getSyncPoller();
+    }
+
+    /**
+     * Starts the purchase of all phone numbers in the reservation.
+     * 
+     * Starts a long running operation to purchase all of the phone numbers in the reservation. Purchase can only be
+     * started for active reservations that at least one phone number. If any of the phone numbers in the reservation is
+     * from a country where reselling is not permitted, do not resell agreement is required. The response will include
+     * an 'Operation-Location' header that can be used to query the status of the operation.
+     *
+     * <p>
+     * <strong>Code Samples</strong>
+     * </p>
+     *
+     * <!-- src_embed com.azure.communication.phonenumbers.client.beginPurchase -->
+     * <pre>
+     * PollResponse&lt;PhoneNumberOperation&gt; purchaseResponse =
+     *     phoneNumberClient.beginPurchasePhoneNumbers&#40;searchId&#41;.waitForCompletion&#40;&#41;;
+     * System.out.println&#40;&quot;Purchase phone numbers is complete: &quot; + purchaseResponse.getStatus&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.communication.phonenumbers.client.beginPurchase -->
+     *
+     * @param reservationId ID of the reservation.
+     * @return A {@link SyncPoller} object with PurchaseReservationResult.
+     * @throws NullPointerException if {@code searchId} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PhoneNumberOperation, PurchaseReservationResult> beginReservationPurchase(UUID reservationId) {
+        return asyncClient.beginPurchaseReservation(reservationId).getSyncPoller();
+    }
+
+    /**
+     * Starts the purchase of all phone numbers in the reservation.
+     * 
+     * Starts a long running operation to purchase all of the phone numbers in the reservation. Purchase can only be
+     * started for active reservations that at least one phone number. If any of the phone numbers in the reservation is
+     * from a country where reselling is not permitted, do not resell agreement is required. The response will include
+     * an 'Operation-Location' header that can be used to query the status of the operation.
+     *
+     *
+     * @param reservationId ID of the reservation.
+     * @param agreeToNotResell Parameter indicating agreement to not resell the phone numbers.
+     * @return A {@link SyncPoller} object with PurchaseReservationResult.
+     * @throws NullPointerException if {@code searchId} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PhoneNumberOperation, PurchaseReservationResult> beginReservationPurchase(UUID reservationId,
+        Boolean agreeToNotResell) {
+        return asyncClient.beginPurchaseReservation(reservationId, agreeToNotResell).getSyncPoller();
+    }
+
+    /**
+     * Starts the purchase of all phone numbers in the reservation.
+     * 
+     * Starts a long running operation to purchase all of the phone numbers in the reservation. Purchase can only be
+     * started for active reservations that at least one phone number. If any of the phone numbers in the reservation is
+     * from a country where reselling is not permitted, do not resell agreement is required. The response will include
+     * an 'Operation-Location' header that can be used to query the status of the operation.
+     *
+     *
+     * @param reservationId ID of the reservation.
+     * @param context A {@link Context} representing the request context.
+     * @return A {@link SyncPoller} object with PurchaseReservationResult.
+     * @throws NullPointerException if {@code searchId} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PhoneNumberOperation, PurchaseReservationResult> beginReservationPurchase(UUID reservationId,
+        Context context) {
+        return asyncClient.beginPurchaseReservation(reservationId, false, context).getSyncPoller();
+    }
+
+    /**
+     * Starts the purchase of all phone numbers in the reservation.
+     * 
+     * Starts a long running operation to purchase all of the phone numbers in the reservation. Purchase can only be
+     * started for active reservations that at least one phone number. If any of the phone numbers in the reservation is
+     * from a country where reselling is not permitted, do not resell agreement is required. The response will include
+     * an 'Operation-Location' header that can be used to query the status of the operation.
+     *
+     *
+     * @param reservationId ID of the reservation.
+     * @param agreeToNotResell Parameter indicating agreement to not resell the phone numbers.
+     * @param context A {@link Context} representing the request context.
+     * @return A {@link SyncPoller} object with PurchaseReservationResult.
+     * @throws NullPointerException if {@code searchId} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PhoneNumberOperation, PurchaseReservationResult> beginReservationPurchase(UUID reservationId,
+        Boolean agreeToNotResell, Context context) {
+        return asyncClient.beginPurchaseReservation(reservationId, agreeToNotResell, context).getSyncPoller();
     }
 
     /**
@@ -703,6 +946,53 @@ public final class PhoneNumbersClient {
     }
 
     /**
+     * Lists all reservations.
+     * 
+     * Retrieves a paginated list of all phone number reservations. Note that the reservations will not be populated
+     * with the phone numbers associated with them.
+     * 
+     * @return A {@link PagedIterable} of {@link PhoneNumbersReservation} instances
+     *         representing phone number reservations.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PhoneNumbersReservation> listReservations() {
+        return mapToPhoneNumbersReservationFromPage(client.listReservations(100));
+    }
+
+    /**
+     * Lists all reservations.
+     * 
+     * Retrieves a paginated list of all phone number reservations. Note that the reservations will not be populated
+     * with the phone numbers associated with them.
+     * 
+     * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
+     * value is 100.
+     * @return A {@link PagedIterable} of {@link PhoneNumbersReservation} instances
+     *         representing phone number reservations.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PhoneNumbersReservation> listReservations(Integer maxPageSize) {
+        return mapToPhoneNumbersReservationFromPage(client.listReservations(maxPageSize));
+    }
+
+    /**
+     * Lists all reservations.
+     * 
+     * Retrieves a paginated list of all phone number reservations. Note that the reservations will not be populated
+     * with the phone numbers associated with them.
+     * 
+     * @param maxPageSize An optional parameter for how many entries to return, for pagination purposes. The default
+     * value is 100.
+     * @param context A {@link Context} representing the request context.
+     * @return A {@link PagedIterable} of {@link PhoneNumbersReservation} instances
+     *         representing phone number reservations.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<PhoneNumbersReservation> listReservations(Integer maxPageSize, Context context) {
+        return mapToPhoneNumbersReservationFromPage(client.listReservations(maxPageSize, context));
+    }
+
+    /**
      * Searches for operator information for a given list of phone numbers.
      *
      * @param phoneNumbers The phone number(s) whose operator information should be searched.
@@ -735,5 +1025,137 @@ public final class PhoneNumbersClient {
         request.setPhoneNumbers(phoneNumbers);
         request.setOptions(requestOptions);
         return client.operatorInformationSearchWithResponse(request, context);
+    }
+
+    /**
+     * Creates or updates a reservation by its ID.
+     * 
+     * Adds and removes phone numbers from the reservation with the given ID. The response will be the updated state of
+     * the reservation. Phone numbers can be reserved by including them in the payload. If a number is already in the
+     * reservation, it will be ignored. To remove a phone number, set it explicitly to null in the request payload. This
+     * operation is idempotent. If a reservation with the same ID already exists, it will be updated, otherwise a new
+     * one is created. Only reservations with 'active' status can be updated. Updating a reservation will extend the
+     * expiration time of the reservation to 15 minutes after the last change, up to a maximum of 2 hours from creation
+     * time. Partial success is possible, in which case the response will have a 207 status code.
+     * 
+     * @param reservation A representation of the desired state of the reservation.}
+     * @return represents a reservation for phone numbers {@link PhoneNumbersReservation}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PhoneNumbersReservation createOrUpdateReservation(PhoneNumbersReservation reservation) {
+        PhoneNumbersReservationInternal internalReservation
+            = new PhoneNumbersReservationInternal().setPhoneNumbers(reservation.getPhoneNumbers());
+        PhoneNumbersReservationInternal response
+            = client.createOrUpdateReservation(reservation.getId(), internalReservation);
+        return mapToPhoneNumbersReservation(response);
+    }
+
+    /**
+     * Creates or updates a reservation by its ID.
+     * 
+     * Adds and removes phone numbers from the reservation with the given ID. The response will be the updated state of
+     * the reservation. Phone numbers can be reserved by including them in the payload. If a number is already in the
+     * reservation, it will be ignored. To remove a phone number, set it explicitly to null in the request payload. This
+     * operation is idempotent. If a reservation with the same ID already exists, it will be updated, otherwise a new
+     * one is created. Only reservations with 'active' status can be updated. Updating a reservation will extend the
+     * expiration time of the reservation to 15 minutes after the last change, up to a maximum of 2 hours from creation
+     * time. Partial success is possible, in which case the response will have a 207 status code.
+     * 
+     * @param reservation A representation of the desired state of the reservation.
+     * @param context The context to associate with this operation.
+     * @return represents a reservation for phone numbers along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PhoneNumbersReservation> createOrUpdateReservationWithResponse(PhoneNumbersReservation reservation,
+        Context context) {
+        PhoneNumbersReservationInternal internalReservation
+            = new PhoneNumbersReservationInternal().setPhoneNumbers(reservation.getPhoneNumbers());
+        return mapToPhoneNumbersReservationResponse(
+            client.createOrUpdateReservationWithResponse(reservation.getId(), internalReservation, context));
+    }
+
+    /**
+     * Deletes a reservation by its ID.
+     * 
+     * Deletes the reservation with the given ID. Any phone number in the reservation will be released and made
+     * available for others to purchase. Only reservations with 'active' status can be deleted.
+     * 
+     * @param reservationId The id of the reservation that's going to be deleted.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void deleteReservation(UUID reservationId) {
+        client.deleteReservation(reservationId);
+    }
+
+    /**
+     * Deletes a reservation by its ID.
+     * 
+     * Deletes the reservation with the given ID. Any phone number in the reservation will be released and made
+     * available for others to purchase. Only reservations with 'active' status can be deleted.
+     * 
+     * @param reservationId The id of the reservation that's going to be deleted.
+     * @param context The context to associate with this operation.
+     * @return a {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteReservationWithResponse(UUID reservationId, Context context) {
+        return client.deleteReservationWithResponse(reservationId, context);
+    }
+
+    private static PhoneNumbersReservation
+        mapToPhoneNumbersReservation(PhoneNumbersReservationInternal internalReservation) {
+        PhoneNumbersReservation reservation = new PhoneNumbersReservation(internalReservation.getId(),
+            internalReservation.getExpiresAt(), internalReservation.getPhoneNumbers(), internalReservation.getStatus());
+        return reservation;
+    }
+
+    private Response<PhoneNumbersReservation>
+        mapToPhoneNumbersReservationResponse(Response<PhoneNumbersReservationInternal> internalResponse) {
+        PhoneNumbersReservation reservation = mapToPhoneNumbersReservation(internalResponse.getValue());
+        return new Response<PhoneNumbersReservation>() {
+            @Override
+            public int getStatusCode() {
+                return internalResponse.getStatusCode();
+            }
+
+            @Override
+            public HttpHeaders getHeaders() {
+                return internalResponse.getHeaders();
+            }
+
+            @Override
+            public PhoneNumbersReservation getValue() {
+                return reservation;
+            }
+
+            @Override
+            public HttpRequest getRequest() {
+                return internalResponse.getRequest();
+            }
+        };
+    }
+
+    private static PagedIterable<PhoneNumbersReservation>
+        mapToPhoneNumbersReservationFromPage(PagedIterable<PhoneNumbersReservationInternal> internalPagedIterable) {
+
+        final Function<PagedResponse<PhoneNumbersReservationInternal>, PagedResponse<PhoneNumbersReservation>> RESPONSE_MAPPER
+            = response -> new PagedResponseBase<Void, PhoneNumbersReservation>(response.getRequest(),
+                response.getStatusCode(), response.getHeaders(),
+                response.getValue()
+                    .stream()
+                    .map(value -> mapToPhoneNumbersReservation(value))
+                    .collect(Collectors.toList()),
+                response.getContinuationToken(), null);
+
+        final Supplier<PageRetriever<String, PagedResponse<PhoneNumbersReservation>>> provider
+            = () -> (continuationToken, pageSize) -> {
+                Flux<PagedResponse<PhoneNumbersReservationInternal>> flux = (continuationToken == null)
+                    ? Flux.fromIterable(internalPagedIterable.iterableByPage(25))
+                    : Flux.fromIterable(internalPagedIterable.iterableByPage(continuationToken, 25));
+                return flux.map(RESPONSE_MAPPER);
+            };
+        PagedFlux<PhoneNumbersReservation> phoneNumberReservationPagedFlux = PagedFlux.create(provider);
+
+        return new PagedIterable<PhoneNumbersReservation>(phoneNumberReservationPagedFlux);
     }
 }
