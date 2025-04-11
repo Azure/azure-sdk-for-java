@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+- Update OpenTelemetry to 1.49.0 ([#44950](https://github.com/Azure/azure-sdk-for-java/pull/44950))
 
 ## 1.1.0 (2025-03-20)
 
