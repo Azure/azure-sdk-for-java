@@ -46,7 +46,7 @@ steps:
     displayName: Find current version and update to SNAPSHOT
     workingDirectory: $(Agent.TempDirectory)
 
-  - task: Gradle@4
+  - task: Gradle@3
     inputs:
       tasks: clean build -x test "-Dmaven.repo.local=$env:PIPELINE_WORKSPACE/.m2/repository" publishToMavenLocal
       jdkVersionOption: '1.11'
