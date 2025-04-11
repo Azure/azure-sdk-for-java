@@ -2,13 +2,19 @@
 // Licensed under the MIT License.
 package com.azure.communication.phonenumbers;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClientImpl;
 import com.azure.communication.phonenumbers.implementation.PhoneNumbersImpl;
 import com.azure.communication.phonenumbers.implementation.models.OperatorInformationRequest;
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersReservationInternal;
 import com.azure.communication.phonenumbers.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.models.OperatorInformationOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
@@ -31,11 +37,19 @@ import com.azure.communication.phonenumbers.models.ReleasePhoneNumberResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.paging.PageRetriever;
 import com.azure.core.util.polling.SyncPoller;
+
+import reactor.core.publisher.Flux;
 
 /**
  * Synchronous client for Communication service phone number operations.
@@ -142,7 +156,8 @@ public final class PhoneNumbersClient {
 
     /**
      * Gets a reservation by its ID.
-     * 
+        PhoneNumbersReservationInternal internalReservation = client.getReservation(reservationId);
+        return mapToPhoneNumbersReservation(internalReservation);
      * Retrieves the reservation with the given ID, including all of the phone numbers associated with it.
      * 
      * @param reservationId The id of the reservation.
@@ -152,7 +167,7 @@ public final class PhoneNumbersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PhoneNumbersReservation getReservation(UUID reservationId) {
         Objects.requireNonNull(reservationId, "'reservationId' cannot be null.");
-        return client.getReservation(reservationId);
+        return mapToPhoneNumbersReservation(client.getReservation(reservationId));
     }
 
     /**
@@ -168,7 +183,9 @@ public final class PhoneNumbersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PhoneNumbersReservation> getReservationWithResponse(UUID reservationId, Context context) {
         Objects.requireNonNull(reservationId, "'reservationId' cannot be null.");
-        return client.getReservationWithResponse(reservationId, context);
+        Response<PhoneNumbersReservationInternal> internalResponse
+            = client.getReservationWithResponse(reservationId, context);
+        return mapToPhoneNumbersReservationResponse(internalResponse);
     }
 
     /**
@@ -941,7 +958,7 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PhoneNumbersReservation> listReservations() {
-        return client.listReservations(100);
+        return mapToPhoneNumbersReservationFromPage(client.listReservations(100));
     }
 
     /**
@@ -957,7 +974,7 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PhoneNumbersReservation> listReservations(Integer maxPageSize) {
-        return client.listReservations(maxPageSize);
+        return mapToPhoneNumbersReservationFromPage(client.listReservations(maxPageSize));
     }
 
     /**
@@ -974,7 +991,7 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PhoneNumbersReservation> listReservations(Integer maxPageSize, Context context) {
-        return client.listReservations(maxPageSize, context);
+        return mapToPhoneNumbersReservationFromPage(client.listReservations(maxPageSize, context));
     }
 
     /**
@@ -1028,7 +1045,11 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PhoneNumbersReservation createOrUpdateReservation(PhoneNumbersReservation reservation) {
-        return client.createOrUpdateReservation(reservation.getId(), reservation);
+        PhoneNumbersReservationInternal internalReservation
+            = new PhoneNumbersReservationInternal().setPhoneNumbers(reservation.getPhoneNumbers());
+        PhoneNumbersReservationInternal response
+            = client.createOrUpdateReservation(reservation.getId(), internalReservation);
+        return mapToPhoneNumbersReservation(response);
     }
 
     /**
@@ -1049,7 +1070,10 @@ public final class PhoneNumbersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PhoneNumbersReservation> createOrUpdateReservationWithResponse(PhoneNumbersReservation reservation,
         Context context) {
-        return client.createOrUpdateReservationWithResponse(reservation.getId(), reservation, context);
+        PhoneNumbersReservationInternal internalReservation
+            = new PhoneNumbersReservationInternal().setPhoneNumbers(reservation.getPhoneNumbers());
+        return mapToPhoneNumbersReservationResponse(
+            client.createOrUpdateReservationWithResponse(reservation.getId(), internalReservation, context));
     }
 
     /**
@@ -1079,4 +1103,66 @@ public final class PhoneNumbersClient {
     public Response<Void> deleteReservationWithResponse(UUID reservationId, Context context) {
         return client.deleteReservationWithResponse(reservationId, context);
     }
+
+    private static PhoneNumbersReservation
+        mapToPhoneNumbersReservation(PhoneNumbersReservationInternal internalReservation) {
+        PhoneNumbersReservation reservation = new PhoneNumbersReservation(internalReservation.getId(),
+            internalReservation.getExpiresAt(), internalReservation.getPhoneNumbers(), internalReservation.getStatus());
+        return reservation;
+    }
+
+    private Response<PhoneNumbersReservation>
+        mapToPhoneNumbersReservationResponse(Response<PhoneNumbersReservationInternal> internalResponse) {
+        PhoneNumbersReservation reservation = mapToPhoneNumbersReservation(internalResponse.getValue());
+        return new Response<PhoneNumbersReservation>() {
+            @Override
+            public int getStatusCode() {
+                return internalResponse.getStatusCode();
+            }
+
+            @Override
+            public HttpHeaders getHeaders() {
+                return internalResponse.getHeaders();
+            }
+
+            @Override
+            public PhoneNumbersReservation getValue() {
+                return reservation;
+            }
+
+            @Override
+            public HttpRequest getRequest() {
+                return internalResponse.getRequest();
+            }
+        };
+    }
+
+    private static PagedIterable<PhoneNumbersReservation>
+        mapToPhoneNumbersReservationFromPage(PagedIterable<PhoneNumbersReservationInternal> internalPagedIterable) {
+
+        final Function<PagedResponse<PhoneNumbersReservationInternal>, PagedResponse<PhoneNumbersReservation>> responseMapper
+            = response -> new PagedResponseBase<Void, PhoneNumbersReservation>(response.getRequest(),
+                response.getStatusCode(), response.getHeaders(),
+                response.getValue()
+                    .stream()
+                    .map(value -> mapToPhoneNumbersReservation(value))
+                    .collect(Collectors.toList()),
+                response.getContinuationToken(), null);
+        // Map the internal PagedFlux to the public PhoneNumbersReservation type
+        final Supplier<PageRetriever<String, PagedResponse<PhoneNumbersReservation>>> provider
+            = () -> (continuationToken, pageSize) -> {
+                Flux<PagedResponse<PhoneNumbersReservationInternal>> flux = (continuationToken == null)
+                    ? Flux.fromIterable(internalPagedIterable.iterableByPage(20)) // Replace 20 with the desired page
+                    // size
+                    : Flux.fromIterable(internalPagedIterable.iterableByPage(continuationToken, 20)); // Replace 20 with
+                                                                                                     // the desired
+                                                                                                     // page size
+                return flux.map(responseMapper);
+            };
+        PagedFlux<PhoneNumbersReservation> phoneNumberReservationPagedFlux = PagedFlux.create(provider);
+
+        // Return a new PagedIterable based on the mapped iterable
+        return new PagedIterable<PhoneNumbersReservation>(phoneNumberReservationPagedFlux);
+    }
+
 }

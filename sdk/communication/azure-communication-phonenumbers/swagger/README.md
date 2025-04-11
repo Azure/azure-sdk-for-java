@@ -27,7 +27,7 @@ tag: package-phonenumber-2025-04-01
 use: '@autorest/java@4.1.29'
 require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/de9cb12d2840ca0915849ce6a3bf8c956a32c022/specification/communication/data-plane/PhoneNumbers/readme.md
 override-client-name: PhoneNumberAdminClient
-custom-types: PurchasedPhoneNumber,BillingFrequency,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilityType,PhoneNumberCost,PhoneNumberSearchResult,PhoneNumberType,PhoneNumberCapability,PhoneNumberAdministrativeDivision,PhoneNumberCountry,PhoneNumberLocality,PhoneNumberOffering,AreaCodeResult,AreaCodes,PhoneNumberAreaCode,PhoneNumberSearchResultError,OperatorDetails,OperatorInformation,OperatorInformationResult,OperatorInformationOptions,OperatorNumberType,PhoneNumbersReservation,PhoneNumbersBrowseResult,PhoneNumbersPurchaseReservationResponse,PhoneNumbersReservationPurchaseRequest,PhoneNumbersBrowseRequest,AvailablePhoneNumber,AvailablePhoneNumberCost,AvailablePhoneNumberError,AvailablePhoneNumberStatus,PhoneNumberBrowseCapabilitiesRequest,PhoneNumbersReservation,PhoneNumbersReservationStatus
+custom-types: PurchasedPhoneNumber,BillingFrequency,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilityType,PhoneNumberCost,PhoneNumberSearchResult,PhoneNumberType,PhoneNumberCapability,PhoneNumberAdministrativeDivision,PhoneNumberCountry,PhoneNumberLocality,PhoneNumberOffering,AreaCodeResult,AreaCodes,PhoneNumberAreaCode,PhoneNumberSearchResultError,OperatorDetails,OperatorInformation,OperatorInformationResult,OperatorInformationOptions,OperatorNumberType,PhoneNumbersReservation,PhoneNumbersBrowseResult,PhoneNumbersPurchaseReservationResponse,PhoneNumbersReservationPurchaseRequest,PhoneNumbersBrowseRequest,AvailablePhoneNumber,AvailablePhoneNumberCost,AvailablePhoneNumberError,AvailablePhoneNumberStatus,PhoneNumberBrowseCapabilitiesRequest,PhoneNumbersReservationStatus
 custom-types-subpackage: models
 models-subpackage: implementation.models
 java: true
@@ -236,6 +236,14 @@ directive:
   where: $.definitions.PhoneNumbersReservation.properties.status.x-ms-enum
   transform: >
     $["name"] = "PhoneNumbersReservationStatus";
+```
+
+### Rename PhoneNumbersReservation to PhoneNumbersReservationInternal
+``` yaml
+directive:
+    - rename-model:
+        from: PhoneNumbersReservation
+        to: PhoneNumbersReservationInternal
 ```
 
 ``` yaml

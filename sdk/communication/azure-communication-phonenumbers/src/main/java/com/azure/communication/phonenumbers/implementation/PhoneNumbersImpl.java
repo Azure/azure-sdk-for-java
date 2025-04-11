@@ -17,6 +17,7 @@ import com.azure.communication.phonenumbers.implementation.models.PhoneNumberSea
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersGetOperationResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersPurchasePhoneNumbersResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersReleasePhoneNumberResponse;
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersReservationInternal;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersReservations;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersSearchAvailablePhoneNumbersResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersUpdateCapabilitiesResponse;
@@ -31,7 +32,6 @@ import com.azure.communication.phonenumbers.models.PhoneNumbersBrowseRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumbersBrowseResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumbersPurchaseReservationResponse;
-import com.azure.communication.phonenumbers.models.PhoneNumbersReservation;
 import com.azure.communication.phonenumbers.models.PhoneNumbersReservationPurchaseRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
@@ -153,15 +153,16 @@ public final class PhoneNumbersImpl {
         @Patch("/availablePhoneNumbers/reservations/{reservationId}")
         @ExpectedResponses({ 200, 201, 207 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<PhoneNumbersReservation>> createOrUpdateReservation(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("reservationId") UUID reservationId,
-            @BodyParam("application/merge-patch+json") PhoneNumbersReservation reservation,
+        Mono<Response<PhoneNumbersReservationInternal>> createOrUpdateReservation(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("reservationId") UUID reservationId,
+            @BodyParam("application/merge-patch+json") PhoneNumbersReservationInternal reservation,
             @HeaderParam("Accept") String accept, Context context);
 
         @Get("/availablePhoneNumbers/reservations/{reservationId}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<PhoneNumbersReservation>> getReservation(@HostParam("endpoint") String endpoint,
+        Mono<Response<PhoneNumbersReservationInternal>> getReservation(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("reservationId") UUID reservationId,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -1229,7 +1230,7 @@ public final class PhoneNumbersImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PhoneNumbersReservation>> listReservationsSinglePageAsync(Integer maxPageSize) {
+    public Mono<PagedResponse<PhoneNumbersReservationInternal>> listReservationsSinglePageAsync(Integer maxPageSize) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listReservations(this.client.getEndpoint(), this.client.getApiVersion(),
@@ -1254,7 +1255,7 @@ public final class PhoneNumbersImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PhoneNumbersReservation>> listReservationsSinglePageAsync(Integer maxPageSize,
+    public Mono<PagedResponse<PhoneNumbersReservationInternal>> listReservationsSinglePageAsync(Integer maxPageSize,
         Context context) {
         final String accept = "application/json";
         return service
@@ -1277,7 +1278,7 @@ public final class PhoneNumbersImpl {
      * @return represents a list of phone numbers reservations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PhoneNumbersReservation> listReservationsAsync(Integer maxPageSize) {
+    public PagedFlux<PhoneNumbersReservationInternal> listReservationsAsync(Integer maxPageSize) {
         return new PagedFlux<>(() -> listReservationsSinglePageAsync(maxPageSize),
             nextLink -> listReservationsNextSinglePageAsync(nextLink));
     }
@@ -1297,7 +1298,7 @@ public final class PhoneNumbersImpl {
      * @return represents a list of phone numbers reservations as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PhoneNumbersReservation> listReservationsAsync(Integer maxPageSize, Context context) {
+    public PagedFlux<PhoneNumbersReservationInternal> listReservationsAsync(Integer maxPageSize, Context context) {
         return new PagedFlux<>(() -> listReservationsSinglePageAsync(maxPageSize, context),
             nextLink -> listReservationsNextSinglePageAsync(nextLink, context));
     }
@@ -1316,7 +1317,7 @@ public final class PhoneNumbersImpl {
      * @return represents a list of phone numbers reservations along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<PhoneNumbersReservation> listReservationsSinglePage(Integer maxPageSize) {
+    public PagedResponse<PhoneNumbersReservationInternal> listReservationsSinglePage(Integer maxPageSize) {
         return listReservationsSinglePageAsync(maxPageSize).block();
     }
 
@@ -1335,7 +1336,8 @@ public final class PhoneNumbersImpl {
      * @return represents a list of phone numbers reservations along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<PhoneNumbersReservation> listReservationsSinglePage(Integer maxPageSize, Context context) {
+    public PagedResponse<PhoneNumbersReservationInternal> listReservationsSinglePage(Integer maxPageSize,
+        Context context) {
         return listReservationsSinglePageAsync(maxPageSize, context).block();
     }
 
@@ -1353,7 +1355,7 @@ public final class PhoneNumbersImpl {
      * @return represents a list of phone numbers reservations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PhoneNumbersReservation> listReservations(Integer maxPageSize) {
+    public PagedIterable<PhoneNumbersReservationInternal> listReservations(Integer maxPageSize) {
         return new PagedIterable<>(listReservationsAsync(maxPageSize));
     }
 
@@ -1372,7 +1374,7 @@ public final class PhoneNumbersImpl {
      * @return represents a list of phone numbers reservations as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PhoneNumbersReservation> listReservations(Integer maxPageSize, Context context) {
+    public PagedIterable<PhoneNumbersReservationInternal> listReservations(Integer maxPageSize, Context context) {
         return new PagedIterable<>(listReservationsAsync(maxPageSize, context));
     }
 
@@ -1396,8 +1398,8 @@ public final class PhoneNumbersImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PhoneNumbersReservation>> createOrUpdateReservationWithResponseAsync(UUID reservationId,
-        PhoneNumbersReservation reservation) {
+    public Mono<Response<PhoneNumbersReservationInternal>>
+        createOrUpdateReservationWithResponseAsync(UUID reservationId, PhoneNumbersReservationInternal reservation) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.createOrUpdateReservation(this.client.getEndpoint(),
             this.client.getApiVersion(), reservationId, reservation, accept, context));
@@ -1424,8 +1426,8 @@ public final class PhoneNumbersImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PhoneNumbersReservation>> createOrUpdateReservationWithResponseAsync(UUID reservationId,
-        PhoneNumbersReservation reservation, Context context) {
+    public Mono<Response<PhoneNumbersReservationInternal>> createOrUpdateReservationWithResponseAsync(
+        UUID reservationId, PhoneNumbersReservationInternal reservation, Context context) {
         final String accept = "application/json";
         return service.createOrUpdateReservation(this.client.getEndpoint(), this.client.getApiVersion(), reservationId,
             reservation, accept, context);
@@ -1450,8 +1452,8 @@ public final class PhoneNumbersImpl {
      * @return represents a reservation for phone numbers on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersReservation> createOrUpdateReservationAsync(UUID reservationId,
-        PhoneNumbersReservation reservation) {
+    public Mono<PhoneNumbersReservationInternal> createOrUpdateReservationAsync(UUID reservationId,
+        PhoneNumbersReservationInternal reservation) {
         return createOrUpdateReservationWithResponseAsync(reservationId, reservation)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1476,8 +1478,8 @@ public final class PhoneNumbersImpl {
      * @return represents a reservation for phone numbers on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersReservation> createOrUpdateReservationAsync(UUID reservationId,
-        PhoneNumbersReservation reservation, Context context) {
+    public Mono<PhoneNumbersReservationInternal> createOrUpdateReservationAsync(UUID reservationId,
+        PhoneNumbersReservationInternal reservation, Context context) {
         return createOrUpdateReservationWithResponseAsync(reservationId, reservation, context)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -1502,8 +1504,8 @@ public final class PhoneNumbersImpl {
      * @return represents a reservation for phone numbers along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PhoneNumbersReservation> createOrUpdateReservationWithResponse(UUID reservationId,
-        PhoneNumbersReservation reservation, Context context) {
+    public Response<PhoneNumbersReservationInternal> createOrUpdateReservationWithResponse(UUID reservationId,
+        PhoneNumbersReservationInternal reservation, Context context) {
         return createOrUpdateReservationWithResponseAsync(reservationId, reservation, context).block();
     }
 
@@ -1526,7 +1528,8 @@ public final class PhoneNumbersImpl {
      * @return represents a reservation for phone numbers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PhoneNumbersReservation createOrUpdateReservation(UUID reservationId, PhoneNumbersReservation reservation) {
+    public PhoneNumbersReservationInternal createOrUpdateReservation(UUID reservationId,
+        PhoneNumbersReservationInternal reservation) {
         return createOrUpdateReservationWithResponse(reservationId, reservation, Context.NONE).getValue();
     }
 
@@ -1543,7 +1546,7 @@ public final class PhoneNumbersImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PhoneNumbersReservation>> getReservationWithResponseAsync(UUID reservationId) {
+    public Mono<Response<PhoneNumbersReservationInternal>> getReservationWithResponseAsync(UUID reservationId) {
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getReservation(this.client.getEndpoint(),
             this.client.getApiVersion(), reservationId, accept, context));
@@ -1563,7 +1566,7 @@ public final class PhoneNumbersImpl {
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PhoneNumbersReservation>> getReservationWithResponseAsync(UUID reservationId,
+    public Mono<Response<PhoneNumbersReservationInternal>> getReservationWithResponseAsync(UUID reservationId,
         Context context) {
         final String accept = "application/json";
         return service.getReservation(this.client.getEndpoint(), this.client.getApiVersion(), reservationId, accept,
@@ -1582,7 +1585,7 @@ public final class PhoneNumbersImpl {
      * @return represents a reservation for phone numbers on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersReservation> getReservationAsync(UUID reservationId) {
+    public Mono<PhoneNumbersReservationInternal> getReservationAsync(UUID reservationId) {
         return getReservationWithResponseAsync(reservationId).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1599,7 +1602,7 @@ public final class PhoneNumbersImpl {
      * @return represents a reservation for phone numbers on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersReservation> getReservationAsync(UUID reservationId, Context context) {
+    public Mono<PhoneNumbersReservationInternal> getReservationAsync(UUID reservationId, Context context) {
         return getReservationWithResponseAsync(reservationId, context).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -1616,7 +1619,7 @@ public final class PhoneNumbersImpl {
      * @return represents a reservation for phone numbers along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PhoneNumbersReservation> getReservationWithResponse(UUID reservationId, Context context) {
+    public Response<PhoneNumbersReservationInternal> getReservationWithResponse(UUID reservationId, Context context) {
         return getReservationWithResponseAsync(reservationId, context).block();
     }
 
@@ -1632,7 +1635,7 @@ public final class PhoneNumbersImpl {
      * @return represents a reservation for phone numbers.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PhoneNumbersReservation getReservation(UUID reservationId) {
+    public PhoneNumbersReservationInternal getReservation(UUID reservationId) {
         return getReservationWithResponse(reservationId, Context.NONE).getValue();
     }
 
@@ -3234,7 +3237,7 @@ public final class PhoneNumbersImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PhoneNumbersReservation>> listReservationsNextSinglePageAsync(String nextLink) {
+    public Mono<PagedResponse<PhoneNumbersReservationInternal>> listReservationsNextSinglePageAsync(String nextLink) {
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listReservationsNext(nextLink, this.client.getEndpoint(), accept, context))
@@ -3256,7 +3259,7 @@ public final class PhoneNumbersImpl {
      * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PagedResponse<PhoneNumbersReservation>> listReservationsNextSinglePageAsync(String nextLink,
+    public Mono<PagedResponse<PhoneNumbersReservationInternal>> listReservationsNextSinglePageAsync(String nextLink,
         Context context) {
         final String accept = "application/json";
         return service.listReservationsNext(nextLink, this.client.getEndpoint(), accept, context)
@@ -3276,7 +3279,7 @@ public final class PhoneNumbersImpl {
      * @return represents a list of phone numbers reservations along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<PhoneNumbersReservation> listReservationsNextSinglePage(String nextLink) {
+    public PagedResponse<PhoneNumbersReservationInternal> listReservationsNextSinglePage(String nextLink) {
         return listReservationsNextSinglePageAsync(nextLink).block();
     }
 
@@ -3293,7 +3296,8 @@ public final class PhoneNumbersImpl {
      * @return represents a list of phone numbers reservations along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<PhoneNumbersReservation> listReservationsNextSinglePage(String nextLink, Context context) {
+    public PagedResponse<PhoneNumbersReservationInternal> listReservationsNextSinglePage(String nextLink,
+        Context context) {
         return listReservationsNextSinglePageAsync(nextLink, context).block();
     }
 

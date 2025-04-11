@@ -12,6 +12,7 @@ import com.azure.communication.phonenumbers.implementation.models.PhoneNumberRaw
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberSearchRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersSearchAvailablePhoneNumbersResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersReleasePhoneNumberResponse;
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersReservationInternal;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberCapabilitiesRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersUpdateCapabilitiesResponse;
 import com.azure.communication.phonenumbers.implementation.models.OperatorInformationRequest;
@@ -43,14 +44,19 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.paging.PageRetriever;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.PollingContext;
+
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -59,6 +65,8 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
@@ -184,7 +192,11 @@ public final class PhoneNumbersAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PhoneNumbersReservation> getReservation(UUID reservationId) {
         Objects.requireNonNull(reservationId, "'reservationId' cannot be null.");
-        return client.getReservationAsync(reservationId);
+        return client.getReservationAsync(reservationId).map(internalReservation -> {
+            // Map PhoneNumbersReservationInternal to PhoneNumbersReservation
+            PhoneNumbersReservation reservation = mapToPhoneNumbersReservation(internalReservation);
+            return reservation;
+        });
     }
 
     /**
@@ -502,11 +514,12 @@ public final class PhoneNumbersAsyncClient {
         return beginPurchasePhoneNumbers(searchId, agreeToNotResell, null);
     }
 
-    PollerFlux<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId, Context context) {
+    PollerFlux<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId,
+        Context context) {
         try {
             Objects.requireNonNull(searchId, "'searchId' cannot be null.");
-            return new PollerFlux<>(defaultPollInterval,
-                purchaseNumbersInitOperation(searchId, false, context), pollOperation(),
+            return new PollerFlux<>(defaultPollInterval, purchaseNumbersInitOperation(searchId, false, context),
+                pollOperation(),
                 (pollingContext, firstResponse) -> Mono
                     .error(logger.logExceptionAsError(new RuntimeException("Cancellation is not supported"))),
                 (pollingContext) -> Mono.just(new PurchasePhoneNumbersResult()));
@@ -884,7 +897,7 @@ public final class PhoneNumbersAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PhoneNumbersReservation> listReservations() {
-        return client.listReservationsAsync(100);
+        return mapToPhoneNumbersReservationFromPage(client.listReservationsAsync(100));
     }
 
     /**
@@ -900,7 +913,7 @@ public final class PhoneNumbersAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PhoneNumbersReservation> listReservations(Integer maxPageSize) {
-        return client.listReservationsAsync(maxPageSize);
+        return mapToPhoneNumbersReservationFromPage(client.listReservationsAsync(maxPageSize));
     }
 
     /**
@@ -954,7 +967,11 @@ public final class PhoneNumbersAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PhoneNumbersReservation> createOrUpdateReservation(PhoneNumbersReservation reservation) {
-        return client.createOrUpdateReservationAsync(reservation.getId(), reservation);
+        PhoneNumbersReservationInternal internalReservation
+            = new PhoneNumbersReservationInternal().setPhoneNumbers(reservation.getPhoneNumbers());
+
+        return client.createOrUpdateReservationAsync(reservation.getId(), internalReservation)
+            .map(value -> mapToPhoneNumbersReservation(value));
     }
 
     /**
@@ -991,5 +1008,33 @@ public final class PhoneNumbersAsyncClient {
             error = PhoneNumberErrorConverter.convert(exception.getValue().getError());
         }
         return new PhoneNumberErrorResponseException(exception.getMessage(), exception.getResponse(), error);
+    }
+
+    private static PhoneNumbersReservation mapToPhoneNumbersReservation(PhoneNumbersReservationInternal reservation) {
+        return new PhoneNumbersReservation(reservation.getId(), reservation.getExpiresAt(),
+            reservation.getPhoneNumbers(), reservation.getStatus());
+    }
+
+    // PagedResponse<PhoneNumbersReservationInternal> to
+    // PagedResponse<PhoneNumbersReservation> mapper
+    final static Function<PagedResponse<PhoneNumbersReservationInternal>, PagedResponse<PhoneNumbersReservation>> responseMapper
+        = response -> new PagedResponseBase<Void, PhoneNumbersReservation>(response.getRequest(),
+            response.getStatusCode(), response.getHeaders(),
+            response.getValue().stream().map(value -> mapToPhoneNumbersReservation(value)).collect(Collectors.toList()),
+            response.getContinuationToken(), null);
+
+    private static PagedFlux<PhoneNumbersReservation>
+        mapToPhoneNumbersReservationFromPage(PagedFlux<PhoneNumbersReservationInternal> internalPagedFlux) {
+        // Map the internal PagedFlux to the public PhoneNumbersReservation type
+        final Supplier<PageRetriever<String, PagedResponse<PhoneNumbersReservation>>> provider
+            = () -> (continuationToken, pageSize) -> {
+                Flux<PagedResponse<PhoneNumbersReservationInternal>> flux = (continuationToken == null)
+                    ? internalPagedFlux.byPage(20) // Replace 20 with the desired page size
+                    : internalPagedFlux.byPage(continuationToken, 20); // Replace 20 with the desired page size
+                return flux.map(responseMapper);
+            };
+        PagedFlux<PhoneNumbersReservation> phoneNumberReservationPagedFlux = PagedFlux.create(provider);
+
+        return phoneNumberReservationPagedFlux;
     }
 }
