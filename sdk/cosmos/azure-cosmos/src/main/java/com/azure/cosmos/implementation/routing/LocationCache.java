@@ -167,13 +167,15 @@ public class LocationCache {
         this.updateLocationCache(
                 databaseAccount.getWritableLocations(),
                 databaseAccount.getReadableLocations(),
+                databaseAccount.getThinClientWritableLocations(),
+                databaseAccount.getThinClientReadableLocations(),
                 null,
                 BridgeInternal.isEnableMultipleWriteLocations(databaseAccount));
     }
 
     void onLocationPreferenceChanged(UnmodifiableList<String> preferredLocations) {
         this.updateLocationCache(
-                null, null , preferredLocations, null);
+                null, null, null, null, preferredLocations, null);
     }
 
     /**
@@ -547,12 +549,14 @@ public class LocationCache {
     }
 
     private void updateLocationCache(){
-        updateLocationCache(null, null, null, null);
+        updateLocationCache(null, null, null, null, null, null);
     }
 
     private void updateLocationCache(
             Iterable<DatabaseAccountLocation> gatewayWriteLocations,
             Iterable<DatabaseAccountLocation> gatewayReadLocations,
+            Iterable<DatabaseAccountLocation> thinClientWriteLocations,
+            Iterable<DatabaseAccountLocation> thinClientReadLocations,
             UnmodifiableList<String> preferenceList,
             Boolean enableMultipleWriteLocations) {
         synchronized (this.lockObject) {
@@ -573,7 +577,7 @@ public class LocationCache {
             if (gatewayReadLocations != null) {
                 Utils.ValueHolder<UnmodifiableList<String>> readValueHolder = Utils.ValueHolder.initialize(nextLocationInfo.availableReadLocations);
                 Utils.ValueHolder<UnmodifiableMap<RegionalRoutingContext, String>> readRegionMapValueHolder = Utils.ValueHolder.initialize(nextLocationInfo.regionNameByReadEndpoint);
-                nextLocationInfo.availableReadEndpointsByLocation = this.getEndpointsByLocation(gatewayReadLocations, readValueHolder, readRegionMapValueHolder);
+                nextLocationInfo.availableReadEndpointsByLocation = this.getEndpointsByLocation(gatewayReadLocations, thinClientReadLocations, readValueHolder, readRegionMapValueHolder);
                 nextLocationInfo.availableReadLocations =  readValueHolder.v;
                 nextLocationInfo.regionNameByReadEndpoint = readRegionMapValueHolder.v;
             }
@@ -581,7 +585,7 @@ public class LocationCache {
             if (gatewayWriteLocations != null) {
                 Utils.ValueHolder<UnmodifiableList<String>> writeValueHolder = Utils.ValueHolder.initialize(nextLocationInfo.availableWriteLocations);
                 Utils.ValueHolder<UnmodifiableMap<RegionalRoutingContext, String>> outWriteRegionMap = Utils.ValueHolder.initialize(nextLocationInfo.regionNameByWriteEndpoint);
-                nextLocationInfo.availableWriteEndpointsByLocation = this.getEndpointsByLocation(gatewayWriteLocations, writeValueHolder, outWriteRegionMap);
+                nextLocationInfo.availableWriteEndpointsByLocation = this.getEndpointsByLocation(gatewayWriteLocations, thinClientWriteLocations, writeValueHolder, outWriteRegionMap);
                 nextLocationInfo.availableWriteLocations = writeValueHolder.v;
                 nextLocationInfo.regionNameByWriteEndpoint = outWriteRegionMap.v;
             }
@@ -679,6 +683,7 @@ public class LocationCache {
 
     private void addEndpoints(
         Iterable<DatabaseAccountLocation> gatewayDbAccountLocations,
+        Iterable<DatabaseAccountLocation> thinclientDbAccountLocations,
         Map<String, RegionalRoutingContext> endpointsByLocation,
         Map<RegionalRoutingContext, String> regionByEndpoint,
         List<String> parsedLocations) {
@@ -712,16 +717,36 @@ public class LocationCache {
                 }
             }
         }
+
+        if (thinclientDbAccountLocations != null) {
+            for (DatabaseAccountLocation thinclientDbAccountLocation : thinclientDbAccountLocations) {
+                if (!Strings.isNullOrEmpty(thinclientDbAccountLocation.getName())) {
+                    try {
+                        String location = thinclientDbAccountLocation.getName().toLowerCase(Locale.ROOT);
+                        URI endpoint = new URI(thinclientDbAccountLocation.getEndpoint().toLowerCase(Locale.ROOT));
+
+                        RegionalRoutingContext regionalRoutingContext = endpointsByLocation.get(location);
+                        regionalRoutingContext.setThinclientRegionalEndpoint(endpoint);
+                    } catch (Exception e) {
+                        logger.warn("Skipping add for location = [{}] and endpoint = [{}] due to exception [{}]",
+                            thinclientDbAccountLocation.getName(),
+                            thinclientDbAccountLocation.getEndpoint(),
+                            e.getMessage());
+                    }
+                }
+            }
+        }
     }
 
     private UnmodifiableMap<String, RegionalRoutingContext> getEndpointsByLocation(Iterable<DatabaseAccountLocation> gatewayLocations,
+                                                                                   Iterable<DatabaseAccountLocation> thinclientLocations,
                                                                                    Utils.ValueHolder<UnmodifiableList<String>> orderedLocations,
                                                                                    Utils.ValueHolder<UnmodifiableMap<RegionalRoutingContext, String>> regionMap) {
         Map<String, RegionalRoutingContext> endpointsByLocation = new CaseInsensitiveMap<>();
         Map<RegionalRoutingContext, String> regionByEndpoint = new CaseInsensitiveMap<>();
         List<String> parsedLocations = new ArrayList<>();
 
-        addEndpoints(gatewayLocations, endpointsByLocation, regionByEndpoint, parsedLocations);
+        addEndpoints(gatewayLocations, thinclientLocations, endpointsByLocation, regionByEndpoint, parsedLocations);
 
         orderedLocations.v = new UnmodifiableList<>(parsedLocations);
         regionMap.v = (UnmodifiableMap<RegionalRoutingContext, String>) UnmodifiableMap.unmodifiableMap(regionByEndpoint);

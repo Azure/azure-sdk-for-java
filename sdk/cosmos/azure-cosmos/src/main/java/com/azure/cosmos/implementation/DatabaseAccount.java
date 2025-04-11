@@ -252,6 +252,24 @@ public final class DatabaseAccount extends Resource {
     }
 
     /**
+     * Gets the list of thin client readable locations for this database account.
+     *
+     * @return the list of thin client readable locations.
+     */
+    public Iterable<DatabaseAccountLocation> getThinClientReadableLocations() {
+        return super.getCollection(Constants.Properties.THINCLIENT_READABLE_LOCATIONS, DatabaseAccountLocation.class);
+    }
+
+    /**
+     * Gets the list of thin client writable locations for this database account.
+     *
+     * @return the list of thin client writable locations.
+     */
+    public Iterable<DatabaseAccountLocation> getThinClientWritableLocations() {
+        return super.getCollection(Constants.Properties.THINCLIENT_WRITABLE_LOCATIONS, DatabaseAccountLocation.class);
+    }
+
+    /**
      * Gets if enable multiple write locations is set.
      *
      * @return the true if multiple write locations are set
