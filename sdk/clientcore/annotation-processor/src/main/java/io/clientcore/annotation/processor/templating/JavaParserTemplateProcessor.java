@@ -357,30 +357,73 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             }
 
             String valueExpression = value.getValue();
-            final String finalValueExpression = valueExpression;
             boolean isValueTypeString = method.getParameters()
                 .stream()
-                .anyMatch(parameter -> parameter.getName().equals(finalValueExpression)
+                .anyMatch(parameter -> parameter.getName().equals(valueExpression)
                     && "String".equals(parameter.getShortTypeName()));
+            boolean isValueTypeListOfString = method.getParameters()
+                .stream()
+                .anyMatch(parameter -> parameter.getName().equals(valueExpression)
+                    && "List<String>".equals(parameter.getShortTypeName()));
 
             if (!CoreUtils.isNullOrEmpty(valueExpression)) {
-                body.tryAddImportToParentCompilationUnit(UriEscapers.class);
                 String encodedKey = "UriEscapers.QUERY_ESCAPER.escape(\"" + key + "\")";
 
-                if (value.shouldEncode()) {
-                    // Handle encoding
-                    if (valueExpression.startsWith("\"") && valueExpression.endsWith("\"")) {
-                        valueExpression = valueExpression.substring(1, valueExpression.length() - 1); // Remove quotes
-                        String encodedValue = "UriEscapers.QUERY_ESCAPER.escape(\"" + valueExpression + "\")";
-                        body.addStatement("queryParamMap.put(" + encodedKey + ", " + encodedValue + ");");
-                    } else if (isValueTypeString) {
+                if (valueExpression.contains(";")) {
+                    if (value.shouldEncode()) {
+                        // Treat as a String type if it contains commas
+                        body.tryAddImportToParentCompilationUnit(Arrays.class);
+                        body.tryAddImportToParentCompilationUnit(Collectors.class);
+                        body.tryAddImportToParentCompilationUnit(UriEscapers.class);
+
+                        // Split the comma-separated string and apply UriEscapers.QUERY_ESCAPER.escape
+                        body.addStatement("queryParamMap.put(" + encodedKey + ", Arrays.stream(" + valueExpression
+                            + ".split(\";\"))" + ".map(UriEscapers.QUERY_ESCAPER::escape)" // Escape each value
+                            + ".collect(Collectors.toList()));"); // Collect the escaped values into a list
+                    } else {
+                        // Remove the surrounding quotes and process the valueExpression
+                        String staticValues
+                            = valueExpression.substring(1, valueExpression.length() - 1).replace("\";\"", ";");
+
+                        body.tryAddImportToParentCompilationUnit(Arrays.class);
+                        body.tryAddImportToParentCompilationUnit(Collectors.class);
+
+                        // Generate the code to split the values and add them to the queryParamMap
+                        body.addStatement(
+                            "queryParamMap.put(\"" + key + "\", Arrays.stream(\"" + staticValues + "\".split(\";\"))" // Split by delimiter
+                                + ".collect(Collectors.toList()));"); // Collect into a list
+                    }
+                } else if (isValueTypeString) {
+                    // Handle String values
+                    if (value.shouldEncode()) {
+                        body.tryAddImportToParentCompilationUnit(UriEscapers.class);
                         String encodedValue = "UriEscapers.QUERY_ESCAPER.escape(" + valueExpression + ")";
                         body.addStatement("queryParamMap.put(" + encodedKey + ", " + encodedValue + ");");
                     } else {
-                        body.addStatement("queryParamMap.put(\"" + key + "\", " + valueExpression + ");");
+                        body.addStatement("queryParamMap.put(" + encodedKey + ", " + valueExpression + ");");
                     }
+                } else if (isValueTypeListOfString) {
+                    // Handle List<String> values
+                    body.tryAddImportToParentCompilationUnit(Collectors.class);
+                    if (value.shouldEncode()) {
+                        body.addStatement("queryParamMap.put(" + encodedKey + ", " + "(" + valueExpression
+                            + " != null ? " + valueExpression + ".stream()" + ".map(UriEscapers.QUERY_ESCAPER::escape)" // Escape each value
+                            + ".collect(Collectors.toList()) : null));"); // Handle null case
+                    } else {
+                        body.addStatement("queryParamMap.put(" + key + ", " + "(" + valueExpression + " != null ? "
+                            + valueExpression + ".stream()" + ".collect(Collectors.toList()) : null));"); // Handle null case
+                    }
+                } else if (valueExpression.startsWith("\"") && valueExpression.endsWith("\"")) {
+                    if ("\"\"".equals(valueExpression)) {
+                        // Handle empty string literal
+                        body.addStatement("queryParamMap.put(\"" + key + "\", \"\");");
+                        return;
+                    }
+                    // static header values
+                    body.addStatement("queryParamMap.put(\"" + key + "\", \""
+                        + valueExpression.substring(1, valueExpression.length() - 1).trim() + "\");");
                 } else {
-                    // Handle non-encoded values
+                    // Handle non-String values (e.g., int, boolean, etc.)
                     body.addStatement("queryParamMap.put(\"" + key + "\", " + valueExpression + ");");
                 }
             } else {

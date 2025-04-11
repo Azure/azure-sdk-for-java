@@ -55,10 +55,9 @@ public class HttpRequestInitializerTest {
                     + "(value1));\r\n";
         }
         String expectedCode = "public class TestClass { public void testMethod() {" + "String url = " + url + ";\n"
-            + "// Append non-null query parameters\n" + "String newUrl;\n"
             + "LinkedHashMap<String, Object> queryParamMap = new LinkedHashMap<>();\n" + expectedQuery1Statement
             + "queryParamMap.put(\"" + queryKey2 + "\", " + queryValue2 + ");\n"
-            + "newUrl = CoreUtils.appendQueryParams(url, queryParamMap);\n" + "if (newUrl != null) {\n"
+            + "String newUrl = CoreUtils.appendQueryParams(url, queryParamMap);\n" + "if (newUrl != null) {\n"
             + "url = newUrl;\n" + "}\n" + "// Create the HTTP request\n"
             + "HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod." + httpMethod + ").setUri(url);\n"
             + "httpRequest.getHeaders().add(HttpHeaderName.CONTENT_LENGTH, String.valueOf(0)).add(HttpHeaderName"

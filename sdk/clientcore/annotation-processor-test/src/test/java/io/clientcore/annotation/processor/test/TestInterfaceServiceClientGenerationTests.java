@@ -6,9 +6,6 @@ package io.clientcore.annotation.processor.test;
 import io.clientcore.annotation.processor.test.implementation.TestInterfaceClientImpl;
 import io.clientcore.annotation.processor.test.implementation.models.Foo;
 import io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON;
-import io.clientcore.core.annotations.ServiceInterface;
-import io.clientcore.core.http.annotations.HostParam;
-import io.clientcore.core.http.annotations.HttpRequestInformation;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
@@ -1084,23 +1081,6 @@ public class TestInterfaceServiceClientGenerationTests {
         assertEquals("I'm the body!", expectedBody.get("data"));
     }
 
-    @ServiceInterface(name = "Service10", host = "{uri}")
-    interface Service10 {
-        static Service10 getNewInstance(HttpPipeline pipeline) {
-            if (pipeline == null) {
-                throw new IllegalArgumentException("pipeline cannot be null");
-            }
-            try {
-                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" + ".Service10Impl");
-                return (Service10) clazz.getMethod("getNewInstance", HttpPipeline.class).invoke(null, pipeline);
-            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
-                | InvocationTargetException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-    }
-
     @Test
     public void headRequest() throws IOException {
         try (Response<Void> response
@@ -1462,31 +1442,6 @@ public class TestInterfaceServiceClientGenerationTests {
             (uri, service28) -> service28.headResponseVoid(uri));
     }
 
-    @ServiceInterface(name = "Service29", host = "{uri}")
-    public interface Service29 {
-        static Service29 getNewInstance(HttpPipeline pipeline) {
-            if (pipeline == null) {
-                throw new IllegalArgumentException("pipeline cannot be null");
-            }
-            try {
-                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" + ".Service29Impl");
-                return (Service29) clazz.getMethod("getNewInstance", HttpPipeline.class).invoke(null, pipeline);
-            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
-                | InvocationTargetException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        @HttpRequestInformation(method = HttpMethod.PUT, path = "voiderrorreturned", expectedStatusCodes = { 200 })
-        void headvoid(@HostParam("uri") String uri);
-
-        @HttpRequestInformation(method = HttpMethod.PUT, path = "voiderrorreturned", expectedStatusCodes = { 200 })
-        Void headVoid(@HostParam("uri") String uri);
-
-        @HttpRequestInformation(method = HttpMethod.PUT, path = "voiderrorreturned", expectedStatusCodes = { 200 })
-        Response<Void> headResponseVoid(@HostParam("uri") String uri);
-    }
-
     @ParameterizedTest
     @MethodSource("voidErrorReturnsErrorBodySupplier")
     @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/43728")
@@ -1652,53 +1607,52 @@ public class TestInterfaceServiceClientGenerationTests {
         assertEquals("constantValue1", queryParams.get("constantParam1").get(0));
         assertEquals(1, queryParams.get("constantParam2").size());
         assertEquals("constantValue2", queryParams.get("constantParam2").get(0));
-        // Assert null for 'variableParam' as it is provided as dynamic value and static headers ovverwrite it.
+        // Assert null for 'variableParam' as it is provided as dynamic value and static headers overwrite it.
         assertNull(queryParams.get("variableParam"));
     }
 
-    //@Test
-    //@Disabled("Is this a valid use case for a query param key to have multiple values?")
-    //public void queryParamsRequestWithMultipleValuesForSameName() {
-    //    HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-    //
-    //    TestInterfaceClientImpl.TestInterfaceClientService service
-    //        = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
-    //    final HttpBinJSON json = service.get2(getRequestUri(), "variableValue");
-    //
-    //    assertNotNull(json);
-    //    assertMatchWithHttpOrHttps("localhost/anything", json.uri().substring(0, json.uri().indexOf('?')));
-    //
-    //    Map<String, List<String>> queryParams = json.queryParams();
-    //
-    //    assertNotNull(queryParams);
-    //    assertEquals(1, queryParams.size());
-    //    assertEquals("constantValue1", queryParams.get("param").get(0));
-    //    assertEquals("constantValue2", queryParams.get("param").get(1));
-    //    assertEquals("variableValue", queryParams.get("param").get(2));
-    //}
+    @Test
+    public void queryParamsRequestWithMultipleValuesForSameName() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
 
-    //@Test
-    //@Disabled("Is this a valid use case for a query param key to have multiple values?")
-    //public void queryParamsRequestWithMultipleValuesForSameNameAndValueArray() {
-    //    HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-    //
-    //    TestInterfaceClientImpl.TestInterfaceClientService service
-    //        = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
-    //
-    //    final HttpBinJSON json = service.get3(getRequestUri(), "variableValue1,variableValue2,variableValue3");
-    //
-    //    assertNotNull(json);
-    //    assertMatchWithHttpOrHttps("localhost/anything", json.uri().substring(0, json.uri().indexOf('?')));
-    //
-    //    Map<String, List<String>> queryParams = json.queryParams();
-    //
-    //    assertNotNull(queryParams);
-    //    assertEquals(1, queryParams.size());
-    //    assertEquals(3, queryParams.get("param").size());
-    //    assertEquals("constantValue1%2CconstantValue2", queryParams.get("param").get(0));
-    //    assertEquals("constantValue3", queryParams.get("param").get(1));
-    //    assertEquals("variableValue1%2CvariableValue2%2CvariableValue3", queryParams.get("param").get(2));
-    //}
+        TestInterfaceClientImpl.TestInterfaceClientService service
+            = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        final HttpBinJSON json = service.get2(getRequestUri(), "variableValue");
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything", json.uri().substring(0, json.uri().indexOf('?')));
+
+        Map<String, List<String>> queryParams = json.queryParams();
+
+        assertNotNull(queryParams);
+        assertEquals(1, queryParams.size());
+        // Assert only contains static values for same name dynamic query param i.e 'variableValue'
+        assertEquals(2, queryParams.get("param").size());
+        assertEquals("constantValue1", queryParams.get("param").get(0));
+        assertEquals("constantValue2", queryParams.get("param").get(1));
+    }
+
+    @Test
+    public void queryParamsRequestWithMultipleValuesForSameNameAndValueArray() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+
+        TestInterfaceClientImpl.TestInterfaceClientService service
+            = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON json = service.get3(getRequestUri(), "variableValue1,variableValue2,variableValue3");
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything", json.uri().substring(0, json.uri().indexOf('?')));
+
+        Map<String, List<String>> queryParams = json.queryParams();
+
+        assertNotNull(queryParams);
+        assertEquals(1, queryParams.size());
+        // In case of static values for same param name, no dynamic values are set
+        assertEquals(2, queryParams.get("param").size());
+        assertEquals("constantValue1,constantValue2", queryParams.get("param").get(0));
+        assertEquals("constantValue3", queryParams.get("param").get(1));
+    }
 
     @Test
     public void queryParamsRequestWithEmptyValues() {
@@ -1734,7 +1688,7 @@ public class TestInterfaceServiceClientGenerationTests {
 
         assertNotNull(queryParams);
         assertEquals(1, queryParams.size());
-        assertEquals("some%3Dvalue", queryParams.get("constantParam1").get(0));
+        assertTrue(json.uri().substring(json.uri().indexOf('?'), json.uri().length()).contains("some=value"));
     }
 
     @Test
