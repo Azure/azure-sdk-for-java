@@ -24,6 +24,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
+import java.util.Objects;
 
 public class QuickPulse {
 
@@ -79,11 +80,10 @@ public class QuickPulse {
     private void initialize(HttpPipeline httpPipeline, Supplier<URL> endpointUrl, Supplier<String> instrumentationKey,
         @Nullable String roleName, @Nullable String roleInstance, String sdkVersion) {
         if (LOGGER.canLogAtLevel(LogLevel.VERBOSE)) {
-            String maskedIkey = instrumentationKey.get() == null ? "null" : IKeyMasker.mask(instrumentationKey.get());
             LOGGER.verbose(
                 "Initializing QuickPulse with instrumentation key: {} , URL {}, rolename {}, role instance {}, sdk version {}",
-                maskedIkey, endpointUrl.get() == null ? "null" : endpointUrl.get().toString(), roleName, roleInstance,
-                sdkVersion);
+                Objects.toString(IKeyMasker.mask(instrumentationKey.get())), Objects.toString(endpointUrl.get()),
+                roleName, roleInstance, sdkVersion);
         }
 
         String quickPulseId = UUID.randomUUID().toString().replace("-", "");
