@@ -99,7 +99,7 @@ public final class DefaultServiceBusNamespaceConsumerFactory implements ServiceB
     @Override
     public void destroy() {
         clients.forEach((name, receiver) -> {
-            listeners.forEach(l -> l.receiverRemoved(name, receiver));
+            listeners.forEach(l -> l.consumerRemoved(name, receiver));
             receiver.close();
         });
         this.clients.clear();
@@ -131,7 +131,7 @@ public final class DefaultServiceBusNamespaceConsumerFactory implements ServiceB
 
                 receiverClient = builder.buildClient();
 
-                this.listeners.forEach(l -> l.receiverAdded(entityName, receiverClient));
+                this.listeners.forEach(l -> l.consumerAdded(entityName, receiverClient));
             } else {
                 receiverClient = null;
                 LOGGER.warn("Receiver client is null. Define a bean PropertiesSupplier<ConsumerIdentifier, ConsumerProperties> to enable consumer 'session-enabled'.");
@@ -164,7 +164,7 @@ public final class DefaultServiceBusNamespaceConsumerFactory implements ServiceB
      *
      * @param customizer the provided builder customizer.
      */
-    public void addCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder> customizer) {
+    public void addServiceBusClientBuilderCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder> customizer) {
         if (customizer == null) {
             LOGGER.debug("The provided '{}' customizer is null, will ignore it.", ServiceBusClientBuilder.class.getName());
         } else {
@@ -177,7 +177,7 @@ public final class DefaultServiceBusNamespaceConsumerFactory implements ServiceB
      * customizer to customize all the session clients created from this factory.
      * @param customizer the provided builder customizer.
      */
-    public void addSessionReceiverCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder> customizer) {
+    public void addBuilderCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder> customizer) {
         if (customizer == null) {
             LOGGER.debug("The provided '{}' customizer is null, will ignore it.",
                 ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder.class.getName());
@@ -193,8 +193,8 @@ public final class DefaultServiceBusNamespaceConsumerFactory implements ServiceB
      * @param entityName the entity name of the client.
      * @param customizer the provided customizer.
      */
-    public void addDedicatedSessionReceiverCustomizer(String entityName,
-                                               AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder> customizer) {
+    public void addBuilderCustomizer(String entityName,
+                                     AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder> customizer) {
         if (customizer == null) {
             LOGGER.debug("The provided '{}' dedicated customizer is null, will ignore it.",
                 ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder.class.getName());

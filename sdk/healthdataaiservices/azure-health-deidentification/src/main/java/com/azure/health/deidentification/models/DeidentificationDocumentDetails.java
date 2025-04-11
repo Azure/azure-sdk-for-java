@@ -40,25 +40,13 @@ public final class DeidentificationDocumentDetails implements JsonSerializable<D
      * Status of the document.
      */
     @Generated
-    private final OperationState status;
+    private final OperationStatus status;
 
     /*
      * Error when document fails.
      */
     @Generated
     private ResponseError error;
-
-    /**
-     * Creates an instance of DeidentificationDocumentDetails class.
-     *
-     * @param input the input value to set.
-     * @param status the status value to set.
-     */
-    @Generated
-    private DeidentificationDocumentDetails(DeidentificationDocumentLocation input, OperationState status) {
-        this.input = input;
-        this.status = status;
-    }
 
     /**
      * Get the id property: Id of the document details.
@@ -96,7 +84,7 @@ public final class DeidentificationDocumentDetails implements JsonSerializable<D
      * @return the status value.
      */
     @Generated
-    public OperationState getStatus() {
+    public OperationStatus getStatus() {
         return this.status;
     }
 
@@ -138,7 +126,7 @@ public final class DeidentificationDocumentDetails implements JsonSerializable<D
         return jsonReader.readObject(reader -> {
             String id = null;
             DeidentificationDocumentLocation input = null;
-            OperationState status = null;
+            OperationStatus status = null;
             DeidentificationDocumentLocation output = null;
             ResponseError error = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -149,7 +137,7 @@ public final class DeidentificationDocumentDetails implements JsonSerializable<D
                 } else if ("input".equals(fieldName)) {
                     input = DeidentificationDocumentLocation.fromJson(reader);
                 } else if ("status".equals(fieldName)) {
-                    status = OperationState.fromString(reader.getString());
+                    status = OperationStatus.fromString(reader.getString());
                 } else if ("output".equals(fieldName)) {
                     output = DeidentificationDocumentLocation.fromJson(reader);
                 } else if ("error".equals(fieldName)) {
@@ -165,5 +153,17 @@ public final class DeidentificationDocumentDetails implements JsonSerializable<D
             deserializedDeidentificationDocumentDetails.error = error;
             return deserializedDeidentificationDocumentDetails;
         });
+    }
+
+    /**
+     * Creates an instance of DeidentificationDocumentDetails class.
+     *
+     * @param input the input value to set.
+     * @param status the status value to set.
+     */
+    @Generated
+    private DeidentificationDocumentDetails(DeidentificationDocumentLocation input, OperationStatus status) {
+        this.input = input;
+        this.status = status;
     }
 }

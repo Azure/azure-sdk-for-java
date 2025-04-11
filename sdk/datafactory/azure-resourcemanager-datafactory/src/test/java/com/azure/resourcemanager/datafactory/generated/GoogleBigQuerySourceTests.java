@@ -11,19 +11,19 @@ public final class GoogleBigQuerySourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GoogleBigQuerySource model = BinaryData.fromString(
-            "{\"type\":\"GoogleBigQuerySource\",\"query\":\"dataeydmeuimlhyze\",\"queryTimeout\":\"dataivkzrvya\",\"additionalColumns\":\"dataqgyui\",\"sourceRetryCount\":\"dataelyjduzapnopoto\",\"sourceRetryWait\":\"datarrqcaglyt\",\"maxConcurrentConnections\":\"datacbdpczmzuwr\",\"disableMetricsCollection\":\"datahfwce\",\"\":{\"cyfccnwmdpbso\":\"dataaqaviqskylwpq\",\"fxpveruuckrzw\":\"datakn\"}}")
+            "{\"type\":\"GoogleBigQuerySource\",\"query\":\"dataso\",\"queryTimeout\":\"datapuaptpuwek\",\"additionalColumns\":\"datal\",\"sourceRetryCount\":\"datamtcljopivtwxvcfc\",\"sourceRetryWait\":\"datakkcjjnq\",\"maxConcurrentConnections\":\"datajoayaj\",\"disableMetricsCollection\":\"datahcxjmapgfbzbxeqz\",\"\":{\"hfafxcgjucmuax\":\"dataf\",\"srxqscdbbwejrmk\":\"dataulvue\"}}")
             .toObject(GoogleBigQuerySource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GoogleBigQuerySource model = new GoogleBigQuerySource().withSourceRetryCount("dataelyjduzapnopoto")
-            .withSourceRetryWait("datarrqcaglyt")
-            .withMaxConcurrentConnections("datacbdpczmzuwr")
-            .withDisableMetricsCollection("datahfwce")
-            .withQueryTimeout("dataivkzrvya")
-            .withAdditionalColumns("dataqgyui")
-            .withQuery("dataeydmeuimlhyze");
+        GoogleBigQuerySource model = new GoogleBigQuerySource().withSourceRetryCount("datamtcljopivtwxvcfc")
+            .withSourceRetryWait("datakkcjjnq")
+            .withMaxConcurrentConnections("datajoayaj")
+            .withDisableMetricsCollection("datahcxjmapgfbzbxeqz")
+            .withQueryTimeout("datapuaptpuwek")
+            .withAdditionalColumns("datal")
+            .withQuery("dataso");
         model = BinaryData.fromObject(model).toObject(GoogleBigQuerySource.class);
     }
 }

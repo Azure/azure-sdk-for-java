@@ -52,7 +52,7 @@ public final class SalesforceMarketingCloudLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private SalesforceMarketingCloudLinkedServiceTypeProperties innerTypeProperties() {
+    SalesforceMarketingCloudLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

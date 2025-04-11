@@ -11,16 +11,16 @@ public final class DelimitedTextWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DelimitedTextWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"DelimitedTextWriteSettings\",\"quoteAllText\":\"datawyzxqhuhmldhnz\",\"fileExtension\":\"datackfu\",\"maxRowsPerFile\":\"datachotdzt\",\"fileNamePrefix\":\"dataqhwpuaermaww\",\"\":{\"qcemco\":\"datada\",\"hisxz\":\"datawfuo\",\"oj\":\"dataikvdfszxbupsx\",\"zlmwfncwlwov\":\"datagxcgqkhyvtajwkrx\"}}")
+            "{\"type\":\"DelimitedTextWriteSettings\",\"quoteAllText\":\"datasrje\",\"fileExtension\":\"datavmbh\",\"maxRowsPerFile\":\"datar\",\"fileNamePrefix\":\"datazetsspww\",\"\":{\"rlieeocyarvsfz\":\"dataotbrepe\",\"xzpz\":\"datacscootfsgilwis\",\"trfvogknocshmp\":\"datatust\"}}")
             .toObject(DelimitedTextWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DelimitedTextWriteSettings model = new DelimitedTextWriteSettings().withQuoteAllText("datawyzxqhuhmldhnz")
-            .withFileExtension("datackfu")
-            .withMaxRowsPerFile("datachotdzt")
-            .withFileNamePrefix("dataqhwpuaermaww");
+        DelimitedTextWriteSettings model = new DelimitedTextWriteSettings().withQuoteAllText("datasrje")
+            .withFileExtension("datavmbh")
+            .withMaxRowsPerFile("datar")
+            .withFileNamePrefix("datazetsspww");
         model = BinaryData.fromObject(model).toObject(DelimitedTextWriteSettings.class);
     }
 }

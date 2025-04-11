@@ -52,7 +52,7 @@ public final class AzureSynapseArtifactsLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzureSynapseArtifactsLinkedServiceTypeProperties innerTypeProperties() {
+    AzureSynapseArtifactsLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

@@ -51,7 +51,7 @@ public final class AmazonRdsForOracleLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private AmazonRdsForLinkedServiceTypeProperties innerTypeProperties() {
+    AmazonRdsForLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

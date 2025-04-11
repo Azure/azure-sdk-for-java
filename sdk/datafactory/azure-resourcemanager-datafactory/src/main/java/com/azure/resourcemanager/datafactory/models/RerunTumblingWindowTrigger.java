@@ -54,7 +54,7 @@ public final class RerunTumblingWindowTrigger extends Trigger {
      * 
      * @return the innerTypeProperties value.
      */
-    private RerunTumblingWindowTriggerTypeProperties innerTypeProperties() {
+    RerunTumblingWindowTriggerTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

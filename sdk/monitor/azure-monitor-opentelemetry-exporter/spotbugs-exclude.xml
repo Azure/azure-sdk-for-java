@@ -84,4 +84,12 @@
     <Bug pattern="UWF_FIELD_NOT_INITIALIZED_IN_CONSTRUCTOR" />
     <Class name="com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder" />
   </Match>
+  <Match>
+    <Bug pattern="MS_EXPOSE_REP" />
+    <Class name="com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.StatsbeatModule" /> <!--non-public API, only for testing-->
+  </Match>
+  <Match>
+    <Bug pattern="MS_EXPOSE_REP" />
+    <Class name="com.azure.monitor.opentelemetry.autoconfigure.implementation.statsbeat.StatsbeatModule" /> <!--non-public API, only for testing-->
+  </Match>
 </FindBugsFilter>

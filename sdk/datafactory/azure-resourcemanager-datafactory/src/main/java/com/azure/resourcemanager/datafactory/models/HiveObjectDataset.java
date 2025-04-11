@@ -51,7 +51,7 @@ public final class HiveObjectDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private HiveDatasetTypeProperties innerTypeProperties() {
+    HiveDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

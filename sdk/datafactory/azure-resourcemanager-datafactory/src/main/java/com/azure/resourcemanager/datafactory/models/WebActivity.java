@@ -51,7 +51,7 @@ public final class WebActivity extends ExecutionActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private WebActivityTypeProperties innerTypeProperties() {
+    WebActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

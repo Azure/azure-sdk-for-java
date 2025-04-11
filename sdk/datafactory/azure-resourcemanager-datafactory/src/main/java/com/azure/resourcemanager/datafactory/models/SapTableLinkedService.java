@@ -51,7 +51,7 @@ public final class SapTableLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private SapTableLinkedServiceTypeProperties innerTypeProperties() {
+    SapTableLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
@@ -324,8 +324,8 @@ public final class SapTableLinkedService extends LinkedService {
     }
 
     /**
-     * Get the sncMode property: SNC activation indicator to access the SAP server where the table is located. Must be
-     * either 0 (off) or 1 (on). Type: string (or Expression with resultType string).
+     * Get the sncMode property: SNC activation flag (Boolean) to access the SAP server where the table is located.
+     * Type: boolean (or Expression with resultType boolean).
      * 
      * @return the sncMode value.
      */
@@ -334,8 +334,8 @@ public final class SapTableLinkedService extends LinkedService {
     }
 
     /**
-     * Set the sncMode property: SNC activation indicator to access the SAP server where the table is located. Must be
-     * either 0 (off) or 1 (on). Type: string (or Expression with resultType string).
+     * Set the sncMode property: SNC activation flag (Boolean) to access the SAP server where the table is located.
+     * Type: boolean (or Expression with resultType boolean).
      * 
      * @param sncMode the sncMode value to set.
      * @return the SapTableLinkedService object itself.

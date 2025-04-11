@@ -61,7 +61,7 @@ public final class CopyActivity extends ExecutionActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private CopyActivityTypeProperties innerTypeProperties() {
+    CopyActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
