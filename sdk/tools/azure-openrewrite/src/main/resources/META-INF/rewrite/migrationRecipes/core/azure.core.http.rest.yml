@@ -63,7 +63,7 @@ recipeList:
 
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.azure.core.http.rest.RequestOptions
-      newFullyQualifiedTypeName: io.clientcore.core.http.models.RequestOptions
+      newFullyQualifiedTypeName: io.clientcore.core.http.models.RequestContext
 
   # TODO: Migrate Methods and Fields
 

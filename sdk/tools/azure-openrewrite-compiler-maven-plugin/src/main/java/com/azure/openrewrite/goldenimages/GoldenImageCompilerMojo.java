@@ -106,13 +106,17 @@ public class GoldenImageCompilerMojo extends AbstractMojo {
     }
 
     private boolean hasEqualFileContents(File file1, File file2) throws IOException {
-        if (file1.length() != file2.length()) {
-            return false;
-        }
-        try (Stream<String> lines1 = Files.lines(file1.toPath());
-             Stream<String> lines2 = Files.lines(file2.toPath())) {
-            return lines1.collect(Collectors.toList()).equals(lines2.collect(Collectors.toList()));
-        }
+
+
+        String before = Files.readAllLines(file1.toPath())
+            .stream()
+            .reduce("", (a, b) -> a + b + "\n");
+
+        String after = Files.readAllLines(file2.toPath())
+            .stream()
+            .reduce("", (a, b) -> a + b + "\n");
+
+        return before.equals(after);
     }
 
     private boolean hasChanges(File profileDir, File previousProfileDir) throws MojoExecutionException {

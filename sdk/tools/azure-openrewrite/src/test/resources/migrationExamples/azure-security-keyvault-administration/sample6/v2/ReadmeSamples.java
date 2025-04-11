@@ -257,8 +257,8 @@ public class ReadmeSamples {
 
         keyVaultAccessControlAsyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinitionId,
             servicePrincipalId).subscribe(roleAssignment ->
-            System.out.printf("Created role assignment with randomly generated name '%s' for principal with id"
-                + "'%s'.%n", roleAssignment.getName(), roleAssignment.getProperties().getPrincipalId()));
+                System.out.printf("Created role assignment with randomly generated name '%s' for principal with id"
+                    + "'%s'.%n", roleAssignment.getName(), roleAssignment.getProperties().getPrincipalId()));
         // END: readme-sample-createRoleAssignmentAsync
     }
 
