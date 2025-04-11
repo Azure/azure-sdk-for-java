@@ -9,6 +9,7 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.models.binarydata.ByteArrayBinaryData;
 import io.clientcore.core.utils.ProgressReporter;
@@ -32,7 +33,7 @@ public class HttpUrlConnectionHttpClient implements HttpClient {
     }
 
     @Override
-    public Response<BinaryData> send(HttpRequest request) throws IOException {
+    public Response<BinaryData> send(HttpRequest request) {
         HttpURLConnection connection = null;
         try {
             connection = (HttpURLConnection) request.getUri().toURL().openConnection();
@@ -40,7 +41,7 @@ public class HttpUrlConnectionHttpClient implements HttpClient {
 
             return createHttpResponse(connection, request);
         } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            throw CoreException.from(e);
         } finally {
             if (connection != null) {
                 connection.disconnect();

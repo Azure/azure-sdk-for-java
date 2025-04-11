@@ -14,7 +14,6 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
 
-import java.io.IOException;
 import java.util.Objects;
 
 /**
@@ -82,11 +81,7 @@ public class OAuthBearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
         if (httpResponse.getStatusCode() == 401 && authHeader != null) {
             if (authorizeRequestOnChallenge(httpRequest, httpResponse)) {
                 // body needs to be closed or read to the end to release the connection
-                try {
-                    httpResponse.close();
-                } catch (IOException e) {
-                    throw LOGGER.logThrowableAsError(new RuntimeException(e));
-                }
+                httpResponse.close();
                 return nextPolicy.process();
             } else {
                 return httpResponse;

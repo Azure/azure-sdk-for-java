@@ -70,22 +70,22 @@ public class NettyHttpClientHttpClientWithHttpsTests extends HttpClientTests {
 
     @Disabled("Need to implement server sent event support in NettyHttpClient")
     @Test
-    public void canReceiveServerSentEvents() throws IOException {
+    public void canReceiveServerSentEvents() {
     }
 
     @Disabled("Need to implement server sent event support in NettyHttpClient")
     @Test
-    public void canRecognizeServerSentEvent() throws IOException {
+    public void canRecognizeServerSentEvent() {
     }
 
     @Disabled("Need to implement server sent event support in NettyHttpClient")
     @Test
-    public void onErrorServerSentEvents() throws IOException {
+    public void onErrorServerSentEvents() {
     }
 
     @Disabled("Need to implement server sent event support in NettyHttpClient")
     @Test
-    public void onRetryWithLastEventIdReceiveServerSentEvents() throws IOException {
+    public void onRetryWithLastEventIdReceiveServerSentEvents() {
     }
 
     @Disabled("Need to implement server sent event support in NettyHttpClient")
@@ -131,7 +131,7 @@ public class NettyHttpClientHttpClientWithHttpsTests extends HttpClientTests {
 
     @Timeout(value = 1, unit = TimeUnit.MINUTES)
     @Test
-    public void canSendTinyBinaryDataDebugging() throws IOException {
+    public void canSendTinyBinaryDataDebugging() {
         byte[] expectedResponseBody = new byte[512];
         ThreadLocalRandom.current().nextBytes(expectedResponseBody);
 

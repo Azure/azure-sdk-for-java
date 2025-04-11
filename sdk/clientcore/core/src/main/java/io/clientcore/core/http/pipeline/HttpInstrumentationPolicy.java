@@ -521,8 +521,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
      * @return A flag indicating if the request or response body should be logged.
      */
     private static boolean canLogBody(BinaryData data) {
-        // TODO (limolkova) we might want to filter out binary data, but
-        // if somebody enabled logging it - why not log it?
+        // TODO (limolkova) we might want to filter out binary data, but if somebody enabled logging it - why not log it?
         return data != null && data.getLength() != null && data.getLength() > 0 && data.getLength() < MAX_BODY_LOG_SIZE;
     }
 
@@ -619,7 +618,7 @@ public final class HttpInstrumentationPolicy implements HttpPipelinePolicy {
         }
 
         @Override
-        public void close() throws IOException {
+        public void close() {
             if (bufferedBody == null) {
                 getValue();
             }

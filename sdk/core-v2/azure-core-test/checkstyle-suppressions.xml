@@ -25,4 +25,5 @@
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.v2.core.test.InterceptorManager.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.v2.core.test.policy.TestProxyRecordPolicy.java" />
   <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.v2.core.test.utils.HttpUrlConnectionHttpClient.java" />
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger" files="com.azure.v2.core.test.http.MockHttpClient.java" />
 </suppressions>

@@ -21,7 +21,6 @@ import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.UriBuilder;
 
-import java.io.IOException;
 import java.lang.reflect.Type;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -187,8 +186,6 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
 
             return new PollResponse<>(pollResult.getStatus(),
                 PollingUtils.deserializeResponse(responseBody, serializer, pollResponseType), retryAfter);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
         }
     }
 
@@ -223,8 +220,6 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
         try (Response<BinaryData> response = httpPipeline.send(request)) {
             BinaryData responseBody = response.getValue();
             return PollingUtils.deserializeResponse(responseBody, serializer, resultType);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
         }
     }
 

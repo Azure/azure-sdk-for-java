@@ -126,7 +126,7 @@ public abstract class HttpClientTests {
      * Tests that a response without a byte order mark or a 'Content-Type' header encodes using UTF-8.
      */
     @Test
-    public void plainResponse() throws IOException {
+    public void plainResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
 
         assertEquals(expected, new String(sendRequest(PLAIN_RESPONSE), StandardCharsets.UTF_8));
@@ -136,7 +136,7 @@ public abstract class HttpClientTests {
      * Tests that a response with a 'Content-Type' header encodes using the specified charset.
      */
     @Test
-    public void headerResponse() throws IOException {
+    public void headerResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_16BE);
 
         assertEquals(expected, new String(sendRequest(HEADER_RESPONSE), StandardCharsets.UTF_16BE));
@@ -146,7 +146,7 @@ public abstract class HttpClientTests {
      * Tests that a response with a 'Content-Type' containing an invalid or unsupported charset encodes using UTF-8.
      */
     @Test
-    public void invalidHeaderResponse() throws IOException {
+    public void invalidHeaderResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
 
         assertEquals(expected, new String(sendRequest(INVALID_HEADER_RESPONSE), StandardCharsets.UTF_8));
@@ -156,7 +156,7 @@ public abstract class HttpClientTests {
      * Tests that a response with a byte order mark encodes using the specified charset.
      */
     @Test
-    public void utf8BomResponse() throws IOException {
+    public void utf8BomResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
         byte[] response = sendRequest(UTF_8_BOM_RESPONSE);
 
@@ -167,7 +167,7 @@ public abstract class HttpClientTests {
      * Tests that a response with a byte order mark encodes using the specified charset.
      */
     @Test
-    public void utf16BeBomResponse() throws IOException {
+    public void utf16BeBomResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_16BE);
         byte[] response = sendRequest(UTF_16BE_BOM_RESPONSE);
 
@@ -178,7 +178,7 @@ public abstract class HttpClientTests {
      * Tests that a response with a byte order mark encodes using the specified charset.
      */
     @Test
-    public void utf16LeBomResponse() throws IOException {
+    public void utf16LeBomResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_16LE);
         byte[] response = sendRequest(UTF_16LE_BOM_RESPONSE);
 
@@ -189,7 +189,7 @@ public abstract class HttpClientTests {
      * Tests that a response with a byte order mark encodes using the specified charset.
      */
     @Test
-    public void utf32BeBomResponse() throws IOException {
+    public void utf32BeBomResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, Charset.forName("UTF-32BE"));
 
         assertEquals(expected, new String(sendRequest(UTF_32BE_BOM_RESPONSE), Charset.forName("UTF-32BE")));
@@ -199,7 +199,7 @@ public abstract class HttpClientTests {
      * Tests that a response with a byte order mark encodes using the specified charset.
      */
     @Test
-    public void utf32LeBomResponse() throws IOException {
+    public void utf32LeBomResponse() {
         String expected = new String(EXPECTED_RETURN_BYTES, Charset.forName("UTF-32LE"));
 
         assertEquals(expected, new String(sendRequest(UTF_32LE_BOM_RESPONSE), Charset.forName("UTF-32LE")));
@@ -209,7 +209,7 @@ public abstract class HttpClientTests {
      * Tests that a response with a byte order marker and 'Content-Type' header will defer to using the BOM encoding.
      */
     @Test
-    public void bomWithSameHeader() throws IOException {
+    public void bomWithSameHeader() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
         byte[] response = sendRequest(BOM_WITH_DIFFERENT_HEADER);
 
@@ -220,7 +220,7 @@ public abstract class HttpClientTests {
      * Tests that a response with a byte order marker and 'Content-Type' header will defer to using the BOM encoding.
      */
     @Test
-    public void bomWithDifferentHeader() throws IOException {
+    public void bomWithDifferentHeader() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
         byte[] response = sendRequest(BOM_WITH_DIFFERENT_HEADER);
 
@@ -231,7 +231,7 @@ public abstract class HttpClientTests {
      * Tests that unbuffered response body can be accessed.
      */
     @Test
-    public void canAccessResponseBody() throws IOException {
+    public void canAccessResponseBody() {
         BinaryData requestBody = BinaryData.fromString("test body");
         HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.PUT).setUri(getRequestUri(ECHO_RESPONSE)).setBody(requestBody);
@@ -246,7 +246,7 @@ public abstract class HttpClientTests {
      * Tests that buffered response is indeed buffered, i.e. content can be accessed many times.
      */
     @Test
-    public void bufferedResponseCanBeReadMultipleTimes() throws IOException {
+    public void bufferedResponseCanBeReadMultipleTimes() {
         BinaryData requestBody = BinaryData.fromString("test body");
         HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.PUT).setUri(getRequestUri(ECHO_RESPONSE)).setBody(requestBody);
@@ -269,7 +269,7 @@ public abstract class HttpClientTests {
      */
     @ParameterizedTest
     @MethodSource("getBinaryDataBodyVariants")
-    public void canSendBinaryData(BinaryData requestBody, byte[] expectedResponseBody) throws IOException {
+    public void canSendBinaryData(BinaryData requestBody, byte[] expectedResponseBody) {
         HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.PUT).setUri(getRequestUri(ECHO_RESPONSE)).setBody(requestBody);
 
@@ -353,7 +353,7 @@ public abstract class HttpClientTests {
         });
     }
 
-    private byte[] sendRequest(String requestPath) throws IOException {
+    private byte[] sendRequest(String requestPath) {
         try (Response<BinaryData> response
             = getHttpClient().send(new HttpRequest().setMethod(HttpMethod.GET).setUri(getRequestUri(requestPath)))) {
             return response.getValue().toBytes();
@@ -410,7 +410,7 @@ public abstract class HttpClientTests {
      * Tests that the response body is correctly returned as a byte array.
      */
     @Test
-    public void requestWithByteArrayReturnType() throws IOException {
+    public void requestWithByteArrayReturnType() {
         String uri = UriBuilder.parse(getRequestUri()).setPath("bytes/100").toString();
 
         try (Response<BinaryData> response
@@ -425,7 +425,7 @@ public abstract class HttpClientTests {
      * Tests that the response body is correctly returned as a byte array.
      */
     @Test
-    public void requestWithByteArrayReturnTypeAndParameterizedHostAndPath() throws IOException {
+    public void requestWithByteArrayReturnTypeAndParameterizedHostAndPath() {
         String uri = new UriBuilder().setScheme(getRequestScheme())
             .setHost("localhost")
             .setPort(getPort())
@@ -444,7 +444,7 @@ public abstract class HttpClientTests {
      * Tests that the response body is correctly returned as a byte array.
      */
     @Test
-    public void requestWithEmptyByteArrayReturnTypeAndParameterizedHostAndPath() throws IOException {
+    public void requestWithEmptyByteArrayReturnTypeAndParameterizedHostAndPath() {
         String uri = new UriBuilder().setScheme(getRequestScheme())
             .setHost("localhost")
             .setPort(getPort())
@@ -602,7 +602,7 @@ public abstract class HttpClientTests {
     }
 
     @Test
-    public void headRequest() throws IOException {
+    public void headRequest() {
         String uri = UriBuilder.parse(getRequestUri()).setPath("anything").toString();
         try (Response<BinaryData> response
             = getHttpClient().send(new HttpRequest().setMethod(HttpMethod.HEAD).setUri(uri))) {
@@ -710,7 +710,7 @@ public abstract class HttpClientTests {
     }
 
     @Test
-    public void canReceiveServerSentEvents() throws IOException {
+    public void canReceiveServerSentEvents() {
         String uri = UriBuilder.parse(getRequestUri()).setPath("serversentevent").toString();
         final int[] i = { 0 };
         ServerSentEventListener serverSentEventListener = sse -> {
@@ -745,7 +745,7 @@ public abstract class HttpClientTests {
      * Tests that eagerly converting implementation HTTP headers to Client Core Headers is done.
      */
     @Test
-    public void canRecognizeServerSentEvent() throws IOException {
+    public void canRecognizeServerSentEvent() {
         List<String> expected = Arrays.asList("YHOO", "+2", "10");
         String uri = UriBuilder.parse(getRequestUri()).setPath("serversentevent").toString();
         HttpHeaders headers = new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, ContentType.APPLICATION_OCTET_STREAM);
@@ -787,7 +787,7 @@ public abstract class HttpClientTests {
     }
 
     @Test
-    public void onRetryWithLastEventIdReceiveServerSentEvents() throws IOException {
+    public void onRetryWithLastEventIdReceiveServerSentEvents() {
         String uri = UriBuilder.parse(getRequestUri()).setPath("serversentevent").toString();
         final int[] i = { 0 };
         ServerSentEventListener serverSentEventListener = sse -> {

@@ -12,6 +12,7 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.Instrumentation;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.SdkInstrumentationOptions;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
@@ -50,7 +51,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.net.SocketException;
 import java.net.URI;
 import java.net.UnknownHostException;
@@ -191,7 +191,7 @@ public class HttpInstrumentationPolicyTests {
                     assertEquals(traceparent(Span.current().getSpanContext()),
                         request.getHeaders().get(TRACEPARENT).getValue());
                     if (count.getAndIncrement() == 0) {
-                        throw new UnknownHostException("test exception");
+                        throw CoreException.from(new UnknownHostException("test exception"));
                     } else {
                         return new Response<>(request, 200, new HttpHeaders(), BinaryData.empty());
                     }
@@ -346,10 +346,10 @@ public class HttpInstrumentationPolicyTests {
         SocketException exception = new SocketException("test exception");
         HttpPipeline pipeline
             = new HttpPipelineBuilder().addPolicy(new HttpInstrumentationPolicy(otelOptions)).httpClient(request -> {
-                throw exception;
+                throw CoreException.from(exception);
             }).build();
 
-        assertThrows(UncheckedIOException.class,
+        assertThrows(CoreException.class,
             () -> pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("https://localhost/")).close());
         assertNotNull(exporter.getFinishedSpanItems());
         assertEquals(1, exporter.getFinishedSpanItems().size());
