@@ -3,10 +3,10 @@
 
 package com.azure.communication.phonenumbers.siprouting.implementation.converters;
 
-import com.azure.communication.phonenumbers.siprouting.models.SipTrunkRoute;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.azure.communication.phonenumbers.siprouting.models.SipTrunkRoute;
 
 /**
  * A converter between {@link com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunkRoute} and
@@ -50,6 +50,7 @@ public final class SipTrunkRouteConverter {
                 .setName(route.getName())
                 .setNumberPattern(route.getNumberPattern())
                 .setDescription(route.getDescription())
+                .setCallerIdOverride(route.getCallerIdOverride())
                 .setTrunks(route.getTrunks()));
         }
 
