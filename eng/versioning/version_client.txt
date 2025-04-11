@@ -492,22 +492,22 @@ unreleased_com.azure:azure-core-test;1.26.0-beta.1
 
 
 # SDK versions for Spring Boot 2:
-spring_com.azure:azure-cosmos;4.67.0;4.67.0
-spring_com.azure:azure-core;1.55.2;1.55.2
-spring_com.azure:azure-data-appconfiguration;1.7.4;1.7.4
-spring_com.azure:azure-messaging-eventhubs;5.20.1;5.20.1
-spring_com.azure:azure-security-keyvault-certificates;4.7.3;4.7.3
-spring_com.azure:azure-security-keyvault-secrets;4.9.3;4.9.3
-spring_com.azure:azure-storage-blob;12.29.1;12.29.1
-spring_com.azure:azure-storage-file-share;12.25.2;12.25.2
-spring_com.azure:azure-storage-queue;12.24.1;12.24.1
-spring_com.azure:azure-identity;1.15.3;1.15.3
-spring_com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.20.5;1.20.5
-spring_com.azure:azure-messaging-servicebus;7.17.9;7.17.9
-spring_com.azure:azure-messaging-eventgrid;4.29.0;4.29.0
-spring_com.azure:azure-identity-extensions;1.2.1;1.2.1
-spring_com.azure:azure-core-amqp;2.9.15;2.9.15
-spring_com.azure:azure-core-management;1.16.2;1.16.2
+spring_com.azure:azure-cosmos;4.68.0;4.68.0
+spring_com.azure:azure-core;1.55.3;1.55.3
+spring_com.azure:azure-data-appconfiguration;1.8.0;1.8.0
+spring_com.azure:azure-messaging-eventhubs;5.20.2;5.20.2
+spring_com.azure:azure-security-keyvault-certificates;4.7.4;4.7.4
+spring_com.azure:azure-security-keyvault-secrets;4.9.4;4.9.4
+spring_com.azure:azure-storage-blob;12.30.0;12.30.0
+spring_com.azure:azure-storage-file-share;12.26.0;12.26.0
+spring_com.azure:azure-storage-queue;12.25.0;12.25.0
+spring_com.azure:azure-identity;1.15.4;1.15.4
+spring_com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.20.6;1.20.6
+spring_com.azure:azure-messaging-servicebus;7.17.10;7.17.10
+spring_com.azure:azure-messaging-eventgrid;4.29.1;4.29.1
+spring_com.azure:azure-identity-extensions;1.2.2;1.2.2
+spring_com.azure:azure-core-amqp;2.9.16;2.9.16
+spring_com.azure:azure-core-management;1.17.0;1.17.0
 spring_com.azure:azure-monitor-opentelemetry-exporter;1.0.0-beta.32;1.0.0-beta.32
-spring_com.azure:azure-core-test;1.27.0-beta.7;1.27.0-beta.7
-spring_com.azure:azure-core-serializer-json-jackson;1.5.7;1.5.7
+spring_com.azure:azure-core-test;1.27.0-beta.8;1.27.0-beta.8
+spring_com.azure:azure-core-serializer-json-jackson;1.5.8;1.5.8
