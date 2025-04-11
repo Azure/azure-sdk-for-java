@@ -51,7 +51,7 @@ public final class OracleTableDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private OracleTableDatasetTypeProperties innerTypeProperties() {
+    OracleTableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

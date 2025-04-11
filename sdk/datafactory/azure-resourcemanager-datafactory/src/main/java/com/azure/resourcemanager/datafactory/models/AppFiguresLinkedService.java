@@ -51,7 +51,7 @@ public final class AppFiguresLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private AppFiguresLinkedServiceTypeProperties innerTypeProperties() {
+    AppFiguresLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

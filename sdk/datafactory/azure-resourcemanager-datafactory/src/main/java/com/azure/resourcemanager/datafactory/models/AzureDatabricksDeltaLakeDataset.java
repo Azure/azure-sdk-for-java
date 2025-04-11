@@ -51,7 +51,7 @@ public final class AzureDatabricksDeltaLakeDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzureDatabricksDeltaLakeDatasetTypeProperties innerTypeProperties() {
+    AzureDatabricksDeltaLakeDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

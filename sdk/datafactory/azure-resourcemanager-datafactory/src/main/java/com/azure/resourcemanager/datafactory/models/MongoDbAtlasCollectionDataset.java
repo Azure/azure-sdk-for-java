@@ -52,7 +52,7 @@ public final class MongoDbAtlasCollectionDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private MongoDbAtlasCollectionDatasetTypeProperties innerTypeProperties() {
+    MongoDbAtlasCollectionDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

@@ -110,7 +110,9 @@ public class ImportSettings implements JsonSerializable<ImportSettings> {
                     }
                 }
                 // Use the discriminator value to determine which subtype should be deserialized.
-                if ("AzureDatabricksDeltaLakeImportCommand".equals(discriminatorValue)) {
+                if ("TeradataImportCommand".equals(discriminatorValue)) {
+                    return TeradataImportCommand.fromJson(readerToUse.reset());
+                } else if ("AzureDatabricksDeltaLakeImportCommand".equals(discriminatorValue)) {
                     return AzureDatabricksDeltaLakeImportCommand.fromJson(readerToUse.reset());
                 } else if ("SnowflakeImportCopyCommand".equals(discriminatorValue)) {
                     return SnowflakeImportCopyCommand.fromJson(readerToUse.reset());

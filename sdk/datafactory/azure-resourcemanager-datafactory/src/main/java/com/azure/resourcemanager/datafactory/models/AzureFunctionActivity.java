@@ -51,7 +51,7 @@ public final class AzureFunctionActivity extends ExecutionActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzureFunctionActivityTypeProperties innerTypeProperties() {
+    AzureFunctionActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

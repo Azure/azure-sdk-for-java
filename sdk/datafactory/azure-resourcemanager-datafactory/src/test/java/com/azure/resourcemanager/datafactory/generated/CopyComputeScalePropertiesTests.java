@@ -14,20 +14,20 @@ public final class CopyComputeScalePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CopyComputeScaleProperties model = BinaryData.fromString(
-            "{\"dataIntegrationUnit\":1175584995,\"timeToLive\":61564169,\"\":{\"yibx\":\"dataubwhx\",\"ttgxkxt\":\"dataceg\"}}")
+            "{\"dataIntegrationUnit\":992750702,\"timeToLive\":447712322,\"\":{\"pumzuh\":\"datakifqbxmnnidot\",\"pva\":\"dataodttq\",\"avzlhjgmrodbl\":\"dataumvuwjyulqfpqql\"}}")
             .toObject(CopyComputeScaleProperties.class);
-        Assertions.assertEquals(1175584995, model.dataIntegrationUnit());
-        Assertions.assertEquals(61564169, model.timeToLive());
+        Assertions.assertEquals(992750702, model.dataIntegrationUnit());
+        Assertions.assertEquals(447712322, model.timeToLive());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CopyComputeScaleProperties model = new CopyComputeScaleProperties().withDataIntegrationUnit(1175584995)
-            .withTimeToLive(61564169)
+        CopyComputeScaleProperties model = new CopyComputeScaleProperties().withDataIntegrationUnit(992750702)
+            .withTimeToLive(447712322)
             .withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(CopyComputeScaleProperties.class);
-        Assertions.assertEquals(1175584995, model.dataIntegrationUnit());
-        Assertions.assertEquals(61564169, model.timeToLive());
+        Assertions.assertEquals(992750702, model.dataIntegrationUnit());
+        Assertions.assertEquals(447712322, model.timeToLive());
     }
 
     // Use "Map.of" if available

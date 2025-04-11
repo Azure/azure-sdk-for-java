@@ -51,7 +51,7 @@ public final class JsonDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private JsonDatasetTypeProperties innerTypeProperties() {
+    JsonDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

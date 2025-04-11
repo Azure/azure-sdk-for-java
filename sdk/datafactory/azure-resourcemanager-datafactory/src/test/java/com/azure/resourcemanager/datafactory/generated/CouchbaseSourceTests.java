@@ -11,19 +11,19 @@ public final class CouchbaseSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CouchbaseSource model = BinaryData.fromString(
-            "{\"type\":\"CouchbaseSource\",\"query\":\"datahndfpf\",\"queryTimeout\":\"datafdgf\",\"additionalColumns\":\"dataoeh\",\"sourceRetryCount\":\"datapkssjbw\",\"sourceRetryWait\":\"dataxdgcfcfky\",\"maxConcurrentConnections\":\"datajwxhslrbwwk\",\"disableMetricsCollection\":\"datawodhsodofsxjiky\",\"\":{\"cxdmxhuwldfa\":\"datauhuixqwogg\",\"dkbgsg\":\"datakyft\",\"ayqkg\":\"datapyckmncrutoudjm\"}}")
+            "{\"type\":\"CouchbaseSource\",\"query\":\"datauyefhhdrm\",\"queryTimeout\":\"dataifgyxkgqwmpgh\",\"additionalColumns\":\"datacxqcbnkxhcodhxsb\",\"sourceRetryCount\":\"datalfw\",\"sourceRetryWait\":\"dataouuyzpaqjahjxged\",\"maxConcurrentConnections\":\"datazhofhk\",\"disableMetricsCollection\":\"datawtacgu\",\"\":{\"cmrgahs\":\"datardqrfassiii\",\"ieqonsbukznxd\":\"dataayyxgcgb\",\"oxtkmknacnfz\":\"datavqopxun\",\"gzfeyexbg\":\"dataytbhdjpagwszmw\"}}")
             .toObject(CouchbaseSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CouchbaseSource model = new CouchbaseSource().withSourceRetryCount("datapkssjbw")
-            .withSourceRetryWait("dataxdgcfcfky")
-            .withMaxConcurrentConnections("datajwxhslrbwwk")
-            .withDisableMetricsCollection("datawodhsodofsxjiky")
-            .withQueryTimeout("datafdgf")
-            .withAdditionalColumns("dataoeh")
-            .withQuery("datahndfpf");
+        CouchbaseSource model = new CouchbaseSource().withSourceRetryCount("datalfw")
+            .withSourceRetryWait("dataouuyzpaqjahjxged")
+            .withMaxConcurrentConnections("datazhofhk")
+            .withDisableMetricsCollection("datawtacgu")
+            .withQueryTimeout("dataifgyxkgqwmpgh")
+            .withAdditionalColumns("datacxqcbnkxhcodhxsb")
+            .withQuery("datauyefhhdrm");
         model = BinaryData.fromObject(model).toObject(CouchbaseSource.class);
     }
 }
