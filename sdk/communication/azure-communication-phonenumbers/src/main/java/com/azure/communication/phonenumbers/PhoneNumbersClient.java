@@ -1148,21 +1148,16 @@ public final class PhoneNumbersClient {
                     .map(value -> mapToPhoneNumbersReservation(value))
                     .collect(Collectors.toList()),
                 response.getContinuationToken(), null);
-        // Map the internal PagedFlux to the public PhoneNumbersReservation type
+
         final Supplier<PageRetriever<String, PagedResponse<PhoneNumbersReservation>>> provider
             = () -> (continuationToken, pageSize) -> {
                 Flux<PagedResponse<PhoneNumbersReservationInternal>> flux = (continuationToken == null)
-                    ? Flux.fromIterable(internalPagedIterable.iterableByPage(20)) // Replace 20 with the desired page
-                    // size
-                    : Flux.fromIterable(internalPagedIterable.iterableByPage(continuationToken, 20)); // Replace 20 with
-                                                                                                     // the desired
-                                                                                                     // page size
+                    ? Flux.fromIterable(internalPagedIterable.iterableByPage(25))
+                    : Flux.fromIterable(internalPagedIterable.iterableByPage(continuationToken, 25));
                 return flux.map(responseMapper);
             };
         PagedFlux<PhoneNumbersReservation> phoneNumberReservationPagedFlux = PagedFlux.create(provider);
 
-        // Return a new PagedIterable based on the mapped iterable
         return new PagedIterable<PhoneNumbersReservation>(phoneNumberReservationPagedFlux);
     }
-
 }

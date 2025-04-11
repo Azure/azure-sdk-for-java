@@ -1025,12 +1025,12 @@ public final class PhoneNumbersAsyncClient {
 
     private static PagedFlux<PhoneNumbersReservation>
         mapToPhoneNumbersReservationFromPage(PagedFlux<PhoneNumbersReservationInternal> internalPagedFlux) {
-        // Map the internal PagedFlux to the public PhoneNumbersReservation type
+
         final Supplier<PageRetriever<String, PagedResponse<PhoneNumbersReservation>>> provider
             = () -> (continuationToken, pageSize) -> {
                 Flux<PagedResponse<PhoneNumbersReservationInternal>> flux = (continuationToken == null)
-                    ? internalPagedFlux.byPage(20) // Replace 20 with the desired page size
-                    : internalPagedFlux.byPage(continuationToken, 20); // Replace 20 with the desired page size
+                    ? internalPagedFlux.byPage(25)
+                    : internalPagedFlux.byPage(continuationToken, 25);
                 return flux.map(responseMapper);
             };
         PagedFlux<PhoneNumbersReservation> phoneNumberReservationPagedFlux = PagedFlux.create(provider);

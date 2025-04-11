@@ -81,7 +81,7 @@ public final class PhoneNumbersReservation implements JsonSerializable<PhoneNumb
      * @param status        the status of the reservation.
      */
     public PhoneNumbersReservation(UUID reservationId, OffsetDateTime expiresAt,
-            Map<String, AvailablePhoneNumber> phoneNumbers, PhoneNumbersReservationStatus status) {
+        Map<String, AvailablePhoneNumber> phoneNumbers, PhoneNumbersReservationStatus status) {
         this.id = reservationId;
         this.expiresAt = expiresAt;
         this.phoneNumbers = phoneNumbers;
@@ -195,18 +195,18 @@ public final class PhoneNumbersReservation implements JsonSerializable<PhoneNumb
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
-                    deserializedPhoneNumbersReservation.id = reader
-                            .getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                    deserializedPhoneNumbersReservation.id
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
                 } else if ("expiresAt".equals(fieldName)) {
-                    deserializedPhoneNumbersReservation.expiresAt = reader
-                            .getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedPhoneNumbersReservation.expiresAt
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("phoneNumbers".equals(fieldName)) {
-                    Map<String, AvailablePhoneNumber> phoneNumbers = reader
-                            .readMap(reader1 -> AvailablePhoneNumber.fromJson(reader1));
+                    Map<String, AvailablePhoneNumber> phoneNumbers
+                        = reader.readMap(reader1 -> AvailablePhoneNumber.fromJson(reader1));
                     deserializedPhoneNumbersReservation.phoneNumbers = phoneNumbers;
                 } else if ("status".equals(fieldName)) {
-                    deserializedPhoneNumbersReservation.status = PhoneNumbersReservationStatus
-                            .fromString(reader.getString());
+                    deserializedPhoneNumbersReservation.status
+                        = PhoneNumbersReservationStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }
