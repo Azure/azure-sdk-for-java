@@ -1138,7 +1138,7 @@ public final class PhoneNumbersClient {
     private static PagedIterable<PhoneNumbersReservation>
         mapToPhoneNumbersReservationFromPage(PagedIterable<PhoneNumbersReservationInternal> internalPagedIterable) {
 
-        final Function<PagedResponse<PhoneNumbersReservationInternal>, PagedResponse<PhoneNumbersReservation>> responseMapper
+        final Function<PagedResponse<PhoneNumbersReservationInternal>, PagedResponse<PhoneNumbersReservation>> RESPONSE_MAPPER
             = response -> new PagedResponseBase<Void, PhoneNumbersReservation>(response.getRequest(),
                 response.getStatusCode(), response.getHeaders(),
                 response.getValue()
@@ -1152,7 +1152,7 @@ public final class PhoneNumbersClient {
                 Flux<PagedResponse<PhoneNumbersReservationInternal>> flux = (continuationToken == null)
                     ? Flux.fromIterable(internalPagedIterable.iterableByPage(25))
                     : Flux.fromIterable(internalPagedIterable.iterableByPage(continuationToken, 25));
-                return flux.map(responseMapper);
+                return flux.map(RESPONSE_MAPPER);
             };
         PagedFlux<PhoneNumbersReservation> phoneNumberReservationPagedFlux = PagedFlux.create(provider);
 

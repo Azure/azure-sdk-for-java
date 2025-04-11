@@ -74,11 +74,10 @@ public final class PhoneNumbersReservation implements JsonSerializable<PhoneNumb
      * Creates an instance of PhoneNumbersReservation class with given reservationId
      * and expiration time.
      * 
-     * @param reservationId the reservationId that will be assigned to the
-     *                      reservation.
-     * @param expiresAt     the expiration time of the reservation.
-     * @param phoneNumbers  the phone numbers that are reserved.
-     * @param status        the status of the reservation.
+     * @param reservationId the reservationId that will be assigned to the reservation.
+     * @param expiresAt the expiration time of the reservation.
+     * @param phoneNumbers the phone numbers that are reserved.
+     * @param status the status of the reservation.
      */
     public PhoneNumbersReservation(UUID reservationId, OffsetDateTime expiresAt,
         Map<String, AvailablePhoneNumber> phoneNumbers, PhoneNumbersReservationStatus status) {

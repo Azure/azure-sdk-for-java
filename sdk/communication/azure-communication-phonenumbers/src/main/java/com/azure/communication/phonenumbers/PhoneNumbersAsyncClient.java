@@ -1017,7 +1017,7 @@ public final class PhoneNumbersAsyncClient {
 
     // PagedResponse<PhoneNumbersReservationInternal> to
     // PagedResponse<PhoneNumbersReservation> mapper
-    final static Function<PagedResponse<PhoneNumbersReservationInternal>, PagedResponse<PhoneNumbersReservation>> responseMapper
+    private static final Function<PagedResponse<PhoneNumbersReservationInternal>, PagedResponse<PhoneNumbersReservation>> RESPONSE_MAPPER
         = response -> new PagedResponseBase<Void, PhoneNumbersReservation>(response.getRequest(),
             response.getStatusCode(), response.getHeaders(),
             response.getValue().stream().map(value -> mapToPhoneNumbersReservation(value)).collect(Collectors.toList()),
@@ -1031,7 +1031,7 @@ public final class PhoneNumbersAsyncClient {
                 Flux<PagedResponse<PhoneNumbersReservationInternal>> flux = (continuationToken == null)
                     ? internalPagedFlux.byPage(25)
                     : internalPagedFlux.byPage(continuationToken, 25);
-                return flux.map(responseMapper);
+                return flux.map(RESPONSE_MAPPER);
             };
         PagedFlux<PhoneNumbersReservation> phoneNumberReservationPagedFlux = PagedFlux.create(provider);
 
