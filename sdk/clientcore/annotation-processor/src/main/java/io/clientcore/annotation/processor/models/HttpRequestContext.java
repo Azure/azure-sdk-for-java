@@ -4,6 +4,7 @@
 package io.clientcore.annotation.processor.models;
 
 import io.clientcore.core.http.models.HttpMethod;
+import io.clientcore.core.utils.CoreUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -296,23 +297,27 @@ public final class HttpRequestContext {
      * @param headers the array of headers to set.
      */
     public void setHeaders(String[] headers) {
-        // if the headers are null or empty, return
-        if (headers == null || headers.length == 0) {
+        // If the headers array is null or empty, return immediately
+        if (CoreUtils.isNullOrEmpty(headers)) {
             return;
         }
-        // if this method is called, we need to clear the headers map first
-        this.headers.clear();
-        // take the headers and split them into key value pairs
+
+        // Iterate through the headers array to process each header
         for (String header : headers) {
-            String[] parts = header.split(":");
-            // if ":" is not found, we need to add the header as a key with an empty value
-            if (parts.length == 1) {
-                addHeader(parts[0].trim(), "");
-                continue;
-            }
+            // Split the header into key-value pairs using the first occurrence of ":"
+            String[] parts = header.split(":", 2);
+
+            // If no ":" is found, treat the header as a key with an empty value
             String key = parts[0].trim();
-            String value = "\"" + parts[1].trim() + "\""; // Surround the value with quotes
-            addHeader(key, value);
+            String value = parts.length > 1 ? "\"" + parts[1].trim() + "\"" : "";
+
+            if (this.headers.containsKey(key)) {
+                // Replace the existing value with the static header value
+                this.headers.put(key, value);
+            } else {
+                // Add the new key-value pair to the headers map
+                addHeader(key, value);
+            }
         }
     }
 
@@ -322,25 +327,30 @@ public final class HttpRequestContext {
      * @param queryParams the array of query parameters to set.
      */
     public void setQueryParams(String[] queryParams) {
-        // if the query params are null or empty, return
-        if (queryParams == null || queryParams.length == 0) {
+        // If the query params array is null or empty, return immediately
+        if (CoreUtils.isNullOrEmpty(queryParams)) {
             return;
         }
-        // if this method is called, we need to clear the query params map first
-        this.queryParams.clear();
-        // take the query params and split them into key value pairs
+
+        // Iterate through the query params array to process each query param
         for (String queryParam : queryParams) {
-            // only look for the first "=" in the string, so we can support query params with "=" in them
-            // e.g. "key=val1=val2" will be split into "key" and "val1=val2"
+            // Split the query param into key-value pairs using the first occurrence of "="
             String[] parts = queryParam.split("=", 2);
-            // if "=" is not found, we need to add the query param as a key with an empty value
-            if (parts.length == 1) {
-                addQueryParam(parts[0].trim(), "", false, true);
-                continue;
-            }
+
+            // Extract the key and value, trimming any leading or trailing whitespace
             String key = parts[0].trim();
-            String value = "\"" + parts[1].trim() + "\""; // Surround the value with quotes
-            addQueryParam(key, value, false, true);
+            String value = parts.length > 1 ? "\"" + parts[1].trim() + "\"" : ""; // Surround the value with quotes
+
+            if (this.queryParams.containsKey(key)) {
+                // Append the new value to the existing key
+                QueryParameter existingParam = this.queryParams.get(key);
+                String existingValue = existingParam.getValue();
+                String combinedValue = existingValue + ";" + value; // Combine values with a delimiter
+                this.queryParams.put(key, new QueryParameter(combinedValue, true, existingParam.shouldEncode()));
+            } else {
+                // Add the new key-value pair to the query params map
+                addQueryParam(key, value, true, false);
+            }
         }
     }
 
