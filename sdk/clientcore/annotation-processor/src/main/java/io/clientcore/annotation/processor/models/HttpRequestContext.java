@@ -4,6 +4,7 @@
 package io.clientcore.annotation.processor.models;
 
 import io.clientcore.core.http.models.HttpMethod;
+import io.clientcore.core.utils.CoreUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -288,6 +289,69 @@ public final class HttpRequestContext {
      */
     public void setIsConvenience(boolean isConvenience) {
         this.isConvenience = isConvenience;
+    }
+
+    /**
+     * Sets the static headers from an array of strings.
+     *
+     * @param headers the array of headers to set.
+     */
+    public void setHeaders(String[] headers) {
+        // If the headers array is null or empty, return immediately
+        if (CoreUtils.isNullOrEmpty(headers)) {
+            return;
+        }
+
+        // Iterate through the headers array to process each header
+        for (String header : headers) {
+            // Split the header into key-value pairs using the first occurrence of ":"
+            String[] parts = header.split(":", 2);
+
+            // If no ":" is found, treat the header as a key with an empty value
+            String key = parts[0].trim();
+            String value = parts.length > 1 ? "\"" + parts[1].trim() + "\"" : "";
+
+            if (this.headers.containsKey(key)) {
+                // Replace the existing value with the static header value
+                this.headers.put(key, value);
+            } else {
+                // Add the new key-value pair to the headers map
+                addHeader(key, value);
+            }
+        }
+    }
+
+    /**
+     * Sets the static query parameters from an array of strings.
+     *
+     * @param queryParams the array of query parameters to set.
+     */
+    public void setQueryParams(String[] queryParams) {
+        // If the query params array is null or empty, return immediately
+        if (CoreUtils.isNullOrEmpty(queryParams)) {
+            return;
+        }
+
+        // Iterate through the query params array to process each query param
+        for (String queryParam : queryParams) {
+            // Split the query param into key-value pairs using the first occurrence of "="
+            String[] parts = queryParam.split("=", 2);
+
+            // Extract the key and value, trimming any leading or trailing whitespace
+            String key = parts[0].trim();
+            String value = parts.length > 1 ? "\"" + parts[1].trim() + "\"" : ""; // Surround the value with quotes
+
+            if (this.queryParams.containsKey(key)) {
+                // Append the new value to the existing key
+                QueryParameter existingParam = this.queryParams.get(key);
+                String existingValue = existingParam.getValue();
+                String combinedValue = existingValue + ";" + value; // Combine values with a delimiter
+                this.queryParams.put(key, new QueryParameter(combinedValue, true, existingParam.shouldEncode()));
+            } else {
+                // Add the new key-value pair to the query params map
+                addQueryParam(key, value, true, false);
+            }
+        }
     }
 
     /**
