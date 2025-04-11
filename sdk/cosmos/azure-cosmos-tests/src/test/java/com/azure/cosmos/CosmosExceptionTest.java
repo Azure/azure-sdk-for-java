@@ -64,6 +64,7 @@ import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.SERVE
 import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.SERVER_GENERATED_503;
 import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.TIMEOUT_GENERATED_410;
 import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_410;
+import static com.azure.cosmos.implementation.HttpConstants.SubStatusCodes.TRANSPORT_GENERATED_503;
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.testng.Assert.assertEquals;
@@ -214,7 +215,8 @@ public class CosmosExceptionTest {
             { GoneException.class, GONE,  COMPLETING_SPLIT_EXCEEDED_RETRY_LIMIT},
             { GoneException.class, GONE,  NAME_CACHE_IS_STALE_EXCEEDED_RETRY_LIMIT},
             { GoneException.class, GONE,  PARTITION_KEY_RANGE_GONE_EXCEEDED_RETRY_LIMIT},
-            { ServiceUnavailableException.class, SERVICE_UNAVAILABLE, SERVER_GENERATED_503 }
+            { ServiceUnavailableException.class, SERVICE_UNAVAILABLE, SERVER_GENERATED_503 },
+            { ServiceUnavailableException.class, SERVICE_UNAVAILABLE, TRANSPORT_GENERATED_503 }
         };
     }
 }
