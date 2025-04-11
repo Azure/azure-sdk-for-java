@@ -24,6 +24,7 @@ import com.azure.ai.openai.models.ChatCompletionsOptions;
 import com.azure.ai.openai.models.ChatCompletionsToolCall;
 import com.azure.ai.openai.models.ChatCompletionsToolSelection;
 import com.azure.ai.openai.models.ChatCompletionsToolSelectionPreset;
+import com.azure.ai.openai.models.ChatCompletionStreamOptions;
 import com.azure.ai.openai.models.ChatResponseMessage;
 import com.azure.ai.openai.models.ChatRole;
 import com.azure.ai.openai.models.Choice;
@@ -1728,6 +1729,56 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
 
             Upload cancelUpload = client.cancelUpload(uploadId);
             assertEquals(uploadId, cancelUpload.getId());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetCompletionsStreamChatCompletionStreamOptions(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        getCompletionsRunner((deploymentId, prompt) -> {
+            IterableStream<Completions> resultCompletions = client.getCompletionsStream(deploymentId,
+                new CompletionsOptions(prompt), new ChatCompletionStreamOptions().setIncludeUsage(true));
+
+            Object[] result = resultCompletions.stream().toArray();
+            Completions[] completionsArray = Arrays.copyOf(result, result.length, Completions[].class);
+
+            assertTrue(completionsArray.length > 1);
+            // First element returns the prompt filter results (no output tokens are present)
+            assertFalse(CoreUtils.isNullOrEmpty(completionsArray[0].getPromptFilterResults()));
+            // Choices (output tokens) are present in all the elements in between
+            for (int i = 1; i < completionsArray.length - 2; i++) {
+                assertCompletionsStream(completionsArray[i]);
+            }
+
+            // Last element returns the completion tokens (no output tokens are present)
+            assertNotNull(completionsArray[completionsArray.length - 1].getUsage());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsStreamChatCompletionStreamOptionsUsageTrue(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        getChatCompletionsStreamUsageRunner((deploymentId, chatCompletionsOptions) -> {
+            IterableStream<ChatCompletions> resultChatCompletions = client.getChatCompletionsStream(deploymentId,
+                chatCompletionsOptions, new ChatCompletionStreamOptions().setIncludeUsage(true));
+            assertChatCompletionStreamUsage(resultChatCompletions.stream().collect(Collectors.toList()));
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsStreamChatCompletionStreamOptionsUsageFalse(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        getChatCompletionsRunner((deploymentId, chatMessages) -> {
+            IterableStream<ChatCompletions> resultChatCompletions = client.getChatCompletionsStream(deploymentId,
+                new ChatCompletionsOptions(chatMessages), new ChatCompletionStreamOptions().setIncludeUsage(false));
+            assertTrue(resultChatCompletions.stream().toArray().length > 1);
+            resultChatCompletions.forEach(OpenAIClientTestBase::assertChatCompletionsStream);
         });
     }
 }
