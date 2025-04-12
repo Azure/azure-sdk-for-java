@@ -669,7 +669,7 @@ public final class ConnectionPolicy {
             ", minConnectionPoolSizePerEndpoint=" + minConnectionPoolSizePerEndpoint +
             ", openConnectionsConcurrency=" + openConnectionsConcurrency +
             ", aggressiveWarmupConcurrency=" + aggressiveWarmupConcurrency +
-            ", pendingAcquireMaxCount=" + this.pendingAcquireMaxCount != null ? String.valueOf(this.pendingAcquireMaxCount) : "DEFAULT" +
+            ", pendingAcquireMaxCount=" + (this.pendingAcquireMaxCount != null ? String.valueOf(this.pendingAcquireMaxCount) : "DEFAULT") +
             '}';
     }
 }
