@@ -241,8 +241,6 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertNotNull(JsonMapper.builder().build().readValue(choice.message().content().get(), Map.class));
     }
 
-    // --------------------------------------------------------
-    @DisabledIf("com.azure.ai.openai.stainless.TestUtils#isAzureConfigMissing")
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
     public void testChatCompletionWithSensitiveContent(String apiType, String apiVersion, String testModel) {
@@ -253,7 +251,6 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertRaiContentFilter(thrownException);
     }
 
-    @DisabledIf("com.azure.ai.openai.stainless.TestUtils#isAzureConfigMissing")
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
     public void testChatCompletionWithoutSensitiveContent(String apiType, String apiVersion, String testModel) {
@@ -263,13 +260,12 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         ChatCompletion chatCompletion = client.chat().completions().create(params);
         assertChatCompletionWithoutSensitiveContent(chatCompletion);
     }
-    // --------------------------------------------------------
 
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
     public void testChatCompletionByod(String apiType, String apiVersion, String testModel) {
         client = createClient(apiType, apiVersion);
-        ChatCompletionCreateParams params = createParamsBuilder("gpt-4o-mini")
+        ChatCompletionCreateParams params = createParamsBuilder(testModel)
             .messages(asList(createSystemMessageParam(),
                 createUserMessageParam("What do most contributions require you to do?")))
             .additionalBodyProperties(createExtraBodyForByod())

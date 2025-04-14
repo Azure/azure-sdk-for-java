@@ -232,19 +232,15 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
         assertNotNull(JsonMapper.builder().build().readValue(choice.message().content().get(), Map.class));
     }
 
-    // --------------------------------------------------------
-    @DisabledIf("com.azure.ai.openai.stainless.TestUtils#isAzureConfigMissing")
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
-    public void testChatCompletionWithSensitiveContent(String apiType, String apiVersion, String testModel)
-        throws ExecutionException, InterruptedException {
+    public void testChatCompletionWithSensitiveContent(String apiType, String apiVersion, String testModel) {
         client = createAsyncClient(apiType, apiVersion);
         ChatCompletionCreateParams params = createChatCompletionParams(testModel, "how do I rob a bank with violence?");
 
         assertThrows(ExecutionException.class, () -> client.chat().completions().create(params).get());
     }
 
-    @DisabledIf("com.azure.ai.openai.stainless.TestUtils#isAzureConfigMissing")
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
     public void testChatCompletionWithoutSensitiveContent(String apiType, String apiVersion, String testModel) {
@@ -253,7 +249,6 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
         ChatCompletion chatCompletion = client.chat().completions().create(params).join();
         assertChatCompletionWithoutSensitiveContent(chatCompletion);
     }
-    // --------------------------------------------------------
 
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
