@@ -3,6 +3,7 @@
 
 package io.clientcore.http.netty4.implementation;
 
+import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
@@ -10,11 +11,16 @@ import io.clientcore.core.instrumentation.logging.LogLevel;
 import io.clientcore.core.instrumentation.logging.LoggingEvent;
 import io.clientcore.core.utils.CoreUtils;
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelPipeline;
+import io.netty.handler.codec.http.HttpClientCodec;
+import io.netty.handler.codec.http.HttpDecoderConfig;
+import io.netty.handler.codec.http.HttpHeadersFactory;
 import io.netty.util.Version;
 
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,8 +30,8 @@ import java.util.concurrent.CountDownLatch;
 /**
  * Helper class containing utility methods.
  */
-public final class NettyUtility {
-    private static final ClientLogger LOGGER = new ClientLogger(NettyUtility.class);
+public final class Netty4Utility {
+    private static final ClientLogger LOGGER = new ClientLogger(Netty4Utility.class);
 
     static final String PROPERTIES_FILE_NAME = "http-netty.properties";
     static final String NETTY_VERSION_PROPERTY = "netty-version";
@@ -38,6 +44,12 @@ public final class NettyUtility {
             "netty-handler", "netty-handler-proxy", "netty-resolver", "netty-resolver-dns", "netty-transport");
     private static final List<String> OPTIONAL_NETTY_VERSION_ARTIFACTS = Arrays
         .asList("netty-transport-native-unix-common", "netty-transport-native-epoll", "netty-transport-native-kqueue");
+
+    /**
+     * Name given to the {@link Netty4ProgressAndTimeoutHandler} used in the {@link ChannelPipeline} created by
+     * {@code NettyHttpClient}.
+     */
+    public static final String PROGRESS_AND_TIMEOUT_HANDLER_NAME = "Netty4-Progress-And-Timeout-Handler";
 
     /**
      * Converts Netty HttpHeaders to ClientCore HttpHeaders.
@@ -102,6 +114,77 @@ public final class NettyUtility {
     }
 
     /**
+     * Creates an {@link HttpClientCodec} that uses a custom {@link HttpDecoderConfig} that injects
+     * {@link WrappedHttpHeaders} functionality.
+     *
+     * @return A new {@link HttpClientCodec} instance.
+     */
+    public static HttpClientCodec createCodec() {
+        return new HttpClientCodec(new HttpDecoderConfig().setHeadersFactory(new HttpHeadersFactory() {
+            // Override newHeaders and newEmptyHeaders to return a new instance of WrappedHttpHeaders.
+            // This is a performance optimization to remove converting Netty's HttpHeaders to ClientCore's HttpHeaders
+            // and vice versa.
+            @Override
+            public io.netty.handler.codec.http.HttpHeaders newHeaders() {
+                return new WrappedHttpHeaders(new io.clientcore.core.http.models.HttpHeaders());
+            }
+
+            @Override
+            public io.netty.handler.codec.http.HttpHeaders newEmptyHeaders() {
+                return new WrappedHttpHeaders(new io.clientcore.core.http.models.HttpHeaders());
+            }
+        }), HttpClientCodec.DEFAULT_PARSE_HTTP_AFTER_CONNECT_REQUEST, HttpClientCodec.DEFAULT_FAIL_ON_MISSING_RESPONSE);
+    }
+
+    /**
+     * Convenience method for getting the header value of a given name from the Netty
+     * {@link io.netty.handler.codec.http.HttpHeaders}.
+     * <p>
+     * This method inspects the Netty {@link io.netty.handler.codec.http.HttpHeaders} for being an instance of
+     * {@link WrappedHttpHeaders}. If it is not an instanceof it will use the {@code nettyHeaderName} to retrieve all
+     * values. If it is an instanceof it will use the {@code clientCoreHeaderName}.
+     * <p>
+     * This method is an attempt to optimize retrieval as Netty and ClientCore use different structures for managing
+     * headers, where in many cases lookup is faster for ClientCore headers.
+     *
+     * @param headers The Netty {@link io.netty.handler.codec.http.HttpHeaders} to retrieve all header values from.
+     * @param nettyHeaderName The header name to use when retrieving from a non-{@link WrappedHttpHeaders}.
+     * @param clientCoreHeaderName The header name to use when retrieving from a {@link WrappedHttpHeaders}.
+     * @return The value for the header name, or null if the header didn't exist in the headers.
+     */
+    public static String get(io.netty.handler.codec.http.HttpHeaders headers, CharSequence nettyHeaderName,
+        HttpHeaderName clientCoreHeaderName) {
+        List<String> all = getAll(headers, nettyHeaderName, clientCoreHeaderName);
+        return all.isEmpty() ? null : all.get(0);
+    }
+
+    /**
+     * Convenience method for getting all header values of a given name from the Netty
+     * {@link io.netty.handler.codec.http.HttpHeaders}.
+     * <p>
+     * This method inspects the Netty {@link io.netty.handler.codec.http.HttpHeaders} for being an instance of
+     * {@link WrappedHttpHeaders}. If it is not an instanceof it will use the {@code nettyHeaderName} to retrieve all
+     * values. If it is an instanceof it will use the {@code clientCoreHeaderName}.
+     * <p>
+     * This method is an attempt to optimize retrieval as Netty and ClientCore use different structures for managing
+     * headers, where in many cases lookup is faster for ClientCore headers.
+     *
+     * @param headers The Netty {@link io.netty.handler.codec.http.HttpHeaders} to retrieve all header values from.
+     * @param nettyHeaderName The header name to use when retrieving from a non-{@link WrappedHttpHeaders}.
+     * @param clientCoreHeaderName The header name to use when retrieving from a {@link WrappedHttpHeaders}.
+     * @return The list of values for the header name, or an empty list if the header didn't exist in the headers.
+     */
+    public static List<String> getAll(io.netty.handler.codec.http.HttpHeaders headers, CharSequence nettyHeaderName,
+        HttpHeaderName clientCoreHeaderName) {
+        if (headers instanceof WrappedHttpHeaders) {
+            HttpHeader header = ((WrappedHttpHeaders) headers).getCoreHeaders().get(clientCoreHeaderName);
+            return (header == null) ? Collections.emptyList() : header.getValues();
+        } else {
+            return headers.getAll(nettyHeaderName);
+        }
+    }
+
+    /**
      * Checks the runtime version of the Netty libraries.
      * <p>
      * If the runtime versions match the dependencies in the pom.xml file, this method will do nothing.
@@ -136,7 +219,7 @@ public final class NettyUtility {
     static NettyVersionLogInformation createNettyVersionLogInformation(String nettyVersion) {
         Map<String, String> classpathNettyVersions = new LinkedHashMap<>();
 
-        Map<String, Version> nettyVersions = Version.identify(NettyUtility.class.getClassLoader());
+        Map<String, Version> nettyVersions = Version.identify(Netty4Utility.class.getClassLoader());
 
         for (String artifact : REQUIRED_NETTY_VERSION_ARTIFACTS) {
             Version version = nettyVersions.get(artifact);
@@ -190,6 +273,6 @@ public final class NettyUtility {
         }
     }
 
-    private NettyUtility() {
+    private Netty4Utility() {
     }
 }
