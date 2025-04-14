@@ -277,6 +277,75 @@ public final class RegistryUpdateParameters implements JsonSerializable<Registry
     }
 
     /**
+     * Get the anonymousPullEnabled property: Enables registry-wide pull from unauthenticated clients.
+     * 
+     * @return the anonymousPullEnabled value.
+     */
+    public Boolean anonymousPullEnabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().anonymousPullEnabled();
+    }
+
+    /**
+     * Set the anonymousPullEnabled property: Enables registry-wide pull from unauthenticated clients.
+     * 
+     * @param anonymousPullEnabled the anonymousPullEnabled value to set.
+     * @return the RegistryUpdateParameters object itself.
+     */
+    public RegistryUpdateParameters withAnonymousPullEnabled(Boolean anonymousPullEnabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistryPropertiesUpdateParameters();
+        }
+        this.innerProperties().withAnonymousPullEnabled(anonymousPullEnabled);
+        return this;
+    }
+
+    /**
+     * Get the metadataSearch property: Determines whether registry artifacts are indexed for metadata search.
+     * 
+     * @return the metadataSearch value.
+     */
+    public MetadataSearch metadataSearch() {
+        return this.innerProperties() == null ? null : this.innerProperties().metadataSearch();
+    }
+
+    /**
+     * Set the metadataSearch property: Determines whether registry artifacts are indexed for metadata search.
+     * 
+     * @param metadataSearch the metadataSearch value to set.
+     * @return the RegistryUpdateParameters object itself.
+     */
+    public RegistryUpdateParameters withMetadataSearch(MetadataSearch metadataSearch) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistryPropertiesUpdateParameters();
+        }
+        this.innerProperties().withMetadataSearch(metadataSearch);
+        return this;
+    }
+
+    /**
+     * Get the roleAssignmentMode property: Determines registry role assignment mode.
+     * 
+     * @return the roleAssignmentMode value.
+     */
+    public RoleAssignmentMode roleAssignmentMode() {
+        return this.innerProperties() == null ? null : this.innerProperties().roleAssignmentMode();
+    }
+
+    /**
+     * Set the roleAssignmentMode property: Determines registry role assignment mode.
+     * 
+     * @param roleAssignmentMode the roleAssignmentMode value to set.
+     * @return the RegistryUpdateParameters object itself.
+     */
+    public RegistryUpdateParameters withRoleAssignmentMode(RoleAssignmentMode roleAssignmentMode) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RegistryPropertiesUpdateParameters();
+        }
+        this.innerProperties().withRoleAssignmentMode(roleAssignmentMode);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.

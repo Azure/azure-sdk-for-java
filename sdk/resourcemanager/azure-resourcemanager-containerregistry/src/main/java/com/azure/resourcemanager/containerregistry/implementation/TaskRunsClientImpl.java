@@ -94,9 +94,9 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
 
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/taskRuns/{taskRunName}")
-        @ExpectedResponses({ 200, 202, 204 })
+        @ExpectedResponses({ 200, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+        Mono<Response<Void>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("registryName") String registryName,
             @QueryParam("api-version") String apiVersion, @PathParam("taskRunName") String taskRunName,
@@ -173,11 +173,10 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         if (taskRunName == null) {
             return Mono.error(new IllegalArgumentException("Parameter taskRunName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, apiVersion, taskRunName, accept, context))
+                resourceGroupName, registryName, this.client.getApiVersion(), taskRunName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -215,11 +214,10 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         if (taskRunName == null) {
             return Mono.error(new IllegalArgumentException("Parameter taskRunName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, registryName,
-            apiVersion, taskRunName, accept, context);
+            this.client.getApiVersion(), taskRunName, accept, context);
     }
 
     /**
@@ -312,11 +310,10 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         } else {
             taskRun.validate();
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, apiVersion, taskRunName, taskRun, accept, context))
+                resourceGroupName, registryName, this.client.getApiVersion(), taskRunName, taskRun, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -360,11 +357,10 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         } else {
             taskRun.validate();
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            registryName, apiVersion, taskRunName, taskRun, accept, context);
+            registryName, this.client.getApiVersion(), taskRunName, taskRun, accept, context);
     }
 
     /**
@@ -536,7 +532,7 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String registryName,
+    public Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String registryName,
         String taskRunName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -556,11 +552,10 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         if (taskRunName == null) {
             return Mono.error(new IllegalArgumentException("Parameter taskRunName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, apiVersion, taskRunName, accept, context))
+                resourceGroupName, registryName, this.client.getApiVersion(), taskRunName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -577,7 +572,7 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String registryName,
+    private Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String registryName,
         String taskRunName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -597,87 +592,10 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         if (taskRunName == null) {
             return Mono.error(new IllegalArgumentException("Parameter taskRunName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            registryName, apiVersion, taskRunName, accept, context);
-    }
-
-    /**
-     * Deletes a specified task run resource.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param taskRunName The name of the task run.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String registryName,
-        String taskRunName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, registryName, taskRunName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
-    }
-
-    /**
-     * Deletes a specified task run resource.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param taskRunName The name of the task run.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String registryName,
-        String taskRunName, Context context) {
-        context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceGroupName, registryName, taskRunName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            context);
-    }
-
-    /**
-     * Deletes a specified task run resource.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param taskRunName The name of the task run.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName,
-        String taskRunName) {
-        return this.beginDeleteAsync(resourceGroupName, registryName, taskRunName).getSyncPoller();
-    }
-
-    /**
-     * Deletes a specified task run resource.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param taskRunName The name of the task run.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName,
-        String taskRunName, Context context) {
-        return this.beginDeleteAsync(resourceGroupName, registryName, taskRunName, context).getSyncPoller();
+            registryName, this.client.getApiVersion(), taskRunName, accept, context);
     }
 
     /**
@@ -693,8 +611,7 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String registryName, String taskRunName) {
-        return beginDeleteAsync(resourceGroupName, registryName, taskRunName).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return deleteWithResponseAsync(resourceGroupName, registryName, taskRunName).flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -707,12 +624,12 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String registryName, String taskRunName, Context context) {
-        return beginDeleteAsync(resourceGroupName, registryName, taskRunName, context).last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    public Response<Void> deleteWithResponse(String resourceGroupName, String registryName, String taskRunName,
+        Context context) {
+        return deleteWithResponseAsync(resourceGroupName, registryName, taskRunName, context).block();
     }
 
     /**
@@ -727,23 +644,7 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String registryName, String taskRunName) {
-        deleteAsync(resourceGroupName, registryName, taskRunName).block();
-    }
-
-    /**
-     * Deletes a specified task run resource.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param taskRunName The name of the task run.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String registryName, String taskRunName, Context context) {
-        deleteAsync(resourceGroupName, registryName, taskRunName, context).block();
+        deleteWithResponse(resourceGroupName, registryName, taskRunName, Context.NONE);
     }
 
     /**
@@ -786,11 +687,11 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         } else {
             updateParameters.validate();
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, apiVersion, taskRunName, updateParameters, accept, context))
+            .withContext(
+                context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    registryName, this.client.getApiVersion(), taskRunName, updateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -835,11 +736,10 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         } else {
             updateParameters.validate();
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            registryName, apiVersion, taskRunName, updateParameters, accept, context);
+            registryName, this.client.getApiVersion(), taskRunName, updateParameters, accept, context);
     }
 
     /**
@@ -1033,11 +933,10 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         if (taskRunName == null) {
             return Mono.error(new IllegalArgumentException("Parameter taskRunName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.getDetails(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, apiVersion, taskRunName, accept, context))
+                resourceGroupName, registryName, this.client.getApiVersion(), taskRunName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1075,11 +974,10 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         if (taskRunName == null) {
             return Mono.error(new IllegalArgumentException("Parameter taskRunName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.getDetails(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            registryName, apiVersion, taskRunName, accept, context);
+            registryName, this.client.getApiVersion(), taskRunName, accept, context);
     }
 
     /**
@@ -1161,11 +1059,10 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, registryName, apiVersion, accept, context))
+                resourceGroupName, registryName, this.client.getApiVersion(), accept, context))
             .<PagedResponse<TaskRunInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1200,12 +1097,11 @@ public final class TaskRunsClientImpl implements TaskRunsClient {
         if (registryName == null) {
             return Mono.error(new IllegalArgumentException("Parameter registryName is required and cannot be null."));
         }
-        final String apiVersion = "2019-06-01-preview";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, registryName,
-                apiVersion, accept, context)
+                this.client.getApiVersion(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
