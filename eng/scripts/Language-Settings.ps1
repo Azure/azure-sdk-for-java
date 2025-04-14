@@ -526,11 +526,11 @@ function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName)
 function Find-java-Artifacts-For-ApireviewV2($artifactDir, $packageInfo)
 {
   # skip spark packages
-  if ($packageInfo.ArtifactId.Contains("-spark")) {
+  if ($packageInfo.ArtifactName.Contains("-spark")) {
     return $null
   }
   # skip azure-cosmos-test package because it needs to be released
-  if ($packageInfo.ArtifactId.Contains("azure-cosmos-test")) {
+  if ($packageInfo.ArtifactName.Contains("azure-cosmos-test")) {
     return $null
   }
 
