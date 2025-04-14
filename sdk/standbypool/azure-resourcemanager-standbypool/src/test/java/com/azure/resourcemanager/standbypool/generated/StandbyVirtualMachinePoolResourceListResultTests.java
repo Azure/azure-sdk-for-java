@@ -13,7 +13,7 @@ public final class StandbyVirtualMachinePoolResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StandbyVirtualMachinePoolResourceListResult model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":6994648788334081274,\"minReadyCapacity\":1638654012680876058},\"virtualMachineState\":\"Deallocated\",\"attachedVirtualMachineScaleSetId\":\"dfdosygexp\",\"provisioningState\":\"Canceled\"},\"location\":\"khmsbz\",\"tags\":{\"hqtrgqjbpf\":\"rzevdphlxaol\",\"tfell\":\"fsinzgvfcjrwzoxx\",\"lxofpdvhpfxxypin\":\"wfzitonpeqfpjk\"},\"id\":\"nmayhuybb\",\"name\":\"podepoo\",\"type\":\"inuvamiheogn\"}],\"nextLink\":\"xzxtheo\"}")
+            "{\"value\":[{\"properties\":{\"elasticityProfile\":{\"maxReadyCapacity\":6994648788334081274,\"minReadyCapacity\":1638654012680876058},\"virtualMachineState\":\"Running\",\"attachedVirtualMachineScaleSetId\":\"dfdosygexp\",\"provisioningState\":\"Canceled\"},\"location\":\"khmsbz\",\"tags\":{\"hqtrgqjbpf\":\"rzevdphlxaol\",\"tfell\":\"fsinzgvfcjrwzoxx\",\"lxofpdvhpfxxypin\":\"wfzitonpeqfpjk\"},\"id\":\"nmayhuybb\",\"name\":\"podepoo\",\"type\":\"inuvamiheogn\"}],\"nextLink\":\"xzxtheo\"}")
             .toObject(StandbyVirtualMachinePoolResourceListResult.class);
         Assertions.assertEquals("khmsbz", model.value().get(0).location());
         Assertions.assertEquals("rzevdphlxaol", model.value().get(0).tags().get("hqtrgqjbpf"));
@@ -21,8 +21,7 @@ public final class StandbyVirtualMachinePoolResourceListResultTests {
             model.value().get(0).properties().elasticityProfile().maxReadyCapacity());
         Assertions.assertEquals(1638654012680876058L,
             model.value().get(0).properties().elasticityProfile().minReadyCapacity());
-        Assertions.assertEquals(VirtualMachineState.DEALLOCATED,
-            model.value().get(0).properties().virtualMachineState());
+        Assertions.assertEquals(VirtualMachineState.RUNNING, model.value().get(0).properties().virtualMachineState());
         Assertions.assertEquals("dfdosygexp", model.value().get(0).properties().attachedVirtualMachineScaleSetId());
         Assertions.assertEquals("xzxtheo", model.nextLink());
     }

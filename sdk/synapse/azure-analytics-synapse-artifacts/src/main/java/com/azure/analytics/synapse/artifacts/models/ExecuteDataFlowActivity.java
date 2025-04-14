@@ -39,6 +39,11 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
     private IntegrationRuntimeReference integrationRuntime;
 
     /*
+     * Continuation settings for execute data flow activity.
+     */
+    private ContinuationSettingsReference continuationSettings;
+
+    /*
      * Compute properties for data flow activity.
      */
     private ExecuteDataFlowActivityTypePropertiesCompute compute;
@@ -140,6 +145,26 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
      */
     public ExecuteDataFlowActivity setIntegrationRuntime(IntegrationRuntimeReference integrationRuntime) {
         this.integrationRuntime = integrationRuntime;
+        return this;
+    }
+
+    /**
+     * Get the continuationSettings property: Continuation settings for execute data flow activity.
+     * 
+     * @return the continuationSettings value.
+     */
+    public ContinuationSettingsReference getContinuationSettings() {
+        return this.continuationSettings;
+    }
+
+    /**
+     * Set the continuationSettings property: Continuation settings for execute data flow activity.
+     * 
+     * @param continuationSettings the continuationSettings value to set.
+     * @return the ExecuteDataFlowActivity object itself.
+     */
+    public ExecuteDataFlowActivity setContinuationSettings(ContinuationSettingsReference continuationSettings) {
+        this.continuationSettings = continuationSettings;
         return this;
     }
 
@@ -343,6 +368,7 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
         if (dataflow != null
             || staging != null
             || integrationRuntime != null
+            || continuationSettings != null
             || compute != null
             || traceLevel != null
             || continueOnError != null
@@ -352,6 +378,7 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
             jsonWriter.writeJsonField("dataflow", this.dataflow);
             jsonWriter.writeJsonField("staging", this.staging);
             jsonWriter.writeJsonField("integrationRuntime", this.integrationRuntime);
+            jsonWriter.writeJsonField("continuationSettings", this.continuationSettings);
             jsonWriter.writeJsonField("compute", this.compute);
             jsonWriter.writeUntypedField("traceLevel", this.traceLevel);
             jsonWriter.writeUntypedField("continueOnError", this.continueOnError);
@@ -418,6 +445,9 @@ public class ExecuteDataFlowActivity extends ExecutionActivity {
                         } else if ("integrationRuntime".equals(fieldName)) {
                             deserializedExecuteDataFlowActivity.integrationRuntime
                                 = IntegrationRuntimeReference.fromJson(reader);
+                        } else if ("continuationSettings".equals(fieldName)) {
+                            deserializedExecuteDataFlowActivity.continuationSettings
+                                = ContinuationSettingsReference.fromJson(reader);
                         } else if ("compute".equals(fieldName)) {
                             deserializedExecuteDataFlowActivity.compute
                                 = ExecuteDataFlowActivityTypePropertiesCompute.fromJson(reader);

@@ -27,7 +27,9 @@ public final class WeatherValueYear implements JsonSerializable<WeatherValueYear
     private String unit;
 
     /*
-     * Numeric ID value associated with the type of unit being displayed. Can be used for unit translation. Please refer to [Weather services in Azure Maps](/azure/azure-maps/weather-services-concepts#daily-index-range-sets) for details.
+     * Numeric ID value associated with the type of unit being displayed. Can be used for unit translation. Please refer
+     * to [Weather services in Azure Maps](/azure/azure-maps/weather-services-concepts#daily-index-range-sets) for
+     * details.
      */
     private Integer unitType;
 

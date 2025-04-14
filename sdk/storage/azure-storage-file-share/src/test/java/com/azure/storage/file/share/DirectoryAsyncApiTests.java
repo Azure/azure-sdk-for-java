@@ -7,7 +7,9 @@ import com.azure.core.http.rest.Response;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
+import com.azure.storage.file.share.models.NfsFileType;
 import com.azure.storage.file.share.models.FilePermissionFormat;
+import com.azure.storage.file.share.models.FilePosixProperties;
 import com.azure.storage.file.share.models.NtfsFileAttributes;
 import com.azure.storage.file.share.models.ShareAudience;
 import com.azure.storage.file.share.models.ShareDirectoryInfo;
@@ -1053,5 +1055,86 @@ public class DirectoryAsyncApiTests extends FileShareTestBase {
             = oAuthServiceClient.getShareAsyncClient(shareName).getDirectoryClient(dirName);
 
         StepVerifier.create(createDirMono.then(aadDirClient.exists())).expectNext(true).verifyComplete();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
+    @Test
+    public void createNFS() {
+        ShareDirectoryCreateOptions options = new ShareDirectoryCreateOptions()
+            .setPosixProperties(new FilePosixProperties().setOwner("345").setGroup("123").setFileMode("7777"));
+
+        String shareName = generateShareName();
+        Mono<Response<ShareDirectoryInfo>> create
+            = getPremiumNFSShareAsyncClient(shareName).flatMap(premiumShareClient -> {
+                ShareDirectoryAsyncClient premiumDirectoryClient
+                    = premiumShareClient.getDirectoryClient(generatePathName());
+                return premiumDirectoryClient.createWithResponse(options);
+            });
+
+        StepVerifier.create(create).assertNext(r -> {
+            ShareDirectoryInfo response = r.getValue();
+            assertEquals(NfsFileType.DIRECTORY, response.getPosixProperties().getFileType());
+            assertEquals("345", response.getPosixProperties().getOwner());
+            assertEquals("123", response.getPosixProperties().getGroup());
+            assertEquals("7777", response.getPosixProperties().getFileMode());
+
+            FileShareTestHelper.assertSmbPropertiesNull(response.getSmbProperties());
+        }).verifyComplete();
+
+        //cleanup
+        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
+    @Test
+    public void setPropertiesNFS() {
+        ShareDirectorySetPropertiesOptions options = new ShareDirectorySetPropertiesOptions()
+            .setPosixProperties(new FilePosixProperties().setOwner("345").setGroup("123").setFileMode("7777"));
+
+        String shareName = generateShareName();
+        Mono<Response<ShareDirectoryInfo>> create
+            = getPremiumNFSShareAsyncClient(shareName).flatMap(premiumShareClient -> {
+                ShareDirectoryAsyncClient premiumDirectoryClient
+                    = premiumShareClient.getDirectoryClient(generatePathName());
+                return premiumDirectoryClient.create().then(premiumDirectoryClient.setPropertiesWithResponse(options));
+            });
+
+        StepVerifier.create(create).assertNext(r -> {
+            ShareDirectoryInfo response = r.getValue();
+            assertEquals("345", response.getPosixProperties().getOwner());
+            assertEquals("123", response.getPosixProperties().getGroup());
+            assertEquals("7777", response.getPosixProperties().getFileMode());
+
+            FileShareTestHelper.assertSmbPropertiesNull(response.getSmbProperties());
+        }).verifyComplete();
+
+        //cleanup
+        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
+    }
+
+    @RequiredServiceVersion(clazz = ShareServiceVersion.class, min = "2025-05-05")
+    @Test
+    public void getPropertiesNFS() {
+        String shareName = generateShareName();
+        Mono<Response<ShareDirectoryProperties>> create
+            = getPremiumNFSShareAsyncClient(shareName).flatMap(premiumShareClient -> {
+                ShareDirectoryAsyncClient premiumDirectoryClient
+                    = premiumShareClient.getDirectoryClient(generatePathName());
+                return premiumDirectoryClient.create().then(premiumDirectoryClient.getPropertiesWithResponse());
+            });
+
+        StepVerifier.create(create).assertNext(r -> {
+            ShareDirectoryProperties response = r.getValue();
+
+            assertEquals(NfsFileType.DIRECTORY, response.getPosixProperties().getFileType());
+            assertEquals("0", response.getPosixProperties().getOwner());
+            assertEquals("0", response.getPosixProperties().getGroup());
+            assertEquals("0755", response.getPosixProperties().getFileMode());
+
+            FileShareTestHelper.assertSmbPropertiesNull(response.getSmbProperties());
+        }).verifyComplete();
+
+        //cleanup
+        premiumFileServiceAsyncClient.getShareAsyncClient(shareName).delete().block();
     }
 }

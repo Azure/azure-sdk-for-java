@@ -70,20 +70,20 @@ foreach($packageInfoFile in $packageInfoFiles) {
     # if the library's jar file exists. If the jar doesn't exist then skip this library.
     # From the $packageInfo piece together the path to the javadoc jar file
     # BEGIN-GreedyPackageInfoSkip
-    $jarFile = Join-Path $ArtifactStagingDirectory $packageInfo.Group $packageInfo.Name "$($packageInfo.Name)-$($version).jar"
+    $jarFile = Join-Path $ArtifactStagingDirectory $packageInfo.Group $packageInfo.ArtifactName "$($packageInfo.ArtifactName)-$($version).jar"
     if (!(Test-Path $jarFile -PathType Leaf)) {
         Write-Host "Jar $jarFile doesn't exist, skipping..."
         continue
     }
     # END-GreedyPackageInfoSkip
 
-    $javadocJar = Join-Path $ArtifactStagingDirectory $packageInfo.Group $packageInfo.Name "$($packageInfo.Name)-$($version)-javadoc.jar"
+    $javadocJar = Join-Path $ArtifactStagingDirectory $packageInfo.Group $packageInfo.ArtifactName "$($packageInfo.ArtifactName)-$($version)-javadoc.jar"
     if (!(Test-Path $javadocJar -PathType Leaf)) {
         LogError "Javadoc Jar file, $javadocJar, was not found. Please ensure that a Javadoc jar is being created for the library."
         $foundError = $true
         continue
     }
-    $namespaces = Fetch-Namespaces-From-Javadoc $packageInfo.Name $packageInfo.Group $version $javadocJar
+    $namespaces = Fetch-Namespaces-From-Javadoc $packageInfo.ArtifactName $packageInfo.Group $version $javadocJar
     if ($namespaces.Count -gt 0) {
         Write-Host "Adding/Updating Namespaces property with the following namespaces:"
         $namespaces | Write-Host
@@ -102,7 +102,7 @@ foreach($packageInfoFile in $packageInfoFiles) {
             -Path $packageInfoFile `
             -Value $packageInfoJson
     } else {
-        LogError "Unable to determine namespaces for $($packageInfo.Group):$($packageInfo.Name). Please ensure that skipPublishDocMs isn't incorrectly set to true or that the library isn't producing an empty java doc jar."
+        LogError "Unable to determine namespaces for $($packageInfo.Group):$($packageInfo.ArtifactName). Please ensure that skipPublishDocMs isn't incorrectly set to true or that the library isn't producing an empty java doc jar."
         $foundError = $true
     }
 }

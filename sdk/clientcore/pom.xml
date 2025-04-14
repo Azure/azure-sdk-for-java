@@ -12,8 +12,10 @@
   <modules>
     <module>core</module>
     <module>http-okhttp3</module>
+    <module>http-netty4</module>
+    <module>annotation-processor</module>
+    <module>annotation-processor-test</module>
     <module>optional-dependency-tests</module>
     <module>http-stress</module>
-    <module>tools</module>
   </modules>
 </project>

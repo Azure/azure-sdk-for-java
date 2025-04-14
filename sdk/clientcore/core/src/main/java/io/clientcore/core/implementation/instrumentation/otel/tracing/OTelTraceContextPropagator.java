@@ -5,6 +5,7 @@ package io.clientcore.core.implementation.instrumentation.otel.tracing;
 
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.instrumentation.otel.FallbackInvoker;
+import io.clientcore.core.implementation.instrumentation.otel.OTelContext;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.tracing.TraceContextGetter;

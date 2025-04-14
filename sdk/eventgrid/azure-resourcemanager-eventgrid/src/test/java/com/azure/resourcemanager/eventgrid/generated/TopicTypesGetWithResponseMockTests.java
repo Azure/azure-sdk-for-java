@@ -6,8 +6,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.ResourceRegionType;
@@ -24,27 +24,28 @@ public final class TopicTypesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provider\":\"okfekcjjlw\",\"displayName\":\"e\",\"description\":\"hhutpuln\",\"resourceRegionType\":\"RegionalResource\",\"provisioningState\":\"Creating\",\"supportedLocations\":[\"cih\"],\"sourceResourceFormat\":\"nowrerjpx\",\"supportedScopesForSource\":[\"ManagementGroup\",\"AzureSubscription\",\"ResourceGroup\"],\"areRegionalAndGlobalSourcesSupported\":false,\"additionalEnforcedPermissions\":[{\"permissionName\":\"qimlgbbfjmdgj\",\"isDataAction\":false},{\"permissionName\":\"mpmheftyap\",\"isDataAction\":false},{\"permissionName\":\"fytlsnl\",\"isDataAction\":true}]},\"id\":\"cmcqixuan\",\"name\":\"cqvjf\",\"type\":\"gfqpmq\"}";
+            = "{\"properties\":{\"provider\":\"qpmnu\",\"displayName\":\"hr\",\"description\":\"x\",\"resourceRegionType\":\"RegionalResource\",\"provisioningState\":\"Failed\",\"supportedLocations\":[\"vwlvivjmxmlit\",\"dsjipdviscotyxb\"],\"sourceResourceFormat\":\"ifefndslv\",\"supportedScopesForSource\":[\"ManagementGroup\",\"ManagementGroup\"],\"areRegionalAndGlobalSourcesSupported\":false,\"additionalEnforcedPermissions\":[{\"permissionName\":\"ailwdqmqfyd\",\"isDataAction\":false},{\"permissionName\":\"fxlkd\",\"isDataAction\":true}]},\"id\":\"gnamkuuyiu\",\"name\":\"uafixlxicwgp\",\"type\":\"hdcfm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        TopicTypeInfo response = manager.topicTypes().getWithResponse("f", com.azure.core.util.Context.NONE).getValue();
+        TopicTypeInfo response
+            = manager.topicTypes().getWithResponse("vucgji", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("okfekcjjlw", response.provider());
-        Assertions.assertEquals("e", response.displayName());
-        Assertions.assertEquals("hhutpuln", response.description());
+        Assertions.assertEquals("qpmnu", response.provider());
+        Assertions.assertEquals("hr", response.displayName());
+        Assertions.assertEquals("x", response.description());
         Assertions.assertEquals(ResourceRegionType.REGIONAL_RESOURCE, response.resourceRegionType());
-        Assertions.assertEquals(TopicTypeProvisioningState.CREATING, response.provisioningState());
-        Assertions.assertEquals("cih", response.supportedLocations().get(0));
-        Assertions.assertEquals("nowrerjpx", response.sourceResourceFormat());
+        Assertions.assertEquals(TopicTypeProvisioningState.FAILED, response.provisioningState());
+        Assertions.assertEquals("vwlvivjmxmlit", response.supportedLocations().get(0));
+        Assertions.assertEquals("ifefndslv", response.sourceResourceFormat());
         Assertions.assertEquals(TopicTypeSourceScope.MANAGEMENT_GROUP, response.supportedScopesForSource().get(0));
         Assertions.assertEquals(false, response.areRegionalAndGlobalSourcesSupported());
-        Assertions.assertEquals("qimlgbbfjmdgj", response.additionalEnforcedPermissions().get(0).permissionName());
+        Assertions.assertEquals("ailwdqmqfyd", response.additionalEnforcedPermissions().get(0).permissionName());
         Assertions.assertEquals(false, response.additionalEnforcedPermissions().get(0).isDataAction());
     }
 }

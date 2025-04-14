@@ -33,7 +33,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 import com.azure.security.keyvault.administration.implementation.KeyVaultCredentialPolicy;
-import com.azure.security.keyvault.administration.implementation.KeyVaultErrorCodeStrings;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -94,9 +93,14 @@ public final class KeyVaultBackupClientBuilder implements TokenCredentialTrait<K
     HttpTrait<KeyVaultBackupClientBuilder>, ConfigurationTrait<KeyVaultBackupClientBuilder> {
     // This is the properties file name.
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultBackupClientBuilder.class);
-    private static final String AZURE_KEY_VAULT_RBAC = "azure-key-vault-administration.properties";
-    private static final String SDK_NAME = "name";
-    private static final String SDK_VERSION = "version";
+    private static final String CLIENT_NAME;
+    private static final String CLIENT_VERSION;
+
+    static {
+        Map<String, String> properties = CoreUtils.getProperties("azure-security-keyvault-administration.properties");
+        CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
+        CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
+    }
 
     // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
@@ -105,7 +109,6 @@ public final class KeyVaultBackupClientBuilder implements TokenCredentialTrait<K
 
     private final List<HttpPipelinePolicy> perCallPolicies;
     private final List<HttpPipelinePolicy> perRetryPolicies;
-    private final Map<String, String> properties;
 
     private TokenCredential credential;
     private HttpPipeline pipeline;
@@ -127,7 +130,6 @@ public final class KeyVaultBackupClientBuilder implements TokenCredentialTrait<K
         httpLogOptions = new HttpLogOptions();
         perCallPolicies = new ArrayList<>();
         perRetryPolicies = new ArrayList<>();
-        properties = CoreUtils.getProperties(AZURE_KEY_VAULT_RBAC);
     }
 
     /**
@@ -186,7 +188,7 @@ public final class KeyVaultBackupClientBuilder implements TokenCredentialTrait<K
 
         if (buildEndpoint == null) {
             throw LOGGER
-                .logExceptionAsError(new IllegalStateException(KeyVaultErrorCodeStrings.VAULT_END_POINT_REQUIRED));
+                .logExceptionAsError(new IllegalStateException(KeyVaultAdministrationUtil.VAULT_END_POINT_REQUIRED));
         }
         return buildConfiguration;
     }
@@ -200,15 +202,12 @@ public final class KeyVaultBackupClientBuilder implements TokenCredentialTrait<K
         // Closest to API goes first, closest to wire goes last.
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-
         httpLogOptions = (httpLogOptions == null) ? new HttpLogOptions() : httpLogOptions;
 
         ClientOptions localClientOptions = clientOptions != null ? clientOptions : DEFAULT_CLIENT_OPTIONS;
 
-        policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(localClientOptions, httpLogOptions), clientName,
-            clientVersion, buildConfiguration));
+        policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(localClientOptions, httpLogOptions), CLIENT_NAME,
+            CLIENT_VERSION, buildConfiguration));
 
         List<HttpHeader> httpHeaderList = new ArrayList<>();
         localClientOptions.getHeaders()
@@ -232,7 +231,7 @@ public final class KeyVaultBackupClientBuilder implements TokenCredentialTrait<K
 
         TracingOptions tracingOptions = localClientOptions.getTracingOptions();
         Tracer tracer = TracerProvider.getDefaultProvider()
-            .createTracer(clientName, clientVersion, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
+            .createTracer(CLIENT_NAME, CLIENT_VERSION, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
 
         return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)

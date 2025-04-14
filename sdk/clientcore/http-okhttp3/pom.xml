@@ -8,14 +8,14 @@
   <parent>
     <groupId>io.clientcore</groupId>
     <artifactId>clientcore-parent</artifactId>
-    <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:clientcore-parent;current} -->
+    <version>1.0.0-beta.3</version> <!-- {x-version-update;io.clientcore:clientcore-parent;current} -->
     <relativePath>../../parents/clientcore-parent</relativePath>
   </parent>
 
   <groupId>io.clientcore</groupId>
   <artifactId>http-okhttp3</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:http-okhttp3;current} -->
+  <version>1.0.0-beta.3</version> <!-- {x-version-update;io.clientcore:http-okhttp3;current} -->
 
   <name>Java OkHttp3 HTTP Client Library</name>
   <description>This package contains the OkHttp HTTP client plugin for io.clientcore.</description>
@@ -43,7 +43,7 @@
     <javaModulesSurefireArgLine>
       --add-exports io.clientcore.core/io.clientcore.core.implementation.http=ALL-UNNAMED
       --add-exports io.clientcore.core/io.clientcore.core.implementation.http.serializer=ALL-UNNAMED
-      --add-exports io.clientcore.core/io.clientcore.core.implementation.util=ALL-UNNAMED
+      --add-exports io.clientcore.core/io.clientcore.core.implementation.utils=ALL-UNNAMED
 
       --add-opens io.clientcore.http.okhttp3/io.clientcore.http.okhttp3=ALL-UNNAMED
       --add-opens io.clientcore.http.okhttp3/io.clientcore.http.okhttp3.implementation=ALL-UNNAMED
@@ -55,7 +55,7 @@
     <javadoc.excludePackageNames>
       io.clientcore.core.annotation,io.clientcore.core.credential,io.clientcore.core.http,io.clientcore.core.http.annotation,io.clientcore.core.http.client,
       io.clientcore.core.http.exception,io.clientcore.core.http.models,io.clientcore.core.http.pipeline,io.clientcore.core.implementation,
-      io.clientcore.core.implementation*,io.clientcore.core.models,io.clientcore.core.util,io.clientcore.core.util*
+      io.clientcore.core.implementation*,io.clientcore.core.models,io.clientcore.core.utils,io.clientcore.core.util*
     </javadoc.excludePackageNames>
   </properties>
 
@@ -63,7 +63,7 @@
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.2</version> <!-- {x-version-update;io.clientcore:core;current} -->
+      <version>1.0.0-beta.9</version> <!-- {x-version-update;io.clientcore:core;current} -->
     </dependency>
     <dependency>
       <groupId>com.squareup.okio</groupId>
@@ -86,7 +86,7 @@
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.2</version> <!-- {x-version-update;io.clientcore:core;current} -->
+      <version>1.0.0-beta.9</version> <!-- {x-version-update;io.clientcore:core;current} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
@@ -118,12 +118,6 @@
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-params</artifactId>
       <version>5.11.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-core</artifactId>
-      <version>4.11.0</version><!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

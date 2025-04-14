@@ -20,9 +20,12 @@
 # performance regressions or bugs. They are also responsible for smoke testing their library after every release.
 
 com.azure:azure-ai-contentsafety # Tests owner: zhaiyutong
+com.azure:azure-ai-documentintelligence # Tests owner: samvaity
 com.azure:azure-ai-metricsadvisor # Tests owner: samvaity
 com.azure:azure-ai-textanalytics # Tests owner: mssfang
+com.azure:azure-ai-translation-document # Tests owner: sg-ms
 com.azure:azure-ai-translation-text # Tests owner: MikeyMCZ
+com.azure:azure-ai-vision-imageanalysis # Tests owner: dargilco
 com.azure:azure-communication-callautomation # Tests owner: minwoolee-msft, juntuchen-msft
 com.azure:azure-communication-chat # Tests owner: jiminwen
 com.azure:azure-communication-common # Tests owner: AikoBB, maximrytych-ms, mjafferi-msft
@@ -37,10 +40,12 @@ com.azure:azure-containers-containerregistry # Tests owner: lmolkova
 com.azure:azure-data-appconfiguration # Tests owner: mssfang
 com.azure:azure-data-schemaregistry # Tests owner: conniey
 com.azure:azure-data-schemaregistry-apacheavro # Tests owner: conniey
+com.azure:azure-data-schemaregistry-jsonschema # Tests owner: conniey
 com.azure:azure-data-tables # Tests owner: jairmyree
 com.azure:azure-developer-devcenter # Tests owner: drielenr, leti367
 com.azure:azure-developer-loadtesting # Tests owner: Harshan01, prativen
 com.azure:azure-digitaltwins-core # Tests owner: sjiherzig
+com.azure:azure-health-insights-radiologyinsights # Tests owner: tomsft, koen-mertens
 com.azure:azure-identity-broker # Tests owner: billwert, vigera
 com.azure:azure-identity-extensions # Tests owner: saragluna, backwind1233
 com.azure:azure-iot-deviceupdate # Tests owner: leolie, ryzhan

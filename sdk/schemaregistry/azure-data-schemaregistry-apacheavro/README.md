@@ -23,7 +23,7 @@ and deserialization.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-schemaregistry-apacheavro</artifactId>
-  <version>1.1.21</version>
+  <version>1.2.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -51,7 +51,7 @@ with the Azure SDK, please include the `azure-identity` package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.14.2</version>
+    <version>1.15.3</version>
 </dependency>
 ```
 
@@ -164,4 +164,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fschemaregistry%2Fazure-data-schemaregistry-apacheavro%2FREADME.png)
+

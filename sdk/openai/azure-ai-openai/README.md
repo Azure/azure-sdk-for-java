@@ -47,7 +47,7 @@ If you want to see the full code for these snippets check out our [samples folde
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-openai</artifactId>
-    <version>1.0.0-beta.12</version>
+    <version>1.0.0-beta.16</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -108,7 +108,7 @@ Authentication with Entra ID requires some initial setup:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.14.2</version>
+    <version>1.15.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -165,6 +165,45 @@ The following sections provide several code snippets covering some of the most c
 * [Batch operations sample](#batch-operations "Batch Operations")
 * [Structured Outputs](#structured-outputs "Structured Outputs")
 * [Upload large files in multiple parts](#upload-large-files-in-multiple-parts "Upload large files in multiple parts")
+
+### Responses
+
+The Responses API is OpenAI's newest form of supporting agentic applications with a surface that should feel familiar to Chat Completions users. For more details on the similarities and additional features please visit [OpenAI's documentation site.](https://platform.openai.com/docs/guides/responses-vs-chat-completions)
+
+To use Responses, there is a separate client that is needed which can be initialized to work for both OpenAI and Azure OpenAI services.
+
+```java readme-sample-createAzureResponsesClient
+TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
+ResponsesClient client = new ResponsesClientBuilder()
+    .credential(defaultCredential)
+    .endpoint("{endpoint}")
+    .buildClient(); // or .buildAsyncClient() for the ResponsesAsyncClient
+```
+
+Or for (non-Azure) OpenAI service setup:
+
+```java readme-sample-createNonAzureResponsesClient
+ResponsesClient client = new ResponsesClientBuilder()
+    .credential(new KeyCredential("{openai-secret-key}"))
+    .buildClient(); // or .buildAsyncClient() for the ResponsesAsyncClient
+```
+
+For a very minimal demonstration, to get the equivalent of a Chat Completions request with Responses, the request looks like this:
+
+```java readme-sample-sendResponsesUserMessage
+CreateResponsesRequest request = new CreateResponsesRequest(
+        CreateResponsesRequestModel.GPT_4O_MINI, "Hello, world!"
+);
+
+ResponsesResponse response = responsesClient.createResponse(request);
+
+// Print the response
+ResponsesAssistantMessage assistantMessage = (ResponsesAssistantMessage) response.getOutput().get(0);
+ResponsesOutputContentText outputContent = (ResponsesOutputContentText) assistantMessage.getContent().get(0);
+System.out.println(outputContent.getText());
+```
+
+The full extent of the features supported in the new Responses API surface can be found on [Responses API documentation page.](https://platform.openai.com/docs/api-reference/responses)
 
 ### Legacy completions
 

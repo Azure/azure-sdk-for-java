@@ -23,7 +23,7 @@ public final class ClusterPrincipalAssignmentsCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"principalId\":\"zjkjexfdeqv\",\"role\":\"AllDatabasesViewer\",\"tenantId\":\"ylkkshkbffmbm\",\"principalType\":\"Group\",\"tenantName\":\"rgywwp\",\"principalName\":\"xs\",\"provisioningState\":\"Succeeded\",\"aadObjectId\":\"ujgicgaaoe\"},\"id\":\"ttaqutdew\",\"name\":\"mxswvruunzz\",\"type\":\"gehkfkimrtixokff\"}";
+            = "{\"properties\":{\"principalId\":\"syrq\",\"role\":\"AllDatabasesAdmin\",\"tenantId\":\"qhd\",\"principalType\":\"Group\",\"tenantName\":\"aulk\",\"principalName\":\"kdk\",\"provisioningState\":\"Succeeded\",\"aadObjectId\":\"nnawtqabpxuckpgg\"},\"id\":\"oweyirdhlis\",\"name\":\"gwflq\",\"type\":\"mpizru\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,17 +33,17 @@ public final class ClusterPrincipalAssignmentsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ClusterPrincipalAssignment response = manager.clusterPrincipalAssignments()
-            .define("fy")
-            .withExistingCluster("z", "kiwbuqnyoph")
-            .withPrincipalId("gcrpfbcun")
-            .withRole(ClusterPrincipalRole.ALL_DATABASES_VIEWER)
-            .withTenantId("cez")
+            .define("rltzkatbhjmz")
+            .withExistingCluster("smgbzahgxqdl", "rtltla")
+            .withPrincipalId("bsoqeqala")
+            .withRole(ClusterPrincipalRole.ALL_DATABASES_ADMIN)
+            .withTenantId("agunbtgfebw")
             .withPrincipalType(PrincipalType.GROUP)
             .create();
 
-        Assertions.assertEquals("zjkjexfdeqv", response.principalId());
-        Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_VIEWER, response.role());
-        Assertions.assertEquals("ylkkshkbffmbm", response.tenantId());
+        Assertions.assertEquals("syrq", response.principalId());
+        Assertions.assertEquals(ClusterPrincipalRole.ALL_DATABASES_ADMIN, response.role());
+        Assertions.assertEquals("qhd", response.tenantId());
         Assertions.assertEquals(PrincipalType.GROUP, response.principalType());
     }
 }

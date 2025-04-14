@@ -204,7 +204,7 @@
         },
         {
           "code": "java.method.addedToInterface",
-          "new" : "method <T> long com.azure.spring.data.cosmos.core.CosmosOperations::sum(com.azure.cosmos.models.SqlQuerySpec, java.lang.String)",
+          "new" : "method long com.azure.spring.data.cosmos.core.CosmosOperations::sum(com.azure.cosmos.models.SqlQuerySpec, java.lang.String)",
           "justification": "Spring interfaces are allowed to add methods."
         },
         {
@@ -719,6 +719,36 @@
           "code" : "java.method.removed",
           "old" : "method com.azure.resourcemanager.cosmos.models.DatabaseAccountCreateUpdateParameters com.azure.resourcemanager.cosmos.models.DatabaseAccountCreateUpdateParameters::withDatabaseAccountOfferType(java.lang.String)",
           "justification": "The property is a constant, which should not be changed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.storage.models.StorageAccountCheckNameAvailabilityParameters com.azure.resourcemanager.storage.models.StorageAccountCheckNameAvailabilityParameters::withType(java.lang.String)",
+          "justification": "The property is a constant, which should not be changed."
+        },
+        {
+          "ignore": true,
+          "code": "java.field.addedStaticField",
+          "new": "field com.azure.messaging.webpubsub.models.WebPubSubClientProtocol.SOCKETIO",
+          "justification": "Additional protocols are supported by Web PubSub."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.keyvault.models.VaultCheckNameAvailabilityParameters com.azure.resourcemanager.keyvault.models.VaultCheckNameAvailabilityParameters::withType(java.lang.String)",
+          "justification": "The property is a constant, which should not be changed."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.containerservice.models.ManagedClusterLoadBalancerProfile com.azure.resourcemanager.containerservice.models.ManagedClusterLoadBalancerProfile::withEffectiveOutboundIPs(java.util.List<com.azure.resourcemanager.containerservice.models.ResourceReference>)",
+          "justification": "The effectiveOutboundIPs was never a client-side modifiable property."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.removed",
+          "old" : "method com.azure.resourcemanager.containerservice.models.ManagedClusterNatGatewayProfile com.azure.resourcemanager.containerservice.models.ManagedClusterNatGatewayProfile::withEffectiveOutboundIPs(java.util.List<com.azure.resourcemanager.containerservice.models.ResourceReference>)",
+          "justification": "The effectiveOutboundIPs was never a client-side modifiable property."
         }
       ]
     }

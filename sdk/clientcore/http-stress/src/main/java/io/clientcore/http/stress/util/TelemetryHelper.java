@@ -3,8 +3,7 @@
 
 package io.clientcore.http.stress.util;
 
-import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporter;
-import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterOptions;
+import com.azure.monitor.opentelemetry.autoconfigure.AzureMonitorAutoConfigure;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.http.stress.StressOptions;
 import io.opentelemetry.api.GlobalOpenTelemetry;
@@ -106,8 +105,7 @@ public class TelemetryHelper {
         AutoConfiguredOpenTelemetrySdkBuilder sdkBuilder = AutoConfiguredOpenTelemetrySdk.builder();
         String applicationInsightsConnectionString = System.getenv("APPLICATIONINSIGHTS_CONNECTION_STRING");
         if (applicationInsightsConnectionString != null) {
-            AzureMonitorExporter.customize(sdkBuilder,
-                new AzureMonitorExporterOptions().connectionString(applicationInsightsConnectionString));
+            AzureMonitorAutoConfigure.customize(sdkBuilder, applicationInsightsConnectionString);
         } else {
             System.setProperty("otel.traces.exporter", "none");
             System.setProperty("otel.logs.exporter", "none");
@@ -269,7 +267,7 @@ public class TelemetryHelper {
         span.setStatus(StatusCode.ERROR, unwrapped.getMessage());
 
         String errorType = unwrapped.getClass().getName();
-        logger.atError().addKeyValue("error.type", errorType).log("run ended", unwrapped);
+        logger.atError().addKeyValue("error.type", errorType).setThrowable(unwrapped).log("run ended");
 
         Attributes errorAttributes
             = Attributes.of(SCENARIO_NAME_ATTRIBUTE, scenarioName, ERROR_TYPE_ATTRIBUTE, errorType);

@@ -17,26 +17,30 @@ public interface Tracer {
      * </strong></p>
      *
      * <p><strong>Basic tracing instrumentation for a service method:</strong></p>
-     * <!-- src_embed io.clientcore.core.telemetry.tracing.tracecall -->
+     * <!-- src_embed io.clientcore.core.instrumentation.tracecall -->
      * <pre>
      *
-     * Span span = tracer.spanBuilder&#40;&quot;&#123;operationName&#125;&quot;, SpanKind.CLIENT, null&#41;
+     * if &#40;!tracer.isEnabled&#40;&#41;&#41; &#123;
+     *     &#47;&#47; tracing is disabled, so we don't need to create a span
+     *     clientCall&#40;context&#41;.close&#40;&#41;;
+     *     return;
+     * &#125;
+     *
+     * InstrumentationContext instrumentationContext = context.getInstrumentationContext&#40;&#41;;
+     * Span span = tracer.spanBuilder&#40;&quot;&#123;operationName&#125;&quot;, SpanKind.CLIENT, instrumentationContext&#41;
      *     .startSpan&#40;&#41;;
+     *
+     * RequestContext childContext = context.toBuilder&#40;&#41;
+     *     .setInstrumentationContext&#40;span.getInstrumentationContext&#40;&#41;&#41;
+     *     .build&#40;&#41;;
      *
      * &#47;&#47; we'll propagate context implicitly using span.makeCurrent&#40;&#41; as shown later.
      * &#47;&#47; Libraries that write async code should propagate context explicitly in addition to implicit propagation.
-     * if &#40;tracer.isEnabled&#40;&#41;&#41; &#123;
-     *     if &#40;requestOptions == null&#41; &#123;
-     *         requestOptions = new RequestOptions&#40;&#41;;
-     *     &#125;
-     *     requestOptions.setInstrumentationContext&#40;span.getInstrumentationContext&#40;&#41;&#41;;
-     * &#125;
-     *
      * try &#40;TracingScope scope = span.makeCurrent&#40;&#41;&#41; &#123;
-     *     clientCall&#40;requestOptions&#41;;
+     *     clientCall&#40;childContext&#41;.close&#40;&#41;;
      * &#125; catch &#40;Throwable t&#41; &#123;
      *     &#47;&#47; make sure to report any exceptions including unchecked ones.
-     *     span.end&#40;t&#41;;
+     *     span.end&#40;getCause&#40;t&#41;&#41;;
      *     throw t;
      * &#125; finally &#123;
      *     &#47;&#47; NOTE: closing the scope does not end the span, span should be ended explicitly.
@@ -44,13 +48,13 @@ public interface Tracer {
      * &#125;
      *
      * </pre>
-     * <!-- end io.clientcore.core.telemetry.tracing.tracecall -->
+     * <!-- end io.clientcore.core.instrumentation.tracecall -->
      *
      * <p><strong>Adding attributes to spans:</strong></p>
-     * <!-- src_embed io.clientcore.core.telemetry.tracing.tracewithattributes -->
+     * <!-- src_embed io.clientcore.core.instrumentation.tracewithattributes -->
      * <pre>
      *
-     * Span sendSpan = tracer.spanBuilder&#40;&quot;send &#123;queue-name&#125;&quot;, SpanKind.PRODUCER, null&#41;
+     * Span sendSpan = tracer.spanBuilder&#40;&quot;send &#123;queue-name&#125;&quot;, SpanKind.PRODUCER, context.getInstrumentationContext&#40;&#41;&#41;
      *     &#47;&#47; Some of the attributes should be provided at the start time &#40;as documented in semantic conventions&#41; -
      *     &#47;&#47; they can be used by client apps to sample spans.
      *     .setAttribute&#40;&quot;messaging.system&quot;, &quot;servicebus&quot;&#41;
@@ -58,12 +62,17 @@ public interface Tracer {
      *     .setAttribute&#40;&quot;messaging.operations.name&quot;, &quot;send&quot;&#41;
      *     .startSpan&#40;&#41;;
      *
+     * RequestContext childContext = context.toBuilder&#40;&#41;
+     *     .setInstrumentationContext&#40;sendSpan.getInstrumentationContext&#40;&#41;&#41;
+     *     .build&#40;&#41;;
+     *
      * try &#40;TracingScope scope = sendSpan.makeCurrent&#40;&#41;&#41; &#123;
      *     if &#40;sendSpan.isRecording&#40;&#41;&#41; &#123;
      *         sendSpan.setAttribute&#40;&quot;messaging.message.id&quot;, &quot;&#123;message-id&#125;&quot;&#41;;
      *     &#125;
      *
-     *     clientCall&#40;requestOptions&#41;;
+     *     Response&lt;?&gt; response = clientCall&#40;childContext&#41;;
+     *     response.close&#40;&#41;;
      * &#125; catch &#40;Throwable t&#41; &#123;
      *     sendSpan.end&#40;t&#41;;
      *     throw t;
@@ -72,7 +81,7 @@ public interface Tracer {
      * &#125;
      *
      * </pre>
-     * <!-- end io.clientcore.core.telemetry.tracing.tracewithattributes -->
+     * <!-- end io.clientcore.core.instrumentation.tracewithattributes -->
      *
      * @param spanName The name of the span.
      * @param spanKind The kind of the span.

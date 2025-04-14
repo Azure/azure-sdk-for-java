@@ -51,7 +51,7 @@ public final class HDInsightHiveActivity extends ExecutionActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private HDInsightHiveActivityTypeProperties innerTypeProperties() {
+    HDInsightHiveActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

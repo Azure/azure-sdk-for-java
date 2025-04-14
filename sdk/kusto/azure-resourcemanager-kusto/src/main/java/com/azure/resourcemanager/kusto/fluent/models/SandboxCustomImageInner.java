@@ -107,7 +107,8 @@ public final class SandboxCustomImageInner extends ProxyResource {
     }
 
     /**
-     * Get the languageVersion property: The version of the language.
+     * Get the languageVersion property: The version of the language. Either this property or baseImageName should be
+     * specified.
      * 
      * @return the languageVersion value.
      */
@@ -116,7 +117,8 @@ public final class SandboxCustomImageInner extends ProxyResource {
     }
 
     /**
-     * Set the languageVersion property: The version of the language.
+     * Set the languageVersion property: The version of the language. Either this property or baseImageName should be
+     * specified.
      * 
      * @param languageVersion the languageVersion value to set.
      * @return the SandboxCustomImageInner object itself.
@@ -126,6 +128,33 @@ public final class SandboxCustomImageInner extends ProxyResource {
             this.innerProperties = new SandboxCustomImageProperties();
         }
         this.innerProperties().withLanguageVersion(languageVersion);
+        return this;
+    }
+
+    /**
+     * Get the baseImageName property: The base image name on which the custom image is built on top of. It can be one
+     * of the LanguageExtensionImageName (e.g.: 'Python3_10_8', 'Python3_10_8_DL') or the name of an existing custom
+     * image. Either this property or languageVersion should be specified.
+     * 
+     * @return the baseImageName value.
+     */
+    public String baseImageName() {
+        return this.innerProperties() == null ? null : this.innerProperties().baseImageName();
+    }
+
+    /**
+     * Set the baseImageName property: The base image name on which the custom image is built on top of. It can be one
+     * of the LanguageExtensionImageName (e.g.: 'Python3_10_8', 'Python3_10_8_DL') or the name of an existing custom
+     * image. Either this property or languageVersion should be specified.
+     * 
+     * @param baseImageName the baseImageName value to set.
+     * @return the SandboxCustomImageInner object itself.
+     */
+    public SandboxCustomImageInner withBaseImageName(String baseImageName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SandboxCustomImageProperties();
+        }
+        this.innerProperties().withBaseImageName(baseImageName);
         return this;
     }
 

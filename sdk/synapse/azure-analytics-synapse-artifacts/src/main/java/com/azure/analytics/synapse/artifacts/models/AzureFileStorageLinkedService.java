@@ -77,6 +77,17 @@ public class AzureFileStorageLinkedService extends LinkedService {
      */
     private Object encryptedCredential;
 
+    /*
+     * File service endpoint of the Azure File Storage resource. It is mutually exclusive with connectionString, sasUri
+     * property.
+     */
+    private Object serviceEndpoint;
+
+    /*
+     * The credential reference containing authentication information.
+     */
+    private CredentialReference credential;
+
     /**
      * Creates an instance of AzureFileStorageLinkedService class.
      */
@@ -304,6 +315,57 @@ public class AzureFileStorageLinkedService extends LinkedService {
     }
 
     /**
+     * Get the serviceEndpoint property: File service endpoint of the Azure File Storage resource. It is mutually
+     * exclusive with connectionString, sasUri property.
+     * 
+     * @return the serviceEndpoint value.
+     */
+    public Object getServiceEndpoint() {
+        return this.serviceEndpoint;
+    }
+
+    /**
+     * Set the serviceEndpoint property: File service endpoint of the Azure File Storage resource. It is mutually
+     * exclusive with connectionString, sasUri property.
+     * 
+     * @param serviceEndpoint the serviceEndpoint value to set.
+     * @return the AzureFileStorageLinkedService object itself.
+     */
+    public AzureFileStorageLinkedService setServiceEndpoint(Object serviceEndpoint) {
+        this.serviceEndpoint = serviceEndpoint;
+        return this;
+    }
+
+    /**
+     * Get the credential property: The credential reference containing authentication information.
+     * 
+     * @return the credential value.
+     */
+    public CredentialReference getCredential() {
+        return this.credential;
+    }
+
+    /**
+     * Set the credential property: The credential reference containing authentication information.
+     * 
+     * @param credential the credential value to set.
+     * @return the AzureFileStorageLinkedService object itself.
+     */
+    public AzureFileStorageLinkedService setCredential(CredentialReference credential) {
+        this.credential = credential;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureFileStorageLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -345,6 +407,7 @@ public class AzureFileStorageLinkedService extends LinkedService {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -359,7 +422,9 @@ public class AzureFileStorageLinkedService extends LinkedService {
             || sasToken != null
             || fileShare != null
             || snapshot != null
-            || encryptedCredential != null) {
+            || encryptedCredential != null
+            || serviceEndpoint != null
+            || credential != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("host", this.host);
             jsonWriter.writeUntypedField("userId", this.userId);
@@ -371,6 +436,8 @@ public class AzureFileStorageLinkedService extends LinkedService {
             jsonWriter.writeUntypedField("fileShare", this.fileShare);
             jsonWriter.writeUntypedField("snapshot", this.snapshot);
             jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
+            jsonWriter.writeUntypedField("serviceEndpoint", this.serviceEndpoint);
+            jsonWriter.writeJsonField("credential", this.credential);
             jsonWriter.writeEndObject();
         }
         if (getAdditionalProperties() != null) {
@@ -399,7 +466,9 @@ public class AzureFileStorageLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedAzureFileStorageLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedAzureFileStorageLinkedService
                         .setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
@@ -440,6 +509,10 @@ public class AzureFileStorageLinkedService extends LinkedService {
                             deserializedAzureFileStorageLinkedService.snapshot = reader.readUntyped();
                         } else if ("encryptedCredential".equals(fieldName)) {
                             deserializedAzureFileStorageLinkedService.encryptedCredential = reader.readUntyped();
+                        } else if ("serviceEndpoint".equals(fieldName)) {
+                            deserializedAzureFileStorageLinkedService.serviceEndpoint = reader.readUntyped();
+                        } else if ("credential".equals(fieldName)) {
+                            deserializedAzureFileStorageLinkedService.credential = CredentialReference.fromJson(reader);
                         } else {
                             reader.skipChildren();
                         }

@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.hybridkubernetes.generated;
 
+import com.azure.resourcemanager.hybridkubernetes.models.AzureHybridBenefit;
 import com.azure.resourcemanager.hybridkubernetes.models.ConnectedCluster;
 import java.util.HashMap;
 import java.util.Map;
@@ -14,8 +15,8 @@ import java.util.Map;
 public final class ConnectedClusterUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/stable/2021-10-01/examples/
-     * UpdateClusterExample.json
+     * specification/hybridkubernetes/resource-manager/Microsoft.Kubernetes/preview/2024-12-01-preview/examples/
+     * UpdateClusterByPatchExample.json
      */
     /**
      * Sample code: UpdateClusterExample.
@@ -27,7 +28,12 @@ public final class ConnectedClusterUpdateSamples {
         ConnectedCluster resource = manager.connectedClusters()
             .getByResourceGroupWithResponse("k8sc-rg", "testCluster", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
+        resource.update()
+            .withTags(mapOf("tag1", "value1", "tag2", "value2"))
+            .withDistribution("AKS")
+            .withDistributionVersion("1.0")
+            .withAzureHybridBenefit(AzureHybridBenefit.NOT_APPLICABLE)
+            .apply();
     }
 
     // Use "Map.of" if available

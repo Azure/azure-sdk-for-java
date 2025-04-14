@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Microsoft Fabric LakeHouse Files write settings.
+ * Microsoft Fabric Lakehouse Files write settings.
  */
 @Fluent
 public final class LakeHouseWriteSettings extends StoreWriteSettings {

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.DataFlowDebugCommandPayload;
@@ -24,26 +24,26 @@ import reactor.core.publisher.Mono;
 public final class DataFlowDebugSessionsExecuteCommandMockTests {
     @Test
     public void testExecuteCommand() throws Exception {
-        String responseStr = "{\"status\":\"lkflffo\",\"data\":\"skndwyw\"}";
+        String responseStr = "{\"status\":\"nvnxsa\",\"data\":\"couilbjccj\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         DataFlowDebugCommandResponse response = manager.dataFlowDebugSessions()
-            .executeCommand("wvbiryxsaxwu", "pnsesxwkhkcdt",
-                new DataFlowDebugCommandRequest().withSessionId("a")
+            .executeCommand("fiomfkiopk", "hbfnhspogxuv",
+                new DataFlowDebugCommandRequest().withSessionId("my")
                     .withCommand(DataFlowDebugCommandType.EXECUTE_PREVIEW_QUERY)
-                    .withCommandPayload(new DataFlowDebugCommandPayload().withStreamName("qfzvvtifcqsuem")
-                        .withRowLimits(271273488)
-                        .withColumns(Arrays.asList("ovbpn", "fucxtmhmzcnpsd", "fwjcwwbunf", "mbwinura"))
-                        .withExpression("bmjokttqgokhaj")),
+                    .withCommandPayload(new DataFlowDebugCommandPayload().withStreamName("ayfkvw")
+                        .withRowLimits(1637727011)
+                        .withColumns(Arrays.asList("yh", "yn"))
+                        .withExpression("p")),
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("lkflffo", response.status());
-        Assertions.assertEquals("skndwyw", response.data());
+        Assertions.assertEquals("nvnxsa", response.status());
+        Assertions.assertEquals("couilbjccj", response.data());
     }
 }

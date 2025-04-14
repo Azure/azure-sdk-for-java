@@ -51,7 +51,7 @@ public final class ImpalaLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private ImpalaLinkedServiceTypeProperties innerTypeProperties() {
+    ImpalaLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

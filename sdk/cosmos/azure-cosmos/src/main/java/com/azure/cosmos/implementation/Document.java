@@ -117,7 +117,7 @@ public class Document extends Resource {
         // a "null" value is represented as a missing element on the wire.
         // setting timeToLive to null should remove the property from the property bag.
         if (timeToLive != null) {
-            this.set(Constants.Properties.TTL, timeToLive, CosmosItemSerializer.DEFAULT_SERIALIZER);
+            this.set(Constants.Properties.TTL, timeToLive);
         } else if (super.has(Constants.Properties.TTL)) {
             this.remove(Constants.Properties.TTL);
         }

@@ -18,7 +18,8 @@ import java.util.List;
 @Fluent
 public class GeoJsonGeometryCollectionData implements JsonSerializable<GeoJsonGeometryCollectionData> {
     /*
-     * Contains a list of valid `GeoJSON` geometry objects. **Note** that coordinates in GeoJSON are in x, y order (longitude, latitude).
+     * Contains a list of valid `GeoJSON` geometry objects. **Note** that coordinates in GeoJSON are in x, y order
+     * (longitude, latitude).
      */
     private List<GeoJsonGeometry> geometries;
 

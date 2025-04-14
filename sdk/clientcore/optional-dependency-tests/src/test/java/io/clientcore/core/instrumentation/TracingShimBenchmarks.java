@@ -43,6 +43,7 @@ public class TracingShimBenchmarks {
     private io.opentelemetry.api.trace.Tracer otelTracer;
     private io.opentelemetry.api.trace.Tracer otelTracerDisabled;
     private OpenTelemetry openTelemetry;
+    private SdkInstrumentationOptions sdkInstrumentationOptions;
 
     private static final AttributeKey<String> STRING_ATTRIBUTE_KEY_1 = AttributeKey.stringKey("string1");
     private static final AttributeKey<String> STRING_ATTRIBUTE_KEY_2 = AttributeKey.stringKey("string2");
@@ -58,18 +59,17 @@ public class TracingShimBenchmarks {
             .setTracerProvider(SdkTracerProvider.builder().addSpanProcessor(new NoopProcessor()).build())
             .build();
 
+        sdkInstrumentationOptions = new SdkInstrumentationOptions("test").setSdkVersion("https://localhost:8080");
+
         otelTracer = openTelemetry.getTracer("test");
         otelTracerDisabled = TracerProvider.noop().get("test");
-        shimTracer
-            = Instrumentation
-                .create(new InstrumentationOptions<OpenTelemetry>().setProvider(openTelemetry),
-                    new LibraryInstrumentationOptions("test"))
-                .getTracer();
-        shimTracerDisabled
-            = Instrumentation
-                .create(new InstrumentationOptions<OpenTelemetry>().setProvider(OpenTelemetry.noop()),
-                    new LibraryInstrumentationOptions("test"))
-                .getTracer();
+
+        shimTracer = Instrumentation
+            .create(new InstrumentationOptions().setTelemetryProvider(openTelemetry), sdkInstrumentationOptions)
+            .getTracer();
+        shimTracerDisabled = Instrumentation
+            .create(new InstrumentationOptions().setTelemetryProvider(OpenTelemetry.noop()), sdkInstrumentationOptions)
+            .getTracer();
     }
 
     @Benchmark

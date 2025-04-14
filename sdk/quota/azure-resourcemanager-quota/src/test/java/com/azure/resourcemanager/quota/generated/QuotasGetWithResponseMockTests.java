@@ -6,8 +6,8 @@ package com.azure.resourcemanager.quota.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.quota.QuotaManager;
 import com.azure.resourcemanager.quota.models.CurrentQuotaLimitBase;
@@ -21,19 +21,20 @@ public final class QuotasGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"ztppriolxorjalto\",\"name\":{\"value\":\"cwsobqwcs\",\"localizedValue\":\"nwdcfhu\"},\"resourceType\":\"dpfuvg\",\"quotaPeriod\":\"bjj\",\"isQuotaApplicable\":false,\"properties\":\"dataxbvtvudu\"},\"id\":\"ncormrlxqtvcof\",\"name\":\"dflvkg\",\"type\":\"u\"}";
+            = "{\"properties\":{\"limit\":{\"limitObjectType\":\"LimitJsonObject\"},\"unit\":\"fmtdaaygdvwvgp\",\"name\":{\"value\":\"g\",\"localizedValue\":\"rtfudxepxg\"},\"resourceType\":\"agvrvmnpkuk\",\"quotaPeriod\":\"i\",\"isQuotaApplicable\":false,\"properties\":\"dataxgwim\"},\"id\":\"njhf\",\"name\":\"xw\",\"type\":\"szkkfoqre\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         QuotaManager manager = QuotaManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        CurrentQuotaLimitBase response
-            = manager.quotas().getWithResponse("fz", "whxxbuyqax", com.azure.core.util.Context.NONE).getValue();
+        CurrentQuotaLimitBase response = manager.quotas()
+            .getWithResponse("nayrhyrnxxmueedn", "rdvstkwqqtch", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("cwsobqwcs", response.properties().name().value());
-        Assertions.assertEquals("dpfuvg", response.properties().resourceType());
+        Assertions.assertEquals("g", response.properties().name().value());
+        Assertions.assertEquals("agvrvmnpkuk", response.properties().resourceType());
     }
 }

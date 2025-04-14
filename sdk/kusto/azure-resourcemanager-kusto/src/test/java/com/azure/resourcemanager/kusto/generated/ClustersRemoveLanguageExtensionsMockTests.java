@@ -33,17 +33,14 @@ public final class ClustersRemoveLanguageExtensionsMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.clusters()
-            .removeLanguageExtensions("pbzpcpiljhahz", "echndbnwieholew",
+            .removeLanguageExtensions("embnkbw", "qvxkd",
                 new LanguageExtensionsList().withValue(Arrays.asList(
                     new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.PYTHON)
                         .withLanguageExtensionImageName(LanguageExtensionImageName.PYTHON3_10_8)
-                        .withLanguageExtensionCustomImageName("fqsfa"),
-                    new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.R)
-                        .withLanguageExtensionImageName(LanguageExtensionImageName.PYTHON3_10_8_DL)
-                        .withLanguageExtensionCustomImageName("rrqwexjk"),
+                        .withLanguageExtensionCustomImageName("tswbzuwfmd"),
                     new LanguageExtensionInner().withLanguageExtensionName(LanguageExtensionName.PYTHON)
-                        .withLanguageExtensionImageName(LanguageExtensionImageName.PYTHON3_6_5)
-                        .withLanguageExtensionCustomImageName("wogqqnobpudcdab"))),
+                        .withLanguageExtensionImageName(LanguageExtensionImageName.PYTHON3_10_8_DL)
+                        .withLanguageExtensionCustomImageName("izvcjfe"))),
                 com.azure.core.util.Context.NONE);
 
     }

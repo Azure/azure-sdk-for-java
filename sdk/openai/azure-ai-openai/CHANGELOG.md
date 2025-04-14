@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.14 (Unreleased)
+## 1.0.0-beta.17 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,60 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.16 (2025-03-26)
+
+### Features Added
+
+- Added `ServiceTier` and `ServiceTierOptions` for `ChatCompletions` and `ChatCompletionsOptions` respectively. This is exclusively a non-Azure OpenAI issue and was requested in [this issue](https://github.com/Azure/azure-sdk-for-java/issues/41695#issuecomment-2736037879).
+
+### Bugs Fixed
+
+- The serialization and the subsequent serialization of any subclass of `ChatRequestMessage` (namely, `ChatRequestAssistantMessage`, `ChatRequestDeveloperMessage`, `ChatRequestFunctionMessage`, `ChatRequestSystemMessage`, `ChatRequestToolMessage`, `ChatRequestUserMessage`) was faulty. The `content` member of most of these classes was lost. Related issues are [42882](https://github.com/Azure/azure-sdk-for-java/issues/42882) and [44094](https://github.com/Azure/azure-sdk-for-java/issues/44094).
+- The documentation for `ChatCompletions` and `Completions` field `usage`, now matches the spec and the field is marked as `Optional`.
+
+## 1.0.0-beta.15 (2025-03-14)
+
+### Features Added
+
+- New subpackage `com.azure.ai.openai.responses` contains support for OpenAI's recently released Responses functionality.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to version `1.55.3`.
+- Upgraded `azure-core-http-netty` to version `1.15.11`.
+
+## 1.0.0-beta.14 (2025-02-21)
+
+### Features Added
+
+- For `ChatCompletionOptions`:
+  - `store` (bool), which enables saving outputs for FT (distillation)
+  - `metadata` (string/string map), used with `store`
+  - `reasoning_effort` (enum string, `low`, `medium`, `high`) to configure how hard `o1` thinks
+  - `developer` message role (`system` replacement for `o1` and newer models) now available. Other than the name, it's identical
+  - `prediction` added for predicted outputs
+  - `modalities` added ("text" | "audio") for audio input support
+  - `audio` added for audio content options (voice, format, etc.)
+  - user role message content part representation for audio input added
+  - **AZURE-ONLY** User Security Context (for Defender for Cloud Integration)
+    - Azure chat request bodies now have a user_security_context property
+    - These are JSON objects that have application_name, end_user_id, end_user_tenant_id, and source_ip, all optional string properties
+
+- For `ChatCompletions`:
+  - audio output added as `ChatMessageAudioContentItem`
+  - parity usage updates:
+    - `PromptTokensDetails` gets `AudioTokens`
+    - `CompletionTokensDetails` gets `AcceptedPredictionTokens`, `RejectedPredictionTokens`, and `AudioTokens`
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` to version `1.55.2`.
+- Upgraded `azure-core-http-netty` to version `1.15.10`.
 
 ## 1.0.0-beta.13 (2024-12-04)
 

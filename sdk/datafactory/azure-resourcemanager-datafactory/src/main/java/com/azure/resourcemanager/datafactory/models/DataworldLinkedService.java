@@ -51,7 +51,7 @@ public final class DataworldLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private DataworldLinkedServiceTypeProperties innerTypeProperties() {
+    DataworldLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

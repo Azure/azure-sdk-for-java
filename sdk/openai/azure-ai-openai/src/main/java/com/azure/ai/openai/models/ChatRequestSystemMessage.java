@@ -6,10 +6,12 @@ package com.azure.ai.openai.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -27,7 +29,7 @@ public final class ChatRequestSystemMessage extends ChatRequestMessage {
 
     private final String stringContent;
 
-    private final List<ChatMessageContentItem> chatMessageContentItem;
+    private final List<ChatMessageContentItem> chatMessageContentItems;
 
     /*
      * An optional name for the participant.
@@ -43,6 +45,38 @@ public final class ChatRequestSystemMessage extends ChatRequestMessage {
     @Generated
     public BinaryData getContent() {
         return this.content;
+    }
+
+    /**
+     * Get the content property: The contents of the user message, with available input types varying by selected model.
+     * If the result of this method is `null`, it means that the content could be a String or null altogether.
+     *
+     * @return the content value if defined as a list
+     */
+    public List<ChatMessageContentItem> getListContent() {
+        return this.chatMessageContentItems;
+    }
+
+    /**
+     * Get the content property: The contents of the user message, with available input types varying by selected model.
+     * If the result of this method is `null`, it means that the content could be a String or null altogether.
+     *
+     * @return the content value if defined as an array
+     */
+    public ChatMessageContentItem[] getArrayContent() {
+        return this.chatMessageContentItems == null
+            ? null
+            : this.chatMessageContentItems.toArray(new ChatMessageContentItem[0]);
+    }
+
+    /**
+     * Get the content property: The contents of the user message, with available input types varying by selected model.
+     * If the result of this method is `null`, it means that the content could be a list or null altogether.
+     *
+     * @return the content value if defined as a string
+     */
+    public String getStringContent() {
+        return this.stringContent;
     }
 
     /**
@@ -92,8 +126,10 @@ public final class ChatRequestSystemMessage extends ChatRequestMessage {
         jsonWriter.writeStartObject();
         if (stringContent != null) {
             jsonWriter.writeStringField("content", stringContent);
-        } else if (chatMessageContentItem != null) {
-            jsonWriter.writeArrayField("content", chatMessageContentItem, JsonWriter::writeJson);
+        } else if (chatMessageContentItems != null) {
+            jsonWriter.writeArrayField("content", chatMessageContentItems, JsonWriter::writeJson);
+        } else {
+            jsonWriter.writeNullField("content");
         }
         jsonWriter.writeStringField("role", this.role == null ? null : this.role.toString());
         jsonWriter.writeStringField("name", this.name);
@@ -112,6 +148,8 @@ public final class ChatRequestSystemMessage extends ChatRequestMessage {
     public static ChatRequestSystemMessage fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             BinaryData content = null;
+            String stringContent = null;
+            List<ChatMessageContentItem> chatMessageContentItems = null;
             ChatRole role = ChatRole.SYSTEM;
             String name = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
@@ -119,10 +157,12 @@ public final class ChatRequestSystemMessage extends ChatRequestMessage {
                 reader.nextToken();
                 if ("content".equals(fieldName)) {
                     if (reader.currentToken() == JsonToken.STRING) {
-                        content = BinaryData.fromString(reader.getString());
+                        stringContent = reader.getString();
                     } else if (reader.currentToken() == JsonToken.START_ARRAY) {
-                        content = BinaryData.fromObject(
-                            reader.readArray(arrayReader -> arrayReader.readObject(ChatMessageContentItem::fromJson)));
+                        chatMessageContentItems
+                            = reader.readArray(arrayReader -> arrayReader.readObject(ChatMessageContentItem::fromJson));
+                    } else if (reader.currentToken() == JsonToken.NULL) {
+                        content = null;
                     } else {
                         throw new IllegalStateException("Unexpected 'content' type found when deserializing"
                             + " ChatRequestSystemMessage JSON object: " + reader.currentToken());
@@ -135,7 +175,14 @@ public final class ChatRequestSystemMessage extends ChatRequestMessage {
                     reader.skipChildren();
                 }
             }
-            ChatRequestSystemMessage deserializedChatRequestSystemMessage = new ChatRequestSystemMessage(content);
+            ChatRequestSystemMessage deserializedChatRequestSystemMessage;
+            if (CoreUtils.isNullOrEmpty(stringContent) && chatMessageContentItems == null) {
+                deserializedChatRequestSystemMessage = new ChatRequestSystemMessage(content);
+            } else {
+                deserializedChatRequestSystemMessage = CoreUtils.isNullOrEmpty(stringContent)
+                    ? new ChatRequestSystemMessage(chatMessageContentItems)
+                    : new ChatRequestSystemMessage(stringContent);
+            }
             deserializedChatRequestSystemMessage.role = role;
             deserializedChatRequestSystemMessage.name = name;
             return deserializedChatRequestSystemMessage;
@@ -150,7 +197,7 @@ public final class ChatRequestSystemMessage extends ChatRequestMessage {
     private ChatRequestSystemMessage(BinaryData content) {
         this.content = content;
         this.stringContent = null;
-        this.chatMessageContentItem = null;
+        this.chatMessageContentItems = null;
     }
 
     /**
@@ -161,7 +208,18 @@ public final class ChatRequestSystemMessage extends ChatRequestMessage {
     public ChatRequestSystemMessage(String content) {
         this.content = BinaryData.fromString(content);
         this.stringContent = content;
-        this.chatMessageContentItem = null;
+        this.chatMessageContentItems = null;
+    }
+
+    /**
+     * Creates a new instance of ChatRequestSystemMessage using a collection of structured content.
+     *
+     * @param content The collection of structured content associated with the message.
+     */
+    public ChatRequestSystemMessage(ChatMessageContentItem[] content) {
+        this.content = BinaryData.fromObject(content);
+        this.chatMessageContentItems = Arrays.asList(content);
+        this.stringContent = null;
     }
 
     /**
@@ -172,6 +230,6 @@ public final class ChatRequestSystemMessage extends ChatRequestMessage {
     public ChatRequestSystemMessage(List<ChatMessageContentItem> content) {
         this.content = BinaryData.fromObject(content);
         this.stringContent = null;
-        this.chatMessageContentItem = content;
+        this.chatMessageContentItems = content;
     }
 }

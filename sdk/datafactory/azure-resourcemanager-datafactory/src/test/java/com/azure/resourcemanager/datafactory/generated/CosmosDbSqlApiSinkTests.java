@@ -11,19 +11,19 @@ public final class CosmosDbSqlApiSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CosmosDbSqlApiSink model = BinaryData.fromString(
-            "{\"type\":\"CosmosDbSqlApiSink\",\"writeBehavior\":\"datapiezthflgpsalyn\",\"writeBatchSize\":\"datamwzpfbiqjrz\",\"writeBatchTimeout\":\"dataxizorqliblyb\",\"sinkRetryCount\":\"datajzknkffzdyozn\",\"sinkRetryWait\":\"datastofdedlmfwabf\",\"maxConcurrentConnections\":\"datawe\",\"disableMetricsCollection\":\"datawxmcsxidazslwhuy\",\"\":{\"fperheiplzms\":\"datadcilinbuok\",\"u\":\"datahqrdvqvalo\",\"fjgklmyomav\":\"datawoigofumbpmzed\"}}")
+            "{\"type\":\"CosmosDbSqlApiSink\",\"writeBehavior\":\"datafztrvonbtnnwamk\",\"writeBatchSize\":\"datayskm\",\"writeBatchTimeout\":\"datawsbznjngerw\",\"sinkRetryCount\":\"datalpsswoslqmftk\",\"sinkRetryWait\":\"dataafjycfbdbzb\",\"maxConcurrentConnections\":\"dataoeegal\",\"disableMetricsCollection\":\"dataqy\",\"\":{\"locnk\":\"dataz\",\"qegjv\":\"datatnhi\"}}")
             .toObject(CosmosDbSqlApiSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CosmosDbSqlApiSink model = new CosmosDbSqlApiSink().withWriteBatchSize("datamwzpfbiqjrz")
-            .withWriteBatchTimeout("dataxizorqliblyb")
-            .withSinkRetryCount("datajzknkffzdyozn")
-            .withSinkRetryWait("datastofdedlmfwabf")
-            .withMaxConcurrentConnections("datawe")
-            .withDisableMetricsCollection("datawxmcsxidazslwhuy")
-            .withWriteBehavior("datapiezthflgpsalyn");
+        CosmosDbSqlApiSink model = new CosmosDbSqlApiSink().withWriteBatchSize("datayskm")
+            .withWriteBatchTimeout("datawsbznjngerw")
+            .withSinkRetryCount("datalpsswoslqmftk")
+            .withSinkRetryWait("dataafjycfbdbzb")
+            .withMaxConcurrentConnections("dataoeegal")
+            .withDisableMetricsCollection("dataqy")
+            .withWriteBehavior("datafztrvonbtnnwamk");
         model = BinaryData.fromObject(model).toObject(CosmosDbSqlApiSink.class);
     }
 }
