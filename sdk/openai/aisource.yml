@@ -19,5 +19,3 @@ extends:
       AZURE_TEST_RUN_LIVE: 'true'
     MatrixFilters:
       - TestFromSource=^$|false
-      - AZURE_TEST_HTTP_CLIENTS=netty
-      - pool=^(?!.*(win)).*
