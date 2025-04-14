@@ -289,7 +289,6 @@ $responses = @{}
 
 Write-Host "Artifact path: $($ArtifactPath)"
 Write-Host "Source branch: $($SourceBranch)"
-Write-Host "PackageInfo directory: $($PackageInfoDir)"
 
 # if package name param is not empty then process only that package
 # process all packages in the artifact
