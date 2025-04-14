@@ -295,10 +295,6 @@ cosmos_io.confluent:kafka-avro-serializer;7.6.0
 cosmos_org.apache.avro:avro;1.11.3
 # Maven Tools for Cosmos Kafka connector only
 
-# sdk\core\azure-core-serializer-avro-jackson\pom.xml
-# This dependency is needed since Jackson Avro uses an older dependency on Apache Avro which is another library.
-jacksonavro_org.apache.avro:avro-maven-plugin;1.8.2
-
 # sdk\mediaservices\microsoft-azure-media\pom.xml which hasn't been released for 2 years
 # all of these unique references below are listed here because they're old, some are over 10 years old
 media_javax.xml.bind:jaxb-api;2.2.7
