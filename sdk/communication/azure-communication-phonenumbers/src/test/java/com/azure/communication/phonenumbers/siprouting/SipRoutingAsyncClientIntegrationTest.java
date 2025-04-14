@@ -28,7 +28,6 @@ import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.azure.communication.phonenumbers.siprouting.implementation.models.SipDomain;
-import com.azure.communication.phonenumbers.siprouting.models.SipConfigurationModel;
 
 @Execution(value = ExecutionMode.SAME_THREAD)
 public class SipRoutingAsyncClientIntegrationTest extends SipRoutingIntegrationTestBase {
@@ -884,14 +883,9 @@ public class SipRoutingAsyncClientIntegrationTest extends SipRoutingIntegrationT
     public void testRoutesWithNumberWithResponse(HttpClient httpClient) {
         SipRoutingAsyncClient client = getClientWithManagedIdentity(httpClient, "testRoutesWithNumberWithResponse");
         String targetPhonenumber = "+11234567890";
-        Map<String, SipDomain> domain = new HashMap<>();
-        Map<String, com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunk> trunk
-            = new HashMap<>();
-        List<com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunkRoute> trunkRoute
-            = new ArrayList<>();
-        SipConfigurationModel sipConfigurationModel = new SipConfigurationModel(domain, trunk, trunkRoute);
+        List<com.azure.communication.phonenumbers.siprouting.models.SipTrunkRoute> trunkRoute = new ArrayList<>();
 
-        StepVerifier.create(client.testRoutesWithNumberWithResponse(targetPhonenumber, sipConfigurationModel))
+        StepVerifier.create(client.testRoutesWithNumberWithResponse(targetPhonenumber, trunkRoute))
             .assertNext(response -> {
                 assertNotNull(response);
                 assertEquals(200, response.getStatusCode());
@@ -906,18 +900,11 @@ public class SipRoutingAsyncClientIntegrationTest extends SipRoutingIntegrationT
     public void testRoutesWithNumber(HttpClient httpClient) {
         SipRoutingAsyncClient client = getClientWithManagedIdentity(httpClient, "testRoutesWithNumber");
         String targetPhonenumber = "+11234567890";
-        Map<String, SipDomain> domain = new HashMap<>();
-        Map<String, com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunk> trunk
-            = new HashMap<>();
-        List<com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunkRoute> trunkRoute
-            = new ArrayList<>();
-        SipConfigurationModel sipConfigurationModel = new SipConfigurationModel(domain, trunk, trunkRoute);
+        List<com.azure.communication.phonenumbers.siprouting.models.SipTrunkRoute> trunkRoute = new ArrayList<>();
 
-        StepVerifier.create(client.testRoutesWithNumber(targetPhonenumber, sipConfigurationModel))
-            .assertNext(response -> {
-                assertNotNull(response);
-            })
-            .verifyComplete();
+        StepVerifier.create(client.testRoutesWithNumber(targetPhonenumber, trunkRoute)).assertNext(response -> {
+            assertNotNull(response);
+        }).verifyComplete();
     }
 
     private void validateTrunks(List<SipTrunk> expected, List<SipTrunk> actual) {

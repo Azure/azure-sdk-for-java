@@ -12,7 +12,6 @@ import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -21,8 +20,9 @@ import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
 import com.azure.core.http.policy.AzureKeyCredentialPolicy;
-import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.HttpPolicyProviders;
 import com.azure.core.http.policy.RequestIdPolicy;
@@ -41,9 +41,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-/**
- * A builder for creating a new instance of the SipRoutingAdminClient type.
- */
+/** A builder for creating a new instance of the SipRoutingAdminClient type. */
 @ServiceClientBuilder(serviceClients = { SipRoutingAdminClientImpl.class })
 public final class SipRoutingAdminClientImplBuilder
     implements HttpTrait<SipRoutingAdminClientImplBuilder>, ConfigurationTrait<SipRoutingAdminClientImplBuilder>,
@@ -60,9 +58,7 @@ public final class SipRoutingAdminClientImplBuilder
     @Generated
     private final List<HttpPipelinePolicy> pipelinePolicies;
 
-    /**
-     * Create an instance of the SipRoutingAdminClientImplBuilder.
-     */
+    /** Create an instance of the SipRoutingAdminClientImplBuilder. */
     @Generated
     public SipRoutingAdminClientImplBuilder() {
         this.pipelinePolicies = new ArrayList<>();
@@ -74,9 +70,7 @@ public final class SipRoutingAdminClientImplBuilder
     @Generated
     private HttpPipeline pipeline;
 
-    /**
-     * {@inheritDoc}.
-     */
+    /** {@inheritDoc}. */
     @Generated
     @Override
     public SipRoutingAdminClientImplBuilder pipeline(HttpPipeline pipeline) {
@@ -90,9 +84,7 @@ public final class SipRoutingAdminClientImplBuilder
     @Generated
     private HttpClient httpClient;
 
-    /**
-     * {@inheritDoc}.
-     */
+    /** {@inheritDoc}. */
     @Generated
     @Override
     public SipRoutingAdminClientImplBuilder httpClient(HttpClient httpClient) {
@@ -106,9 +98,7 @@ public final class SipRoutingAdminClientImplBuilder
     @Generated
     private HttpLogOptions httpLogOptions;
 
-    /**
-     * {@inheritDoc}.
-     */
+    /** {@inheritDoc}. */
     @Generated
     @Override
     public SipRoutingAdminClientImplBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
@@ -122,9 +112,7 @@ public final class SipRoutingAdminClientImplBuilder
     @Generated
     private ClientOptions clientOptions;
 
-    /**
-     * {@inheritDoc}.
-     */
+    /** {@inheritDoc}. */
     @Generated
     @Override
     public SipRoutingAdminClientImplBuilder clientOptions(ClientOptions clientOptions) {
@@ -138,9 +126,7 @@ public final class SipRoutingAdminClientImplBuilder
     @Generated
     private RetryOptions retryOptions;
 
-    /**
-     * {@inheritDoc}.
-     */
+    /** {@inheritDoc}. */
     @Generated
     @Override
     public SipRoutingAdminClientImplBuilder retryOptions(RetryOptions retryOptions) {
@@ -148,9 +134,7 @@ public final class SipRoutingAdminClientImplBuilder
         return this;
     }
 
-    /**
-     * {@inheritDoc}.
-     */
+    /** {@inheritDoc}. */
     @Generated
     @Override
     public SipRoutingAdminClientImplBuilder addPolicy(HttpPipelinePolicy customPolicy) {
@@ -165,9 +149,7 @@ public final class SipRoutingAdminClientImplBuilder
     @Generated
     private Configuration configuration;
 
-    /**
-     * {@inheritDoc}.
-     */
+    /** {@inheritDoc}. */
     @Generated
     @Override
     public SipRoutingAdminClientImplBuilder configuration(Configuration configuration) {
@@ -181,9 +163,7 @@ public final class SipRoutingAdminClientImplBuilder
     @Generated
     private AzureKeyCredential azureKeyCredential;
 
-    /**
-     * {@inheritDoc}.
-     */
+    /** {@inheritDoc}. */
     @Generated
     @Override
     public SipRoutingAdminClientImplBuilder credential(AzureKeyCredential azureKeyCredential) {
@@ -197,9 +177,7 @@ public final class SipRoutingAdminClientImplBuilder
     @Generated
     private String endpoint;
 
-    /**
-     * {@inheritDoc}.
-     */
+    /** {@inheritDoc}. */
     @Generated
     @Override
     public SipRoutingAdminClientImplBuilder endpoint(String endpoint) {
@@ -215,7 +193,7 @@ public final class SipRoutingAdminClientImplBuilder
 
     /**
      * Sets Api Version.
-     * 
+     *
      * @param apiVersion the apiVersion value.
      * @return the SipRoutingAdminClientImplBuilder.
      */
@@ -233,7 +211,7 @@ public final class SipRoutingAdminClientImplBuilder
 
     /**
      * Sets The serializer to serialize an object into a string.
-     * 
+     *
      * @param serializerAdapter the serializerAdapter value.
      * @return the SipRoutingAdminClientImplBuilder.
      */
@@ -251,7 +229,7 @@ public final class SipRoutingAdminClientImplBuilder
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     * 
+     *
      * @param retryPolicy the retryPolicy value.
      * @return the SipRoutingAdminClientImplBuilder.
      */
@@ -263,7 +241,7 @@ public final class SipRoutingAdminClientImplBuilder
 
     /**
      * Builds an instance of SipRoutingAdminClientImpl with the provided parameters.
-     * 
+     *
      * @return an instance of SipRoutingAdminClientImpl.
      */
     @Generated
@@ -273,7 +251,7 @@ public final class SipRoutingAdminClientImplBuilder
         SerializerAdapter localSerializerAdapter
             = (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
         SipRoutingAdminClientImpl client
-            = new SipRoutingAdminClientImpl(localPipeline, localSerializerAdapter, this.endpoint, localApiVersion);
+            = new SipRoutingAdminClientImpl(localPipeline, localSerializerAdapter, endpoint, localApiVersion);
         return client;
     }
 
@@ -291,8 +269,7 @@ public final class SipRoutingAdminClientImplBuilder
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
         HttpHeaders headers = new HttpHeaders();
-        localClientOptions.getHeaders()
-            .forEach(header -> headers.set(HttpHeaderName.fromString(header.getName()), header.getValue()));
+        localClientOptions.getHeaders().forEach(header -> headers.set(header.getName(), header.getValue()));
         if (headers.getSize() > 0) {
             policies.add(new AddHeadersPolicy(headers));
         }
@@ -302,6 +279,7 @@ public final class SipRoutingAdminClientImplBuilder
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(ClientBuilderUtil.validateAndGetRetryPolicy(retryPolicy, retryOptions, new RetryPolicy()));
         policies.add(new AddDatePolicy());
+        policies.add(new CookiePolicy());
         if (azureKeyCredential != null) {
             policies.add(new AzureKeyCredentialPolicy("access_key", azureKeyCredential));
         }
@@ -309,7 +287,7 @@ public final class SipRoutingAdminClientImplBuilder
             .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
             .forEach(p -> policies.add(p));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
-        policies.add(new HttpLoggingPolicy(localHttpLogOptions));
+        policies.add(new HttpLoggingPolicy(httpLogOptions));
         HttpPipeline httpPipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
             .clientOptions(localClientOptions)

@@ -4,9 +4,6 @@
 
 package com.azure.communication.phonenumbers.siprouting.models;
 
-import com.azure.communication.phonenumbers.siprouting.implementation.models.IpAddressVersion;
-import com.azure.communication.phonenumbers.siprouting.implementation.models.PrivacyHeader;
-import com.azure.communication.phonenumbers.siprouting.implementation.models.TrunkHealth;
 import com.azure.core.annotation.Immutable;
 
 /** Represents a SIP trunk for routing calls. See RFC 4904. */

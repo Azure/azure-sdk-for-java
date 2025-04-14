@@ -12,9 +12,7 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Represents a trunk route for routing calls.
- */
+/** Represents a trunk route for routing calls. */
 @Fluent
 public final class SipTrunkRoute implements JsonSerializable<SipTrunkRoute> {
     /*
@@ -44,15 +42,13 @@ public final class SipTrunkRoute implements JsonSerializable<SipTrunkRoute> {
      */
     private String callerIdOverride;
 
-    /**
-     * Creates an instance of SipTrunkRoute class.
-     */
+    /** Creates an instance of SipTrunkRoute class. */
     public SipTrunkRoute() {
     }
 
     /**
      * Get the description property: Gets or sets description of the route.
-     * 
+     *
      * @return the description value.
      */
     public String getDescription() {
@@ -61,7 +57,7 @@ public final class SipTrunkRoute implements JsonSerializable<SipTrunkRoute> {
 
     /**
      * Set the description property: Gets or sets description of the route.
-     * 
+     *
      * @param description the description value to set.
      * @return the SipTrunkRoute object itself.
      */
@@ -72,7 +68,7 @@ public final class SipTrunkRoute implements JsonSerializable<SipTrunkRoute> {
 
     /**
      * Get the name property: Gets or sets name of the route.
-     * 
+     *
      * @return the name value.
      */
     public String getName() {
@@ -81,7 +77,7 @@ public final class SipTrunkRoute implements JsonSerializable<SipTrunkRoute> {
 
     /**
      * Set the name property: Gets or sets name of the route.
-     * 
+     *
      * @param name the name value to set.
      * @return the SipTrunkRoute object itself.
      */
@@ -92,10 +88,9 @@ public final class SipTrunkRoute implements JsonSerializable<SipTrunkRoute> {
 
     /**
      * Get the numberPattern property: Gets or sets regex number pattern for routing calls. .NET regex format is
-     * supported.
-     * The regex should match only digits with an optional '+' prefix without spaces.
-     * I.e. "^\+[1-9][0-9]{3,23}$".
-     * 
+     * supported. The regex should match only digits with an optional '+' prefix without spaces. I.e.
+     * "^\+[1-9][0-9]{3,23}$".
+     *
      * @return the numberPattern value.
      */
     public String getNumberPattern() {
@@ -104,10 +99,9 @@ public final class SipTrunkRoute implements JsonSerializable<SipTrunkRoute> {
 
     /**
      * Set the numberPattern property: Gets or sets regex number pattern for routing calls. .NET regex format is
-     * supported.
-     * The regex should match only digits with an optional '+' prefix without spaces.
-     * I.e. "^\+[1-9][0-9]{3,23}$".
-     * 
+     * supported. The regex should match only digits with an optional '+' prefix without spaces. I.e.
+     * "^\+[1-9][0-9]{3,23}$".
+     *
      * @param numberPattern the numberPattern value to set.
      * @return the SipTrunkRoute object itself.
      */
@@ -118,7 +112,7 @@ public final class SipTrunkRoute implements JsonSerializable<SipTrunkRoute> {
 
     /**
      * Get the trunks property: Gets or sets list of SIP trunks for routing calls. Trunks are represented as FQDN.
-     * 
+     *
      * @return the trunks value.
      */
     public List<String> getTrunks() {
@@ -127,7 +121,7 @@ public final class SipTrunkRoute implements JsonSerializable<SipTrunkRoute> {
 
     /**
      * Set the trunks property: Gets or sets list of SIP trunks for routing calls. Trunks are represented as FQDN.
-     * 
+     *
      * @param trunks the trunks value to set.
      * @return the SipTrunkRoute object itself.
      */
@@ -139,7 +133,7 @@ public final class SipTrunkRoute implements JsonSerializable<SipTrunkRoute> {
     /**
      * Get the callerIdOverride property: Gets or sets caller ID override. This value will override caller ID of
      * outgoing call specified at runtime.
-     * 
+     *
      * @return the callerIdOverride value.
      */
     public String getCallerIdOverride() {
@@ -149,7 +143,7 @@ public final class SipTrunkRoute implements JsonSerializable<SipTrunkRoute> {
     /**
      * Set the callerIdOverride property: Gets or sets caller ID override. This value will override caller ID of
      * outgoing call specified at runtime.
-     * 
+     *
      * @param callerIdOverride the callerIdOverride value to set.
      * @return the SipTrunkRoute object itself.
      */
@@ -158,9 +152,6 @@ public final class SipTrunkRoute implements JsonSerializable<SipTrunkRoute> {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -174,10 +165,10 @@ public final class SipTrunkRoute implements JsonSerializable<SipTrunkRoute> {
 
     /**
      * Reads an instance of SipTrunkRoute from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SipTrunkRoute if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SipTrunkRoute.
      */

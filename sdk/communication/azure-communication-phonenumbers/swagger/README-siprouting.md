@@ -34,6 +34,7 @@ tag: package-2024-11-15-preview
 use: '@autorest/java@4.1.29'
 require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/abb839b726184aa10f8d1eaac8e9fe590833619c/specification/communication/data-plane/SipRouting/readme.md
 override-client-name: SipRoutingAdminClient
+custom-types: TlsHealth,PingHealth,TrunkHealth,OverallHealth,UnhealthyStatusReason,TlsStatus,PrivacyHeader,PingStatus,OverallHealthStatus,IpAddressVersion
 custom-types-subpackage: models
 models-subpackage: implementation.models
 java: true

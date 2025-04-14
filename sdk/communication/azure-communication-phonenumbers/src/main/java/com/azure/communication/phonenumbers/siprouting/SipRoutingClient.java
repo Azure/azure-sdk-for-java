@@ -25,7 +25,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import com.azure.communication.phonenumbers.siprouting.implementation.converters.SipConfigurationConverter;
 import static com.azure.communication.phonenumbers.siprouting.implementation.converters.SipTrunkConverter.convertFromApi;
 import static com.azure.communication.phonenumbers.siprouting.implementation.converters.SipDomainConverter.convertFromApi;
 import static com.azure.communication.phonenumbers.siprouting.implementation.converters.SipTrunkConverter.convertToApi;
@@ -35,7 +34,6 @@ import static com.azure.communication.phonenumbers.siprouting.implementation.con
 import static com.azure.communication.phonenumbers.siprouting.implementation.converters.RoutesForNumberConverter.convertRoutesForNumber;
 import com.azure.communication.phonenumbers.siprouting.implementation.models.ExpandEnum;
 import com.azure.communication.phonenumbers.siprouting.models.RoutesForNumber;
-import com.azure.communication.phonenumbers.siprouting.models.SipConfigurationModel;
 
 /**
  * Synchronous SIP Routing Client. This client contains all the operations for
@@ -480,16 +478,15 @@ public final class SipRoutingClient {
      * priority.
      *
      * @param targetPhoneNumber Phone number to test routing patterns against.
-     * @param sipConfigurationModel Sip configuration object to test with
-     * targetPhoneNumber.
+     * @param routes List of routes to test with targetPhoneNumber.
      * @param context The context to associate with this operation.
      * @return the list of routes matching the target phone number, ordered by
      * priority along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RoutesForNumber> testRoutesWithNumberWithResponse(String targetPhoneNumber,
-        SipConfigurationModel sipConfigurationModel, Context context) {
-        SipConfiguration sipConfiguration = SipConfigurationConverter.convertSipConfiguration(sipConfigurationModel);
+        List<SipTrunkRoute> routes, Context context) {
+        SipConfiguration sipConfiguration = new SipConfiguration().setRoutes(convertToApi(routes));
         return client.getSipRoutings()
             .testRoutesWithNumberWithResponseAsync(targetPhoneNumber, sipConfiguration, context)
             .onErrorMap(CommunicationErrorResponseException.class, this::translateException)
@@ -502,14 +499,13 @@ public final class SipRoutingClient {
      * priority.
      *
      * @param targetPhoneNumber Phone number to test routing patterns against.
-     * @param sipConfigurationModel Sip configuration object to test with
-     * targetPhoneNumber.
+     * @param routes List of routes to test with targetPhoneNumber.
      * @return the list of routes matching the target phone number, ordered by
      * priority.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RoutesForNumber testRoutesWithNumber(String targetPhoneNumber, SipConfigurationModel sipConfigurationModel) {
-        SipConfiguration sipConfiguration = SipConfigurationConverter.convertSipConfiguration(sipConfigurationModel);
+    public RoutesForNumber testRoutesWithNumber(String targetPhoneNumber, List<SipTrunkRoute> routes) {
+        SipConfiguration sipConfiguration = new SipConfiguration().setRoutes(convertToApi(routes));
         return convertRoutesForNumber(
             client.getSipRoutings().testRoutesWithNumber(targetPhoneNumber, sipConfiguration));
     }

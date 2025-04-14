@@ -28,7 +28,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import com.azure.communication.phonenumbers.siprouting.implementation.models.SipDomain;
 import com.azure.communication.phonenumbers.siprouting.models.RoutesForNumber;
-import com.azure.communication.phonenumbers.siprouting.models.SipConfigurationModel;
 
 @Execution(value = ExecutionMode.SAME_THREAD)
 public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBase {
@@ -831,15 +830,10 @@ public class SipRoutingClientIntegrationTest extends SipRoutingIntegrationTestBa
     public void testRoutesWithNumberWithResponse(HttpClient httpClient) {
         SipRoutingClient client = getClientWithConnectionString(httpClient, "testRoutesWithNumberWithResponse");
         String targetPhonenumber = "+11234567890";
-        Map<String, SipDomain> domain = new HashMap<>();
-        Map<String, com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunk> trunk
-            = new HashMap<>();
-        List<com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunkRoute> trunkRoute
-            = new ArrayList<>();
-        SipConfigurationModel sipConfigurationModel = new SipConfigurationModel(domain, trunk, trunkRoute);
+        List<com.azure.communication.phonenumbers.siprouting.models.SipTrunkRoute> trunkRoute = new ArrayList<>();
 
         Response<RoutesForNumber> response
-            = client.testRoutesWithNumberWithResponse(targetPhonenumber, sipConfigurationModel, Context.NONE);
+            = client.testRoutesWithNumberWithResponse(targetPhonenumber, trunkRoute, Context.NONE);
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
         assertNotNull(response.getValue());

@@ -4,16 +4,18 @@
 
 package com.azure.communication.phonenumbers.siprouting.implementation.models;
 
+import com.azure.communication.phonenumbers.siprouting.models.IpAddressVersion;
+import com.azure.communication.phonenumbers.siprouting.models.PrivacyHeader;
+import com.azure.communication.phonenumbers.siprouting.models.TrunkHealth;
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.Objects;
 
-/**
- * Represents a SIP trunk for routing calls. See RFC 4904. Can be expanded with additional data.
- */
+/** Represents a SIP trunk for routing calls. See RFC 4904. Can be expanded with additional data. */
 @Fluent
 public final class SipTrunk implements JsonSerializable<SipTrunk> {
     /*
@@ -32,7 +34,8 @@ public final class SipTrunk implements JsonSerializable<SipTrunk> {
     private TrunkHealth health;
 
     /*
-     * When enabled, removes Azure Communication Services from the signaling path on call transfer and sets the SIP Refer-To header to the trunk's FQDN. By default false.
+     * When enabled, removes Azure Communication Services from the signaling path on call transfer and sets the SIP
+     * Refer-To header to the trunk's FQDN. By default false.
      */
     private Boolean directTransfer;
 
@@ -46,15 +49,13 @@ public final class SipTrunk implements JsonSerializable<SipTrunk> {
      */
     private IpAddressVersion ipAddressVersion;
 
-    /**
-     * Creates an instance of SipTrunk class.
-     */
+    /** Creates an instance of SipTrunk class. */
     public SipTrunk() {
     }
 
     /**
      * Get the sipSignalingPort property: Gets or sets SIP signaling port of the trunk.
-     * 
+     *
      * @return the sipSignalingPort value.
      */
     public int getSipSignalingPort() {
@@ -63,7 +64,7 @@ public final class SipTrunk implements JsonSerializable<SipTrunk> {
 
     /**
      * Set the sipSignalingPort property: Gets or sets SIP signaling port of the trunk.
-     * 
+     *
      * @param sipSignalingPort the sipSignalingPort value to set.
      * @return the SipTrunk object itself.
      */
@@ -74,7 +75,7 @@ public final class SipTrunk implements JsonSerializable<SipTrunk> {
 
     /**
      * Get the enabled property: Enabled flag.
-     * 
+     *
      * @return the enabled value.
      */
     public Boolean isEnabled() {
@@ -83,7 +84,7 @@ public final class SipTrunk implements JsonSerializable<SipTrunk> {
 
     /**
      * Set the enabled property: Enabled flag.
-     * 
+     *
      * @param enabled the enabled value to set.
      * @return the SipTrunk object itself.
      */
@@ -94,7 +95,7 @@ public final class SipTrunk implements JsonSerializable<SipTrunk> {
 
     /**
      * Get the health property: Represents health state of a SIP trunk for routing calls.
-     * 
+     *
      * @return the health value.
      */
     public TrunkHealth getHealth() {
@@ -104,7 +105,7 @@ public final class SipTrunk implements JsonSerializable<SipTrunk> {
     /**
      * Get the directTransfer property: When enabled, removes Azure Communication Services from the signaling path on
      * call transfer and sets the SIP Refer-To header to the trunk's FQDN. By default false.
-     * 
+     *
      * @return the directTransfer value.
      */
     public Boolean isDirectTransfer() {
@@ -114,7 +115,7 @@ public final class SipTrunk implements JsonSerializable<SipTrunk> {
     /**
      * Set the directTransfer property: When enabled, removes Azure Communication Services from the signaling path on
      * call transfer and sets the SIP Refer-To header to the trunk's FQDN. By default false.
-     * 
+     *
      * @param directTransfer the directTransfer value to set.
      * @return the SipTrunk object itself.
      */
@@ -125,7 +126,7 @@ public final class SipTrunk implements JsonSerializable<SipTrunk> {
 
     /**
      * Get the privacyHeader property: SIP Privacy header. Default value is id.
-     * 
+     *
      * @return the privacyHeader value.
      */
     public PrivacyHeader getPrivacyHeader() {
@@ -134,7 +135,7 @@ public final class SipTrunk implements JsonSerializable<SipTrunk> {
 
     /**
      * Set the privacyHeader property: SIP Privacy header. Default value is id.
-     * 
+     *
      * @param privacyHeader the privacyHeader value to set.
      * @return the SipTrunk object itself.
      */
@@ -145,7 +146,7 @@ public final class SipTrunk implements JsonSerializable<SipTrunk> {
 
     /**
      * Get the ipAddressVersion property: IP address version used by the trunk. Default value is ipv4.
-     * 
+     *
      * @return the ipAddressVersion value.
      */
     public IpAddressVersion getIpAddressVersion() {
@@ -154,7 +155,7 @@ public final class SipTrunk implements JsonSerializable<SipTrunk> {
 
     /**
      * Set the ipAddressVersion property: IP address version used by the trunk. Default value is ipv4.
-     * 
+     *
      * @param ipAddressVersion the ipAddressVersion value to set.
      * @return the SipTrunk object itself.
      */
@@ -163,27 +164,24 @@ public final class SipTrunk implements JsonSerializable<SipTrunk> {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeIntField("sipSignalingPort", this.sipSignalingPort);
         jsonWriter.writeBooleanField("enabled", this.enabled);
+        jsonWriter.writeJsonField("health", this.health);
         jsonWriter.writeBooleanField("directTransfer", this.directTransfer);
-        jsonWriter.writeStringField("privacyHeader", this.privacyHeader == null ? null : this.privacyHeader.toString());
-        jsonWriter.writeStringField("ipAddressVersion",
-            this.ipAddressVersion == null ? null : this.ipAddressVersion.toString());
+        jsonWriter.writeStringField("privacyHeader", Objects.toString(this.privacyHeader, null));
+        jsonWriter.writeStringField("ipAddressVersion", Objects.toString(this.ipAddressVersion, null));
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of SipTrunk from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SipTrunk if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
+     *     to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SipTrunk.
      */

@@ -7,18 +7,14 @@ package com.azure.communication.phonenumbers.siprouting.implementation.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/**
- * Defines values for ExpandEnum.
- */
+/** Defines values for ExpandEnum. */
 public final class ExpandEnum extends ExpandableStringEnum<ExpandEnum> {
-    /**
-     * Health state of a SIP trunk for routing calls.
-     */
+    /** Health state of a SIP trunk for routing calls. */
     public static final ExpandEnum TRUNKS_HEALTH = fromString("trunks/health");
 
     /**
      * Creates a new instance of ExpandEnum value.
-     * 
+     *
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +23,7 @@ public final class ExpandEnum extends ExpandableStringEnum<ExpandEnum> {
 
     /**
      * Creates or finds a ExpandEnum from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding ExpandEnum.
      */
@@ -37,7 +33,7 @@ public final class ExpandEnum extends ExpandableStringEnum<ExpandEnum> {
 
     /**
      * Gets known ExpandEnum values.
-     * 
+     *
      * @return known ExpandEnum values.
      */
     public static Collection<ExpandEnum> values() {

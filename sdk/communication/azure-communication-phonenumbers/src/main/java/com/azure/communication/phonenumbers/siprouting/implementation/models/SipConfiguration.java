@@ -14,11 +14,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a SIP configuration.
- * When a call is being routed the routes are applied in the same order as in the routes list.
- * A route is matched by its number pattern.
- * Call is then directed into route's first available trunk, based on the order in the route's trunks list. The
- * configuration can be expanded with additional data.
+ * Represents a SIP configuration. When a call is being routed the routes are applied in the same order as in the routes
+ * list. A route is matched by its number pattern. Call is then directed into route's first available trunk, based on
+ * the order in the route's trunks list. The configuration can be expanded with additional data.
  */
 @Fluent
 public final class SipConfiguration implements JsonSerializable<SipConfiguration> {
@@ -39,16 +37,13 @@ public final class SipConfiguration implements JsonSerializable<SipConfiguration
      */
     private List<SipTrunkRoute> routes;
 
-    /**
-     * Creates an instance of SipConfiguration class.
-     */
+    /** Creates an instance of SipConfiguration class. */
     public SipConfiguration() {
     }
 
     /**
-     * Get the domains property: Validated Domains.
-     * Map key is domain.
-     * 
+     * Get the domains property: Validated Domains. Map key is domain.
+     *
      * @return the domains value.
      */
     public Map<String, SipDomain> getDomains() {
@@ -56,9 +51,8 @@ public final class SipConfiguration implements JsonSerializable<SipConfiguration
     }
 
     /**
-     * Set the domains property: Validated Domains.
-     * Map key is domain.
-     * 
+     * Set the domains property: Validated Domains. Map key is domain.
+     *
      * @param domains the domains value to set.
      * @return the SipConfiguration object itself.
      */
@@ -68,9 +62,8 @@ public final class SipConfiguration implements JsonSerializable<SipConfiguration
     }
 
     /**
-     * Get the trunks property: SIP trunks for routing calls.
-     * Map key is trunk's FQDN (1-249 characters).
-     * 
+     * Get the trunks property: SIP trunks for routing calls. Map key is trunk's FQDN (1-249 characters).
+     *
      * @return the trunks value.
      */
     public Map<String, SipTrunk> getTrunks() {
@@ -78,9 +71,8 @@ public final class SipConfiguration implements JsonSerializable<SipConfiguration
     }
 
     /**
-     * Set the trunks property: SIP trunks for routing calls.
-     * Map key is trunk's FQDN (1-249 characters).
-     * 
+     * Set the trunks property: SIP trunks for routing calls. Map key is trunk's FQDN (1-249 characters).
+     *
      * @param trunks the trunks value to set.
      * @return the SipConfiguration object itself.
      */
@@ -91,7 +83,7 @@ public final class SipConfiguration implements JsonSerializable<SipConfiguration
 
     /**
      * Get the routes property: Trunk routes for routing calls.
-     * 
+     *
      * @return the routes value.
      */
     public List<SipTrunkRoute> getRoutes() {
@@ -100,7 +92,7 @@ public final class SipConfiguration implements JsonSerializable<SipConfiguration
 
     /**
      * Set the routes property: Trunk routes for routing calls.
-     * 
+     *
      * @param routes the routes value to set.
      * @return the SipConfiguration object itself.
      */
@@ -109,9 +101,6 @@ public final class SipConfiguration implements JsonSerializable<SipConfiguration
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
@@ -134,10 +123,10 @@ public final class SipConfiguration implements JsonSerializable<SipConfiguration
 
     /**
      * Reads an instance of SipConfiguration from the JsonReader.
-     * 
+     *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SipConfiguration if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     *     pointing to JSON null.
      * @throws IOException If an error occurs while reading the SipConfiguration.
      */
     public static SipConfiguration fromJson(JsonReader jsonReader) throws IOException {
