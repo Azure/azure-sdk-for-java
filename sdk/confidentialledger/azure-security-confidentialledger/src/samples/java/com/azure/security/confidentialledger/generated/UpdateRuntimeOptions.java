@@ -20,7 +20,7 @@ public class UpdateRuntimeOptions {
                 .buildClient();
         // BEGIN:com.azure.security.confidentialledger.generated.updateruntimeoptions.updateruntimeoptions
         BinaryData JSRuntimeOptions
-            = BinaryData.fromString("{\"log_exception_details\":false,\"max_execution_time_ms\":1200}");
+            = BinaryData.fromString("logExceptionDetails");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response
             = confidentialLedgerClient.updateRuntimeOptionsWithResponse(JSRuntimeOptions, requestOptions);
