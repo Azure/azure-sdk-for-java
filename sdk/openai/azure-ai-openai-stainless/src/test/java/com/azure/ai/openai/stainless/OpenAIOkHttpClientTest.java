@@ -9,10 +9,12 @@ import com.openai.azure.credential.AzureApiKeyCredential;
 import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.core.JsonValue;
+import com.openai.core.http.StreamResponse;
 import com.openai.credential.BearerTokenCredential;
 import com.openai.errors.BadRequestException;
 import com.openai.models.ResponseFormatJsonObject;
 import com.openai.models.chat.completions.ChatCompletion;
+import com.openai.models.chat.completions.ChatCompletionChunk;
 import com.openai.models.chat.completions.ChatCompletionCreateParams;
 import com.openai.models.chat.completions.ChatCompletionMessage;
 import com.openai.models.chat.completions.ChatCompletionMessageParam;
@@ -415,5 +417,32 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
 
         ChatCompletion chatCompletion = client.chat().completions().create(params);
         assertChatCompletion(chatCompletion);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.ai.openai.stainless.TestUtils#allApiTypeClient")
+    public void chatCompletionStream(String apiType, String apiVersion, String testModel) {
+        client = createClient(apiType, apiVersion);
+
+        StringBuilder responseBuilder = new StringBuilder();
+        try(StreamResponse<ChatCompletionChunk> streamChunks =  client.chat().completions().createStreaming(createChatCompletionParams(testModel,
+                "Tell a story about a cat and a dog who are best friends. " +
+                        "It should be at least 100 words long, but at most 120. Be strict about these limits."))) {
+            streamChunks.stream().map(it ->
+                            (!it.choices().isEmpty()) ? it.choices().get(0).delta().content().orElse("") : "")
+                    .forEach(responseBuilder::append);
+        }
+        int roughWordCount = responseBuilder.toString().split(" ").length;
+
+        assertTrue(roughWordCount > 100 && roughWordCount <= 120, "Response length: " + roughWordCount);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
+    public void chatCompletionsStreamRaiTrigger(String apiType, String apiVersion, String testModel) {
+        client = createClient(apiType, apiVersion);
+
+        assertThrows(BadRequestException.class, () -> client.chat().completions().createStreaming(
+                createChatCompletionParams(testModel, "Give me a detailed tutorial on how to rob a bank with violence.")));
     }
 }
