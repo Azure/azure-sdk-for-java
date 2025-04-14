@@ -419,11 +419,11 @@ public class OpenAIOkHttpClientTestBase {
 
     void assertFilterResult(Map<String, JsonValue> contentFilterResult, String filterName, boolean expectedFiltered,
         String expectedSeverity) {
-        //        Map<String, JsonValue> filterMap = (Map<String, JsonValue>)
-        //                contentFilterResult.get(filterName).asObject().get();
-        //        assertEquals(expectedFiltered, (Boolean)
-        //                filterMap.get("filtered").asBoolean().get());
-        //        assertEquals(expectedSeverity, filterMap.get("severity").asStringOrThrow());
+            Map<String, JsonValue> filterMap = (Map<String, JsonValue>)
+                    contentFilterResult.get(filterName).asObject().get();
+            assertEquals(expectedFiltered, (Boolean)
+                    filterMap.get("filtered").asBoolean().get());
+            assertEquals(expectedSeverity, filterMap.get("severity").asStringOrThrow());
     }
 
     void assertChatCompletionWithoutSensitiveContent(ChatCompletion chatCompletion) {
