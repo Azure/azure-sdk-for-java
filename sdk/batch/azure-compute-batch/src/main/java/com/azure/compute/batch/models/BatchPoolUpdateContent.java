@@ -82,7 +82,7 @@ public final class BatchPoolUpdateContent implements JsonSerializable<BatchPoolU
      * Pool. If omitted, any existing metadata is left unchanged.
      */
     @Generated
-    private List<MetadataItem> metadata;
+    private List<BatchMetadataItem> metadata;
 
     /*
      * The virtual machine configuration for the Pool. This property must be specified.<br /><br />This field can be
@@ -342,7 +342,7 @@ public final class BatchPoolUpdateContent implements JsonSerializable<BatchPoolU
      * @return the metadata value.
      */
     @Generated
-    public List<MetadataItem> getMetadata() {
+    public List<BatchMetadataItem> getMetadata() {
         return this.metadata;
     }
 
@@ -355,7 +355,7 @@ public final class BatchPoolUpdateContent implements JsonSerializable<BatchPoolU
      * @return the BatchPoolUpdateContent object itself.
      */
     @Generated
-    public BatchPoolUpdateContent setMetadata(List<MetadataItem> metadata) {
+    public BatchPoolUpdateContent setMetadata(List<BatchMetadataItem> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -653,7 +653,7 @@ public final class BatchPoolUpdateContent implements JsonSerializable<BatchPoolU
                         = reader.readArray(reader1 -> BatchApplicationPackageReference.fromJson(reader1));
                     deserializedBatchPoolUpdateContent.applicationPackageReferences = applicationPackageReferences;
                 } else if ("metadata".equals(fieldName)) {
-                    List<MetadataItem> metadata = reader.readArray(reader1 -> MetadataItem.fromJson(reader1));
+                    List<BatchMetadataItem> metadata = reader.readArray(reader1 -> BatchMetadataItem.fromJson(reader1));
                     deserializedBatchPoolUpdateContent.metadata = metadata;
                 } else if ("virtualMachineConfiguration".equals(fieldName)) {
                     deserializedBatchPoolUpdateContent.virtualMachineConfiguration
