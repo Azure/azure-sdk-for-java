@@ -9,17 +9,18 @@ import com.openai.azure.credential.AzureApiKeyCredential;
 import com.openai.client.OpenAIClient;
 import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.core.JsonValue;
+import com.openai.core.http.StreamResponse;
 import com.openai.credential.BearerTokenCredential;
 import com.openai.errors.BadRequestException;
 import com.openai.models.ResponseFormatJsonObject;
 import com.openai.models.chat.completions.ChatCompletion;
+import com.openai.models.chat.completions.ChatCompletionChunk;
 import com.openai.models.chat.completions.ChatCompletionCreateParams;
 import com.openai.models.chat.completions.ChatCompletionMessage;
 import com.openai.models.chat.completions.ChatCompletionMessageParam;
 import com.openai.models.chat.completions.ChatCompletionMessageToolCall;
 import com.openai.models.completions.CompletionUsage;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.condition.DisabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -77,7 +78,6 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertChatCompletion(chatCompletion, 1);
     }
 
-    // Azure-Only Test
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
     public void testAzureApiKey(String apiType, String apiVersion, String testModel) {
@@ -88,7 +88,6 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertChatCompletion(chatCompletion, 1);
     }
 
-    // Azure-Only Test
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureAdTokenOnly")
     public void testAzureEntraIdToken(String apiType, String apiVersion, String testModel) {
@@ -240,19 +239,16 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertNotNull(JsonMapper.builder().build().readValue(choice.message().content().get(), Map.class));
     }
 
-    // Azure-Only Test
-    @DisabledIf("com.azure.ai.openai.stainless.TestUtils#isAzureConfigMissing")
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
     public void testChatCompletionWithSensitiveContent(String apiType, String apiVersion, String testModel) {
         client = createClient(apiType, apiVersion);
 
         ChatCompletionCreateParams params = createChatCompletionParams(testModel, "how do I rob a bank with violence?");
-        assertThrows(BadRequestException.class, () -> client.chat().completions().create(params));
+        BadRequestException thrownException = assertThrows(BadRequestException.class, () -> client.chat().completions().create(params));
+        assertRaiContentFilter(thrownException);
     }
 
-    // Azure-Only Test
-    @DisabledIf("com.azure.ai.openai.stainless.TestUtils#isAzureConfigMissing")
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
     public void testChatCompletionWithoutSensitiveContent(String apiType, String apiVersion, String testModel) {
@@ -267,12 +263,11 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
     public void testChatCompletionByod(String apiType, String apiVersion, String testModel) {
         client = createClient(apiType, apiVersion);
-        ChatCompletionCreateParams params = createParamsBuilder("gpt-4o-mini")
-                .messages(asList(
-                        createSystemMessageParam(),
-                        createUserMessageParam("What do most contributions require you to do?")))
-                .additionalBodyProperties(createExtraBodyForByod())
-                .build();
+        ChatCompletionCreateParams params = createParamsBuilder(testModel)
+            .messages(asList(createSystemMessageParam(),
+                createUserMessageParam("What do most contributions require you to do?")))
+            .additionalBodyProperties(createExtraBodyForByod())
+            .build();
         ChatCompletion completion = client.chat().completions().create(params);
         assertChatCompletionByod(completion);
     }
@@ -334,6 +329,7 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         ChatCompletion completion = client.chat().completions().create(params);
 
         assertChatCompletion(completion);
+        assertEquals(ChatCompletion.Choice.FinishReason.FUNCTION_CALL, completion.choices().get(0).finishReason());
         assertFunctionCall(completion.choices().get(0).message().functionCall().get());
 
         ChatCompletion functionCompletion = client.chat()
@@ -345,7 +341,7 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertPromptAndContentFilterResults(functionCompletion);
     }
 
-    @Disabled("Azure OpenAI's content response is null but not OpenAI's")
+    @Disabled("Deprecated feature not working.")
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#allApiTypeClient")
     public void testChatCompletionGivenFunction(String apiType, String apiVersion, String testModel) {
@@ -373,8 +369,6 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertFunctionCompletion(functionCompletion);
     }
 
-    // Azure-Only Test
-    @DisabledIf("com.azure.ai.openai.stainless.TestUtils#isAzureConfigMissing")
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
     public void testChatCompletionFunctionsRai(String apiType, String apiVersion, String testModel) {
@@ -384,7 +378,8 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         List<ChatCompletionCreateParams.Function> functions = createFunctions();
         ChatCompletionCreateParams params
             = createChatCompletionParamsWithoutFunctionCall(testModel, messages, functions);
-        assertThrows(BadRequestException.class, () -> client.chat().completions().create(params));
+        BadRequestException thrownException = assertThrows(BadRequestException.class, () -> client.chat().completions().create(params));
+        assertRaiContentFilter(thrownException);
     }
 
     @ParameterizedTest
@@ -409,11 +404,45 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         HashMap<String, JsonValue> userSecurityContext = new HashMap<>();
         userSecurityContext.put("user_security_context", JsonValue.from(userSecurityContextFields));
 
-        ChatCompletionCreateParams params = createChatCompletionParamsBuilder(testModel, "Hello, world")
-                .additionalBodyProperties(userSecurityContext)
+        ChatCompletionCreateParams params
+            = createChatCompletionParamsBuilder(testModel, "Hello, world").additionalBodyProperties(userSecurityContext)
                 .build();
 
         ChatCompletion chatCompletion = client.chat().completions().create(params);
         assertChatCompletion(chatCompletion);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.ai.openai.stainless.TestUtils#allApiTypeClient")
+    public void chatCompletionStream(String apiType, String apiVersion, String testModel) {
+        client = createClient(apiType, apiVersion);
+
+        StringBuilder responseBuilder = new StringBuilder();
+        try (StreamResponse<ChatCompletionChunk> streamChunks = client.chat()
+            .completions()
+            .createStreaming(
+                createChatCompletionParams(testModel, "Tell a story about a cat and a dog who are best friends. "
+                    + "It should be at least 100 words long, but at most 120. Be strict about these limits."))) {
+            streamChunks.stream()
+                .map(it -> (!it.choices().isEmpty()) ? it.choices().get(0).delta().content().orElse("") : "")
+                .forEach(responseBuilder::append);
+        }
+        int roughWordCount = responseBuilder.toString().split(" ").length;
+
+        // making the boundaries less strict to prevent live test flakiness
+        assertTrue(roughWordCount > 50 && roughWordCount <= 200, "Response length: " + roughWordCount);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
+    public void chatCompletionsStreamRaiTrigger(String apiType, String apiVersion, String testModel) {
+        client = createClient(apiType, apiVersion);
+
+        BadRequestException thrownException = assertThrows(BadRequestException.class, () ->
+            client.chat()
+                .completions()
+                .createStreaming(createChatCompletionParams(testModel,
+                        "Give me a detailed tutorial on how to rob a bank with violence.")));
+        assertRaiContentFilter(thrownException);
     }
 }
