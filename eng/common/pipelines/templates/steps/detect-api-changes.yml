@@ -1,8 +1,19 @@
 parameters:
-  ArtifactPath: $(Build.ArtifactStagingDirectory)
-  ArtifactName: 'packages'
-  RepoRoot: $(Build.SourcesDirectory)
-  Condition: true
+  - name: ArtifactPath
+    type: string
+    default: $(Build.ArtifactStagingDirectory)
+  - name: ArtifactName
+    type: string
+    default: 'packages'
+  - name: RepoRoot
+    type: string
+    default: $(Build.SourcesDirectory)
+  - name: UseV2
+    type: boolean
+    default: false
+  - name: Condition
+    type: boolean
+    default: true
 
 steps:
   - pwsh: |
@@ -11,18 +22,37 @@ steps:
     displayName: "Set API change detect request URL"
     condition: and(${{ parameters.Condition}}, eq(variables['ApiChangeDetectRequestUrl'], ''))
 
-  - task: Powershell@2
-    inputs:
-      filePath: ${{ parameters.RepoRoot }}/eng/common/scripts/Detect-Api-Changes.ps1
-      arguments: >
-        -ArtifactPath ${{parameters.ArtifactPath}}
-        -CommitSha '$(System.PullRequest.SourceCommitId)'
-        -BuildId $(Build.BuildId)
-        -PullRequestNumber $(System.PullRequest.PullRequestNumber)
-        -RepoFullName $(Build.Repository.Name)
-        -APIViewUri $(ApiChangeDetectRequestUrl)
-        -ArtifactName ${{ parameters.ArtifactName }}
-        -DevopsProject $(System.TeamProject)
-      pwsh: true
-    displayName: Detect API changes
-    condition: and(${{ parameters.Condition }}, succeededOrFailed(), eq(variables['Build.Reason'],'PullRequest'))
+  - ${{ if eq(parameters.UseV2, false) }}:
+    - task: Powershell@2
+      inputs:
+        filePath: ${{ parameters.RepoRoot }}/eng/common/scripts/Detect-Api-Changes.ps1
+        arguments: >
+          -ArtifactPath ${{parameters.ArtifactPath}}
+          -CommitSha '$(System.PullRequest.SourceCommitId)'
+          -BuildId $(Build.BuildId)
+          -PullRequestNumber $(System.PullRequest.PullRequestNumber)
+          -RepoFullName $(Build.Repository.Name)
+          -APIViewUri $(ApiChangeDetectRequestUrl)
+          -ArtifactName ${{ parameters.ArtifactName }}
+          -DevopsProject $(System.TeamProject)
+        pwsh: true
+      displayName: Detect API changes
+      condition: and(${{ parameters.Condition }}, succeededOrFailed(), eq(variables['Build.Reason'],'PullRequest'))
+  - ${{ else }}:
+    # The Detect-Api-ChangesV2.ps1 version calls a different Language-Settings function pointer and
+    # passes around the PackageInfo object instead of pieces of data
+    - task: Powershell@2
+      inputs:
+        filePath: ${{ parameters.RepoRoot }}/eng/common/scripts/Detect-Api-ChangesV2.ps1
+        arguments: >
+          -ArtifactPath ${{parameters.ArtifactPath}}
+          -CommitSha '$(System.PullRequest.SourceCommitId)'
+          -BuildId $(Build.BuildId)
+          -PullRequestNumber $(System.PullRequest.PullRequestNumber)
+          -RepoFullName $(Build.Repository.Name)
+          -APIViewUri $(ApiChangeDetectRequestUrl)
+          -ArtifactName ${{ parameters.ArtifactName }}
+          -DevopsProject $(System.TeamProject)
+        pwsh: true
+      displayName: Detect API changes
+      condition: and(${{ parameters.Condition }}, succeededOrFailed(), eq(variables['Build.Reason'],'PullRequest'))
