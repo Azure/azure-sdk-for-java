@@ -43,6 +43,9 @@ steps:
       Set-Content -Path $buildGradlePath -Value $updatedContent
      
       Write-Host "##vso[task.setvariable variable=NewVersion]$newVersion"
+      
+      # Generate a wrapper from my Gradle project
+      gradle wrapper
     displayName: Find current version and update to SNAPSHOT
     workingDirectory: $(Agent.TempDirectory)
 
