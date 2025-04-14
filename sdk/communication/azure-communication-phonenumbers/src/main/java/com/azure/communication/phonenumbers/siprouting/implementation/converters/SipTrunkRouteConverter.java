@@ -27,7 +27,8 @@ public final class SipTrunkRouteConverter {
         for (com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunkRoute apiRoute : apiRoutes) {
             result.add(new SipTrunkRoute(apiRoute.getName(), apiRoute.getNumberPattern())
                 .setDescription(apiRoute.getDescription())
-                .setTrunks(apiRoute.getTrunks()));
+                .setTrunks(apiRoute.getTrunks())
+                .setCallerIdOverride(apiRoute.getCallerIdOverride()));
         }
 
         return result;

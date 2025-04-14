@@ -3,12 +3,12 @@
 
 package com.azure.communication.phonenumbers.siprouting.implementation.converters;
 
-import com.azure.communication.phonenumbers.siprouting.models.SipTrunk;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import com.azure.communication.phonenumbers.siprouting.models.SipTrunk;
 
 /**
  * A converter between {@link com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunk} and
@@ -40,8 +40,14 @@ public final class SipTrunkConverter {
         if (obj == null) {
             return null;
         }
+        SipTrunk sipTrunk = new SipTrunk(fqdn, obj.getSipSignalingPort());
+        sipTrunk.setDirectTransfer(obj.isDirectTransfer());
+        sipTrunk.setEnabled(obj.isEnabled());
+        sipTrunk.setHealth(obj.getHealth());
+        sipTrunk.setIpAddressVersion(obj.getIpAddressVersion());
+        sipTrunk.setPrivacyHeader(obj.getPrivacyHeader());
 
-        return new SipTrunk(fqdn, obj.getSipSignalingPort());
+        return sipTrunk;
     }
 
     /**
@@ -71,7 +77,11 @@ public final class SipTrunkConverter {
         }
 
         return new com.azure.communication.phonenumbers.siprouting.implementation.models.SipTrunk()
-            .setSipSignalingPort(obj.getSipSignalingPort());
+            .setSipSignalingPort(obj.getSipSignalingPort())
+            .setDirectTransfer(obj.isDirectTransfer())
+            .setEnabled(obj.isEnabled())
+            .setIpAddressVersion(obj.getIpAddressVersion())
+            .setPrivacyHeader(obj.getPrivacyHeader());
     }
 
     private SipTrunkConverter() {
