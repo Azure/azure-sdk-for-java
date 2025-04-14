@@ -46,13 +46,11 @@ public class ThinClientE2ETest extends com.azure.cosmos.rx.TestSuiteBase {
             doc.put("pk", idValue);
 
             // create
-            // todo: test other overloads for create
             CosmosItemResponse<ObjectNode> createResponse = container.createItem(doc).block();
             assertThat(createResponse.getStatusCode()).isEqualTo(201);
             assertThat(createResponse.getRequestCharge()).isGreaterThan(0.0);
 
             // read
-            // todo: test other overloads for read
             CosmosItemResponse<ObjectNode> readResponse = container.readItem(idValue, new PartitionKey(idValue), ObjectNode.class).block();
             assertThat(readResponse.getStatusCode()).isEqualTo(200);
             assertThat(readResponse.getRequestCharge()).isGreaterThan(0.0);
@@ -63,7 +61,6 @@ public class ThinClientE2ETest extends com.azure.cosmos.rx.TestSuiteBase {
             doc2.put("pk", idValue);
 
             // replace
-            // todo: test other overloads for replace
             CosmosItemResponse<ObjectNode> replaceResponse = container.replaceItem(doc2, idValue, new PartitionKey(idValue)).block();
             assertThat(replaceResponse.getStatusCode()).isEqualTo(200);
             assertThat(replaceResponse.getRequestCharge()).isGreaterThan(0.0);
@@ -79,7 +76,6 @@ public class ThinClientE2ETest extends com.azure.cosmos.rx.TestSuiteBase {
             doc3.put("newField", "newValue");
 
             // upsert
-            // todo: test other overloads for upsert
             CosmosItemResponse<ObjectNode> upsertResponse = container.upsertItem(doc3, new PartitionKey(idValue), new CosmosItemRequestOptions()).block();
             assertThat(upsertResponse.getStatusCode()).isEqualTo(200);
             assertThat(upsertResponse.getRequestCharge()).isGreaterThan(0.0);
@@ -90,7 +86,6 @@ public class ThinClientE2ETest extends com.azure.cosmos.rx.TestSuiteBase {
             assertThat(upsertedItemFromRead.get("newField").asText()).isEqualTo("newValue");
 
             // patch
-            // todo: test other overloads for patch
             CosmosPatchOperations patchOperations = CosmosPatchOperations.create();
             patchOperations.add("/anotherNewField", "anotherNewValue");
             patchOperations.replace("/newField", "patchedNewField");
@@ -105,7 +100,6 @@ public class ThinClientE2ETest extends com.azure.cosmos.rx.TestSuiteBase {
             assertThat(patchedItemFromRead.get("anotherNewField").asText()).isEqualTo("anotherNewValue");
 
             // delete
-            // todo: test other overloads for delete
             CosmosItemResponse<Object> deleteResponse = container.deleteItem(idValue2, new PartitionKey(idValue)).block();
             assertThat(deleteResponse.getStatusCode()).isEqualTo(204);
             assertThat(deleteResponse.getRequestCharge()).isGreaterThan(0.0);

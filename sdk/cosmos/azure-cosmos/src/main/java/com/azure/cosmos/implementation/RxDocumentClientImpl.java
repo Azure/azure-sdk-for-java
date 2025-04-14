@@ -5721,7 +5721,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this,
                 OperationType.Read, ResourceType.DatabaseAccount, "", null, (Object) null);
             // if thin client enabled, populate thin client header so we can get thin client read and writeable locations
-            if (useThinClient(request)) {
+            if (useThinClient()) {
                 request.getHeaders().put(HttpConstants.HttpHeaders.THINCLIENT_OPT_IN, "true");
             }
             return this.populateHeadersAsync(request, RequestVerb.GET)
@@ -6784,12 +6784,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
     }
 
-    private boolean useThinClient(RxDocumentServiceRequest request) {
+    private boolean useThinClient() {
         return Configs.isThinClientEnabled() && this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY;
     }
 
     private boolean useThinClientStoreModel(RxDocumentServiceRequest request) {
-        return useThinClient(request)
+        return useThinClient()
             && request.getResourceType() == ResourceType.Document
             && request.getOperationType().isPointOperation();
     }
