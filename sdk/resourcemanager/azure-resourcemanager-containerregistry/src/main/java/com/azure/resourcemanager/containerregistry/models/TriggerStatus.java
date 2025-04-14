@@ -8,18 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The current status of trigger.
+ * The current status of the source trigger.
  */
 public final class TriggerStatus extends ExpandableStringEnum<TriggerStatus> {
-    /**
-     * Static value Disabled for TriggerStatus.
-     */
-    public static final TriggerStatus DISABLED = fromString("Disabled");
-
     /**
      * Static value Enabled for TriggerStatus.
      */
     public static final TriggerStatus ENABLED = fromString("Enabled");
+
+    /**
+     * Static value Disabled for TriggerStatus.
+     */
+    public static final TriggerStatus DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of TriggerStatus value.

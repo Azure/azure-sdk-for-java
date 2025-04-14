@@ -36,6 +36,16 @@ public final class Policies implements JsonSerializable<Policies> {
      */
     private ExportPolicy exportPolicy;
 
+    /*
+     * The policy for using ARM audience token for a container registry.
+     */
+    private AzureADAuthenticationAsArmPolicy azureADAuthenticationAsArmPolicy;
+
+    /*
+     * The soft delete policy for a container registry.
+     */
+    private SoftDeletePolicy softDeletePolicy;
+
     /**
      * Creates an instance of Policies class.
      */
@@ -123,6 +133,49 @@ public final class Policies implements JsonSerializable<Policies> {
     }
 
     /**
+     * Get the azureADAuthenticationAsArmPolicy property: The policy for using ARM audience token for a container
+     * registry.
+     * 
+     * @return the azureADAuthenticationAsArmPolicy value.
+     */
+    public AzureADAuthenticationAsArmPolicy azureADAuthenticationAsArmPolicy() {
+        return this.azureADAuthenticationAsArmPolicy;
+    }
+
+    /**
+     * Set the azureADAuthenticationAsArmPolicy property: The policy for using ARM audience token for a container
+     * registry.
+     * 
+     * @param azureADAuthenticationAsArmPolicy the azureADAuthenticationAsArmPolicy value to set.
+     * @return the Policies object itself.
+     */
+    public Policies
+        withAzureADAuthenticationAsArmPolicy(AzureADAuthenticationAsArmPolicy azureADAuthenticationAsArmPolicy) {
+        this.azureADAuthenticationAsArmPolicy = azureADAuthenticationAsArmPolicy;
+        return this;
+    }
+
+    /**
+     * Get the softDeletePolicy property: The soft delete policy for a container registry.
+     * 
+     * @return the softDeletePolicy value.
+     */
+    public SoftDeletePolicy softDeletePolicy() {
+        return this.softDeletePolicy;
+    }
+
+    /**
+     * Set the softDeletePolicy property: The soft delete policy for a container registry.
+     * 
+     * @param softDeletePolicy the softDeletePolicy value to set.
+     * @return the Policies object itself.
+     */
+    public Policies withSoftDeletePolicy(SoftDeletePolicy softDeletePolicy) {
+        this.softDeletePolicy = softDeletePolicy;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -140,6 +193,12 @@ public final class Policies implements JsonSerializable<Policies> {
         if (exportPolicy() != null) {
             exportPolicy().validate();
         }
+        if (azureADAuthenticationAsArmPolicy() != null) {
+            azureADAuthenticationAsArmPolicy().validate();
+        }
+        if (softDeletePolicy() != null) {
+            softDeletePolicy().validate();
+        }
     }
 
     /**
@@ -152,6 +211,8 @@ public final class Policies implements JsonSerializable<Policies> {
         jsonWriter.writeJsonField("trustPolicy", this.trustPolicy);
         jsonWriter.writeJsonField("retentionPolicy", this.retentionPolicy);
         jsonWriter.writeJsonField("exportPolicy", this.exportPolicy);
+        jsonWriter.writeJsonField("azureADAuthenticationAsArmPolicy", this.azureADAuthenticationAsArmPolicy);
+        jsonWriter.writeJsonField("softDeletePolicy", this.softDeletePolicy);
         return jsonWriter.writeEndObject();
     }
 
@@ -178,6 +239,11 @@ public final class Policies implements JsonSerializable<Policies> {
                     deserializedPolicies.retentionPolicy = RetentionPolicy.fromJson(reader);
                 } else if ("exportPolicy".equals(fieldName)) {
                     deserializedPolicies.exportPolicy = ExportPolicy.fromJson(reader);
+                } else if ("azureADAuthenticationAsArmPolicy".equals(fieldName)) {
+                    deserializedPolicies.azureADAuthenticationAsArmPolicy
+                        = AzureADAuthenticationAsArmPolicy.fromJson(reader);
+                } else if ("softDeletePolicy".equals(fieldName)) {
+                    deserializedPolicies.softDeletePolicy = SoftDeletePolicy.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

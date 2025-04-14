@@ -9,14 +9,9 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
-import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
-import com.azure.core.util.polling.PollerFlux;
-import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.containerregistry.fluent.models.TaskInner;
 import com.azure.resourcemanager.containerregistry.models.TaskUpdateParameters;
-import java.nio.ByteBuffer;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
@@ -135,57 +130,8 @@ public interface TasksClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String registryName,
-        String taskName, TaskInner taskCreateParameters);
-
-    /**
-     * Creates a task for a container registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param taskName The name of the container registry task.
-     * @param taskCreateParameters The parameters for creating a task.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the task that has the ARM resource and task properties.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<TaskInner>, TaskInner> beginCreateAsync(String resourceGroupName, String registryName,
-        String taskName, TaskInner taskCreateParameters);
-
-    /**
-     * Creates a task for a container registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param taskName The name of the container registry task.
-     * @param taskCreateParameters The parameters for creating a task.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the task that has the ARM resource and task properties.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TaskInner>, TaskInner> beginCreate(String resourceGroupName, String registryName,
-        String taskName, TaskInner taskCreateParameters);
-
-    /**
-     * Creates a task for a container registry with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param taskName The name of the container registry task.
-     * @param taskCreateParameters The parameters for creating a task.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the task that has the ARM resource and task properties.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TaskInner>, TaskInner> beginCreate(String resourceGroupName, String registryName,
-        String taskName, TaskInner taskCreateParameters, Context context);
+    Mono<Response<TaskInner>> createWithResponseAsync(String resourceGroupName, String registryName, String taskName,
+        TaskInner taskCreateParameters);
 
     /**
      * Creates a task for a container registry with the specified parameters.
@@ -210,13 +156,15 @@ public interface TasksClient {
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
      * @param taskCreateParameters The parameters for creating a task.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the task that has the ARM resource and task properties.
+     * @return the task that has the ARM resource and task properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TaskInner create(String resourceGroupName, String registryName, String taskName, TaskInner taskCreateParameters);
+    Response<TaskInner> createWithResponse(String resourceGroupName, String registryName, String taskName,
+        TaskInner taskCreateParameters, Context context);
 
     /**
      * Creates a task for a container registry with the specified parameters.
@@ -225,15 +173,13 @@ public interface TasksClient {
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
      * @param taskCreateParameters The parameters for creating a task.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the task that has the ARM resource and task properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TaskInner create(String resourceGroupName, String registryName, String taskName, TaskInner taskCreateParameters,
-        Context context);
+    TaskInner create(String resourceGroupName, String registryName, String taskName, TaskInner taskCreateParameters);
 
     /**
      * Deletes a specified task.
@@ -247,52 +193,7 @@ public interface TasksClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String registryName,
-        String taskName);
-
-    /**
-     * Deletes a specified task.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param taskName The name of the container registry task.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String registryName, String taskName);
-
-    /**
-     * Deletes a specified task.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param taskName The name of the container registry task.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName, String taskName);
-
-    /**
-     * Deletes a specified task.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param taskName The name of the container registry task.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName, String taskName,
-        Context context);
+    Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String registryName, String taskName);
 
     /**
      * Deletes a specified task.
@@ -314,12 +215,14 @@ public interface TasksClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String registryName, String taskName);
+    Response<Void> deleteWithResponse(String resourceGroupName, String registryName, String taskName, Context context);
 
     /**
      * Deletes a specified task.
@@ -327,13 +230,12 @@ public interface TasksClient {
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String registryName, String taskName, Context context);
+    void delete(String resourceGroupName, String registryName, String taskName);
 
     /**
      * Updates a task with the specified parameters.
@@ -349,57 +251,8 @@ public interface TasksClient {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String registryName,
-        String taskName, TaskUpdateParameters taskUpdateParameters);
-
-    /**
-     * Updates a task with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param taskName The name of the container registry task.
-     * @param taskUpdateParameters The parameters for updating a task.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of the task that has the ARM resource and task properties.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<TaskInner>, TaskInner> beginUpdateAsync(String resourceGroupName, String registryName,
-        String taskName, TaskUpdateParameters taskUpdateParameters);
-
-    /**
-     * Updates a task with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param taskName The name of the container registry task.
-     * @param taskUpdateParameters The parameters for updating a task.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the task that has the ARM resource and task properties.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TaskInner>, TaskInner> beginUpdate(String resourceGroupName, String registryName,
-        String taskName, TaskUpdateParameters taskUpdateParameters);
-
-    /**
-     * Updates a task with the specified parameters.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param taskName The name of the container registry task.
-     * @param taskUpdateParameters The parameters for updating a task.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of the task that has the ARM resource and task properties.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<TaskInner>, TaskInner> beginUpdate(String resourceGroupName, String registryName,
-        String taskName, TaskUpdateParameters taskUpdateParameters, Context context);
+    Mono<Response<TaskInner>> updateWithResponseAsync(String resourceGroupName, String registryName, String taskName,
+        TaskUpdateParameters taskUpdateParameters);
 
     /**
      * Updates a task with the specified parameters.
@@ -424,14 +277,15 @@ public interface TasksClient {
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
      * @param taskUpdateParameters The parameters for updating a task.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the task that has the ARM resource and task properties.
+     * @return the task that has the ARM resource and task properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TaskInner update(String resourceGroupName, String registryName, String taskName,
-        TaskUpdateParameters taskUpdateParameters);
+    Response<TaskInner> updateWithResponse(String resourceGroupName, String registryName, String taskName,
+        TaskUpdateParameters taskUpdateParameters, Context context);
 
     /**
      * Updates a task with the specified parameters.
@@ -440,7 +294,6 @@ public interface TasksClient {
      * @param registryName The name of the container registry.
      * @param taskName The name of the container registry task.
      * @param taskUpdateParameters The parameters for updating a task.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -448,7 +301,7 @@ public interface TasksClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     TaskInner update(String resourceGroupName, String registryName, String taskName,
-        TaskUpdateParameters taskUpdateParameters, Context context);
+        TaskUpdateParameters taskUpdateParameters);
 
     /**
      * Returns a task with extended information that includes all secrets.

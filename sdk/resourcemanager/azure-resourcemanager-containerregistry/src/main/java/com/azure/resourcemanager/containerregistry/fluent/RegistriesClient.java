@@ -1033,54 +1033,8 @@ public interface RegistriesClient
      * @return run resource properties along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> scheduleRunWithResponseAsync(String resourceGroupName, String registryName,
+    Mono<Response<RunInner>> scheduleRunWithResponseAsync(String resourceGroupName, String registryName,
         RunRequest runRequest);
-
-    /**
-     * Schedules a new run based on the request parameters and add it to the run queue.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param runRequest The parameters of a run that needs to scheduled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of run resource properties.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<RunInner>, RunInner> beginScheduleRunAsync(String resourceGroupName, String registryName,
-        RunRequest runRequest);
-
-    /**
-     * Schedules a new run based on the request parameters and add it to the run queue.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param runRequest The parameters of a run that needs to scheduled.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of run resource properties.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RunInner>, RunInner> beginScheduleRun(String resourceGroupName, String registryName,
-        RunRequest runRequest);
-
-    /**
-     * Schedules a new run based on the request parameters and add it to the run queue.
-     * 
-     * @param resourceGroupName The name of the resource group to which the container registry belongs.
-     * @param registryName The name of the container registry.
-     * @param runRequest The parameters of a run that needs to scheduled.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of run resource properties.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RunInner>, RunInner> beginScheduleRun(String resourceGroupName, String registryName,
-        RunRequest runRequest, Context context);
 
     /**
      * Schedules a new run based on the request parameters and add it to the run queue.
@@ -1102,13 +1056,15 @@ public interface RegistriesClient
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param runRequest The parameters of a run that needs to scheduled.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return run resource properties.
+     * @return run resource properties along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RunInner scheduleRun(String resourceGroupName, String registryName, RunRequest runRequest);
+    Response<RunInner> scheduleRunWithResponse(String resourceGroupName, String registryName, RunRequest runRequest,
+        Context context);
 
     /**
      * Schedules a new run based on the request parameters and add it to the run queue.
@@ -1116,14 +1072,13 @@ public interface RegistriesClient
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @param runRequest The parameters of a run that needs to scheduled.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return run resource properties.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RunInner scheduleRun(String resourceGroupName, String registryName, RunRequest runRequest, Context context);
+    RunInner scheduleRun(String resourceGroupName, String registryName, RunRequest runRequest);
 
     /**
      * Get the upload location for the user to be able to upload the source.
