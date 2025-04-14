@@ -1,0 +1,70 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/openai/ci.yml
+      - sdk/openai/azure-ai-openai/
+      - sdk/openai/azure-ai-openai-assistants/
+      - sdk/openai/azure-ai-openai-realtime/
+    exclude:
+      - sdk/openai/pom.xml
+      - sdk/openai/azure-ai-openai/pom.xml
+      - sdk/openai/azure-ai-openai-assistants/pom.xml
+      - sdk/openai/azure-ai-openai-realtime/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/openai/ci.yml
+      - sdk/openai/azure-ai-openai/
+      - sdk/openai/azure-ai-openai-assistants/
+      - sdk/openai/azure-ai-openai-realtime/
+    exclude:
+      - sdk/openai/pom.xml
+      - sdk/openai/azure-ai-openai/pom.xml
+      - sdk/openai/azure-ai-openai-assistants/pom.xml
+      - sdk/openai/azure-ai-openai-realtime/pom.xml
+
+parameters:
+  - name: release_azureaiopenai
+    displayName: 'azure-ai-openai'
+    type: boolean
+    default: true
+  - name: release_azureaiopenaiassistants
+    displayName: 'azure-ai-openai-assistants'
+    type: boolean
+    default: true
+  - name: release_azureaiopenairealtime
+    displayName: 'azure-ai-openai-realtime'
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: openai
+    Artifacts:
+      - name: azure-ai-openai
+        groupId: com.azure
+        safeName: azureaiopenai
+        releaseInBatch: ${{ parameters.release_azureaiopenai }}
+      - name: azure-ai-openai-assistants
+        groupId: com.azure
+        safeName: azureaiopenaiassistants
+        releaseInBatch: ${{ parameters.release_azureaiopenaiassistants }}
+      - name: azure-ai-openai-realtime
+        groupId: com.azure
+        safeName: azureaiopenairealtime
+        releaseInBatch: ${{ parameters.release_azureaiopenairealtime }}
