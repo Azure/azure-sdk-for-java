@@ -19,29 +19,30 @@ public final class WebLinkedServiceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WebLinkedService model = BinaryData.fromString(
-            "{\"type\":\"Web\",\"typeProperties\":{\"authenticationType\":\"WebLinkedServiceTypeProperties\",\"url\":\"datacg\"},\"version\":\"t\",\"connectVia\":{\"referenceName\":\"lpihtepasjeb\",\"parameters\":{\"nybnt\":\"datavfcdsijs\",\"ayxujzoxgakqt\":\"datax\"}},\"description\":\"jucazwedmahulxgc\",\"parameters\":{\"dvqan\":{\"type\":\"Array\",\"defaultValue\":\"datan\"}},\"annotations\":[\"dataxgohm\",\"datagblqyf\"],\"\":{\"zfgxwfxjiqp\":\"datafpqifs\"}}")
+            "{\"type\":\"Web\",\"typeProperties\":{\"authenticationType\":\"WebLinkedServiceTypeProperties\",\"url\":\"datavk\"},\"version\":\"mkupbnkcwauyl\",\"connectVia\":{\"referenceName\":\"dskrpyfr\",\"parameters\":{\"pahyuxxeike\":\"datakafqzyle\",\"nhqafuvvys\":\"datanpw\",\"mesxjeqqfy\":\"datahjkxg\",\"kxtanlvoorv\":\"datav\"}},\"description\":\"dncqcuwtps\",\"parameters\":{\"atptzkmfvdrkcw\":{\"type\":\"Int\",\"defaultValue\":\"dataolspvxpiegxlzd\"}},\"annotations\":[\"datanwsffiahf\",\"datafrzzxirxxkmozkd\",\"datazhrhki\"],\"\":{\"wm\":\"datayzn\",\"bzzwsesqytktvof\":\"datauuzny\"}}")
             .toObject(WebLinkedService.class);
-        Assertions.assertEquals("t", model.version());
-        Assertions.assertEquals("lpihtepasjeb", model.connectVia().referenceName());
-        Assertions.assertEquals("jucazwedmahulxgc", model.description());
-        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("dvqan").type());
+        Assertions.assertEquals("mkupbnkcwauyl", model.version());
+        Assertions.assertEquals("dskrpyfr", model.connectVia().referenceName());
+        Assertions.assertEquals("dncqcuwtps", model.description());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("atptzkmfvdrkcw").type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WebLinkedService model = new WebLinkedService().withVersion("t")
-            .withConnectVia(new IntegrationRuntimeReference().withReferenceName("lpihtepasjeb")
-                .withParameters(mapOf("nybnt", "datavfcdsijs", "ayxujzoxgakqt", "datax")))
-            .withDescription("jucazwedmahulxgc")
-            .withParameters(
-                mapOf("dvqan", new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("datan")))
-            .withAnnotations(Arrays.asList("dataxgohm", "datagblqyf"))
-            .withTypeProperties(new WebLinkedServiceTypeProperties().withUrl("datacg"));
+        WebLinkedService model = new WebLinkedService().withVersion("mkupbnkcwauyl")
+            .withConnectVia(new IntegrationRuntimeReference().withReferenceName("dskrpyfr")
+                .withParameters(mapOf("pahyuxxeike", "datakafqzyle", "nhqafuvvys", "datanpw", "mesxjeqqfy", "datahjkxg",
+                    "kxtanlvoorv", "datav")))
+            .withDescription("dncqcuwtps")
+            .withParameters(mapOf("atptzkmfvdrkcw",
+                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("dataolspvxpiegxlzd")))
+            .withAnnotations(Arrays.asList("datanwsffiahf", "datafrzzxirxxkmozkd", "datazhrhki"))
+            .withTypeProperties(new WebLinkedServiceTypeProperties().withUrl("datavk"));
         model = BinaryData.fromObject(model).toObject(WebLinkedService.class);
-        Assertions.assertEquals("t", model.version());
-        Assertions.assertEquals("lpihtepasjeb", model.connectVia().referenceName());
-        Assertions.assertEquals("jucazwedmahulxgc", model.description());
-        Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("dvqan").type());
+        Assertions.assertEquals("mkupbnkcwauyl", model.version());
+        Assertions.assertEquals("dskrpyfr", model.connectVia().referenceName());
+        Assertions.assertEquals("dncqcuwtps", model.description());
+        Assertions.assertEquals(ParameterType.INT, model.parameters().get("atptzkmfvdrkcw").type());
     }
 
     // Use "Map.of" if available

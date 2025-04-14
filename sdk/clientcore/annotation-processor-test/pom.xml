@@ -55,7 +55,7 @@
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.7</version> <!-- {x-version-update;io.clientcore:core;dependency} -->
+      <version>1.0.0-beta.9</version> <!-- {x-version-update;unreleased_io.clientcore:core;dependency} -->
     </dependency>
     <dependency>
       <groupId>io.clientcore</groupId>
@@ -67,7 +67,7 @@
     <dependency>
       <groupId>io.clientcore</groupId>
       <artifactId>core</artifactId>
-      <version>1.0.0-beta.7</version> <!-- {x-version-update;io.clientcore:core;dependency} -->
+      <version>1.0.0-beta.9</version> <!-- {x-version-update;unreleased_io.clientcore:core;dependency} -->
       <type>test-jar</type>
       <scope>test</scope>
     </dependency>
@@ -121,25 +121,29 @@
             <goals>
               <goal>compile</goal>
             </goals>
-
             <configuration>
-              <release>11</release>
+              <source>1.8</source>
+              <target>1.8</target>
+              <release>8</release>
               <proc>only</proc>
               <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
               <annotationProcessorPaths>
                 <annotationProcessorPath>
                   <groupId>io.clientcore</groupId>
                   <artifactId>annotation-processor</artifactId>
-                  <version>1.0.0-beta.1</version> <!-- {x-version-update;unreleased_io.clientcore:annotation-processor;dependency} -->
+                  <version>1.0.0-beta.3</version> <!-- {x-version-update;unreleased_io.clientcore:annotation-processor;dependency} -->
                 </annotationProcessorPath>
               </annotationProcessorPaths>
               <annotationProcessors>
                 <annotationProcessor>io.clientcore.annotation.processor.AnnotationProcessor</annotationProcessor>
               </annotationProcessors>
-
               <compilerArgs>
                 <arg>-Xlint:-options</arg>
               </compilerArgs>
+              <!-- Exclude module-info.java as this is not supported in Java 8 and is not needed by annotation processor -->
+              <excludes>
+                <exclude>module-info.java</exclude>
+              </excludes>
             </configuration>
           </execution>
         </executions>
@@ -148,7 +152,7 @@
           <dependency>
             <groupId>io.clientcore</groupId>
             <artifactId>annotation-processor</artifactId>
-            <version>1.0.0-beta.1</version> <!-- {x-version-update;unreleased_io.clientcore:annotation-processor;dependency} -->
+            <version>1.0.0-beta.3</version> <!-- {x-version-update;unreleased_io.clientcore:annotation-processor;dependency} -->
           </dependency>
         </dependencies>
       </plugin>

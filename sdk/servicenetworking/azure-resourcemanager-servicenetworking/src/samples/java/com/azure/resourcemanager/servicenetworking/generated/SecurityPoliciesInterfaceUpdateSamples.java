@@ -4,24 +4,45 @@
 
 package com.azure.resourcemanager.servicenetworking.generated;
 
+import com.azure.resourcemanager.servicenetworking.models.IpAccessRulesPolicy;
 import com.azure.resourcemanager.servicenetworking.models.SecurityPolicy;
 import com.azure.resourcemanager.servicenetworking.models.SecurityPolicyUpdateProperties;
 import com.azure.resourcemanager.servicenetworking.models.WafPolicy;
+import java.util.Arrays;
 
 /**
  * Samples for SecurityPoliciesInterface Update.
  */
 public final class SecurityPoliciesInterfaceUpdateSamples {
     /*
-     * x-ms-original-file: 2025-01-01/SecurityPolicyPatch.json
+     * x-ms-original-file: 2025-03-01-preview/IpAccessRulesSecurityPolicyPatch.json
      */
     /**
-     * Sample code: Update SecurityPolicy.
+     * Sample code: Update IpAccessRules SecurityPolicy.
+     * 
+     * @param manager Entry point to TrafficControllerManager.
+     */
+    public static void updateIpAccessRulesSecurityPolicy(
+        com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
+        SecurityPolicy resource = manager.securityPoliciesInterfaces()
+            .getWithResponse("rg1", "tc1", "sp1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new SecurityPolicyUpdateProperties()
+                .withIpAccessRulesPolicy(new IpAccessRulesPolicy().withRules(Arrays.asList())))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-01-preview/WafSecurityPolicyPatch.json
+     */
+    /**
+     * Sample code: Update WAF SecurityPolicy.
      * 
      * @param manager Entry point to TrafficControllerManager.
      */
     public static void
-        updateSecurityPolicy(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
+        updateWAFSecurityPolicy(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
         SecurityPolicy resource = manager.securityPoliciesInterfaces()
             .getWithResponse("rg1", "tc1", "sp1", com.azure.core.util.Context.NONE)
             .getValue();

@@ -51,7 +51,7 @@ public final class CommonDataServiceForAppsEntityDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private CommonDataServiceForAppsEntityDatasetTypeProperties innerTypeProperties() {
+    CommonDataServiceForAppsEntityDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

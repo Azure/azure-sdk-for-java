@@ -70,7 +70,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-servicebus</artifactId>
-    <version>7.18.0-beta.2</version>
+    <version>7.17.10</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

@@ -101,23 +101,23 @@ public class ImplUtilsTests {
 
         return Stream.of(
             // Configuration has an empty string timeout property configured.
-            Arguments.of(new Configuration(new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "")),
+            Arguments.of(Configuration.from(new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "")),
                 Duration.ofMillis(10000), logger, Duration.ofMillis(10000)),
 
             // Configuration has a value that isn't a valid number.
-            Arguments.of(new Configuration(new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "ten")),
+            Arguments.of(Configuration.from(new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "ten")),
                 Duration.ofMillis(10000), logger, Duration.ofMillis(10000)),
 
             // Configuration has a negative value.
-            Arguments.of(new Configuration(new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "-10")),
+            Arguments.of(Configuration.from(new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "-10")),
                 Duration.ofMillis(10000), logger, Duration.ZERO),
 
             // Configuration has a zero value.
-            Arguments.of(new Configuration(new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "0")),
+            Arguments.of(Configuration.from(new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "0")),
                 Duration.ofMillis(10000), logger, Duration.ZERO),
 
             // Configuration has a positive value.
-            Arguments.of(new Configuration(new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "42")),
+            Arguments.of(Configuration.from(new TestConfigurationSource().put(TIMEOUT_PROPERTY_NAME, "42")),
                 Duration.ofMillis(10000), logger, Duration.ofMillis(42)));
     }
 

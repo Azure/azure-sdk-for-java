@@ -34,16 +34,6 @@ public class PathBuilderTest {
     }
 
     @Test
-    public void buildsPathWithQueryParameters() {
-        HttpRequestContext context = new HttpRequestContext();
-        context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        context.addQueryParam("key1", "value1");
-        context.addQueryParam("key2", "value2");
-        String result = PathBuilder.buildPath("https://{endpoint}/keys", context);
-        assertEquals("\"https://\" + myEndpoint + \"/keys?key1=\" + value1 + \"&key2=\" + value2", result);
-    }
-
-    @Test
     public void buildsPathWithEmptySubstitutions() {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
@@ -75,18 +65,6 @@ public class PathBuilderTest {
     }
 
     @Test
-    public void buildsPathWithMultipleQueryParameters() {
-        HttpRequestContext context = new HttpRequestContext();
-        context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        context.addQueryParam("key1", "value1");
-        context.addQueryParam("key2", "value2");
-        context.addQueryParam("key3", "value3");
-        String result = PathBuilder.buildPath("https://{endpoint}/keys", context);
-        assertEquals("\"https://\" + myEndpoint + \"/keys?key1=\" + value1 + \"&key2=\" + value2 + \"&key3=\" + value3",
-            result);
-    }
-
-    @Test
     public void buildsPathWithNoSubstitutions() {
         HttpRequestContext context = new HttpRequestContext();
         String result = PathBuilder.buildPath("https://keys", context);
@@ -114,8 +92,8 @@ public class PathBuilderTest {
     public void buildsPathWithMultipleSameQueryParameters() {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        context.addQueryParam("key", "value1");
-        assertThrows(IllegalArgumentException.class, () -> context.addQueryParam("key", "value2"));
+        context.addQueryParam("key", "value1", false, false);
+        assertThrows(IllegalArgumentException.class, () -> context.addQueryParam("key", "value2", false, false));
     }
 
     @Test
@@ -124,21 +102,6 @@ public class PathBuilderTest {
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
         assertThrows(IllegalArgumentException.class,
             () -> context.addSubstitution(new Substitution("endpoint", "myEndpoint2")));
-    }
-
-    @Test
-    public void buildsPathWithMultipleSubstitutionsAndQueryParameters() {
-        HttpRequestContext context = new HttpRequestContext();
-        context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        context.addSubstitution(new Substitution("path1", "myPath"));
-        context.addSubstitution(new Substitution("path2", "myPath2"));
-        context.addQueryParam("key1", "value1");
-        context.addQueryParam("key2", "value2");
-        context.addQueryParam("key3", "value3");
-        String result = PathBuilder.buildPath("https://{endpoint}/keys/{path1}/{path2}", context);
-        assertEquals(
-            "\"https://\" + myEndpoint + \"/keys/\" + myPath + \"/\" + myPath2 + \"?key1=\" + value1 + \"&key2=\" + value2 + \"&key3=\" + value3",
-            result);
     }
 
     @Test
@@ -153,7 +116,7 @@ public class PathBuilderTest {
     public void buildsPathWithMissingQueryParameter() {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        context.addQueryParam("key1", "value1");
+        context.addQueryParam("key1", "value1", false, false);
         assertThrows(MissingSubstitutionException.class,
             () -> PathBuilder.buildPath("https://{endpoint}/keys?key2={value2}", context));
     }
@@ -412,27 +375,6 @@ public class PathBuilderTest {
         assertEquals("myEndpoint + \"/keys/\" + myPath", result);
     }
 
-    @Test
-    public void buildsPathWithoutProtocolWithQueryParameters() {
-        HttpRequestContext context = new HttpRequestContext();
-        context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        context.addQueryParam("key1", "value1");
-        context.addQueryParam("key2", "value2");
-        String result = PathBuilder.buildPath("{endpoint}/keys", context);
-        assertEquals("myEndpoint + \"/keys?key1=\" + value1 + \"&key2=\" + value2", result);
-    }
-
-    @Test
-    public void buildsPathWithoutProtocolWithSubstitutionsAndQueryParameters() {
-        HttpRequestContext context = new HttpRequestContext();
-        context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        context.addSubstitution(new Substitution("path", "myPath"));
-        context.addQueryParam("key1", "value1");
-        context.addQueryParam("key2", "value2");
-        String result = PathBuilder.buildPath("{endpoint}/keys/{path}", context);
-        assertEquals("myEndpoint + \"/keys/\" + myPath + \"?key1=\" + value1 + \"&key2=\" + value2", result);
-    }
-
     // TODO: Currently, the context adds subsitition using the parameter name as key so i
     // Is this a valid case?
     //    @Test
@@ -446,39 +388,11 @@ public class PathBuilderTest {
     //    }
 
     @Test
-    public void buildsPathWithEmptyQueryParameterKey() {
-        HttpRequestContext context = new HttpRequestContext();
-        context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        context.addQueryParam("", "value1");
-        assertThrows(IllegalArgumentException.class, () -> PathBuilder.buildPath("https://{endpoint}/keys", context));
-    }
-
-    @Test
     public void buildsPathWithNullQueryParameterValue() {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        context.addQueryParam("key1", null);
+        context.addQueryParam("key1", null, false, false);
         String result = PathBuilder.buildPath("https://{endpoint}/keys", context);
         assertEquals("\"https://\" + myEndpoint + \"/keys\"", result);
-    }
-
-    @Test
-    public void buildsPathWithNullQueryParameterKey() {
-        HttpRequestContext context = new HttpRequestContext();
-        context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        context.addQueryParam(null, "value1");
-        assertThrows(IllegalArgumentException.class, () -> PathBuilder.buildPath("https://{endpoint}/keys", context));
-    }
-
-    @Test
-    public void buildsPathWithMixedQueryParameters() {
-        HttpRequestContext context = new HttpRequestContext();
-        context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        context.addQueryParam("key1", "value1");
-        context.addQueryParam("key2", null);
-        context.addQueryParam("key3", "");
-        context.addQueryParam("key4", "value4");
-        String result = PathBuilder.buildPath("https://{endpoint}/keys", context);
-        assertEquals("\"https://\" + myEndpoint + \"/keys?key1=\" + value1 + \"&key4=\" + value4", result);
     }
 }

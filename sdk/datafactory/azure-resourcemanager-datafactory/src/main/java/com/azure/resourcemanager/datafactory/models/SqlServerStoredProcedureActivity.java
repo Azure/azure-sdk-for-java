@@ -52,7 +52,7 @@ public final class SqlServerStoredProcedureActivity extends ExecutionActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private SqlServerStoredProcedureActivityTypeProperties innerTypeProperties() {
+    SqlServerStoredProcedureActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

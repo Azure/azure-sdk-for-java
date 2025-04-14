@@ -11,7 +11,7 @@ public final class IcebergWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IcebergWriteSettings model
-            = BinaryData.fromString("{\"type\":\"IcebergWriteSettings\",\"\":{\"djbyfdfuaj\":\"datauobzz\"}}")
+            = BinaryData.fromString("{\"type\":\"IcebergWriteSettings\",\"\":{\"hyekggo\":\"datab\"}}")
                 .toObject(IcebergWriteSettings.class);
     }
 

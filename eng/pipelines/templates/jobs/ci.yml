@@ -52,9 +52,6 @@ parameters:
   - name: JavaBuildVersion
     type: string
     default: $(JavaBuildVersion)
-  - name: IgnoreVerifyTypeSpecCodeGenerationError
-    type: boolean
-    default: false
   - name: TimeoutInMinutes
     type: number
     default: 60
@@ -349,6 +346,7 @@ jobs:
           CheckLinkGuidance: $true
 
       - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
+        # NOTE: The PRServiceDirectories string is used in the two Code Generation steps below
         - pwsh: |
             $diffJson = Get-Content '$(Build.ArtifactStagingDirectory)/diff/diff.json' -Raw
             $diff = ConvertFrom-Json $diffJson
@@ -357,15 +355,17 @@ jobs:
                 $changedServicesString = $diff.ChangedServices -join ","
             }
             Write-Host "changedServicesString='$changedServicesString'"
-            Write-Host "##vso[task.setvariable variable=SamplesServiceDirectories;]$changedServicesString"
-          displayName: Get samples service directories from PR diff
-        - template: /eng/common/pipelines/templates/steps/verify-samples.yml
-          parameters:
-            ServiceDirectories: $(SamplesServiceDirectories)
+            Write-Host "##vso[task.setvariable variable=PRServiceDirectories;]$changedServicesString"
+          displayName: Set PRServiceDirectories from PR diff
       - ${{ else }}:
-        - template: /eng/common/pipelines/templates/steps/verify-samples.yml
-          parameters:
-            ServiceDirectory: ${{ parameters.ServiceDirectory }}
+        - pwsh: |
+            Write-Host "changedServicesString='${{ parameters.ServiceDirectory }}'"
+            Write-Host "##vso[task.setvariable variable=PRServiceDirectories;]$changedServicesString"
+          displayName: Set PRServiceDirectories to ServiceDirectory parameter
+
+      - template: /eng/common/pipelines/templates/steps/verify-samples.yml
+        parameters:
+          ServiceDirectories: $(PRServiceDirectories)
 
       # Use BasePathLength of 38 instead of the default 49 as some released files fail when the number is higher.
       - template: /eng/common/pipelines/templates/steps/verify-path-length.yml
@@ -394,21 +394,20 @@ jobs:
           JdkVersion: ${{ parameters.JavaBuildVersion }}
 
       - task: PowerShell@2
-        displayName: Verify Code Generation
+        displayName: Verify Code Generation for Pull Request
         inputs:
           pwsh: true
           filePath: $(Build.SourcesDirectory)/eng/scripts/Compare-CurrentToCodegeneration.ps1
           arguments: >
-            -Directory sdk/${{ parameters.ServiceDirectory }}
+            -ServiceDirectories '$(PRServiceDirectories)'
 
       - task: PowerShell@2
         displayName: Verify TypeSpec Code Generation
-        continueOnError: ${{ eq(parameters.IgnoreVerifyTypeSpecCodeGenerationError, 'true') }}
         inputs:
           pwsh: true
           filePath: $(Build.SourcesDirectory)/eng/scripts/TypeSpec-Compare-CurrentToCodegeneration.ps1
           arguments: >
-            -Directory sdk/${{ parameters.ServiceDirectory }}
+            -ServiceDirectories '$(PRServiceDirectories)'
 
       - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
         parameters:
@@ -452,8 +451,9 @@ jobs:
           - ${{ config }}
       ${{ if eq(parameters.ServiceDirectory, 'auto') }}:
         EnablePRGeneration: true
-        # We want full matrix for indirect packages
-        PRMatrixSparseIndirect: false
+        PRMatrixSparseIndirect: true
+        # This key will use the PackageInfo.Name to populate the ArtifactPackageNames
+        PRMatrixKey: 'Name'
         SparseCheckoutPaths:
           - '**/*.xml'
           - '**/*.md'

@@ -13,19 +13,19 @@ public final class EventSubscriptionIdentityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         EventSubscriptionIdentity model
-            = BinaryData.fromString("{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"fdsd\"}")
+            = BinaryData.fromString("{\"type\":\"UserAssigned\",\"userAssignedIdentity\":\"gfbcvkcv\"}")
                 .toObject(EventSubscriptionIdentity.class);
         Assertions.assertEquals(EventSubscriptionIdentityType.USER_ASSIGNED, model.type());
-        Assertions.assertEquals("fdsd", model.userAssignedIdentity());
+        Assertions.assertEquals("gfbcvkcv", model.userAssignedIdentity());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         EventSubscriptionIdentity model
             = new EventSubscriptionIdentity().withType(EventSubscriptionIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentity("fdsd");
+                .withUserAssignedIdentity("gfbcvkcv");
         model = BinaryData.fromObject(model).toObject(EventSubscriptionIdentity.class);
         Assertions.assertEquals(EventSubscriptionIdentityType.USER_ASSIGNED, model.type());
-        Assertions.assertEquals("fdsd", model.userAssignedIdentity());
+        Assertions.assertEquals("gfbcvkcv", model.userAssignedIdentity());
     }
 }

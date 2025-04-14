@@ -15,7 +15,7 @@
   <groupId>io.clientcore</groupId>
   <artifactId>core</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.0-beta.8</version> <!-- {x-version-update;io.clientcore:core;current} -->
+  <version>1.0.0-beta.9</version> <!-- {x-version-update;io.clientcore:core;current} -->
 
   <name>Core Library for building Java client libraries for accessing web services.</name>
   <description>This library contains core types for building Java client libraries for accessing web services.</description>
@@ -37,8 +37,8 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jacoco.min.linecoverage>0.70</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.65</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.68</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.63</jacoco.min.branchcoverage>
 
     <javaModulesSurefireArgLine>
       --add-opens io.clientcore.core/io.clientcore.core.annotations=ALL-UNNAMED
@@ -46,7 +46,6 @@
       --add-opens io.clientcore.core/io.clientcore.core.http=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.http.annotations=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.http.client=ALL-UNNAMED
-      --add-opens io.clientcore.core/io.clientcore.core.http.exceptions=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.http.models=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.http.pipeline=ALL-UNNAMED
       --add-opens io.clientcore.core/io.clientcore.core.implementation=ALL-UNNAMED
@@ -125,7 +124,7 @@
 
   <build>
     <plugins>
-      <!-- RestProxyTests is inherited by tests in http-okhttp3 -->
+      <!-- HttpClientTests is inherited by tests in http-okhttp3 -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>

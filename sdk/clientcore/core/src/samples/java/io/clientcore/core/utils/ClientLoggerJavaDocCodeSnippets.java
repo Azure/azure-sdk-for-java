@@ -20,7 +20,7 @@ public class ClientLoggerJavaDocCodeSnippets {
     /**
      * Code snippets to show usage of {@link ClientLogger} at all log levels
      */
-    public void loggingSnippets() {
+    public void loggingSnippets() throws IOException {
 
         ClientLogger logger = new ClientLogger(ClientLoggerJavaDocCodeSnippets.class);
         String name = getName();
@@ -59,19 +59,21 @@ public class ClientLoggerJavaDocCodeSnippets {
             .addKeyValue("param1", 1)
             .addKeyValue("param2", 2)
             .addKeyValue("param3", 2)
-            .log("A structured log message with exception.", illegalArgumentException);
+            .setThrowable(illegalArgumentException)
+            .log("param3 is expected to be 3");
         // END: io.clientcore.core.util.logging.clientlogger.log#throwable
 
         // BEGIN: io.clientcore.core.util.logging.clientlogger.warning
         Throwable detailedException = new IllegalArgumentException("A exception with a detailed message");
-        logger.atWarning().log("A warning with exception.", detailedException);
+        logger.atWarning().setThrowable(detailedException).log("A warning with exception.");
         // END: io.clientcore.core.util.logging.clientlogger.warning
 
         // BEGIN: io.clientcore.core.util.logging.clientlogger.warning#string-object
         Throwable exception = new IllegalArgumentException("An invalid argument was encountered.");
         logger.atWarning()
             .addKeyValue("hello", name)
-            .log("A structured warning with exception.", exception);
+            .setThrowable(exception)
+            .log("A structured warning with exception.");
         // END: io.clientcore.core.util.logging.clientlogger.warning#string-object
 
         File resource = getFile();
@@ -79,7 +81,7 @@ public class ClientLoggerJavaDocCodeSnippets {
         try {
             upload(resource);
         } catch (IOException ex) {
-            logger.atError().log("A structured error with exception.", ex);
+            throw logger.logThrowableAsError(ex);
         }
         // END: io.clientcore.core.util.logging.clientlogger.error
 
@@ -89,7 +91,10 @@ public class ClientLoggerJavaDocCodeSnippets {
         } catch (IOException ex) {
             logger.atError()
                 .addKeyValue("hello", name)
-                .log("A structured error with exception and context.", ex);
+                .setThrowable(ex)
+                .log();
+
+            throw ex;
         }
         // END: io.clientcore.core.util.logging.clientlogger.error#string-object
 
@@ -113,7 +118,8 @@ public class ClientLoggerJavaDocCodeSnippets {
         // BEGIN: io.clientcore.core.util.logging.clientlogger.atWarning
         logger.atWarning()
             .addKeyValue("key", "value")
-            .log("A structured log message with exception.", exception);
+            .setThrowable(exception)
+            .log("A structured log message with exception.");
         // END: io.clientcore.core.util.logging.clientlogger.atWarning
 
         // BEGIN: io.clientcore.core.util.logging.clientlogger.atError#deffered-value
@@ -122,7 +128,10 @@ public class ClientLoggerJavaDocCodeSnippets {
         } catch (IOException ex) {
             logger.atError()
                 .addKeyValue("key", () -> "Expensive to calculate value")
-                .log("A structured log message with exception.", ex);
+                .setThrowable(ex)
+                .log();
+
+            throw ex;
         }
         // END: io.clientcore.core.util.logging.clientlogger.atError#deffered-value
 

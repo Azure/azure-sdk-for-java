@@ -6,6 +6,10 @@ package com.azure.resourcemanager.servicenetworking.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.servicenetworking.models.FrontendUpdate;
+import com.azure.resourcemanager.servicenetworking.models.FrontendUpdateProperties;
+import com.azure.resourcemanager.servicenetworking.models.IpAccessRulesSecurityPolicy;
+import com.azure.resourcemanager.servicenetworking.models.SecurityPolicyConfigurations;
+import com.azure.resourcemanager.servicenetworking.models.WafSecurityPolicy;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Assertions;
@@ -13,19 +17,27 @@ import org.junit.jupiter.api.Assertions;
 public final class FrontendUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FrontendUpdate model = BinaryData
-            .fromString(
-                "{\"tags\":{\"ypininm\":\"jkjlxofpdvhpfx\",\"po\":\"yhuybbkpod\",\"ognarxzxtheotus\":\"ginuvamih\"}}")
+        FrontendUpdate model = BinaryData.fromString(
+            "{\"tags\":{\"ixjsprozvcputeg\":\"xinpmqnjaq\",\"atscmd\":\"vwmf\",\"zkrwfn\":\"pjhulsuuvmkj\"},\"properties\":{\"securityPolicyConfigurations\":{\"wafSecurityPolicy\":{\"id\":\"jpslwejd\"},\"ipAccessRulesSecurityPolicy\":{\"id\":\"wryoqpsoacc\"}}}}")
             .toObject(FrontendUpdate.class);
-        Assertions.assertEquals("jkjlxofpdvhpfx", model.tags().get("ypininm"));
+        Assertions.assertEquals("xinpmqnjaq", model.tags().get("ixjsprozvcputeg"));
+        Assertions.assertEquals("jpslwejd", model.properties().securityPolicyConfigurations().wafSecurityPolicy().id());
+        Assertions.assertEquals("wryoqpsoacc",
+            model.properties().securityPolicyConfigurations().ipAccessRulesSecurityPolicy().id());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FrontendUpdate model = new FrontendUpdate()
-            .withTags(mapOf("ypininm", "jkjlxofpdvhpfx", "po", "yhuybbkpod", "ognarxzxtheotus", "ginuvamih"));
+            .withTags(mapOf("ixjsprozvcputeg", "xinpmqnjaq", "atscmd", "vwmf", "zkrwfn", "pjhulsuuvmkj"))
+            .withProperties(new FrontendUpdateProperties().withSecurityPolicyConfigurations(
+                new SecurityPolicyConfigurations().withWafSecurityPolicy(new WafSecurityPolicy().withId("jpslwejd"))
+                    .withIpAccessRulesSecurityPolicy(new IpAccessRulesSecurityPolicy().withId("wryoqpsoacc"))));
         model = BinaryData.fromObject(model).toObject(FrontendUpdate.class);
-        Assertions.assertEquals("jkjlxofpdvhpfx", model.tags().get("ypininm"));
+        Assertions.assertEquals("xinpmqnjaq", model.tags().get("ixjsprozvcputeg"));
+        Assertions.assertEquals("jpslwejd", model.properties().securityPolicyConfigurations().wafSecurityPolicy().id());
+        Assertions.assertEquals("wryoqpsoacc",
+            model.properties().securityPolicyConfigurations().ipAccessRulesSecurityPolicy().id());
     }
 
     // Use "Map.of" if available

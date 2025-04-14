@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public final class PolicyAssignmentsCreateByIdSamples {
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
      * createPolicyAssignmentById.json
      */
     /**
@@ -39,6 +39,7 @@ public final class PolicyAssignmentsCreateByIdSamples {
                 new PolicyAssignmentInner().withDisplayName("Enforce storage account SKU")
                     .withPolicyDefinitionId(
                         "/providers/Microsoft.Authorization/policyDefinitions/7433c107-6db4-4ad1-b57a-a76dce0154a1")
+                    .withDefinitionVersion("1.*.*")
                     .withParameters(mapOf("listOfAllowedSKUs", new ParameterValuesValue().withValue(SerializerFactory
                         .createDefaultManagementSerializerAdapter()
                         .deserialize("[\"Standard_GRS\",\"Standard_LRS\"]", Object.class, SerializerEncoding.JSON))))
@@ -50,7 +51,7 @@ public final class PolicyAssignmentsCreateByIdSamples {
     }
 
     /*
-     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2022-06-01/examples/
+     * x-ms-original-file: specification/resources/resource-manager/Microsoft.Authorization/stable/2023-04-01/examples/
      * createPolicyAssignmentWithIdentityById.json
      */
     /**
@@ -71,6 +72,7 @@ public final class PolicyAssignmentsCreateByIdSamples {
                     .withDisplayName("Enforce storage account SKU")
                     .withPolicyDefinitionId(
                         "/providers/Microsoft.Authorization/policyDefinitions/7433c107-6db4-4ad1-b57a-a76dce0154a1")
+                    .withDefinitionVersion("1.*.*")
                     .withParameters(mapOf("listOfAllowedSKUs", new ParameterValuesValue().withValue(SerializerFactory
                         .createDefaultManagementSerializerAdapter()
                         .deserialize("[\"Standard_GRS\",\"Standard_LRS\"]", Object.class, SerializerEncoding.JSON))))

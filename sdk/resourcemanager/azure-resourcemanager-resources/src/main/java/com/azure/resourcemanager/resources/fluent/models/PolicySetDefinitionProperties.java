@@ -24,7 +24,7 @@ import java.util.Map;
 @Fluent
 public final class PolicySetDefinitionProperties implements JsonSerializable<PolicySetDefinitionProperties> {
     /*
-     * The type of policy definition. Possible values are NotSpecified, BuiltIn, Custom, and Static.
+     * The type of policy set definition. Possible values are NotSpecified, BuiltIn, Custom, and Static.
      */
     private PolicyType policyType;
 
@@ -59,6 +59,16 @@ public final class PolicySetDefinitionProperties implements JsonSerializable<Pol
      */
     private List<PolicyDefinitionGroup> policyDefinitionGroups;
 
+    /*
+     * The policy set definition version in #.#.# format.
+     */
+    private String version;
+
+    /*
+     * A list of available versions for this policy set definition.
+     */
+    private List<String> versions;
+
     /**
      * Creates an instance of PolicySetDefinitionProperties class.
      */
@@ -66,8 +76,8 @@ public final class PolicySetDefinitionProperties implements JsonSerializable<Pol
     }
 
     /**
-     * Get the policyType property: The type of policy definition. Possible values are NotSpecified, BuiltIn, Custom,
-     * and Static.
+     * Get the policyType property: The type of policy set definition. Possible values are NotSpecified, BuiltIn,
+     * Custom, and Static.
      * 
      * @return the policyType value.
      */
@@ -76,8 +86,8 @@ public final class PolicySetDefinitionProperties implements JsonSerializable<Pol
     }
 
     /**
-     * Set the policyType property: The type of policy definition. Possible values are NotSpecified, BuiltIn, Custom,
-     * and Static.
+     * Set the policyType property: The type of policy set definition. Possible values are NotSpecified, BuiltIn,
+     * Custom, and Static.
      * 
      * @param policyType the policyType value to set.
      * @return the PolicySetDefinitionProperties object itself.
@@ -215,6 +225,46 @@ public final class PolicySetDefinitionProperties implements JsonSerializable<Pol
     }
 
     /**
+     * Get the version property: The policy set definition version in #.#.# format.
+     * 
+     * @return the version value.
+     */
+    public String version() {
+        return this.version;
+    }
+
+    /**
+     * Set the version property: The policy set definition version in #.#.# format.
+     * 
+     * @param version the version value to set.
+     * @return the PolicySetDefinitionProperties object itself.
+     */
+    public PolicySetDefinitionProperties withVersion(String version) {
+        this.version = version;
+        return this;
+    }
+
+    /**
+     * Get the versions property: A list of available versions for this policy set definition.
+     * 
+     * @return the versions value.
+     */
+    public List<String> versions() {
+        return this.versions;
+    }
+
+    /**
+     * Set the versions property: A list of available versions for this policy set definition.
+     * 
+     * @param versions the versions value to set.
+     * @return the PolicySetDefinitionProperties object itself.
+     */
+    public PolicySetDefinitionProperties withVersions(List<String> versions) {
+        this.versions = versions;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -256,6 +306,8 @@ public final class PolicySetDefinitionProperties implements JsonSerializable<Pol
         jsonWriter.writeMapField("parameters", this.parameters, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("policyDefinitionGroups", this.policyDefinitionGroups,
             (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("version", this.version);
+        jsonWriter.writeArrayField("versions", this.versions, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -296,6 +348,11 @@ public final class PolicySetDefinitionProperties implements JsonSerializable<Pol
                     List<PolicyDefinitionGroup> policyDefinitionGroups
                         = reader.readArray(reader1 -> PolicyDefinitionGroup.fromJson(reader1));
                     deserializedPolicySetDefinitionProperties.policyDefinitionGroups = policyDefinitionGroups;
+                } else if ("version".equals(fieldName)) {
+                    deserializedPolicySetDefinitionProperties.version = reader.getString();
+                } else if ("versions".equals(fieldName)) {
+                    List<String> versions = reader.readArray(reader1 -> reader1.getString());
+                    deserializedPolicySetDefinitionProperties.versions = versions;
                 } else {
                     reader.skipChildren();
                 }

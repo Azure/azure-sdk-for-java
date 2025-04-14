@@ -32,8 +32,9 @@ public final class VirtualMachineScaleSetUpdateNetworkProfile
     private List<VirtualMachineScaleSetUpdateNetworkConfiguration> networkInterfaceConfigurations;
 
     /*
-     * specifies the Microsoft.Network API version used when creating networking resources in the Network Interface
-     * Configurations for Virtual Machine Scale Set with orchestration mode 'Flexible'
+     * Specifies the Microsoft.Network API version used when creating networking resources in the Network Interface
+     * Configurations for Virtual Machine Scale Set with orchestration mode 'Flexible'. For support of all network
+     * properties, use '2022-11-01'.
      */
     private NetworkApiVersion networkApiVersion;
 
@@ -89,9 +90,9 @@ public final class VirtualMachineScaleSetUpdateNetworkProfile
     }
 
     /**
-     * Get the networkApiVersion property: specifies the Microsoft.Network API version used when creating networking
+     * Get the networkApiVersion property: Specifies the Microsoft.Network API version used when creating networking
      * resources in the Network Interface Configurations for Virtual Machine Scale Set with orchestration mode
-     * 'Flexible'.
+     * 'Flexible'. For support of all network properties, use '2022-11-01'.
      * 
      * @return the networkApiVersion value.
      */
@@ -100,9 +101,9 @@ public final class VirtualMachineScaleSetUpdateNetworkProfile
     }
 
     /**
-     * Set the networkApiVersion property: specifies the Microsoft.Network API version used when creating networking
+     * Set the networkApiVersion property: Specifies the Microsoft.Network API version used when creating networking
      * resources in the Network Interface Configurations for Virtual Machine Scale Set with orchestration mode
-     * 'Flexible'.
+     * 'Flexible'. For support of all network properties, use '2022-11-01'.
      * 
      * @param networkApiVersion the networkApiVersion value to set.
      * @return the VirtualMachineScaleSetUpdateNetworkProfile object itself.

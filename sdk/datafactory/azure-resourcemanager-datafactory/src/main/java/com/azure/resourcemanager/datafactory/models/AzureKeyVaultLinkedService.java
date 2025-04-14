@@ -52,7 +52,7 @@ public final class AzureKeyVaultLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzureKeyVaultLinkedServiceTypeProperties innerTypeProperties() {
+    AzureKeyVaultLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

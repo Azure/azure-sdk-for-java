@@ -52,7 +52,7 @@ public final class AzureDataExplorerLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzureDataExplorerLinkedServiceTypeProperties innerTypeProperties() {
+    AzureDataExplorerLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

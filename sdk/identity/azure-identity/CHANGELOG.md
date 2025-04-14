@@ -1,5 +1,17 @@
 # Release History
 
+## 1.16.0-beta.2 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+- Marked `VisualStudioCodeCredential` and `VisualStudioCodeCredentialBuilder` as deprecated.[#44527](https://github.com/Azure/azure-sdk-for-java/issues/44527)
+
 ## 1.16.0-beta.1 (2025-03-13)
 
 ### Features Added
