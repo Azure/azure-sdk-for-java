@@ -61,6 +61,8 @@ recipeList:
   # RequestOptions
   # --------------------------------------------------------------------
 
+  - com.azure.openrewrite.core.http.rest.RequestOptionsCustomRecipe
+
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.azure.core.http.rest.RequestOptions
       newFullyQualifiedTypeName: io.clientcore.core.http.models.RequestContext

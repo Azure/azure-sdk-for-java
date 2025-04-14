@@ -20,7 +20,7 @@
       <dependency>
         <groupId>org.openrewrite.recipe</groupId>
         <artifactId>rewrite-recipe-bom</artifactId>
-        <version>3.4.0</version> <!-- {x-version-update;org.openrewrite.recipe:rewrite-recipe-bom;external_dependency} -->
+        <version>3.6.1</version> <!-- {x-version-update;org.openrewrite.recipe:rewrite-recipe-bom;external_dependency} -->
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -80,6 +80,20 @@
           <groupId>org.openrewrite</groupId>
           <artifactId>rewrite-test</artifactId>
           <scope>test</scope>
+          <exclusions>
+            <exclusion>
+              <groupId>org.junit.jupiter</groupId>
+              <artifactId>junit-jupiter-api</artifactId>
+            </exclusion>
+            <exclusion>
+              <groupId>org.junit.platform</groupId>
+              <artifactId>junit-platform-launcher</artifactId>
+            </exclusion>
+            <exclusion>
+              <groupId>org.junit.jupiter</groupId>
+              <artifactId>junit-jupiter-params</artifactId>
+            </exclusion>
+          </exclusions>
         </dependency>
         <dependency>
           <groupId>org.junit.jupiter</groupId>
@@ -92,6 +106,16 @@
           <artifactId>junit-jupiter-engine</artifactId>
           <version>5.12.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
           <scope>test</scope>
+        </dependency>
+        <dependency>
+          <groupId>org.junit.platform</groupId>
+          <artifactId>junit-platform-launcher</artifactId>
+          <version>1.12.1</version> <!-- {x-version-update;org.junit.platform:junit-platform-launcher;external_dependency} -->
+        </dependency>
+        <dependency>
+          <groupId>org.junit.jupiter</groupId>
+          <artifactId>junit-jupiter-params</artifactId>
+          <version>5.12.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
         </dependency>
         <!-- Optional dependency on assertJ to provide fluent assertions. -->
         <dependency>

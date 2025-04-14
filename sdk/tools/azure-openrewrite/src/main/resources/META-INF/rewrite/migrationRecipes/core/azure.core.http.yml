@@ -169,11 +169,18 @@ recipeList:
   # --------------------------------------------------------------------
 
   - com.azure.openrewrite.core.http.HttpRequestCustomRecipe
-  - org.openrewrite.java.ShortenFullyQualifiedTypeReferences
 
   - org.openrewrite.java.ChangeMethodName:
       methodPattern: 'com.azure.core.http.HttpRequest getUrl()'
       newMethodName: 'getUri'
+
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: 'com.azure.core.http.HttpRequest setUrl()'
+      newMethodName: 'setUri'
+
+  - org.openrewrite.java.ChangeMethodName:
+        methodPattern: 'com.azure.core.http.HttpRequest setHttpMethod(..)'
+        newMethodName: 'setMethod'
 
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.azure.core.http.HttpRequest
@@ -185,11 +192,11 @@ recipeList:
   # HttpResponse
   # --------------------------------------------------------------------
 
+  - com.azure.openrewrite.core.http.HttpResponseCustomRecipe
+
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.azure.core.http.HttpResponse
       newFullyQualifiedTypeName: io.clientcore.core.http.models.Response
-
-  # TODO: Migrate Methods and Fields
 
   # --------------------------------------------------------------------
   # MatchConditions

@@ -12,8 +12,8 @@ public class HttpResponseApis {
 
         int statusCode = response.getStatusCode();
 
-        String headerValue = response.getHeaders().get(HttpHeaderName.fromString("Content-Type")).getValue();
-        String headerValue2 = response.getHeaders().get(HttpHeaderName.CONTENT_TYPE).getValue();
+        String headerValue = response.getHeaders().getValue(HttpHeaderName.fromString("Content-Type"));
+        String headerValue2 = response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
         HttpHeaders headers = response.getHeaders();
         // skipping getBody() since it returns a Reactor API
         BinaryData body = BinaryData.fromObject(response.getValue());
