@@ -92,7 +92,7 @@ For fields that are "Azure-specific", we will provide guidelines on how to work 
 Every [OpenAI Java SDK][openai_java] type has `Map<String, JsonValue>` named `additionalProperties` in which all fields that are not exclusively [OpenAI service related][openai_openapi] are populated. All the fields that are Azure OpenAI specific (i.e. content filter, Azure AI Search, etc.) will be populated in the aforementioned `Map<String, JsonValue>`. Next, you will find what we believe to be the more common scenarios, and how to provide/access these Azure OpenAI specific fields, while working with the [OpenAI Java SDK][openai_java].
 
 > [!TIP]
-> We strongly recommend keeping an eye in our `samples` and `test` folders. 
+> We strongly recommend keeping an eye on our `samples` and `test` folders. 
 > We use those tests to regularly validate the Azure OpenAI service.
 
 ### OYD: Chat Completions
