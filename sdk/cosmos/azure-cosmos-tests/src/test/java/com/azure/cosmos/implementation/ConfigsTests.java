@@ -166,7 +166,7 @@ public class ConfigsTests {
         }
     }
 
-    @Test(groups = { "unit" })
+    @Test(groups = { "emulator" })
     public void thinClientEnabledTest() {
         assertThat(isThinClientEnabled()).isFalse();
         System.clearProperty("COSMOS.THINCLIENT_ENABLED");
@@ -178,7 +178,7 @@ public class ConfigsTests {
         }
     }
 
-    @Test(groups = { "unit" })
+    @Test(groups = { "emulator" })
     public void thinClientEndpointTest() {
         Configs config = new Configs();
         assertThat(config.getThinclientEndpoint()).isEqualTo(URI.create(""));

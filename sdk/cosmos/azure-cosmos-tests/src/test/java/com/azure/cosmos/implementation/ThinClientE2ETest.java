@@ -20,18 +20,20 @@ import java.util.UUID;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
-public class ThinClientE2ETest {
-    // todo: also test query/changefeed, and container point operations
-    @Test
+public class ThinClientE2ETest extends com.azure.cosmos.rx.TestSuiteBase {
+    @Test(groups = {"thinclient"})
     public void testThinClientDocumentPointOperations() {
         CosmosAsyncClient client = null;
         try {
             System.setProperty("COSMOS.THINCLIENT_ENABLED", "true");
             System.setProperty("COSMOS.HTTP2_ENABLED", "true");
 
+            String thinclientTestEndpoint = System.getProperty("COSMOS.THINCLIENT_ENDPOINT");
+            String thinclientTestKey = System.getProperty("COSMOS.THINCLIENT_KEY");
+
             client  = new CosmosClientBuilder()
-                .key(TestConfigurations.MASTER_KEY)
-                .endpoint(TestConfigurations.HOST)
+                .endpoint(thinclientTestEndpoint)
+                .key(thinclientTestKey)
                 .gatewayMode()
                 .consistencyLevel(ConsistencyLevel.SESSION)
                 .buildAsyncClient();
