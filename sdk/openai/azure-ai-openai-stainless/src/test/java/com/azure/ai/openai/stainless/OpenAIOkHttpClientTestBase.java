@@ -35,6 +35,7 @@ import com.openai.models.chat.completions.ChatCompletionUserMessageParam;
 import com.openai.models.completions.CompletionUsage;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -135,6 +136,7 @@ public class OpenAIOkHttpClientTestBase {
         String functionName) {
         ChatCompletionCreateParams.FunctionCall functionCall = ChatCompletionCreateParams.FunctionCall
             .ofFunctionCallOption(ChatCompletionFunctionCallOption.builder().name(functionName).build());
+
         return ChatCompletionCreateParams.builder()
             .messages(messages)
             .functions(functions)
@@ -451,32 +453,32 @@ public class OpenAIOkHttpClientTestBase {
     }
 
     void assertPromptAndContentFilterResults(ChatCompletion chatCompletion) {
-        //        ChatCompletion.Choice choice = chatCompletion.choices().get(0);
-        //        JsonValue promptFilterResults = chatCompletion._additionalProperties().get("prompt_filter_results");
-        //        assertNotNull(promptFilterResults);
-        //        assertFalse(promptFilterResults.isMissing());
-        //
-        //        List<JsonValue> promptFilterResultsList =
-        //                (List<JsonValue>) promptFilterResults.asArray().get();
-        //        assertEquals(1, promptFilterResultsList.size());
-        //        JsonValue promptFilterResultJsonValue = promptFilterResultsList.get(0);
-        //        Map<String, JsonValue> promptFilterResultsMap =
-        //                (Map<String, JsonValue>) promptFilterResultJsonValue.asObject().get();
-        //        assertEquals(
-        //                0,
-        //                ((Number) promptFilterResultsMap.get("prompt_index").asNumber().get()).intValue());
-        //
-        //        Map<String, JsonValue> contentFilterResultsMap = (Map<String, JsonValue>)
-        //                promptFilterResultsMap.get("content_filter_results").asObject().get();
-        //        assertContentFilterResultAllSafe(contentFilterResultsMap);
-        //
-        //        JsonValue contentFilterResultsMapJsonValue =
-        //                choice._additionalProperties().get("content_filter_results");
-        //        assertNotNull(contentFilterResultsMapJsonValue);
-        //        assertFalse(contentFilterResultsMapJsonValue.isMissing());
-        //        Map<String, JsonValue> contentFilterResultsMapInChoice = (Map<String, JsonValue>)
-        //                contentFilterResultsMapJsonValue.asObject().get();
-        //        assertContentFilterResultAllSafe(contentFilterResultsMapInChoice);
+                ChatCompletion.Choice choice = chatCompletion.choices().get(0);
+                JsonValue promptFilterResults = chatCompletion._additionalProperties().get("prompt_filter_results");
+                assertNotNull(promptFilterResults);
+                assertFalse(promptFilterResults.isMissing());
+
+                List<JsonValue> promptFilterResultsList =
+                        (List<JsonValue>) promptFilterResults.asArray().get();
+                assertEquals(1, promptFilterResultsList.size());
+                JsonValue promptFilterResultJsonValue = promptFilterResultsList.get(0);
+                Map<String, JsonValue> promptFilterResultsMap =
+                        (Map<String, JsonValue>) promptFilterResultJsonValue.asObject().get();
+                assertEquals(
+                        0,
+                        ((Number) promptFilterResultsMap.get("prompt_index").asNumber().get()).intValue());
+
+                Map<String, JsonValue> contentFilterResultsMap = (Map<String, JsonValue>)
+                        promptFilterResultsMap.get("content_filter_results").asObject().get();
+                assertContentFilterResultAllSafe(contentFilterResultsMap);
+
+                JsonValue contentFilterResultsMapJsonValue =
+                        choice._additionalProperties().get("content_filter_results");
+                assertNotNull(contentFilterResultsMapJsonValue);
+                assertFalse(contentFilterResultsMapJsonValue.isMissing());
+                Map<String, JsonValue> contentFilterResultsMapInChoice = (Map<String, JsonValue>)
+                        contentFilterResultsMapJsonValue.asObject().get();
+                assertContentFilterResultAllSafe(contentFilterResultsMapInChoice);
     }
 
     void assertChatCompletionByod(ChatCompletion chatCompletion) {
@@ -508,74 +510,67 @@ public class OpenAIOkHttpClientTestBase {
     }
 
     void assertRaiContentFilter(BadRequestException e) {
-        //        OpenAIError error = e.error();
-        //        Map<String, JsonValue> errorMap = error.additionalProperties();
-        //        assertNotNull(errorMap);
-        //        JsonValue errorDetails = errorMap.get("error");
-        //        assertNotNull(errorDetails);
-        //        Map<String, JsonValue> errorDetailsMap =
-        //            (Map<String, JsonValue>) errorDetails.asObject().get();
-        //        JsonValue code = errorDetailsMap.get("code");
-        //        assertNotNull(code);
-        //        assertEquals("content_filter", code.asString().get());
-        //        JsonValue message = errorDetailsMap.get("message");
-        //        assertNotNull(message);
-        //
-        //        Map<String, JsonValue> innererrorMap = (Map<String, JsonValue>)
-        //            errorDetailsMap.get("innererror").asObject().get();
-        //        assertNotNull(innererrorMap);
-        //        JsonValue contentFilterResult = innererrorMap.get("content_filter_result");
-        //        assertNotNull(contentFilterResult);
-        //        Map<String, JsonValue> contentFilterResultMap =
-        //            (Map<String, JsonValue>) contentFilterResult.asObject().get();
-        //
-        //        JsonValue hate = contentFilterResultMap.get("hate");
-        //        assertNotNull(hate);
-        //        Map<String, JsonValue> hateMap =
-        //            (Map<String, JsonValue>) hate.asObject().get();
-        //        JsonValue hateFiltered = hateMap.get("filtered");
-        //        assertNotNull(hateFiltered);
-        //        assertFalse((Boolean) hateFiltered.asBoolean().get());
-        //        JsonValue hateSeverity = hateMap.get("severity");
-        //        assertNotNull(hateSeverity);
-        //        assertEquals("safe", hateSeverity.asString().get());
-        //
-        //        JsonValue selfHarm = contentFilterResultMap.get("self_harm");
-        //        assertNotNull(selfHarm);
-        //        Map<String, JsonValue> selfHarmMap =
-        //            (Map<String, JsonValue>) selfHarm.asObject().get();
-        //        JsonValue selfHarmFiltered = selfHarmMap.get("filtered");
-        //        assertNotNull(selfHarmFiltered);
-        //        assertFalse((Boolean) selfHarmFiltered.asBoolean().get());
-        //        JsonValue selfHarmSeverity = selfHarmMap.get("severity");
-        //        assertNotNull(selfHarmSeverity);
-        //        assertEquals("safe", selfHarmSeverity.asString().get());
-        //
-        //        JsonValue sexual = contentFilterResultMap.get("sexual");
-        //        assertNotNull(sexual);
-        //        Map<String, JsonValue> sexualMap =
-        //            (Map<String, JsonValue>) sexual.asObject().get();
-        //        JsonValue sexualFiltered = sexualMap.get("filtered");
-        //        assertNotNull(sexualFiltered);
-        //        assertFalse((Boolean) sexualFiltered.asBoolean().get());
-        //        JsonValue sexualSeverity = sexualMap.get("severity");
-        //        assertNotNull(sexualSeverity);
-        //        assertEquals("safe", sexualSeverity.asString().get());
-        //
-        //        JsonValue violence = contentFilterResultMap.get("violence");
-        //        assertNotNull(violence);
-        ////        Map<String, JsonValue> violenceMap =
-        ////            (Map<String, JsonValue>) violence.asObject().get();
-        //
-        //        Map<String, JsonValue> violenceMap = (violence.asObject().isPresent())
-        //            ? (Map<String, JsonValue>) violence.asObject().get()
-        //            : new HashMap<>();
-        //
-        //        JsonValue violenceFiltered = violenceMap.get("filtered");
-        //        assertNotNull(violenceFiltered);
-        //        assertTrue((Boolean) violenceFiltered.asBoolean().get());
-        //        JsonValue violenceSeverity = violenceMap.get("severity");
-        //        assertNotNull(violenceSeverity);
-        //        assertEquals("medium", violenceSeverity.asString().get());
+        JsonValue errorDetails = e.body();
+        assertNotNull(errorDetails);
+        Map<String, JsonValue> errorDetailsMap =
+            (Map<String, JsonValue>) errorDetails.asObject().get();
+        JsonValue code = errorDetailsMap.get("code");
+        assertNotNull(code);
+        assertEquals("content_filter", code.asString().get());
+        JsonValue message = errorDetailsMap.get("message");
+        assertNotNull(message);
+
+        Map<String, JsonValue> innererrorMap = (Map<String, JsonValue>)
+            errorDetailsMap.get("innererror").asObject().get();
+        assertNotNull(innererrorMap);
+        JsonValue contentFilterResult = innererrorMap.get("content_filter_result");
+        assertNotNull(contentFilterResult);
+        Map<String, JsonValue> contentFilterResultMap =
+            (Map<String, JsonValue>) contentFilterResult.asObject().get();
+
+        JsonValue hate = contentFilterResultMap.get("hate");
+        assertNotNull(hate);
+        Map<String, JsonValue> hateMap =
+            (Map<String, JsonValue>) hate.asObject().get();
+        JsonValue hateFiltered = hateMap.get("filtered");
+        assertNotNull(hateFiltered);
+        assertFalse((Boolean) hateFiltered.asBoolean().get());
+        JsonValue hateSeverity = hateMap.get("severity");
+        assertNotNull(hateSeverity);
+        assertEquals("safe", hateSeverity.asString().get());
+
+        JsonValue selfHarm = contentFilterResultMap.get("self_harm");
+        assertNotNull(selfHarm);
+        Map<String, JsonValue> selfHarmMap =
+            (Map<String, JsonValue>) selfHarm.asObject().get();
+        JsonValue selfHarmFiltered = selfHarmMap.get("filtered");
+        assertNotNull(selfHarmFiltered);
+        assertFalse((Boolean) selfHarmFiltered.asBoolean().get());
+        JsonValue selfHarmSeverity = selfHarmMap.get("severity");
+        assertNotNull(selfHarmSeverity);
+        assertEquals("safe", selfHarmSeverity.asString().get());
+
+        JsonValue sexual = contentFilterResultMap.get("sexual");
+        assertNotNull(sexual);
+        Map<String, JsonValue> sexualMap =
+            (Map<String, JsonValue>) sexual.asObject().get();
+        JsonValue sexualFiltered = sexualMap.get("filtered");
+        assertNotNull(sexualFiltered);
+        assertFalse((Boolean) sexualFiltered.asBoolean().get());
+        JsonValue sexualSeverity = sexualMap.get("severity");
+        assertNotNull(sexualSeverity);
+        assertEquals("safe", sexualSeverity.asString().get());
+
+        JsonValue violence = contentFilterResultMap.get("violence");
+        assertNotNull(violence);
+        Map<String, JsonValue> violenceMap =
+            (Map<String, JsonValue>) violence.asObject().get();
+
+        JsonValue violenceFiltered = violenceMap.get("filtered");
+        assertNotNull(violenceFiltered);
+        assertTrue((Boolean) violenceFiltered.asBoolean().get());
+        JsonValue violenceSeverity = violenceMap.get("severity");
+        assertNotNull(violenceSeverity);
+        assertEquals("medium", violenceSeverity.asString().get());
     }
 }
