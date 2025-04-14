@@ -5755,7 +5755,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             return this.gatewayProxy;
         }
 
-        if (useThinClient(request)) {
+        if (useThinClientStoreModel(request)) {
             return this.thinProxy;
         }
 
@@ -6785,12 +6785,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private boolean useThinClient(RxDocumentServiceRequest request) {
-        return Configs.isThinClientEnabled()
-            && this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY
-            && (request.getResourceType() == ResourceType.DocumentCollection
-                || request.getResourceType() == ResourceType.PartitionKeyRange
-                || request.getResourceType() == ResourceType.DatabaseAccount
-                || request.getResourceType() == ResourceType.Document)
+        return Configs.isThinClientEnabled() && this.connectionPolicy.getConnectionMode() == ConnectionMode.GATEWAY;
+    }
+
+    private boolean useThinClientStoreModel(RxDocumentServiceRequest request) {
+        return useThinClient(request)
+            && request.getResourceType() == ResourceType.Document
             && request.getOperationType().isPointOperation();
     }
 
