@@ -69,9 +69,9 @@ public class OpenAIOkHttpClientTestBase {
         Configuration config = Configuration.getGlobalConfiguration();
         ChainedTokenCredentialBuilder chainedTokenCredentialBuilder
             = new ChainedTokenCredentialBuilder().addLast(new EnvironmentCredentialBuilder().build())
-            .addLast(new AzureCliCredentialBuilder().build())
-            .addLast(new AzureDeveloperCliCredentialBuilder().build())
-            .addLast(new AzurePowerShellCredentialBuilder().build());
+                .addLast(new AzureCliCredentialBuilder().build())
+                .addLast(new AzureDeveloperCliCredentialBuilder().build())
+                .addLast(new AzurePowerShellCredentialBuilder().build());
 
         String serviceConnectionId = config.get("AZURESUBSCRIPTION_SERVICE_CONNECTION_ID");
         String clientId = config.get("AZURESUBSCRIPTION_CLIENT_ID");
@@ -121,14 +121,13 @@ public class OpenAIOkHttpClientTestBase {
     }
 
     ChatCompletionCreateParams createChatCompletionParams(String testModel, String userMessage) {
-        return createChatCompletionParamsBuilder(testModel, userMessage)
-            .build();
+        return createChatCompletionParamsBuilder(testModel, userMessage).build();
     }
 
-    ChatCompletionCreateParams.Builder createChatCompletionParamsBuilder (String testModel, String userMessage) {
+    ChatCompletionCreateParams.Builder createChatCompletionParamsBuilder(String testModel, String userMessage) {
         return ChatCompletionCreateParams.builder()
-                .messages(asList(createSystemMessageParam(), createUserMessageParam(userMessage)))
-                .model(testModel);
+            .messages(asList(createSystemMessageParam(), createUserMessageParam(userMessage)))
+            .model(testModel);
     }
 
     ChatCompletionCreateParams createChatCompletionParamsWithFunction(String testModel,
@@ -273,7 +272,7 @@ public class OpenAIOkHttpClientTestBase {
     }
 
     ChatCompletionCreateParams addToolResponseToMessages(ChatCompletionCreateParams params,
-                                                         List<ChatCompletionMessageToolCall> chatCompletionMessageToolCalls, ChatCompletion.Choice choice) {
+        List<ChatCompletionMessageToolCall> chatCompletionMessageToolCalls, ChatCompletion.Choice choice) {
         // Create a new builder from the existing params
         ChatCompletionCreateParams.Builder paramsBuilder = params.toBuilder();
 
