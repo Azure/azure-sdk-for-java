@@ -50,7 +50,6 @@ steps:
     inputs:
       tasks: clean build -x test "-Dmaven.repo.local=$env:PIPELINE_WORKSPACE/.m2/repository" publishToMavenLocal
       jdkVersionOption: '1.11'
-      workingDirectory: '$(Agent.TempDirectory)/openai-java'
 
   - pwsh: |
       # Define the path to the external_dependencies.txt file
