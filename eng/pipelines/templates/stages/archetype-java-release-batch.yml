@@ -330,7 +330,7 @@ stages:
         - job: PublishDocsMs
           displayName: Docs.MS Release
           condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
-          dependsOn: PublishESRPPackage
+          dependsOn: PublishDevFeedPackage
 
           pool:
             name: $(LINUXPOOL)
@@ -470,7 +470,7 @@ stages:
             parameters:
               Paths:
                 - sdk/${{ parameters.ServiceDirectory }}/**/*.md
-                - '!**/*.xml'
+                - '!**/pom*.xml'
           - download: current
             displayName: 'Download Artifacts'
             artifact: packages
