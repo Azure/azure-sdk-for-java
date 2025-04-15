@@ -8,7 +8,6 @@ import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventDataBatch;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
-import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.messaging.core.SendOperation;
 import com.azure.spring.messaging.eventhubs.support.converter.EventHubsMessageConverter;
 import org.slf4j.Logger;
@@ -35,7 +34,7 @@ public class EventHubsTemplate implements SendOperation {
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsTemplate.class);
 
     private final EventHubsProducerFactory producerFactory;
-    private AzureMessageConverter<EventData, EventData> messageConverter = new EventHubsMessageConverter();
+    private EventHubsMessageConverter messageConverter = new EventHubsMessageConverter();
 
     /**
      * Create an instance using the supplied producer factory.
@@ -167,7 +166,7 @@ public class EventHubsTemplate implements SendOperation {
      * Set the message converter.
      * @param messageConverter the message converter.
      */
-    public void setMessageConverter(AzureMessageConverter<EventData, EventData> messageConverter) {
+    public void setMessageConverter(EventHubsMessageConverter messageConverter) {
         this.messageConverter = messageConverter;
     }
 
