@@ -10,7 +10,11 @@ import com.azure.resourcemanager.resources.fluentcore.model.Settable;
 @Fluent()
 public interface LoadBalancerHttpProbe extends LoadBalancerProbe {
 
-    /** @return the HTTP request path for the HTTP probe to call to check the health status */
+    /**
+     * Gets the HTTP request path for the HTTP probe to call to check the health status.
+     *
+     * @return the HTTP request path for the HTTP probe to call to check the health status
+     */
     String requestPath();
 
     /** Grouping of probe definition stages. */

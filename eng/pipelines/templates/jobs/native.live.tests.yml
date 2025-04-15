@@ -161,7 +161,7 @@ jobs:
           TestVersionSupport: ${{ parameters.TestVersionSupport }}
           TestEnvVars:
             AZURE_TEST_MODE: ${{ parameters.TestMode }}
-            AZURE_VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
+            VERSION_OVERRIDE_TESTS: ${{ parameters.TestVersionSupport }}
             ${{ each var in parameters.EnvVars }}:
               ${{ var.key }}: ${{ var.value }}
 

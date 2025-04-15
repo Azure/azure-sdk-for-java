@@ -11,18 +11,38 @@ import com.azure.resourcemanager.sql.fluent.models.ServerUsageInner;
 @Fluent
 public interface ServerMetric extends HasInnerModel<ServerUsageInner> {
 
-    /** @return Name of the server usage metric */
+    /**
+     * Gets name of the server usage metric.
+     *
+     * @return Name of the server usage metric
+     */
     String name();
 
-    /** @return the metric display name */
+    /**
+     * Gets the metric display name.
+     *
+     * @return the metric display name
+     */
     String displayName();
 
-    /** @return the current value of the metric */
+    /**
+     * Gets the current value of the metric.
+     *
+     * @return the current value of the metric
+     */
     double currentValue();
 
-    /** @return the current limit of the metric */
+    /**
+     * Gets the current limit of the metric.
+     *
+     * @return the current limit of the metric
+     */
     double limit();
 
-    /** @return the units of the metric */
+    /**
+     * Gets the units of the metric.
+     *
+     * @return the units of the metric
+     */
     String unit();
 }

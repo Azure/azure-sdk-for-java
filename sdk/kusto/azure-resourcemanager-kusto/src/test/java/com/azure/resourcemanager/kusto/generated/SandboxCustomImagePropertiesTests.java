@@ -13,21 +13,24 @@ public final class SandboxCustomImagePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SandboxCustomImageProperties model = BinaryData.fromString(
-            "{\"language\":\"Python\",\"languageVersion\":\"unygaeqid\",\"requirementsFileContent\":\"fatpxllrxcyjmoa\",\"provisioningState\":\"Running\"}")
+            "{\"language\":\"Python\",\"languageVersion\":\"oakgtdlmkkzev\",\"baseImageName\":\"hewpusdsttwv\",\"requirementsFileContent\":\"vbbejdcng\",\"provisioningState\":\"Running\"}")
             .toObject(SandboxCustomImageProperties.class);
         Assertions.assertEquals(Language.PYTHON, model.language());
-        Assertions.assertEquals("unygaeqid", model.languageVersion());
-        Assertions.assertEquals("fatpxllrxcyjmoa", model.requirementsFileContent());
+        Assertions.assertEquals("oakgtdlmkkzev", model.languageVersion());
+        Assertions.assertEquals("hewpusdsttwv", model.baseImageName());
+        Assertions.assertEquals("vbbejdcng", model.requirementsFileContent());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SandboxCustomImageProperties model = new SandboxCustomImageProperties().withLanguage(Language.PYTHON)
-            .withLanguageVersion("unygaeqid")
-            .withRequirementsFileContent("fatpxllrxcyjmoa");
+            .withLanguageVersion("oakgtdlmkkzev")
+            .withBaseImageName("hewpusdsttwv")
+            .withRequirementsFileContent("vbbejdcng");
         model = BinaryData.fromObject(model).toObject(SandboxCustomImageProperties.class);
         Assertions.assertEquals(Language.PYTHON, model.language());
-        Assertions.assertEquals("unygaeqid", model.languageVersion());
-        Assertions.assertEquals("fatpxllrxcyjmoa", model.requirementsFileContent());
+        Assertions.assertEquals("oakgtdlmkkzev", model.languageVersion());
+        Assertions.assertEquals("hewpusdsttwv", model.baseImageName());
+        Assertions.assertEquals("vbbejdcng", model.requirementsFileContent());
     }
 }

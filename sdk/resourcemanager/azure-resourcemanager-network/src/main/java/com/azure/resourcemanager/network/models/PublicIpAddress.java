@@ -23,46 +23,102 @@ public interface PublicIpAddress extends GroupableResource<NetworkManager, Publi
 
     // Getters
 
-    /** @return the IP version of the public IP address */
+    /**
+     * Gets the IP version of the public IP address.
+     *
+     * @return the IP version of the public IP address
+     */
     IpVersion version();
 
-    /** @return the assigned IP address */
+    /**
+     * Gets the assigned IP address.
+     *
+     * @return the assigned IP address
+     */
     String ipAddress();
 
-    /** @return the assigned leaf domain label */
+    /**
+     * Gets the assigned leaf domain label.
+     *
+     * @return the assigned leaf domain label
+     */
     String leafDomainLabel();
 
-    /** @return the assigned FQDN (fully qualified domain name) */
+    /**
+     * Gets the assigned FQDN (fully qualified domain name).
+     *
+     * @return the assigned FQDN (fully qualified domain name)
+     */
     String fqdn();
 
-    /** @return the assigned reverse FQDN, if any */
+    /**
+     * Gets the assigned reverse FQDN.
+     *
+     * @return the assigned reverse FQDN, if any
+     */
     String reverseFqdn();
 
-    /** @return the IP address allocation method (Static/Dynamic) */
+    /**
+     * Gets the IP address allocation method (Static/Dynamic).
+     *
+     * @return the IP address allocation method (Static/Dynamic)
+     */
     IpAllocationMethod ipAllocationMethod();
 
-    /** @return the idle connection timeout setting (in minutes) */
+    /**
+     * Gets the idle connection timeout setting (in minutes).
+     *
+     * @return the idle connection timeout setting (in minutes)
+     */
     int idleTimeoutInMinutes();
 
-    /** @return the load balancer public frontend that this public IP address is assigned to */
+    /**
+     * Gets the load balancer public frontend that this public IP address is assigned to.
+     *
+     * @return the load balancer public frontend that this public IP address is assigned to
+     */
     LoadBalancerPublicFrontend getAssignedLoadBalancerFrontend();
 
-    /** @return true if this public IP address is assigned to a load balancer */
+    /**
+     * Checks whether this public IP address is assigned to a load balancer.
+     *
+     * @return true if this public IP address is assigned to a load balancer
+     */
     boolean hasAssignedLoadBalancer();
 
-    /** @return the network interface IP configuration that this public IP address is assigned to */
+    /**
+     * Gets the network interface IP configuration that this public IP address is assigned to.
+     *
+     * @return the network interface IP configuration that this public IP address is assigned to
+     */
     NicIpConfiguration getAssignedNetworkInterfaceIPConfiguration();
 
-    /** @return true if this public IP address is assigned to a network interface */
+    /**
+     * Checks whether this public IP address is assigned to a network interface.
+     *
+     * @return true if this public IP address is assigned to a network interface
+     */
     boolean hasAssignedNetworkInterface();
 
-    /** @return the availability zones assigned to the public IP address */
+    /**
+     * Gets the availability zones assigned to the public IP address.
+     *
+     * @return the availability zones assigned to the public IP address
+     */
     Set<AvailabilityZoneId> availabilityZones();
 
-    /** @return public IP address sku. */
+    /**
+     * Gets public IP address sku.
+     *
+     * @return public IP address sku.
+     */
     PublicIPSkuType sku();
 
-    /** @return read-only list of ipTags assosiated with public ip address */
+    /**
+     * Gets read-only list of ipTags assosiated with public ip address.
+     *
+     * @return read-only list of ipTags assosiated with public ip address
+     */
     List<IpTag> ipTags();
 
     /** Container interface for all the definitions. */

@@ -41,7 +41,11 @@ public enum SqlElasticPoolPremiumMaxEDTUs {
         this.value = eDTU;
     }
 
-    /** @return the maximum eDTUs available per each database for the SQL Elastic Pool */
+    /**
+     * Gets the maximum eDTUs available per each database for the SQL Elastic Pool.
+     *
+     * @return the maximum eDTUs available per each database for the SQL Elastic Pool
+     */
     public int value() {
         return this.value;
     }

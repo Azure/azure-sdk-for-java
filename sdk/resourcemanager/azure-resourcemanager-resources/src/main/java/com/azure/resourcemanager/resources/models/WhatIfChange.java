@@ -24,6 +24,22 @@ public final class WhatIfChange implements JsonSerializable<WhatIfChange> {
     private String resourceId;
 
     /*
+     * The resource id of the Deployment responsible for this change.
+     */
+    private String deploymentId;
+
+    /*
+     * The symbolic name of the resource responsible for this change.
+     */
+    private String symbolicName;
+
+    /*
+     * A subset of properties that uniquely identify a Bicep extensible resource because it lacks a resource id like an
+     * Azure resource has.
+     */
+    private Object identifiers;
+
+    /*
      * Type of change that will be made to the resource when the deployment is executed.
      */
     private ChangeType changeType;
@@ -71,6 +87,68 @@ public final class WhatIfChange implements JsonSerializable<WhatIfChange> {
      */
     public WhatIfChange withResourceId(String resourceId) {
         this.resourceId = resourceId;
+        return this;
+    }
+
+    /**
+     * Get the deploymentId property: The resource id of the Deployment responsible for this change.
+     * 
+     * @return the deploymentId value.
+     */
+    public String deploymentId() {
+        return this.deploymentId;
+    }
+
+    /**
+     * Set the deploymentId property: The resource id of the Deployment responsible for this change.
+     * 
+     * @param deploymentId the deploymentId value to set.
+     * @return the WhatIfChange object itself.
+     */
+    public WhatIfChange withDeploymentId(String deploymentId) {
+        this.deploymentId = deploymentId;
+        return this;
+    }
+
+    /**
+     * Get the symbolicName property: The symbolic name of the resource responsible for this change.
+     * 
+     * @return the symbolicName value.
+     */
+    public String symbolicName() {
+        return this.symbolicName;
+    }
+
+    /**
+     * Set the symbolicName property: The symbolic name of the resource responsible for this change.
+     * 
+     * @param symbolicName the symbolicName value to set.
+     * @return the WhatIfChange object itself.
+     */
+    public WhatIfChange withSymbolicName(String symbolicName) {
+        this.symbolicName = symbolicName;
+        return this;
+    }
+
+    /**
+     * Get the identifiers property: A subset of properties that uniquely identify a Bicep extensible resource because
+     * it lacks a resource id like an Azure resource has.
+     * 
+     * @return the identifiers value.
+     */
+    public Object identifiers() {
+        return this.identifiers;
+    }
+
+    /**
+     * Set the identifiers property: A subset of properties that uniquely identify a Bicep extensible resource because
+     * it lacks a resource id like an Azure resource has.
+     * 
+     * @param identifiers the identifiers value to set.
+     * @return the WhatIfChange object itself.
+     */
+    public WhatIfChange withIdentifiers(Object identifiers) {
+        this.identifiers = identifiers;
         return this;
     }
 
@@ -180,10 +258,6 @@ public final class WhatIfChange implements JsonSerializable<WhatIfChange> {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (resourceId() == null) {
-            throw LOGGER.atError()
-                .log(new IllegalArgumentException("Missing required property resourceId in model WhatIfChange"));
-        }
         if (changeType() == null) {
             throw LOGGER.atError()
                 .log(new IllegalArgumentException("Missing required property changeType in model WhatIfChange"));
@@ -201,8 +275,11 @@ public final class WhatIfChange implements JsonSerializable<WhatIfChange> {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("resourceId", this.resourceId);
         jsonWriter.writeStringField("changeType", this.changeType == null ? null : this.changeType.toString());
+        jsonWriter.writeStringField("resourceId", this.resourceId);
+        jsonWriter.writeStringField("deploymentId", this.deploymentId);
+        jsonWriter.writeStringField("symbolicName", this.symbolicName);
+        jsonWriter.writeUntypedField("identifiers", this.identifiers);
         jsonWriter.writeStringField("unsupportedReason", this.unsupportedReason);
         jsonWriter.writeUntypedField("before", this.before);
         jsonWriter.writeUntypedField("after", this.after);
@@ -226,10 +303,16 @@ public final class WhatIfChange implements JsonSerializable<WhatIfChange> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("resourceId".equals(fieldName)) {
-                    deserializedWhatIfChange.resourceId = reader.getString();
-                } else if ("changeType".equals(fieldName)) {
+                if ("changeType".equals(fieldName)) {
                     deserializedWhatIfChange.changeType = ChangeType.fromString(reader.getString());
+                } else if ("resourceId".equals(fieldName)) {
+                    deserializedWhatIfChange.resourceId = reader.getString();
+                } else if ("deploymentId".equals(fieldName)) {
+                    deserializedWhatIfChange.deploymentId = reader.getString();
+                } else if ("symbolicName".equals(fieldName)) {
+                    deserializedWhatIfChange.symbolicName = reader.getString();
+                } else if ("identifiers".equals(fieldName)) {
+                    deserializedWhatIfChange.identifiers = reader.readUntyped();
                 } else if ("unsupportedReason".equals(fieldName)) {
                     deserializedWhatIfChange.unsupportedReason = reader.getString();
                 } else if ("before".equals(fieldName)) {

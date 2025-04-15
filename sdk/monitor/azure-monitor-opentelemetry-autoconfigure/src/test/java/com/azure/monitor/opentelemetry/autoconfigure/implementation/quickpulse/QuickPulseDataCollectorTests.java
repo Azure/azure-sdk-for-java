@@ -253,6 +253,14 @@ class QuickPulseDataCollectorTests {
         createTelemetryItemsForFiltering(collector);
 
         QuickPulseDataCollector.FinalCounters counters = collector.peek();
+
+        // The default documents config asks to collect documents of the "Event" telemetry type
+        // As the SDK does not collect the Event telemetry type for live metrics, we consider that part of the config invalid
+        List<CollectionConfigurationError> errors = counters.configErrors;
+        assertThat(errors.size()).isEqualTo(1);
+        assertThat(errors.get(0).getCollectionConfigurationErrorType())
+            .isEqualTo(CollectionConfigurationErrorType.METRIC_TELEMETRY_TYPE_UNSUPPORTED);
+
         List<DocumentIngress> documents = counters.documentList;
 
         assertThat(documents.size()).isEqualTo(4);

@@ -36,7 +36,7 @@ METRICS_ADVISOR_MAX_LIST_ELEMENTS=<max-list-elements>
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-metricsadvisor</artifactId>
-    <version>1.1.11</version>
+    <version>1.3.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -92,5 +92,5 @@ For details on contributing to this repository, see the [contributing guide](htt
 
 <!-- LINKS -->
 [azure_subscription]: https://azure.microsoft.com/free
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [metrics_advisor_account]: https://ms.portal.azure.com/#create/Microsoft.CognitiveServicesMetricsAdvisor

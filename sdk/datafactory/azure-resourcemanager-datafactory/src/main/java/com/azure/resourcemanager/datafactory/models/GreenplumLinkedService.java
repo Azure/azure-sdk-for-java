@@ -51,7 +51,7 @@ public final class GreenplumLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private GreenplumLinkedServiceTypeProperties innerTypeProperties() {
+    GreenplumLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
@@ -170,6 +170,196 @@ public final class GreenplumLinkedService extends LinkedService {
             this.innerTypeProperties = new GreenplumLinkedServiceTypeProperties();
         }
         this.innerTypeProperties().withEncryptedCredential(encryptedCredential);
+        return this;
+    }
+
+    /**
+     * Get the authenticationType property: The authentication type to use. Type: string. Only used for V2.
+     * 
+     * @return the authenticationType value.
+     */
+    public GreenplumAuthenticationType authenticationType() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().authenticationType();
+    }
+
+    /**
+     * Set the authenticationType property: The authentication type to use. Type: string. Only used for V2.
+     * 
+     * @param authenticationType the authenticationType value to set.
+     * @return the GreenplumLinkedService object itself.
+     */
+    public GreenplumLinkedService withAuthenticationType(GreenplumAuthenticationType authenticationType) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new GreenplumLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withAuthenticationType(authenticationType);
+        return this;
+    }
+
+    /**
+     * Get the host property: Host name for connection. Type: string. Only used for V2.
+     * 
+     * @return the host value.
+     */
+    public Object host() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().host();
+    }
+
+    /**
+     * Set the host property: Host name for connection. Type: string. Only used for V2.
+     * 
+     * @param host the host value to set.
+     * @return the GreenplumLinkedService object itself.
+     */
+    public GreenplumLinkedService withHost(Object host) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new GreenplumLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withHost(host);
+        return this;
+    }
+
+    /**
+     * Get the port property: The port for the connection. Type: integer. Only used for V2.
+     * 
+     * @return the port value.
+     */
+    public Object port() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().port();
+    }
+
+    /**
+     * Set the port property: The port for the connection. Type: integer. Only used for V2.
+     * 
+     * @param port the port value to set.
+     * @return the GreenplumLinkedService object itself.
+     */
+    public GreenplumLinkedService withPort(Object port) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new GreenplumLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withPort(port);
+        return this;
+    }
+
+    /**
+     * Get the username property: Username for authentication. Type: string. Only used for V2.
+     * 
+     * @return the username value.
+     */
+    public Object username() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().username();
+    }
+
+    /**
+     * Set the username property: Username for authentication. Type: string. Only used for V2.
+     * 
+     * @param username the username value to set.
+     * @return the GreenplumLinkedService object itself.
+     */
+    public GreenplumLinkedService withUsername(Object username) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new GreenplumLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withUsername(username);
+        return this;
+    }
+
+    /**
+     * Get the database property: Database name for connection. Type: string. Only used for V2.
+     * 
+     * @return the database value.
+     */
+    public Object database() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().database();
+    }
+
+    /**
+     * Set the database property: Database name for connection. Type: string. Only used for V2.
+     * 
+     * @param database the database value to set.
+     * @return the GreenplumLinkedService object itself.
+     */
+    public GreenplumLinkedService withDatabase(Object database) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new GreenplumLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withDatabase(database);
+        return this;
+    }
+
+    /**
+     * Get the sslMode property: SSL mode for connection. Type: integer. 0: disable, 1:allow, 2: prefer, 3: require, 4:
+     * verify-ca, 5: verify-full. Type: integer. Only used for V2.
+     * 
+     * @return the sslMode value.
+     */
+    public Object sslMode() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().sslMode();
+    }
+
+    /**
+     * Set the sslMode property: SSL mode for connection. Type: integer. 0: disable, 1:allow, 2: prefer, 3: require, 4:
+     * verify-ca, 5: verify-full. Type: integer. Only used for V2.
+     * 
+     * @param sslMode the sslMode value to set.
+     * @return the GreenplumLinkedService object itself.
+     */
+    public GreenplumLinkedService withSslMode(Object sslMode) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new GreenplumLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withSslMode(sslMode);
+        return this;
+    }
+
+    /**
+     * Get the connectionTimeout property: The time to wait (in seconds) while trying to establish a connection before
+     * terminating the attempt and generating an error. Type: integer. Only used for V2.
+     * 
+     * @return the connectionTimeout value.
+     */
+    public Object connectionTimeout() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().connectionTimeout();
+    }
+
+    /**
+     * Set the connectionTimeout property: The time to wait (in seconds) while trying to establish a connection before
+     * terminating the attempt and generating an error. Type: integer. Only used for V2.
+     * 
+     * @param connectionTimeout the connectionTimeout value to set.
+     * @return the GreenplumLinkedService object itself.
+     */
+    public GreenplumLinkedService withConnectionTimeout(Object connectionTimeout) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new GreenplumLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withConnectionTimeout(connectionTimeout);
+        return this;
+    }
+
+    /**
+     * Get the commandTimeout property: The time to wait (in seconds) while trying to execute a command before
+     * terminating the attempt and generating an error. Set to zero for infinity. Type: integer. Only used for V2.
+     * 
+     * @return the commandTimeout value.
+     */
+    public Object commandTimeout() {
+        return this.innerTypeProperties() == null ? null : this.innerTypeProperties().commandTimeout();
+    }
+
+    /**
+     * Set the commandTimeout property: The time to wait (in seconds) while trying to execute a command before
+     * terminating the attempt and generating an error. Set to zero for infinity. Type: integer. Only used for V2.
+     * 
+     * @param commandTimeout the commandTimeout value to set.
+     * @return the GreenplumLinkedService object itself.
+     */
+    public GreenplumLinkedService withCommandTimeout(Object commandTimeout) {
+        if (this.innerTypeProperties() == null) {
+            this.innerTypeProperties = new GreenplumLinkedServiceTypeProperties();
+        }
+        this.innerTypeProperties().withCommandTimeout(commandTimeout);
         return this;
     }
 

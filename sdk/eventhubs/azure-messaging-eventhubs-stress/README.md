@@ -291,17 +291,17 @@ For details on contributing to this repository, see the [contributing guide](htt
 <!-- links -->
 [azure_sdk_chaos]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md
 [azure_sdk_stress_test]: https://aka.ms/azsdk/stress
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [maven]: https://maven.apache.org/
 [docker]: https://docs.docker.com/get-docker/
 [kubectl]: https://kubernetes.io/docs/tasks/tools/#kubectl
 [helm]: https://helm.sh/docs/intro/install/
-[azure_cli]: https://docs.microsoft.com/cli/azure/install-azure-cli
-[powershell]: https://docs.microsoft.com/powershell/scripting/install/installing-powershell?view=powershell-7
+[azure_cli]: https://learn.microsoft.com/cli/azure/install-azure-cli
+[powershell]: https://learn.microsoft.com/powershell/scripting/install/installing-powershell?view=powershell-7
 [azure_core_metrics_opentelemetry]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core/azure-core-metrics-opentelemetry
 [logback_xml]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/eventhubs/azure-messaging-eventhubs-stress/src/main/resources/logback.xml
 [stress_test_file_share]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#stress-test-file-share
-[enable_application_insights]: https://docs.microsoft.com/azure/azure-monitor/app/java-in-process-agent#enable-azure-monitor-application-insights
+[enable_application_insights]: https://learn.microsoft.com/azure/azure-monitor/app/java-in-process-agent#enable-azure-monitor-application-insights
 [deploy_stress_test]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#deploying-a-stress-test
 [config_faults]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#configuring-faults
 [stress_test_layout]: https://github.com/Azure/azure-sdk-tools/blob/main/tools/stress-cluster/chaos/README.md#layout

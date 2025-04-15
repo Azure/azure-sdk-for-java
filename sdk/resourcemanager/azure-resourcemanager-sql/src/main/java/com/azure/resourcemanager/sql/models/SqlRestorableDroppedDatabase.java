@@ -18,24 +18,52 @@ import java.time.OffsetDateTime;
 public interface SqlRestorableDroppedDatabase extends Refreshable<SqlRestorableDroppedDatabase>,
     HasInnerModel<RestorableDroppedDatabaseInner>, HasResourceGroup, HasName, HasId {
 
-    /** @return the geo-location where the resource lives */
+    /**
+     * Gets the geo-location where the resource lives.
+     *
+     * @return the geo-location where the resource lives
+     */
     Region region();
 
-    /** @return the name of the database */
+    /**
+     * Gets the name of the database.
+     *
+     * @return the name of the database
+     */
     String databaseName();
 
-    /** @return the edition of the database */
+    /**
+     * Gets the edition of the database.
+     *
+     * @return the edition of the database
+     */
     String edition();
 
-    /** @return the max size in bytes of the database */
+    /**
+     * Gets the max size in bytes of the database.
+     *
+     * @return the max size in bytes of the database
+     */
     String maxSizeBytes();
 
-    /** @return the creation date of the database (ISO8601 format) */
+    /**
+     * Gets the creation date of the database.
+     *
+     * @return the creation date of the database (ISO8601 format)
+     */
     OffsetDateTime creationDate();
 
-    /** @return the deletion date of the database (ISO8601 format) */
+    /**
+     * Gets the deletion date of the database.
+     *
+     * @return the deletion date of the database (ISO8601 format)
+     */
     OffsetDateTime deletionDate();
 
-    /** @return the earliest restore date of the database (ISO8601 format) */
+    /**
+     * Gets the earliest restore date of the database.
+     *
+     * @return the earliest restore date of the database (ISO8601 format)
+     */
     OffsetDateTime earliestRestoreDate();
 }

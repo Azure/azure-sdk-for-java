@@ -51,7 +51,7 @@ public final class QuickBooksLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private QuickBooksLinkedServiceTypeProperties innerTypeProperties() {
+    QuickBooksLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

@@ -10,21 +10,45 @@ import java.time.OffsetDateTime;
 @Fluent
 public interface DatabaseMetric {
 
-    /** @return the name of the resource */
+    /**
+     * Gets the name of the resource.
+     *
+     * @return the name of the resource
+     */
     String resourceName();
 
-    /** @return the metric display name */
+    /**
+     * Gets the metric display name.
+     *
+     * @return the metric display name
+     */
     String displayName();
 
-    /** @return the current value of the metric */
+    /**
+     * Gets the current value of the metric.
+     *
+     * @return the current value of the metric
+     */
     double currentValue();
 
-    /** @return the current limit of the metric */
+    /**
+     * Gets the current limit of the metric.
+     *
+     * @return the current limit of the metric
+     */
     double limit();
 
-    /** @return the units of the metric */
+    /**
+     * Gets the units of the metric.
+     *
+     * @return the units of the metric
+     */
     String unit();
 
-    /** @return the next reset time for the metric (ISO8601 format) */
+    /**
+     * Gets the next reset time for the metric.
+     *
+     * @return the next reset time for the metric (ISO8601 format)
+     */
     OffsetDateTime nextResetTime();
 }

@@ -12,14 +12,14 @@ public final class ManagedRGConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManagedRGConfiguration model
-            = BinaryData.fromString("{\"name\":\"zovawjvz\"}").toObject(ManagedRGConfiguration.class);
-        Assertions.assertEquals("zovawjvz", model.name());
+            = BinaryData.fromString("{\"name\":\"obbc\"}").toObject(ManagedRGConfiguration.class);
+        Assertions.assertEquals("obbc", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedRGConfiguration model = new ManagedRGConfiguration().withName("zovawjvz");
+        ManagedRGConfiguration model = new ManagedRGConfiguration().withName("obbc");
         model = BinaryData.fromObject(model).toObject(ManagedRGConfiguration.class);
-        Assertions.assertEquals("zovawjvz", model.name());
+        Assertions.assertEquals("obbc", model.name());
     }
 }

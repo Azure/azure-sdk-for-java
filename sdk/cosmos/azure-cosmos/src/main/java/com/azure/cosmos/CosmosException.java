@@ -21,7 +21,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -185,7 +184,7 @@ public class CosmosException extends AzureException {
     protected CosmosException(int statusCode, String errorMessage) {
         this(statusCode, errorMessage, null, null);
         this.cosmosError = new CosmosError();
-        cosmosError.set(Constants.Properties.MESSAGE, errorMessage, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        cosmosError.set(Constants.Properties.MESSAGE, errorMessage);
     }
 
     /**

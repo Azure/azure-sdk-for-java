@@ -7,7 +7,11 @@ import com.azure.core.annotation.Fluent;
 /** An interface representing a model's ability to reference a frontend port. */
 @Fluent
 public interface HasFrontendPort {
-    /** @return the frontend port number the inbound network traffic is received on */
+    /**
+     * Gets the frontend port number the inbound network traffic is received on.
+     *
+     * @return the frontend port number the inbound network traffic is received on
+     */
     int frontendPort();
 
     /** Grouping of definition stages involving specifying a frontend port. */

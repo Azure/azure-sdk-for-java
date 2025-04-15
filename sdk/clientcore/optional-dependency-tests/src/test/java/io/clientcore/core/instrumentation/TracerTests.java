@@ -3,13 +3,15 @@
 
 package io.clientcore.core.instrumentation;
 
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.implementation.instrumentation.otel.tracing.OTelSpanContext;
 import io.clientcore.core.instrumentation.tracing.Span;
 import io.clientcore.core.instrumentation.tracing.SpanKind;
 import io.clientcore.core.instrumentation.tracing.Tracer;
 import io.clientcore.core.instrumentation.tracing.TracingScope;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
+import io.opentelemetry.api.common.Attributes;
+import io.opentelemetry.context.Context;
 import io.opentelemetry.sdk.OpenTelemetrySdk;
 import io.opentelemetry.sdk.testing.exporter.InMemorySpanExporter;
 import io.opentelemetry.sdk.trace.SdkTracerProvider;
@@ -23,21 +25,22 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Stream;
 
-import static io.clientcore.core.instrumentation.Instrumentation.TRACE_CONTEXT_KEY;
 import static io.clientcore.core.instrumentation.tracing.SpanKind.INTERNAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TracerTests {
-    private static final LibraryInstrumentationOptions DEFAULT_LIB_OPTIONS
-        = new LibraryInstrumentationOptions("test-library");
+    private static final SdkInstrumentationOptions DEFAULT_LIB_OPTIONS = new SdkInstrumentationOptions("test-library");
 
     private InMemorySpanExporter exporter;
     private SdkTracerProvider tracerProvider;
-    private InstrumentationOptions<OpenTelemetry> otelOptions;
+    private InstrumentationOptions otelOptions;
+    private OpenTelemetry openTelemetry;
+    private Instrumentation instrumentation;
     private Tracer tracer;
 
     @BeforeEach
@@ -45,9 +48,10 @@ public class TracerTests {
         exporter = InMemorySpanExporter.create();
         tracerProvider = SdkTracerProvider.builder().addSpanProcessor(SimpleSpanProcessor.create(exporter)).build();
 
-        OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
-        otelOptions = new InstrumentationOptions<OpenTelemetry>().setProvider(openTelemetry);
-        tracer = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS).getTracer();
+        openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
+        otelOptions = new InstrumentationOptions().setTelemetryProvider(openTelemetry);
+        instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS);
+        tracer = instrumentation.getTracer();
     }
 
     @AfterEach
@@ -105,6 +109,32 @@ public class TracerTests {
     }
 
     @Test
+    public void testSetAllAttributes() {
+        Map<String, Object> start = new HashMap<>();
+        start.put("string", "value");
+        start.put("int", 42);
+        start.put("double", 0.42);
+        start.put("float", 4.2f);
+        start.put("boolean", true);
+        start.put("long", 420L);
+        InstrumentationAttributes startAttributes = instrumentation.createAttributes(start);
+
+        Span span = tracer.spanBuilder("test-span", INTERNAL, null).setAllAttributes(startAttributes).startSpan();
+        span.end();
+
+        assertEquals(1, exporter.getFinishedSpanItems().size());
+        SpanData spanData = exporter.getFinishedSpanItems().get(0);
+        Attributes attrs = spanData.getAttributes();
+        assertEquals(6, attrs.size());
+        assertEquals("value", attrs.get(AttributeKey.stringKey("string")));
+        assertEquals(42L, attrs.get(AttributeKey.longKey("int")));
+        assertEquals(420L, attrs.get(AttributeKey.longKey("long")));
+        assertEquals(0.42, attrs.get(AttributeKey.doubleKey("double")));
+        assertEquals(4.2f, attrs.get(AttributeKey.doubleKey("float")), 0.1);
+        assertEquals(true, attrs.get(AttributeKey.booleanKey("boolean")));
+    }
+
+    @Test
     public void testEndWithErrorString() {
         Span span = tracer.spanBuilder("test-span", INTERNAL, null).startSpan();
 
@@ -153,7 +183,7 @@ public class TracerTests {
     @SuppressWarnings("try")
     @Test
     public void implicitParent() throws Exception {
-        io.opentelemetry.api.trace.Tracer otelTracer = otelOptions.getProvider().getTracer("test");
+        io.opentelemetry.api.trace.Tracer otelTracer = openTelemetry.getTracer("test");
         io.opentelemetry.api.trace.Span parent = otelTracer.spanBuilder("parent").startSpan();
         try (AutoCloseable scope = parent.makeCurrent()) {
             Span child = tracer.spanBuilder("child", INTERNAL, null).startSpan();
@@ -172,13 +202,12 @@ public class TracerTests {
     }
 
     @Test
-    public void explicitParent() throws Exception {
-        io.opentelemetry.api.trace.Tracer otelTracer = otelOptions.getProvider().getTracer("test");
+    public void explicitParent() {
+        io.opentelemetry.api.trace.Tracer otelTracer = openTelemetry.getTracer("test");
         io.opentelemetry.api.trace.Span parent = otelTracer.spanBuilder("parent").startSpan();
 
-        RequestOptions requestOptions = new RequestOptions().putContext(TRACE_CONTEXT_KEY,
-            parent.storeInContext(io.opentelemetry.context.Context.current()));
-        Span child = tracer.spanBuilder("child", INTERNAL, requestOptions).startSpan();
+        Span child = tracer.spanBuilder("child", INTERNAL, OTelSpanContext.fromOTelContext(Context.root().with(parent)))
+            .startSpan();
         child.end();
         parent.end();
 
@@ -189,20 +218,6 @@ public class TracerTests {
         assertEquals("child", childData.getName());
         assertEquals(parentData.getTraceId(), childData.getTraceId());
         assertEquals(parentData.getSpanId(), childData.getParentSpanId());
-    }
-
-    @Test
-    public void explicitParentWrongType() {
-        RequestOptions requestOptions
-            = new RequestOptions().putContext(TRACE_CONTEXT_KEY, "This is not a valid trace context");
-        Span child = tracer.spanBuilder("child", INTERNAL, requestOptions).startSpan();
-        child.end();
-
-        assertEquals(1, exporter.getFinishedSpanItems().size());
-        SpanData childData = exporter.getFinishedSpanItems().get(0);
-
-        assertEquals("child", childData.getName());
-        assertFalse(childData.getParentSpanContext().isValid());
     }
 
     public static Stream<Arguments> kindSource() {

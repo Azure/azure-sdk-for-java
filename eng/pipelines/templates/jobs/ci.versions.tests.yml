@@ -73,7 +73,7 @@ jobs:
 
     steps:
       - pwsh: |
-          Write-Host "##vso[task.setvariable variable=AZURE_VERSION_OVERRIDE_TESTS]true"
+          Write-Host "##vso[task.setvariable variable=VERSION_OVERRIDE_TESTS]true"
           Write-Host "##vso[task.setvariable variable=TestVersionSupport]true"
         displayName: "Set version override variables"
 

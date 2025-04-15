@@ -7,10 +7,18 @@ import com.azure.core.annotation.Fluent;
 /** An interface representing a model's ability to reference a private IP address. */
 @Fluent
 public interface HasPrivateIpAddress {
-    /** @return the private IP address associated with this resource */
+    /**
+     * Gets the private IP address associated with this resource.
+     *
+     * @return the private IP address associated with this resource
+     */
     String privateIpAddress();
 
-    /** @return the private IP address allocation method within the associated subnet */
+    /**
+     * Gets the private IP address allocation method within the associated subnet.
+     *
+     * @return the private IP address allocation method within the associated subnet
+     */
     IpAllocationMethod privateIpAllocationMethod();
 
     /** Grouping of definition stages involving specifying the private IP address. */

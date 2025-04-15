@@ -51,12 +51,20 @@ public enum KnownWebApplicationGatewayManagedRuleSet {
         this.version = version;
     }
 
-    /** @return the type of the Managed Rule Set */
+    /**
+     * Gets the type of the Managed Rule Set.
+     *
+     * @return the type of the Managed Rule Set
+     */
     public String type() {
         return type;
     }
 
-    /** @return the version of the Managed Rule Set */
+    /**
+     * Geets the version of the Managed Rule Set.
+     *
+     * @return the version of the Managed Rule Set
+     */
     public String version() {
         return version;
     }

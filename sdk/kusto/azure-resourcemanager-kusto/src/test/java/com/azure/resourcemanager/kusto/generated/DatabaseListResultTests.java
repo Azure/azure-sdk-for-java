@@ -14,20 +14,21 @@ public final class DatabaseListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DatabaseListResult model = BinaryData.fromString(
-            "{\"nextLink\":\"ycduier\",\"value\":[{\"kind\":\"Database\",\"location\":\"y\",\"id\":\"vaolpsslqlf\",\"name\":\"mdnbbglzpswiy\",\"type\":\"mcwyhzdxssadb\"},{\"kind\":\"Database\",\"location\":\"nvdfznuda\",\"id\":\"dvxzbncblylpst\",\"name\":\"bhhxsrzdzuc\",\"type\":\"rsc\"},{\"kind\":\"Database\",\"location\":\"t\",\"id\":\"evfiwjmygt\",\"name\":\"sslswtmweriof\",\"type\":\"pyqs\"},{\"kind\":\"Database\",\"location\":\"wab\",\"id\":\"ets\",\"name\":\"hszhedplvwiwu\",\"type\":\"mwmbes\"}]}")
+            "{\"nextLink\":\"qgxy\",\"value\":[{\"kind\":\"Database\",\"location\":\"mbqfqvmk\",\"id\":\"xozap\",\"name\":\"helxprglya\",\"type\":\"dd\"},{\"kind\":\"Database\",\"location\":\"cbcuejrjxgciqi\",\"id\":\"rhos\",\"name\":\"sdqrhzoymibmrq\",\"type\":\"ibahwflus\"},{\"kind\":\"Database\",\"location\":\"tmhrkwofyyvoqacp\",\"id\":\"expbtg\",\"name\":\"wbwo\",\"type\":\"nwashrtd\"},{\"kind\":\"Database\",\"location\":\"cnqxwbpokulpi\",\"id\":\"jwaa\",\"name\":\"ipqiiobyuqerpq\",\"type\":\"pqwcciuqgbdbutau\"}]}")
             .toObject(DatabaseListResult.class);
-        Assertions.assertEquals("ycduier", model.nextLink());
-        Assertions.assertEquals("y", model.value().get(0).location());
+        Assertions.assertEquals("qgxy", model.nextLink());
+        Assertions.assertEquals("mbqfqvmk", model.value().get(0).location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DatabaseListResult model = new DatabaseListResult().withNextLink("ycduier")
-            .withValue(
-                Arrays.asList(new DatabaseInner().withLocation("y"), new DatabaseInner().withLocation("nvdfznuda"),
-                    new DatabaseInner().withLocation("t"), new DatabaseInner().withLocation("wab")));
+        DatabaseListResult model = new DatabaseListResult().withNextLink("qgxy")
+            .withValue(Arrays.asList(new DatabaseInner().withLocation("mbqfqvmk"),
+                new DatabaseInner().withLocation("cbcuejrjxgciqi"),
+                new DatabaseInner().withLocation("tmhrkwofyyvoqacp"),
+                new DatabaseInner().withLocation("cnqxwbpokulpi")));
         model = BinaryData.fromObject(model).toObject(DatabaseListResult.class);
-        Assertions.assertEquals("ycduier", model.nextLink());
-        Assertions.assertEquals("y", model.value().get(0).location());
+        Assertions.assertEquals("qgxy", model.nextLink());
+        Assertions.assertEquals("mbqfqvmk", model.value().get(0).location());
     }
 }

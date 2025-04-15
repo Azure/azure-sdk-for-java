@@ -3,8 +3,6 @@
 
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Utils.ValueHolder;
 import org.slf4j.Logger;
@@ -62,11 +60,11 @@ public final class TopContinuationToken extends JsonSerializable {
     }
 
     private void setTopCount(int topCount) {
-        this.set(TOP_PROPERTY_NAME, topCount, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(TOP_PROPERTY_NAME, topCount);
     }
 
     private void setSourceToken(String sourceToken) {
-        this.set(SOURCE_TOKEN_PROPERTY_NAME, sourceToken, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(SOURCE_TOKEN_PROPERTY_NAME, sourceToken);
     }
 
     @Override

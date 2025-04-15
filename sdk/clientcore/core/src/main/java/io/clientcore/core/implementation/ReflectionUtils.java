@@ -3,7 +3,7 @@
 
 package io.clientcore.core.implementation;
 
-import io.clientcore.core.util.ClientLogger;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
@@ -13,7 +13,23 @@ import java.lang.reflect.Method;
  */
 public abstract class ReflectionUtils {
     private static final ClientLogger LOGGER = new ClientLogger(ReflectionUtils.class);
-    private static final ReflectionUtilsApi INSTANCE = new ReflectionUtilsMethodHandle();
+    private static final ReflectionUtilsApi INSTANCE;
+
+    static {
+        ReflectionUtilsApi instance;
+        try {
+            LOGGER.atVerbose().log("Attempting to use java.lang.invoke package to handle reflection.");
+            instance = new ReflectionUtilsMethodHandle();
+            LOGGER.atVerbose().log("Successfully used java.lang.invoke package to handle reflection.");
+        } catch (LinkageError ignored) {
+            LOGGER.atVerbose()
+                .log("Failed to use java.lang.invoke package to handle reflection. Falling back to "
+                    + "java.lang.reflect package to handle reflection.");
+            instance = new ReflectionUtilsClassic();
+            LOGGER.atVerbose().log("Successfully used java.lang.reflect package to handle reflection.");
+        }
+        INSTANCE = instance;
+    }
 
     /**
      * Creates an {@link ReflectiveInvoker} instance that will invoke a {@link Method}.
@@ -112,6 +128,15 @@ public abstract class ReflectionUtils {
 
         targetClass = (targetClass == null) ? constructor.getDeclaringClass() : targetClass;
         return INSTANCE.getConstructorInvoker(targetClass, constructor, scopeToClientCore);
+    }
+
+    /**
+     * Determines whether a Java 9+ module-based implementation of {@link ReflectionUtilsApi} is being used.
+     *
+     * @return Whether a Java 9+ module-based implementation of {@link ReflectionUtilsApi} is being used.
+     */
+    public static boolean isModuleBased() {
+        return INSTANCE.isModuleBased();
     }
 
     /**

@@ -46,7 +46,7 @@
   <Match>
     <Bug pattern="SS_SHOULD_BE_STATIC" />
     <Or>
-      <Class name="com.azure.ai.inference.models.ChatCompletionsNamedToolSelection" />
+      <Class name="com.azure.ai.inference.models.ChatCompletionsNamedToolChoice" />
       <Class name="com.azure.ai.inference.models.ChatCompletionsToolCall" />
       <Class name="com.azure.ai.inference.models.ChatCompletionsToolDefinition" />
     </Or>

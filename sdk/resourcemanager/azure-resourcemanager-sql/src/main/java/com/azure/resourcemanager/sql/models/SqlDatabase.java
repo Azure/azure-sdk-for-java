@@ -27,73 +27,147 @@ import java.util.Map;
 public interface SqlDatabase extends ExternalChildResource<SqlDatabase, SqlServer>, HasInnerModel<DatabaseInner>,
     HasResourceGroup, Refreshable<SqlDatabase>, Updatable<SqlDatabase.Update> {
 
-    /** @return name of the SQL Server to which this database belongs */
+    /**
+     * Gets name of the SQL Server to which this database belongs.
+     *
+     * @return name of the SQL Server to which this database belongs
+     */
     String sqlServerName();
 
-    /** @return the collation of the Azure SQL Database */
+    /**
+     * Gets the collation of the Azure SQL Database.
+     *
+     * @return the collation of the Azure SQL Database
+     */
     String collation();
 
-    /** @return the creation date of the Azure SQL Database */
+    /**
+     * Gets the creation date of the Azure SQL Database.
+     *
+     * @return the creation date of the Azure SQL Database
+     */
     OffsetDateTime creationDate();
 
     /**
+     * Gets the current Service Level Objective Name of the Azure SQL Database.
+     *
      * @return the current Service Level Objective Name of the Azure SQL Database, this is the Name of the Service Level
      *     Objective that is currently active
      */
     String currentServiceObjectiveName();
 
-    /** @return the Id of the Azure SQL Database */
+    /**
+     * Gets the ID of the Azure SQL Database.
+     *
+     * @return the ID of the Azure SQL Database
+     */
     String databaseId();
 
     /**
+     * Gets the recovery period start date of the Azure SQL Database.
+     *
      * @return the recovery period start date of the Azure SQL Database. This records the start date and time when
      *     recovery is available for this Azure SQL Database.
      */
     OffsetDateTime earliestRestoreDate();
 
-    /** @return the edition of the Azure SQL Database */
+    /**
+     * Gets the edition of the Azure SQL Database.
+     *
+     * @return the edition of the Azure SQL Database
+     */
     DatabaseEdition edition();
 
-    /** @return the max size of the Azure SQL Database expressed in bytes. */
+    /**
+     * Gets the max size of the Azure SQL Database expressed in bytes.
+     *
+     * @return the max size of the Azure SQL Database expressed in bytes.
+     */
     long maxSizeBytes();
 
     /**
+     * Gets the name of the configured Service Level Objective of the Azure SQL Database.
+     *
      * @return the name of the configured Service Level Objective of the Azure SQL Database, this is the Service Level
      *     Objective that is being applied to the Azure SQL Database
      */
     String requestedServiceObjectiveName();
 
-    /** @return the status of the Azure SQL Database */
+    /**
+     * Gets the status of the Azure SQL Database.
+     *
+     * @return the status of the Azure SQL Database
+     */
     DatabaseStatus status();
 
-    /** @return the elasticPoolId value */
+    /**
+     * Gets ID of the elastic pool.
+     *
+     * @return the elasticPoolId value
+     */
     String elasticPoolId();
 
-    /** @return the elasticPoolName value */
+    /**
+     * Gets name of the elastic pool.
+     *
+     * @return the elasticPoolName value
+     */
     String elasticPoolName();
 
-    /** @return the defaultSecondaryLocation value */
+    /**
+     * Gets the default secondary location.
+     *
+     * @return the defaultSecondaryLocation value
+     */
     String defaultSecondaryLocation();
 
-    /** @return the parent SQL server ID */
+    /**
+     * Gets the parent SQL server ID.
+     *
+     * @return the parent SQL server ID
+     */
     String parentId();
 
-    /** @return the name of the region the resource is in */
+    /**
+     * Gets the name of the region the resource is in.
+     *
+     * @return the name of the region the resource is in
+     */
     String regionName();
 
-    /** @return the region the resource is in */
+    /**
+     * Gets the region the resource is in.
+     *
+     * @return the region the resource is in
+     */
     Region region();
 
-    /** @return true if this Database is SqlWarehouse */
+    /**
+     * Checks whether this Database is SqlWarehouse.
+     *
+     * @return true if this Database is SqlWarehouse
+     */
     boolean isDataWarehouse();
 
-    /** @return SqlWarehouse instance for more operations */
+    /**
+     * Gets SqlWarehouse instance for more operations.
+     *
+     * @return SqlWarehouse instance for more operations
+     */
     SqlWarehouse asWarehouse();
 
-    /** @return the list of all restore points on this database */
+    /**
+     * Gets the list of all restore points on this database.
+     *
+     * @return the list of all restore points on this database
+     */
     List<RestorePoint> listRestorePoints();
 
-    /** @return the list of all restore points on this database */
+    /**
+     * Gets the list of all restore points on this database.
+     *
+     * @return the list of all restore points on this database
+     */
     PagedFlux<RestorePoint> listRestorePointsAsync();
 
     /**
@@ -111,10 +185,16 @@ public interface SqlDatabase extends ExternalChildResource<SqlDatabase, SqlServe
      */
     Mono<TransparentDataEncryption> getTransparentDataEncryptionAsync();
 
-    /** @return all the replication links associated with this database */
+    /**
+     * Gets all the replication links associated with this database.
+     *
+     * @return all the replication links associated with this database
+     */
     Map<String, ReplicationLink> listReplicationLinks();
 
     /**
+     * Gets a representation of the deferred computation of all the replication links associated with this database.
+     *
      * @return a representation of the deferred computation of all the replication links associated with this database
      */
     PagedFlux<ReplicationLink> listReplicationLinksAsync();
@@ -242,7 +322,11 @@ public interface SqlDatabase extends ExternalChildResource<SqlDatabase, SqlServe
      */
     Mono<Void> deleteAsync();
 
-    /** @return the SQL Sync Group entry point for the current database */
+    /**
+     * Gets the SQL Sync Group entry point for the current database.
+     *
+     * @return the SQL Sync Group entry point for the current database
+     */
     SqlSyncGroupOperations.SqlSyncGroupActionsDefinition syncGroups();
 
     /**************************************************************
@@ -378,12 +462,16 @@ public interface SqlDatabase extends ExternalChildResource<SqlDatabase, SqlServe
          */
         interface WithStorageKey<ParentT> {
             /**
+             * Specifies the storage access key to use.
+             *
              * @param storageAccessKey the storage access key to use
              * @return next definition stage
              */
             SqlDatabase.DefinitionStages.WithAuthentication<ParentT> withStorageAccessKey(String storageAccessKey);
 
             /**
+             * Specifies the shared access key to use.
+             *
              * @param sharedAccessKey the shared access key to use; it must be preceded with a "?."
              * @return next definition stage
              */
@@ -397,6 +485,8 @@ public interface SqlDatabase extends ExternalChildResource<SqlDatabase, SqlServe
          */
         interface WithAuthentication<ParentT> {
             /**
+             * Specifies administrator login name and login password.
+             *
              * @param administratorLogin the SQL administrator login
              * @param administratorPassword the SQL administrator password
              * @return next definition stage
@@ -405,6 +495,8 @@ public interface SqlDatabase extends ExternalChildResource<SqlDatabase, SqlServe
                 withSqlAdministratorLoginAndPassword(String administratorLogin, String administratorPassword);
 
             /**
+             * Specifies Active Directory login name and login password.
+             *
              * @param administratorLogin the Active Directory administrator login
              * @param administratorPassword the Active Directory administrator password
              * @return next definition stage
@@ -446,6 +538,8 @@ public interface SqlDatabase extends ExternalChildResource<SqlDatabase, SqlServe
          */
         interface WithStorageKeyAfterElasticPool<ParentT> {
             /**
+             * Specifies the storage access key to use.
+             *
              * @param storageAccessKey the storage access key to use
              * @return next definition stage
              */
@@ -453,6 +547,8 @@ public interface SqlDatabase extends ExternalChildResource<SqlDatabase, SqlServe
                 withStorageAccessKey(String storageAccessKey);
 
             /**
+             * Specifies the shared access key to use.
+             *
              * @param sharedAccessKey the shared access key to use; it must be preceded with a "?."
              * @return next definition stage
              */
@@ -467,6 +563,8 @@ public interface SqlDatabase extends ExternalChildResource<SqlDatabase, SqlServe
          */
         interface WithAuthenticationAfterElasticPool<ParentT> {
             /**
+             * Specifies administrator login name and login password.
+             *
              * @param administratorLogin the SQL administrator login
              * @param administratorPassword the SQL administrator password
              * @return next definition stage
@@ -475,6 +573,8 @@ public interface SqlDatabase extends ExternalChildResource<SqlDatabase, SqlServe
                 withSqlAdministratorLoginAndPassword(String administratorLogin, String administratorPassword);
 
             /**
+             * Specifies Active Directory login name and login password.
+             *
              * @param administratorLogin the Active Directory administrator login
              * @param administratorPassword the Active Directory administrator password
              * @return next definition stage

@@ -13,7 +13,11 @@ public interface ApplicationGatewayBackendServerHealth
     extends HasInnerModel<ApplicationGatewayBackendHealthServerInner>,
     HasParent<ApplicationGatewayBackendHttpConfigurationHealth> {
 
-    /** @return IP address of the server this health information pertains to */
+    /**
+     * Gets IP address of the server this health information pertains to.
+     *
+     * @return IP address of the server this health information pertains to
+     */
     String ipAddress();
 
     /**
@@ -23,6 +27,10 @@ public interface ApplicationGatewayBackendServerHealth
      */
     NicIpConfiguration getNetworkInterfaceIPConfiguration();
 
-    /** @return the health status of the server */
+    /**
+     * Gets the health status of the server.
+     *
+     * @return the health status of the server
+     */
     ApplicationGatewayBackendHealthStatus status();
 }

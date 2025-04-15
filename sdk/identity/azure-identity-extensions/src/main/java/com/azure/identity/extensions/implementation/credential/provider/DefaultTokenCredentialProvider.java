@@ -15,6 +15,7 @@ import reactor.util.annotation.Nullable;
 /**
  * Default tokenCredentialProvider implementation that provides tokenCredential instance.
  */
+@SuppressWarnings("deprecation")
 public class DefaultTokenCredentialProvider implements TokenCredentialProvider {
 
     private final TokenCredentialProviderOptions options;
@@ -67,7 +68,8 @@ public class DefaultTokenCredentialProvider implements TokenCredentialProvider {
                         .clientId(clientId);
 
                 if (hasText(options.getClientCertificatePassword())) {
-                    builder.pfxCertificate(clientCertificatePath, options.getClientCertificatePassword());
+                    builder.pfxCertificate(clientCertificatePath)
+                        .clientCertificatePassword(options.getClientCertificatePassword());
                 } else {
                     builder.pemCertificate(clientCertificatePath);
                 }

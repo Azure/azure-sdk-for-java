@@ -122,7 +122,7 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-04";
+        final String apiVersion = "2024-11-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), roleName, resourceGroupName,
@@ -164,7 +164,7 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-04";
+        final String apiVersion = "2024-11-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), roleName, resourceGroupName, cloudServiceName,
@@ -253,7 +253,7 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-04";
+        final String apiVersion = "2024-11-04";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, cloudServiceName,
@@ -295,7 +295,7 @@ public final class CloudServiceRolesClientImpl implements CloudServiceRolesClien
             return Mono.error(new IllegalArgumentException(
                 "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        final String apiVersion = "2022-09-04";
+        final String apiVersion = "2024-11-04";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

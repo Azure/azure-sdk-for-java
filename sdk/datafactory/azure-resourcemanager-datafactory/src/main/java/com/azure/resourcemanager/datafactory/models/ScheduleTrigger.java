@@ -51,7 +51,7 @@ public final class ScheduleTrigger extends MultiplePipelineTrigger {
      * 
      * @return the innerTypeProperties value.
      */
-    private ScheduleTriggerTypeProperties innerTypeProperties() {
+    ScheduleTriggerTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

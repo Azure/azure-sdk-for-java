@@ -16,7 +16,11 @@ import java.io.IOException;
 public interface ApplicationGatewaySslCertificate
     extends HasInnerModel<ApplicationGatewaySslCertificateInner>, ChildResource<ApplicationGateway> {
 
-    /** @return the public data of the certificate */
+    /**
+     * Gets the public data of the certificate.
+     *
+     * @return the public data of the certificate
+     */
     String publicData();
 
     /**

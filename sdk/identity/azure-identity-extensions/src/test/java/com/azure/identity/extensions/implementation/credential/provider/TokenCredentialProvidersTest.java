@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 class TokenCredentialProvidersTest {
 
     private static final String SPRING_TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME
-        = SpringTokenCredentialProviderTest.class.getName();
+        = TestSpringTokenCredentialProvider.class.getName();
 
     @Test
     void testOptionsIsNull() {
@@ -29,7 +29,7 @@ class TokenCredentialProvidersTest {
         TokenCredentialProviderOptions option = new TokenCredentialProviderOptions();
         option.setTokenCredentialProviderClassName(SPRING_TOKEN_CREDENTIAL_PROVIDER_CLASS_NAME);
         TokenCredentialProvider credentialProvider = TokenCredentialProviders.createInstance(option);
-        Assertions.assertTrue(credentialProvider instanceof SpringTokenCredentialProviderTest);
+        Assertions.assertTrue(credentialProvider instanceof TestSpringTokenCredentialProvider);
     }
 
 }

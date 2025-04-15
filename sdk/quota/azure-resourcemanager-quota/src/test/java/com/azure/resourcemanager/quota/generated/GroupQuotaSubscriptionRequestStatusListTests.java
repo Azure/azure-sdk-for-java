@@ -16,29 +16,22 @@ public final class GroupQuotaSubscriptionRequestStatusListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GroupQuotaSubscriptionRequestStatusList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"subscriptionId\":\"f\",\"requestSubmitTime\":\"2021-02-14T20:28:05Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"xxjtfe\",\"name\":\"luwfzitonpeqfpjk\",\"type\":\"lxofpdvhpfxxypin\"},{\"properties\":{\"subscriptionId\":\"ayhuy\",\"requestSubmitTime\":\"2021-05-05T04:33:07Z\",\"provisioningState\":\"Created\"},\"id\":\"epoo\",\"name\":\"inuvamiheogn\",\"type\":\"rxzxtheo\"},{\"properties\":{\"subscriptionId\":\"ivyevcciqihnhun\",\"requestSubmitTime\":\"2021-08-15T16:10:49Z\",\"provisioningState\":\"Created\"},\"id\":\"nfygxgispemvtz\",\"name\":\"kufubljo\",\"type\":\"xqeofjaeqjhqjba\"}],\"nextLink\":\"msmjqulngsntn\"}")
+            "{\"value\":[{\"properties\":{\"subscriptionId\":\"yahux\",\"requestSubmitTime\":\"2021-07-08T12:15:19Z\",\"provisioningState\":\"InProgress\"},\"id\":\"jaqwixjsp\",\"name\":\"ozvcput\",\"type\":\"gjvw\"}],\"nextLink\":\"datscmd\"}")
             .toObject(GroupQuotaSubscriptionRequestStatusList.class);
-        Assertions.assertEquals("f", model.value().get(0).properties().subscriptionId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-14T20:28:05Z"),
+        Assertions.assertEquals("yahux", model.value().get(0).properties().subscriptionId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-08T12:15:19Z"),
             model.value().get(0).properties().requestSubmitTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GroupQuotaSubscriptionRequestStatusList model
-            = new GroupQuotaSubscriptionRequestStatusList().withValue(Arrays.asList(
-                new GroupQuotaSubscriptionRequestStatusInner()
-                    .withProperties(new GroupQuotaSubscriptionRequestStatusProperties().withSubscriptionId("f")
-                        .withRequestSubmitTime(OffsetDateTime.parse("2021-02-14T20:28:05Z"))),
-                new GroupQuotaSubscriptionRequestStatusInner()
-                    .withProperties(new GroupQuotaSubscriptionRequestStatusProperties().withSubscriptionId("ayhuy")
-                        .withRequestSubmitTime(OffsetDateTime.parse("2021-05-05T04:33:07Z"))),
-                new GroupQuotaSubscriptionRequestStatusInner().withProperties(
-                    new GroupQuotaSubscriptionRequestStatusProperties().withSubscriptionId("ivyevcciqihnhun")
-                        .withRequestSubmitTime(OffsetDateTime.parse("2021-08-15T16:10:49Z")))));
+        GroupQuotaSubscriptionRequestStatusList model = new GroupQuotaSubscriptionRequestStatusList()
+            .withValue(Arrays.asList(new GroupQuotaSubscriptionRequestStatusInner()
+                .withProperties(new GroupQuotaSubscriptionRequestStatusProperties().withSubscriptionId("yahux")
+                    .withRequestSubmitTime(OffsetDateTime.parse("2021-07-08T12:15:19Z")))));
         model = BinaryData.fromObject(model).toObject(GroupQuotaSubscriptionRequestStatusList.class);
-        Assertions.assertEquals("f", model.value().get(0).properties().subscriptionId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-14T20:28:05Z"),
+        Assertions.assertEquals("yahux", model.value().get(0).properties().subscriptionId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-08T12:15:19Z"),
             model.value().get(0).properties().requestSubmitTime());
     }
 }

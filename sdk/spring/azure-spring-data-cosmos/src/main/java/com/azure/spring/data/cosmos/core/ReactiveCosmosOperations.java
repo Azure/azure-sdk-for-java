@@ -337,6 +337,15 @@ public interface ReactiveCosmosOperations {
     Mono<Long> count(SqlQuerySpec querySpec, String containerName);
 
     /**
+     * Sum
+     *
+     * @param querySpec the document query spec
+     * @param containerName the container name
+     * @return sum result
+     */
+    Mono<Long> sum(SqlQuerySpec querySpec, String containerName);
+
+    /**
      * To get converter
      * @return MappingCosmosConverter
      */

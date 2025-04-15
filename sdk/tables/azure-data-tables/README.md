@@ -46,7 +46,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-tables</artifactId>
-  <version>12.5.0</version>
+  <version>12.6.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -366,17 +366,17 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [coc_contact]: mailto:opencode@microsoft.com
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc]: https://opensource.microsoft.com/codeofconduct/
-[cosmosdb_create_cli]: https://docs.microsoft.com/azure/cosmos-db/scripts/cli/table/create
-[cosmosdb_create_portal]: https://docs.microsoft.com/azure/cosmos-db/create-table-java#create-a-database-account
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[cosmosdb_create_cli]: https://learn.microsoft.com/azure/cosmos-db/scripts/cli/table/create
+[cosmosdb_create_portal]: https://learn.microsoft.com/azure/cosmos-db/create-table-java#create-a-database-account
+[jdk]: https://learn.microsoft.com/java/azure/jdk/
 [log_level]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/core/azure-core/src/main/java/com/azure/core/util/logging/LogLevel.java
 [package]: https://central.sonatype.com/artifact/com.azure/azure-data-tables
-[product_documentation]: https://docs.microsoft.com/azure/cosmos-db/table-storage-overview
-[query_options]: https://docs.microsoft.com/rest/api/storageservices/querying-tables-and-entities#supported-query-options
-[rest_api]: https://docs.microsoft.com/rest/api/storageservices/table-service-rest-api
+[product_documentation]: https://learn.microsoft.com/azure/cosmos-db/table-storage-overview
+[query_options]: https://learn.microsoft.com/rest/api/storageservices/querying-tables-and-entities#supported-query-options
+[rest_api]: https://learn.microsoft.com/rest/api/storageservices/table-service-rest-api
 [samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/tables/azure-data-tables/src/samples/java/
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/tables/azure-data-tables/src
-[storage_account_create_cli]: https://docs.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-cli
-[storage_account_create_portal]: https://docs.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-portal
+[storage_account_create_cli]: https://learn.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-cli
+[storage_account_create_portal]: https://learn.microsoft.com/azure/storage/common/storage-account-create?tabs=azure-portal
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Ftables%2Fazure-data-tables%2FREADME.png)
+

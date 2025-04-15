@@ -10,7 +10,6 @@ import com.azure.identity.implementation.util.ValidationUtil;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.ForkJoinPool;
 
 /**
  * <p>The base class for credential builders that allow specifying a client ID, tenant ID, authority host, and
@@ -73,9 +72,9 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
      * Developer is responsible for maintaining the lifecycle of the ExecutorService.
      *
      * <p>
-     * If this is not configured, the {@link ForkJoinPool#commonPool() common fork join pool} will be used which is
-     * also shared with other application tasks. If the common pool is heavily used for other tasks, authentication
-     * requests might starve and setting up this executor service should be considered.
+     * If this is not configured, the {@link com.azure.core.util.SharedExecutorService} will be used which is
+     * also shared with other SDK libraries. If there are many concurrent SDK tasks occurring, authentication
+     * requests might starve and configuring a separate executor service should be considered.
      * </p>
      *
      * <p> The executor service and can be safely shutdown if the TokenCredential is no longer being used by the

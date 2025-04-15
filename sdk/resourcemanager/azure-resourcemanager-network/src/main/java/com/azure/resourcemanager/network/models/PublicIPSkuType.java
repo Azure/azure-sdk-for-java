@@ -22,7 +22,11 @@ public final class PublicIPSkuType {
     /** The actual serialized value for a PublicIPSkuType instance. */
     private final PublicIpAddressSkuName skuName;
 
-    /** @return predefined publicIP SKU types */
+    /**
+     * Gets predefined publicIP SKU types.
+     *
+     * @return predefined publicIP SKU types
+     */
     public static PublicIPSkuType[] values() {
         Collection<PublicIPSkuType> valuesCollection = VALUES_BY_NAME.values();
         return valuesCollection.toArray(new PublicIPSkuType[valuesCollection.size()]);
@@ -61,7 +65,11 @@ public final class PublicIPSkuType {
         }
     }
 
-    /** @return the PublicIpAddressSku associated with the PublicIpAddressSkuType. */
+    /**
+     * Gets the PublicIpAddressSku associated with the PublicIpAddressSkuType.
+     *
+     * @return the PublicIpAddressSku associated with the PublicIpAddressSkuType.
+     */
     public PublicIpAddressSku sku() {
         return (new PublicIpAddressSku()).withName(this.skuName);
     }

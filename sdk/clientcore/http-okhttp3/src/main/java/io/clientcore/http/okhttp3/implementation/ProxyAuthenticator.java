@@ -6,11 +6,10 @@ package io.clientcore.http.okhttp3.implementation;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpResponse;
-import io.clientcore.core.util.ClientLogger;
-import io.clientcore.core.util.auth.AuthUtils;
-import io.clientcore.core.util.auth.ChallengeHandler;
-import io.clientcore.core.util.binarydata.BinaryData;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.utils.AuthUtils;
+import io.clientcore.core.utils.ChallengeHandler;
 import okhttp3.Authenticator;
 import okhttp3.Interceptor;
 import okhttp3.Request;
@@ -20,7 +19,6 @@ import okhttp3.Route;
 import java.io.IOException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Supplier;
 
 import static io.clientcore.core.http.models.HttpHeaderName.PROXY_AUTHORIZATION;
 
@@ -41,7 +39,7 @@ public final class ProxyAuthenticator implements Authenticator {
     /*
      * Proxies use 'CONNECT' as the HTTP method.
      */
-    private static final String PROXY_METHOD = HttpMethod.CONNECT.name();
+    private static final HttpMethod PROXY_METHOD = HttpMethod.CONNECT;
 
     /*
      * Proxies are always the root path.
@@ -51,7 +49,6 @@ public final class ProxyAuthenticator implements Authenticator {
     /*
      * Digest authentication to a proxy uses the 'CONNECT' method, these can't have a request body.
      */
-    private static final Supplier<BinaryData> NO_BODY = BinaryData::empty;
 
     private static final String CNONCE = "cnonce";
     private static final String NC = "nc";
@@ -106,9 +103,10 @@ public final class ProxyAuthenticator implements Authenticator {
         }
 
         Request.Builder requestBuilder = response.request().newBuilder();
-        HttpRequest httpRequest = new HttpRequest(HttpMethod.valueOf(PROXY_METHOD), PROXY_URI_PATH);
-        HttpResponse<?> httpResponse = new HttpResponse<>(httpRequest, response.code(),
-            OkHttpResponse.fromOkHttpHeaders(response.headers()), NO_BODY);
+        HttpRequest httpRequest = new HttpRequest().setMethod(PROXY_METHOD).setUri(PROXY_URI_PATH);
+        io.clientcore.core.http.models.Response<BinaryData> httpResponse
+            = new io.clientcore.core.http.models.Response<>(httpRequest, response.code(),
+                OkHttpToCoreHttpHeadersWrapper.fromOkHttpHeaders(response.headers()), BinaryData.empty());
         String authorizationHeader;
         // Replace nonce value in the PROXY_AUTHENTICATE header with the updated nonce
         ConcurrentHashMap<String, String> lastChallengeMap = proxyInterceptor.getLastChallenge();
@@ -194,7 +192,7 @@ public final class ProxyAuthenticator implements Authenticator {
 
             String proxyAuthenticationInfoHeader = response.header(PROXY_AUTHENTICATION_INFO);
 
-            if (!AuthUtils.isNullOrEmpty(proxyAuthenticationInfoHeader)) {
+            if (proxyAuthenticationInfoHeader != null && !proxyAuthenticationInfoHeader.isEmpty()) {
                 Map<String, String> authenticationInfoPieces
                     = AuthUtils.parseAuthenticationOrAuthorizationHeader(proxyAuthenticationInfoHeader);
                 Map<String, String> authorizationPieces = AuthUtils.parseAuthenticationOrAuthorizationHeader(

@@ -10,6 +10,8 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.models.CoreException;
+import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.shared.InsecureTrustManager;
 import io.clientcore.core.shared.LocalTestServer;
 import org.conscrypt.Conscrypt;
@@ -37,6 +39,7 @@ import java.util.concurrent.TimeUnit;
 
 import static io.clientcore.http.okhttp3.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -98,21 +101,22 @@ public class OkHttpHttpClientTests {
     }
 
     @Test
-    public void testFlowableResponseShortBodyAsByteArrayAsync() throws IOException {
+    public void testFlowableResponseShortBodyAsByteArrayAsync() {
         checkBodyReceived(SHORT_BODY, "/short");
     }
 
     @Test
-    public void testFlowableResponseLongBodyAsByteArrayAsync() throws IOException {
+    public void testFlowableResponseLongBodyAsByteArrayAsync() {
         checkBodyReceived(LONG_BODY, "/long");
     }
 
     @Test
     public void testServerShutsDownSocketShouldPushErrorToContentFlowable() {
         HttpClient client = new OkHttpHttpClientProvider().getSharedInstance();
-        HttpRequest request = new HttpRequest(HttpMethod.GET, uri(server, "/connectionClose"));
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(server, "/connectionClose"));
 
-        assertThrows(IOException.class, () -> client.send(request).getBody().toBytes());
+        CoreException exception = assertThrows(CoreException.class, () -> client.send(request).getValue().toBytes());
+        assertInstanceOf(IOException.class, exception.getCause());
     }
 
     @Test
@@ -125,8 +129,8 @@ public class OkHttpHttpClientTests {
 
         for (int i = 0; i < numRequests; i++) {
             requests.add(() -> {
-                try (Response<?> response = doRequest(client, "/long")) {
-                    byte[] body = response.getBody().toBytes();
+                try (Response<BinaryData> response = doRequest(client, "/long")) {
+                    byte[] body = response.getValue().toBytes();
                     assertArraysEqual(LONG_BODY, body);
 
                     return null;
@@ -141,7 +145,7 @@ public class OkHttpHttpClientTests {
     }
 
     @Test
-    public void validateHeadersReturnAsIs() throws IOException {
+    public void validateHeadersReturnAsIs() {
         HttpClient client = new OkHttpHttpClientProvider().getSharedInstance();
         HttpHeaderName singleValueHeaderName = HttpHeaderName.fromString("singleValue");
         final String singleValueHeaderValue = "value";
@@ -151,8 +155,9 @@ public class OkHttpHttpClientTests {
         HttpHeaders headers = new HttpHeaders().set(singleValueHeaderName, singleValueHeaderValue)
             .set(multiValueHeaderName, multiValueHeaderValue);
 
-        try (Response<?> response = client
-            .send(new HttpRequest(HttpMethod.GET, uri(server, RETURN_HEADERS_AS_IS_PATH)).setHeaders(headers))) {
+        try (Response<?> response = client.send(new HttpRequest().setMethod(HttpMethod.GET)
+            .setUri(uri(server, RETURN_HEADERS_AS_IS_PATH))
+            .setHeaders(headers))) {
 
             assertEquals(200, response.getStatusCode());
 
@@ -170,7 +175,7 @@ public class OkHttpHttpClientTests {
     }
 
     @Test
-    public void testCustomSslSocketFactory() throws IOException, GeneralSecurityException {
+    public void testCustomSslSocketFactory() throws GeneralSecurityException {
         SSLContext sslContext = SSLContext.getInstance("TLSv1.2", Conscrypt.newProvider());
 
         // Initialize the SSL context with a trust manager that trusts all certificates.
@@ -182,8 +187,9 @@ public class OkHttpHttpClientTests {
                 .hostnameVerifier((hostname, session) -> true)
                 .build();
 
-        try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, httpsUri(server, "/short")))) {
-            TestUtils.assertArraysEqual(SHORT_BODY, response.getBody().toBytes());
+        try (Response<BinaryData> response
+            = httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(httpsUri(server, "/short")))) {
+            TestUtils.assertArraysEqual(SHORT_BODY, response.getValue().toBytes());
         }
     }
 
@@ -214,17 +220,17 @@ public class OkHttpHttpClientTests {
         return longBody;
     }
 
-    private static void checkBodyReceived(byte[] expectedBody, String path) throws IOException {
+    private static void checkBodyReceived(byte[] expectedBody, String path) {
         HttpClient client = new OkHttpHttpClientBuilder().build();
-        try (Response<?> response = doRequest(client, path)) {
-            byte[] bytes = response.getBody().toBytes();
+        try (Response<BinaryData> response = doRequest(client, path)) {
+            byte[] bytes = response.getValue().toBytes();
 
             assertArraysEqual(expectedBody, bytes);
         }
     }
 
-    private static Response<?> doRequest(HttpClient client, String path) throws IOException {
-        HttpRequest request = new HttpRequest(HttpMethod.GET, uri(server, path));
+    private static Response<BinaryData> doRequest(HttpClient client, String path) {
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(server, path));
 
         return client.send(request);
     }

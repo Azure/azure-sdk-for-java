@@ -18,10 +18,18 @@ import reactor.core.publisher.Mono;
 public interface NetworkWatcher extends GroupableResource<NetworkManager, NetworkWatcherInner>,
     Refreshable<NetworkWatcher>, Updatable<NetworkWatcher.Update>, UpdatableWithTags<NetworkWatcher> {
 
-    /** @return entry point to manage packet captures associated with network watcher */
+    /**
+     * Gets entry point to manage packet captures associated with network watcher.
+     *
+     * @return entry point to manage packet captures associated with network watcher
+     */
     PacketCaptures packetCaptures();
 
-    /** @return entry point to manage connection monitors associated with network watcher */
+    /**
+     * Gets entry point to manage connection monitors associated with network watcher.
+     *
+     * @return entry point to manage connection monitors associated with network watcher
+     */
     ConnectionMonitors connectionMonitors();
 
     /**

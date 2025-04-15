@@ -30,31 +30,43 @@ public interface PrivateEndpoint extends GroupableResource<NetworkManager, Priva
         ChildResource<PrivateEndpoint> {
 
         /**
+         * Gets the state of the connection.
+         *
          * @return the state of the connection.
          */
         PrivateLinkServiceConnectionState state();
 
         /**
+         * Gets the resource ID that this connection connects to.
+         *
          * @return the resource ID that this connection connects to.
          */
         String privateLinkResourceId();
 
         /**
+         * Gets the collection of sub resource names.
+         *
          * @return the collection of sub resource names.
          */
         List<PrivateLinkSubResourceName> subResourceNames();
 
         /**
+         * Gets the request message.
+         *
          * @return the request message.
          */
         String requestMessage();
 
         /**
+         * Gets the provisioning state.
+         *
          * @return the provisioning state.
          */
         ProvisioningState provisioningState();
 
         /**
+         * Checks whether connection is manual approval.
+         *
          * @return whether connection is manual approval.
          */
         boolean isManualApproval();
@@ -182,31 +194,43 @@ public interface PrivateEndpoint extends GroupableResource<NetworkManager, Priva
     }
 
     /**
+     * Gets the resource collection API of private DNS zone group.
+     *
      * @return the resource collection API of private DNS zone group.
      */
     PrivateDnsZoneGroups privateDnsZoneGroups();
 
     /**
+     * Gets the reference of the subnet.
+     *
      * @return the reference of the subnet.
      */
     SubResource subnet();
 
     /**
+     * Gets the collection of reference of the network interfaces.
+     *
      * @return the collection of reference of the network interfaces.
      */
     List<SubResource> networkInterfaces();
 
     /**
+     * Gets the provisioning state.
+     *
      * @return the provisioning state.
      */
     ProvisioningState provisioningState();
 
     /**
+     * Gets the collection of the private link service connections.
+     *
      * @return the collection of the private link service connections.
      */
     Map<String, PrivateLinkServiceConnection> privateLinkServiceConnections();
 
     /**
+     * Gets the collection of custom DNS configurations.
+     *
      * @return the collection of custom DNS configurations.
      */
     List<CustomDnsConfigPropertiesFormat> customDnsConfigurations();

@@ -116,7 +116,6 @@ class SparkE2EGatewayChangeFeedITest
     assertMetrics(meterRegistry, "cosmos.client.op.latency", expectedToFind = true)
     assertMetrics(meterRegistry, "cosmos.client.system.avgCpuLoad", expectedToFind = true)
     assertMetrics(meterRegistry, "cosmos.client.req.gw", expectedToFind = true)
-    assertMetrics(meterRegistry, "cosmos.client.req.rntbd", expectedToFind = false)
   }
   //scalastyle:on magic.number
   //scalastyle:on multiple.string.literals

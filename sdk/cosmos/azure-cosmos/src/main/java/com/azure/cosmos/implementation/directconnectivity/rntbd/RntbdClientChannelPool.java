@@ -52,7 +52,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.PriorityBlockingQueue;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
@@ -191,7 +190,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
         Comparator.comparingLong((task) -> task.originalPromise.getExpiryTimeInNanos()));
 
     private final ScheduledFuture<?> pendingAcquisitionExpirationFuture;
-    private final ClientTelemetry clientTelemetry;
     private final RntbdServerErrorInjector serverErrorInjector;
     private final RntbdServiceEndpoint endpoint;
     private final RntbdConnectionStateListener connectionStateListener;
@@ -212,35 +210,15 @@ public final class RntbdClientChannelPool implements ChannelPool {
         final Config config,
         final ClientTelemetry clientTelemetry,
         final RntbdConnectionStateListener connectionStateListener,
-        final RntbdServerErrorInjector faultInjectionInterceptors,
-        final RntbdDurableEndpointMetrics durableEndpointMetrics) {
-        this(
-            endpoint,
-            bootstrap,
-            config,
-            new RntbdClientChannelHealthChecker(config),
-            clientTelemetry,
-            connectionStateListener,
-            faultInjectionInterceptors,
-            durableEndpointMetrics);
-    }
-
-    private RntbdClientChannelPool(
-        final RntbdServiceEndpoint endpoint,
-        final Bootstrap bootstrap,
-        final Config config,
-        final RntbdClientChannelHealthChecker healthChecker,
-        final ClientTelemetry clientTelemetry,
-        final RntbdConnectionStateListener connectionStateListener,
         final RntbdServerErrorInjector serverErrorInjector,
         final RntbdDurableEndpointMetrics durableEndpointMetrics) {
 
         checkNotNull(endpoint, "expected non-null endpoint");
         checkNotNull(bootstrap, "expected non-null bootstrap");
         checkNotNull(config, "expected non-null config");
-        checkNotNull(healthChecker, "expected non-null healthChecker");
         checkNotNull(durableEndpointMetrics, "expected non-null durableEndpointMetrics");
 
+        RntbdClientChannelHealthChecker healthChecker = new RntbdClientChannelHealthChecker(config, clientTelemetry);
         this.poolHandler = new RntbdClientChannelHandler(config, healthChecker, connectionStateListener, serverErrorInjector);
         this.executor = bootstrap.config().group().next();
         this.healthChecker = healthChecker;
@@ -281,8 +259,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 task.originalPromise.setFailure(ACQUISITION_TIMEOUT);
                 RntbdChannelAcquisitionTimeline.startNewEvent(
                     task.originalPromise.getChannelAcquisitionTimeline(),
-                    RntbdChannelAcquisitionEventType.PENDING_TIME_OUT,
-                    clientTelemetry);
+                    RntbdChannelAcquisitionEventType.PENDING_TIME_OUT);
             }
         };
 
@@ -298,7 +275,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
         } else {
             this.pendingAcquisitionExpirationFuture = null;
         }
-        this.clientTelemetry = clientTelemetry;
     }
 
     // region Accessors
@@ -704,8 +680,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
 
                     RntbdChannelAcquisitionTimeline.startNewEvent(
                         channelAcquisitionTimeline,
-                        RntbdChannelAcquisitionEventType.ATTEMPT_TO_CREATE_NEW_CHANNEL,
-                        clientTelemetry);
+                        RntbdChannelAcquisitionEventType.ATTEMPT_TO_CREATE_NEW_CHANNEL);
 
                     if (this.serverErrorInjector != null) {
                         Consumer<Duration> openConnectionConsumer =
@@ -858,8 +833,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
             } else {
                 RntbdChannelAcquisitionTimeline.startNewEvent(
                     promise.getChannelAcquisitionTimeline(),
-                    RntbdChannelAcquisitionEventType.ADD_TO_PENDING_QUEUE,
-                    clientTelemetry);
+                    RntbdChannelAcquisitionEventType.ADD_TO_PENDING_QUEUE);
             }
         }
     }
@@ -1204,7 +1178,6 @@ public final class RntbdClientChannelPool implements ChannelPool {
                 }
 
                 if (promise.trySuccess(channel)) {
-  
                     if (logger.isDebugEnabled()) {
                         logger.debug("established a channel local {}, remote {}", channel.localAddress(), channel.remoteAddress());
                     }
@@ -1240,8 +1213,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
             if (promise instanceof ChannelPromiseWithExpiryTime) {
                 RntbdChannelAcquisitionTimeline.startNewEvent(
                     ((ChannelPromiseWithExpiryTime) promise).getChannelAcquisitionTimeline(),
-                    RntbdChannelAcquisitionEventType.ATTEMPT_TO_CREATE_NEW_CHANNEL_COMPLETE,
-                    clientTelemetry
+                    RntbdChannelAcquisitionEventType.ATTEMPT_TO_CREATE_NEW_CHANNEL_COMPLETE
                 );
             }
             this.connecting.set(false);
@@ -1344,8 +1316,7 @@ public final class RntbdClientChannelPool implements ChannelPool {
             RntbdChannelAcquisitionTimeline.startNewPollEvent(
                 channelAcquisitionTimeline,
                 this.availableChannels.size(),
-                this.acquiredChannels.size(),
-                this.clientTelemetry);
+                this.acquiredChannels.size());
 
         final Channel first = this.availableChannels.pollFirst();
 

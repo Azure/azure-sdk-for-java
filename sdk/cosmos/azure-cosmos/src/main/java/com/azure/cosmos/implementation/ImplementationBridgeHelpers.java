@@ -41,6 +41,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStat
 import com.azure.cosmos.implementation.faultinjection.IFaultInjectorProvider;
 import com.azure.cosmos.implementation.patch.PatchOperation;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosBatch;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
@@ -74,6 +75,7 @@ import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Tag;
@@ -82,7 +84,6 @@ import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.net.URI;
 import java.time.Duration;
 import java.util.Collection;
 import java.util.EnumSet;
@@ -837,7 +838,7 @@ public class ImplementationBridgeHelpers {
 
             void setDiagnosticsContext(CosmosDiagnostics cosmosDiagnostics, CosmosDiagnosticsContext ctx);
 
-            URI getFirstContactedLocationEndpoint(CosmosDiagnostics cosmosDiagnostics);
+            RegionalRoutingContext getFirstContactedLocationEndpoint(CosmosDiagnostics cosmosDiagnostics);
 
             void mergeMetadataDiagnosticContext(CosmosDiagnostics cosmosDiagnostics, MetadataDiagnosticsContext otherMetadataDiagnosticsContext);
 
@@ -925,6 +926,19 @@ public class ImplementationBridgeHelpers {
                 CosmosDiagnostics diagnostics,
                 Throwable finalError);
 
+            boolean endOperation(
+                CosmosDiagnosticsContext ctx,
+                int statusCode,
+                int subStatusCode,
+                Integer actualItemCount,
+                Double requestCharge,
+                Long opCountPerEvaluation,
+                Long opRetriedCountPerEvaluation,
+                Long globalOpCount,
+                Integer targetMaxMicroBatchSize,
+                CosmosDiagnostics diagnostics,
+                Throwable finalError);
+
             void addRequestCharge(CosmosDiagnosticsContext ctx, float requestCharge);
 
             void addRequestSize(CosmosDiagnosticsContext ctx, int bytes);
@@ -953,6 +967,13 @@ public class ImplementationBridgeHelpers {
 
             String getQueryStatement(CosmosDiagnosticsContext ctx);
 
+            Long getOpCountPerEvaluation(CosmosDiagnosticsContext ctx);
+
+            Long getRetriedOpCountPerEvaluation(CosmosDiagnosticsContext ctx);
+
+            Long getGlobalOpCount(CosmosDiagnosticsContext ctx);
+
+            Integer getTargetMaxMicroBatchSize(CosmosDiagnosticsContext ctx);
         }
     }
 
@@ -1311,6 +1332,22 @@ public class ImplementationBridgeHelpers {
 
         public interface CosmosBatchResponseAccessor {
             List<CosmosBatchOperationResult> getResults(CosmosBatchResponse cosmosBatchResponse);
+
+            void setOpCountPerEvaluation(CosmosBatchResponse cosmosBatchResponse, long opCountPerEvaluation);
+
+            void setGlobalOpCount(CosmosBatchResponse cosmosBatchResponse, long globalOpCount);
+
+            void setRetriedOpCountPerEvaluation(CosmosBatchResponse cosmosBatchResponse, long retriedOpCountPerEvaluation);
+
+            void setTargetMaxMicroBatchSize(CosmosBatchResponse cosmosBatchResponse, int targetMaxMicroBatchSize);
+
+            long getOpCountPerEvaluation(CosmosBatchResponse cosmosBatchResponse);
+
+            long getGlobalOpCount(CosmosBatchResponse cosmosBatchResponse);
+
+            long getRetriedOpCountPerEvaluation(CosmosBatchResponse cosmosBatchResponse);
+
+            int getTargetMaxMicroBatchSize(CosmosBatchResponse cosmosBatchResponse);
         }
     }
 
@@ -1385,7 +1422,6 @@ public class ImplementationBridgeHelpers {
             EnumSet<TagName> getMetricTagNames(CosmosAsyncClient client);
             EnumSet<MetricCategory> getMetricCategories(CosmosAsyncClient client);
             boolean shouldEnableEmptyPageDiagnostics(CosmosAsyncClient client);
-            boolean isSendClientTelemetryToServiceEnabled(CosmosAsyncClient client);
             List<String> getPreferredRegions(CosmosAsyncClient client);
             boolean isEndpointDiscoveryEnabled(CosmosAsyncClient client);
             String getConnectionMode(CosmosAsyncClient client);
@@ -1541,14 +1577,9 @@ public class ImplementationBridgeHelpers {
             EnumSet<TagName> getMetricTagNames(CosmosClientTelemetryConfig config);
             String getClientCorrelationId(CosmosClientTelemetryConfig config);
             MeterRegistry getClientMetricRegistry(CosmosClientTelemetryConfig config);
-            Boolean isSendClientTelemetryToServiceEnabled(CosmosClientTelemetryConfig config);
             boolean isClientMetricsEnabled(CosmosClientTelemetryConfig config);
-            void resetIsSendClientTelemetryToServiceEnabled(CosmosClientTelemetryConfig config);
             CosmosMeterOptions getMeterOptions(CosmosClientTelemetryConfig config, CosmosMetricName name);
             CosmosMeterOptions createDisabledMeterOptions(CosmosMetricName name);
-            CosmosClientTelemetryConfig createSnapshot(
-                CosmosClientTelemetryConfig config,
-                boolean effectiveIsClientTelemetryEnabled);
             Collection<CosmosDiagnosticsHandler> getDiagnosticHandlers(CosmosClientTelemetryConfig config);
             void setAccountName(CosmosClientTelemetryConfig config, String accountName);
             String getAccountName(CosmosClientTelemetryConfig config);
@@ -1770,6 +1801,9 @@ public class ImplementationBridgeHelpers {
             void setShouldWrapSerializationExceptions(
                 CosmosItemSerializer serializer,
                 boolean shouldWrapSerializationExceptions);
+
+            void setItemObjectMapper(CosmosItemSerializer serializer, ObjectMapper mapper);
+            ObjectMapper getItemObjectMapper(CosmosItemSerializer serializer);
         }
     }
 }

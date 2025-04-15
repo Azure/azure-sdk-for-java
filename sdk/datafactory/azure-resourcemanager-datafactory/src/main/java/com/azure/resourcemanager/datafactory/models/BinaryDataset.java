@@ -51,7 +51,7 @@ public final class BinaryDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private BinaryDatasetTypeProperties innerTypeProperties() {
+    BinaryDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

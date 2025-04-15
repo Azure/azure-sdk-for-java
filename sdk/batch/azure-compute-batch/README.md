@@ -26,7 +26,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-compute-batch</artifactId>
-    <version>1.0.0-beta.3</version>
+    <version>1.0.0-beta.4</version>
 </dependency>
 ```
 
@@ -55,7 +55,7 @@ BatchSharedKeyCredentials sharedKeyCred = new BatchSharedKeyCredentials(batchEnd
 batchClientBuilder.credential(sharedKeyCred);
 ```
 
-- The other way is using Entra ID authentication to create the client. See this [document](https://docs.microsoft.com/azure/batch/batch-aad-auth) for details on authenticating to Batch with Entra ID.
+- The other way is using Entra ID authentication to create the client. See this [document](https://learn.microsoft.com/azure/batch/batch-aad-auth) for details on authenticating to Batch with Entra ID.
 For example:
 
 ```java
@@ -159,6 +159,19 @@ BatchTaskCreateContent taskToCreate = new BatchTaskCreateContent(taskId, "echo h
 batchClient.createTask(jobId, taskToCreate);
 ```
 
+Error handling
+
+When a call to the batch service fails the response from that call will contain a BatchError object in the body of the response.  In the AZURE-COMPUTE-BATCH SDK when an api method is called and a failure from the server occurs the sdk will throw a HttpResponseException exception.  You can use the helper method BatchError.fromException() to extract out the BatchError object.
+
+```java
+try {
+    BatchPool pool = batchClient.getPool("poolthatdoesnotexist");
+} catch (HttpResponseException err) {
+    BatchError batchError = BatchError.fromException(err);
+    Assertions.assertEquals("PoolNotFound", batchError.getCode());
+}
+```
+
 ## Help
 
 If you encounter any bugs with these libraries, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java) or check out [StackOverflow for Azure Java SDK](https://stackoverflow.com/questions/tagged/azure-java-sdk).
@@ -250,6 +263,6 @@ mvn test -DAZURE_TEST_MODE=Playback -Dtest=JobScheduleTests
 <!-- LINKS -->
 [product_documentation]: https://azure.microsoft.com/services/
 [docs]: https://azure.github.io/azure-sdk-for-java/
-[jdk]: https://docs.microsoft.com/java/azure/jdk/
+[jdk]: https://learn.microsoft.com/java/azure/jdk/
 [azure_subscription]: https://azure.microsoft.com/free/
 [java_building_wiki]: https://github.com/Azure/azure-sdk-for-java/wiki/Building

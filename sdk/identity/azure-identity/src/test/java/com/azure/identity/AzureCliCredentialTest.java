@@ -11,6 +11,8 @@ import com.azure.identity.implementation.util.IdentityUtil;
 import com.azure.identity.util.TestUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedConstruction;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
@@ -147,5 +149,76 @@ public class AzureCliCredentialTest {
         StepVerifier.create(credential.getToken(request))
             .expectErrorMatches(e -> e instanceof ClientAuthenticationException)
             .verify();
+    }
+
+    @ParameterizedTest
+    @ValueSource(
+        strings = {
+            "test",
+            "TEST",
+            "Test123",
+            "sub-123",
+            "sub_456",
+            "sub.name",
+            "123456",
+            "a.b-c_d",
+            "A.B-C_D",
+            "0-9a-zA-Z_",
+            "valid.subscription",
+            " " })
+    public void testSubscriptionAccepted(String subscription) {
+        // Setup
+        TokenRequestContext request = new TokenRequestContext().addScopes("https://vault.azure.net/.default");
+
+        // Mock
+        try (MockedConstruction<IdentityClient> identityClientMock
+            = mockConstruction(IdentityClient.class, (identityClient, context) -> {
+                when(identityClient.authenticateWithAzureCli(request))
+                    .thenReturn(Mono.error(new Exception("other error")));
+                when(identityClient.getIdentityClientOptions()).thenReturn(new IdentityClientOptions());
+            })) {
+
+            AzureCliCredential credential = new AzureCliCredentialBuilder().subscription(subscription).build();
+
+            StepVerifier.create(credential.getToken(request))
+                .expectErrorMatches(e -> e instanceof Exception && e.getMessage().contains("other error"))
+                .verify();
+
+            Assertions.assertNotNull(identityClientMock);
+        }
+    }
+
+    @ParameterizedTest
+    @ValueSource(
+        strings = {
+            "@",
+            "#",
+            "$",
+            "%",
+            "^",
+            "&",
+            "*",
+            "(",
+            ")",
+            "+",
+            "=",
+            "/",
+            ",",
+            ";",
+            ":",
+            "<",
+            ">",
+            "?",
+            "!",
+            "[",
+            "]",
+            "{",
+            "}" })
+    public void testInvalidSubscriptionRejected(String invalidChar) {
+        String invalidSubscription = "test" + invalidChar + "sub";
+
+        // Expect validation exception when an invalid subscription name is used
+        Assertions.assertThrows(IllegalArgumentException.class,
+            () -> new AzureCliCredentialBuilder().subscription(invalidSubscription));
     }
 }

@@ -1123,15 +1123,19 @@ public final class OpenAIClientImpl {
      *             finish_reason: String(stop/length/content_filter/function_call/tool_calls) (Required)
      *         }
      *     ]
-     *     usage (Required): {
+     *     usage (Optional): {
      *         completion_tokens: int (Required)
      *         prompt_tokens: int (Required)
      *         total_tokens: int (Required)
      *         prompt_tokens_details (Optional): {
+     *             audio_tokens: Integer (Optional)
      *             cached_tokens: Integer (Optional)
      *         }
      *         completion_tokens_details (Optional): {
+     *             accepted_prediction_tokens: Integer (Optional)
+     *             audio_tokens: Integer (Optional)
      *             reasoning_tokens: Integer (Optional)
+     *             rejected_prediction_tokens: Integer (Optional)
      *         }
      *     }
      *     system_fingerprint: String (Optional)
@@ -1299,15 +1303,19 @@ public final class OpenAIClientImpl {
      *             finish_reason: String(stop/length/content_filter/function_call/tool_calls) (Required)
      *         }
      *     ]
-     *     usage (Required): {
+     *     usage (Optional): {
      *         completion_tokens: int (Required)
      *         prompt_tokens: int (Required)
      *         total_tokens: int (Required)
      *         prompt_tokens_details (Optional): {
+     *             audio_tokens: Integer (Optional)
      *             cached_tokens: Integer (Optional)
      *         }
      *         completion_tokens_details (Optional): {
+     *             accepted_prediction_tokens: Integer (Optional)
+     *             audio_tokens: Integer (Optional)
      *             reasoning_tokens: Integer (Optional)
+     *             rejected_prediction_tokens: Integer (Optional)
      *         }
      *     }
      *     system_fingerprint: String (Optional)
@@ -1349,7 +1357,7 @@ public final class OpenAIClientImpl {
      * {
      *     messages (Required): [
      *          (Required){
-     *             role: String(system/assistant/user/function/tool) (Required)
+     *             role: String(system/assistant/user/function/tool/developer) (Required)
      *         }
      *     ]
      *     functions (Optional): [
@@ -1405,6 +1413,28 @@ public final class OpenAIClientImpl {
      *     ]
      *     tool_choice: BinaryData (Optional)
      *     parallel_tool_calls: Boolean (Optional)
+     *     store: Boolean (Optional)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     *     reasoning_effort: String(low/medium/high) (Optional)
+     *     user_security_context (Optional): {
+     *         application_name: String (Optional)
+     *         end_user_id: String (Optional)
+     *         end_user_tenant_id: String (Optional)
+     *         source_ip: String (Optional)
+     *     }
+     *     modalities (Optional): [
+     *         String(text/audio) (Optional)
+     *     ]
+     *     prediction (Optional): {
+     *         type: String(content) (Required)
+     *         content: BinaryData (Required)
+     *     }
+     *     audio (Optional): {
+     *         voice: String(alloy/echo/fable/onyx/nova/shimmer) (Required)
+     *         format: String(wav/mp3/flac/opus/pcm16) (Required)
+     *     }
      * }
      * }
      * </pre>
@@ -1419,7 +1449,7 @@ public final class OpenAIClientImpl {
      *     choices (Required): [
      *          (Required){
      *             message (Optional): {
-     *                 role: String(system/assistant/user/function/tool) (Required)
+     *                 role: String(system/assistant/user/function/tool/developer) (Required)
      *                 refusal: String (Required)
      *                 content: String (Required)
      *                 tool_calls (Optional): [
@@ -1431,6 +1461,12 @@ public final class OpenAIClientImpl {
      *                 function_call (Optional): {
      *                     name: String (Required)
      *                     arguments: String (Required)
+     *                 }
+     *                 audio (Optional): {
+     *                     id: String (Required)
+     *                     expires_at: long (Required)
+     *                     data: String (Required)
+     *                     transcript: String (Required)
      *                 }
      *                 context (Optional): {
      *                     citations (Optional): [
@@ -1581,15 +1617,19 @@ public final class OpenAIClientImpl {
      *         }
      *     ]
      *     system_fingerprint: String (Optional)
-     *     usage (Required): {
+     *     usage (Optional): {
      *         completion_tokens: int (Required)
      *         prompt_tokens: int (Required)
      *         total_tokens: int (Required)
      *         prompt_tokens_details (Optional): {
+     *             audio_tokens: Integer (Optional)
      *             cached_tokens: Integer (Optional)
      *         }
      *         completion_tokens_details (Optional): {
+     *             accepted_prediction_tokens: Integer (Optional)
+     *             audio_tokens: Integer (Optional)
      *             reasoning_tokens: Integer (Optional)
+     *             rejected_prediction_tokens: Integer (Optional)
      *         }
      *     }
      * }
@@ -1631,7 +1671,7 @@ public final class OpenAIClientImpl {
      * {
      *     messages (Required): [
      *          (Required){
-     *             role: String(system/assistant/user/function/tool) (Required)
+     *             role: String(system/assistant/user/function/tool/developer) (Required)
      *         }
      *     ]
      *     functions (Optional): [
@@ -1687,6 +1727,28 @@ public final class OpenAIClientImpl {
      *     ]
      *     tool_choice: BinaryData (Optional)
      *     parallel_tool_calls: Boolean (Optional)
+     *     store: Boolean (Optional)
+     *     metadata (Optional): {
+     *         String: String (Required)
+     *     }
+     *     reasoning_effort: String(low/medium/high) (Optional)
+     *     user_security_context (Optional): {
+     *         application_name: String (Optional)
+     *         end_user_id: String (Optional)
+     *         end_user_tenant_id: String (Optional)
+     *         source_ip: String (Optional)
+     *     }
+     *     modalities (Optional): [
+     *         String(text/audio) (Optional)
+     *     ]
+     *     prediction (Optional): {
+     *         type: String(content) (Required)
+     *         content: BinaryData (Required)
+     *     }
+     *     audio (Optional): {
+     *         voice: String(alloy/echo/fable/onyx/nova/shimmer) (Required)
+     *         format: String(wav/mp3/flac/opus/pcm16) (Required)
+     *     }
      * }
      * }
      * </pre>
@@ -1701,7 +1763,7 @@ public final class OpenAIClientImpl {
      *     choices (Required): [
      *          (Required){
      *             message (Optional): {
-     *                 role: String(system/assistant/user/function/tool) (Required)
+     *                 role: String(system/assistant/user/function/tool/developer) (Required)
      *                 refusal: String (Required)
      *                 content: String (Required)
      *                 tool_calls (Optional): [
@@ -1713,6 +1775,12 @@ public final class OpenAIClientImpl {
      *                 function_call (Optional): {
      *                     name: String (Required)
      *                     arguments: String (Required)
+     *                 }
+     *                 audio (Optional): {
+     *                     id: String (Required)
+     *                     expires_at: long (Required)
+     *                     data: String (Required)
+     *                     transcript: String (Required)
      *                 }
      *                 context (Optional): {
      *                     citations (Optional): [
@@ -1863,15 +1931,19 @@ public final class OpenAIClientImpl {
      *         }
      *     ]
      *     system_fingerprint: String (Optional)
-     *     usage (Required): {
+     *     usage (Optional): {
      *         completion_tokens: int (Required)
      *         prompt_tokens: int (Required)
      *         total_tokens: int (Required)
      *         prompt_tokens_details (Optional): {
+     *             audio_tokens: Integer (Optional)
      *             cached_tokens: Integer (Optional)
      *         }
      *         completion_tokens_details (Optional): {
+     *             accepted_prediction_tokens: Integer (Optional)
+     *             audio_tokens: Integer (Optional)
      *             reasoning_tokens: Integer (Optional)
+     *             rejected_prediction_tokens: Integer (Optional)
      *         }
      *     }
      * }
@@ -2401,7 +2473,7 @@ public final class OpenAIClientImpl {
      * }
      * </pre>
      * 
-     * @param uploadFileRequest The uploadFileRequest parameter.
+     * @param uploadFileRequest The file and its purpose to upload.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2438,7 +2510,7 @@ public final class OpenAIClientImpl {
      * }
      * </pre>
      * 
-     * @param uploadFileRequest The uploadFileRequest parameter.
+     * @param uploadFileRequest The file and its purpose to upload.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2586,7 +2658,7 @@ public final class OpenAIClientImpl {
      * 
      * <pre>
      * {@code
-     * byte[]
+     * BinaryData
      * }
      * </pre>
      * 
@@ -2596,11 +2668,11 @@ public final class OpenAIClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represent a byte array along with {@link Response} on successful completion of {@link Mono}.
+     * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getFileContentWithResponseAsync(String fileId, RequestOptions requestOptions) {
-        final String accept = "application/json";
+        final String accept = "application/octet-stream";
         return FluxUtil.withContext(
             context -> service.getFileContent(this.getEndpoint(), fileId, accept, requestOptions, context));
     }
@@ -2611,7 +2683,7 @@ public final class OpenAIClientImpl {
      * 
      * <pre>
      * {@code
-     * byte[]
+     * BinaryData
      * }
      * </pre>
      * 
@@ -2621,11 +2693,11 @@ public final class OpenAIClientImpl {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return represent a byte array along with {@link Response}.
+     * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getFileContentWithResponse(String fileId, RequestOptions requestOptions) {
-        final String accept = "application/json";
+        final String accept = "application/octet-stream";
         return service.getFileContentSync(this.getEndpoint(), fileId, accept, requestOptions, Context.NONE);
     }
 

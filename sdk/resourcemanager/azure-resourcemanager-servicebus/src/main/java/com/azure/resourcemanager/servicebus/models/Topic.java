@@ -24,107 +24,149 @@ public interface Topic extends IndependentChildResource<ServiceBusManager, SBTop
     Updatable<Topic.Update>, HasInnerModel<SBTopicInner> {
 
     /**
+     * Gets the exact time the topic was created.
+     *
      * @return the exact time the topic was created
      */
     OffsetDateTime createdAt();
 
     /**
+     * Gets last time a message was sent, or the last time there was a receive request to this topic.
+     *
      * @return last time a message was sent, or the last time there was a receive request to this topic
      */
     OffsetDateTime accessedAt();
 
     /**
+     * Gets the exact time the topic was updated.
+     *
      * @return the exact time the topic was updated
      */
     OffsetDateTime updatedAt();
 
     /**
+     * Gets the maximum size of memory allocated for the topic in megabytes.
+     *
      * @return the maximum size of memory allocated for the topic in megabytes
      */
     long maxSizeInMB();
 
     /**
+     * Gets current size of the topic.
+     *
      * @return current size of the topic, in bytes
      */
     long currentSizeInBytes();
 
     /**
+     * Checks whether server-side batched operations are enabled.
+     *
      * @return indicates whether server-side batched operations are enabled
      */
     boolean isBatchedOperationsEnabled();
 
     /**
+     * Check whether express entities are enabled.
+     *
      * @return indicates whether express entities are enabled
      */
     boolean isExpressEnabled();
 
     /**
+     * Checks whether the topic is to be partitioned across multiple message brokers.
+     *
      * @return indicates whether the topic is to be partitioned across multiple message brokers
      */
     boolean isPartitioningEnabled();
 
     /**
+     * Checks whether this topic requires duplicate detection.
+     *
      * @return indicates if this topic requires duplicate detection
      */
     boolean isDuplicateDetectionEnabled();
 
     /**
+     * Gets the idle duration after which the topic is automatically deleted.
+     *
      * @return the idle duration after which the topic is automatically deleted
      */
     long deleteOnIdleDurationInMinutes();
 
     /**
+     * Gets the duration after which the message expires, starting from when the message is sent to topic.
+     *
      * @return the duration after which the message expires, starting from when the message is sent to topic
      */
     Duration defaultMessageTtlDuration();
 
     /**
+     * Gets the duration of the duplicate detection history.
+     *
      * @return the duration of the duplicate detection history
      */
     Duration duplicateMessageDetectionHistoryDuration();
 
     /**
+     * Gets number of active messages in the topic.
+     *
      * @return number of active messages in the topic
      */
     long activeMessageCount();
 
     /**
+     * Gets number of messages in the dead-letter topic.
+     *
      * @return number of messages in the dead-letter topic
      */
     long deadLetterMessageCount();
 
     /**
+     * Gets number of messages sent to the topic that are yet to be released for consumption.
+     *
      * @return number of messages sent to the topic that are yet to be released
      * for consumption
      */
     long scheduledMessageCount();
 
     /**
+     * Gets number of messages transferred into dead letters.
+     *
      * @return number of messages transferred into dead letters
      */
     long transferDeadLetterMessageCount();
 
     /**
+     * Gets number of messages transferred to another topic, topic, or subscription.
+     *
      * @return number of messages transferred to another topic, topic, or subscription
      */
     long transferMessageCount();
 
     /**
+     * Gets number of subscriptions for the topic.
+     *
      * @return number of subscriptions for the topic
      */
     int subscriptionCount();
 
     /**
+     * Gets the current status of the topic.
+     *
      * @return the current status of the topic
      */
     EntityStatus status();
 
     /**
+     * Gets entry point to manage subscriptions associated with the topic.
+     *
      * @return entry point to manage subscriptions associated with the topic
      */
     ServiceBusSubscriptions subscriptions();
 
     /**
+     * Gets entry point to manage authorization rules for the Service Bus topic.
+     *
      * @return entry point to manage authorization rules for the Service Bus topic
      */
     TopicAuthorizationRules authorizationRules();

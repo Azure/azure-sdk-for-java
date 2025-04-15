@@ -15,13 +15,25 @@ public interface ApplicationGatewayListener extends HasInnerModel<ApplicationGat
     ChildResource<ApplicationGateway>, HasSslCertificate<ApplicationGatewaySslCertificate>, HasPublicIpAddress,
     HasProtocol<ApplicationGatewayProtocol>, HasHostname, HasServerNameIndication, HasSubnet {
 
-    /** @return the frontend IP configuration this listener is associated with. */
+    /**
+     * Gets the frontend IP configuration this listener is associated with.
+     *
+     * @return the frontend IP configuration this listener is associated with.
+     */
     ApplicationGatewayFrontend frontend();
 
-    /** @return the number of the frontend port the listener is listening on */
+    /**
+     * Gets the number of the frontend port the listener is listening on.
+     *
+     * @return the number of the frontend port the listener is listening on
+     */
     int frontendPortNumber();
 
-    /** @return the name of the frontend port the listener is listening on */
+    /**
+     * Gets the name of the frontend port the listener is listening on.
+     *
+     * @return the name of the frontend port the listener is listening on
+     */
     String frontendPortName();
 
     /** Grouping of application gateway HTTP listener configuration stages. */

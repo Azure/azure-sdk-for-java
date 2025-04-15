@@ -19,6 +19,8 @@ import java.util.Set;
 public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Network> {
 
     /**
+     * Gets network interface IP configurations that are associated with this subnet.
+     *
      * @return network interface IP configurations that are associated with this subnet
      *     <p>Note that this call may result in multiple calls to Azure to fetch all the referenced interfaces each time
      *     it is invoked.
@@ -35,7 +37,11 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
      */
     Set<String> listAvailablePrivateIPAddresses();
 
-    /** @return number of network interface IP configurations associated with this subnet */
+    /**
+     * Gets number of network interface IP configurations associated with this subnet.
+     *
+     * @return number of network interface IP configurations associated with this subnet
+     */
     int networkInterfaceIPConfigurationCount();
 
     /**
@@ -57,30 +63,54 @@ public interface Subnet extends HasInnerModel<SubnetInner>, ChildResource<Networ
     List<String> addressPrefixes();
 
     /**
+     * Gets the network security group associated with this subnet.
+     *
      * @return the network security group associated with this subnet, if any
      *     <p>Note that this method will result in a call to Azure each time it is invoked.
      */
     NetworkSecurityGroup getNetworkSecurityGroup();
 
-    /** @return the resource ID of the network security group associated with this subnet, if any */
+    /**
+     * Gets the resource ID of the network security group associated with this subnet.
+     *
+     * @return the resource ID of the network security group associated with this subnet, if any
+     */
     String networkSecurityGroupId();
 
     /**
+     * Gets the route table associated with this subnet.
+     *
      * @return the route table associated with this subnet, if any
      *     <p>Note that this method will result in a call to Azure each time it is invoked.
      */
     RouteTable getRouteTable();
 
-    /** @return the resource ID of the route table associated with this subnet, if any */
+    /**
+     * Gets the resource ID of the route table associated with this subnet.
+     *
+     * @return the resource ID of the route table associated with this subnet, if any
+     */
     String routeTableId();
 
-    /** @return the services that has access to the subnet. */
+    /**
+     * Gets the services that has access to the subnet.
+     *
+     * @return the services that has access to the subnet.
+     */
     Map<ServiceEndpointType, List<Region>> servicesWithAccess();
 
-    /** @return the ID of the subnet. */
+    /**
+     * Gets the ID of the subnet.
+     *
+     * @return the ID of the subnet.
+     */
     String id();
 
-    /** @return the resource ID of the NAT gateway associated with this subnet, if any */
+    /**
+     * Gets the resource ID of the NAT gateway associated with this subnet.
+     *
+     * @return the resource ID of the NAT gateway associated with this subnet, if any
+     */
     String natGatewayId();
 
     /** Grouping of subnet definition stages. */

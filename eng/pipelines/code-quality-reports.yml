@@ -5,6 +5,9 @@ parameters:
       - name: azure-core
         groupId: com.azure
         safeName: azurecore
+      - name: core
+        groupId: io.clientcore
+        safeName: core
 
 extends:
   template: /eng/pipelines/templates/stages/1es-redirect.yml

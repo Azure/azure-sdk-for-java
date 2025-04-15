@@ -344,7 +344,7 @@ public final class TableUtils {
         ClientLogger logger, boolean skip409Logging) {
         try {
             return callHandler(callable, timeout, logger);
-        } catch (Throwable thrown) {
+        } catch (Exception thrown) {
             Throwable exception = mapThrowableToTableServiceException(thrown);
             if (exception instanceof TableServiceException) {
                 TableServiceException e = (TableServiceException) exception;

@@ -17,30 +17,38 @@ public final class MultiplePipelineTriggerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MultiplePipelineTrigger model = BinaryData.fromString(
-            "{\"type\":\"MultiplePipelineTrigger\",\"pipelines\":[{\"pipelineReference\":{\"referenceName\":\"gr\",\"name\":\"lt\"},\"parameters\":{\"c\":\"dataqyiiujukcdlvptxt\",\"xpxslccuyscjefap\":\"datapmfpbodswgnglmll\",\"dndirdle\":\"datauwsyns\"}},{\"pipelineReference\":{\"referenceName\":\"zvpdwyhggv\",\"name\":\"oaoetitktkeir\"},\"parameters\":{\"up\":\"datafmsaedglubqtf\"}}],\"description\":\"wtemir\",\"runtimeState\":\"Started\",\"annotations\":[\"dataksafjht\",\"databrkghtsfp\",\"datajunkhxthkqny\"],\"\":{\"ceheeqqetasi\":\"datavzrqaphe\",\"qwomkzcmwqfd\":\"dataia\"}}")
+            "{\"type\":\"MultiplePipelineTrigger\",\"pipelines\":[{\"pipelineReference\":{\"referenceName\":\"pvnkhggaz\",\"name\":\"psypgmmieheqmte\"},\"parameters\":{\"eiihabojargetncf\":\"datawg\",\"aeefzlwo\":\"datajwjrpljkcqed\",\"lcno\":\"dataobaaccglvix\"}},{\"pipelineReference\":{\"referenceName\":\"qhbrdcgmyj\",\"name\":\"w\"},\"parameters\":{\"rvbzvi\":\"datab\",\"blrnur\":\"datakkt\",\"joshmmzotcpf\":\"dataandmusud\"}},{\"pipelineReference\":{\"referenceName\":\"ik\",\"name\":\"ifbeottvioone\"},\"parameters\":{\"wvatfa\":\"datazqbdutvnl\",\"ixobdqobngjbeihc\":\"datah\"}},{\"pipelineReference\":{\"referenceName\":\"kivryv\",\"name\":\"xnnirnfuvesmepq\"},\"parameters\":{\"wbtexigm\":\"datayptsvnotbenfshf\",\"isggn\":\"datadtjcyvmsduodpm\",\"pqwucprpw\":\"dataocqaejlebcy\",\"zdkcike\":\"datag\"}}],\"description\":\"mqialebct\",\"runtimeState\":\"Disabled\",\"annotations\":[\"dataepjsfhxh\",\"datalrekroyjdnzrcjok\"],\"\":{\"aoryefgwovyce\":\"dataydyzrrwlguesoi\"}}")
             .toObject(MultiplePipelineTrigger.class);
-        Assertions.assertEquals("wtemir", model.description());
-        Assertions.assertEquals("gr", model.pipelines().get(0).pipelineReference().referenceName());
-        Assertions.assertEquals("lt", model.pipelines().get(0).pipelineReference().name());
+        Assertions.assertEquals("mqialebct", model.description());
+        Assertions.assertEquals("pvnkhggaz", model.pipelines().get(0).pipelineReference().referenceName());
+        Assertions.assertEquals("psypgmmieheqmte", model.pipelines().get(0).pipelineReference().name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MultiplePipelineTrigger model = new MultiplePipelineTrigger().withDescription("wtemir")
-            .withAnnotations(Arrays.asList("dataksafjht", "databrkghtsfp", "datajunkhxthkqny"))
+        MultiplePipelineTrigger model = new MultiplePipelineTrigger().withDescription("mqialebct")
+            .withAnnotations(Arrays.asList("dataepjsfhxh", "datalrekroyjdnzrcjok"))
             .withPipelines(Arrays.asList(
                 new TriggerPipelineReference()
-                    .withPipelineReference(new PipelineReference().withReferenceName("gr").withName("lt"))
-                    .withParameters(mapOf("c", "dataqyiiujukcdlvptxt", "xpxslccuyscjefap", "datapmfpbodswgnglmll",
-                        "dndirdle", "datauwsyns")),
+                    .withPipelineReference(
+                        new PipelineReference().withReferenceName("pvnkhggaz").withName("psypgmmieheqmte"))
+                    .withParameters(
+                        mapOf("eiihabojargetncf", "datawg", "aeefzlwo", "datajwjrpljkcqed", "lcno", "dataobaaccglvix")),
+                new TriggerPipelineReference()
+                    .withPipelineReference(new PipelineReference().withReferenceName("qhbrdcgmyj").withName("w"))
+                    .withParameters(mapOf("rvbzvi", "datab", "blrnur", "datakkt", "joshmmzotcpf", "dataandmusud")),
+                new TriggerPipelineReference()
+                    .withPipelineReference(new PipelineReference().withReferenceName("ik").withName("ifbeottvioone"))
+                    .withParameters(mapOf("wvatfa", "datazqbdutvnl", "ixobdqobngjbeihc", "datah")),
                 new TriggerPipelineReference()
                     .withPipelineReference(
-                        new PipelineReference().withReferenceName("zvpdwyhggv").withName("oaoetitktkeir"))
-                    .withParameters(mapOf("up", "datafmsaedglubqtf"))));
+                        new PipelineReference().withReferenceName("kivryv").withName("xnnirnfuvesmepq"))
+                    .withParameters(mapOf("wbtexigm", "datayptsvnotbenfshf", "isggn", "datadtjcyvmsduodpm", "pqwucprpw",
+                        "dataocqaejlebcy", "zdkcike", "datag"))));
         model = BinaryData.fromObject(model).toObject(MultiplePipelineTrigger.class);
-        Assertions.assertEquals("wtemir", model.description());
-        Assertions.assertEquals("gr", model.pipelines().get(0).pipelineReference().referenceName());
-        Assertions.assertEquals("lt", model.pipelines().get(0).pipelineReference().name());
+        Assertions.assertEquals("mqialebct", model.description());
+        Assertions.assertEquals("pvnkhggaz", model.pipelines().get(0).pipelineReference().referenceName());
+        Assertions.assertEquals("psypgmmieheqmte", model.pipelines().get(0).pipelineReference().name());
     }
 
     // Use "Map.of" if available

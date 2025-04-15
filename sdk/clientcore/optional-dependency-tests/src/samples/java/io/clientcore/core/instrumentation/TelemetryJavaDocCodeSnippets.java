@@ -3,27 +3,20 @@
 
 package io.clientcore.core.instrumentation;
 
+import io.clientcore.core.http.models.RequestContext;
+import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
-import io.clientcore.core.http.pipeline.InstrumentationPolicy;
-import io.clientcore.core.instrumentation.tracing.SpanKind;
-import io.clientcore.core.instrumentation.tracing.TracingScope;
 import io.opentelemetry.api.GlobalOpenTelemetry;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.Tracer;
-import io.opentelemetry.context.Context;
 import io.opentelemetry.context.Scope;
 import io.opentelemetry.sdk.autoconfigure.AutoConfiguredOpenTelemetrySdk;
-
-import java.io.IOException;
-import java.io.UncheckedIOException;
-
-import static io.clientcore.core.instrumentation.Instrumentation.TRACE_CONTEXT_KEY;
 
 /**
  * Application developers are expected to configure OpenTelemetry
@@ -61,6 +54,8 @@ public class TelemetryJavaDocCodeSnippets {
         AutoConfiguredOpenTelemetrySdk.initialize();
 
         SampleClient client = new SampleClientBuilder().build();
+
+        // this call will be traced using OpenTelemetry SDK initialized globally
         client.clientCall();
 
         // END: io.clientcore.core.telemetry.useglobalopentelemetry
@@ -73,11 +68,13 @@ public class TelemetryJavaDocCodeSnippets {
     public void useExplicitOpenTelemetry() {
         // BEGIN: io.clientcore.core.telemetry.useexplicitopentelemetry
 
-        OpenTelemetry openTelemetry =  AutoConfiguredOpenTelemetrySdk.initialize().getOpenTelemetrySdk();
-        InstrumentationOptions<OpenTelemetry> instrumentationOptions = new InstrumentationOptions<OpenTelemetry>()
-            .setProvider(openTelemetry);
+        OpenTelemetry openTelemetry = AutoConfiguredOpenTelemetrySdk.initialize().getOpenTelemetrySdk();
+        HttpInstrumentationOptions instrumentationOptions = new HttpInstrumentationOptions()
+            .setTelemetryProvider(openTelemetry);
 
         SampleClient client = new SampleClientBuilder().instrumentationOptions(instrumentationOptions).build();
+
+        // this call will be traced using OpenTelemetry SDK provided explicitly
         client.clientCall();
 
         // END: io.clientcore.core.telemetry.useexplicitopentelemetry
@@ -90,7 +87,7 @@ public class TelemetryJavaDocCodeSnippets {
     public void disableDistributedTracing() {
         // BEGIN: io.clientcore.core.telemetry.disabledistributedtracing
 
-        InstrumentationOptions<?> instrumentationOptions = new InstrumentationOptions<>()
+        HttpInstrumentationOptions instrumentationOptions = new HttpInstrumentationOptions()
             .setTracingEnabled(false);
 
         SampleClient client = new SampleClientBuilder().instrumentationOptions(instrumentationOptions).build();
@@ -100,10 +97,27 @@ public class TelemetryJavaDocCodeSnippets {
     }
 
     /**
+     * This code snippet shows how to disable distributed tracing
+     * for a specific instance of client.
+     */
+    public void disableMetrics() {
+        // BEGIN: io.clientcore.core.telemetry.disablemetrics
+
+        HttpInstrumentationOptions instrumentationOptions = new HttpInstrumentationOptions()
+            .setMetricsEnabled(false);
+
+        SampleClient client = new SampleClientBuilder().instrumentationOptions(instrumentationOptions).build();
+        client.clientCall();
+
+        // END: io.clientcore.core.telemetry.disablemetrics
+    }
+
+    /**
      * This code snippet shows how to correlate spans from
      * client library with spans from application code
      * using current context.
      */
+    @SuppressWarnings("try")
     public void correlationWithImplicitContext() {
         // BEGIN: io.clientcore.core.telemetry.correlationwithimplicitcontext
 
@@ -134,76 +148,69 @@ public class TelemetryJavaDocCodeSnippets {
         Tracer tracer = GlobalOpenTelemetry.getTracer("sample");
         Span span = tracer.spanBuilder("my-operation")
             .startSpan();
+
         SampleClient client = new SampleClientBuilder().build();
 
         // Propagating context implicitly is preferred way in synchronous code.
-        // However, in asynchronous code, context may need to be propagated explicitly using RequestOptions
+        // However, in asynchronous code, context may need to be propagated explicitly using RequestContext
         // and explicit io.clientcore.core.util.Context.
 
-        RequestOptions options = new RequestOptions()
-            .setContext(io.clientcore.core.util.Context.of(TRACE_CONTEXT_KEY, Context.current().with(span)));
+        RequestContext context = RequestContext.builder()
+            .setInstrumentationContext(Instrumentation.createInstrumentationContext(span))
+            .build();
 
-        // run on another thread
-        client.clientCall(options);
+        // run on another thread - all telemetry will be correlated with the span created above
+        client.clientCall(context);
 
         // END: io.clientcore.core.telemetry.correlationwithexplicitcontext
     }
 
     static class SampleClientBuilder {
-        private InstrumentationOptions<?> instrumentationOptions;
-        // TODO (limolkova): do we need InstrumnetationTrait?
-        public SampleClientBuilder instrumentationOptions(InstrumentationOptions<?> instrumentationOptions) {
+        private HttpInstrumentationOptions instrumentationOptions;
+        public SampleClientBuilder instrumentationOptions(HttpInstrumentationOptions instrumentationOptions) {
             this.instrumentationOptions = instrumentationOptions;
             return this;
         }
 
         public SampleClient build() {
             return new SampleClient(instrumentationOptions, new HttpPipelineBuilder()
-                .policies(new InstrumentationPolicy(instrumentationOptions, null))
+                .addPolicy(new HttpInstrumentationPolicy(instrumentationOptions))
                 .build());
         }
     }
 
     static class SampleClient {
-        private final static LibraryInstrumentationOptions LIBRARY_OPTIONS = new LibraryInstrumentationOptions("sample");
+        private static final String SDK_NAME = "contoso.sample";
+        private final Instrumentation instrumentation;
         private final HttpPipeline httpPipeline;
-        private final io.clientcore.core.instrumentation.tracing.Tracer tracer;
+        private final String serviceEndpoint;
 
-        SampleClient(InstrumentationOptions<?> instrumentationOptions, HttpPipeline httpPipeline) {
+        SampleClient(InstrumentationOptions instrumentationOptions, HttpPipeline httpPipeline) {
+            serviceEndpoint = "https://contoso.com";
+            SdkInstrumentationOptions sdkOptions = new SdkInstrumentationOptions(SDK_NAME)
+                .setEndpoint(serviceEndpoint);
             this.httpPipeline = httpPipeline;
-            this.tracer = Instrumentation.create(instrumentationOptions, LIBRARY_OPTIONS).getTracer();
+            this.instrumentation = Instrumentation.create(instrumentationOptions, sdkOptions);
         }
 
-        public void clientCall() {
-            this.clientCall(null);
+        public Response<?> clientCall() {
+            return this.clientCallWithResponse(null);
         }
 
-        @SuppressWarnings("try")
-        public void clientCall(RequestOptions options) {
-            io.clientcore.core.instrumentation.tracing.Span span = tracer.spanBuilder("clientCall", SpanKind.CLIENT, options)
-                .startSpan();
+        public Response<?> clientCallWithResponse(RequestContext context) {
+            return instrumentation.instrumentWithResponse("Sample.call", context, this::clientCallWithResponseImpl);
+        }
 
-            if (options == null) {
-                options = new RequestOptions();
-            }
+        public void clientCall(RequestContext context) {
+            instrumentation.instrument("Sample.call", context, this::clientCallImpl);
+        }
 
-            options.setContext(options.getContext().put(TRACE_CONTEXT_KEY, span));
+        private Response<?> clientCallWithResponseImpl(RequestContext context) {
+            return httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint).setContext(context));
+        }
 
-            try (TracingScope scope = span.makeCurrent()) {
-                Response<?> response = httpPipeline.send(new HttpRequest(HttpMethod.GET, "https://example.com"));
-                response.close();
-                span.end();
-            } catch (Throwable t) {
-                span.end(t);
-
-                if (t instanceof IOException) {
-                    throw new UncheckedIOException((IOException) t);
-                } else if (t instanceof RuntimeException) {
-                    throw (RuntimeException) t;
-                } else {
-                    throw new RuntimeException(t);
-                }
-            }
+        private void clientCallImpl(RequestContext context) {
+            httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(serviceEndpoint).setContext(context));
         }
     }
 }

@@ -1,0 +1,91 @@
+[
+  {
+    "extension": "revapi.java",
+    "configuration": {
+      "missing-classes": {
+        "behavior": "ignore",
+        "ignoreMissingAnnotations": false
+      },
+      "matchOverloads": true
+    }
+  },
+  {
+    "extension": "revapi.versions",
+    "configuration": {
+      "enabled": true,
+      "semantic0": false,
+      "versionIncreaseAllows": {
+        "major": {
+          "severity": "BREAKING"
+        },
+        "minor": {
+          "severity": "NON_BREAKING"
+        },
+        "patch": {
+          "severity": "EQUIVALENT"
+        }
+      },
+      "onAllowed": {
+        "remove": true,
+        "attachments": {
+          "breaksVersioningRules": "false"
+        }
+      },
+      "onDisallowed": {
+        "criticality": "error",
+        "attachments": {
+          "breaksVersioningRules": "true"
+        }
+      },
+      "passThroughDifferences": [
+        "java.class.nonPublicPartOfAPI"
+      ]
+    }
+  },
+  {
+    "extension": "allowed-external-apis",
+    "configuration": {
+      "enabled": true,
+      "allowedPrefixes": {
+        "io.": [
+          "clientcore.core"
+        ]
+      }
+    }
+  },
+  {
+    "extension": "ignored-transitive-changes",
+    "configuration": {
+      "enabled": true,
+      "ignoredNewArchives": [
+        "io.clientcore:core:"
+      ]
+    }
+  },
+  {
+    "extension": "class-and-package-tree-filter-provider",
+    "configuration": {
+      "ignoredClasses": {
+      },
+      "ignoredPackages": {
+        "kotlin": [],
+        "okhttp3": [],
+        "okio": [],
+        "org.": [
+          "junit"
+        ]
+      },
+      "ignoredPackagesPatterns": [
+        "io\\.clientcore\\..*(implementation|samples).*"
+      ]
+    }
+  },
+  {
+    "extension": "revapi.differences",
+    "configuration": {
+      "ignore": true,
+      "differences": [
+      ]
+    }
+  }
+]

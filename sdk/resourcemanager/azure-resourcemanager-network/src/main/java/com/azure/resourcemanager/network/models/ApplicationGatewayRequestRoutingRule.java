@@ -17,32 +17,69 @@ public interface ApplicationGatewayRequestRoutingRule extends HasInnerModel<Appl
     ChildResource<ApplicationGateway>, HasPublicIpAddress, HasSslCertificate<ApplicationGatewaySslCertificate>,
     HasFrontendPort, HasBackendPort, HasHostname, HasCookieBasedAffinity, HasServerNameIndication {
 
-    /** @return the redirect configuration associated with this request routing rule, if any */
+    /**
+     * Gets the redirect configuration associated with this request routing rule.
+     *
+     * @return the redirect configuration associated with this request routing rule, if any
+     */
     ApplicationGatewayRedirectConfiguration redirectConfiguration();
 
-    /** @return the frontend protocol */
+    /**
+     * Gets the frontend protocol.
+     *
+     * @return the frontend protocol
+     */
     ApplicationGatewayProtocol frontendProtocol();
 
-    /** @return rule type */
+    /**
+     * Gets rule type.
+     *
+     * @return rule type
+     */
     ApplicationGatewayRequestRoutingRuleType ruleType();
 
-    /** @return the associated backend address pool */
+    /**
+     * Gets the associated backend address pool.
+     *
+     * @return the associated backend address pool
+     */
     ApplicationGatewayBackend backend();
 
-    /** @return the associated backend HTTP settings configuration */
+    /**
+     * Gets the associated backend HTTP settings configuration.
+     *
+     * @return the associated backend HTTP settings configuration
+     */
     ApplicationGatewayBackendHttpConfiguration backendHttpConfiguration();
 
-    /** @return the associated frontend HTTP listener */
+    /**
+     * Gets the associated frontend HTTP listener.
+     *
+     * @return the associated frontend HTTP listener
+     */
     ApplicationGatewayListener listener();
 
-    /** @return the addresses assigned to the associated backend */
+    /**
+     * Gets the addresses assigned to the associated backend.
+     *
+     * @return the addresses assigned to the associated backend
+     */
     Collection<ApplicationGatewayBackendAddress> backendAddresses();
 
-    /** @return the associated URL path map */
+    /**
+     * Gets the associated URL path map.
+     *
+     * @return the associated URL path map
+     */
     ApplicationGatewayUrlPathMap urlPathMap();
 
-    /** @return the priority of the rule
-                only available for {@link ApplicationGatewaySkuName#STANDARD_V2} and {@link ApplicationGatewaySkuName#WAF_V2} */
+    /**
+     * Gets the priority of the rule
+     *        only available for {@link ApplicationGatewaySkuName#STANDARD_V2} and {@link ApplicationGatewaySkuName#WAF_V2}
+     *
+     * @return the priority of the rule
+                only available for {@link ApplicationGatewaySkuName#STANDARD_V2} and {@link ApplicationGatewaySkuName#WAF_V2}
+     */
     Integer priority();
 
     /** Grouping of application gateway request routing rule definition stages. */

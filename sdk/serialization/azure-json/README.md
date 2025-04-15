@@ -17,7 +17,7 @@ Azure JSON provides shared primitives, abstractions, and helpers for JSON.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-json</artifactId>
-  <version>1.3.0</version>
+  <version>1.6.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -48,7 +48,7 @@ could be called indefinitely returning the same integer without error until `nex
 forward.
 
 `JsonReader` allows for type conversion between JSON types, such as trying to convert a JSON string to a number or vice
-versa, and for commonly used nonstandard JSON values, such as `NaN`, `INF`, `-INF`, `Infinity`, and `-Infinity`.
+versa, and for commonly used nonstandard JSON values, such as `NaN`, `Infinity`, `+Infinity`, and `-Infinity`.
 
 `JsonReader` doesn't take ownership of the JSON input source and therefore doesn't close any resources if the JSON is 
 provided using an `InputStream` or `Reader`.
@@ -65,7 +65,7 @@ and objects, APIs for writing JSON. `JsonWriter` is provided to allow for any un
 such as Jackson or GSON, as long as the implementation passes the tests provided by the package's test-jar
 (`JsonWriterContractTests`).
 
-`JsonWriter` allows for commonly used nonstandard JSON values, such as `NaN`, `INF`, `-INF`, `Infinity`, and 
+`JsonWriter` allows for commonly used nonstandard JSON values, such as `NaN`, `Infinity`, `+Infinity`, and 
 `-Infinity`, to be written using `writeNumberField` or `writeRawValue`.
 
 `JsonWriter` doesn't write null `byte[]`, `Boolean`, `Number`, or `String` values when written as a field, 
@@ -96,7 +96,7 @@ by this package if an implementation isn't found on the classpath.
 #### JsonOptions
 
 `JsonOptions` contains configurations that must be respected by all implementations of `JsonReader`s and `JsonWriter`s. 
-At this time, there's only one configuration for determining whether non-numeric numbers, `NaN`, `INF`, `-INF`, `Infinity`, 
+At this time, there's only one configuration for determining whether non-numeric numbers, `NaN`, `Infinity`, `+Infinity`, 
 and `-Infinity` are supported in JSON reading and writing with a default setting of `true`, that non-numeric numbers 
 are allowed.
 
@@ -135,7 +135,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 5. Create new Pull Request
 
 <!-- links -->
-[jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/8517f855a79ea23dce94397c58e4368738016fc4/sdk/core/azure-json/src/samples/README.md
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fserialization%2Fazure-json%2FREADME.png)
+

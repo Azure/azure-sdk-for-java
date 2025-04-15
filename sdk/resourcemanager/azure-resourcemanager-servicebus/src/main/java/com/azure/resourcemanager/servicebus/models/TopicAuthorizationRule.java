@@ -15,11 +15,15 @@ import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
 public interface TopicAuthorizationRule
     extends AuthorizationRule<TopicAuthorizationRule>, Updatable<TopicAuthorizationRule.Update> {
     /**
+     * Gets the name of the namespace that the parent topic belongs to.
+     *
      * @return the name of the namespace that the parent topic belongs to
      */
     String namespaceName();
 
     /**
+     * Gets the name of the parent topic name.
+     *
      * @return the name of the parent topic name
      */
     String topicName();

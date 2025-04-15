@@ -115,6 +115,47 @@ public final class CosmosMetricName {
         CosmosMetricCategory.REQUEST_SUMMARY);
 
     /**
+     * The count of batch operations per evaluation cycle per physical partition executed through {@link com.azure.cosmos.CosmosContainer#executeBulkOperations} or {@link com.azure.cosmos.CosmosAsyncContainer#executeBulkOperations}.
+     * <p>
+     * In every evaluation cycle the no. of items to touch per batch I/O operation is recomputed to reasonably saturate provisioned throughput without getting throttled.
+     * <p>
+     * NOTE: No percentiles or histogram supported.
+     * */
+    public static final CosmosMetricName REQUEST_SUMMARY_DIRECT_BULK_OP_COUNT_PER_EVALUATION = new CosmosMetricName(
+        nameOf("req.rntbd.bulkOpCountPerEvaluation"),
+        CosmosMetricCategory.REQUEST_SUMMARY);
+
+    /**
+     * The count of batch operations retried per evaluation cycle per physical partition executed through {@link com.azure.cosmos.CosmosContainer#executeBulkOperations} or {@link com.azure.cosmos.CosmosAsyncContainer#executeBulkOperations}.
+     * <p>
+     * In every evaluation cycle the no. of items to touch per batch I/O operation is recomputed to reasonably saturate provisioned throughput without getting throttled.
+     * <p>
+     * NOTE: No percentiles or histogram supported.
+     * */
+    public static final CosmosMetricName REQUEST_SUMMARY_DIRECT_BULK_OP_RETRIED_COUNT_PER_EVALUATION = new CosmosMetricName(
+        nameOf("req.rntbd.bulkOpRetriedCountPerEvaluation"),
+        CosmosMetricCategory.REQUEST_SUMMARY);
+
+    /**
+     * The count of batch operations per physical partition executed through {@link com.azure.cosmos.CosmosContainer#executeBulkOperations} or {@link com.azure.cosmos.CosmosAsyncContainer#executeBulkOperations}.
+     * <p>
+     * NOTE: No percentiles or histogram supported.
+     * */
+    public static final CosmosMetricName REQUEST_SUMMARY_DIRECT_BULK_GLOBAL_OP_COUNT = new CosmosMetricName(
+        nameOf("req.rntbd.bulkGlobalOpCount"),
+        CosmosMetricCategory.REQUEST_SUMMARY);
+
+
+    /**
+     * The max count of items to touch per physical partition executed through {@link com.azure.cosmos.CosmosContainer#executeBulkOperations} or {@link com.azure.cosmos.CosmosAsyncContainer#executeBulkOperations}.
+     * <p>
+     * NOTE: No percentiles or histogram supported.
+     * */
+    public static final CosmosMetricName REQUEST_SUMMARY_DIRECT_BULK_TARGET_MAX_MICRO_BATCH_SIZE = new CosmosMetricName(
+        nameOf("req.rntbd.bulkTargetMaxMicroBatchSize"),
+        CosmosMetricCategory.REQUEST_SUMMARY);
+
+    /**
      * Number of requests (Counter)
      * NOTE: No percentiles or histogram supported
      */
@@ -143,6 +184,46 @@ public final class CosmosMetricName {
      */
     public static final CosmosMetricName REQUEST_SUMMARY_GATEWAY_ACTUAL_ITEM_COUNT = new CosmosMetricName(
         nameOf("req.gw.actualItemCount"),
+        CosmosMetricCategory.REQUEST_SUMMARY);
+
+    /**
+     * The count of batch operations per evaluation cycle per physical partition executed through {@link com.azure.cosmos.CosmosContainer#executeBulkOperations} or {@link com.azure.cosmos.CosmosAsyncContainer#executeBulkOperations}.
+     * <p>
+     * In every evaluation cycle the no. of items to touch per batch I/O operation is computed to reasonably saturate provisioned throughput without getting throttled.
+     * <p>
+     * NOTE: No percentiles or histogram supported.
+     * */
+    public static final CosmosMetricName REQUEST_SUMMARY_GATEWAY_BULK_OP_COUNT_PER_EVALUATION = new CosmosMetricName(
+        nameOf("req.gw.bulkOpCountPerEvaluation"),
+        CosmosMetricCategory.REQUEST_SUMMARY);
+
+    /**
+     * The count of batch operations retried per evaluation cycle per physical partition executed through {@link com.azure.cosmos.CosmosContainer#executeBulkOperations} or {@link com.azure.cosmos.CosmosAsyncContainer#executeBulkOperations}.
+     * <p>
+     * In every evaluation cycle the no. of items to touch per batch I/O operation is recomputed to reasonably saturate provisioned throughput without getting throttled.
+     * <p>
+     * NOTE: No percentiles or histogram supported.
+     * */
+    public static final CosmosMetricName REQUEST_SUMMARY_GATEWAY_BULK_OP_RETRIED_COUNT_PER_EVALUATION = new CosmosMetricName(
+        nameOf("req.gw.bulkOpRetriedCountPerEvaluation"),
+        CosmosMetricCategory.REQUEST_SUMMARY);
+
+    /**
+     * The count of batch operations per physical partition executed through {@link com.azure.cosmos.CosmosContainer#executeBulkOperations} or {@link com.azure.cosmos.CosmosAsyncContainer#executeBulkOperations}.
+     * <p>
+     * NOTE: No percentiles or histogram supported.
+     * */
+    public static final CosmosMetricName REQUEST_SUMMARY_GATEWAY_BULK_GLOBAL_OP_COUNT = new CosmosMetricName(
+        nameOf("req.gw.bulkGlobalOpCount"),
+        CosmosMetricCategory.REQUEST_SUMMARY);
+
+    /**
+     * The max count of items to touch per physical partition executed through {@link com.azure.cosmos.CosmosContainer#executeBulkOperations} or {@link com.azure.cosmos.CosmosAsyncContainer#executeBulkOperations}.
+     * <p>
+     * NOTE: No percentiles or histogram supported.
+     * */
+    public static final CosmosMetricName REQUEST_SUMMARY_GATEWAY_BULK_TARGET_MAX_MICRO_BATCH_SIZE = new CosmosMetricName(
+        nameOf("req.gw.bulkTargetMaxMicroBatchSize"),
         CosmosMetricCategory.REQUEST_SUMMARY);
 
     /**
@@ -389,10 +470,18 @@ public final class CosmosMetricName {
         map.put(nameOf("req.rntbd.backendlatency"), CosmosMetricName.REQUEST_SUMMARY_DIRECT_BACKEND_LATENCY);
         map.put(nameOf("req.rntbd.rus"), CosmosMetricName.REQUEST_SUMMARY_DIRECT_REQUEST_CHARGE);
         map.put(nameOf("req.rntbd.actualitemcount"), CosmosMetricName.REQUEST_SUMMARY_DIRECT_ACTUAL_ITEM_COUNT);
+        map.put(nameOf("req.rntbd.bulkopcountperevaluation"), CosmosMetricName.REQUEST_SUMMARY_DIRECT_BULK_OP_COUNT_PER_EVALUATION);
+        map.put(nameOf("req.rntbd.bulkopretriedcountperevaluation"), CosmosMetricName.REQUEST_SUMMARY_DIRECT_BULK_OP_RETRIED_COUNT_PER_EVALUATION);
+        map.put(nameOf("req.rntbd.bulkglobalopcount"), CosmosMetricName.REQUEST_SUMMARY_DIRECT_BULK_GLOBAL_OP_COUNT);
+        map.put(nameOf("req.rntbd.bulktargetmaxmicrobatchsize"), CosmosMetricName.REQUEST_SUMMARY_DIRECT_BULK_TARGET_MAX_MICRO_BATCH_SIZE);
         map.put(nameOf("req.gw.requests"), CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUESTS);
         map.put(nameOf("req.gw.latency"), CosmosMetricName.REQUEST_SUMMARY_GATEWAY_LATENCY);
         map.put(nameOf("req.gw.rus"), CosmosMetricName.REQUEST_SUMMARY_GATEWAY_REQUEST_CHARGE);
         map.put(nameOf("req.gw.actualitemcount"), CosmosMetricName.REQUEST_SUMMARY_GATEWAY_ACTUAL_ITEM_COUNT);
+        map.put(nameOf("req.gw.bulkopcountperevaluation"), CosmosMetricName.REQUEST_SUMMARY_GATEWAY_BULK_OP_COUNT_PER_EVALUATION);
+        map.put(nameOf("req.gw.bulkopretriedcountperevaluation"), CosmosMetricName.REQUEST_SUMMARY_GATEWAY_BULK_OP_RETRIED_COUNT_PER_EVALUATION);
+        map.put(nameOf("req.gw.bulkglobalopCount"), CosmosMetricName.REQUEST_SUMMARY_GATEWAY_BULK_GLOBAL_OP_COUNT);
+        map.put(nameOf("req.gw.bulktargetmaxmicrobatchsize"), CosmosMetricName.REQUEST_SUMMARY_GATEWAY_BULK_TARGET_MAX_MICRO_BATCH_SIZE);
         map.put(nameOf("req.reqpayloadsize"), CosmosMetricName.REQUEST_SUMMARY_SIZE_REQUEST);
         map.put(nameOf("req.rsppayloadsize"), CosmosMetricName.REQUEST_SUMMARY_SIZE_RESPONSE);
         map.put(nameOf("req.rntbd.timeline"), CosmosMetricName.REQUEST_DETAILS_DIRECT_TIMELINE);

@@ -7,8 +7,8 @@ package com.azure.resourcemanager.eventgrid.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.eventgrid.EventGridManager;
 import com.azure.resourcemanager.eventgrid.models.TopicSpace;
@@ -22,19 +22,20 @@ public final class TopicSpacesListByNamespaceMockTests {
     @Test
     public void testListByNamespace() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"description\":\"xwacyyjmlxp\",\"topicTemplates\":[\"dzkf\",\"vuiiu\",\"ibfkcjytq\"],\"provisioningState\":\"Deleting\"},\"id\":\"eqqfop\",\"name\":\"nopm\",\"type\":\"tdsfh\"}]}";
+            = "{\"value\":[{\"properties\":{\"description\":\"lufbortb\",\"topicTemplates\":[\"k\"],\"provisioningState\":\"Creating\"},\"id\":\"svbxxyjisskob\",\"name\":\"ocl\",\"type\":\"l\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         EventGridManager manager = EventGridManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<TopicSpace> response = manager.topicSpaces()
-            .listByNamespace("anhz", "knjxizbaxdy", "zkz", 1973773763, com.azure.core.util.Context.NONE);
+            .listByNamespace("dyzoutxfptofhg", "uywezygvadg", "aqwvkgjpytpmpvdn", 1304500188,
+                com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xwacyyjmlxp", response.iterator().next().description());
-        Assertions.assertEquals("dzkf", response.iterator().next().topicTemplates().get(0));
+        Assertions.assertEquals("lufbortb", response.iterator().next().description());
+        Assertions.assertEquals("k", response.iterator().next().topicTemplates().get(0));
     }
 }

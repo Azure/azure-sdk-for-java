@@ -299,7 +299,7 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
     @LiveOnly
     public void testGetSocketIOAuthenticationToken() {
         GetClientAccessTokenOptions options = new GetClientAccessTokenOptions();
-        options.setWebPubSubClientProtocol(WebPubSubClientProtocol.SOCKETIO);
+        options.setWebPubSubClientProtocol(WebPubSubClientProtocol.SOCKET_IO);
         StepVerifier.create(client.getClientAccessToken(options)).assertNext(token -> {
             Assertions.assertNotNull(token);
             Assertions.assertNotNull(token.getToken());
@@ -344,7 +344,7 @@ public class WebPubSubServiceAsyncClientTests extends TestProxyTestBase {
                 .hub(TestUtils.HUB_NAME);
         WebPubSubServiceAsyncClient aadClient = aadClientBuilder.buildAsyncClient();
         GetClientAccessTokenOptions options = new GetClientAccessTokenOptions();
-        options.setWebPubSubClientProtocol(WebPubSubClientProtocol.SOCKETIO);
+        options.setWebPubSubClientProtocol(WebPubSubClientProtocol.SOCKET_IO);
         StepVerifier.create(aadClient.getClientAccessToken(options)).assertNext(token -> {
             Assertions.assertNotNull(token);
             Assertions.assertNotNull(token.getToken());

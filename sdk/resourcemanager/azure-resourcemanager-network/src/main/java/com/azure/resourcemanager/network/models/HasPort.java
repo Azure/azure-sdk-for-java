@@ -7,7 +7,11 @@ import com.azure.core.annotation.Fluent;
 /** An interface representing a model's ability to have a port number. */
 @Fluent
 public interface HasPort {
-    /** @return the port number */
+    /**
+     * Gets the port number.
+     *
+     * @return the port number
+     */
     int port();
 
     /** Grouping of definition stages involving specifying a port number. */

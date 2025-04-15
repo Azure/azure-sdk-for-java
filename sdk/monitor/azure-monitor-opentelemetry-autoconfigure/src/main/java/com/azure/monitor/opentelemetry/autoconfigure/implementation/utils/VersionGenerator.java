@@ -13,38 +13,63 @@ import java.util.Map;
 public final class VersionGenerator {
     private static final String UNKNOWN_VERSION_VALUE = "unknown";
 
-    private static final String artifactName;
-    private static final String artifactVersion;
-
     private static final String sdkVersionString;
 
     static {
-        Map<String, String> properties
-            = CoreUtils.getProperties("azure-monitor-opentelemetry-autoconfigure.properties");
+        String componentName = null;
+        String componentVersion = null;
 
-        artifactName = properties.get("name");
-        artifactVersion = properties.get("version");
+        Map<String, String> springDistroProperties
+            = CoreUtils.getProperties("azure-spring-cloud-azure-starter-monitor.properties");
+        String springDistroVersion = springDistroProperties.get("version");
+        if (springDistroVersion != null) {
+            componentName = "dss";
+            componentVersion = springDistroVersion;
+        }
 
-        sdkVersionString = "java" + getJavaVersion() + getJavaRuntime() + ":" + "otel" + getOpenTelemetryApiVersion()
-            + ":" + "ext" + artifactVersion;
+        Map<String, String> quarkusProperties = CoreUtils.getProperties("quarkus-exporter.properties");
+        String quarkusVersion = quarkusProperties.get("version");
+        if (quarkusVersion != null) {
+            componentName = "dsq";
+            componentVersion = quarkusVersion;
+        }
+
+        if (componentName == null) {
+            componentName = "ext";
+            Map<String, String> otelAutoconfigureProperties
+                = CoreUtils.getProperties("azure-monitor-opentelemetry-autoconfigure.properties");
+            componentVersion = otelAutoconfigureProperties.get("version");
+        }
+
+        sdkVersionString = getPrefix() + "java" + getJavaVersion() + getJavaRuntime() + ":" + "otel"
+            + getOpenTelemetryApiVersion() + ":" + componentName + componentVersion;
     }
 
-    /**
-     * This method returns artifact name.
-     *
-     * @return artifactName.
-     */
-    public static String getArtifactName() {
-        return artifactName;
+    private static String getPrefix() {
+        return getResourceProvider() + getOs() + "_";
     }
 
-    /**
-     * This method returns artifact version.
-     *
-     * @return artifactVersion.
-     */
-    public static String getArtifactVersion() {
-        return artifactVersion;
+    private static String getResourceProvider() {
+        if ("java".equals(System.getenv("FUNCTIONS_WORKER_RUNTIME"))) {
+            return "f";
+        } else if (!Strings.isNullOrEmpty(System.getenv("WEBSITE_SITE_NAME"))) {
+            return "a";
+        } else if (!Strings.isNullOrEmpty(System.getenv("APPLICATIONINSIGHTS_SPRINGCLOUD_SERVICE_ID"))) {
+            // Spring Cloud needs to be checked before AKS since it runs on AKS
+            return "s";
+        } else if (!Strings.isNullOrEmpty(System.getenv("AKS_ARM_NAMESPACE_ID"))) {
+            return "k";
+        }
+        return "u";
+    }
+
+    private static String getOs() {
+        if (SystemInformation.isWindows()) {
+            return "w";
+        } else if (SystemInformation.isLinux()) {
+            return "l";
+        }
+        return "u";
     }
 
     /**

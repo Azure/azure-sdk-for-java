@@ -4,7 +4,7 @@
 
 package com.azure.resourcemanager.resources.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * Deployment properties with additional details.
  */
-@Immutable
+@Fluent
 public final class DeploymentPropertiesExtended implements JsonSerializable<DeploymentPropertiesExtended> {
     /*
      * Denotes the state of provisioning.
@@ -105,6 +105,16 @@ public final class DeploymentPropertiesExtended implements JsonSerializable<Depl
      * The deployment error.
      */
     private ManagementError error;
+
+    /*
+     * Contains diagnostic information collected during validation process.
+     */
+    private List<DeploymentDiagnosticsDefinition> diagnostics;
+
+    /*
+     * The validation level of the deployment
+     */
+    private ValidationLevel validationLevel;
 
     /**
      * Creates an instance of DeploymentPropertiesExtended class.
@@ -266,6 +276,35 @@ public final class DeploymentPropertiesExtended implements JsonSerializable<Depl
     }
 
     /**
+     * Get the diagnostics property: Contains diagnostic information collected during validation process.
+     * 
+     * @return the diagnostics value.
+     */
+    public List<DeploymentDiagnosticsDefinition> diagnostics() {
+        return this.diagnostics;
+    }
+
+    /**
+     * Get the validationLevel property: The validation level of the deployment.
+     * 
+     * @return the validationLevel value.
+     */
+    public ValidationLevel validationLevel() {
+        return this.validationLevel;
+    }
+
+    /**
+     * Set the validationLevel property: The validation level of the deployment.
+     * 
+     * @param validationLevel the validationLevel value to set.
+     * @return the DeploymentPropertiesExtended object itself.
+     */
+    public DeploymentPropertiesExtended withValidationLevel(ValidationLevel validationLevel) {
+        this.validationLevel = validationLevel;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -295,6 +334,9 @@ public final class DeploymentPropertiesExtended implements JsonSerializable<Depl
         if (validatedResources() != null) {
             validatedResources().forEach(e -> e.validate());
         }
+        if (diagnostics() != null) {
+            diagnostics().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -303,6 +345,8 @@ public final class DeploymentPropertiesExtended implements JsonSerializable<Depl
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("validationLevel",
+            this.validationLevel == null ? null : this.validationLevel.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -364,6 +408,13 @@ public final class DeploymentPropertiesExtended implements JsonSerializable<Depl
                     deserializedDeploymentPropertiesExtended.validatedResources = validatedResources;
                 } else if ("error".equals(fieldName)) {
                     deserializedDeploymentPropertiesExtended.error = ManagementError.fromJson(reader);
+                } else if ("diagnostics".equals(fieldName)) {
+                    List<DeploymentDiagnosticsDefinition> diagnostics
+                        = reader.readArray(reader1 -> DeploymentDiagnosticsDefinition.fromJson(reader1));
+                    deserializedDeploymentPropertiesExtended.diagnostics = diagnostics;
+                } else if ("validationLevel".equals(fieldName)) {
+                    deserializedDeploymentPropertiesExtended.validationLevel
+                        = ValidationLevel.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

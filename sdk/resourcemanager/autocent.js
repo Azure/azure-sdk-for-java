@@ -13,9 +13,9 @@ const pkgRegEx2 = /Package\s+tag\s+(.+)\.</;
 const data = {};
 const servicesInvalidUrl = ["securitydevops"];
 const deprecatedArtifacts = [
-    "azure-resourcemanager-batchai",
     "azure-resourcemanager-loadtestservice",
-    "azure-resourcemanager-machinelearningservices",
+    "azure-resourcemanager-networkanalytics",
+    "azure-resourcemanager-logz"
 ];
 // exclude premium packages
 const excludeArtifacts = [

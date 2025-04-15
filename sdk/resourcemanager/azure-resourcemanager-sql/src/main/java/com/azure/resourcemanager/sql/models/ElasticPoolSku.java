@@ -287,7 +287,11 @@ public final class ElasticPoolSku {
         return String.format("%s/%s/%s/%d/%s", sku.name(), sku.tier(), sku.family(), sku.capacity(), sku.size());
     }
 
-    /** @return the underneath sku description */
+    /**
+     * Gets the underneath sku description.
+     *
+     * @return the underneath sku description
+     */
     @JsonValue
     public Sku toSku() {
         return new Sku().withName(sku.name())

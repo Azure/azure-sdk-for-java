@@ -20,14 +20,9 @@ import java.io.IOException;
 @Fluent
 public final class RedisFirewallRuleCreateParameters extends RedisFirewallRuleInner {
     /*
-     * Fully qualified resource Id for the resource.
+     * redis cache firewall rule properties
      */
-    private String id;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
+    private RedisFirewallRuleProperties innerProperties = new RedisFirewallRuleProperties();
 
     /*
      * The type of the resource.
@@ -35,9 +30,14 @@ public final class RedisFirewallRuleCreateParameters extends RedisFirewallRuleIn
     private String type;
 
     /*
-     * redis cache firewall rule properties
+     * The name of the resource.
      */
-    private RedisFirewallRuleProperties innerProperties = new RedisFirewallRuleProperties();
+    private String name;
+
+    /*
+     * Fully qualified resource Id for the resource.
+     */
+    private String id;
 
     /**
      * Creates an instance of RedisFirewallRuleCreateParameters class.
@@ -46,23 +46,12 @@ public final class RedisFirewallRuleCreateParameters extends RedisFirewallRuleIn
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the innerProperties property: redis cache firewall rule properties.
      * 
-     * @return the id value.
+     * @return the innerProperties value.
      */
-    @Override
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
+    private RedisFirewallRuleProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -76,12 +65,23 @@ public final class RedisFirewallRuleCreateParameters extends RedisFirewallRuleIn
     }
 
     /**
-     * Get the innerProperties property: redis cache firewall rule properties.
+     * Get the name property: The name of the resource.
      * 
-     * @return the innerProperties value.
+     * @return the name value.
      */
-    private RedisFirewallRuleProperties innerProperties() {
-        return this.innerProperties;
+    @Override
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Get the id property: Fully qualified resource Id for the resource.
+     * 
+     * @return the id value.
+     */
+    @Override
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -135,6 +135,7 @@ public final class RedisFirewallRuleCreateParameters extends RedisFirewallRuleIn
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
         if (innerProperties() == null) {
             throw LOGGER.atError()

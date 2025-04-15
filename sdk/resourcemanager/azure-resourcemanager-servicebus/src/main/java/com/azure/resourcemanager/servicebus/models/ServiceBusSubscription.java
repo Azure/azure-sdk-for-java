@@ -22,92 +22,128 @@ import java.time.OffsetDateTime;
 public interface ServiceBusSubscription extends IndependentChildResource<ServiceBusManager, SBSubscriptionInner>,
     Refreshable<ServiceBusSubscription>, Updatable<ServiceBusSubscription.Update> {
     /**
+     * Gets the exact time the message was created.
+     *
      * @return the exact time the message was created
      */
     OffsetDateTime createdAt();
 
     /**
+     * Gets last time there was a receive request to this subscription.
+     *
      * @return last time there was a receive request to this subscription
      */
     OffsetDateTime accessedAt();
 
     /**
+     * Gets the exact time the message was updated.
+     *
      * @return the exact time the message was updated
      */
     OffsetDateTime updatedAt();
 
     /**
+     * Checks whether server-side batched operations are enabled.
+     *
      * @return indicates whether server-side batched operations are enabled
      */
     boolean isBatchedOperationsEnabled();
 
     /**
+     * Checks whether this subscription has dead letter support when a message expires.
+     *
      * @return indicates whether this subscription has dead letter support when a message expires
      */
     boolean isDeadLetteringEnabledForExpiredMessages();
 
     /**
+     * Checks whether the subscription supports sessions.
+     *
      * @return indicates whether the subscription supports sessions
      */
     boolean isSessionEnabled();
 
     /**
+     * Gets the duration of peek-lock which is the amount of time that the message is locked for other receivers.
+     *
      * @return the duration of peek-lock which is the amount of time that the message is locked for other receivers
      */
     long lockDurationInSeconds();
 
     /**
+     * Gets the idle duration after which the subscription is automatically deleted.
+     *
      * @return the idle duration after which the subscription is automatically deleted.
      */
     long deleteOnIdleDurationInMinutes();
 
     /**
+     * Gets the duration after which the message expires.
+     *
      * @return the duration after which the message expires, starting from when the message is sent to subscription.
      */
     Duration defaultMessageTtlDuration();
 
     /**
+     * Gets the maximum number of a message delivery before marking it as dead-lettered.
+     *
      * @return the maximum number of a message delivery before marking it as dead-lettered
      */
     int maxDeliveryCountBeforeDeadLetteringMessage();
 
     /**
+     * Gets the number of messages in the subscription.
+     *
      * @return the number of messages in the subscription
      */
     long messageCount();
 
     /**
+     * Gets number of active messages in the subscription.
+     *
      * @return number of active messages in the subscription
      */
     long activeMessageCount();
 
     /**
+     * Gets number of messages in the dead-letter subscription.
+     *
      * @return number of messages in the dead-letter subscription
      */
     long deadLetterMessageCount();
 
     /**
+     * Gets number of messages sent to the subscription that are yet to be released for consumption.
+     *
      * @return number of messages sent to the subscription that are yet to be released
      * for consumption
      */
     long scheduledMessageCount();
 
     /**
+     * Gets number of messages transferred into dead letters.
+     *
      * @return number of messages transferred into dead letters
      */
     long transferDeadLetterMessageCount();
 
     /**
+     * Gets number of messages transferred to another queue, topic, or subscription.
+     *
      * @return number of messages transferred to another queue, topic, or subscription
      */
     long transferMessageCount();
 
     /**
+     * Gets the current status of the subscription.
+     *
      * @return the current status of the subscription
      */
     EntityStatus status();
 
     /**
+     * Checks whether subscription has dead letter support on filter evaluation exceptions.
+     *
      * @return indicates whether subscription has dead letter support on filter evaluation exceptions
      */
     boolean isDeadLetteringEnabledForFilterEvaluationFailedMessages();

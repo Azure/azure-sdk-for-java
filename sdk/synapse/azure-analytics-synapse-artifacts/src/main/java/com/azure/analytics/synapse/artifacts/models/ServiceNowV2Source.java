@@ -27,6 +27,11 @@ public final class ServiceNowV2Source extends TabularSource {
      */
     private ExpressionV2 expression;
 
+    /*
+     * Page size of the result. Type: integer (or Expression with resultType integer).
+     */
+    private Object pageSize;
+
     /**
      * Creates an instance of ServiceNowV2Source class.
      */
@@ -60,6 +65,26 @@ public final class ServiceNowV2Source extends TabularSource {
      */
     public ServiceNowV2Source setExpression(ExpressionV2 expression) {
         this.expression = expression;
+        return this;
+    }
+
+    /**
+     * Get the pageSize property: Page size of the result. Type: integer (or Expression with resultType integer).
+     * 
+     * @return the pageSize value.
+     */
+    public Object getPageSize() {
+        return this.pageSize;
+    }
+
+    /**
+     * Set the pageSize property: Page size of the result. Type: integer (or Expression with resultType integer).
+     * 
+     * @param pageSize the pageSize value to set.
+     * @return the ServiceNowV2Source object itself.
+     */
+    public ServiceNowV2Source setPageSize(Object pageSize) {
+        this.pageSize = pageSize;
         return this;
     }
 
@@ -121,6 +146,7 @@ public final class ServiceNowV2Source extends TabularSource {
         jsonWriter.writeUntypedField("additionalColumns", getAdditionalColumns());
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeJsonField("expression", this.expression);
+        jsonWriter.writeUntypedField("pageSize", this.pageSize);
         if (getAdditionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -159,6 +185,8 @@ public final class ServiceNowV2Source extends TabularSource {
                     deserializedServiceNowV2Source.type = reader.getString();
                 } else if ("expression".equals(fieldName)) {
                     deserializedServiceNowV2Source.expression = ExpressionV2.fromJson(reader);
+                } else if ("pageSize".equals(fieldName)) {
+                    deserializedServiceNowV2Source.pageSize = reader.readUntyped();
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();

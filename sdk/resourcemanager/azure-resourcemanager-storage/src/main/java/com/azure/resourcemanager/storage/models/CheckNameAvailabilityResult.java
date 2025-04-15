@@ -19,6 +19,8 @@ public class CheckNameAvailabilityResult {
     }
 
     /**
+     * Checks whether the name is available for you to use.
+     *
      * @return a boolean value that indicates whether the name is available for you to use. If true, the name is
      *     available. If false, the name has already been taken or invalid and cannot be used.
      */
@@ -27,6 +29,8 @@ public class CheckNameAvailabilityResult {
     }
 
     /**
+     * Gets the reason that a storage account name could not be used.
+     *
      * @return the reason that a storage account name could not be used. The Reason element is only returned if
      *     NameAvailable is false. Possible values include: 'AccountNameInvalid', 'AlreadyExists'.
      */
@@ -34,7 +38,11 @@ public class CheckNameAvailabilityResult {
         return inner.reason();
     }
 
-    /** @return an error message explaining the Reason value in more detail */
+    /**
+     * Gets an error message explaining the Reason value in more detail.
+     *
+     * @return an error message explaining the Reason value in more detail
+     */
     public String message() {
         return inner.message();
     }

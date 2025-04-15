@@ -27,9 +27,17 @@ public interface HasNetworkInterfaces extends HasId {
      */
     Mono<NetworkInterface> getPrimaryNetworkInterfaceAsync();
 
-    /** @return the resource id of the primary network interface associated with this resource */
+    /**
+     * Gets the resource ID of the primary network interface associated with this resource.
+     *
+     * @return the resource ID of the primary network interface associated with this resource
+     */
     String primaryNetworkInterfaceId();
 
-    /** @return the list of resource IDs of the network interfaces associated with this resource */
+    /**
+     * Gets the list of resource IDs of the network interfaces associated with this resource.
+     *
+     * @return the list of resource IDs of the network interfaces associated with this resource
+     */
     List<String> networkInterfaceIds();
 }

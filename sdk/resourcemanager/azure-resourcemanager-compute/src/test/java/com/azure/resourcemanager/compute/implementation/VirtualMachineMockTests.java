@@ -8,9 +8,9 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.management.serializer.SerializerFactory;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
@@ -64,8 +64,8 @@ public class VirtualMachineMockTests {
 
     private ComputeManager mockComputeManager() {
         HttpClient httpClient = mockHttpClient();
-        AzureProfile mockProfile
-            = new AzureProfile(UUID.randomUUID().toString(), UUID.randomUUID().toString(), AzureEnvironment.AZURE);
+        AzureProfile mockProfile = new AzureProfile(UUID.randomUUID().toString(), UUID.randomUUID().toString(),
+            AzureCloud.AZURE_PUBLIC_CLOUD);
         ComputeManager computeManager
             = ComputeManager.authenticate(new HttpPipelineBuilder().httpClient(httpClient).build(), mockProfile);
         stateHolder.nextLinkUrl = String.format("%s%s?filter=%s", HOST, NEXT_LINK_PATH, QUERY);

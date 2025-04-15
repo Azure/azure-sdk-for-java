@@ -11,13 +11,13 @@ public final class JsonWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JsonWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"JsonWriteSettings\",\"filePattern\":\"databomjby\",\"\":{\"jwfncsaaylcpgzmx\":\"datarkbzra\",\"unntqqguhv\":\"datagppqajdm\",\"fwfuxdtpjcs\":\"datawrziminetb\",\"yfftqombdsgqxa\":\"datakedlclxxq\"}}")
+            "{\"type\":\"JsonWriteSettings\",\"filePattern\":\"dataqtu\",\"\":{\"hfjqpxydpamctzm\":\"datarbrv\",\"sgkouenpgkxyr\":\"datarhccdgunsjssreo\"}}")
             .toObject(JsonWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JsonWriteSettings model = new JsonWriteSettings().withFilePattern("databomjby");
+        JsonWriteSettings model = new JsonWriteSettings().withFilePattern("dataqtu");
         model = BinaryData.fromObject(model).toObject(JsonWriteSettings.class);
     }
 }

@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.benchmark;
 
+import com.azure.core.credential.TokenCredential;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
@@ -22,6 +23,7 @@ import com.azure.cosmos.models.CosmosContainerIdentity;
 import com.azure.cosmos.models.CosmosMicrometerMetricsOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.ThroughputProperties;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.codahale.metrics.ConsoleReporter;
 import com.codahale.metrics.CsvReporter;
 import com.codahale.metrics.Meter;
@@ -73,7 +75,8 @@ abstract class AsyncBenchmark<T> {
     private boolean collectionCreated;
 
     final Logger logger;
-    final CosmosAsyncClient cosmosClient;
+    final CosmosAsyncClient benchmarkWorkloadClient;
+    final CosmosClient resultUploaderClient;
     CosmosAsyncContainer cosmosAsyncContainer;
     CosmosAsyncDatabase cosmosAsyncDatabase;
     final String partitionKey;
@@ -81,6 +84,12 @@ abstract class AsyncBenchmark<T> {
     final List<PojoizedJson> docsToRead;
     final Semaphore concurrencyControlSemaphore;
     Timer latency;
+
+    private static final TokenCredential CREDENTIAL = new DefaultAzureCredentialBuilder()
+            .managedIdentityClientId(Configuration.getAadManagedIdentityId())
+            .authorityHost(Configuration.getAadLoginUri())
+            .tenantId(Configuration.getAadTenantId())
+            .build();
 
     private AtomicBoolean warmupMode = new AtomicBoolean(false);
 
@@ -99,19 +108,29 @@ abstract class AsyncBenchmark<T> {
                     + "}");
         }
 
-        CosmosClientBuilder cosmosClientBuilder = new CosmosClientBuilder()
-            .endpoint(cfg.getServiceEndpoint())
-            .key(cfg.getMasterKey())
-            .preferredRegions(cfg.getPreferredRegionsList())
-            .consistencyLevel(cfg.getConsistencyLevel())
-            .userAgentSuffix(configuration.getApplicationName())
-            .contentResponseOnWriteEnabled(cfg.isContentResponseOnWriteEnabled());
+        boolean isManagedIdentityRequired = cfg.isManagedIdentityRequired();
+
+        CosmosClientBuilder benchmarkSpecificClientBuilder = isManagedIdentityRequired ?
+                new CosmosClientBuilder()
+                        .credential(CREDENTIAL) :
+                new CosmosClientBuilder()
+                        .key(cfg.getMasterKey());
+
+        benchmarkSpecificClientBuilder = benchmarkSpecificClientBuilder
+                .endpoint(cfg.getServiceEndpoint())
+                .preferredRegions(cfg.getPreferredRegionsList())
+                .consistencyLevel(cfg.getConsistencyLevel())
+                .userAgentSuffix(configuration.getApplicationName())
+                .contentResponseOnWriteEnabled(cfg.isContentResponseOnWriteEnabled());
+
+        CosmosClientBuilder resultUploadClientBuilder = new CosmosClientBuilder()
+                .consistencyLevel(cfg.getConsistencyLevel())
+                .userAgentSuffix(configuration.getApplicationName());
 
         clientBuilderAccessor
-            .setRegionScopedSessionCapturingEnabled(cosmosClientBuilder, cfg.isRegionScopedSessionContainerEnabled());
+            .setRegionScopedSessionCapturingEnabled(benchmarkSpecificClientBuilder, cfg.isRegionScopedSessionContainerEnabled());
 
         CosmosClientTelemetryConfig telemetryConfig = new CosmosClientTelemetryConfig()
-            .sendClientTelemetryToService(cfg.isClientTelemetryEnabled())
             .diagnosticsThresholds(
                 new CosmosDiagnosticsThresholds()
                     .setPointOperationLatencyThreshold(cfg.getPointOperationThreshold())
@@ -124,44 +143,52 @@ abstract class AsyncBenchmark<T> {
 
         MeterRegistry registry = configuration.getAzureMonitorMeterRegistry();
         if (registry != null) {
-            logger.info("USING AZURE METRIC REGISTRY - isClientTelemetryEnabled {}", cfg.isClientTelemetryEnabled());
+            logger.info("USING AZURE METRIC REGISTRY");
             telemetryConfig.metricsOptions(new CosmosMicrometerMetricsOptions().meterRegistry(registry));
         } else {
             registry = configuration.getGraphiteMeterRegistry();
 
             if (registry != null) {
-                logger.info("USING GRAPHITE METRIC REGISTRY - isClientTelemetryEnabled {}", cfg.isClientTelemetryEnabled());
+                logger.info("USING GRAPHITE METRIC REGISTRY");
                 telemetryConfig.metricsOptions(new CosmosMicrometerMetricsOptions().meterRegistry(registry));
             } else {
-                logger.info("USING DEFAULT/GLOBAL METRIC REGISTRY - isClientTelemetryEnabled {}", cfg.isClientTelemetryEnabled());
+                logger.info("USING DEFAULT/GLOBAL METRIC REGISTRY");
                 telemetryConfig.metricsOptions(
                     new CosmosMicrometerMetricsOptions().meterRegistry(null));
             }
         }
 
-        cosmosClientBuilder.clientTelemetryConfig(telemetryConfig);
+        benchmarkSpecificClientBuilder.clientTelemetryConfig(telemetryConfig);
 
         if (cfg.getConnectionMode().equals(ConnectionMode.DIRECT)) {
-            cosmosClientBuilder = cosmosClientBuilder.directMode(DirectConnectionConfig.getDefaultConfig());
+            benchmarkSpecificClientBuilder = benchmarkSpecificClientBuilder.directMode(DirectConnectionConfig.getDefaultConfig());
+            resultUploadClientBuilder = resultUploadClientBuilder.directMode(DirectConnectionConfig.getDefaultConfig());
         } else {
             GatewayConnectionConfig gatewayConnectionConfig = new GatewayConnectionConfig();
             gatewayConnectionConfig.setMaxConnectionPoolSize(cfg.getMaxConnectionPoolSize());
-            cosmosClientBuilder = cosmosClientBuilder.gatewayMode(gatewayConnectionConfig);
+            benchmarkSpecificClientBuilder = benchmarkSpecificClientBuilder.gatewayMode(gatewayConnectionConfig);
+            resultUploadClientBuilder = resultUploadClientBuilder.gatewayMode(gatewayConnectionConfig);
         }
 
-        cosmosClient = cosmosClientBuilder.buildAsyncClient();
-        CosmosClient syncClient = cosmosClientBuilder
-            .endpoint(StringUtils.isNotEmpty(configuration.getServiceEndpointForRunResultsUploadAccount()) ? configuration.getServiceEndpointForRunResultsUploadAccount() : configuration.getServiceEndpoint())
-            .key(StringUtils.isNotEmpty(configuration.getMasterKeyForRunResultsUploadAccount()) ? configuration.getMasterKeyForRunResultsUploadAccount() : configuration.getMasterKey())
-            .buildClient();
+        benchmarkWorkloadClient = benchmarkSpecificClientBuilder.buildAsyncClient();
+        this.resultUploaderClient = resultUploadClientBuilder
+                .endpoint(StringUtils.isNotEmpty(configuration.getServiceEndpointForRunResultsUploadAccount()) ? configuration.getServiceEndpointForRunResultsUploadAccount() : configuration.getServiceEndpoint())
+                .key(StringUtils.isNotEmpty(configuration.getMasterKeyForRunResultsUploadAccount()) ? configuration.getMasterKeyForRunResultsUploadAccount() : configuration.getMasterKey())
+                .buildClient();
 
         try {
-            cosmosAsyncDatabase = cosmosClient.getDatabase(this.configuration.getDatabaseId());
+            cosmosAsyncDatabase = benchmarkWorkloadClient.getDatabase(this.configuration.getDatabaseId());
             cosmosAsyncDatabase.read().block();
         } catch (CosmosException e) {
             if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
-                cosmosClient.createDatabase(cfg.getDatabaseId()).block();
-                cosmosAsyncDatabase = cosmosClient.getDatabase(cfg.getDatabaseId());
+
+                if (isManagedIdentityRequired) {
+                    throw new IllegalStateException("If managed identity is required, " +
+                        "either pre-create a database and a container or use the management SDK.");
+                }
+
+                benchmarkWorkloadClient.createDatabase(cfg.getDatabaseId()).block();
+                cosmosAsyncDatabase = benchmarkWorkloadClient.getDatabase(cfg.getDatabaseId());
                 logger.info("Database {} is created for this test", this.configuration.getDatabaseId());
                 databaseCreated = true;
             } else {
@@ -175,6 +202,12 @@ abstract class AsyncBenchmark<T> {
 
         } catch (CosmosException e) {
             if (e.getStatusCode() == HttpConstants.StatusCodes.NOTFOUND) {
+
+                if (isManagedIdentityRequired) {
+                    throw new IllegalStateException("If managed identity is required, " +
+                        "either pre-create a database and a container or use the management SDK.");
+                }
+
                 cosmosAsyncDatabase.createContainer(
                     this.configuration.getCollectionId(),
                     Configuration.DEFAULT_PARTITION_KEY_PATH,
@@ -208,8 +241,8 @@ abstract class AsyncBenchmark<T> {
         ArrayList<Flux<PojoizedJson>> createDocumentObservables = new ArrayList<>();
 
         if (configuration.getOperationType() != Configuration.Operation.WriteLatency
-                && configuration.getOperationType() != Configuration.Operation.WriteThroughput
-                && configuration.getOperationType() != Configuration.Operation.ReadMyWrites) {
+            && configuration.getOperationType() != Configuration.Operation.WriteThroughput
+            && configuration.getOperationType() != Configuration.Operation.ReadMyWrites) {
             logger.info("PRE-populating {} documents ....", cfg.getNumberOfPreCreatedDocuments());
             String dataFieldValue = RandomStringUtils.randomAlphabetic(cfg.getDocumentDataFieldSize());
             for (int i = 0; i < cfg.getNumberOfPreCreatedDocuments(); i++) {
@@ -224,11 +257,12 @@ abstract class AsyncBenchmark<T> {
                         if (!(error instanceof CosmosException)) {
                             return false;
                         }
-                        final CosmosException cosmosException = (CosmosException)error;
+                        final CosmosException cosmosException = (CosmosException) error;
                         if (cosmosException.getStatusCode() == 410 ||
-                                cosmosException.getStatusCode() == 408 ||
-                                cosmosException.getStatusCode() == 429 ||
-                                cosmosException.getStatusCode() == 503) {
+                            cosmosException.getStatusCode() == 408 ||
+                            cosmosException.getStatusCode() == 429 ||
+                            cosmosException.getStatusCode() == 500 ||
+                            cosmosException.getStatusCode() == 503) {
                             return true;
                         }
 
@@ -239,7 +273,7 @@ abstract class AsyncBenchmark<T> {
                             if (!(error instanceof CosmosException)) {
                                 return false;
                             }
-                            final CosmosException cosmosException = (CosmosException)error;
+                            final CosmosException cosmosException = (CosmosException) error;
                             if (cosmosException.getStatusCode() == 409) {
                                 return true;
                             }
@@ -272,8 +306,8 @@ abstract class AsyncBenchmark<T> {
 
         if (configuration.getGraphiteEndpoint() != null) {
             final Graphite graphite = new Graphite(new InetSocketAddress(
-                    configuration.getGraphiteEndpoint(),
-                    configuration.getGraphiteEndpointPort()));
+                configuration.getGraphiteEndpoint(),
+                configuration.getGraphiteEndpointPort()));
             reporter = GraphiteReporter.forRegistry(metricsRegistry)
                 .prefixedWith(configuration.getOperationType().name())
                 .convertDurationsTo(TimeUnit.MILLISECONDS)
@@ -296,7 +330,7 @@ abstract class AsyncBenchmark<T> {
             resultReporter = CosmosTotalResultReporter
                 .forRegistry(
                     metricsRegistry,
-                    syncClient.getDatabase(configuration.getResultUploadDatabase()).getContainer(configuration.getResultUploadContainer()),
+                    this.resultUploaderClient.getDatabase(configuration.getResultUploadDatabase()).getContainer(configuration.getResultUploadContainer()),
                     configuration)
                 .convertRatesTo(TimeUnit.SECONDS)
                 .convertDurationsTo(TimeUnit.MILLISECONDS).build();
@@ -304,13 +338,19 @@ abstract class AsyncBenchmark<T> {
             resultReporter = null;
         }
 
+
         boolean shouldOpenConnectionsAndInitCaches = configuration.getConnectionMode() == ConnectionMode.DIRECT
                 && configuration.isProactiveConnectionManagementEnabled()
                 && !configuration.isUseUnWarmedUpContainer();
 
-        CosmosClientBuilder cosmosClientBuilderForOpeningConnections = new CosmosClientBuilder()
+        CosmosClientBuilder cosmosClientBuilderForOpeningConnections = isManagedIdentityRequired ?
+                new CosmosClientBuilder()
+                        .credential(CREDENTIAL) :
+                new CosmosClientBuilder()
+                        .key(configuration.getMasterKey());
+
+        cosmosClientBuilderForOpeningConnections = cosmosClientBuilderForOpeningConnections
                 .endpoint(configuration.getServiceEndpoint())
-                .key(configuration.getMasterKey())
                 .preferredRegions(configuration.getPreferredRegionsList())
                 .directMode();
 
@@ -330,17 +370,17 @@ abstract class AsyncBenchmark<T> {
 
             if (configuration.getAggressiveWarmupDuration() == Duration.ZERO) {
 
-                cosmosClientBuilder = cosmosClientBuilderForOpeningConnections
+                benchmarkSpecificClientBuilder = cosmosClientBuilderForOpeningConnections
                         .openConnectionsAndInitCaches(cosmosContainerProactiveInitConfigBuilder.build())
                         .endpointDiscoveryEnabled(true);
             } else {
 
                 logger.info("Setting an aggressive proactive connection establishment duration of {}", configuration.getAggressiveWarmupDuration());
 
-                cosmosContainerProactiveInitConfigBuilder = cosmosContainerProactiveInitConfigBuilder
+                cosmosContainerProactiveInitConfigBuilder
                         .setAggressiveWarmupDuration(configuration.getAggressiveWarmupDuration());
 
-                cosmosClientBuilder = cosmosClientBuilder
+                benchmarkSpecificClientBuilder = benchmarkSpecificClientBuilder
                         .openConnectionsAndInitCaches(cosmosContainerProactiveInitConfigBuilder.build())
                         .endpointDiscoveryEnabled(true);
             }
@@ -350,10 +390,20 @@ abstract class AsyncBenchmark<T> {
                 logger.info("Min connection pool size per endpoint : {}", System.getProperty("COSMOS.MIN_CONNECTION_POOL_SIZE_PER_ENDPOINT"));
             }
 
-            CosmosAsyncClient openConnectionsAsyncClient = cosmosClientBuilder.buildAsyncClient();
-            openConnectionsAsyncClient.createDatabaseIfNotExists(cosmosAsyncDatabase.getId()).block();
-            CosmosAsyncDatabase databaseForProactiveConnectionManagement = openConnectionsAsyncClient.getDatabase(cosmosAsyncDatabase.getId());
-            databaseForProactiveConnectionManagement.createContainerIfNotExists(configuration.getCollectionId(), "/id").block();
+            CosmosAsyncDatabase databaseForProactiveConnectionManagement;
+            try (CosmosAsyncClient openConnectionsAsyncClient = benchmarkSpecificClientBuilder.buildAsyncClient()) {
+
+                if (!isManagedIdentityRequired) {
+                    openConnectionsAsyncClient.createDatabaseIfNotExists(cosmosAsyncDatabase.getId()).block();
+                }
+
+                databaseForProactiveConnectionManagement = openConnectionsAsyncClient.getDatabase(cosmosAsyncDatabase.getId());
+            }
+
+            if (!isManagedIdentityRequired) {
+                databaseForProactiveConnectionManagement.createContainerIfNotExists(configuration.getCollectionId(), "/id").block();
+            }
+
             cosmosAsyncContainer = databaseForProactiveConnectionManagement.getContainer(configuration.getCollectionId());
         }
 
@@ -361,16 +411,30 @@ abstract class AsyncBenchmark<T> {
 
             logger.info("Creating unwarmed container");
 
-            CosmosAsyncClient clientForUnwarmedContainer = new CosmosClientBuilder()
+            CosmosClientBuilder clientBuilderForUnwarmedContainer = isManagedIdentityRequired ?
+                    new CosmosClientBuilder()
+                            .credential(CREDENTIAL) :
+                    new CosmosClientBuilder()
+                            .key(configuration.getMasterKey());
+
+            CosmosAsyncDatabase databaseForUnwarmedContainer;
+            try (CosmosAsyncClient clientForUnwarmedContainer = clientBuilderForUnwarmedContainer
                     .endpoint(configuration.getServiceEndpoint())
-                    .key(configuration.getMasterKey())
                     .preferredRegions(configuration.getPreferredRegionsList())
                     .directMode()
-                    .buildAsyncClient();
+                    .buildAsyncClient()) {
 
-            clientForUnwarmedContainer.createDatabaseIfNotExists(configuration.getDatabaseId()).block();
-            CosmosAsyncDatabase databaseForUnwarmedContainer = clientForUnwarmedContainer.getDatabase(configuration.getDatabaseId());
-            databaseForUnwarmedContainer.createContainerIfNotExists(configuration.getCollectionId(), "/id").block();
+                if (!isManagedIdentityRequired) {
+                    clientForUnwarmedContainer.createDatabaseIfNotExists(configuration.getDatabaseId()).block();
+                }
+
+                databaseForUnwarmedContainer = clientForUnwarmedContainer.getDatabase(configuration.getDatabaseId());
+            }
+
+            if (!isManagedIdentityRequired) {
+                databaseForUnwarmedContainer.createContainerIfNotExists(configuration.getCollectionId(), "/id").block();
+            }
+
             cosmosAsyncContainer = databaseForUnwarmedContainer.getContainer(configuration.getCollectionId());
         }
     }
@@ -387,7 +451,8 @@ abstract class AsyncBenchmark<T> {
             logger.info("Deleted temporary collection {} created for this test", this.configuration.getCollectionId());
         }
 
-        cosmosClient.close();
+        benchmarkWorkloadClient.close();
+        resultUploaderClient.close();
     }
 
     protected void onSuccess() {

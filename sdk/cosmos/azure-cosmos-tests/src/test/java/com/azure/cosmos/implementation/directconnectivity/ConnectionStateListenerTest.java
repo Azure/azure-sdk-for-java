@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.directconnectivity;
 
+import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
@@ -13,6 +14,8 @@ import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.UserAgentContainer;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
+import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetryInfo;
 import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.RequestResponseType;
 import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.SslContextUtils;
 import com.azure.cosmos.implementation.directconnectivity.TcpServerMock.TcpServer;
@@ -23,6 +26,7 @@ import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdConnectionS
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpoint;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdRequestManager;
 import com.azure.cosmos.implementation.routing.PartitionKeyRangeIdentity;
+import com.azure.cosmos.implementation.routing.RegionalRoutingContext;
 import io.netty.handler.ssl.SslContext;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
@@ -31,8 +35,11 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.channels.ClosedChannelException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -81,7 +88,7 @@ public class ConnectionStateListenerTest {
         boolean isTcpConnectionEndpointRediscoveryEnabled,
         RequestResponseType responseType,
         boolean markUnhealthy,
-        boolean markUnhealthyWhenServerShutdown) throws ExecutionException, InterruptedException {
+        boolean markUnhealthyWhenServerShutdown) throws ExecutionException, InterruptedException, URISyntaxException {
 
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(DirectConnectionConfig.getDefaultConfig());
         connectionPolicy.setTcpConnectionEndpointRediscoveryEnabled(isTcpConnectionEndpointRediscoveryEnabled);
@@ -93,18 +100,35 @@ public class ConnectionStateListenerTest {
         Configs config = Mockito.mock(Configs.class);
         Mockito.doReturn(sslContext).when(config).getSslContext(false, false);
 
+        ClientTelemetry clientTelemetry = Mockito.mock(ClientTelemetry.class);
+        ClientTelemetryInfo clientTelemetryInfo = new ClientTelemetryInfo(
+            "testMachine",
+            "testClient",
+            "testProcess",
+            "testApp",
+            ConnectionMode.DIRECT,
+            "test-cdb-account",
+            "Test Region 1",
+            "Linux",
+            false,
+            Arrays.asList("Test Region 1", "Test Region 2"));
+
+        Mockito.when(clientTelemetry.getClientTelemetryInfo()).thenReturn(clientTelemetryInfo);
+
         RntbdTransportClient client = new RntbdTransportClient(
             config,
             connectionPolicy,
             new UserAgentContainer(),
             addressResolver,
-            null,
+            clientTelemetry,
             null);
 
         RxDocumentServiceRequest req =
             RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Document,
                 "dbs/fakedb/colls/fakeColls",
                 getDocumentDefinition(), new HashMap<>());
+        req.requestContext.regionalRoutingContextToRoute = new RegionalRoutingContext(new URI("https://localhost:8080"));
+
         req.setPartitionKeyRangeIdentity(new PartitionKeyRangeIdentity("fakeCollectionId","fakePartitionKeyRangeId"));
 
         // Validate connectionStateListener will always track the latest Uri

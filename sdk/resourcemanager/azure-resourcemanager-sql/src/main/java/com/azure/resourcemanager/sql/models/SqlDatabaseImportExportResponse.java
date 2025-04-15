@@ -13,30 +13,66 @@ import com.azure.resourcemanager.sql.fluent.models.ImportExportOperationResultIn
 @Fluent
 public interface SqlDatabaseImportExportResponse
     extends Indexable, HasInnerModel<ImportExportOperationResultInner>, HasId, HasName {
-    /** @return the request type of the operation */
+    /**
+     * Gets the request type of the operation.
+     *
+     * @return the request type of the operation
+     */
     String requestType();
 
-    /** @return the UUID of the operation */
+    /**
+     * Gets the UUID of the operation.
+     *
+     * @return the UUID of the operation
+     */
     String requestId();
 
-    /** @return the name of the server */
+    /**
+     * Gets the name of the server.
+     *
+     * @return the name of the server
+     */
     String serverName();
 
-    /** @return the name of the database */
+    /**
+     * Gets the name of the database.
+     *
+     * @return the name of the database
+     */
     String databaseName();
 
-    /** @return the status message returned from the server */
+    /**
+     * Gets the status message returned from the server.
+     *
+     * @return the status message returned from the server
+     */
     String status();
 
-    /** @return the operation status last modified time */
+    /**
+     * Gets the operation status last modified time.
+     *
+     * @return the operation status last modified time
+     */
     String lastModifiedTime();
 
-    /** @return the operation queued time */
+    /**
+     * Gets the operation queued time.
+     *
+     * @return the operation queued time
+     */
     String queuedTime();
 
-    /** @return the blob uri */
+    /**
+     * Gets the blob uri.
+     *
+     * @return the blob uri
+     */
     String blobUri();
 
-    /** @return the error message returned from the server */
+    /**
+     * Gets the error message returned from the server.
+     *
+     * @return the error message returned from the server
+     */
     String errorMessage();
 }
