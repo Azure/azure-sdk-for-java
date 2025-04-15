@@ -259,7 +259,7 @@ stages:
               parameters:
                 Paths:
                   - sdk/**/*.md
-                  - '!**/*.xml'
+                  - '!**/pom*.xml'
             - download: current
               displayName: 'Download Artifact: packages'
               artifact: packages
