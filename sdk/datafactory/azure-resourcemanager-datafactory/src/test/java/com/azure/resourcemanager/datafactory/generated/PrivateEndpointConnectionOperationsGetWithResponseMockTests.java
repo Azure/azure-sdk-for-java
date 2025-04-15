@@ -6,8 +6,8 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.PrivateEndpointConnectionResource;
@@ -21,22 +21,23 @@ public final class PrivateEndpointConnectionOperationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"siinm\",\"privateEndpoint\":{\"id\":\"dtuydynugkjzp\"},\"privateLinkServiceConnectionState\":{\"status\":\"rfhpcyuaj\",\"description\":\"ou\",\"actionsRequired\":\"x\"}},\"name\":\"uzls\",\"type\":\"bsghzund\",\"etag\":\"bmuvgfkdea\",\"id\":\"xdwwraimjkaz\"}";
+            = "{\"properties\":{\"provisioningState\":\"uzhidpxv\",\"privateEndpoint\":{\"id\":\"aftfdxhfusjxnadi\"},\"privateLinkServiceConnectionState\":{\"status\":\"dzfhzihrxgvubs\",\"description\":\"jr\",\"actionsRequired\":\"oujvz\"}},\"name\":\"isqflmalmxv\",\"type\":\"dp\",\"etag\":\"njkenrl\",\"id\":\"mslpg\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PrivateEndpointConnectionResource response = manager.privateEndpointConnectionOperations()
-            .getWithResponse("pzabbfdhissde", "yecj", "fafmkf", "yyfthsafv", com.azure.core.util.Context.NONE)
+            .getWithResponse("vbvkvomnoslbkrh", "nvozjudg", "dsflitmm", "vuzofuebabrsfu",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("xdwwraimjkaz", response.id());
-        Assertions.assertEquals("rfhpcyuaj", response.properties().privateLinkServiceConnectionState().status());
-        Assertions.assertEquals("ou", response.properties().privateLinkServiceConnectionState().description());
-        Assertions.assertEquals("x", response.properties().privateLinkServiceConnectionState().actionsRequired());
+        Assertions.assertEquals("mslpg", response.id());
+        Assertions.assertEquals("dzfhzihrxgvubs", response.properties().privateLinkServiceConnectionState().status());
+        Assertions.assertEquals("jr", response.properties().privateLinkServiceConnectionState().description());
+        Assertions.assertEquals("oujvz", response.properties().privateLinkServiceConnectionState().actionsRequired());
     }
 }

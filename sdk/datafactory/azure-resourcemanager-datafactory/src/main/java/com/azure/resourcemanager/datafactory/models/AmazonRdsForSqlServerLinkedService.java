@@ -52,7 +52,7 @@ public final class AmazonRdsForSqlServerLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private AmazonRdsForSqlServerLinkedServiceTypeProperties innerTypeProperties() {
+    AmazonRdsForSqlServerLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

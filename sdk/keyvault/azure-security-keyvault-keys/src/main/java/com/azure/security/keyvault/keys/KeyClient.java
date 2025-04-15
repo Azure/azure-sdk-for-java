@@ -850,7 +850,7 @@ public final class KeyClient {
      * {@link KeyVaultKey retrieved key}.</p>
      * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.getKey#String-String -->
      * <pre>
-     * String keyVersion = &quot;6A385B124DEF4096AF1361A85B16C204&quot;;
+     * String keyVersion = &quot;&lt;key-version&gt;&quot;;
      * KeyVaultKey keyWithVersion = keyClient.getKey&#40;&quot;keyName&quot;, keyVersion&#41;;
      *
      * System.out.printf&#40;&quot;Retrieved key with name: %s and: id %s%n&quot;, keyWithVersion.getName&#40;&#41;,
@@ -884,7 +884,7 @@ public final class KeyClient {
      * {@link KeyVaultKey retrieved key}.</p>
      * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.getKeyWithResponse#String-String-Context -->
      * <pre>
-     * String keyVersion = &quot;6A385B124DEF4096AF1361A85B16C204&quot;;
+     * String keyVersion = &quot;&lt;key-version&gt;&quot;;
      * Response&lt;KeyVaultKey&gt; getKeyResponse =
      *     keyClient.getKeyWithResponse&#40;&quot;keyName&quot;, keyVersion, new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
      *
@@ -1841,7 +1841,7 @@ public final class KeyClient {
      * <p>Releases a {@link KeyVaultKey key}. Prints out the signed object that contains the release key.</p>
      * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.releaseKey#String-String-String -->
      * <pre>
-     * String myKeyVersion = &quot;6A385B124DEF4096AF1361A85B16C204&quot;;
+     * String myKeyVersion = &quot;&lt;key-version&gt;&quot;;
      * String myTargetAttestationToken = &quot;someAttestationToken&quot;;
      * ReleaseKeyResult releaseKeyVersionResult =
      *     keyClient.releaseKey&#40;&quot;keyName&quot;, myKeyVersion, myTargetAttestationToken&#41;;
@@ -1876,7 +1876,7 @@ public final class KeyClient {
      * {@link Response HTTP Response} details and the signed object that contains the release key.</p>
      * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.releaseKeyWithResponse#String-String-String-ReleaseKeyOptions-Context -->
      * <pre>
-     * String releaseKeyVersion = &quot;6A385B124DEF4096AF1361A85B16C204&quot;;
+     * String releaseKeyVersion = &quot;&lt;key-version&gt;&quot;;
      * String someTargetAttestationToken = &quot;someAttestationToken&quot;;
      * ReleaseKeyOptions releaseKeyOptions = new ReleaseKeyOptions&#40;&#41;
      *     .setAlgorithm&#40;KeyExportEncryptionAlgorithm.RSA_AES_KEY_WRAP_256&#41;
@@ -2145,5 +2145,103 @@ public final class KeyClient {
 
         return new SimpleResponse<>(response, mapKeyRotationPolicyImpl(response.getValue()
             .toObject(com.azure.security.keyvault.keys.implementation.models.KeyRotationPolicy.class)));
+    }
+
+    /**
+     * Gets the public part of the latest version of the specified {@link KeyVaultKey key}, including its key
+     * attestation information. The get key operation is applicable to all {@link KeyType key types} and it requires the
+     * {@code keys/get} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets the latest version of the {@link KeyVaultKey key} in the key vault, including its attestation
+     * information. Prints out the details of the {@link KeyVaultKey retrieved key}.</p>
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.getKeyAttestation#String -->
+     * <pre>
+     * KeyVaultKey keyVaultKey = keyClient.getKeyAttestation&#40;&quot;keyName&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Retrieved key with name: %s and: id %s%n&quot;, keyVaultKey.getName&#40;&#41;,
+     *     keyVaultKey.getId&#40;&#41;&#41;;
+     *
+     * KeyAttestation keyAttestationInfo = keyVaultKey.getProperties&#40;&#41;.getKeyAttestation&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Attestation information details: %n&quot;
+     *         + &quot;Certificate PEM file: %s%n&quot;
+     *         + &quot;Private key attestation: %s%n&quot;
+     *         + &quot;Public key attestation: %s%n&quot;
+     *         + &quot;Version: %s&quot;,
+     *     Base64Url.encode&#40;keyAttestationInfo.getCertificatePemFile&#40;&#41;&#41;,
+     *     Base64Url.encode&#40;keyAttestationInfo.getPrivateKeyAttestation&#40;&#41;&#41;,
+     *     Base64Url.encode&#40;keyAttestationInfo.getPublicKeyAttestation&#40;&#41;&#41;,
+     *     keyAttestationInfo.getVersion&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.getKeyAttestation#String -->
+     *
+     * @param name The name of the {@link KeyVaultKey key}, cannot be {@code null}.
+     *
+     * @return The requested {@link KeyVaultKey key}. The content of the {@link KeyVaultKey key}  is {@code null} if
+     * both {@code name} and {@code version} are {@code null} or empty.
+     *
+     * @throws HttpResponseException If a valid {@code name} and a non-null/empty {@code version} is specified.
+     * @throws ResourceNotFoundException When a {@link KeyVaultKey key} with the provided {@code name} doesn't exist in
+     * the key vault or an empty/{@code null} {@code name} and a non-null/empty {@code version} is provided.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public KeyVaultKey getKeyAttestation(String name) {
+        return getKeyAttestationWithResponse(name, "", Context.NONE).getValue();
+    }
+
+    /**
+     * Gets the public part of the specified {@link KeyVaultKey key} and key version, including its key attestation
+     * information. The get key operation is applicable to all {@link KeyType key types} and it requires the
+     * {@code keys/get} permission.
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Gets a specific version of the {@link KeyVaultKey key} in the key vault, including its attestation
+     * information. Prints out the details of the {@link KeyVaultKey retrieved key}.</p>
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.getKeyAttestationWithResponse#String-String-Context -->
+     * <pre>
+     * String keyVersion = &quot;&lt;key-version&gt;&quot;;
+     * Response&lt;KeyVaultKey&gt; getKeyResponse =
+     *     keyClient.getKeyAttestationWithResponse&#40;&quot;keyName&quot;, keyVersion, new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
+     * KeyVaultKey keyVaultKey = getKeyResponse.getValue&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Retrieved key with name: %s and: id %s%n&quot;, keyVaultKey.getName&#40;&#41;, keyVaultKey.getId&#40;&#41;&#41;;
+     *
+     * KeyAttestation keyAttestationInfo = keyVaultKey.getProperties&#40;&#41;.getKeyAttestation&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Attestation information details: %n&quot;
+     *         + &quot;Certificate PEM file: %s%n&quot;
+     *         + &quot;Private key attestation: %s%n&quot;
+     *         + &quot;Public key attestation: %s%n&quot;
+     *         + &quot;Version: %s&quot;,
+     *     Base64Url.encode&#40;keyAttestationInfo.getCertificatePemFile&#40;&#41;&#41;,
+     *     Base64Url.encode&#40;keyAttestationInfo.getPrivateKeyAttestation&#40;&#41;&#41;,
+     *     Base64Url.encode&#40;keyAttestationInfo.getPublicKeyAttestation&#40;&#41;&#41;,
+     *     keyAttestationInfo.getVersion&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.getKeyAttestationWithResponse#String-String-Context -->
+     *
+     * @param name The name of the {@link KeyVaultKey key}, cannot be {@code null}.
+     * @param context Additional {@link Context} that is passed through the {@link HttpPipeline} during the service
+     * call.
+     * @param version The version of the {@link KeyVaultKey key}  to retrieve. If this is an empty string or
+     * {@code null}, this call is equivalent to calling {@link KeyClient#getKey(String)}, with the latest version
+     * being retrieved.
+     *
+     * @return A {@link Response} whose {@link Response#getValue() value} contains the requested
+     * {@link KeyVaultKey key}. The content of the {@link KeyVaultKey key} is {@code null} if both {@code name} and
+     * {@code version} are {@code null} or empty.
+     *
+     * @throws HttpResponseException If a valid {@code name} and a non-null/empty {@code version} is specified.
+     * @throws ResourceNotFoundException When a {@link KeyVaultKey key} with the provided {@code name} doesn't exist in
+     * the key vault or an empty/{@code null} {@code name} and a non-null/empty {@code version} is provided.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<KeyVaultKey> getKeyAttestationWithResponse(String name, String version, Context context) {
+        Response<BinaryData> response = callWithMappedException(
+            () -> implClient.getKeyAttestationWithResponse(name, version, new RequestOptions().setContext(context)),
+            KeyAsyncClient::mapGetKeyException);
+
+        return new SimpleResponse<>(response, createKeyVaultKey(response.getValue().toObject(KeyBundle.class)));
     }
 }

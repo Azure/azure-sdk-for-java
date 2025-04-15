@@ -28,11 +28,11 @@ import io.clientcore.core.utils.configuration.Configuration;
  * Once added to the pipeline, requests will have their "User-Agent" header set to "MyApp/1.0" by the
  * {@code UserAgentPolicy}.</p>
  *
- * <!-- src_embed io.clientcore.core.http.pipeline.SetUserAgentPolicy.constructor -->
+ * <!-- src_embed io.clientcore.core.http.pipeline.UserAgentPolicy.constructor -->
  * <pre>
  * UserAgentPolicy policy = new UserAgentPolicy&#40;&quot;MyApp&#47;1.0&quot;&#41;;
  * </pre>
- * <!-- end io.clientcore.core.http.pipeline.SetUserAgentPolicy.constructor -->
+ * <!-- end io.clientcore.core.http.pipeline.UserAgentPolicy.constructor -->
  *
  * @see io.clientcore.core.http.pipeline
  * @see HttpPipelinePolicy
@@ -49,7 +49,7 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
      * Creates a {@link UserAgentPolicy} with a default user agent string.
      */
     public UserAgentPolicy() {
-        this(null);
+        this((String) null);
     }
 
     /**
@@ -69,12 +69,10 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     /**
      * Creates a UserAgentPolicy with the {@code sdkName} and {@code sdkVersion} in the User-Agent header value.
      *
-     * @param applicationId User specified application Id.
-     * @param sdkName Name of the client library.
-     * @param sdkVersion Version of the client library.
+     * @param userAgentOptions Options allowing to customize the user agent string.
      */
-    public UserAgentPolicy(String applicationId, String sdkName, String sdkVersion) {
-        this.userAgent = toUserAgentString(applicationId, sdkName, sdkVersion);
+    public UserAgentPolicy(UserAgentOptions userAgentOptions) {
+        this.userAgent = toUserAgentString(userAgentOptions);
     }
 
     @Override
@@ -88,11 +86,6 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
         return HttpPipelinePosition.BEFORE_REDIRECT;
     }
 
-    private static final int MAX_APPLICATION_ID_LENGTH = 24;
-    private static final String INVALID_APPLICATION_ID_LENGTH
-        = "'applicationId' length cannot be greater than " + MAX_APPLICATION_ID_LENGTH;
-    private static final String INVALID_APPLICATION_ID_SPACE = "'applicationId' cannot contain spaces.";
-
     /**
      * Default {@code UserAgent} header.
      */
@@ -101,29 +94,29 @@ public class UserAgentPolicy implements HttpPipelinePolicy {
     /**
      * Return user agent string for the given sdk name and version.
      *
-     * @param applicationId Name of the application.
-     * @param sdkName Name of the SDK.
-     * @param sdkVersion Version of the SDK.
-     * @return User agent string as specified in design guidelines.
+     * @param userAgentOptions Options allowing to customize the user agent string.
      *
-     * @throws IllegalArgumentException If {@code applicationId} contains spaces or is larger than 24 characters in
-     * length.
+     * @throws IllegalArgumentException If {@code applicationId} contains spaces.
      */
-    private static String toUserAgentString(String applicationId, String sdkName, String sdkVersion) {
+    private static String toUserAgentString(UserAgentOptions userAgentOptions) {
         StringBuilder userAgentBuilder = new StringBuilder();
 
+        String applicationId = userAgentOptions.getApplicationId();
+
         if (!CoreUtils.isNullOrEmpty(applicationId)) {
-            if (applicationId.length() > MAX_APPLICATION_ID_LENGTH) {
-                throw new IllegalArgumentException(INVALID_APPLICATION_ID_LENGTH);
-            } else if (applicationId.contains(" ")) {
-                throw new IllegalArgumentException(INVALID_APPLICATION_ID_SPACE);
+            if (applicationId.contains(" ")) {
+                throw new IllegalArgumentException("'applicationid' cannot contain spaces.");
             } else {
                 userAgentBuilder.append(applicationId).append(" ");
             }
         }
 
         // Add the required default User-Agent string.
-        userAgentBuilder.append(DEFAULT_USER_AGENT_HEADER).append("-").append(sdkName).append("/").append(sdkVersion);
+        userAgentBuilder.append(DEFAULT_USER_AGENT_HEADER)
+            .append("-")
+            .append(userAgentOptions.getSdkName())
+            .append("/")
+            .append(userAgentOptions.getSdkVersion());
         appendPlatformInfo(userAgentBuilder);
 
         return userAgentBuilder.toString();

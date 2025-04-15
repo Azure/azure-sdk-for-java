@@ -51,7 +51,7 @@ public final class WarehouseTableDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private WarehouseTableDatasetTypeProperties innerTypeProperties() {
+    WarehouseTableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

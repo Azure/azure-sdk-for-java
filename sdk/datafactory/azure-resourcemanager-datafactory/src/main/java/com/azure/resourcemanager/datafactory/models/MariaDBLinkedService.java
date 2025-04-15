@@ -51,7 +51,7 @@ public final class MariaDBLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private MariaDBLinkedServiceTypeProperties innerTypeProperties() {
+    MariaDBLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

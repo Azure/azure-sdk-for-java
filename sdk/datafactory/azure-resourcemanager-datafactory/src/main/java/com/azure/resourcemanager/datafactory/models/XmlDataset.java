@@ -51,7 +51,7 @@ public final class XmlDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private XmlDatasetTypeProperties innerTypeProperties() {
+    XmlDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

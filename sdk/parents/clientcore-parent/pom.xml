@@ -911,6 +911,12 @@
               <!-- junit.jupiter.execution.parallel.mode.default controls parallelization. -->
               <!-- Use this to configure parallelization rather than junit.jupiter.execution.parallel.enabled. -->
               <junit.jupiter.execution.parallel.mode.default>${parallelizeTests}</junit.jupiter.execution.parallel.mode.default>
+              <!-- Logging properties if SLF4J simple is injected into a test run -->
+              <org.slf4j.simpleLogger.logFile>${project.build.directory}/${project.artifactId}-test.log</org.slf4j.simpleLogger.logFile>
+              <org.slf4j.simpleLogger.showDateTime>true</org.slf4j.simpleLogger.showDateTime>
+              <org.slf4j.simpleLogger.dateTimeFormat>dd MMM yyyy HH:mm:ss,SSS</org.slf4j.simpleLogger.dateTimeFormat>
+              <org.slf4j.simpleLogger.defaultLogLevel>debug</org.slf4j.simpleLogger.defaultLogLevel>
+              <org.slf4j.simpleLogger.log.io.clientcore>debug</org.slf4j.simpleLogger.log.io.clientcore>
             </systemPropertyVariables>
             <forkCount>1</forkCount>
             <testFailureIgnore>false</testFailureIgnore>
@@ -963,6 +969,12 @@
               <!-- junit.jupiter.execution.parallel.mode.default controls parallelization. -->
               <!-- Use this to configure parallelization rather than junit.jupiter.execution.parallel.enabled. -->
               <junit.jupiter.execution.parallel.mode.default>${parallelizeTests}</junit.jupiter.execution.parallel.mode.default>
+              <!-- Logging properties if SLF4J simple is injected into a test run -->
+              <org.slf4j.simpleLogger.logFile>${project.build.directory}/${project.artifactId}-test.log</org.slf4j.simpleLogger.logFile>
+              <org.slf4j.simpleLogger.showDateTime>true</org.slf4j.simpleLogger.showDateTime>
+              <org.slf4j.simpleLogger.dateTimeFormat>dd MMM yyyy HH:mm:ss,SSS</org.slf4j.simpleLogger.dateTimeFormat>
+              <org.slf4j.simpleLogger.defaultLogLevel>debug</org.slf4j.simpleLogger.defaultLogLevel>
+              <org.slf4j.simpleLogger.log.io.clientcore>debug</org.slf4j.simpleLogger.log.io.clientcore>
             </systemPropertyVariables>
             <forkCount>1</forkCount>
             <testFailureIgnore>false</testFailureIgnore>
