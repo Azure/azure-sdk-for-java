@@ -10,7 +10,9 @@ import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.utils.Base64Uri;
 import io.clientcore.core.utils.DateTimeRfc1123;
 
@@ -50,7 +52,8 @@ public class MockHttpClient extends NoOpHttpClient {
     }
 
     @Override
-    public Response<BinaryData> send(HttpRequest request) throws IOException {
+    public Response<BinaryData> send(HttpRequest request) {
+
         Response<BinaryData> response = null;
         final URI requestUri = request.getUri();
         final String requestHost = requestUri.getHost();
@@ -65,7 +68,7 @@ public class MockHttpClient extends NoOpHttpClient {
                     final HttpBinJson json = new HttpBinJson();
                     json.uri(cleanseUri(requestUri));
                     json.headers(toMap(request.getHeaders()));
-                    response = new MockHttpResponse(request, 200, json.toJsonBytes());
+                    response = new MockHttpResponse(request, 200, toJsonBytes(json));
                 }
             } else if (requestPathLower.startsWith("/bytes/")) {
                 final String byteCountString = requestPath.substring("/bytes/".length());
@@ -146,17 +149,17 @@ public class MockHttpClient extends NoOpHttpClient {
                 final HttpBinJson json = new HttpBinJson();
                 json.uri(cleanseUri(requestUri));
                 json.data(createHttpBinResponseDataForRequest(request));
-                response = new MockHttpResponse(request, 200, json.toJsonBytes());
+                response = new MockHttpResponse(request, 200, toJsonBytes(json));
             } else if ("/get".equals(requestPathLower)) {
                 final HttpBinJson json = new HttpBinJson();
                 json.uri(cleanseUri(requestUri));
                 json.headers(toMap(request.getHeaders()));
-                response = new MockHttpResponse(request, 200, json.toJsonBytes());
+                response = new MockHttpResponse(request, 200, toJsonBytes(json));
             } else if ("/patch".equals(requestPathLower)) {
                 final HttpBinJson json = new HttpBinJson();
                 json.uri(cleanseUri(requestUri));
                 json.data(createHttpBinResponseDataForRequest(request));
-                response = new MockHttpResponse(request, 200, json.toJsonBytes());
+                response = new MockHttpResponse(request, 200, toJsonBytes(json));
             } else if ("/post".equals(requestPathLower)) {
                 if (contentType != null && contentType.contains("x-www-form-urlencoded")) {
                     Map<String, String> parsed = bodyToMap(request);
@@ -168,20 +171,20 @@ public class MockHttpClient extends NoOpHttpClient {
                     form.pizzaSize(PizzaSize.valueOf(parsed.get("size")));
                     form.toppings(Arrays.asList(parsed.get("toppings").split(",")));
                     json.form(form);
-                    response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, json.toJsonBytes());
+                    response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, toJsonBytes(json));
                 } else {
                     final HttpBinJson json = new HttpBinJson();
                     json.uri(cleanseUri(requestUri));
                     json.data(createHttpBinResponseDataForRequest(request));
                     json.headers(toMap(request.getHeaders()));
-                    response = new MockHttpResponse(request, 200, json.toJsonBytes());
+                    response = new MockHttpResponse(request, 200, toJsonBytes(json));
                 }
             } else if ("/put".equals(requestPathLower)) {
                 final HttpBinJson json = new HttpBinJson();
                 json.uri(cleanseUri(requestUri));
                 json.data(createHttpBinResponseDataForRequest(request));
                 json.headers(toMap(request.getHeaders()));
-                response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, json.toJsonBytes());
+                response = new MockHttpResponse(request, 200, RESPONSE_HEADERS, toJsonBytes(json));
             } else if (requestPathLower.startsWith("/status/")) {
                 final String statusCodeString = requestPathLower.substring("/status/".length());
                 final int statusCode = Integer.parseInt(statusCodeString);
@@ -261,6 +264,14 @@ public class MockHttpClient extends NoOpHttpClient {
             return Base64.getEncoder().encodeToString(digest.digest());
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    private byte[] toJsonBytes(JsonSerializable<?> json) {
+        try {
+            return json.toJsonBytes();
+        } catch (IOException ex) {
+            throw CoreException.from(ex);
         }
     }
 }

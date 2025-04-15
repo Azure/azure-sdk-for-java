@@ -331,7 +331,7 @@ stages:
         - job: PublishDocsMs
           displayName: Docs.MS Release
           condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
-          dependsOn: PublishESRPPackage
+          dependsOn: PublishDevFeedPackage
 
           pool:
             name: $(LINUXPOOL)
@@ -342,11 +342,8 @@ stages:
             - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
               parameters:
                 Paths:
-                  - sdk
-                  - common/perf-test-core
-                  - .github/CODEOWNERS
-                  - '!sdk/**/test-recordings'
-                  - '!sdk/**/session-records'
+                  - sdk/${{ parameters.ServiceDirectory }}/**/*.md
+                  - '!**/pom*.xml'
             - download: current
               displayName: 'Download Artifact: packages'
               artifact: packages
@@ -473,11 +470,8 @@ stages:
           - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
             parameters:
               Paths:
-                - sdk
-                - common/perf-test-core
-                - .github/CODEOWNERS
-                - '!sdk/**/test-recordings'
-                - '!sdk/**/session-records'
+                - sdk/${{ parameters.ServiceDirectory }}/**/*.md
+                - '!**/pom*.xml'
           - download: current
             displayName: 'Download Artifacts'
             artifact: packages
