@@ -46,10 +46,22 @@ steps:
     displayName: Find current version and update to SNAPSHOT
     workingDirectory: $(Agent.TempDirectory)
 
+  - pwsh: |
+      java -version
+      echo "Java version above"
+
+      Write-Host "Building the project and publishing to the local Maven repository"
+      cd "$(Agent.TempDirectory)/openai-java"
+      ./gradlew clean build -x test "-Dmaven.repo.local=$env:PIPELINE_WORKSPACE/.m2/repository" publishToMavenLocal
+    displayName: Build the project and publish to the local Maven repository
+    workingDirectory: $(Agent.TempDirectory)
+
   - task: Gradle@4
     inputs:
       tasks: clean build -x test "-Dmaven.repo.local=$env:PIPELINE_WORKSPACE/.m2/repository" publishToMavenLocal
       jdkVersionOption: '1.11'
+      workingDirectory: $(Agent.TempDirectory)/openai-java
+    displayName: Build the project and publish to the local Maven repository
 
   - pwsh: |
       # Define the path to the external_dependencies.txt file
