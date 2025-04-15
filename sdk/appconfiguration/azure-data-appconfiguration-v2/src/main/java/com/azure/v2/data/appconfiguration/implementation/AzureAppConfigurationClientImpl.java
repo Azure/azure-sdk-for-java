@@ -4,7 +4,6 @@
 
 package com.azure.v2.data.appconfiguration.implementation;
 
-import com.azure.v2.data.appconfiguration.AzureAppConfigurationServiceVersion;
 import com.azure.v2.data.appconfiguration.implementation.models.KeyListResult;
 import com.azure.v2.data.appconfiguration.implementation.models.KeyValueListResult;
 import com.azure.v2.data.appconfiguration.implementation.models.LabelListResult;
@@ -32,12 +31,11 @@ import io.clientcore.core.http.annotations.QueryParam;
 import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpResponseException;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.utils.Context;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,17 +65,17 @@ public final class AzureAppConfigurationClientImpl {
     }
 
     /**
-     * Service version.
+     * Version parameter.
      */
-    private final AzureAppConfigurationServiceVersion serviceVersion;
+    private final String apiVersion;
 
     /**
-     * Gets Service version.
+     * Gets Version parameter.
      * 
-     * @return the serviceVersion value.
+     * @return the apiVersion value.
      */
-    public AzureAppConfigurationServiceVersion getServiceVersion() {
-        return this.serviceVersion;
+    public String getApiVersion() {
+        return this.apiVersion;
     }
 
     /**
@@ -99,13 +97,12 @@ public final class AzureAppConfigurationClientImpl {
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param endpoint
-     * @param serviceVersion Service version.
+     * @param apiVersion Version parameter.
      */
-    public AzureAppConfigurationClientImpl(HttpPipeline httpPipeline, String endpoint,
-        AzureAppConfigurationServiceVersion serviceVersion) {
+    public AzureAppConfigurationClientImpl(HttpPipeline httpPipeline, String endpoint, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.endpoint = endpoint;
-        this.serviceVersion = serviceVersion;
+        this.apiVersion = apiVersion;
         this.service = AzureAppConfigurationClientService.getNewInstance(this.httpPipeline);
     }
 
@@ -134,14 +131,14 @@ public final class AzureAppConfigurationClientImpl {
             @QueryParam("api-version") String apiVersion, @QueryParam("name") String name,
             @QueryParam("After") String after, @HeaderParam("Sync-Token") String syncToken,
             @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.HEAD, path = "/keys", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
         Response<Void> checkKeys(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @QueryParam("name") String name, @QueryParam("After") String after,
             @HeaderParam("Sync-Token") String syncToken, @HeaderParam("Accept-Datetime") String acceptDatetime,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "/kv", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
@@ -152,7 +149,7 @@ public final class AzureAppConfigurationClientImpl {
             @QueryParam("$Select") String select, @QueryParam("snapshot") String snapshot,
             @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
             @QueryParam(value = "tags", multipleQueryParams = true) List<String> tags,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.HEAD, path = "/kv", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
@@ -163,7 +160,7 @@ public final class AzureAppConfigurationClientImpl {
             @QueryParam("$Select") String select, @QueryParam("snapshot") String snapshot,
             @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
             @QueryParam(value = "tags", multipleQueryParams = true) List<String> tags,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "/kv/{key}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
@@ -172,7 +169,7 @@ public final class AzureAppConfigurationClientImpl {
             @QueryParam("label") String label, @QueryParam("$Select") String select,
             @HeaderParam("Sync-Token") String syncToken, @HeaderParam("Accept-Datetime") String acceptDatetime,
             @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "/kv/{key}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
@@ -181,7 +178,7 @@ public final class AzureAppConfigurationClientImpl {
             @QueryParam("label") String label, @HeaderParam("Sync-Token") String syncToken,
             @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") KeyValue entity,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.DELETE, path = "/kv/{key}", expectedStatusCodes = { 200, 204 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
@@ -189,7 +186,7 @@ public final class AzureAppConfigurationClientImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("key") String key,
             @QueryParam("label") String label, @HeaderParam("Sync-Token") String syncToken,
             @HeaderParam("If-Match") String ifMatch, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.HEAD, path = "/kv/{key}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
@@ -198,7 +195,7 @@ public final class AzureAppConfigurationClientImpl {
             @QueryParam("label") String label, @HeaderParam("Sync-Token") String syncToken,
             @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("If-Match") String ifMatch,
             @HeaderParam("If-None-Match") String ifNoneMatch, @QueryParam("$Select") String select,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "/snapshots", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
@@ -206,13 +203,13 @@ public final class AzureAppConfigurationClientImpl {
             @QueryParam("api-version") String apiVersion, @QueryParam("name") String name,
             @QueryParam("After") String after, @QueryParam("$Select") String select,
             @QueryParam("status") String status, @HeaderParam("Sync-Token") String syncToken,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.HEAD, path = "/snapshots", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
         Response<Void> checkSnapshots(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Sync-Token") String syncToken,
-            @QueryParam("After") String after, @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @QueryParam("After") String after, @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "/snapshots/{name}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
@@ -220,7 +217,7 @@ public final class AzureAppConfigurationClientImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @QueryParam("$Select") String select, @HeaderParam("Sync-Token") String syncToken,
             @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.PATCH, path = "/snapshots/{name}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
@@ -229,7 +226,7 @@ public final class AzureAppConfigurationClientImpl {
             @HeaderParam("Content-Type") UpdateSnapshotRequestContentType contentType, @PathParam("name") String name,
             @HeaderParam("Sync-Token") String syncToken, @HeaderParam("If-Match") String ifMatch,
             @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") SnapshotUpdateParameters entity, RequestOptions requestOptions);
+            @BodyParam("application/json") SnapshotUpdateParameters entity, RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.HEAD, path = "/snapshots/{name}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
@@ -237,7 +234,7 @@ public final class AzureAppConfigurationClientImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("name") String name,
             @HeaderParam("Sync-Token") String syncToken, @HeaderParam("If-Match") String ifMatch,
             @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "/labels", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
@@ -245,14 +242,14 @@ public final class AzureAppConfigurationClientImpl {
             @QueryParam("api-version") String apiVersion, @QueryParam("name") String name,
             @HeaderParam("Sync-Token") String syncToken, @QueryParam("After") String after,
             @HeaderParam("Accept-Datetime") String acceptDatetime, @QueryParam("$Select") String select,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.HEAD, path = "/labels", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
         Response<Void> checkLabels(@HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
             @QueryParam("name") String name, @HeaderParam("Sync-Token") String syncToken,
             @QueryParam("After") String after, @HeaderParam("Accept-Datetime") String acceptDatetime,
-            @QueryParam("$Select") String select, @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @QueryParam("$Select") String select, @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "/locks/{key}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
@@ -260,7 +257,7 @@ public final class AzureAppConfigurationClientImpl {
             @PathParam("key") String key, @QueryParam("label") String label,
             @HeaderParam("Sync-Token") String syncToken, @HeaderParam("If-Match") String ifMatch,
             @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.DELETE, path = "/locks/{key}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
@@ -268,7 +265,7 @@ public final class AzureAppConfigurationClientImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("key") String key,
             @QueryParam("label") String label, @HeaderParam("Sync-Token") String syncToken,
             @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "/revisions", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
@@ -278,7 +275,7 @@ public final class AzureAppConfigurationClientImpl {
             @QueryParam("After") String after, @HeaderParam("Accept-Datetime") String acceptDatetime,
             @QueryParam("$Select") String select,
             @QueryParam(value = "tags", multipleQueryParams = true) List<String> tags,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.HEAD, path = "/revisions", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
@@ -288,14 +285,14 @@ public final class AzureAppConfigurationClientImpl {
             @QueryParam("After") String after, @HeaderParam("Accept-Datetime") String acceptDatetime,
             @QueryParam("$Select") String select,
             @QueryParam(value = "tags", multipleQueryParams = true) List<String> tags,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
         Response<KeyListResult> getKeysNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Sync-Token") String syncToken,
             @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
@@ -303,27 +300,27 @@ public final class AzureAppConfigurationClientImpl {
             @HostParam("endpoint") String endpoint, @HeaderParam("Sync-Token") String syncToken,
             @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("If-Match") String ifMatch,
             @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
         Response<SnapshotListResult> getSnapshotsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Sync-Token") String syncToken,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
         Response<LabelListResult> getLabelsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Sync-Token") String syncToken,
             @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = Error.class)
         Response<KeyValueListResult> getRevisionsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("endpoint") String endpoint, @HeaderParam("Sync-Token") String syncToken,
             @HeaderParam("Accept-Datetime") String acceptDatetime, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
     }
 
     /**
@@ -344,8 +341,8 @@ public final class AzureAppConfigurationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<Key> getKeysSinglePage(String accept, String name, String after, String syncToken,
         String acceptDatetime) {
-        Response<KeyListResult> res = service.getKeys(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
-            after, syncToken, acceptDatetime, accept, RequestOptions.none());
+        Response<KeyListResult> res = service.getKeys(this.getEndpoint(), this.getApiVersion(), name, after, syncToken,
+            acceptDatetime, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getItems(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -360,7 +357,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
      * time.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -368,9 +365,9 @@ public final class AzureAppConfigurationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<Key> getKeysSinglePage(String accept, String name, String after, String syncToken,
-        String acceptDatetime, RequestOptions requestOptions) {
-        Response<KeyListResult> res = service.getKeys(this.getEndpoint(), this.getServiceVersion().getVersion(), name,
-            after, syncToken, acceptDatetime, accept, requestOptions);
+        String acceptDatetime, RequestContext requestContext) {
+        Response<KeyListResult> res = service.getKeys(this.getEndpoint(), this.getApiVersion(), name, after, syncToken,
+            acceptDatetime, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getItems(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -426,7 +423,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
      * time.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -434,15 +431,12 @@ public final class AzureAppConfigurationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Key> getKeys(String accept, String name, String after, String syncToken, String acceptDatetime,
-        RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(requestOptions != null && requestOptions.getContext() != null
-            ? requestOptions.getContext()
-            : Context.none());
+        RequestContext requestContext) {
+        RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
         return new PagedIterable<>(
-            (pagingOptions) -> getKeysSinglePage(accept, name, after, syncToken, acceptDatetime, requestOptions),
+            (pagingOptions) -> getKeysSinglePage(accept, name, after, syncToken, acceptDatetime, requestContext),
             (pagingOptions, nextLink) -> getKeysNextSinglePage(nextLink, accept, syncToken, acceptDatetime,
-                requestOptionsForNextPage));
+                requestContextForNextPage));
     }
 
     /**
@@ -454,7 +448,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
      * time.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -462,10 +456,10 @@ public final class AzureAppConfigurationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> checkKeysWithResponse(String name, String after, String syncToken, String acceptDatetime,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String accept = "application/json";
-        return service.checkKeys(this.getEndpoint(), this.getServiceVersion().getVersion(), name, after, syncToken,
-            acceptDatetime, accept, requestOptions);
+        return service.checkKeys(this.getEndpoint(), this.getApiVersion(), name, after, syncToken, acceptDatetime,
+            accept, requestContext);
     }
 
     /**
@@ -483,7 +477,7 @@ public final class AzureAppConfigurationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkKeys(String name, String after, String syncToken, String acceptDatetime) {
-        checkKeysWithResponse(name, after, syncToken, acceptDatetime, RequestOptions.none());
+        checkKeysWithResponse(name, after, syncToken, acceptDatetime, RequestContext.none());
     }
 
     /**
@@ -498,7 +492,7 @@ public final class AzureAppConfigurationClientImpl {
         final String after = null;
         final String syncToken = null;
         final String acceptDatetime = null;
-        checkKeysWithResponse(name, after, syncToken, acceptDatetime, RequestOptions.none());
+        checkKeysWithResponse(name, after, syncToken, acceptDatetime, RequestContext.none());
     }
 
     /**
@@ -540,9 +534,9 @@ public final class AzureAppConfigurationClientImpl {
         List<String> tagsConverted = (tags == null)
             ? new ArrayList<>()
             : tags.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        Response<KeyValueListResult> res = service.getKeyValues(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), key, label, syncToken, after, acceptDatetime, selectConverted,
-            snapshot, ifMatch, ifNoneMatch, tagsConverted, accept, RequestOptions.none());
+        Response<KeyValueListResult> res = service.getKeyValues(this.getEndpoint(), this.getApiVersion(), key, label,
+            syncToken, after, acceptDatetime, selectConverted, snapshot, ifMatch, ifNoneMatch, tagsConverted, accept,
+            RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getItems(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -569,7 +563,7 @@ public final class AzureAppConfigurationClientImpl {
      * match the value provided.
      * @param tags A filter used to query by tags. Syntax reference:
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -578,7 +572,7 @@ public final class AzureAppConfigurationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<KeyValue> getKeyValuesSinglePage(String accept, String key, String label, String syncToken,
         String after, String acceptDatetime, List<KeyValueFields> select, String snapshot, String ifMatch,
-        String ifNoneMatch, List<String> tags, RequestOptions requestOptions) {
+        String ifNoneMatch, List<String> tags, RequestContext requestContext) {
         String selectConverted = (select == null)
             ? null
             : select.stream()
@@ -587,9 +581,9 @@ public final class AzureAppConfigurationClientImpl {
         List<String> tagsConverted = (tags == null)
             ? new ArrayList<>()
             : tags.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        Response<KeyValueListResult> res = service.getKeyValues(this.getEndpoint(),
-            this.getServiceVersion().getVersion(), key, label, syncToken, after, acceptDatetime, selectConverted,
-            snapshot, ifMatch, ifNoneMatch, tagsConverted, accept, requestOptions);
+        Response<KeyValueListResult> res
+            = service.getKeyValues(this.getEndpoint(), this.getApiVersion(), key, label, syncToken, after,
+                acceptDatetime, selectConverted, snapshot, ifMatch, ifNoneMatch, tagsConverted, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getItems(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -682,7 +676,7 @@ public final class AzureAppConfigurationClientImpl {
      * match the value provided.
      * @param tags A filter used to query by tags. Syntax reference:
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -691,16 +685,13 @@ public final class AzureAppConfigurationClientImpl {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyValue> getKeyValues(String accept, String key, String label, String syncToken, String after,
         String acceptDatetime, List<KeyValueFields> select, String snapshot, String ifMatch, String ifNoneMatch,
-        List<String> tags, RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(requestOptions != null && requestOptions.getContext() != null
-            ? requestOptions.getContext()
-            : Context.none());
+        List<String> tags, RequestContext requestContext) {
+        RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
         return new PagedIterable<>(
             (pagingOptions) -> getKeyValuesSinglePage(accept, key, label, syncToken, after, acceptDatetime, select,
-                snapshot, ifMatch, ifNoneMatch, tags, requestOptions),
+                snapshot, ifMatch, ifNoneMatch, tags, requestContext),
             (pagingOptions, nextLink) -> getKeyValuesNextSinglePage(nextLink, accept, syncToken, acceptDatetime,
-                ifMatch, ifNoneMatch, requestOptionsForNextPage));
+                ifMatch, ifNoneMatch, requestContextForNextPage));
     }
 
     /**
@@ -724,7 +715,7 @@ public final class AzureAppConfigurationClientImpl {
      * match the value provided.
      * @param tags A filter used to query by tags. Syntax reference:
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -733,7 +724,7 @@ public final class AzureAppConfigurationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> checkKeyValuesWithResponse(String key, String label, String syncToken, String after,
         String acceptDatetime, List<KeyValueFields> select, String snapshot, String ifMatch, String ifNoneMatch,
-        List<String> tags, RequestOptions requestOptions) {
+        List<String> tags, RequestContext requestContext) {
         final String accept = "application/json";
         String selectConverted = (select == null)
             ? null
@@ -743,9 +734,8 @@ public final class AzureAppConfigurationClientImpl {
         List<String> tagsConverted = (tags == null)
             ? new ArrayList<>()
             : tags.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        return service.checkKeyValues(this.getEndpoint(), this.getServiceVersion().getVersion(), key, label, syncToken,
-            after, acceptDatetime, selectConverted, snapshot, ifMatch, ifNoneMatch, tagsConverted, accept,
-            requestOptions);
+        return service.checkKeyValues(this.getEndpoint(), this.getApiVersion(), key, label, syncToken, after,
+            acceptDatetime, selectConverted, snapshot, ifMatch, ifNoneMatch, tagsConverted, accept, requestContext);
     }
 
     /**
@@ -777,7 +767,7 @@ public final class AzureAppConfigurationClientImpl {
     public void checkKeyValues(String key, String label, String syncToken, String after, String acceptDatetime,
         List<KeyValueFields> select, String snapshot, String ifMatch, String ifNoneMatch, List<String> tags) {
         checkKeyValuesWithResponse(key, label, syncToken, after, acceptDatetime, select, snapshot, ifMatch, ifNoneMatch,
-            tags, RequestOptions.none());
+            tags, RequestContext.none());
     }
 
     /**
@@ -799,7 +789,7 @@ public final class AzureAppConfigurationClientImpl {
         final String ifNoneMatch = null;
         final List<String> tags = null;
         checkKeyValuesWithResponse(key, label, syncToken, after, acceptDatetime, select, snapshot, ifMatch, ifNoneMatch,
-            tags, RequestOptions.none());
+            tags, RequestContext.none());
     }
 
     /**
@@ -816,7 +806,7 @@ public final class AzureAppConfigurationClientImpl {
      * value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
      * match the value provided.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -825,14 +815,14 @@ public final class AzureAppConfigurationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyValue> getKeyValueWithResponse(String key, String accept, String label,
         List<KeyValueFields> select, String syncToken, String acceptDatetime, String ifMatch, String ifNoneMatch,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         String selectConverted = (select == null)
             ? null
             : select.stream()
                 .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                 .collect(Collectors.joining(","));
-        return service.getKeyValue(this.getEndpoint(), this.getServiceVersion().getVersion(), key, label,
-            selectConverted, syncToken, acceptDatetime, ifMatch, ifNoneMatch, accept, requestOptions);
+        return service.getKeyValue(this.getEndpoint(), this.getApiVersion(), key, label, selectConverted, syncToken,
+            acceptDatetime, ifMatch, ifNoneMatch, accept, requestContext);
     }
 
     /**
@@ -858,7 +848,7 @@ public final class AzureAppConfigurationClientImpl {
     public KeyValue getKeyValue(String key, String accept, String label, List<KeyValueFields> select, String syncToken,
         String acceptDatetime, String ifMatch, String ifNoneMatch) {
         return getKeyValueWithResponse(key, accept, label, select, syncToken, acceptDatetime, ifMatch, ifNoneMatch,
-            RequestOptions.none()).getValue();
+            RequestContext.none()).getValue();
     }
 
     /**
@@ -880,7 +870,7 @@ public final class AzureAppConfigurationClientImpl {
         final String ifMatch = null;
         final String ifNoneMatch = null;
         return getKeyValueWithResponse(key, accept, label, select, syncToken, acceptDatetime, ifMatch, ifNoneMatch,
-            RequestOptions.none()).getValue();
+            RequestContext.none()).getValue();
     }
 
     /**
@@ -895,7 +885,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
      * match the value provided.
      * @param entity The key-value to create.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -903,9 +893,9 @@ public final class AzureAppConfigurationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyValue> putKeyValueWithResponse(String key, String accept, String label, String syncToken,
-        String ifMatch, String ifNoneMatch, KeyValue entity, RequestOptions requestOptions) {
-        return service.putKeyValue(this.getEndpoint(), this.getServiceVersion().getVersion(), key, label, syncToken,
-            ifMatch, ifNoneMatch, accept, entity, requestOptions);
+        String ifMatch, String ifNoneMatch, KeyValue entity, RequestContext requestContext) {
+        return service.putKeyValue(this.getEndpoint(), this.getApiVersion(), key, label, syncToken, ifMatch,
+            ifNoneMatch, accept, entity, requestContext);
     }
 
     /**
@@ -929,7 +919,7 @@ public final class AzureAppConfigurationClientImpl {
     public KeyValue putKeyValue(String key, String accept, String label, String syncToken, String ifMatch,
         String ifNoneMatch, KeyValue entity) {
         return putKeyValueWithResponse(key, accept, label, syncToken, ifMatch, ifNoneMatch, entity,
-            RequestOptions.none()).getValue();
+            RequestContext.none()).getValue();
     }
 
     /**
@@ -950,7 +940,7 @@ public final class AzureAppConfigurationClientImpl {
         final String ifNoneMatch = null;
         final KeyValue entity = null;
         return putKeyValueWithResponse(key, accept, label, syncToken, ifMatch, ifNoneMatch, entity,
-            RequestOptions.none()).getValue();
+            RequestContext.none()).getValue();
     }
 
     /**
@@ -962,7 +952,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
      * value provided.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -970,9 +960,9 @@ public final class AzureAppConfigurationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyValue> deleteKeyValueWithResponse(String key, String accept, String label, String syncToken,
-        String ifMatch, RequestOptions requestOptions) {
-        return service.deleteKeyValue(this.getEndpoint(), this.getServiceVersion().getVersion(), key, label, syncToken,
-            ifMatch, accept, requestOptions);
+        String ifMatch, RequestContext requestContext) {
+        return service.deleteKeyValue(this.getEndpoint(), this.getApiVersion(), key, label, syncToken, ifMatch, accept,
+            requestContext);
     }
 
     /**
@@ -991,7 +981,7 @@ public final class AzureAppConfigurationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyValue deleteKeyValue(String key, String accept, String label, String syncToken, String ifMatch) {
-        return deleteKeyValueWithResponse(key, accept, label, syncToken, ifMatch, RequestOptions.none()).getValue();
+        return deleteKeyValueWithResponse(key, accept, label, syncToken, ifMatch, RequestContext.none()).getValue();
     }
 
     /**
@@ -1009,7 +999,7 @@ public final class AzureAppConfigurationClientImpl {
         final String label = null;
         final String syncToken = null;
         final String ifMatch = null;
-        return deleteKeyValueWithResponse(key, accept, label, syncToken, ifMatch, RequestOptions.none()).getValue();
+        return deleteKeyValueWithResponse(key, accept, label, syncToken, ifMatch, RequestContext.none()).getValue();
     }
 
     /**
@@ -1025,7 +1015,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
      * match the value provided.
      * @param select Used to select what fields are present in the returned resource(s).
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1033,15 +1023,15 @@ public final class AzureAppConfigurationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> checkKeyValueWithResponse(String key, String label, String syncToken, String acceptDatetime,
-        String ifMatch, String ifNoneMatch, List<KeyValueFields> select, RequestOptions requestOptions) {
+        String ifMatch, String ifNoneMatch, List<KeyValueFields> select, RequestContext requestContext) {
         final String accept = "application/json";
         String selectConverted = (select == null)
             ? null
             : select.stream()
                 .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                 .collect(Collectors.joining(","));
-        return service.checkKeyValue(this.getEndpoint(), this.getServiceVersion().getVersion(), key, label, syncToken,
-            acceptDatetime, ifMatch, ifNoneMatch, selectConverted, accept, requestOptions);
+        return service.checkKeyValue(this.getEndpoint(), this.getApiVersion(), key, label, syncToken, acceptDatetime,
+            ifMatch, ifNoneMatch, selectConverted, accept, requestContext);
     }
 
     /**
@@ -1065,7 +1055,7 @@ public final class AzureAppConfigurationClientImpl {
     public void checkKeyValue(String key, String label, String syncToken, String acceptDatetime, String ifMatch,
         String ifNoneMatch, List<KeyValueFields> select) {
         checkKeyValueWithResponse(key, label, syncToken, acceptDatetime, ifMatch, ifNoneMatch, select,
-            RequestOptions.none());
+            RequestContext.none());
     }
 
     /**
@@ -1085,7 +1075,7 @@ public final class AzureAppConfigurationClientImpl {
         final String ifNoneMatch = null;
         final List<KeyValueFields> select = null;
         checkKeyValueWithResponse(key, label, syncToken, acceptDatetime, ifMatch, ifNoneMatch, select,
-            RequestOptions.none());
+            RequestContext.none());
     }
 
     /**
@@ -1116,9 +1106,8 @@ public final class AzureAppConfigurationClientImpl {
             : status.stream()
                 .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                 .collect(Collectors.joining(","));
-        Response<SnapshotListResult> res
-            = service.getSnapshots(this.getEndpoint(), this.getServiceVersion().getVersion(), name, after,
-                selectConverted, statusConverted, syncToken, accept, RequestOptions.none());
+        Response<SnapshotListResult> res = service.getSnapshots(this.getEndpoint(), this.getApiVersion(), name, after,
+            selectConverted, statusConverted, syncToken, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getItems(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1133,7 +1122,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param select Used to select what fields are present in the returned resource(s).
      * @param status Used to filter returned snapshots by their status property.
      * @param syncToken Used to guarantee real-time consistency between requests.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1141,7 +1130,7 @@ public final class AzureAppConfigurationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<Snapshot> getSnapshotsSinglePage(String accept, String name, String after,
-        List<SnapshotFields> select, List<SnapshotStatus> status, String syncToken, RequestOptions requestOptions) {
+        List<SnapshotFields> select, List<SnapshotStatus> status, String syncToken, RequestContext requestContext) {
         String selectConverted = (select == null)
             ? null
             : select.stream()
@@ -1152,9 +1141,8 @@ public final class AzureAppConfigurationClientImpl {
             : status.stream()
                 .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                 .collect(Collectors.joining(","));
-        Response<SnapshotListResult> res
-            = service.getSnapshots(this.getEndpoint(), this.getServiceVersion().getVersion(), name, after,
-                selectConverted, statusConverted, syncToken, accept, requestOptions);
+        Response<SnapshotListResult> res = service.getSnapshots(this.getEndpoint(), this.getApiVersion(), name, after,
+            selectConverted, statusConverted, syncToken, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getItems(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1213,7 +1201,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param select Used to select what fields are present in the returned resource(s).
      * @param status Used to filter returned snapshots by their status property.
      * @param syncToken Used to guarantee real-time consistency between requests.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1221,15 +1209,12 @@ public final class AzureAppConfigurationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Snapshot> getSnapshots(String accept, String name, String after, List<SnapshotFields> select,
-        List<SnapshotStatus> status, String syncToken, RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(requestOptions != null && requestOptions.getContext() != null
-            ? requestOptions.getContext()
-            : Context.none());
+        List<SnapshotStatus> status, String syncToken, RequestContext requestContext) {
+        RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
         return new PagedIterable<>(
-            (pagingOptions) -> getSnapshotsSinglePage(accept, name, after, select, status, syncToken, requestOptions),
+            (pagingOptions) -> getSnapshotsSinglePage(accept, name, after, select, status, syncToken, requestContext),
             (pagingOptions, nextLink) -> getSnapshotsNextSinglePage(nextLink, accept, syncToken,
-                requestOptionsForNextPage));
+                requestContextForNextPage));
     }
 
     /**
@@ -1238,17 +1223,17 @@ public final class AzureAppConfigurationClientImpl {
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param after Instructs the server to return elements that appear after the element referred
      * to by the specified token.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> checkSnapshotsWithResponse(String syncToken, String after, RequestOptions requestOptions) {
+    public Response<Void> checkSnapshotsWithResponse(String syncToken, String after, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.checkSnapshots(this.getEndpoint(), this.getServiceVersion().getVersion(), syncToken, after,
-            accept, requestOptions);
+        return service.checkSnapshots(this.getEndpoint(), this.getApiVersion(), syncToken, after, accept,
+            requestContext);
     }
 
     /**
@@ -1263,7 +1248,7 @@ public final class AzureAppConfigurationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkSnapshots(String syncToken, String after) {
-        checkSnapshotsWithResponse(syncToken, after, RequestOptions.none());
+        checkSnapshotsWithResponse(syncToken, after, RequestContext.none());
     }
 
     /**
@@ -1276,7 +1261,7 @@ public final class AzureAppConfigurationClientImpl {
     public void checkSnapshots() {
         final String syncToken = null;
         final String after = null;
-        checkSnapshotsWithResponse(syncToken, after, RequestOptions.none());
+        checkSnapshotsWithResponse(syncToken, after, RequestContext.none());
     }
 
     /**
@@ -1290,7 +1275,7 @@ public final class AzureAppConfigurationClientImpl {
      * value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
      * match the value provided.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1298,14 +1283,14 @@ public final class AzureAppConfigurationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Snapshot> getSnapshotWithResponse(String name, String accept, List<SnapshotFields> select,
-        String syncToken, String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
+        String syncToken, String ifMatch, String ifNoneMatch, RequestContext requestContext) {
         String selectConverted = (select == null)
             ? null
             : select.stream()
                 .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                 .collect(Collectors.joining(","));
-        return service.getSnapshot(this.getEndpoint(), this.getServiceVersion().getVersion(), name, selectConverted,
-            syncToken, ifMatch, ifNoneMatch, accept, requestOptions);
+        return service.getSnapshot(this.getEndpoint(), this.getApiVersion(), name, selectConverted, syncToken, ifMatch,
+            ifNoneMatch, accept, requestContext);
     }
 
     /**
@@ -1327,7 +1312,7 @@ public final class AzureAppConfigurationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Snapshot getSnapshot(String name, String accept, List<SnapshotFields> select, String syncToken,
         String ifMatch, String ifNoneMatch) {
-        return getSnapshotWithResponse(name, accept, select, syncToken, ifMatch, ifNoneMatch, RequestOptions.none())
+        return getSnapshotWithResponse(name, accept, select, syncToken, ifMatch, ifNoneMatch, RequestContext.none())
             .getValue();
     }
 
@@ -1347,7 +1332,7 @@ public final class AzureAppConfigurationClientImpl {
         final String syncToken = null;
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return getSnapshotWithResponse(name, accept, select, syncToken, ifMatch, ifNoneMatch, RequestOptions.none())
+        return getSnapshotWithResponse(name, accept, select, syncToken, ifMatch, ifNoneMatch, RequestContext.none())
             .getValue();
     }
 
@@ -1363,7 +1348,7 @@ public final class AzureAppConfigurationClientImpl {
      * value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
      * match the value provided.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1372,9 +1357,9 @@ public final class AzureAppConfigurationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Snapshot> updateSnapshotWithResponse(UpdateSnapshotRequestContentType contentType, String name,
         String accept, SnapshotUpdateParameters entity, String syncToken, String ifMatch, String ifNoneMatch,
-        RequestOptions requestOptions) {
-        return service.updateSnapshot(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType, name,
-            syncToken, ifMatch, ifNoneMatch, accept, entity, requestOptions);
+        RequestContext requestContext) {
+        return service.updateSnapshot(this.getEndpoint(), this.getApiVersion(), contentType, name, syncToken, ifMatch,
+            ifNoneMatch, accept, entity, requestContext);
     }
 
     /**
@@ -1398,7 +1383,7 @@ public final class AzureAppConfigurationClientImpl {
     public Snapshot updateSnapshot(UpdateSnapshotRequestContentType contentType, String name, String accept,
         SnapshotUpdateParameters entity, String syncToken, String ifMatch, String ifNoneMatch) {
         return updateSnapshotWithResponse(contentType, name, accept, entity, syncToken, ifMatch, ifNoneMatch,
-            RequestOptions.none()).getValue();
+            RequestContext.none()).getValue();
     }
 
     /**
@@ -1420,7 +1405,7 @@ public final class AzureAppConfigurationClientImpl {
         final String ifMatch = null;
         final String ifNoneMatch = null;
         return updateSnapshotWithResponse(contentType, name, accept, entity, syncToken, ifMatch, ifNoneMatch,
-            RequestOptions.none()).getValue();
+            RequestContext.none()).getValue();
     }
 
     /**
@@ -1432,7 +1417,7 @@ public final class AzureAppConfigurationClientImpl {
      * value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
      * match the value provided.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1440,10 +1425,10 @@ public final class AzureAppConfigurationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> checkSnapshotWithResponse(String name, String syncToken, String ifMatch, String ifNoneMatch,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String accept = "application/json";
-        return service.checkSnapshot(this.getEndpoint(), this.getServiceVersion().getVersion(), name, syncToken,
-            ifMatch, ifNoneMatch, accept, requestOptions);
+        return service.checkSnapshot(this.getEndpoint(), this.getApiVersion(), name, syncToken, ifMatch, ifNoneMatch,
+            accept, requestContext);
     }
 
     /**
@@ -1461,7 +1446,7 @@ public final class AzureAppConfigurationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkSnapshot(String name, String syncToken, String ifMatch, String ifNoneMatch) {
-        checkSnapshotWithResponse(name, syncToken, ifMatch, ifNoneMatch, RequestOptions.none());
+        checkSnapshotWithResponse(name, syncToken, ifMatch, ifNoneMatch, RequestContext.none());
     }
 
     /**
@@ -1477,7 +1462,7 @@ public final class AzureAppConfigurationClientImpl {
         final String syncToken = null;
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        checkSnapshotWithResponse(name, syncToken, ifMatch, ifNoneMatch, RequestOptions.none());
+        checkSnapshotWithResponse(name, syncToken, ifMatch, ifNoneMatch, RequestContext.none());
     }
 
     /**
@@ -1504,8 +1489,8 @@ public final class AzureAppConfigurationClientImpl {
             : select.stream()
                 .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                 .collect(Collectors.joining(","));
-        Response<LabelListResult> res = service.getLabels(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            name, syncToken, after, acceptDatetime, selectConverted, accept, RequestOptions.none());
+        Response<LabelListResult> res = service.getLabels(this.getEndpoint(), this.getApiVersion(), name, syncToken,
+            after, acceptDatetime, selectConverted, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getItems(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1521,7 +1506,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
      * time.
      * @param select Used to select what fields are present in the returned resource(s).
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1529,14 +1514,14 @@ public final class AzureAppConfigurationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<Label> getLabelsSinglePage(String accept, String name, String syncToken, String after,
-        String acceptDatetime, List<LabelFields> select, RequestOptions requestOptions) {
+        String acceptDatetime, List<LabelFields> select, RequestContext requestContext) {
         String selectConverted = (select == null)
             ? null
             : select.stream()
                 .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                 .collect(Collectors.joining(","));
-        Response<LabelListResult> res = service.getLabels(this.getEndpoint(), this.getServiceVersion().getVersion(),
-            name, syncToken, after, acceptDatetime, selectConverted, accept, requestOptions);
+        Response<LabelListResult> res = service.getLabels(this.getEndpoint(), this.getApiVersion(), name, syncToken,
+            after, acceptDatetime, selectConverted, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getItems(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1597,7 +1582,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
      * time.
      * @param select Used to select what fields are present in the returned resource(s).
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1605,16 +1590,13 @@ public final class AzureAppConfigurationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Label> getLabels(String accept, String name, String syncToken, String after,
-        String acceptDatetime, List<LabelFields> select, RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(requestOptions != null && requestOptions.getContext() != null
-            ? requestOptions.getContext()
-            : Context.none());
+        String acceptDatetime, List<LabelFields> select, RequestContext requestContext) {
+        RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
         return new PagedIterable<>(
             (pagingOptions) -> getLabelsSinglePage(accept, name, syncToken, after, acceptDatetime, select,
-                requestOptions),
+                requestContext),
             (pagingOptions, nextLink) -> getLabelsNextSinglePage(nextLink, accept, syncToken, acceptDatetime,
-                requestOptionsForNextPage));
+                requestContextForNextPage));
     }
 
     /**
@@ -1627,7 +1609,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
      * time.
      * @param select Used to select what fields are present in the returned resource(s).
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1635,15 +1617,15 @@ public final class AzureAppConfigurationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> checkLabelsWithResponse(String name, String syncToken, String after, String acceptDatetime,
-        List<LabelFields> select, RequestOptions requestOptions) {
+        List<LabelFields> select, RequestContext requestContext) {
         final String accept = "application/json";
         String selectConverted = (select == null)
             ? null
             : select.stream()
                 .map(paramItemValue -> Objects.toString(paramItemValue, ""))
                 .collect(Collectors.joining(","));
-        return service.checkLabels(this.getEndpoint(), this.getServiceVersion().getVersion(), name, syncToken, after,
-            acceptDatetime, selectConverted, accept, requestOptions);
+        return service.checkLabels(this.getEndpoint(), this.getApiVersion(), name, syncToken, after, acceptDatetime,
+            selectConverted, accept, requestContext);
     }
 
     /**
@@ -1663,7 +1645,7 @@ public final class AzureAppConfigurationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkLabels(String name, String syncToken, String after, String acceptDatetime,
         List<LabelFields> select) {
-        checkLabelsWithResponse(name, syncToken, after, acceptDatetime, select, RequestOptions.none());
+        checkLabelsWithResponse(name, syncToken, after, acceptDatetime, select, RequestContext.none());
     }
 
     /**
@@ -1679,7 +1661,7 @@ public final class AzureAppConfigurationClientImpl {
         final String after = null;
         final String acceptDatetime = null;
         final List<LabelFields> select = null;
-        checkLabelsWithResponse(name, syncToken, after, acceptDatetime, select, RequestOptions.none());
+        checkLabelsWithResponse(name, syncToken, after, acceptDatetime, select, RequestContext.none());
     }
 
     /**
@@ -1693,7 +1675,7 @@ public final class AzureAppConfigurationClientImpl {
      * value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
      * match the value provided.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1701,9 +1683,9 @@ public final class AzureAppConfigurationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyValue> putLockWithResponse(String key, String accept, String label, String syncToken,
-        String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
-        return service.putLock(this.getEndpoint(), this.getServiceVersion().getVersion(), key, label, syncToken,
-            ifMatch, ifNoneMatch, accept, requestOptions);
+        String ifMatch, String ifNoneMatch, RequestContext requestContext) {
+        return service.putLock(this.getEndpoint(), this.getApiVersion(), key, label, syncToken, ifMatch, ifNoneMatch,
+            accept, requestContext);
     }
 
     /**
@@ -1725,7 +1707,7 @@ public final class AzureAppConfigurationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyValue putLock(String key, String accept, String label, String syncToken, String ifMatch,
         String ifNoneMatch) {
-        return putLockWithResponse(key, accept, label, syncToken, ifMatch, ifNoneMatch, RequestOptions.none())
+        return putLockWithResponse(key, accept, label, syncToken, ifMatch, ifNoneMatch, RequestContext.none())
             .getValue();
     }
 
@@ -1745,7 +1727,7 @@ public final class AzureAppConfigurationClientImpl {
         final String syncToken = null;
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return putLockWithResponse(key, accept, label, syncToken, ifMatch, ifNoneMatch, RequestOptions.none())
+        return putLockWithResponse(key, accept, label, syncToken, ifMatch, ifNoneMatch, RequestContext.none())
             .getValue();
     }
 
@@ -1760,7 +1742,7 @@ public final class AzureAppConfigurationClientImpl {
      * value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
      * match the value provided.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1768,9 +1750,9 @@ public final class AzureAppConfigurationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyValue> deleteLockWithResponse(String key, String accept, String label, String syncToken,
-        String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
-        return service.deleteLock(this.getEndpoint(), this.getServiceVersion().getVersion(), key, label, syncToken,
-            ifMatch, ifNoneMatch, accept, requestOptions);
+        String ifMatch, String ifNoneMatch, RequestContext requestContext) {
+        return service.deleteLock(this.getEndpoint(), this.getApiVersion(), key, label, syncToken, ifMatch, ifNoneMatch,
+            accept, requestContext);
     }
 
     /**
@@ -1792,7 +1774,7 @@ public final class AzureAppConfigurationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyValue deleteLock(String key, String accept, String label, String syncToken, String ifMatch,
         String ifNoneMatch) {
-        return deleteLockWithResponse(key, accept, label, syncToken, ifMatch, ifNoneMatch, RequestOptions.none())
+        return deleteLockWithResponse(key, accept, label, syncToken, ifMatch, ifNoneMatch, RequestContext.none())
             .getValue();
     }
 
@@ -1812,7 +1794,7 @@ public final class AzureAppConfigurationClientImpl {
         final String syncToken = null;
         final String ifMatch = null;
         final String ifNoneMatch = null;
-        return deleteLockWithResponse(key, accept, label, syncToken, ifMatch, ifNoneMatch, RequestOptions.none())
+        return deleteLockWithResponse(key, accept, label, syncToken, ifMatch, ifNoneMatch, RequestContext.none())
             .getValue();
     }
 
@@ -1848,9 +1830,8 @@ public final class AzureAppConfigurationClientImpl {
         List<String> tagsConverted = (tags == null)
             ? new ArrayList<>()
             : tags.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        Response<KeyValueListResult> res
-            = service.getRevisions(this.getEndpoint(), this.getServiceVersion().getVersion(), key, label, syncToken,
-                after, acceptDatetime, selectConverted, tagsConverted, accept, RequestOptions.none());
+        Response<KeyValueListResult> res = service.getRevisions(this.getEndpoint(), this.getApiVersion(), key, label,
+            syncToken, after, acceptDatetime, selectConverted, tagsConverted, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getItems(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1871,7 +1852,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param select Used to select what fields are present in the returned resource(s).
      * @param tags A filter used to query by tags. Syntax reference:
      * https://aka.ms/azconfig/docs/restapirevisions.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1880,7 +1861,7 @@ public final class AzureAppConfigurationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<KeyValue> getRevisionsSinglePage(String accept, String key, String label, String syncToken,
         String after, String acceptDatetime, List<KeyValueFields> select, List<String> tags,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         String selectConverted = (select == null)
             ? null
             : select.stream()
@@ -1889,9 +1870,8 @@ public final class AzureAppConfigurationClientImpl {
         List<String> tagsConverted = (tags == null)
             ? new ArrayList<>()
             : tags.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        Response<KeyValueListResult> res
-            = service.getRevisions(this.getEndpoint(), this.getServiceVersion().getVersion(), key, label, syncToken,
-                after, acceptDatetime, selectConverted, tagsConverted, accept, requestOptions);
+        Response<KeyValueListResult> res = service.getRevisions(this.getEndpoint(), this.getApiVersion(), key, label,
+            syncToken, after, acceptDatetime, selectConverted, tagsConverted, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getItems(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1966,7 +1946,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param select Used to select what fields are present in the returned resource(s).
      * @param tags A filter used to query by tags. Syntax reference:
      * https://aka.ms/azconfig/docs/restapirevisions.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1974,16 +1954,13 @@ public final class AzureAppConfigurationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyValue> getRevisions(String accept, String key, String label, String syncToken, String after,
-        String acceptDatetime, List<KeyValueFields> select, List<String> tags, RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(requestOptions != null && requestOptions.getContext() != null
-            ? requestOptions.getContext()
-            : Context.none());
+        String acceptDatetime, List<KeyValueFields> select, List<String> tags, RequestContext requestContext) {
+        RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
         return new PagedIterable<>(
             (pagingOptions) -> getRevisionsSinglePage(accept, key, label, syncToken, after, acceptDatetime, select,
-                tags, requestOptions),
+                tags, requestContext),
             (pagingOptions, nextLink) -> getRevisionsNextSinglePage(nextLink, accept, syncToken, acceptDatetime,
-                requestOptionsForNextPage));
+                requestContextForNextPage));
     }
 
     /**
@@ -2001,7 +1978,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param select Used to select what fields are present in the returned resource(s).
      * @param tags A filter used to query by tags. Syntax reference:
      * https://aka.ms/azconfig/docs/restapirevisions.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2009,7 +1986,7 @@ public final class AzureAppConfigurationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> checkRevisionsWithResponse(String key, String label, String syncToken, String after,
-        String acceptDatetime, List<KeyValueFields> select, List<String> tags, RequestOptions requestOptions) {
+        String acceptDatetime, List<KeyValueFields> select, List<String> tags, RequestContext requestContext) {
         final String accept = "application/json";
         String selectConverted = (select == null)
             ? null
@@ -2019,8 +1996,8 @@ public final class AzureAppConfigurationClientImpl {
         List<String> tagsConverted = (tags == null)
             ? new ArrayList<>()
             : tags.stream().map(item -> Objects.toString(item, "")).collect(Collectors.toList());
-        return service.checkRevisions(this.getEndpoint(), this.getServiceVersion().getVersion(), key, label, syncToken,
-            after, acceptDatetime, selectConverted, tagsConverted, accept, requestOptions);
+        return service.checkRevisions(this.getEndpoint(), this.getApiVersion(), key, label, syncToken, after,
+            acceptDatetime, selectConverted, tagsConverted, accept, requestContext);
     }
 
     /**
@@ -2045,7 +2022,7 @@ public final class AzureAppConfigurationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkRevisions(String key, String label, String syncToken, String after, String acceptDatetime,
         List<KeyValueFields> select, List<String> tags) {
-        checkRevisionsWithResponse(key, label, syncToken, after, acceptDatetime, select, tags, RequestOptions.none());
+        checkRevisionsWithResponse(key, label, syncToken, after, acceptDatetime, select, tags, RequestContext.none());
     }
 
     /**
@@ -2063,7 +2040,7 @@ public final class AzureAppConfigurationClientImpl {
         final String acceptDatetime = null;
         final List<KeyValueFields> select = null;
         final List<String> tags = null;
-        checkRevisionsWithResponse(key, label, syncToken, after, acceptDatetime, select, tags, RequestOptions.none());
+        checkRevisionsWithResponse(key, label, syncToken, after, acceptDatetime, select, tags, RequestContext.none());
     }
 
     /**
@@ -2085,7 +2062,7 @@ public final class AzureAppConfigurationClientImpl {
     public PagedResponse<Key> getKeysNextSinglePage(String nextLink, String accept, String syncToken,
         String acceptDatetime) {
         Response<KeyListResult> res = service.getKeysNext(nextLink, this.getEndpoint(), syncToken, acceptDatetime,
-            accept, RequestOptions.none());
+            accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getItems(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -2100,7 +2077,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
      * time.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2108,9 +2085,9 @@ public final class AzureAppConfigurationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<Key> getKeysNextSinglePage(String nextLink, String accept, String syncToken,
-        String acceptDatetime, RequestOptions requestOptions) {
+        String acceptDatetime, RequestContext requestContext) {
         Response<KeyListResult> res
-            = service.getKeysNext(nextLink, this.getEndpoint(), syncToken, acceptDatetime, accept, requestOptions);
+            = service.getKeysNext(nextLink, this.getEndpoint(), syncToken, acceptDatetime, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getItems(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -2138,7 +2115,7 @@ public final class AzureAppConfigurationClientImpl {
     public PagedResponse<KeyValue> getKeyValuesNextSinglePage(String nextLink, String accept, String syncToken,
         String acceptDatetime, String ifMatch, String ifNoneMatch) {
         Response<KeyValueListResult> res = service.getKeyValuesNext(nextLink, this.getEndpoint(), syncToken,
-            acceptDatetime, ifMatch, ifNoneMatch, accept, RequestOptions.none());
+            acceptDatetime, ifMatch, ifNoneMatch, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getItems(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -2157,7 +2134,7 @@ public final class AzureAppConfigurationClientImpl {
      * value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
      * match the value provided.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2165,9 +2142,9 @@ public final class AzureAppConfigurationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<KeyValue> getKeyValuesNextSinglePage(String nextLink, String accept, String syncToken,
-        String acceptDatetime, String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
+        String acceptDatetime, String ifMatch, String ifNoneMatch, RequestContext requestContext) {
         Response<KeyValueListResult> res = service.getKeyValuesNext(nextLink, this.getEndpoint(), syncToken,
-            acceptDatetime, ifMatch, ifNoneMatch, accept, requestOptions);
+            acceptDatetime, ifMatch, ifNoneMatch, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getItems(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -2188,7 +2165,7 @@ public final class AzureAppConfigurationClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<Snapshot> getSnapshotsNextSinglePage(String nextLink, String accept, String syncToken) {
         Response<SnapshotListResult> res
-            = service.getSnapshotsNext(nextLink, this.getEndpoint(), syncToken, accept, RequestOptions.none());
+            = service.getSnapshotsNext(nextLink, this.getEndpoint(), syncToken, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getItems(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -2201,7 +2178,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param nextLink The URL to get the next list of items.
      * @param accept The accept parameter.
      * @param syncToken Used to guarantee real-time consistency between requests.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2209,9 +2186,9 @@ public final class AzureAppConfigurationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<Snapshot> getSnapshotsNextSinglePage(String nextLink, String accept, String syncToken,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         Response<SnapshotListResult> res
-            = service.getSnapshotsNext(nextLink, this.getEndpoint(), syncToken, accept, requestOptions);
+            = service.getSnapshotsNext(nextLink, this.getEndpoint(), syncToken, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getItems(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -2235,7 +2212,7 @@ public final class AzureAppConfigurationClientImpl {
     public PagedResponse<Label> getLabelsNextSinglePage(String nextLink, String accept, String syncToken,
         String acceptDatetime) {
         Response<LabelListResult> res = service.getLabelsNext(nextLink, this.getEndpoint(), syncToken, acceptDatetime,
-            accept, RequestOptions.none());
+            accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getItems(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -2250,7 +2227,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
      * time.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2258,9 +2235,9 @@ public final class AzureAppConfigurationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<Label> getLabelsNextSinglePage(String nextLink, String accept, String syncToken,
-        String acceptDatetime, RequestOptions requestOptions) {
+        String acceptDatetime, RequestContext requestContext) {
         Response<LabelListResult> res
-            = service.getLabelsNext(nextLink, this.getEndpoint(), syncToken, acceptDatetime, accept, requestOptions);
+            = service.getLabelsNext(nextLink, this.getEndpoint(), syncToken, acceptDatetime, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getItems(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -2284,7 +2261,7 @@ public final class AzureAppConfigurationClientImpl {
     public PagedResponse<KeyValue> getRevisionsNextSinglePage(String nextLink, String accept, String syncToken,
         String acceptDatetime) {
         Response<KeyValueListResult> res = service.getRevisionsNext(nextLink, this.getEndpoint(), syncToken,
-            acceptDatetime, accept, RequestOptions.none());
+            acceptDatetime, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getItems(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -2299,7 +2276,7 @@ public final class AzureAppConfigurationClientImpl {
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
      * time.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2307,9 +2284,9 @@ public final class AzureAppConfigurationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<KeyValue> getRevisionsNextSinglePage(String nextLink, String accept, String syncToken,
-        String acceptDatetime, RequestOptions requestOptions) {
+        String acceptDatetime, RequestContext requestContext) {
         Response<KeyValueListResult> res
-            = service.getRevisionsNext(nextLink, this.getEndpoint(), syncToken, acceptDatetime, accept, requestOptions);
+            = service.getRevisionsNext(nextLink, this.getEndpoint(), syncToken, acceptDatetime, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getItems(),
             null, res.getValue().getNextLink(), null, null, null);
     }

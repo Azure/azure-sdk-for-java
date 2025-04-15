@@ -24,8 +24,8 @@ import io.clientcore.core.http.pipeline.HttpRedirectPolicy;
 import io.clientcore.core.http.pipeline.HttpRetryOptions;
 import io.clientcore.core.http.pipeline.HttpRetryPolicy;
 import io.clientcore.core.http.pipeline.KeyCredentialPolicy;
+import io.clientcore.core.http.pipeline.UserAgentOptions;
 import io.clientcore.core.http.pipeline.UserAgentPolicy;
-import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.traits.ConfigurationTrait;
 import io.clientcore.core.traits.EndpointTrait;
 import io.clientcore.core.traits.HttpTrait;
@@ -68,25 +68,6 @@ public final class AzureAppConfigurationClientBuilder
     @Metadata(properties = { MetadataProperties.GENERATED })
     public AzureAppConfigurationClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
-    }
-
-    /*
-     * The HTTP pipeline to send requests through.
-     */
-    @Metadata(properties = { MetadataProperties.GENERATED })
-    private HttpPipeline pipeline;
-
-    /**
-     * {@inheritDoc}.
-     */
-    @Metadata(properties = { MetadataProperties.GENERATED })
-    @Override
-    public AzureAppConfigurationClientBuilder httpPipeline(HttpPipeline pipeline) {
-        if (this.pipeline != null && pipeline == null) {
-            LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
-        }
-        this.pipeline = pipeline;
-        return this;
     }
 
     /*
@@ -246,20 +227,20 @@ public final class AzureAppConfigurationClientBuilder
     }
 
     /*
-     * Service version
+     * Version parameter
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    private AzureAppConfigurationServiceVersion serviceVersion;
+    private String apiVersion;
 
     /**
-     * Sets Service version.
+     * Sets Version parameter.
      * 
-     * @param serviceVersion the serviceVersion value.
+     * @param apiVersion the apiVersion value.
      * @return the AzureAppConfigurationClientBuilder.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public AzureAppConfigurationClientBuilder serviceVersion(AzureAppConfigurationServiceVersion serviceVersion) {
-        this.serviceVersion = serviceVersion;
+    public AzureAppConfigurationClientBuilder apiVersion(String apiVersion) {
+        this.apiVersion = apiVersion;
         return this;
     }
 
@@ -271,11 +252,9 @@ public final class AzureAppConfigurationClientBuilder
     @Metadata(properties = { MetadataProperties.GENERATED })
     private AzureAppConfigurationClientImpl buildInnerClient() {
         this.validateClient();
-        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
-        AzureAppConfigurationServiceVersion localServiceVersion
-            = (serviceVersion != null) ? serviceVersion : AzureAppConfigurationServiceVersion.getLatest();
+        String localApiVersion = (apiVersion != null) ? apiVersion : "";
         AzureAppConfigurationClientImpl client
-            = new AzureAppConfigurationClientImpl(localPipeline, this.endpoint, localServiceVersion);
+            = new AzureAppConfigurationClientImpl(createHttpPipeline(), this.endpoint, localApiVersion);
         return client;
     }
 
@@ -297,7 +276,7 @@ public final class AzureAppConfigurationClientBuilder
         String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
         HttpPipelineBuilder httpPipelineBuilder = new HttpPipelineBuilder();
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        policies.add(new UserAgentPolicy(null, clientName, clientVersion));
+        policies.add(new UserAgentPolicy(new UserAgentOptions().setSdkName(clientName).setSdkVersion(clientVersion)));
         policies.add(redirectOptions == null ? new HttpRedirectPolicy() : new HttpRedirectPolicy(redirectOptions));
         policies.add(retryOptions == null ? new HttpRetryPolicy() : new HttpRetryPolicy(retryOptions));
         this.pipelinePolicies.stream().forEach(p -> policies.add(p));
@@ -321,6 +300,4 @@ public final class AzureAppConfigurationClientBuilder
     public AzureAppConfigurationClient buildClient() {
         return new AzureAppConfigurationClient(buildInnerClient());
     }
-
-    private static final ClientLogger LOGGER = new ClientLogger(AzureAppConfigurationClientBuilder.class);
 }
