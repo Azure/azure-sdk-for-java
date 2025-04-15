@@ -1547,7 +1547,6 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
         });
     }
 
-
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testUploadFileSuccess(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
@@ -1569,7 +1568,7 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
         FileDetails fileDetails = new FileDetails(BinaryData.fromBytes("sample-content".getBytes()), "test-file.txt");
 
         HttpResponseException exception
-                = assertThrows(HttpResponseException.class, () -> client.uploadFile(fileDetails, null));
+            = assertThrows(HttpResponseException.class, () -> client.uploadFile(fileDetails, null));
 
         assertEquals(400, exception.getResponse().getStatusCode());
         assertInstanceOf(HttpResponseException.class, exception);
@@ -1580,13 +1579,13 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     @RecordWithoutRequestBody
     public void testGetAudioTranslationAsResponseObjectSuccess(HttpClient httpClient,
-                                                               OpenAIServiceVersion serviceVersion) {
+        OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
 
-        getAudioTranslationRunner((deploymentName, translationOptions) -> {
+        getAudioTranslationRunnerForNonAzure((deploymentName, translationOptions) -> {
             translationOptions.setResponseFormat(AudioTranslationFormat.JSON);
             AudioTranslation translation
-                    = client.getAudioTranslationAsResponseObject(deploymentName, translationOptions);
+                = client.getAudioTranslationAsResponseObject(deploymentName, translationOptions);
 
             assertNotNull(translation);
             assertEquals("It's raining today.", translation.getText());
@@ -1597,15 +1596,15 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     @RecordWithoutRequestBody
     public void testGetAudioTranslationAsResponseObjectFailure(HttpClient httpClient,
-                                                               OpenAIServiceVersion serviceVersion) {
+        OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
 
-        getAudioTranslationRunner((deploymentName, translationOptions) -> {
+        getAudioTranslationRunnerForNonAzure((deploymentName, translationOptions) -> {
             translationOptions.setResponseFormat(AudioTranslationFormat.JSON);
             translationOptions.setFilename(null);
 
             HttpResponseException exception = assertThrows(HttpResponseException.class,
-                    () -> client.getAudioTranslationAsResponseObject(deploymentName, translationOptions));
+                () -> client.getAudioTranslationAsResponseObject(deploymentName, translationOptions));
 
             assertInstanceOf(HttpResponseException.class, exception);
             assertEquals(400, exception.getResponse().getStatusCode());
@@ -1617,13 +1616,13 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     @RecordWithoutRequestBody
     public void testGetAudioTranscriptionAsResponseObjectSuccess(HttpClient httpClient,
-                                                                 OpenAIServiceVersion serviceVersion) {
+        OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
 
-        getAudioTranscriptionRunner((deploymentName, transcriptionOptions) -> {
+        getAudioTranscriptionRunnerForNonAzure((deploymentName, transcriptionOptions) -> {
             transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.JSON);
             AudioTranscription transcription
-                    = client.getAudioTranscriptionAsResponseObject(deploymentName, transcriptionOptions);
+                = client.getAudioTranscriptionAsResponseObject(deploymentName, transcriptionOptions);
 
             assertNotNull(transcription);
             assertEquals(BATMAN_TRANSCRIPTION, transcription.getText());
@@ -1634,15 +1633,15 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     @RecordWithoutRequestBody
     public void testGetAudioTranscriptionAsResponseObjectFailure(HttpClient httpClient,
-                                                                 OpenAIServiceVersion serviceVersion) {
+        OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
 
-        getAudioTranscriptionRunner((deploymentName, transcriptionOptions) -> {
+        getAudioTranscriptionRunnerForNonAzure((deploymentName, transcriptionOptions) -> {
             transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.JSON);
             transcriptionOptions.setFilename(null);
 
             HttpResponseException exception = assertThrows(HttpResponseException.class,
-                    () -> client.getAudioTranscriptionAsResponseObject(deploymentName, transcriptionOptions));
+                () -> client.getAudioTranscriptionAsResponseObject(deploymentName, transcriptionOptions));
 
             assertInstanceOf(HttpResponseException.class, exception);
             assertEquals(400, exception.getResponse().getStatusCode());
@@ -1654,14 +1653,14 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     @RecordWithoutRequestBody
     public void testGetAudioTranslationTextWithResponseSuccess(HttpClient httpClient,
-                                                               OpenAIServiceVersion serviceVersion) {
+        OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
 
-        getAudioTranslationRunner((deploymentName, audioTranslationOptions) -> {
+        getAudioTranslationRunnerForNonAzure((deploymentName, audioTranslationOptions) -> {
             audioTranslationOptions.setResponseFormat(AudioTranslationFormat.TEXT);
 
             Response<String> translation = client.getAudioTranslationTextWithResponse(deploymentName,
-                    audioTranslationOptions.getFilename(), audioTranslationOptions, new RequestOptions());
+                audioTranslationOptions.getFilename(), audioTranslationOptions, new RequestOptions());
 
             assertNotNull(translation);
             assertEquals("It's raining today.\n", translation.getValue());
@@ -1673,16 +1672,16 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     @RecordWithoutRequestBody
     public void testGetAudioTranslationTextWithResponseFailure(HttpClient httpClient,
-                                                               OpenAIServiceVersion serviceVersion) {
+        OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
 
-        getAudioTranslationRunner((deploymentName, audioTranslationOptions) -> {
+        getAudioTranslationRunnerForNonAzure((deploymentName, audioTranslationOptions) -> {
             audioTranslationOptions.setResponseFormat(AudioTranslationFormat.TEXT);
             audioTranslationOptions.setFilename(null);
 
             HttpResponseException exception = assertThrows(HttpResponseException.class,
-                    () -> client.getAudioTranslationTextWithResponse(deploymentName, "test-file.txt",
-                            audioTranslationOptions, new RequestOptions()));
+                () -> client.getAudioTranslationTextWithResponse(deploymentName, "test-file.txt",
+                    audioTranslationOptions, new RequestOptions()));
 
             assertInstanceOf(HttpResponseException.class, exception);
             assertEquals(400, exception.getResponse().getStatusCode());
@@ -1694,15 +1693,15 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     @RecordWithoutRequestBody
     public void testGetAudioTranslationTextWithResponseWithTemperature(HttpClient httpClient,
-                                                                       OpenAIServiceVersion serviceVersion) {
+        OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
 
-        getAudioTranslationRunner((deploymentName, audioTranslationOptions) -> {
+        getAudioTranslationRunnerForNonAzure((deploymentName, audioTranslationOptions) -> {
             audioTranslationOptions.setResponseFormat(AudioTranslationFormat.TEXT);
             audioTranslationOptions.setTemperature(0.0);
 
             Response<String> translation = client.getAudioTranslationTextWithResponse(deploymentName,
-                    audioTranslationOptions.getFilename(), audioTranslationOptions, new RequestOptions());
+                audioTranslationOptions.getFilename(), audioTranslationOptions, new RequestOptions());
 
             assertNotNull(translation);
             assertEquals("It's raining today.\n", translation.getValue());
@@ -1713,17 +1712,17 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     @RecordWithoutRequestBody
     public void testGetAudioTranscriptionTextWithResponseFailure(HttpClient httpClient,
-                                                                 OpenAIServiceVersion serviceVersion) {
+        OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
 
-        getAudioTranscriptionRunner((deploymentName, transcriptionOptions) -> {
+        getAudioTranscriptionRunnerForNonAzure((deploymentName, transcriptionOptions) -> {
             transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.TEXT);
             transcriptionOptions.setFilename(null);
             transcriptionOptions.setTemperature(0.0);
 
             HttpResponseException exception = assertThrows(HttpResponseException.class,
-                    () -> client.getAudioTranscriptionTextWithResponse(deploymentName, "test-file.txt",
-                            transcriptionOptions, new RequestOptions()));
+                () -> client.getAudioTranscriptionTextWithResponse(deploymentName, "test-file.txt",
+                    transcriptionOptions, new RequestOptions()));
 
             assertInstanceOf(HttpResponseException.class, exception);
             assertEquals(400, exception.getResponse().getStatusCode());
@@ -1735,15 +1734,15 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     @RecordWithoutRequestBody
     public void testGetAudioTranscriptionWithResponseSuccess(HttpClient httpClient,
-                                                             OpenAIServiceVersion serviceVersion) {
+        OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
 
-        getAudioTranscriptionRunner((deploymentName, transcriptionOptions) -> {
+        getAudioTranscriptionRunnerForNonAzure((deploymentName, transcriptionOptions) -> {
             transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.JSON);
             transcriptionOptions.setTemperature(0.0);
 
             Response<AudioTranscription> transcription = client.getAudioTranscriptionWithResponse(deploymentName,
-                    transcriptionOptions.getFilename(), transcriptionOptions, new RequestOptions());
+                transcriptionOptions.getFilename(), transcriptionOptions, new RequestOptions());
 
             assertAudioTranscriptionSimpleJson(transcription.getValue(), BATMAN_TRANSCRIPTION);
         });
@@ -1755,12 +1754,12 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     public void testGetAudioTranslationWithResponseSuccess(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
 
-        getAudioTranslationRunner((deploymentName, translationOptions) -> {
+        getAudioTranslationRunnerForNonAzure((deploymentName, translationOptions) -> {
             translationOptions.setResponseFormat(AudioTranslationFormat.JSON);
             translationOptions.setTemperature(0.0);
 
             Response<AudioTranslation> translation = client.getAudioTranslationWithResponse(deploymentName,
-                    translationOptions.getFilename(), translationOptions, new RequestOptions());
+                translationOptions.getFilename(), translationOptions, new RequestOptions());
 
             assertAudioTranslationSimpleJson(translation.getValue(), "It's raining today.");
         });
@@ -1770,15 +1769,15 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     @RecordWithoutRequestBody
     public void testGetAudioTranslationWithResponseWithTemperature(HttpClient httpClient,
-                                                                   OpenAIServiceVersion serviceVersion) {
+        OpenAIServiceVersion serviceVersion) {
         client = getNonAzureOpenAISyncClient(httpClient);
 
-        getAudioTranslationRunner((deploymentName, audioTranslationOptions) -> {
+        getAudioTranslationRunnerForNonAzure((deploymentName, audioTranslationOptions) -> {
             audioTranslationOptions.setResponseFormat(AudioTranslationFormat.JSON);
             audioTranslationOptions.setTemperature(1.0);
 
             Response<AudioTranslation> translation = client.getAudioTranslationWithResponse(deploymentName,
-                    audioTranslationOptions.getFilename(), audioTranslationOptions, new RequestOptions());
+                audioTranslationOptions.getFilename(), audioTranslationOptions, new RequestOptions());
 
             assertNotNull(translation);
             assertEquals("It's raining today.", translation.getValue().getText());
