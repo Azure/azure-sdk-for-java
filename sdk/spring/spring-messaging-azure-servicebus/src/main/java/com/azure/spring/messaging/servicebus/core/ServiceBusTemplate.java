@@ -8,7 +8,6 @@ import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusSessionReceiverClient;
 import com.azure.spring.messaging.PropertiesSupplier;
-import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.messaging.core.SendOperation;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
@@ -40,7 +39,7 @@ public class ServiceBusTemplate implements SendOperation {
     private static final Duration DEFAULT_PRC_SEND_TIMEOUT = Duration.ofSeconds(30);
     private final ServiceBusProducerFactory producerFactory;
     private final ServiceBusConsumerFactory consumerFactory;
-    private AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> messageConverter = DEFAULT_CONVERTER;
+    private ServiceBusMessageConverter messageConverter = DEFAULT_CONVERTER;
     private ServiceBusEntityType defaultEntityType;
     private Duration rpcSendTimeout = DEFAULT_PRC_SEND_TIMEOUT;
 
@@ -173,7 +172,7 @@ public class ServiceBusTemplate implements SendOperation {
      * Set the message converter.
      * @param messageConverter the message converter.
      */
-    public void setMessageConverter(AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> messageConverter) {
+    public void setMessageConverter(ServiceBusMessageConverter messageConverter) {
         this.messageConverter = messageConverter;
     }
 
@@ -181,7 +180,7 @@ public class ServiceBusTemplate implements SendOperation {
      * Get the message converter.
      * @return the message converter.
      */
-    public AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> getMessageConverter() {
+    public ServiceBusMessageConverter getMessageConverter() {
         return messageConverter;
     }
 

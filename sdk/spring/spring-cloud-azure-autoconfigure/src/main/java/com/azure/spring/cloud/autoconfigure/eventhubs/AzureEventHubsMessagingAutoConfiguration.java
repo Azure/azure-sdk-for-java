@@ -4,14 +4,12 @@
 package com.azure.spring.cloud.autoconfigure.eventhubs;
 
 import com.azure.messaging.eventhubs.CheckpointStore;
-import com.azure.messaging.eventhubs.EventData;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.implementation.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.core.provider.connectionstring.ServiceConnectionStringProvider;
 import com.azure.spring.cloud.core.service.AzureServiceType;
 import com.azure.spring.messaging.ConsumerIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
-import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.messaging.eventhubs.core.DefaultEventHubsNamespaceProcessorFactory;
 import com.azure.spring.messaging.eventhubs.core.DefaultEventHubsNamespaceProducerFactory;
 import com.azure.spring.messaging.eventhubs.core.EventHubsProcessorFactory;
@@ -127,14 +125,14 @@ public class AzureEventHubsMessagingAutoConfiguration {
         @Bean
         @ConditionalOnMissingBean
         @ConditionalOnProperty(value = "spring.cloud.azure.message-converter.isolated-object-mapper", havingValue = "true", matchIfMissing = true)
-        AzureMessageConverter<EventData, EventData> defaultEventHubsMessageConverter() {
+        EventHubsMessageConverter defaultEventHubsMessageConverter() {
             return new EventHubsMessageConverter(ObjectMapperHolder.OBJECT_MAPPER);
         }
 
         @Bean
         @ConditionalOnMissingBean
         @ConditionalOnProperty(value = "spring.cloud.azure.message-converter.isolated-object-mapper", havingValue = "false")
-        AzureMessageConverter<EventData, EventData> eventHubsMessageConverter(ObjectMapper objectMapper) {
+        EventHubsMessageConverter eventHubsMessageConverter(ObjectMapper objectMapper) {
             return new EventHubsMessageConverter(objectMapper);
         }
 
@@ -148,7 +146,7 @@ public class AzureEventHubsMessagingAutoConfiguration {
         @Bean
         @ConditionalOnMissingBean
         public EventHubsTemplate eventHubsTemplate(EventHubsProducerFactory producerFactory,
-                                                   AzureMessageConverter<EventData, EventData> messageConverter) {
+                                                   EventHubsMessageConverter messageConverter) {
             EventHubsTemplate eventHubsTemplate = new EventHubsTemplate(producerFactory);
             eventHubsTemplate.setMessageConverter(messageConverter);
             return eventHubsTemplate;
