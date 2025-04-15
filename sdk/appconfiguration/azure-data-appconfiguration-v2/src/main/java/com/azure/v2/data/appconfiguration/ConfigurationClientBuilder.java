@@ -102,22 +102,6 @@ public final class ConfigurationClientBuilder implements HttpTrait<Configuration
     }
 
     /*
-     * The HTTP pipeline to send requests through.
-     */
-    private HttpPipeline pipeline;
-
-    /**
-     * {@inheritDoc}.
-     */
-    public ConfigurationClientBuilder httpPipeline(HttpPipeline pipeline) {
-        if (this.pipeline != null && pipeline == null) {
-            LOGGER.atInfo().log("HttpPipeline is being set to 'null' when it was previously configured.");
-        }
-        this.pipeline = pipeline;
-        return this;
-    }
-
-    /*
      * The HTTP client used to send the request.
      */
     private HttpClient httpClient;
@@ -323,11 +307,10 @@ public final class ConfigurationClientBuilder implements HttpTrait<Configuration
         // Manual changes end
 
         this.validateClient();
-        HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         ConfigurationServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : ConfigurationServiceVersion.getLatest();
         AzureAppConfigurationClientImpl client
-            = new AzureAppConfigurationClientImpl(localPipeline, this.endpoint, localServiceVersion);
+            = new AzureAppConfigurationClientImpl(createHttpPipeline(), this.endpoint, localServiceVersion);
         return client;
     }
 
