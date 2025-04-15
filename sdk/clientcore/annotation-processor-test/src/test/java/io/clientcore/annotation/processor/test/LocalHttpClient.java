@@ -34,7 +34,7 @@ public final class LocalHttpClient implements HttpClient {
 
         return new Response<BinaryData>(request, success ? 200 : 400, new HttpHeaders(), BinaryData.empty()) {
             @Override
-            public void close() throws IOException {
+            public void close() {
                 closeCalledOnResponse = true;
 
                 super.close();

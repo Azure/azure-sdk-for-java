@@ -3,6 +3,7 @@
 package io.clientcore.http.netty4.implementation;
 
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.json.JsonWriter;
@@ -19,10 +20,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
 
-import static io.clientcore.http.netty4.implementation.NettyUtility.awaitLatch;
+import static io.clientcore.http.netty4.implementation.Netty4Utility.awaitLatch;
 
-final class NettyChannelBinaryData extends BinaryData {
-    private static final ClientLogger LOGGER = new ClientLogger(NettyChannelBinaryData.class);
+final class Netty4ChannelBinaryData extends BinaryData {
+    private static final ClientLogger LOGGER = new ClientLogger(Netty4ChannelBinaryData.class);
     private static final int MAX_ARRAY_SIZE = Integer.MAX_VALUE - 8;
     private static final String TOO_LARGE_FOR_BYTE_ARRAY
         = "The content length is too large for a byte array. Content length is: ";
@@ -35,7 +36,7 @@ final class NettyChannelBinaryData extends BinaryData {
 
     private volatile byte[] bytes;
 
-    NettyChannelBinaryData(ByteArrayOutputStream eagerContent, Channel channel, Long length) {
+    Netty4ChannelBinaryData(ByteArrayOutputStream eagerContent, Channel channel, Long length) {
         this.eagerContent = eagerContent;
         this.channel = channel;
         this.length = length;
@@ -49,7 +50,7 @@ final class NettyChannelBinaryData extends BinaryData {
 
         if (bytes == null) {
             CountDownLatch latch = new CountDownLatch(1);
-            channel.pipeline().addLast(new EagerConsumeNetworkResponseHandler(latch, buf -> {
+            channel.pipeline().addLast(new Netty4EagerConsumeNetworkResponseHandler(latch, buf -> {
                 try {
                     buf.readBytes(eagerContent, buf.readableBytes());
                 } catch (IOException ex) {
@@ -71,8 +72,12 @@ final class NettyChannelBinaryData extends BinaryData {
     }
 
     @Override
-    public <T> T toObject(Type type, ObjectSerializer serializer) throws IOException {
-        return serializer.deserializeFromBytes(toBytes(), type);
+    public <T> T toObject(Type type, ObjectSerializer serializer) {
+        try {
+            return serializer.deserializeFromBytes(toBytes(), type);
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(CoreException.from(e));
+        }
     }
 
     @Override
@@ -83,10 +88,14 @@ final class NettyChannelBinaryData extends BinaryData {
     }
 
     @Override
-    public void writeTo(JsonWriter jsonWriter) throws IOException {
+    public void writeTo(JsonWriter jsonWriter) {
         Objects.requireNonNull(jsonWriter, "'jsonWriter' cannot be null");
 
-        jsonWriter.writeBinary(toBytes());
+        try {
+            jsonWriter.writeBinary(toBytes());
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(CoreException.from(e));
+        }
     }
 
     @Override
@@ -110,7 +119,7 @@ final class NettyChannelBinaryData extends BinaryData {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         channel.close();
     }
 }

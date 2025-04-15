@@ -4,17 +4,20 @@
 package io.clientcore.http.netty4;
 
 import io.clientcore.core.http.client.HttpClient;
+import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.models.binarydata.FileBinaryData;
 import io.clientcore.core.models.binarydata.InputStreamBinaryData;
+import io.clientcore.core.utils.AuthenticateChallenge;
 import io.clientcore.core.utils.ProgressReporter;
-import io.clientcore.http.netty4.implementation.CoreProgressAndTimeoutHandler;
-import io.clientcore.http.netty4.implementation.CoreResponseHandler;
-import io.clientcore.http.netty4.implementation.CoreSslInitializationHandler;
+import io.clientcore.http.netty4.implementation.ChannelInitializationProxyHandler;
+import io.clientcore.http.netty4.implementation.Netty4ProgressAndTimeoutHandler;
+import io.clientcore.http.netty4.implementation.Netty4ResponseHandler;
+import io.clientcore.http.netty4.implementation.Netty4SslInitializationHandler;
 import io.clientcore.http.netty4.implementation.WrappedHttpHeaders;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
@@ -23,19 +26,11 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelInitializer;
-import io.netty.channel.ChannelOption;
-import io.netty.channel.ChannelPipeline;
 import io.netty.channel.EventLoopGroup;
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.DefaultHttpRequest;
-import io.netty.handler.codec.http.HttpClientCodec;
-import io.netty.handler.codec.http.HttpDecoderConfig;
-import io.netty.handler.codec.http.HttpHeaderNames;
-import io.netty.handler.codec.http.HttpHeaders;
-import io.netty.handler.codec.http.HttpHeadersFactory;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpVersion;
-import io.netty.handler.proxy.HttpProxyHandler;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.stream.ChunkedInput;
@@ -43,14 +38,17 @@ import io.netty.handler.stream.ChunkedNioFile;
 import io.netty.handler.stream.ChunkedStream;
 import io.netty.handler.stream.ChunkedWriteHandler;
 
+import javax.net.ssl.SSLException;
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.net.URI;
 import java.nio.channels.FileChannel;
 import java.nio.file.StandardOpenOption;
+import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static io.clientcore.http.netty4.implementation.Netty4Utility.PROGRESS_AND_TIMEOUT_HANDLER_NAME;
+import static io.clientcore.http.netty4.implementation.Netty4Utility.createCodec;
 import static io.netty.handler.codec.http.DefaultHttpHeadersFactory.trailersFactory;
 
 /**
@@ -61,24 +59,22 @@ class NettyHttpClient implements HttpClient {
 
     private final Bootstrap bootstrap;
     private final SslContext sslContext;
-    private final ProxyOptions proxyOptions;
+    private final ChannelInitializationProxyHandler channelInitializationProxyHandler;
+    private final AtomicReference<List<AuthenticateChallenge>> proxyChallenges;
     private final long readTimeoutMillis;
     private final long responseTimeoutMillis;
     private final long writeTimeoutMillis;
 
-    NettyHttpClient(Bootstrap bootstrap, SslContext sslContext, ProxyOptions proxyOptions, long readTimeoutMillis,
+    NettyHttpClient(Bootstrap bootstrap, SslContext sslContext,
+        ChannelInitializationProxyHandler channelInitializationProxyHandler, long readTimeoutMillis,
         long responseTimeoutMillis, long writeTimeoutMillis) {
         this.bootstrap = bootstrap;
         this.sslContext = sslContext;
-        this.proxyOptions = proxyOptions;
+        this.channelInitializationProxyHandler = channelInitializationProxyHandler;
+        this.proxyChallenges = new AtomicReference<>();
         this.readTimeoutMillis = readTimeoutMillis;
         this.responseTimeoutMillis = responseTimeoutMillis;
         this.writeTimeoutMillis = writeTimeoutMillis;
-    }
-
-    // For testing.
-    ProxyOptions getProxyOptions() {
-        return proxyOptions;
     }
 
     Bootstrap getBootstrap() {
@@ -86,7 +82,7 @@ class NettyHttpClient implements HttpClient {
     }
 
     @Override
-    public Response<BinaryData> send(HttpRequest request) throws IOException {
+    public Response<BinaryData> send(HttpRequest request) {
         URI uri = request.getUri();
         String host = uri.getHost();
         int port = uri.getPort() == -1 ? ("https".equalsIgnoreCase(uri.getScheme()) ? 443 : 80) : uri.getPort();
@@ -94,61 +90,31 @@ class NettyHttpClient implements HttpClient {
         ProgressReporter progressReporter = (request.getContext() == null)
             ? null
             : (ProgressReporter) request.getContext().getMetadata("progressReporter");
-        CoreProgressAndTimeoutHandler progressAndTimeoutHandler = new CoreProgressAndTimeoutHandler(progressReporter,
-            writeTimeoutMillis, responseTimeoutMillis, readTimeoutMillis);
+        boolean addProgressAndTimeoutHandler
+            = progressReporter != null || writeTimeoutMillis > 0 || responseTimeoutMillis > 0 || readTimeoutMillis > 0;
 
-        // Disable auto-read as we want to control when and how data is read from the channel.
-        bootstrap.option(ChannelOption.AUTO_READ, false);
-        // TODO (alzimmer): Next task is to add support for connection pooling.
+        // Configure an immutable ChannelInitializer in the builder with everything that can be added on a non-per
+        // request basis.
         bootstrap.handler(new ChannelInitializer<Channel>() {
             @Override
-            protected void initChannel(Channel ch) throws Exception {
-                ChannelPipeline pipeline = ch.pipeline();
-
-                if (proxyOptions != null) {
-                    if (proxyOptions.getAddress() != null) {
-                        // TODO (alzimmer): Need to come back to proxy handling as Netty only offers support for Basic
-                        //  authentication and we want to provide broader support through ChallengeHandler.
-                        //  Also, we need to support SOCKS here (unless we want to drop that in ClientCore).
-                        ch.pipeline()
-                            .addFirst(new HttpProxyHandler(
-                                new InetSocketAddress(proxyOptions.getAddress().getHostName(),
-                                    proxyOptions.getAddress().getPort()),
-                                proxyOptions.getUsername(), proxyOptions.getPassword()));
-                    }
+            protected void initChannel(Channel ch) throws SSLException {
+                // Test whether proxying should be applied to this Channel. If so, add it.
+                if (channelInitializationProxyHandler.test(ch.remoteAddress())) {
+                    ch.pipeline().addFirst(channelInitializationProxyHandler.createProxy(proxyChallenges));
                 }
 
+                // Add SSL handling if the request is HTTPS.
                 if (isHttps) {
                     SslContext ssl = (sslContext != null)
                         ? sslContext
                         : SslContextBuilder.forClient().endpointIdentificationAlgorithm("HTTPS").build();
-                    pipeline.addLast(ssl.newHandler(ch.alloc(), host, port));
-
-                    // When SSL is being used we need to defer adding 'CoreResponseHandler' and
-                    // 'CoreProgressAndTimeoutHandler' until after the SSL handshake is complete.
-                    // This is because the SSL Handshake will require reading to complete and that reading will be SSL
-                    // events rather than HTTP response and content events. So, if we add the handlers now, they will
-                    // consume the incorrect information.
-                    // Another possible option here would be having those handlers ignore SSL events. But that requires
-                    // much more state management, therefore is more likely to have issues.
-                    pipeline.addLast(new CoreSslInitializationHandler(progressAndTimeoutHandler));
+                    // SSL handling is added last here. This is done as proxying could require SSL handling too.
+                    ch.pipeline().addLast(ssl.newHandler(ch.alloc(), host, port), new Netty4SslInitializationHandler());
                 }
 
-                HttpClientCodec httpClientCodec
-                    = new HttpClientCodec(new HttpDecoderConfig().setHeadersFactory(new HttpHeadersFactory() {
-                        @Override
-                        public HttpHeaders newHeaders() {
-                            return new WrappedHttpHeaders(new io.clientcore.core.http.models.HttpHeaders());
-                        }
-
-                        @Override
-                        public HttpHeaders newEmptyHeaders() {
-                            return new WrappedHttpHeaders(new io.clientcore.core.http.models.HttpHeaders());
-                        }
-                    }), HttpClientCodec.DEFAULT_PARSE_HTTP_AFTER_CONNECT_REQUEST,
-                        HttpClientCodec.DEFAULT_FAIL_ON_MISSING_RESPONSE);
-
-                pipeline.addLast(httpClientCodec);
+                // Finally add the HttpClientCodec last as it will need to handle processing request and response
+                // writes and reads for not only the actual request but any proxy or SSL handling.
+                ch.pipeline().addLast(createCodec());
             }
         });
 
@@ -159,14 +125,20 @@ class NettyHttpClient implements HttpClient {
         try {
             Channel channel = bootstrap.connect(host, port).sync().channel();
 
-            if (!isHttps) {
-                channel.pipeline().addLast(progressAndTimeoutHandler);
+            // Only add CoreProgressAndTimeoutHandler if it will do anything, ex it is reporting progress or is
+            // applying timeouts.
+            // This is done to keep the ChannelPipeline shorter, therefore more performant, if this would
+            // effectively be a no-op.
+            if (addProgressAndTimeoutHandler) {
+                channel.pipeline()
+                    .addLast(PROGRESS_AND_TIMEOUT_HANDLER_NAME, new Netty4ProgressAndTimeoutHandler(progressReporter,
+                        writeTimeoutMillis, responseTimeoutMillis, readTimeoutMillis));
             }
 
-            CoreResponseHandler responseHandler = new CoreResponseHandler(request, responseReference, latch);
+            Netty4ResponseHandler responseHandler = new Netty4ResponseHandler(request, responseReference, latch);
             channel.pipeline().addLast(responseHandler);
 
-            sendRequest(request, channel).addListener((ChannelFutureListener) future -> {
+            sendRequest(request, channel, addProgressAndTimeoutHandler).addListener((ChannelFutureListener) future -> {
                 if (!future.isSuccess()) {
                     LOGGER.atError().setThrowable(future.cause()).log("Failed to send request");
                     errorReference.set(future.cause());
@@ -180,25 +152,24 @@ class NettyHttpClient implements HttpClient {
             latch.await();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw LOGGER.logThrowableAsError(new IOException("Request interrupted", e));
+            throw LOGGER.logThrowableAsError(CoreException.from("Request interrupted", e));
         }
 
         Response<BinaryData> response = responseReference.get();
-        if (response != null) {
-            return response;
-        } else {
-            throw new IOException(errorReference.get());
+        if (response == null) {
+            throw CoreException.from(errorReference.get());
         }
+        return response;
     }
 
-    private ChannelFuture sendRequest(HttpRequest request, Channel channel) {
+    private ChannelFuture sendRequest(HttpRequest request, Channel channel, boolean progressAndTimeoutHandlerAdded) {
         HttpMethod nettyMethod = HttpMethod.valueOf(request.getHttpMethod().toString());
         String uri = request.getUri().toString();
         WrappedHttpHeaders wrappedHttpHeaders = new WrappedHttpHeaders(request.getHeaders());
 
         // TODO (alzimmer): This will mutate the underlying ClientCore HttpHeaders. Will need to think about this design
         //  more once it's closer to completion.
-        wrappedHttpHeaders.set(HttpHeaderNames.HOST, request.getUri().getHost());
+        wrappedHttpHeaders.getCoreHeaders().set(HttpHeaderName.HOST, request.getUri().getHost());
 
         BinaryData requestBody = request.getBody();
         if (requestBody instanceof FileBinaryData) {
@@ -207,13 +178,15 @@ class NettyHttpClient implements HttpClient {
                 return sendChunked(channel,
                     new ChunkedNioFile(FileChannel.open(fileBinaryData.getFile(), StandardOpenOption.READ),
                         fileBinaryData.getPosition(), fileBinaryData.getLength(), 8192),
-                    new DefaultHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri, wrappedHttpHeaders));
+                    new DefaultHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri, wrappedHttpHeaders),
+                    progressAndTimeoutHandlerAdded);
             } catch (IOException ex) {
                 return channel.newFailedFuture(ex);
             }
         } else if (requestBody instanceof InputStreamBinaryData) {
             return sendChunked(channel, new ChunkedStream(requestBody.toStream()),
-                new DefaultHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri, wrappedHttpHeaders));
+                new DefaultHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri, wrappedHttpHeaders),
+                progressAndTimeoutHandlerAdded);
         }
 
         ByteBuf body = Unpooled.EMPTY_BUFFER;
@@ -225,7 +198,8 @@ class NettyHttpClient implements HttpClient {
         if (body.readableBytes() > 0) {
             // TODO (alzimmer): Should we be setting Content-Length here again? Shouldn't this be handled externally
             //  by the creator of the HttpRequest?
-            wrappedHttpHeaders.set(HttpHeaderNames.CONTENT_LENGTH, body.readableBytes());
+            wrappedHttpHeaders.getCoreHeaders()
+                .set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(body.readableBytes()));
         }
 
         return channel.writeAndFlush(new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri, body,
@@ -233,10 +207,15 @@ class NettyHttpClient implements HttpClient {
     }
 
     private <T> ChannelFuture sendChunked(Channel channel, ChunkedInput<T> chunkedInput,
-        io.netty.handler.codec.http.HttpRequest initialLineAndHeaders) {
+        io.netty.handler.codec.http.HttpRequest initialLineAndHeaders, boolean progressAndTimeoutHandlerAdded) {
         if (channel.pipeline().get(ChunkedWriteHandler.class) == null) {
             // Add the ChunkedWriteHandler which will handle sending the chunkedInput.
-            channel.pipeline().addLast(new ChunkedWriteHandler());
+            ChunkedWriteHandler chunkedWriteHandler = new ChunkedWriteHandler();
+            if (progressAndTimeoutHandlerAdded) {
+                channel.pipeline().addBefore(PROGRESS_AND_TIMEOUT_HANDLER_NAME, null, chunkedWriteHandler);
+            } else {
+                channel.pipeline().addLast(chunkedWriteHandler);
+            }
         }
 
         channel.write(initialLineAndHeaders);

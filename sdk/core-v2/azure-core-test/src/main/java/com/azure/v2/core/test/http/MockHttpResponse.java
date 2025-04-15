@@ -9,8 +9,6 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.models.binarydata.ByteArrayBinaryData;
 
-import java.io.IOException;
-
 /**
  * An HTTP response that is created to simulate an HTTP request.
  */
@@ -82,7 +80,7 @@ public class MockHttpResponse extends Response<BinaryData> {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         super.close();
     }
 }

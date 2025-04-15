@@ -14,6 +14,7 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.serialization.json.JsonReader;
 import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.models.binarydata.BinaryData;
@@ -199,10 +200,10 @@ public class TestProxyPlaybackClient implements HttpClient {
      * Redirects the request to the test-proxy to retrieve the playback response synchronously.
      * @param request The HTTP request to send.
      * @return The HTTP response.
-     * @throws IOException If an error occurs while sending the request.
+     * @throws CoreException If an error occurs while sending the request.
      */
     @Override
-    public Response<BinaryData> send(HttpRequest request) throws IOException {
+    public Response<BinaryData> send(HttpRequest request) {
         beforeSendingRequest(request);
         Response<BinaryData> response = client.send(request);
         return afterReceivedResponse(response);

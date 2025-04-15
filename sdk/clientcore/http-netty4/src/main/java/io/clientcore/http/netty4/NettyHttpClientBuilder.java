@@ -6,6 +6,7 @@ package io.clientcore.http.netty4;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.utils.configuration.Configuration;
+import io.clientcore.http.netty4.implementation.ChannelInitializationProxyHandler;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
@@ -154,6 +155,8 @@ public class NettyHttpClientBuilder {
         Bootstrap bootstrap = new Bootstrap().group(group)
             .channel(channelClass)
             .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) getTimeoutMillis(connectTimeout, 10_000));
+        // Disable auto-read as we want to control when and how data is read from the channel.
+        bootstrap.option(ChannelOption.AUTO_READ, false);
 
         Configuration buildConfiguration
             = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
@@ -161,8 +164,8 @@ public class NettyHttpClientBuilder {
         ProxyOptions buildProxyOptions
             = (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration, true) : proxyOptions;
 
-        return new NettyHttpClient(bootstrap, sslContext, buildProxyOptions, getTimeoutMillis(readTimeout),
-            getTimeoutMillis(responseTimeout), getTimeoutMillis(writeTimeout));
+        return new NettyHttpClient(bootstrap, sslContext, new ChannelInitializationProxyHandler(buildProxyOptions),
+            getTimeoutMillis(readTimeout), getTimeoutMillis(responseTimeout), getTimeoutMillis(writeTimeout));
     }
 
     static long getTimeoutMillis(Duration duration) {
@@ -179,5 +182,13 @@ public class NettyHttpClientBuilder {
         }
 
         return Math.max(1, duration.toMillis());
+    }
+
+    // For testing.
+    ProxyOptions getProxyOptions() {
+        Configuration buildConfiguration
+            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+
+        return (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration, true) : proxyOptions;
     }
 }

@@ -8,8 +8,10 @@ import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufHolder;
 import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelOutboundBuffer;
+import io.netty.channel.ChannelPipeline;
 import io.netty.channel.ChannelPromise;
 import io.netty.channel.FileRegion;
 import io.netty.handler.codec.http.LastHttpContent;
@@ -26,11 +28,11 @@ import java.util.concurrent.TimeoutException;
  * added to the ChannelPipeline and stop working when removed from the channel pipeline this handler used start and end
  * methods. This reduces the number of mutations that happen to the ChannelPipeline when sending a request.
  */
-public final class CoreProgressAndTimeoutHandler extends ChannelDuplexHandler {
+public final class Netty4ProgressAndTimeoutHandler extends ChannelDuplexHandler {
     /**
-     * Name of the handler when it's added into a ChannelPipeline.
+     * Name of this {@link ChannelHandler}, used to control positioning behaviors in a {@link ChannelPipeline}.
      */
-    public static final String HANDLER_NAME = "clientCoreHandler";
+    public static final String HANDLER_NAME = "ClientCore-Progress-And-Timeout-Handler";
 
     private final long writeTimeoutMillis;
     private final ProgressReporter progressReporter;
@@ -60,7 +62,7 @@ public final class CoreProgressAndTimeoutHandler extends ChannelDuplexHandler {
      * @param responseTimeoutMillis The period of milliseconds before a channel's response is considered timed out.
      * @param readTimeoutMillis The period of milliseconds before a channel's read is considered timed out.
      */
-    public CoreProgressAndTimeoutHandler(ProgressReporter progressReporter, long writeTimeoutMillis,
+    public Netty4ProgressAndTimeoutHandler(ProgressReporter progressReporter, long writeTimeoutMillis,
         long responseTimeoutMillis, long readTimeoutMillis) {
         this.progressReporter = progressReporter;
         this.writeTimeoutMillis = writeTimeoutMillis;
