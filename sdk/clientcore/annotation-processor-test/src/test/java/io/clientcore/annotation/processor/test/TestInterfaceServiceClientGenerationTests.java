@@ -1072,7 +1072,6 @@ public class TestInterfaceServiceClientGenerationTests {
     }
 
     @Test
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/43728")
     public void putRequestWithBodyLessThanContentLength() {
         ByteBuffer body = ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8));
         Exception unexpectedLengthException = assertThrows(Exception.class, () -> {
@@ -1098,7 +1097,6 @@ public class TestInterfaceServiceClientGenerationTests {
     }
 
     @Test
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/43728")
     public void putRequestWithUnexpectedResponseAndNoFallthroughExceptionType() {
         HttpResponseException e = assertThrows(HttpResponseException.class,
             () -> createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
@@ -1234,7 +1232,6 @@ public class TestInterfaceServiceClientGenerationTests {
     }
 
     @Test
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/43728")
     public void service18GetStatus400() {
         assertThrows(HttpResponseException.class,
             () -> createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
@@ -1248,7 +1245,6 @@ public class TestInterfaceServiceClientGenerationTests {
     }
 
     @Test
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/43728")
     public void service18GetStatus500() {
         assertThrows(HttpResponseException.class,
             () -> createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
@@ -1320,7 +1316,6 @@ public class TestInterfaceServiceClientGenerationTests {
     }
 
     @Test
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/43728")
     public void unexpectedHTTPOK() {
         HttpResponseException e = assertThrows(HttpResponseException.class,
             () -> createService(TestInterfaceClientImpl.TestInterfaceClientService.class).getBytes(getRequestUri()));
@@ -1479,7 +1474,6 @@ public class TestInterfaceServiceClientGenerationTests {
 
     @ParameterizedTest
     @MethodSource("voidErrorReturnsErrorBodySupplier")
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/43728")
     public void
         voidErrorReturnsErrorBody(BiConsumer<String, TestInterfaceClientImpl.TestInterfaceClientService> executable) {
         HttpResponseException exception = assertThrows(HttpResponseException.class, () -> executable

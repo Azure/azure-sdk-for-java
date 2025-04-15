@@ -37,6 +37,7 @@ import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
@@ -49,6 +50,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -59,6 +61,8 @@ import java.util.Optional;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 import javax.annotation.processing.ProcessingEnvironment;
+import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
@@ -171,6 +175,33 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         if (!headerConstants.isEmpty()) {
             classBuilder.getMembers().addAll(0, headerConstants);
         }
+        addInstantiateExceptionHelperMethod(classBuilder.addMethod("instantiateUnexpectedException",
+            Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC));
+    }
+
+    private void addInstantiateExceptionHelperMethod(MethodDeclaration instantiateUnexpectedException) {
+        instantiateUnexpectedException.setType("HttpResponseException")
+            .addParameter("int", "responseCode")
+            .addParameter("Response<BinaryData>", "response")
+            .addParameter("BinaryData", "data")
+            .addParameter("Object", "decodedValue");
+        instantiateUnexpectedException.setBody(StaticJavaParser.parseBlock("{\n"
+            + "    StringBuilder exceptionMessage = new StringBuilder(\"Status code \")\n"
+            + "        .append(responseCode).append(\", \");\n"
+            + "    String contentType = response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);\n"
+            + "    if (\"application/octet-stream\".equalsIgnoreCase(contentType)) {\n"
+            + "        String contentLength = response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);\n"
+            + "        exceptionMessage.append(\"(\").append(contentLength).append(\"-byte body)\");\n"
+            + "    } else if (data == null || data.toBytes().length == 0) {\n"
+            + "        exceptionMessage.append(\"(empty body)\");\n" + "    } else {\n"
+            + "        exceptionMessage.append('\"').append(new String(data.toBytes(), StandardCharsets.UTF_8)).append('\"');\n"
+            + "    }\n"
+            + "    if (decodedValue instanceof IOException || decodedValue instanceof IllegalStateException) {\n"
+            + "        return new HttpResponseException(exceptionMessage.toString(), response, (Throwable) decodedValue);\n"
+            + "    }\n" + "    return new HttpResponseException(exceptionMessage.toString(), response, decodedValue);\n"
+            + "}"));
+        instantiateUnexpectedException.tryAddImportToParentCompilationUnit(HttpResponseException.class);
+        instantiateUnexpectedException.tryAddImportToParentCompilationUnit(StandardCharsets.class);
     }
 
     private void addLoggerField(String serviceInterfaceShortName) {
@@ -436,17 +467,14 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
     }
 
     /**
-     * Adds headers to the HttpRequest using the provided HttpRequestContext.
-     * Handles both static and dynamic headers, and applies correct quoting logic for static values.
+     * Adds headers to the HttpRequest using the provided HttpRequestContext. Handles both static and dynamic headers,
+     * and applies correct quoting logic for static values.
      * <p>
-     * Quoting logic:
-     * - If value starts and ends with ", use as-is.
-     * - If starts with ", append trailing ".
-     * - If ends with ", prepend leading ".
-     * - Otherwise, wrap value in quotes.
+     * Quoting logic: - If value starts and ends with ", use as-is. - If starts with ", append trailing ". - If ends
+     * with ", prepend leading ". - Otherwise, wrap value in quotes.
      * <p>
-     * For dynamic headers (parameter-based), values are not quoted.
-     * For static headers (literal values), quoting is always applied.
+     * For dynamic headers (parameter-based), values are not quoted. For static headers (literal values), quoting is
+     * always applied.
      * <p>
      */
     private void addHeadersToRequest(BlockStmt body, HttpRequestContext method) {
@@ -532,6 +560,90 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
     private void finalizeHttpRequest(BlockStmt body, TypeMirror returnTypeName, HttpRequestContext method,
         boolean serializationFormatSet) {
         body.tryAddImportToParentCompilationUnit(Response.class);
+
+        Statement statement = StaticJavaParser
+            .parseStatement("Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);");
+        statement.setLineComment("\n Send the request through the httpPipeline");
+        body.addStatement(statement);
+
+        validateResponseStatus(body, method);
+
         generateResponseHandling(body, returnTypeName, method, serializationFormatSet);
+    }
+
+    private void validateResponseStatus(BlockStmt body, HttpRequestContext method) {
+        body.addStatement(StaticJavaParser.parseStatement("int responseCode = networkResponse.getStatusCode();"));
+        String expectedResponseCheck;
+        if (CoreUtils.isNullOrEmpty(method.getExpectedStatusCodes())) {
+            expectedResponseCheck = "responseCode < 400;";
+        } else if (method.getExpectedStatusCodes().size() == 1) {
+            expectedResponseCheck = "responseCode == " + method.getExpectedStatusCodes().get(0) + ";";
+        } else {
+            String statusCodes = method.getExpectedStatusCodes()
+                .stream()
+                .map(code -> "responseCode == " + code)
+                .collect(Collectors.joining(" || "));
+            expectedResponseCheck = "(" + statusCodes + ");";
+        }
+        body.addStatement(StaticJavaParser.parseStatement("boolean expectedResponse = " + expectedResponseCheck));
+        // Generate the error handling block with dynamic ParameterizedType creation
+        StringBuilder errorBlock = new StringBuilder();
+        errorBlock.append("if (!expectedResponse) {\n")
+            .append(
+                "    if (networkResponse.getValue() == null || networkResponse.getValue().toBytes().length == 0) {\n")
+            .append("        throw instantiateUnexpectedException(responseCode, networkResponse, null, null);\n")
+            .append("    } else {\n");
+
+        // Dynamically generate ParameterizedType if return type is declared
+        TypeMirror returnType = method.getMethodReturnType();
+        if (returnType.getKind() == TypeKind.DECLARED) {
+            DeclaredType declaredType = (DeclaredType) returnType;
+            TypeElement typeElement = (TypeElement) declaredType.asElement();
+            body.tryAddImportToParentCompilationUnit(CoreUtils.class);
+            StringBuilder paramTypeBuilder = new StringBuilder();
+            paramTypeBuilder.append(typeElement.getQualifiedName().toString()).append(".class");
+
+            if (!declaredType.getTypeArguments().isEmpty()) {
+                TypeMirror firstGenericType = declaredType.getTypeArguments().get(0);
+
+                if (firstGenericType instanceof DeclaredType) {
+                    DeclaredType genericDeclaredType = (DeclaredType) firstGenericType;
+                    TypeElement genericTypeElement = (TypeElement) genericDeclaredType.asElement();
+
+                    body.findCompilationUnit()
+                        .ifPresent(compilationUnit -> compilationUnit
+                            .addImport(genericTypeElement.getQualifiedName().toString()));
+
+                    if (genericTypeElement.getQualifiedName().contentEquals(List.class.getCanonicalName())) {
+                        if (!genericDeclaredType.getTypeArguments().isEmpty()) {
+                            String innerType
+                                = ((DeclaredType) genericDeclaredType.getTypeArguments().get(0)).asElement()
+                                    .getSimpleName()
+                                    .toString();
+                            paramTypeBuilder.append(", ").append(innerType).append(".class");
+                        }
+                    } else {
+                        String genericType = ((DeclaredType) declaredType.getTypeArguments().get(0)).asElement()
+                            .getSimpleName()
+                            .toString();
+                        paramTypeBuilder.append(", ").append(genericType).append(".class");
+
+                    }
+                }
+            }
+            errorBlock.append("        ParameterizedType returnType = CoreUtils.createParameterizedType(")
+                .append(paramTypeBuilder)
+                .append(");\n");
+        } else {
+            errorBlock.append("        ParameterizedType returnType = null;\n");
+
+        }
+
+        errorBlock.append(
+            "        throw instantiateUnexpectedException(responseCode, networkResponse, networkResponse.getValue(), ")
+            .append("decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType));\n")
+            .append("    }\n")
+            .append("}\n");
+        body.addStatement(StaticJavaParser.parseStatement(errorBlock.toString()));
     }
 }
