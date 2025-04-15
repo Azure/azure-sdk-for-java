@@ -244,7 +244,7 @@ stages:
           displayName: Docs.MS Release
           condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
           timeoutInMinutes: 180
-          dependsOn: PublishESRPPackage
+          dependsOn: PublishDevFeedPackage
 
           pool:
             name: $(LINUXPOOL)
