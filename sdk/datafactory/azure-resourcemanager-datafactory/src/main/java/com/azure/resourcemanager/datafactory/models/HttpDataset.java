@@ -51,7 +51,7 @@ public final class HttpDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private HttpDatasetTypeProperties innerTypeProperties() {
+    HttpDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

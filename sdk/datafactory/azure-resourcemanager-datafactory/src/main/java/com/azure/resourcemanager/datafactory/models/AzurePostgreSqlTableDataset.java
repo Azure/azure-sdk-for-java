@@ -51,7 +51,7 @@ public final class AzurePostgreSqlTableDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzurePostgreSqlTableDatasetTypeProperties innerTypeProperties() {
+    AzurePostgreSqlTableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

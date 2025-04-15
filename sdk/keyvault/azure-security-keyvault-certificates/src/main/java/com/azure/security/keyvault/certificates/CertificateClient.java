@@ -228,10 +228,11 @@ public final class CertificateClient {
      *
      * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map -->
      * <pre>
-     * CertificatePolicy certificatePolicyPkcsSelf = new CertificatePolicy&#40;&quot;Self&quot;,
+     * CertificatePolicy policy = new CertificatePolicy&#40;&quot;Self&quot;,
      *     &quot;CN=SelfSignedJavaPkcs12&quot;&#41;;
+     * Map&lt;String, String&gt; tags = new HashMap&lt;&gt;&#40;&#41;;
      * SyncPoller&lt;CertificateOperation, KeyVaultCertificateWithPolicy&gt; certificateSyncPoller = certificateClient
-     *     .beginCreateCertificate&#40;&quot;certificateName&quot;, certificatePolicyPkcsSelf, true, new HashMap&lt;&gt;&#40;&#41;&#41;;
+     *     .beginCreateCertificate&#40;&quot;certificateName&quot;, policy, true, tags&#41;;
      * certificateSyncPoller.waitUntil&#40;LongRunningOperationStatus.SUCCESSFULLY_COMPLETED&#41;;
      * KeyVaultCertificate createdCertificate = certificateSyncPoller.getFinalResult&#40;&#41;;
      * System.out.printf&#40;&quot;Certificate created with name %s%n&quot;, createdCertificate.getName&#40;&#41;&#41;;
@@ -242,32 +243,76 @@ public final class CertificateClient {
      * @param policy The policy of the certificate to be created.
      * @param isEnabled The enabled status of the certificate.
      * @param tags The application specific metadata to set.
-     * @throws NullPointerException if {@code policy} is null.
-     * @throws ResourceModifiedException when invalid certificate policy configuration is provided.
+     * @throws NullPointerException if {@code policy} is {@code null}.
+     * @throws ResourceModifiedException when an invalid certificate policy configuration is provided.
      * @return A {@link SyncPoller} to poll on the create certificate operation status.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(
         String certificateName, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
 
+        return beginCreateCertificate(certificateName, policy, isEnabled, tags, false);
+    }
+
+    /**
+     * Creates a new certificate. If this is the first version, the certificate resource is created. This operation
+     * requires the certificates/create permission.
+     *
+     * <p>Create certificate is a long running operation. It indefinitely waits for the create certificate operation to
+     * complete on service side.</p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <p>Create certificate is a long running operation. The createCertificate indefinitely waits for the operation to
+     * complete and returns its last status. The details of the last certificate operation status are printed when a
+     * response is received</p>
+     *
+     * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map-Boolean -->
+     * <pre>
+     * CertificatePolicy certificatePolicy = new CertificatePolicy&#40;&quot;Self&quot;, &quot;CN=SelfSignedJavaPkcs12&quot;&#41;;
+     * Map&lt;String, String&gt; certTags = new HashMap&lt;&gt;&#40;&#41;;
+     * SyncPoller&lt;CertificateOperation, KeyVaultCertificateWithPolicy&gt; poller
+     *     = certificateClient.beginCreateCertificate&#40;&quot;certificateName&quot;, certificatePolicy, true, certTags,
+     *     true&#41;;
+     * poller.waitUntil&#40;LongRunningOperationStatus.SUCCESSFULLY_COMPLETED&#41;;
+     * KeyVaultCertificate certificate = poller.getFinalResult&#40;&#41;;
+     * System.out.printf&#40;&quot;Certificate created with name %s%n&quot;, certificate.getName&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map-Boolean -->
+     *
+     * @param certificateName The name of the certificate to be created.
+     * @param policy The policy of the certificate to be created.
+     * @param isEnabled The enabled status of the certificate.
+     * @param tags The application specific metadata to set.
+     * @param preserveCertificateOrder Whether to preserve the order of the certificate chain in the vault. The
+     * default value is {@code false}, which sets the leaf certificate at index 0.
+     * @throws NullPointerException if {@code policy} is null.
+     * @throws ResourceModifiedException when an invalid certificate policy configuration is provided.
+     * @return A {@link SyncPoller} to poll on the create certificate operation status.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(
+        String certificateName, CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags,
+        Boolean preserveCertificateOrder) {
+
         if (policy == null) {
             throw LOGGER.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
         }
 
         return SyncPoller.createPoller(Duration.ofSeconds(1),
-            ignored -> createCertificateActivation(certificateName, policy, isEnabled, tags),
+            ignored -> createCertificateActivation(certificateName, policy, isEnabled, tags, preserveCertificateOrder),
             ignored -> certificatePollOperation(certificateName),
             (ignored1, ignored2) -> certificateCancellationOperation(certificateName),
             ignored -> fetchCertificateOperation(certificateName));
     }
 
     private PollResponse<CertificateOperation> createCertificateActivation(String certificateName,
-        CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
+        CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags, Boolean preserveCertificateOrder) {
 
         CertificateCreateParameters certificateCreateParameters
             = new CertificateCreateParameters().setCertificatePolicy(getImplCertificatePolicy(policy))
                 .setCertificateAttributes(new CertificateAttributes().setEnabled(isEnabled))
-                .setTags(tags);
+                .setTags(tags)
+                .setPreserveCertOrder(preserveCertificateOrder);
 
         return new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
             createCertificateOperation(callWithMappedException(
@@ -1311,11 +1356,8 @@ public final class CertificateClient {
             throw LOGGER.logExceptionAsError(new NullPointerException("'policy' cannot be null."));
         }
 
-        CertificateUpdateParameters certificateUpdateParameters
-            = new CertificateUpdateParameters().setCertificatePolicy(getImplCertificatePolicy(policy));
-
         Response<BinaryData> response = implClient.updateCertificatePolicyWithResponse(certificateName,
-            BinaryData.fromObject(certificateUpdateParameters), new RequestOptions().setContext(context));
+            BinaryData.fromObject(getImplCertificatePolicy(policy)), new RequestOptions().setContext(context));
 
         return new SimpleResponse<>(response, createCertificatePolicy(response.getValue()
             .toObject(com.azure.security.keyvault.certificates.implementation.models.CertificatePolicy.class)));
@@ -2114,7 +2156,8 @@ public final class CertificateClient {
                 .setPassword(importCertificateOptions.getPassword())
                 .setCertificatePolicy(implPolicy)
                 .setTags(importCertificateOptions.getTags())
-                .setCertificateAttributes(new CertificateAttributes().setEnabled(importCertificateOptions.isEnabled()));
+                .setCertificateAttributes(new CertificateAttributes().setEnabled(importCertificateOptions.isEnabled()))
+                .setPreserveCertOrder(importCertificateOptions.isCertificateOrderPreserved());
 
         Response<BinaryData> response = implClient.importCertificateWithResponse(importCertificateOptions.getName(),
             BinaryData.fromObject(certificateImportParameters), new RequestOptions().setContext(context));

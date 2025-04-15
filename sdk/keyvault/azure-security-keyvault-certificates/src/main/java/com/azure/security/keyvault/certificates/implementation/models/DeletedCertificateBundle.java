@@ -79,6 +79,13 @@ public final class DeletedCertificateBundle implements JsonSerializable<DeletedC
     private Map<String, String> tags;
 
     /*
+     * Specifies whether the certificate chain preserves its original order. The default value is false, which sets the
+     * leaf certificate at index 0.
+     */
+    @Generated
+    private Boolean preserveCertOrder;
+
+    /*
      * The url of the recovery object, used to identify and recover the deleted certificate.
      */
     @Generated
@@ -198,6 +205,17 @@ public final class DeletedCertificateBundle implements JsonSerializable<DeletedC
     }
 
     /**
+     * Get the preserveCertOrder property: Specifies whether the certificate chain preserves its original order. The
+     * default value is false, which sets the leaf certificate at index 0.
+     *
+     * @return the preserveCertOrder value.
+     */
+    @Generated
+    public Boolean isPreserveCertOrder() {
+        return this.preserveCertOrder;
+    }
+
+    /**
      * Get the recoveryId property: The url of the recovery object, used to identify and recover the deleted
      * certificate.
      *
@@ -245,6 +263,7 @@ public final class DeletedCertificateBundle implements JsonSerializable<DeletedC
         jsonWriter.writeStringField("contentType", this.contentType);
         jsonWriter.writeJsonField("attributes", this.attributes);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("preserveCertOrder", this.preserveCertOrder);
         jsonWriter.writeStringField("recoveryId", this.recoveryId);
         return jsonWriter.writeEndObject();
     }
@@ -284,6 +303,8 @@ public final class DeletedCertificateBundle implements JsonSerializable<DeletedC
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedDeletedCertificateBundle.tags = tags;
+                } else if ("preserveCertOrder".equals(fieldName)) {
+                    deserializedDeletedCertificateBundle.preserveCertOrder = reader.getNullable(JsonReader::getBoolean);
                 } else if ("recoveryId".equals(fieldName)) {
                     deserializedDeletedCertificateBundle.recoveryId = reader.getString();
                 } else if ("scheduledPurgeDate".equals(fieldName)) {

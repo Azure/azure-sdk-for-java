@@ -70,7 +70,7 @@ public final class Providers<TProvider, TInstance> {
                         .log("Additional provider found on the classpath");
                 }
             } catch (LinkageError | ServiceConfigurationError error) {
-                LOGGER.atWarning().log("Failed to load a provider instance.", error);
+                LOGGER.atWarning().setThrowable(error).log("Failed to load a provider instance.");
             }
         }
 

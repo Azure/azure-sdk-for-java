@@ -11,21 +11,21 @@ public final class LakeHouseTableSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LakeHouseTableSink model = BinaryData.fromString(
-            "{\"type\":\"LakeHouseTableSink\",\"tableActionOption\":\"dataynkhvpuq\",\"partitionOption\":\"datazdbbitpgrnhpmsdg\",\"partitionNameList\":\"datawfodv\",\"writeBatchSize\":\"dataxmoj\",\"writeBatchTimeout\":\"datavgi\",\"sinkRetryCount\":\"datayevhnqtb\",\"sinkRetryWait\":\"datavjodgplagwvgb\",\"maxConcurrentConnections\":\"datamqudnqc\",\"disableMetricsCollection\":\"databh\",\"\":{\"fzkvrmdoshiyy\":\"datasyszl\"}}")
+            "{\"type\":\"LakeHouseTableSink\",\"tableActionOption\":\"dataulmzxhgwz\",\"partitionOption\":\"datastw\",\"partitionNameList\":\"datawehn\",\"writeBatchSize\":\"datassjbpnatpym\",\"writeBatchTimeout\":\"dataichzcajityjz\",\"sinkRetryCount\":\"dataryouujqyey\",\"sinkRetryWait\":\"dataivincni\",\"maxConcurrentConnections\":\"datawvhcgcmuasu\",\"disableMetricsCollection\":\"datahmilhzytdjcjunsd\",\"\":{\"mxgajyracelnlwg\":\"datarhmpokfxcbb\",\"ins\":\"dataeouhjetxupxe\"}}")
             .toObject(LakeHouseTableSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LakeHouseTableSink model = new LakeHouseTableSink().withWriteBatchSize("dataxmoj")
-            .withWriteBatchTimeout("datavgi")
-            .withSinkRetryCount("datayevhnqtb")
-            .withSinkRetryWait("datavjodgplagwvgb")
-            .withMaxConcurrentConnections("datamqudnqc")
-            .withDisableMetricsCollection("databh")
-            .withTableActionOption("dataynkhvpuq")
-            .withPartitionOption("datazdbbitpgrnhpmsdg")
-            .withPartitionNameList("datawfodv");
+        LakeHouseTableSink model = new LakeHouseTableSink().withWriteBatchSize("datassjbpnatpym")
+            .withWriteBatchTimeout("dataichzcajityjz")
+            .withSinkRetryCount("dataryouujqyey")
+            .withSinkRetryWait("dataivincni")
+            .withMaxConcurrentConnections("datawvhcgcmuasu")
+            .withDisableMetricsCollection("datahmilhzytdjcjunsd")
+            .withTableActionOption("dataulmzxhgwz")
+            .withPartitionOption("datastw")
+            .withPartitionNameList("datawehn");
         model = BinaryData.fromObject(model).toObject(LakeHouseTableSink.class);
     }
 }

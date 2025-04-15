@@ -56,7 +56,7 @@
     <module>sdk/containerservicefleet</module>
     <module>sdk/contentsafety</module>
     <module>sdk/core</module>
-    <module>sdk/corev2</module>
+    <module>sdk/core-v2</module>
     <module>sdk/cosmos</module>
     <module>sdk/cosmosdbforpostgresql</module>
     <module>sdk/costmanagement</module>
@@ -117,6 +117,7 @@
     <module>sdk/hybridkubernetes</module>
     <module>sdk/hybridnetwork</module>
     <module>sdk/identity</module>
+    <module>sdk/identity-v2</module>
     <module>sdk/imagebuilder</module>
     <module>sdk/impactreporting</module>
     <module>sdk/informaticadatamanagement</module>

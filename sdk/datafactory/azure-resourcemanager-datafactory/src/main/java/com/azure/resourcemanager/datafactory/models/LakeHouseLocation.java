@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * The location of Microsoft Fabric LakeHouse Files dataset.
+ * The location of Microsoft Fabric Lakehouse Files dataset.
  */
 @Fluent
 public final class LakeHouseLocation extends DatasetLocation {

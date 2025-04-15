@@ -98,9 +98,14 @@ public final class KeyVaultSettingsClientBuilder implements TokenCredentialTrait
     HttpTrait<KeyVaultSettingsClientBuilder>, ConfigurationTrait<KeyVaultSettingsClientBuilder> {
 
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultSettingsClientBuilder.class);
-    private static final String AZURE_KEY_VAULT_RBAC = "azure-security-keyvault-administration.properties";
-    private static final String SDK_NAME = "name";
-    private static final String SDK_VERSION = "version";
+    private static final String CLIENT_NAME;
+    private static final String CLIENT_VERSION;
+
+    static {
+        Map<String, String> properties = CoreUtils.getProperties("azure-security-keyvault-administration.properties");
+        CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
+        CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
+    }
 
     // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
@@ -108,7 +113,6 @@ public final class KeyVaultSettingsClientBuilder implements TokenCredentialTrait
     private static final ClientOptions DEFAULT_CLIENT_OPTIONS = new ClientOptions();
 
     private final List<HttpPipelinePolicy> pipelinePolicies;
-    private final Map<String, String> properties;
 
     private TokenCredential credential;
     private HttpPipeline pipeline;
@@ -128,7 +132,6 @@ public final class KeyVaultSettingsClientBuilder implements TokenCredentialTrait
     public KeyVaultSettingsClientBuilder() {
         this.httpLogOptions = new HttpLogOptions();
         this.pipelinePolicies = new ArrayList<>();
-        this.properties = CoreUtils.getProperties(AZURE_KEY_VAULT_RBAC);
     }
 
     /**
@@ -420,16 +423,12 @@ public final class KeyVaultSettingsClientBuilder implements TokenCredentialTrait
 
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
-
         httpLogOptions = (httpLogOptions == null) ? new HttpLogOptions() : httpLogOptions;
 
         ClientOptions localClientOptions = clientOptions != null ? clientOptions : DEFAULT_CLIENT_OPTIONS;
 
-        String applicationId = CoreUtils.getApplicationId(localClientOptions, httpLogOptions);
-
-        policies.add(new UserAgentPolicy(applicationId, clientName, clientVersion, buildConfiguration));
+        policies.add(new UserAgentPolicy(CoreUtils.getApplicationId(localClientOptions, httpLogOptions), CLIENT_NAME,
+            CLIENT_VERSION, buildConfiguration));
         policies.add(new RequestIdPolicy());
         policies.add(new AddHeadersFromContextPolicy());
 
@@ -457,7 +456,7 @@ public final class KeyVaultSettingsClientBuilder implements TokenCredentialTrait
 
         TracingOptions tracingOptions = localClientOptions.getTracingOptions();
         Tracer tracer = TracerProvider.getDefaultProvider()
-            .createTracer(clientName, clientVersion, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
+            .createTracer(CLIENT_NAME, CLIENT_VERSION, KEYVAULT_TRACING_NAMESPACE_VALUE, tracingOptions);
 
         return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(httpClient)
