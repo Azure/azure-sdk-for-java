@@ -4,7 +4,6 @@
 
 package com.azure.v2.data.appconfiguration.implementation.models;
 
-import com.azure.v2.data.appconfiguration.models.KeyValue;
 import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.serialization.json.JsonReader;

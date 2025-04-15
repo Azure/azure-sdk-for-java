@@ -5,23 +5,23 @@
 package com.azure.v2.data.appconfiguration;
 
 import com.azure.v2.data.appconfiguration.implementation.AzureAppConfigurationClientImpl;
-import com.azure.v2.data.appconfiguration.models.ErrorException;
-import com.azure.v2.data.appconfiguration.models.Key;
-import com.azure.v2.data.appconfiguration.models.KeyValue;
-import com.azure.v2.data.appconfiguration.models.KeyValueFields;
-import com.azure.v2.data.appconfiguration.models.Label;
-import com.azure.v2.data.appconfiguration.models.LabelFields;
-import com.azure.v2.data.appconfiguration.models.Snapshot;
+import com.azure.v2.data.appconfiguration.implementation.models.SnapshotUpdateParameters;
+import com.azure.v2.data.appconfiguration.models.ConfigurationSnapshot;
+import com.azure.v2.data.appconfiguration.models.ConfigurationSnapshotStatus;
+import com.azure.v2.data.appconfiguration.implementation.models.Key;
+import com.azure.v2.data.appconfiguration.implementation.models.KeyValue;
+import com.azure.v2.data.appconfiguration.models.OperationDetails;
+import com.azure.v2.data.appconfiguration.models.SettingFields;
+import com.azure.v2.data.appconfiguration.models.SettingLabel;
+import com.azure.v2.data.appconfiguration.models.SettingLabelFields;
 import com.azure.v2.data.appconfiguration.models.SnapshotFields;
-import com.azure.v2.data.appconfiguration.models.SnapshotStatus;
-import com.azure.v2.data.appconfiguration.models.SnapshotUpdateParameters;
 import com.azure.v2.data.appconfiguration.models.UpdateSnapshotRequestContentType;
 import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.annotations.ReturnType;
 import io.clientcore.core.annotations.ServiceClient;
 import io.clientcore.core.annotations.ServiceMethod;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedIterable;
 import java.util.List;
@@ -30,7 +30,7 @@ import java.util.List;
  * Initializes a new instance of the synchronous AzureAppConfigurationClient type.
  */
 @ServiceClient(builder = AzureAppConfigurationClientBuilder.class)
-public final class AzureAppConfigurationClient {
+class AzureAppConfigurationClient {
     @Metadata(properties = { MetadataProperties.GENERATED })
     private final AzureAppConfigurationClientImpl serviceClient;
 
@@ -91,7 +91,7 @@ public final class AzureAppConfigurationClient {
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
      * time.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -100,8 +100,8 @@ public final class AzureAppConfigurationClient {
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<Key> getKeys(String accept, String name, String after, String syncToken, String acceptDatetime,
-        RequestOptions requestOptions) {
-        return this.serviceClient.getKeys(accept, name, after, syncToken, acceptDatetime, requestOptions);
+        RequestContext requestContext) {
+        return this.serviceClient.getKeys(accept, name, after, syncToken, acceptDatetime, requestContext);
     }
 
     /**
@@ -113,7 +113,7 @@ public final class AzureAppConfigurationClient {
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
      * time.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -122,8 +122,8 @@ public final class AzureAppConfigurationClient {
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> checkKeysWithResponse(String name, String after, String syncToken, String acceptDatetime,
-        RequestOptions requestOptions) {
-        return this.serviceClient.checkKeysWithResponse(name, after, syncToken, acceptDatetime, requestOptions);
+        RequestContext requestContext) {
+        return this.serviceClient.checkKeysWithResponse(name, after, syncToken, acceptDatetime, requestContext);
     }
 
     /**
@@ -180,14 +180,13 @@ public final class AzureAppConfigurationClient {
      * @param tags A filter used to query by tags. Syntax reference:
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-values.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyValue> getKeyValues(String accept, String key, String label, String syncToken, String after,
-        String acceptDatetime, List<KeyValueFields> select, String snapshot, String ifMatch, String ifNoneMatch,
+        String acceptDatetime, List<SettingFields> select, String snapshot, String ifMatch, String ifNoneMatch,
         List<String> tags) {
         return this.serviceClient.getKeyValues(accept, key, label, syncToken, after, acceptDatetime, select, snapshot,
             ifMatch, ifNoneMatch, tags);
@@ -198,7 +197,6 @@ public final class AzureAppConfigurationClient {
      * 
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-values.
      */
@@ -210,7 +208,7 @@ public final class AzureAppConfigurationClient {
 
     /**
      * Gets a list of key-values.
-     *
+     * 
      * @param accept The accept parameter.
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
@@ -230,19 +228,18 @@ public final class AzureAppConfigurationClient {
      * match the value provided.
      * @param tags A filter used to query by tags. Syntax reference:
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-values.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyValue> getKeyValues(String accept, String key, String label, String syncToken, String after,
-        String acceptDatetime, List<KeyValueFields> select, String snapshot, String ifMatch, String ifNoneMatch,
-        List<String> tags, RequestOptions requestOptions) {
+        String acceptDatetime, List<SettingFields> select, String snapshot, String ifMatch, String ifNoneMatch,
+        List<String> tags, RequestContext requestContext) {
         return this.serviceClient.getKeyValues(accept, key, label, syncToken, after, acceptDatetime, select, snapshot,
-            ifMatch, ifNoneMatch, tags, requestOptions);
+            ifMatch, ifNoneMatch, tags, requestContext);
     }
 
     /**
@@ -266,24 +263,23 @@ public final class AzureAppConfigurationClient {
      * match the value provided.
      * @param tags A filter used to query by tags. Syntax reference:
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> checkKeyValuesWithResponse(String key, String label, String syncToken, String after,
-        String acceptDatetime, List<KeyValueFields> select, String snapshot, String ifMatch, String ifNoneMatch,
-        List<String> tags, RequestOptions requestOptions) {
+        String acceptDatetime, List<SettingFields> select, String snapshot, String ifMatch, String ifNoneMatch,
+        List<String> tags, RequestContext requestContext) {
         return this.serviceClient.checkKeyValuesWithResponse(key, label, syncToken, after, acceptDatetime, select,
-            snapshot, ifMatch, ifNoneMatch, tags, requestOptions);
+            snapshot, ifMatch, ifNoneMatch, tags, requestContext);
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @param label A filter used to match labels. Syntax reference:
@@ -303,13 +299,12 @@ public final class AzureAppConfigurationClient {
      * @param tags A filter used to query by tags. Syntax reference:
      * https://aka.ms/azconfig/docs/keyvaluefiltering.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkKeyValues(String key, String label, String syncToken, String after, String acceptDatetime,
-        List<KeyValueFields> select, String snapshot, String ifMatch, String ifNoneMatch, List<String> tags) {
+        List<SettingFields> select, String snapshot, String ifMatch, String ifNoneMatch, List<String> tags) {
         this.serviceClient.checkKeyValues(key, label, syncToken, after, acceptDatetime, select, snapshot, ifMatch,
             ifNoneMatch, tags);
     }
@@ -317,7 +312,6 @@ public final class AzureAppConfigurationClient {
     /**
      * Requests the headers and status of the given resource.
      * 
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -328,7 +322,7 @@ public final class AzureAppConfigurationClient {
 
     /**
      * Gets a single key-value.
-     *
+     * 
      * @param key The key of the key-value.
      * @param accept The accept parameter.
      * @param label The label of the key-value to retrieve.
@@ -340,19 +334,18 @@ public final class AzureAppConfigurationClient {
      * value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
      * match the value provided.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single key-value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyValue> getKeyValueWithResponse(String key, String accept, String label,
-        List<KeyValueFields> select, String syncToken, String acceptDatetime, String ifMatch, String ifNoneMatch,
-        RequestOptions requestOptions) {
+        List<SettingFields> select, String syncToken, String acceptDatetime, String ifMatch, String ifNoneMatch,
+        RequestContext requestContext) {
         return this.serviceClient.getKeyValueWithResponse(key, accept, label, select, syncToken, acceptDatetime,
-            ifMatch, ifNoneMatch, requestOptions);
+            ifMatch, ifNoneMatch, requestContext);
     }
 
     /**
@@ -370,13 +363,12 @@ public final class AzureAppConfigurationClient {
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
      * match the value provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single key-value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyValue getKeyValue(String key, String accept, String label, List<KeyValueFields> select, String syncToken,
+    public KeyValue getKeyValue(String key, String accept, String label, List<SettingFields> select, String syncToken,
         String acceptDatetime, String ifMatch, String ifNoneMatch) {
         return this.serviceClient.getKeyValue(key, accept, label, select, syncToken, acceptDatetime, ifMatch,
             ifNoneMatch);
@@ -388,7 +380,6 @@ public final class AzureAppConfigurationClient {
      * @param key The key of the key-value.
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single key-value.
      */
@@ -400,7 +391,7 @@ public final class AzureAppConfigurationClient {
 
     /**
      * Creates a key-value.
-     *
+     * 
      * @param key The key of the key-value to create.
      * @param accept The accept parameter.
      * @param label The label of the key-value to create.
@@ -410,25 +401,24 @@ public final class AzureAppConfigurationClient {
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
      * match the value provided.
      * @param entity The key-value to create.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyValue> putKeyValueWithResponse(String key, String accept, String label, String syncToken,
-        String ifMatch, String ifNoneMatch, KeyValue entity, RequestOptions requestOptions) {
+        String ifMatch, String ifNoneMatch, KeyValue entity, RequestContext requestContext) {
         // Operation 'putKeyValue' can be invoked with multiple content-type. It is difficult to form a correct method
         // signature for convenience API, and hence the convenience API is not generated.
         return this.serviceClient.putKeyValueWithResponse(key, accept, label, syncToken, ifMatch, ifNoneMatch, entity,
-            requestOptions);
+            requestContext);
     }
 
     /**
      * Creates a key-value.
-     *
+     * 
      * @param key The key of the key-value to create.
      * @param accept The accept parameter.
      * @param label The label of the key-value to create.
@@ -439,7 +429,6 @@ public final class AzureAppConfigurationClient {
      * match the value provided.
      * @param entity The key-value to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
@@ -449,17 +438,15 @@ public final class AzureAppConfigurationClient {
         String ifNoneMatch, KeyValue entity) {
         // Operation 'putKeyValue' can be invoked with multiple content-type. It is difficult to form a correct method
         // signature for convenience API, and hence the convenience API is not generated.
-        return this.serviceClient.putKeyValue(key, accept, label, syncToken, ifMatch, ifNoneMatch,
-            entity.setValue("shawn"));
+        return this.serviceClient.putKeyValue(key, accept, label, syncToken, ifMatch, ifNoneMatch, entity);
     }
 
     /**
      * Creates a key-value.
-     *
+     * 
      * @param key The key of the key-value to create.
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
@@ -480,22 +467,21 @@ public final class AzureAppConfigurationClient {
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
      * value provided.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyValue> deleteKeyValueWithResponse(String key, String accept, String label, String syncToken,
-        String ifMatch, RequestOptions requestOptions) {
-        return this.serviceClient.deleteKeyValueWithResponse(key, accept, label, syncToken, ifMatch, requestOptions);
+        String ifMatch, RequestContext requestContext) {
+        return this.serviceClient.deleteKeyValueWithResponse(key, accept, label, syncToken, ifMatch, requestContext);
     }
 
     /**
      * Deletes a key-value.
-     *
+     * 
      * @param key The key of the key-value to delete.
      * @param accept The accept parameter.
      * @param label The label of the key-value to delete.
@@ -503,7 +489,6 @@ public final class AzureAppConfigurationClient {
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
      * value provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
@@ -519,7 +504,6 @@ public final class AzureAppConfigurationClient {
      * @param key The key of the key-value to delete.
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
@@ -542,23 +526,22 @@ public final class AzureAppConfigurationClient {
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
      * match the value provided.
      * @param select Used to select what fields are present in the returned resource(s).
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> checkKeyValueWithResponse(String key, String label, String syncToken, String acceptDatetime,
-        String ifMatch, String ifNoneMatch, List<KeyValueFields> select, RequestOptions requestOptions) {
+        String ifMatch, String ifNoneMatch, List<SettingFields> select, RequestContext requestContext) {
         return this.serviceClient.checkKeyValueWithResponse(key, label, syncToken, acceptDatetime, ifMatch, ifNoneMatch,
-            select, requestOptions);
+            select, requestContext);
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param key The key of the key-value to retrieve.
      * @param label The label of the key-value to retrieve.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -570,13 +553,12 @@ public final class AzureAppConfigurationClient {
      * match the value provided.
      * @param select Used to select what fields are present in the returned resource(s).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkKeyValue(String key, String label, String syncToken, String acceptDatetime, String ifMatch,
-        String ifNoneMatch, List<KeyValueFields> select) {
+        String ifNoneMatch, List<SettingFields> select) {
         this.serviceClient.checkKeyValue(key, label, syncToken, acceptDatetime, ifMatch, ifNoneMatch, select);
     }
 
@@ -585,7 +567,6 @@ public final class AzureAppConfigurationClient {
      * 
      * @param key The key of the key-value to retrieve.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -605,14 +586,13 @@ public final class AzureAppConfigurationClient {
      * @param status Used to filter returned snapshots by their status property.
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value snapshots.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Snapshot> getSnapshots(String accept, String name, String after, List<SnapshotFields> select,
-        List<SnapshotStatus> status, String syncToken) {
+    public PagedIterable<ConfigurationSnapshot> getSnapshots(String accept, String name, String after,
+        List<SnapshotFields> select, List<ConfigurationSnapshotStatus> status, String syncToken) {
         return this.serviceClient.getSnapshots(accept, name, after, select, status, syncToken);
     }
 
@@ -621,19 +601,18 @@ public final class AzureAppConfigurationClient {
      * 
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value snapshots.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Snapshot> getSnapshots(String accept) {
+    public PagedIterable<ConfigurationSnapshot> getSnapshots(String accept) {
         return this.serviceClient.getSnapshots(accept);
     }
 
     /**
      * Gets a list of key-value snapshots.
-     *
+     * 
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned snapshots.
      * @param after Instructs the server to return elements that appear after the element referred
@@ -641,35 +620,34 @@ public final class AzureAppConfigurationClient {
      * @param select Used to select what fields are present in the returned resource(s).
      * @param status Used to filter returned snapshots by their status property.
      * @param syncToken Used to guarantee real-time consistency between requests.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value snapshots.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Snapshot> getSnapshots(String accept, String name, String after, List<SnapshotFields> select,
-        List<SnapshotStatus> status, String syncToken, RequestOptions requestOptions) {
-        return this.serviceClient.getSnapshots(accept, name, after, select, status, syncToken, requestOptions);
+    public PagedIterable<ConfigurationSnapshot> getSnapshots(String accept, String name, String after,
+        List<SnapshotFields> select, List<ConfigurationSnapshotStatus> status, String syncToken,
+        RequestContext requestContext) {
+        return this.serviceClient.getSnapshots(accept, name, after, select, status, syncToken, requestContext);
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param after Instructs the server to return elements that appear after the element referred
      * to by the specified token.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> checkSnapshotsWithResponse(String syncToken, String after, RequestOptions requestOptions) {
-        return this.serviceClient.checkSnapshotsWithResponse(syncToken, after, requestOptions);
+    public Response<Void> checkSnapshotsWithResponse(String syncToken, String after, RequestContext requestContext) {
+        return this.serviceClient.checkSnapshotsWithResponse(syncToken, after, requestContext);
     }
 
     /**
@@ -679,7 +657,6 @@ public final class AzureAppConfigurationClient {
      * @param after Instructs the server to return elements that appear after the element referred
      * to by the specified token.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -691,7 +668,6 @@ public final class AzureAppConfigurationClient {
     /**
      * Requests the headers and status of the given resource.
      * 
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -711,23 +687,23 @@ public final class AzureAppConfigurationClient {
      * value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
      * match the value provided.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single key-value snapshot.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Snapshot> getSnapshotWithResponse(String name, String accept, List<SnapshotFields> select,
-        String syncToken, String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
+    public Response<ConfigurationSnapshot> getSnapshotWithResponse(String name, String accept,
+        List<SnapshotFields> select, String syncToken, String ifMatch, String ifNoneMatch,
+        RequestContext requestContext) {
         return this.serviceClient.getSnapshotWithResponse(name, accept, select, syncToken, ifMatch, ifNoneMatch,
-            requestOptions);
+            requestContext);
     }
 
     /**
      * Gets a single key-value snapshot.
-     *
+     * 
      * @param name The name of the snapshot.
      * @param accept The accept parameter.
      * @param select Used to select what fields are present in the returned resource(s).
@@ -737,13 +713,12 @@ public final class AzureAppConfigurationClient {
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
      * match the value provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single key-value snapshot.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Snapshot getSnapshot(String name, String accept, List<SnapshotFields> select, String syncToken,
+    public ConfigurationSnapshot getSnapshot(String name, String accept, List<SnapshotFields> select, String syncToken,
         String ifMatch, String ifNoneMatch) {
         return this.serviceClient.getSnapshot(name, accept, select, syncToken, ifMatch, ifNoneMatch);
     }
@@ -754,19 +729,18 @@ public final class AzureAppConfigurationClient {
      * @param name The name of the snapshot.
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single key-value snapshot.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Snapshot getSnapshot(String name, String accept) {
+    public ConfigurationSnapshot getSnapshot(String name, String accept) {
         return this.serviceClient.getSnapshot(name, accept);
     }
 
     /**
      * Updates the state of a key-value snapshot.
-     *
+     * 
      * @param contentType Content-Type header.
      * @param name The name of the key-value snapshot to update.
      * @param accept The accept parameter.
@@ -776,26 +750,25 @@ public final class AzureAppConfigurationClient {
      * value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
      * match the value provided.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a snapshot is a named, immutable subset of an App Configuration store's key-values.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Snapshot> updateSnapshotWithResponse(UpdateSnapshotRequestContentType contentType, String name,
-        String accept, SnapshotUpdateParameters entity, String syncToken, String ifMatch, String ifNoneMatch,
-        RequestOptions requestOptions) {
+    public Response<ConfigurationSnapshot> updateSnapshotWithResponse(UpdateSnapshotRequestContentType contentType,
+        String name, String accept, SnapshotUpdateParameters entity, String syncToken, String ifMatch,
+        String ifNoneMatch, RequestContext requestContext) {
         // Operation 'updateSnapshot' can be invoked with multiple content-type. It is difficult to form a correct
         // method signature for convenience API, and hence the convenience API is not generated.
         return this.serviceClient.updateSnapshotWithResponse(contentType, name, accept, entity, syncToken, ifMatch,
-            ifNoneMatch, requestOptions);
+            ifNoneMatch, requestContext);
     }
 
     /**
      * Updates the state of a key-value snapshot.
-     *
+     * 
      * @param contentType Content-Type header.
      * @param name The name of the key-value snapshot to update.
      * @param accept The accept parameter.
@@ -806,14 +779,13 @@ public final class AzureAppConfigurationClient {
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
      * match the value provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a snapshot is a named, immutable subset of an App Configuration store's key-values.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Snapshot updateSnapshot(UpdateSnapshotRequestContentType contentType, String name, String accept,
-        SnapshotUpdateParameters entity, String syncToken, String ifMatch, String ifNoneMatch) {
+    public ConfigurationSnapshot updateSnapshot(UpdateSnapshotRequestContentType contentType, String name,
+        String accept, SnapshotUpdateParameters entity, String syncToken, String ifMatch, String ifNoneMatch) {
         // Operation 'updateSnapshot' can be invoked with multiple content-type. It is difficult to form a correct
         // method signature for convenience API, and hence the convenience API is not generated.
         return this.serviceClient.updateSnapshot(contentType, name, accept, entity, syncToken, ifMatch, ifNoneMatch);
@@ -821,20 +793,19 @@ public final class AzureAppConfigurationClient {
 
     /**
      * Updates the state of a key-value snapshot.
-     *
+     * 
      * @param contentType Content-Type header.
      * @param name The name of the key-value snapshot to update.
      * @param accept The accept parameter.
      * @param entity The parameters used to update the snapshot.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a snapshot is a named, immutable subset of an App Configuration store's key-values.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Snapshot updateSnapshot(UpdateSnapshotRequestContentType contentType, String name, String accept,
-        SnapshotUpdateParameters entity) {
+    public ConfigurationSnapshot updateSnapshot(UpdateSnapshotRequestContentType contentType, String name,
+        String accept, SnapshotUpdateParameters entity) {
         // Operation 'updateSnapshot' can be invoked with multiple content-type. It is difficult to form a correct
         // method signature for convenience API, and hence the convenience API is not generated.
         return this.serviceClient.updateSnapshot(contentType, name, accept, entity);
@@ -849,22 +820,21 @@ public final class AzureAppConfigurationClient {
      * value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
      * match the value provided.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> checkSnapshotWithResponse(String name, String syncToken, String ifMatch, String ifNoneMatch,
-        RequestOptions requestOptions) {
-        return this.serviceClient.checkSnapshotWithResponse(name, syncToken, ifMatch, ifNoneMatch, requestOptions);
+        RequestContext requestContext) {
+        return this.serviceClient.checkSnapshotWithResponse(name, syncToken, ifMatch, ifNoneMatch, requestContext);
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param name The name of the key-value snapshot to check.
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param ifMatch Used to perform an operation only if the targeted resource's etag matches the
@@ -872,7 +842,6 @@ public final class AzureAppConfigurationClient {
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
      * match the value provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -886,7 +855,6 @@ public final class AzureAppConfigurationClient {
      * 
      * @param name The name of the key-value snapshot to check.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -907,14 +875,13 @@ public final class AzureAppConfigurationClient {
      * time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of labels.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Label> getLabels(String accept, String name, String syncToken, String after,
-        String acceptDatetime, List<LabelFields> select) {
+    public PagedIterable<SettingLabel> getLabels(String accept, String name, String syncToken, String after,
+        String acceptDatetime, List<SettingLabelFields> select) {
         return this.serviceClient.getLabels(accept, name, syncToken, after, acceptDatetime, select);
     }
 
@@ -923,19 +890,18 @@ public final class AzureAppConfigurationClient {
      * 
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of labels.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Label> getLabels(String accept) {
+    public PagedIterable<SettingLabel> getLabels(String accept) {
         return this.serviceClient.getLabels(accept);
     }
 
     /**
      * Gets a list of labels.
-     *
+     * 
      * @param accept The accept parameter.
      * @param name A filter for the name of the returned labels.
      * @param syncToken Used to guarantee real-time consistency between requests.
@@ -944,22 +910,21 @@ public final class AzureAppConfigurationClient {
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
      * time.
      * @param select Used to select what fields are present in the returned resource(s).
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of labels.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<Label> getLabels(String accept, String name, String syncToken, String after,
-        String acceptDatetime, List<LabelFields> select, RequestOptions requestOptions) {
-        return this.serviceClient.getLabels(accept, name, syncToken, after, acceptDatetime, select, requestOptions);
+    public PagedIterable<SettingLabel> getLabels(String accept, String name, String syncToken, String after,
+        String acceptDatetime, List<SettingLabelFields> select, RequestContext requestContext) {
+        return this.serviceClient.getLabels(accept, name, syncToken, after, acceptDatetime, select, requestContext);
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param name A filter for the name of the returned labels.
      * @param syncToken Used to guarantee real-time consistency between requests.
      * @param after Instructs the server to return elements that appear after the element referred
@@ -967,18 +932,17 @@ public final class AzureAppConfigurationClient {
      * @param acceptDatetime Requests the server to respond with the state of the resource at the specified
      * time.
      * @param select Used to select what fields are present in the returned resource(s).
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> checkLabelsWithResponse(String name, String syncToken, String after, String acceptDatetime,
-        List<LabelFields> select, RequestOptions requestOptions) {
+        List<SettingLabelFields> select, RequestContext requestContext) {
         return this.serviceClient.checkLabelsWithResponse(name, syncToken, after, acceptDatetime, select,
-            requestOptions);
+            requestContext);
     }
 
     /**
@@ -992,20 +956,18 @@ public final class AzureAppConfigurationClient {
      * time.
      * @param select Used to select what fields are present in the returned resource(s).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkLabels(String name, String syncToken, String after, String acceptDatetime,
-        List<LabelFields> select) {
+        List<SettingLabelFields> select) {
         this.serviceClient.checkLabels(name, syncToken, after, acceptDatetime, select);
     }
 
     /**
      * Requests the headers and status of the given resource.
      * 
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
@@ -1025,23 +987,22 @@ public final class AzureAppConfigurationClient {
      * value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
      * match the value provided.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyValue> putLockWithResponse(String key, String accept, String label, String syncToken,
-        String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
+        String ifMatch, String ifNoneMatch, RequestContext requestContext) {
         return this.serviceClient.putLockWithResponse(key, accept, label, syncToken, ifMatch, ifNoneMatch,
-            requestOptions);
+            requestContext);
     }
 
     /**
      * Locks a key-value.
-     *
+     * 
      * @param key The key of the key-value to lock.
      * @param accept The accept parameter.
      * @param label The label, if any, of the key-value to lock.
@@ -1051,7 +1012,6 @@ public final class AzureAppConfigurationClient {
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
      * match the value provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
@@ -1068,7 +1028,6 @@ public final class AzureAppConfigurationClient {
      * @param key The key of the key-value to lock.
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
@@ -1080,7 +1039,7 @@ public final class AzureAppConfigurationClient {
 
     /**
      * Unlocks a key-value.
-     *
+     * 
      * @param key The key of the key-value to unlock.
      * @param accept The accept parameter.
      * @param label The label, if any, of the key-value to unlock.
@@ -1089,18 +1048,17 @@ public final class AzureAppConfigurationClient {
      * value provided.
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
      * match the value provided.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyValue> deleteLockWithResponse(String key, String accept, String label, String syncToken,
-        String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
+        String ifMatch, String ifNoneMatch, RequestContext requestContext) {
         return this.serviceClient.deleteLockWithResponse(key, accept, label, syncToken, ifMatch, ifNoneMatch,
-            requestOptions);
+            requestContext);
     }
 
     /**
@@ -1115,7 +1073,6 @@ public final class AzureAppConfigurationClient {
      * @param ifNoneMatch Used to perform an operation only if the targeted resource's etag does not
      * match the value provided.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
@@ -1132,7 +1089,6 @@ public final class AzureAppConfigurationClient {
      * @param key The key of the key-value to unlock.
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a key-value pair representing application settings.
      */
@@ -1159,14 +1115,13 @@ public final class AzureAppConfigurationClient {
      * @param tags A filter used to query by tags. Syntax reference:
      * https://aka.ms/azconfig/docs/restapirevisions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value revisions.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyValue> getRevisions(String accept, String key, String label, String syncToken, String after,
-        String acceptDatetime, List<KeyValueFields> select, List<String> tags) {
+        String acceptDatetime, List<SettingFields> select, List<String> tags) {
         return this.serviceClient.getRevisions(accept, key, label, syncToken, after, acceptDatetime, select, tags);
     }
 
@@ -1175,7 +1130,6 @@ public final class AzureAppConfigurationClient {
      * 
      * @param accept The accept parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value revisions.
      */
@@ -1187,7 +1141,7 @@ public final class AzureAppConfigurationClient {
 
     /**
      * Gets a list of key-value revisions.
-     *
+     * 
      * @param accept The accept parameter.
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/restapirevisions.
@@ -1201,23 +1155,22 @@ public final class AzureAppConfigurationClient {
      * @param select Used to select what fields are present in the returned resource(s).
      * @param tags A filter used to query by tags. Syntax reference:
      * https://aka.ms/azconfig/docs/restapirevisions.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of key-value revisions.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyValue> getRevisions(String accept, String key, String label, String syncToken, String after,
-        String acceptDatetime, List<KeyValueFields> select, List<String> tags, RequestOptions requestOptions) {
+        String acceptDatetime, List<SettingFields> select, List<String> tags, RequestContext requestContext) {
         return this.serviceClient.getRevisions(accept, key, label, syncToken, after, acceptDatetime, select, tags,
-            requestOptions);
+            requestContext);
     }
 
     /**
      * Requests the headers and status of the given resource.
-     *
+     * 
      * @param key A filter used to match keys. Syntax reference:
      * https://aka.ms/azconfig/docs/restapirevisions.
      * @param label A filter used to match labels. Syntax reference:
@@ -1230,18 +1183,17 @@ public final class AzureAppConfigurationClient {
      * @param select Used to select what fields are present in the returned resource(s).
      * @param tags A filter used to query by tags. Syntax reference:
      * https://aka.ms/azconfig/docs/restapirevisions.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> checkRevisionsWithResponse(String key, String label, String syncToken, String after,
-        String acceptDatetime, List<KeyValueFields> select, List<String> tags, RequestOptions requestOptions) {
+        String acceptDatetime, List<SettingFields> select, List<String> tags, RequestContext requestContext) {
         return this.serviceClient.checkRevisionsWithResponse(key, label, syncToken, after, acceptDatetime, select, tags,
-            requestOptions);
+            requestContext);
     }
 
     /**
@@ -1260,25 +1212,53 @@ public final class AzureAppConfigurationClient {
      * @param tags A filter used to query by tags. Syntax reference:
      * https://aka.ms/azconfig/docs/restapirevisions.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkRevisions(String key, String label, String syncToken, String after, String acceptDatetime,
-        List<KeyValueFields> select, List<String> tags) {
+        List<SettingFields> select, List<String> tags) {
         this.serviceClient.checkRevisions(key, label, syncToken, after, acceptDatetime, select, tags);
     }
 
     /**
      * Requests the headers and status of the given resource.
      * 
-     * @throws ErrorException thrown if the request is rejected by server.
+    
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void checkRevisions() {
         this.serviceClient.checkRevisions();
+    }
+
+    /**
+     * Gets the state of a long running operation.
+     * 
+     * @param snapshot Snapshot identifier for the long running operation.
+     * @param requestContext The options to configure the HTTP request before HTTP client sends it.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the state of a long running operation.
+     */
+    @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<OperationDetails> getOperationDetailsWithResponse(String snapshot, RequestContext requestContext) {
+        return this.serviceClient.getOperationDetailsWithResponse(snapshot, requestContext);
+    }
+
+    /**
+     * Gets the state of a long running operation.
+     * 
+     * @param snapshot Snapshot identifier for the long running operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the state of a long running operation.
+     */
+    @Metadata(properties = { MetadataProperties.GENERATED })
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperationDetails getOperationDetails(String snapshot) {
+        return this.serviceClient.getOperationDetails(snapshot);
     }
 }

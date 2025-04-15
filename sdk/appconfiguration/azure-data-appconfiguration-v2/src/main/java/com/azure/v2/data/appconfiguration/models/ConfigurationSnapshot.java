@@ -11,6 +11,7 @@ import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
 import java.io.IOException;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,7 @@ import java.util.Map;
  * A snapshot is a named, immutable subset of an App Configuration store's key-values.
  */
 @Metadata(properties = { MetadataProperties.IMMUTABLE })
-public final class Snapshot implements JsonSerializable<Snapshot> {
+public final class ConfigurationSnapshot implements JsonSerializable<ConfigurationSnapshot> {
     /*
      * The name of the snapshot.
      */
@@ -30,13 +31,13 @@ public final class Snapshot implements JsonSerializable<Snapshot> {
      * The current status of the snapshot.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    private SnapshotStatus status;
+    private ConfigurationSnapshotStatus status;
 
     /*
      * A list of filters used to filter the key-values included in the snapshot.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    private final List<KeyValueFilter> filters;
+    private final List<ConfigurationSettingsFilter> filters;
 
     /*
      * The composition type describes how the key-values within the snapshot are
@@ -45,19 +46,19 @@ public final class Snapshot implements JsonSerializable<Snapshot> {
      * two key-values containing the same key and label.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    private CompositionType compositionType;
+    private SnapshotComposition snapshotComposition;
 
     /*
      * The time that the snapshot was created.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    private OffsetDateTime created;
+    private OffsetDateTime createdAt;
 
     /*
      * The time that the snapshot will expire.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    private OffsetDateTime expires;
+    private OffsetDateTime expiresAt;
 
     /*
      * The amount of time, in seconds, that a snapshot will remain in the archived
@@ -72,13 +73,13 @@ public final class Snapshot implements JsonSerializable<Snapshot> {
      * The size in bytes of the snapshot.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    private Long size;
+    private Long sizeInBytes;
 
     /*
      * The amount of key-values in the snapshot.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    private Long itemsCount;
+    private Long itemCount;
 
     /*
      * The tags of the snapshot.
@@ -90,15 +91,15 @@ public final class Snapshot implements JsonSerializable<Snapshot> {
      * A value representing the current state of the snapshot.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    private String etag;
+    private String eTag;
 
     /**
-     * Creates an instance of Snapshot class.
+     * Creates an instance of ConfigurationSnapshot class.
      * 
      * @param filters the filters value to set.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    private Snapshot(List<KeyValueFilter> filters) {
+    private ConfigurationSnapshot(List<ConfigurationSettingsFilter> filters) {
         this.filters = filters;
     }
 
@@ -118,7 +119,7 @@ public final class Snapshot implements JsonSerializable<Snapshot> {
      * @return the status value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public SnapshotStatus getStatus() {
+    public ConfigurationSnapshotStatus getStatus() {
         return this.status;
     }
 
@@ -128,41 +129,41 @@ public final class Snapshot implements JsonSerializable<Snapshot> {
      * @return the filters value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public List<KeyValueFilter> getFilters() {
+    public List<ConfigurationSettingsFilter> getFilters() {
         return this.filters;
     }
 
     /**
-     * Get the compositionType property: The composition type describes how the key-values within the snapshot are
+     * Get the snapshotComposition property: The composition type describes how the key-values within the snapshot are
      * composed. The 'key' composition type ensures there are no two key-values
      * containing the same key. The 'key_label' composition type ensures there are no
      * two key-values containing the same key and label.
      * 
-     * @return the compositionType value.
+     * @return the snapshotComposition value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public CompositionType getCompositionType() {
-        return this.compositionType;
+    public SnapshotComposition getSnapshotComposition() {
+        return this.snapshotComposition;
     }
 
     /**
-     * Get the created property: The time that the snapshot was created.
+     * Get the createdAt property: The time that the snapshot was created.
      * 
-     * @return the created value.
+     * @return the createdAt value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public OffsetDateTime getCreated() {
-        return this.created;
+    public OffsetDateTime getCreatedAt() {
+        return this.createdAt;
     }
 
     /**
-     * Get the expires property: The time that the snapshot will expire.
+     * Get the expiresAt property: The time that the snapshot will expire.
      * 
-     * @return the expires value.
+     * @return the expiresAt value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public OffsetDateTime getExpires() {
-        return this.expires;
+    public OffsetDateTime getExpiresAt() {
+        return this.expiresAt;
     }
 
     /**
@@ -174,28 +175,31 @@ public final class Snapshot implements JsonSerializable<Snapshot> {
      * @return the retentionPeriod value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public Long getRetentionPeriod() {
-        return this.retentionPeriod;
+    public Duration getRetentionPeriod() {
+        if (this.retentionPeriod == null) {
+            return null;
+        }
+        return Duration.ofSeconds(this.retentionPeriod);
     }
 
     /**
-     * Get the size property: The size in bytes of the snapshot.
+     * Get the sizeInBytes property: The size in bytes of the snapshot.
      * 
-     * @return the size value.
+     * @return the sizeInBytes value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public Long getSize() {
-        return this.size;
+    public Long getSizeInBytes() {
+        return this.sizeInBytes;
     }
 
     /**
-     * Get the itemsCount property: The amount of key-values in the snapshot.
+     * Get the itemCount property: The amount of key-values in the snapshot.
      * 
-     * @return the itemsCount value.
+     * @return the itemCount value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public Long getItemsCount() {
-        return this.itemsCount;
+    public Long getItemCount() {
+        return this.itemCount;
     }
 
     /**
@@ -209,13 +213,13 @@ public final class Snapshot implements JsonSerializable<Snapshot> {
     }
 
     /**
-     * Get the etag property: A value representing the current state of the snapshot.
+     * Get the eTag property: A value representing the current state of the snapshot.
      * 
-     * @return the etag value.
+     * @return the eTag value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public String getEtag() {
-        return this.etag;
+    public String getETag() {
+        return this.eTag;
     }
 
     /**
@@ -227,35 +231,35 @@ public final class Snapshot implements JsonSerializable<Snapshot> {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("filters", this.filters, (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("composition_type",
-            this.compositionType == null ? null : this.compositionType.getValue());
+            this.snapshotComposition == null ? null : this.snapshotComposition.getValue());
         jsonWriter.writeNumberField("retention_period", this.retentionPeriod);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of Snapshot from the JsonReader.
+     * Reads an instance of ConfigurationSnapshot from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of Snapshot if the JsonReader was pointing to an instance of it, or null if it was pointing
-     * to JSON null.
+     * @return An instance of ConfigurationSnapshot if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the Snapshot.
+     * @throws IOException If an error occurs while reading the ConfigurationSnapshot.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public static Snapshot fromJson(JsonReader jsonReader) throws IOException {
+    public static ConfigurationSnapshot fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String name = null;
-            List<KeyValueFilter> filters = null;
-            SnapshotStatus status = null;
-            CompositionType compositionType = null;
-            OffsetDateTime created = null;
-            OffsetDateTime expires = null;
+            List<ConfigurationSettingsFilter> filters = null;
+            ConfigurationSnapshotStatus status = null;
+            SnapshotComposition snapshotComposition = null;
+            OffsetDateTime createdAt = null;
+            OffsetDateTime expiresAt = null;
             Long retentionPeriod = null;
-            Long size = null;
-            Long itemsCount = null;
+            Long sizeInBytes = null;
+            Long itemCount = null;
             Map<String, String> tags = null;
-            String etag = null;
+            String eTag = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -263,42 +267,42 @@ public final class Snapshot implements JsonSerializable<Snapshot> {
                 if ("name".equals(fieldName)) {
                     name = reader.getString();
                 } else if ("filters".equals(fieldName)) {
-                    filters = reader.readArray(reader1 -> KeyValueFilter.fromJson(reader1));
+                    filters = reader.readArray(reader1 -> ConfigurationSettingsFilter.fromJson(reader1));
                 } else if ("status".equals(fieldName)) {
-                    status = SnapshotStatus.fromValue(reader.getString());
+                    status = ConfigurationSnapshotStatus.fromValue(reader.getString());
                 } else if ("composition_type".equals(fieldName)) {
-                    compositionType = CompositionType.fromValue(reader.getString());
+                    snapshotComposition = SnapshotComposition.fromValue(reader.getString());
                 } else if ("created".equals(fieldName)) {
-                    created = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    createdAt = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("expires".equals(fieldName)) {
-                    expires = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    expiresAt = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
                 } else if ("retention_period".equals(fieldName)) {
                     retentionPeriod = reader.getNullable(JsonReader::getLong);
                 } else if ("size".equals(fieldName)) {
-                    size = reader.getNullable(JsonReader::getLong);
+                    sizeInBytes = reader.getNullable(JsonReader::getLong);
                 } else if ("items_count".equals(fieldName)) {
-                    itemsCount = reader.getNullable(JsonReader::getLong);
+                    itemCount = reader.getNullable(JsonReader::getLong);
                 } else if ("tags".equals(fieldName)) {
                     tags = reader.readMap(reader1 -> reader1.getString());
                 } else if ("etag".equals(fieldName)) {
-                    etag = reader.getString();
+                    eTag = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
-            Snapshot deserializedSnapshot = new Snapshot(filters);
-            deserializedSnapshot.name = name;
-            deserializedSnapshot.status = status;
-            deserializedSnapshot.compositionType = compositionType;
-            deserializedSnapshot.created = created;
-            deserializedSnapshot.expires = expires;
-            deserializedSnapshot.retentionPeriod = retentionPeriod;
-            deserializedSnapshot.size = size;
-            deserializedSnapshot.itemsCount = itemsCount;
-            deserializedSnapshot.tags = tags;
-            deserializedSnapshot.etag = etag;
+            ConfigurationSnapshot deserializedConfigurationSnapshot = new ConfigurationSnapshot(filters);
+            deserializedConfigurationSnapshot.name = name;
+            deserializedConfigurationSnapshot.status = status;
+            deserializedConfigurationSnapshot.snapshotComposition = snapshotComposition;
+            deserializedConfigurationSnapshot.createdAt = createdAt;
+            deserializedConfigurationSnapshot.expiresAt = expiresAt;
+            deserializedConfigurationSnapshot.retentionPeriod = retentionPeriod;
+            deserializedConfigurationSnapshot.sizeInBytes = sizeInBytes;
+            deserializedConfigurationSnapshot.itemCount = itemCount;
+            deserializedConfigurationSnapshot.tags = tags;
+            deserializedConfigurationSnapshot.eTag = eTag;
 
-            return deserializedSnapshot;
+            return deserializedConfigurationSnapshot;
         });
     }
 }

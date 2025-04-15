@@ -17,8 +17,8 @@ import java.util.List;
  * Enables filtering of key-values. Syntax reference:
  * https://aka.ms/azconfig/docs/restapisnapshots.
  */
-@Metadata(properties = { MetadataProperties.IMMUTABLE })
-public final class KeyValueFilter implements JsonSerializable<KeyValueFilter> {
+@Metadata(properties = { MetadataProperties.FLUENT })
+public final class ConfigurationSettingsFilter implements JsonSerializable<ConfigurationSettingsFilter> {
     /*
      * Filters key-values by their key field.
      */
@@ -38,12 +38,12 @@ public final class KeyValueFilter implements JsonSerializable<KeyValueFilter> {
     private List<String> tags;
 
     /**
-     * Creates an instance of KeyValueFilter class.
+     * Creates an instance of ConfigurationSettingsFilter class.
      * 
      * @param key the key value to set.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    private KeyValueFilter(String key) {
+    public ConfigurationSettingsFilter(String key) {
         this.key = key;
     }
 
@@ -68,6 +68,17 @@ public final class KeyValueFilter implements JsonSerializable<KeyValueFilter> {
     }
 
     /**
+     * Set the label property: Filters {@link ConfigurationSetting} by their label field.
+     *
+     * @param label the label value to set.
+     * @return the ConfigurationSettingsFilter object itself.
+     */
+    public ConfigurationSettingsFilter setLabel(String label) {
+        this.label = label;
+        return this;
+    }
+
+    /**
      * Get the tags property: Filters key-values by their tags field.
      * 
      * @return the tags value.
@@ -75,6 +86,17 @@ public final class KeyValueFilter implements JsonSerializable<KeyValueFilter> {
     @Metadata(properties = { MetadataProperties.GENERATED })
     public List<String> getTags() {
         return this.tags;
+    }
+
+    /**
+     * Set the tags property: Filters key-values by their tags field.
+     *
+     * @param tags the tags value to set.
+     * @return the ConfigurationSettingsFilter object itself.
+     */
+    public ConfigurationSettingsFilter setTags(List<String> tags) {
+        this.tags = tags;
+        return this;
     }
 
     /**
@@ -91,16 +113,16 @@ public final class KeyValueFilter implements JsonSerializable<KeyValueFilter> {
     }
 
     /**
-     * Reads an instance of KeyValueFilter from the JsonReader.
+     * Reads an instance of ConfigurationSettingsFilter from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of KeyValueFilter if the JsonReader was pointing to an instance of it, or null if it was
-     * pointing to JSON null.
+     * @return An instance of ConfigurationSettingsFilter if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the KeyValueFilter.
+     * @throws IOException If an error occurs while reading the ConfigurationSettingsFilter.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public static KeyValueFilter fromJson(JsonReader jsonReader) throws IOException {
+    public static ConfigurationSettingsFilter fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String key = null;
             String label = null;
@@ -119,11 +141,11 @@ public final class KeyValueFilter implements JsonSerializable<KeyValueFilter> {
                     reader.skipChildren();
                 }
             }
-            KeyValueFilter deserializedKeyValueFilter = new KeyValueFilter(key);
-            deserializedKeyValueFilter.label = label;
-            deserializedKeyValueFilter.tags = tags;
+            ConfigurationSettingsFilter deserializedConfigurationSettingsFilter = new ConfigurationSettingsFilter(key);
+            deserializedConfigurationSettingsFilter.label = label;
+            deserializedConfigurationSettingsFilter.tags = tags;
 
-            return deserializedKeyValueFilter;
+            return deserializedConfigurationSettingsFilter;
         });
     }
 }

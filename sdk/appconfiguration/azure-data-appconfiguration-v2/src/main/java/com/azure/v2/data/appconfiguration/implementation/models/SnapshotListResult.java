@@ -4,7 +4,7 @@
 
 package com.azure.v2.data.appconfiguration.implementation.models;
 
-import com.azure.v2.data.appconfiguration.models.Snapshot;
+import com.azure.v2.data.appconfiguration.models.ConfigurationSnapshot;
 import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.serialization.json.JsonReader;
@@ -23,7 +23,7 @@ public final class SnapshotListResult implements JsonSerializable<SnapshotListRe
      * The collection value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    private List<Snapshot> items;
+    private List<ConfigurationSnapshot> items;
 
     /*
      * The URI that can be used to request the next set of paged results.
@@ -44,7 +44,7 @@ public final class SnapshotListResult implements JsonSerializable<SnapshotListRe
      * @return the items value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public List<Snapshot> getItems() {
+    public List<ConfigurationSnapshot> getItems() {
         return this.items;
     }
 
@@ -87,7 +87,8 @@ public final class SnapshotListResult implements JsonSerializable<SnapshotListRe
                 reader.nextToken();
 
                 if ("items".equals(fieldName)) {
-                    List<Snapshot> items = reader.readArray(reader1 -> Snapshot.fromJson(reader1));
+                    List<ConfigurationSnapshot> items
+                        = reader.readArray(reader1 -> ConfigurationSnapshot.fromJson(reader1));
                     deserializedSnapshotListResult.items = items;
                 } else if ("@nextLink".equals(fieldName)) {
                     deserializedSnapshotListResult.nextLink = reader.getString();

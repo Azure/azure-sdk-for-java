@@ -20,76 +20,40 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 /**
- * Key-value fields.
+ * Composition types.
  */
-public final class KeyValueFields implements ExpandableEnum<String>, JsonSerializable<KeyValueFields> {
-    private static final Map<String, KeyValueFields> VALUES = new ConcurrentHashMap<>();
+public final class SnapshotComposition implements ExpandableEnum<String>, JsonSerializable<SnapshotComposition> {
+    private static final Map<String, SnapshotComposition> VALUES = new ConcurrentHashMap<>();
 
-    private static final Function<String, KeyValueFields> NEW_INSTANCE = KeyValueFields::new;
-
-    /**
-     * Key field.
-     */
-    @Metadata(properties = { MetadataProperties.GENERATED })
-    public static final KeyValueFields KEY = fromValue("key");
+    private static final Function<String, SnapshotComposition> NEW_INSTANCE = SnapshotComposition::new;
 
     /**
-     * Label field.
+     * The 'key' composition type.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public static final KeyValueFields LABEL = fromValue("label");
+    public static final SnapshotComposition KEY = fromValue("key");
 
     /**
-     * Content type field.
+     * The 'key_label' composition type.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public static final KeyValueFields CONTENT_TYPE = fromValue("content_type");
-
-    /**
-     * Value field.
-     */
-    @Metadata(properties = { MetadataProperties.GENERATED })
-    public static final KeyValueFields VALUE = fromValue("value");
-
-    /**
-     * Last modified field.
-     */
-    @Metadata(properties = { MetadataProperties.GENERATED })
-    public static final KeyValueFields LAST_MODIFIED = fromValue("last_modified");
-
-    /**
-     * Tags field.
-     */
-    @Metadata(properties = { MetadataProperties.GENERATED })
-    public static final KeyValueFields TAGS = fromValue("tags");
-
-    /**
-     * Locked field.
-     */
-    @Metadata(properties = { MetadataProperties.GENERATED })
-    public static final KeyValueFields LOCKED = fromValue("locked");
-
-    /**
-     * Etag field.
-     */
-    @Metadata(properties = { MetadataProperties.GENERATED })
-    public static final KeyValueFields ETAG = fromValue("etag");
+    public static final SnapshotComposition KEY_LABEL = fromValue("key_label");
 
     private final String value;
 
-    private KeyValueFields(String value) {
+    private SnapshotComposition(String value) {
         this.value = value;
     }
 
     /**
-     * Creates or finds a KeyValueFields.
+     * Creates or finds a SnapshotComposition.
      * 
      * @param value a value to look for.
-     * @return the corresponding KeyValueFields.
+     * @return the corresponding SnapshotComposition.
      * @throws IllegalArgumentException if value is null.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public static KeyValueFields fromValue(String value) {
+    public static SnapshotComposition fromValue(String value) {
         if (value == null) {
             throw new IllegalArgumentException("'value' cannot be null.");
         }
@@ -97,19 +61,19 @@ public final class KeyValueFields implements ExpandableEnum<String>, JsonSeriali
     }
 
     /**
-     * Gets known KeyValueFields values.
+     * Gets known SnapshotComposition values.
      * 
-     * @return Known KeyValueFields values.
+     * @return Known SnapshotComposition values.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public static Collection<KeyValueFields> values() {
+    public static Collection<SnapshotComposition> values() {
         return new ArrayList<>(VALUES.values());
     }
 
     /**
-     * Gets the value of the KeyValueFields instance.
+     * Gets the value of the SnapshotComposition instance.
      * 
-     * @return the value of the KeyValueFields instance.
+     * @return the value of the SnapshotComposition instance.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @Override
@@ -127,16 +91,16 @@ public final class KeyValueFields implements ExpandableEnum<String>, JsonSeriali
     }
 
     /**
-     * Reads an instance of KeyValueFields from the JsonReader.
+     * Reads an instance of SnapshotComposition from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of KeyValueFields if the JsonReader was pointing to an instance of it, or null if the
+     * @return An instance of SnapshotComposition if the JsonReader was pointing to an instance of it, or null if the
      * JsonReader was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the KeyValueFields.
+     * @throws IOException If an error occurs while reading the SnapshotComposition.
      * @throws IllegalStateException If unexpected JSON token is found.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public static KeyValueFields fromJson(JsonReader jsonReader) throws IOException {
+    public static SnapshotComposition fromJson(JsonReader jsonReader) throws IOException {
         JsonToken nextToken = jsonReader.nextToken();
         if (nextToken == JsonToken.NULL) {
             return null;
@@ -145,7 +109,7 @@ public final class KeyValueFields implements ExpandableEnum<String>, JsonSeriali
             throw new IllegalStateException(
                 String.format("Unexpected JSON token for %s deserialization: %s", JsonToken.STRING, nextToken));
         }
-        return KeyValueFields.fromValue(jsonReader.getString());
+        return SnapshotComposition.fromValue(jsonReader.getString());
     }
 
     @Metadata(properties = { MetadataProperties.GENERATED })

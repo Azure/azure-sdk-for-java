@@ -4,7 +4,7 @@
 
 package com.azure.v2.data.appconfiguration.implementation.models;
 
-import com.azure.v2.data.appconfiguration.models.Label;
+import com.azure.v2.data.appconfiguration.models.SettingLabel;
 import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.serialization.json.JsonReader;
@@ -23,7 +23,7 @@ public final class LabelListResult implements JsonSerializable<LabelListResult> 
      * The collection value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    private List<Label> items;
+    private List<SettingLabel> items;
 
     /*
      * The URI that can be used to request the next set of paged results.
@@ -44,7 +44,7 @@ public final class LabelListResult implements JsonSerializable<LabelListResult> 
      * @return the items value.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public List<Label> getItems() {
+    public List<SettingLabel> getItems() {
         return this.items;
     }
 
@@ -87,7 +87,7 @@ public final class LabelListResult implements JsonSerializable<LabelListResult> 
                 reader.nextToken();
 
                 if ("items".equals(fieldName)) {
-                    List<Label> items = reader.readArray(reader1 -> Label.fromJson(reader1));
+                    List<SettingLabel> items = reader.readArray(reader1 -> SettingLabel.fromJson(reader1));
                     deserializedLabelListResult.items = items;
                 } else if ("@nextLink".equals(fieldName)) {
                     deserializedLabelListResult.nextLink = reader.getString();

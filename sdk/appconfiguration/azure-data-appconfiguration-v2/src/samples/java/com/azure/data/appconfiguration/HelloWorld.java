@@ -4,16 +4,10 @@
 package com.azure.data.appconfiguration;
 
 
-import com.azure.v2.data.appconfiguration.AzureAppConfigurationClient;
-import com.azure.v2.data.appconfiguration.AzureAppConfigurationClientBuilder;
-import com.azure.v2.data.appconfiguration.models.KeyValue;
+import com.azure.v2.data.appconfiguration.ConfigurationClient;
+import com.azure.v2.data.appconfiguration.ConfigurationClientBuilder;
+import com.azure.v2.data.appconfiguration.models.ConfigurationSetting;
 import io.clientcore.core.utils.configuration.Configuration;
-
-import java.util.Arrays;
-
-import static com.azure.v2.data.appconfiguration.models.KeyValueFields.KEY;
-import static com.azure.v2.data.appconfiguration.models.KeyValueFields.LABEL;
-import static com.azure.v2.data.appconfiguration.models.KeyValueFields.VALUE;
 
 /**
  * Sample demonstrates how to add, get, and delete a configuration setting.
@@ -29,7 +23,7 @@ public class HelloWorld {
         // and navigating to "Access Keys" page under the "Settings" section.
         String connectionString = Configuration.getGlobalConfiguration().get("AZURE_APPCONFIG_CONNECTION_STRING");
 
-        final AzureAppConfigurationClient client = new AzureAppConfigurationClientBuilder()
+        final ConfigurationClient client = new ConfigurationClientBuilder()
             .connectionString(connectionString)
             .buildClient();
 
@@ -39,15 +33,14 @@ public class HelloWorld {
 
         System.out.println("Beginning of synchronous sample...");
 
-        KeyValue setting = client.putKeyValue(key, null, "l1", null, null, null, new KeyValue().setLabel("label").setValue(value));
-
+        ConfigurationSetting setting = client.setConfigurationSetting(key, null, value);
         System.out.printf("[SetConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue());
 
-        setting = client.getKeyValueWithResponse(key, null, "l1", Arrays.asList(KEY, LABEL, VALUE), null, null, null, null, null).getValue();
-        System.out.printf("[GetConfigurationSetting] Key: %s, Value: %s%n", setting.getKey(), setting.getValue());
+        setting = client.getConfigurationSetting(key, null, null);
+        System.out.printf("[GetConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue());
 
-        setting = client.deleteKeyValueWithResponse(key, null, "l1", null, null, null).getValue();
-        System.out.printf("[DeleteConfigurationSetting] Key: %s, Value: %s%n", setting.getKey(), setting.getValue());
+        setting = client.deleteConfigurationSetting(key, null);
+        System.out.printf("[DeleteConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue());
 
         System.out.println("End of synchronous sample.");
     }

@@ -20,40 +20,76 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 /**
- * Composition types.
+ * Key-value fields.
  */
-public final class CompositionType implements ExpandableEnum<String>, JsonSerializable<CompositionType> {
-    private static final Map<String, CompositionType> VALUES = new ConcurrentHashMap<>();
+public final class SettingFields implements ExpandableEnum<String>, JsonSerializable<SettingFields> {
+    private static final Map<String, SettingFields> VALUES = new ConcurrentHashMap<>();
 
-    private static final Function<String, CompositionType> NEW_INSTANCE = CompositionType::new;
-
-    /**
-     * The 'key' composition type.
-     */
-    @Metadata(properties = { MetadataProperties.GENERATED })
-    public static final CompositionType KEY = fromValue("key");
+    private static final Function<String, SettingFields> NEW_INSTANCE = SettingFields::new;
 
     /**
-     * The 'key_label' composition type.
+     * Key field.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public static final CompositionType KEY_LABEL = fromValue("key_label");
+    public static final SettingFields KEY = fromValue("key");
+
+    /**
+     * Label field.
+     */
+    @Metadata(properties = { MetadataProperties.GENERATED })
+    public static final SettingFields LABEL = fromValue("label");
+
+    /**
+     * Content type field.
+     */
+    @Metadata(properties = { MetadataProperties.GENERATED })
+    public static final SettingFields CONTENT_TYPE = fromValue("content_type");
+
+    /**
+     * Value field.
+     */
+    @Metadata(properties = { MetadataProperties.GENERATED })
+    public static final SettingFields VALUE = fromValue("value");
+
+    /**
+     * Last modified field.
+     */
+    @Metadata(properties = { MetadataProperties.GENERATED })
+    public static final SettingFields LAST_MODIFIED = fromValue("last_modified");
+
+    /**
+     * Tags field.
+     */
+    @Metadata(properties = { MetadataProperties.GENERATED })
+    public static final SettingFields TAGS = fromValue("tags");
+
+    /**
+     * Locked field.
+     */
+    @Metadata(properties = { MetadataProperties.GENERATED })
+    public static final SettingFields IS_READ_ONLY = fromValue("locked");
+
+    /**
+     * Etag field.
+     */
+    @Metadata(properties = { MetadataProperties.GENERATED })
+    public static final SettingFields ETAG = fromValue("etag");
 
     private final String value;
 
-    private CompositionType(String value) {
+    private SettingFields(String value) {
         this.value = value;
     }
 
     /**
-     * Creates or finds a CompositionType.
+     * Creates or finds a SettingFields.
      * 
      * @param value a value to look for.
-     * @return the corresponding CompositionType.
+     * @return the corresponding SettingFields.
      * @throws IllegalArgumentException if value is null.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public static CompositionType fromValue(String value) {
+    public static SettingFields fromValue(String value) {
         if (value == null) {
             throw new IllegalArgumentException("'value' cannot be null.");
         }
@@ -61,19 +97,19 @@ public final class CompositionType implements ExpandableEnum<String>, JsonSerial
     }
 
     /**
-     * Gets known CompositionType values.
+     * Gets known SettingFields values.
      * 
-     * @return Known CompositionType values.
+     * @return Known SettingFields values.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public static Collection<CompositionType> values() {
+    public static Collection<SettingFields> values() {
         return new ArrayList<>(VALUES.values());
     }
 
     /**
-     * Gets the value of the CompositionType instance.
+     * Gets the value of the SettingFields instance.
      * 
-     * @return the value of the CompositionType instance.
+     * @return the value of the SettingFields instance.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     @Override
@@ -91,16 +127,16 @@ public final class CompositionType implements ExpandableEnum<String>, JsonSerial
     }
 
     /**
-     * Reads an instance of CompositionType from the JsonReader.
+     * Reads an instance of SettingFields from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of CompositionType if the JsonReader was pointing to an instance of it, or null if the
+     * @return An instance of SettingFields if the JsonReader was pointing to an instance of it, or null if the
      * JsonReader was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the CompositionType.
+     * @throws IOException If an error occurs while reading the SettingFields.
      * @throws IllegalStateException If unexpected JSON token is found.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public static CompositionType fromJson(JsonReader jsonReader) throws IOException {
+    public static SettingFields fromJson(JsonReader jsonReader) throws IOException {
         JsonToken nextToken = jsonReader.nextToken();
         if (nextToken == JsonToken.NULL) {
             return null;
@@ -109,7 +145,7 @@ public final class CompositionType implements ExpandableEnum<String>, JsonSerial
             throw new IllegalStateException(
                 String.format("Unexpected JSON token for %s deserialization: %s", JsonToken.STRING, nextToken));
         }
-        return CompositionType.fromValue(jsonReader.getString());
+        return SettingFields.fromValue(jsonReader.getString());
     }
 
     @Metadata(properties = { MetadataProperties.GENERATED })
