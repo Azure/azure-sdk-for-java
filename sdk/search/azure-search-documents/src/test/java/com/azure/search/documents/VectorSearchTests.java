@@ -695,6 +695,7 @@ public class VectorSearchTests extends SearchTestBase {
         indexesToDelete.add(indexName);
 
         SearchIndex retrievedIndex = searchIndexClient.getIndex(indexName).block();
+        assert retrievedIndex != null;
         assertEquals(1, retrievedIndex.getVectorSearch().getCompressions().size());
         BinaryQuantizationCompression compression
             = (BinaryQuantizationCompression) retrievedIndex.getVectorSearch().getCompressions().get(0);
