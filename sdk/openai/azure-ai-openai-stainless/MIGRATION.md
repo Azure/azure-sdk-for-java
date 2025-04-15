@@ -72,7 +72,7 @@ OpenAIClient client = OpenAIOkHttpClient.builder()
     .build();
 ```
 
-And for aync:
+And for async:
 
 ```java
 OpenAIClientAsync client = OpenAIOkHttpClientAsync.builder()
@@ -81,7 +81,7 @@ OpenAIClientAsync client = OpenAIOkHttpClientAsync.builder()
     .build();
 ```
 
-One notable difference betwee the async Azure OpenAI Java SDK and the OpenAI SDK, is that the former uses [reactor](https://projectreactor.io/) and the latter [CompletableFutures](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CompletableFuture.html).
+One notable difference between the async Azure OpenAI Java SDK and the OpenAI SDK, is that the former uses [reactor](https://projectreactor.io/) and the latter [CompletableFutures](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CompletableFuture.html).
 
 ## Using the SDK
 
