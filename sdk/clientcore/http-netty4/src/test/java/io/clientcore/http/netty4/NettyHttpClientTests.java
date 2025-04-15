@@ -286,11 +286,15 @@ public class NettyHttpClientTests {
                     new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress()).setCredentials("2", "2"))
                 .build();
 
-            ProxyConnectException exception = assertThrows(ProxyConnectException.class,
+            CoreException coreException = assertThrows(CoreException.class,
                 () -> httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(PROXY_TO_ADDRESS))));
-            assertTrue(exception.getMessage().contains("Proxy Authentication Required"),
+
+            Throwable exception = coreException.getCause();
+            assertInstanceOf(ProxyConnectException.class, exception);
+
+            assertTrue(coreException.getCause().getMessage().contains("Proxy Authentication Required"),
                 () -> "Expected exception message to contain \"Proxy Authentication Required\", it was: "
-                    + exception.getMessage());
+                    + coreException.getCause().getMessage());
         }
     }
 

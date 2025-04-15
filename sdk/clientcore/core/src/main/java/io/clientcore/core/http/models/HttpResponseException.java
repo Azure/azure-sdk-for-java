@@ -26,6 +26,11 @@ public class HttpResponseException extends CoreException {
     private final Response<BinaryData> response;
 
     /**
+     * Indicates whether the exception is retryable.
+     */
+    private final boolean isRetryable;
+
+    /**
      * Initializes a new instance of the HttpResponseException class.
      *
      * @param message The exception message.
@@ -33,10 +38,11 @@ public class HttpResponseException extends CoreException {
      * @param value The deserialized response value.
      */
     public HttpResponseException(final String message, final Response<BinaryData> response, final Object value) {
-        super(message, null, isRetryable(response, null));
+        super(message, null);
 
         this.value = value;
         this.response = response;
+        this.isRetryable = response == null || RetryUtils.isRetryable(response.getStatusCode());
     }
 
     /**
@@ -47,10 +53,12 @@ public class HttpResponseException extends CoreException {
      * @param cause The {@link Throwable} which caused the creation of this exception.
      */
     public HttpResponseException(final String message, final Response<BinaryData> response, final Throwable cause) {
-        super(message, cause, isRetryable(response, cause));
+        super(message, cause);
 
         this.value = null;
         this.response = response;
+        this.isRetryable
+            = response != null ? RetryUtils.isRetryable(response.getStatusCode()) : RetryUtils.isRetryable(cause);
     }
 
     /**
@@ -71,7 +79,8 @@ public class HttpResponseException extends CoreException {
         return value;
     }
 
-    private static boolean isRetryable(Response<BinaryData> response, Throwable cause) {
-        return response != null ? RetryUtils.isRetryable(response.getStatusCode()) : RetryUtils.isRetryable(cause);
+    @Override
+    public boolean isRetryable() {
+        return isRetryable;
     }
 }

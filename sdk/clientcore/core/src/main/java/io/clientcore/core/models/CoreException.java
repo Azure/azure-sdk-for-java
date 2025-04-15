@@ -79,20 +79,13 @@ public abstract class CoreException extends RuntimeException {
     }
 
     /**
-     * A boolean indicating whether the exception is retryable.
-     */
-    private final boolean isRetryable;
-
-    /**
      * Creates a new instance of {@link CoreException}.
      *
      * @param message The exception message.
      * @param cause The {@link Throwable} which caused the creation of this CoreException.
-     * @param isRetryable Whether the exception is retryable. When in doubt, set to {@code true}.
      */
-    protected CoreException(String message, Throwable cause, boolean isRetryable) {
+    protected CoreException(String message, Throwable cause) {
         super(getMessage(message, cause), cause);
-        this.isRetryable = isRetryable;
     }
 
     /**
@@ -100,9 +93,7 @@ public abstract class CoreException extends RuntimeException {
      *
      * @return {@code true} if the exception is retryable; {@code false} otherwise.
      */
-    public boolean isRetryable() {
-        return isRetryable;
-    }
+    public abstract boolean isRetryable();
 
     private static String getMessage(String message, Throwable cause) {
         if (message == null) {
@@ -112,9 +103,20 @@ public abstract class CoreException extends RuntimeException {
     }
 
     private static class CoreExceptionImpl extends CoreException {
+        /**
+         * A boolean indicating whether the exception is retryable.
+         * When in doubt, set to {@code true}.
+         */
+        private final boolean isRetryable;
 
         CoreExceptionImpl(String message, Throwable cause, boolean isRetryable) {
-            super(message, cause, isRetryable);
+            super(message, cause);
+            this.isRetryable = isRetryable;
+        }
+
+        @Override
+        public boolean isRetryable() {
+            return isRetryable;
         }
     }
 }
