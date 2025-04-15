@@ -233,7 +233,9 @@ public final class ChatCompletionsClientImpl {
      *             function (Required): {
      *                 name: String (Required)
      *                 description: String (Optional)
-     *                 parameters: BinaryData (Optional)
+     *                 parameters (Optional): {
+     *                     String: BinaryData (Required)
+     *                 }
      *             }
      *         }
      *     ]
@@ -345,7 +347,9 @@ public final class ChatCompletionsClientImpl {
      *             function (Required): {
      *                 name: String (Required)
      *                 description: String (Optional)
-     *                 parameters: BinaryData (Optional)
+     *                 parameters (Optional): {
+     *                     String: BinaryData (Required)
+     *                 }
      *             }
      *         }
      *     ]
