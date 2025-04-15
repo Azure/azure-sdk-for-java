@@ -50,9 +50,6 @@ steps:
       java -version
       echo "Java version above"
       
-      ./gradlew -version
-      echo "Gradle version above"
-      
       Write-Host "Building the project and publishing to the local Maven repository"
       cd "$(Agent.TempDirectory)/openai-java"
       
