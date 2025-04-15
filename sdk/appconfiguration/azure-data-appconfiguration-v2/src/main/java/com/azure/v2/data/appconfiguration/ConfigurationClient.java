@@ -990,7 +990,7 @@ public final class ConfigurationClient {
     //            try {
     //                pagedResponse = serviceClient.getKeyValuesSinglePage(null, keyFilter, labelFilter, null, null, acceptDateTime,
     //                    settingFields, null, null, getPageETag(matchConditionsList, pageETagIndex), tagsFilter,
-    //                    new RequestOptions().setContext(context));
+    //                    new requestContext().setContext(context));
     //            } catch (HttpResponseException ex) {
     //                return handleNotModifiedErrorToValidResponse(ex, LOGGER);
     //            }
@@ -999,7 +999,7 @@ public final class ConfigurationClient {
     //            PagedResponse<KeyValue> pagedResponse;
     //            try {
     //                pagedResponse = serviceClient.getKeyValuesNextSinglePage(nextLink.getContinuationToken(), null, null, acceptDateTime, null,
-    //                    getPageETag(matchConditionsList, pageETagIndex), new RequestOptions().setContext(context));
+    //                    getPageETag(matchConditionsList, pageETagIndex), new requestContext().setContext(context));
     //            } catch (HttpResponseException ex) {
     //                return handleNotModifiedErrorToValidResponse(ex, LOGGER);
     //            }
@@ -1066,12 +1066,12 @@ public final class ConfigurationClient {
     //        return new PagedIterable<>(() -> {
     //            final PagedResponse<KeyValue> pagedResponse = serviceClient.getKeyValuesSinglePage(null, null, null, null,
     //                null, null,
-    //                fields, snapshotName, null, null, null, new RequestOptions().setContext(context));
+    //                fields, snapshotName, null, null, null, new requestContext().setContext(context));
     //            return toConfigurationSettingWithPagedResponse(pagedResponse);
     //        }, nextLink -> {
     //            final PagedResponse<KeyValue> pagedResponse
     //                = serviceClient.getKeyValuesNextSinglePage(nextLink.getContinuationToken(), null, null, null, null, null,
-    //                new RequestOptions().setContext(context));
+    //                new requestContext().setContext(context));
     //            return toConfigurationSettingWithPagedResponse(pagedResponse);
     //        });
     //    }
@@ -1151,12 +1151,12 @@ public final class ConfigurationClient {
     //                acceptDateTime,
     //                selector == null ? null : toSettingFieldsList(selector.getFields()),
     //                selector == null ? null : selector.getTagsFilter(),
-    //                new RequestOptions().setContext(context));
+    //                new requestContext().setContext(context));
     //            return toConfigurationSettingWithPagedResponse(pagedResponse);
     //        }, nextLink -> {
     //            final PagedResponse<KeyValue> pagedResponse = serviceClient.getRevisionsNextSinglePage(
     //                nextLink.getContinuationToken(), null, null,
-    //                acceptDateTime, new RequestOptions().setContext(context));
+    //                acceptDateTime, new requestContext().setContext(context));
     //            return toConfigurationSettingWithPagedResponse(pagedResponse);
     //        });
     //    }

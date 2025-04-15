@@ -44,7 +44,6 @@ public final class ConfigurationClientJavaDocCodeSnippets {
             .build();
 
         ConfigurationClient configurationClient = new ConfigurationClientBuilder()
-            .httpPipeline(pipeline)
             .endpoint("https://dummy.azure.net/")
             .connectionString(connectionString)
             .buildClient();
