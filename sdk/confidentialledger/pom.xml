@@ -12,4 +12,9 @@
       <module>azure-resourcemanager-confidentialledger</module>
       <module>azure-security-confidentialledger</module>
   </modules>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <jacoco.min.linecoverage>0.2</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.2</jacoco.min.branchcoverage>
+  </properties>
 </project>

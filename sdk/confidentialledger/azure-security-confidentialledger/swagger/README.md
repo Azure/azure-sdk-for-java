@@ -16,6 +16,9 @@ title: ConfidentialLedgerClient
 use: '@autorest/java@4.1.42'
 generate-samples: true
 generate-tests: true
+service-version:
+- 2022-05-13
+- 2024-12-09-preview
 ```
 
 
@@ -36,4 +39,7 @@ title: ConfidentialLedgerCertificateClient
 use: '@autorest/java@4.1.42'
 generate-samples: true
 generate-tests: true
+service-version:
+- 2022-05-13
+- 2024-12-09-preview
 ```
