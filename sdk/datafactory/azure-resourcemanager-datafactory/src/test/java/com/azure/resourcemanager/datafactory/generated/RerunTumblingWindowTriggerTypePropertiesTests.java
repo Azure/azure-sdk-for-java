@@ -13,23 +13,23 @@ public final class RerunTumblingWindowTriggerTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RerunTumblingWindowTriggerTypeProperties model = BinaryData.fromString(
-            "{\"parentTrigger\":\"datamdpwpzuxo\",\"requestedStartTime\":\"2021-11-01T10:58:22Z\",\"requestedEndTime\":\"2021-05-15T01:16:29Z\",\"rerunConcurrency\":1024171923}")
+            "{\"parentTrigger\":\"datayneyoxj\",\"requestedStartTime\":\"2021-08-03T22:31:19Z\",\"requestedEndTime\":\"2021-11-03T09:33:57Z\",\"rerunConcurrency\":1875069315}")
             .toObject(RerunTumblingWindowTriggerTypeProperties.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-01T10:58:22Z"), model.requestedStartTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-15T01:16:29Z"), model.requestedEndTime());
-        Assertions.assertEquals(1024171923, model.rerunConcurrency());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-03T22:31:19Z"), model.requestedStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-03T09:33:57Z"), model.requestedEndTime());
+        Assertions.assertEquals(1875069315, model.rerunConcurrency());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RerunTumblingWindowTriggerTypeProperties model
-            = new RerunTumblingWindowTriggerTypeProperties().withParentTrigger("datamdpwpzuxo")
-                .withRequestedStartTime(OffsetDateTime.parse("2021-11-01T10:58:22Z"))
-                .withRequestedEndTime(OffsetDateTime.parse("2021-05-15T01:16:29Z"))
-                .withRerunConcurrency(1024171923);
+            = new RerunTumblingWindowTriggerTypeProperties().withParentTrigger("datayneyoxj")
+                .withRequestedStartTime(OffsetDateTime.parse("2021-08-03T22:31:19Z"))
+                .withRequestedEndTime(OffsetDateTime.parse("2021-11-03T09:33:57Z"))
+                .withRerunConcurrency(1875069315);
         model = BinaryData.fromObject(model).toObject(RerunTumblingWindowTriggerTypeProperties.class);
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-01T10:58:22Z"), model.requestedStartTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-15T01:16:29Z"), model.requestedEndTime());
-        Assertions.assertEquals(1024171923, model.rerunConcurrency());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-03T22:31:19Z"), model.requestedStartTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-03T09:33:57Z"), model.requestedEndTime());
+        Assertions.assertEquals(1875069315, model.rerunConcurrency());
     }
 }

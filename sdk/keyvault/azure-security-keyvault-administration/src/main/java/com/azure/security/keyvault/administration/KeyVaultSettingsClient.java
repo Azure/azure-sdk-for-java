@@ -15,6 +15,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.security.keyvault.administration.implementation.KeyVaultAdministrationClientImpl;
 import com.azure.security.keyvault.administration.implementation.models.Setting;
 import com.azure.security.keyvault.administration.implementation.models.SettingsListResult;
+import com.azure.security.keyvault.administration.implementation.models.UpdateSettingRequest;
 import com.azure.security.keyvault.administration.models.KeyVaultAdministrationException;
 import com.azure.security.keyvault.administration.models.KeyVaultGetSettingsResult;
 import com.azure.security.keyvault.administration.models.KeyVaultRoleDefinition;
@@ -181,7 +182,8 @@ public final class KeyVaultSettingsClient {
             }
 
             return KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(implClient
-                .updateSettingWithResponse(setting.getName(), BinaryData.fromObject(settingValue), EMPTY_OPTIONS)
+                .updateSettingWithResponse(setting.getName(),
+                    BinaryData.fromObject(new UpdateSettingRequest(settingValue)), EMPTY_OPTIONS)
                 .getValue()
                 .toObject(Setting.class));
         } catch (RuntimeException e) {
@@ -227,7 +229,8 @@ public final class KeyVaultSettingsClient {
             }
 
             Response<BinaryData> response = implClient.updateSettingWithResponse(setting.getName(),
-                BinaryData.fromObject(settingValue), new RequestOptions().setContext(context));
+                BinaryData.fromObject(new UpdateSettingRequest(settingValue)),
+                new RequestOptions().setContext(context));
 
             return new SimpleResponse<>(response,
                 KeyVaultSettingsAsyncClient.transformToKeyVaultSetting(response.getValue().toObject(Setting.class)));

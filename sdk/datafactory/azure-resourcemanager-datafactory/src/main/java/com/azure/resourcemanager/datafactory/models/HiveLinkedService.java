@@ -51,7 +51,7 @@ public final class HiveLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private HiveLinkedServiceTypeProperties innerTypeProperties() {
+    HiveLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

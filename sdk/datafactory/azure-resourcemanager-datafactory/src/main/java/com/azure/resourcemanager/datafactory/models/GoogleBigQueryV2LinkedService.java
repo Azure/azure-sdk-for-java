@@ -52,7 +52,7 @@ public final class GoogleBigQueryV2LinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private GoogleBigQueryV2LinkedServiceTypeProperties innerTypeProperties() {
+    GoogleBigQueryV2LinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

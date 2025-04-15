@@ -11,17 +11,17 @@ public final class WebSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WebSource model = BinaryData.fromString(
-            "{\"type\":\"WebSource\",\"additionalColumns\":\"datavifl\",\"sourceRetryCount\":\"datarknsc\",\"sourceRetryWait\":\"datah\",\"maxConcurrentConnections\":\"dataljsvpokvh\",\"disableMetricsCollection\":\"dataygffuzhnusrfffag\",\"\":{\"hgonovwu\":\"datafwzysvnvrfjgbxup\",\"gkouf\":\"dataearowrmesziubkyv\"}}")
+            "{\"type\":\"WebSource\",\"additionalColumns\":\"datasoj\",\"sourceRetryCount\":\"dataarliig\",\"sourceRetryWait\":\"datav\",\"maxConcurrentConnections\":\"datai\",\"disableMetricsCollection\":\"datajhxxxuuqcmunhfa\",\"\":{\"oxh\":\"datanyvypu\",\"gejytqnzrcbh\":\"datawwerwywlxhiuwvq\",\"zgzf\":\"datayhctjvlwf\",\"fuhsmuclxgcedus\":\"datafyvytydrdcwbaiaq\"}}")
             .toObject(WebSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WebSource model = new WebSource().withSourceRetryCount("datarknsc")
-            .withSourceRetryWait("datah")
-            .withMaxConcurrentConnections("dataljsvpokvh")
-            .withDisableMetricsCollection("dataygffuzhnusrfffag")
-            .withAdditionalColumns("datavifl");
+        WebSource model = new WebSource().withSourceRetryCount("dataarliig")
+            .withSourceRetryWait("datav")
+            .withMaxConcurrentConnections("datai")
+            .withDisableMetricsCollection("datajhxxxuuqcmunhfa")
+            .withAdditionalColumns("datasoj");
         model = BinaryData.fromObject(model).toObject(WebSource.class);
     }
 }

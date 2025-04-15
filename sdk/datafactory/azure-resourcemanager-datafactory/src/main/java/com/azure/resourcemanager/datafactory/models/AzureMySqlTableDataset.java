@@ -51,7 +51,7 @@ public final class AzureMySqlTableDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzureMySqlTableDatasetTypeProperties innerTypeProperties() {
+    AzureMySqlTableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

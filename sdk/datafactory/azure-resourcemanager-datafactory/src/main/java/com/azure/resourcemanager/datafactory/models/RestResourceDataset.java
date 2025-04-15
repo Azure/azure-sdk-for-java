@@ -51,7 +51,7 @@ public final class RestResourceDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private RestResourceDatasetTypeProperties innerTypeProperties() {
+    RestResourceDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

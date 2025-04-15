@@ -15,6 +15,7 @@ import com.azure.cosmos.ThrottlingRetryOptions;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
@@ -696,7 +697,7 @@ public final class ConnectionPolicy {
             ", openConnectionsConcurrency=" + openConnectionsConcurrency +
             ", aggressiveWarmupConcurrency=" + aggressiveWarmupConcurrency +
             ", http2ConnectionConfig=" + this.http2ConnectionConfig.toDiagnosticsString() +
-            ", pendingAcquireMaxCount=" + this.pendingAcquireMaxCount != null ? String.valueOf(this.pendingAcquireMaxCount) : "DEFAULT" +
+            ", pendingAcquireMaxCount=" + Objects.toString(this.pendingAcquireMaxCount,"DEFAULT") +
             '}';
     }
 }

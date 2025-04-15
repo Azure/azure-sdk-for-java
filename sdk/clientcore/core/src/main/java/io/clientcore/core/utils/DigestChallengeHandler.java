@@ -4,19 +4,24 @@
 package io.clientcore.core.utils;
 
 import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.models.binarydata.BinaryData;
 
+import java.net.URI;
 import java.security.SecureRandom;
-import java.util.HashMap;
+import java.util.AbstractMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
+import static io.clientcore.core.utils.AuthUtils.ALGORITHM;
 import static io.clientcore.core.utils.AuthUtils.DIGEST;
 import static io.clientcore.core.utils.AuthUtils.MD5;
 import static io.clientcore.core.utils.AuthUtils.SESS;
@@ -30,7 +35,6 @@ import static io.clientcore.core.utils.AuthUtils.calculateHa2AuthQopOrEmpty;
 import static io.clientcore.core.utils.AuthUtils.calculateResponseKnownQop;
 import static io.clientcore.core.utils.AuthUtils.calculateResponseUnknownQop;
 import static io.clientcore.core.utils.AuthUtils.calculateUserhash;
-import static io.clientcore.core.utils.AuthUtils.extractValue;
 import static io.clientcore.core.utils.AuthUtils.getDigestFunction;
 import static io.clientcore.core.utils.AuthUtils.partitionByChallengeType;
 
@@ -45,7 +49,6 @@ import static io.clientcore.core.utils.AuthUtils.partitionByChallengeType;
 public class DigestChallengeHandler implements ChallengeHandler {
     private final String username;
     private final String password;
-    private final Map<String, String> digestCache; // Cache for nonce, realm, etc.
     private static final String REALM = "realm";
     private static final String NONCE = "nonce";
     private static final String QOP = "qop";
@@ -76,7 +79,6 @@ public class DigestChallengeHandler implements ChallengeHandler {
     public DigestChallengeHandler(String username, String password) {
         this.username = username;
         this.password = password;
-        this.digestCache = new HashMap<>();
     }
 
     @Override
@@ -85,18 +87,12 @@ public class DigestChallengeHandler implements ChallengeHandler {
             return;
         }
 
-        HttpHeaderName authHeaderName = isProxy ? HttpHeaderName.PROXY_AUTHENTICATE : HttpHeaderName.WWW_AUTHENTICATE;
-        String authHeader = response.getHeaders() != null ? response.getHeaders().getValue(authHeaderName) : null;
-
-        if (authHeader != null && authHeader.contains(NONCE)) {
-            updateDigestCache(authHeader);
-        }
-
         // Extract the algorithm if present
         Map<String, List<Map<String, String>>> challengesByType = partitionByChallengeType(response.getHeaders());
 
         for (String algorithm : ALGORITHM_PREFERENCE_ORDER) {
-            if (!challengesByType.containsKey(algorithm.toUpperCase(Locale.ROOT))) {
+            List<Map<String, String>> challengeForType = challengesByType.get(algorithm);
+            if (CoreUtils.isNullOrEmpty(challengeForType)) {
                 continue;
             }
 
@@ -105,50 +101,116 @@ public class DigestChallengeHandler implements ChallengeHandler {
                 continue;
             }
 
+            // Arbitrarily select the first set of challenge parameters for this algorithm type.
+            // TODO (alzimmer): If there aren't features we support, such as the possibility of qop=auth-int, we'll need
+            //  to include that as part of the filtering.
+            Map<String, String> challengeParams
+                = challengeForType.stream().filter(params -> !CoreUtils.isNullOrEmpty(params)).findFirst().orElse(null);
+            if (challengeParams == null) {
+                continue;
+            }
+
             // Generate Digest Authorization header
             String digestAuthHeader = generateDigestAuthHeader(request.getHttpMethod().name(),
-                request.getUri().toString(), algorithm, digestFunction, response.getValue());
+                request.getUri().toString(), algorithm, challengeParams, digestFunction, response.getValue());
 
-            synchronized (request.getHeaders()) {
-                HttpHeaderName headerName = isProxy ? HttpHeaderName.PROXY_AUTHORIZATION : HttpHeaderName.AUTHORIZATION;
-                request.getHeaders().set(headerName, digestAuthHeader);
-            }
+            HttpHeaderName headerName = isProxy ? HttpHeaderName.PROXY_AUTHORIZATION : HttpHeaderName.AUTHORIZATION;
+            request.getHeaders().set(headerName, digestAuthHeader);
+            return;
         }
     }
 
     @Override
     public boolean canHandle(Response<BinaryData> response, boolean isProxy) {
-        if (response.getHeaders() != null) {
-            HttpHeaderName authHeaderName
-                = isProxy ? HttpHeaderName.PROXY_AUTHENTICATE : HttpHeaderName.WWW_AUTHENTICATE;
-            String authHeader = response.getHeaders().getValue(authHeaderName);
+        HttpHeaders responseHeaders = response.getHeaders();
+        if (responseHeaders == null) {
+            return false;
+        }
 
-            if (authHeader != null) {
-                // Parse the authenticate header into AuthenticateChallenges, then check if any use scheme 'Digest'.
-                List<AuthenticateChallenge> challenges = AuthUtils.parseAuthenticateHeader(authHeader);
-                for (AuthenticateChallenge challenge : challenges) {
-                    if (DIGEST.equalsIgnoreCase(challenge.getScheme())) {
-                        return true;
-                    }
+        HttpHeaderName authHeaderName = isProxy ? HttpHeaderName.PROXY_AUTHENTICATE : HttpHeaderName.WWW_AUTHENTICATE;
+        List<String> authenticateHeaders = responseHeaders.getValues(authHeaderName);
+        if (CoreUtils.isNullOrEmpty(authenticateHeaders)) {
+            return false;
+        }
+
+        for (String authenticateHeader : authenticateHeaders) {
+            for (AuthenticateChallenge challenge : AuthUtils.parseAuthenticateHeader(authenticateHeader)) {
+                if (canHandle(challenge)) {
+                    return true;
                 }
             }
         }
+
         return false;
     }
 
-    private void updateDigestCache(String authHeader) {
-        // Parse the authHeader and update the digest cache with necessary values like nonce, realm, etc.
-        String nonce = extractValue(authHeader, NONCE);
-        String realm = extractValue(authHeader, REALM);
-        String qop = extractValue(authHeader, QOP);
-        String hashUsername = extractValue(authHeader, USERHASH);
-        String opaque = extractValue(authHeader, OPAQUE);
+    @Override
+    public Map.Entry<String, AuthenticateChallenge> handleChallenge(String method, URI uri,
+        List<AuthenticateChallenge> challenges) {
+        Objects.requireNonNull(challenges, "Cannot use a null 'challenges' to handle challenges.");
+        if (!canHandle(challenges)) {
+            return null;
+        }
 
-        digestCache.put(NONCE, nonce);
-        digestCache.put(REALM, realm);
-        digestCache.put(QOP, qop);
-        digestCache.put(USERHASH, hashUsername);
-        digestCache.put(OPAQUE, opaque);
+        // Bucket the Digest AuthenticateChallenges by their 'algorithm'. We want to prefer stronger algorithms
+        // such as SHA256 over MD5.
+        // Extract the challenges from the headers, specifically the "Proxy-Authenticate" or "WWW-Authenticate" headers
+        Map<String, List<AuthenticateChallenge>> challengesByType
+            = challenges.stream().collect(Collectors.groupingBy(challenge -> {
+                String algorithmHeader = challenge.getParameters().get(ALGORITHM);
+
+                // RFC7616 specifies that if the "algorithm" header is null, it defaults to MD5.
+                return CoreUtils.isNullOrEmpty(algorithmHeader) ? MD5 : algorithmHeader.toUpperCase(Locale.ROOT);
+            }));
+
+        for (String algorithm : ALGORITHM_PREFERENCE_ORDER) {
+            List<AuthenticateChallenge> challengeForType = challengesByType.get(algorithm);
+            if (CoreUtils.isNullOrEmpty(challengeForType)) {
+                continue;
+            }
+
+            Function<byte[], byte[]> digestFunction = getDigestFunction(algorithm);
+            if (digestFunction == null) {
+                continue;
+            }
+
+            // Arbitrarily select the first set of challenge parameters for this algorithm type.
+            // TODO (alzimmer): If there aren't features we support, such as the possibility of qop=auth-int, we'll need
+            //  to include that as part of the filtering.
+            AuthenticateChallenge authenticateChallenge = challengeForType.stream()
+                .filter(challenge -> !CoreUtils.isNullOrEmpty(challenge.getParameters()))
+                .findFirst()
+                .orElse(null);
+            if (authenticateChallenge == null) {
+                continue;
+            }
+
+            // Generate Digest Authorization header
+            String path = uri.getPath();
+            if (path == null) {
+                path = "/";
+            }
+            return new AbstractMap.SimpleImmutableEntry<>(generateDigestAuthHeader(method, path, algorithm,
+                authenticateChallenge.getParameters(), digestFunction, BinaryData.empty()), authenticateChallenge);
+        }
+
+        return null;
+    }
+
+    @Override
+    public boolean canHandle(List<AuthenticateChallenge> challenges) {
+        Objects.requireNonNull(challenges, "Cannot use a null 'challenges' to determine if it can be handled.");
+        for (AuthenticateChallenge challenge : challenges) {
+            if (canHandle(challenge)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean canHandle(AuthenticateChallenge challenge) {
+        return challenge != null && DIGEST.equalsIgnoreCase(challenge.getScheme());
     }
 
     /*
@@ -161,12 +223,12 @@ public class DigestChallengeHandler implements ChallengeHandler {
     }
 
     private String generateDigestAuthHeader(String method, String uri, String algorithm,
-        Function<byte[], byte[]> digestFunction, BinaryData body) {
-        String nonce = digestCache.get(NONCE);
-        String realm = digestCache.get(REALM);
-        String qop = digestCache.get(QOP);
-        String opaque = digestCache.get(OPAQUE);
-        boolean hashUsername = Boolean.parseBoolean(digestCache.get(USERHASH));
+        Map<String, String> challengeParams, Function<byte[], byte[]> digestFunction, BinaryData body) {
+        String nonce = challengeParams.get(NONCE);
+        String realm = challengeParams.get(REALM);
+        String qop = challengeParams.get(QOP);
+        String opaque = challengeParams.get(OPAQUE);
+        boolean hashUsername = Boolean.parseBoolean(challengeParams.get(USERHASH));
         /*
          * If the algorithm being used is <algorithm>-sess or QOP is 'auth' or 'auth-int' a client nonce will be needed
          * to calculate the authorization header. If the QOP is set a nonce-count will need to retrieved.

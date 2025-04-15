@@ -42,7 +42,9 @@ public class KeyVaultCertificateWithPolicy extends KeyVaultCertificate {
 
     KeyVaultCertificateWithPolicy(byte[] cer, String kid, String sid, CertificateProperties properties,
         CertificatePolicy policy) {
+
         super(cer, kid, sid, properties);
+
         this.policy = policy;
     }
 
@@ -101,6 +103,7 @@ public class KeyVaultCertificateWithPolicy extends KeyVaultCertificate {
             String keyId = null;
             String secretId = null;
             CertificatePolicy policy = null;
+            boolean certificateOrderPreserved = false;
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -122,13 +125,16 @@ public class KeyVaultCertificateWithPolicy extends KeyVaultCertificate {
                     secretId = reader.getString();
                 } else if ("policy".equals(fieldName)) {
                     policy = CertificatePolicy.fromJson(reader);
+                } else if ("preserveCertOrder".equals(fieldName)) {
+                    certificateOrderPreserved = reader.getBoolean();
                 } else {
                     reader.skipChildren();
                 }
             }
 
             return new KeyVaultCertificateWithPolicy(cer, keyId, secretId,
-                new CertificateProperties(id, attributes, tags, wireThumbprint, null), policy);
+                new CertificateProperties(id, attributes, tags, wireThumbprint, null, certificateOrderPreserved),
+                policy);
         });
     }
 }
