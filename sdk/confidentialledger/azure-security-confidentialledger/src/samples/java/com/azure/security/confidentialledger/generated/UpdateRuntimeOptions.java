@@ -19,11 +19,11 @@ public class UpdateRuntimeOptions {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.security.confidentialledger.generated.updateruntimeoptions.updateruntimeoptions
-        BinaryData JSRuntimeOptions
+        BinaryData jSRuntimeOptions
             = BinaryData.fromString("logExceptionDetails");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response
-            = confidentialLedgerClient.updateRuntimeOptionsWithResponse(JSRuntimeOptions, requestOptions);
+            = confidentialLedgerClient.updateRuntimeOptionsWithResponse(jSRuntimeOptions, requestOptions);
         // END:com.azure.security.confidentialledger.generated.updateruntimeoptions.updateruntimeoptions
     }
 }
