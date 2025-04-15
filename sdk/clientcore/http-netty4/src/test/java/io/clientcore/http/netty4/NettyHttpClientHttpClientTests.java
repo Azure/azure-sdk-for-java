@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -54,22 +53,22 @@ public class NettyHttpClientHttpClientTests extends HttpClientTests {
 
     @Disabled("Need to implement server sent event support in NettyHttpClient")
     @Test
-    public void canReceiveServerSentEvents() throws IOException {
+    public void canReceiveServerSentEvents() {
     }
 
     @Disabled("Need to implement server sent event support in NettyHttpClient")
     @Test
-    public void canRecognizeServerSentEvent() throws IOException {
+    public void canRecognizeServerSentEvent() {
     }
 
     @Disabled("Need to implement server sent event support in NettyHttpClient")
     @Test
-    public void onErrorServerSentEvents() throws IOException {
+    public void onErrorServerSentEvents() {
     }
 
     @Disabled("Need to implement server sent event support in NettyHttpClient")
     @Test
-    public void onRetryWithLastEventIdReceiveServerSentEvents() throws IOException {
+    public void onRetryWithLastEventIdReceiveServerSentEvents() {
     }
 
     @Disabled("Need to implement server sent event support in NettyHttpClient")

@@ -3,6 +3,7 @@
 package io.clientcore.http.netty4.implementation;
 
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.json.JsonWriter;
@@ -71,8 +72,12 @@ final class Netty4ChannelBinaryData extends BinaryData {
     }
 
     @Override
-    public <T> T toObject(Type type, ObjectSerializer serializer) throws IOException {
-        return serializer.deserializeFromBytes(toBytes(), type);
+    public <T> T toObject(Type type, ObjectSerializer serializer) {
+        try {
+            return serializer.deserializeFromBytes(toBytes(), type);
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(CoreException.from(e));
+        }
     }
 
     @Override
@@ -83,10 +88,14 @@ final class Netty4ChannelBinaryData extends BinaryData {
     }
 
     @Override
-    public void writeTo(JsonWriter jsonWriter) throws IOException {
+    public void writeTo(JsonWriter jsonWriter) {
         Objects.requireNonNull(jsonWriter, "'jsonWriter' cannot be null");
 
-        jsonWriter.writeBinary(toBytes());
+        try {
+            jsonWriter.writeBinary(toBytes());
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(CoreException.from(e));
+        }
     }
 
     @Override
@@ -110,7 +119,7 @@ final class Netty4ChannelBinaryData extends BinaryData {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         channel.close();
     }
 }

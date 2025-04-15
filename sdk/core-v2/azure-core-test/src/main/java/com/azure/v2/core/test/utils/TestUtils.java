@@ -12,7 +12,6 @@ import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.UriBuilder;
 import org.junit.jupiter.api.Assertions;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -245,7 +244,7 @@ public final class TestUtils {
         }
 
         @Override
-        public Response<BinaryData> send(HttpRequest request) throws IOException {
+        public Response<BinaryData> send(HttpRequest request) {
             URI originalUri = request.getUri();
             request.getHeaders().set(UPSTREAM_URI_HEADER, originalUri.toString());
             request.setUri(rewriteUri(originalUri));
