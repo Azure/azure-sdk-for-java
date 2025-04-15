@@ -6,22 +6,23 @@ package com.azure.resourcemanager.durabletask.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.durabletask.DurableTaskManager;
-import com.azure.resourcemanager.durabletask.models.TaskHub;
+import com.azure.resourcemanager.durabletask.models.PurgeableOrchestrationState;
+import com.azure.resourcemanager.durabletask.models.RetentionPolicy;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class TaskHubsListBySchedulerMockTests {
+public final class RetentionPoliciesGetWithResponseMockTests {
     @Test
-    public void testListByScheduler() throws Exception {
+    public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"dashboardUrl\":\"eyyvxyqjpkcat\"},\"id\":\"ngj\",\"name\":\"rcczsqpjhvmd\",\"type\":\"jvnysounqe\"}]}";
+            = "{\"properties\":{\"provisioningState\":\"Deleting\",\"retentionPolicies\":[{\"retentionPeriodInDays\":1829419035,\"orchestrationState\":\"Completed\"}]},\"id\":\"ulexxbczwtr\",\"name\":\"wiqzbqjvsovmyo\",\"type\":\"acspkwl\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +31,12 @@ public final class TaskHubsListBySchedulerMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<TaskHub> response
-            = manager.taskHubs().listByScheduler("tehfiqscjeypvh", "zrkgqhcjrefovg", com.azure.core.util.Context.NONE);
+        RetentionPolicy response = manager.retentionPolicies()
+            .getWithResponse("poczvyifqrvkdvjs", "lrmv", com.azure.core.util.Context.NONE)
+            .getValue();
 
+        Assertions.assertEquals(1829419035, response.properties().retentionPolicies().get(0).retentionPeriodInDays());
+        Assertions.assertEquals(PurgeableOrchestrationState.COMPLETED,
+            response.properties().retentionPolicies().get(0).orchestrationState());
     }
 }
