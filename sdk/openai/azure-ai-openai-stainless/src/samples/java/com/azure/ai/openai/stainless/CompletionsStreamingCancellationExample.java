@@ -42,17 +42,12 @@ public final class CompletionsStreamingCancellationExample {
                 .build();
 
         try (StreamResponse<ChatCompletionChunk> streamResponse =
-                client.chat().completions().createStreaming(createParams)) {
+                 client.chat().completions().createStreaming(createParams)) {
             streamResponse.stream()
-                    .flatMap(completion -> completion.choices().stream())
-                    .flatMap(choice -> choice.delta().content().stream())
-                    .forEach(text -> {
-                        System.out.print(text);
-                        if (text.contains("SDK")) {
-                            // Close the stream early.
-                            streamResponse.close();
-                        }
-                    });
+                .flatMap(completion -> completion.choices().stream())
+                .flatMap(choice -> choice.delta().content().stream())
+                .takeWhile(text -> !text.contains("SDK")) // Stop processing when "SDK" is found
+                .forEach(System.out::print);
         }
     }
 }

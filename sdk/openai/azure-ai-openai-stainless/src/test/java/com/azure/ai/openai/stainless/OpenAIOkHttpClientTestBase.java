@@ -415,6 +415,7 @@ public class OpenAIOkHttpClientTestBase {
         assertFilterResult(contentFilterResult, "violence", false, "safe");
     }
 
+    @SuppressWarnings("unchecked")
     void assertFilterResult(Map<String, JsonValue> contentFilterResult, String filterName, boolean expectedFiltered,
         String expectedSeverity) {
             Map<String, JsonValue> filterMap = (Map<String, JsonValue>)
@@ -450,6 +451,7 @@ public class OpenAIOkHttpClientTestBase {
             || response.contains("I cannot assist with that."));
     }
 
+    @SuppressWarnings("unchecked")
     void assertPromptAndContentFilterResults(ChatCompletion chatCompletion) {
                 ChatCompletion.Choice choice = chatCompletion.choices().get(0);
                 JsonValue promptFilterResults = chatCompletion._additionalProperties().get("prompt_filter_results");
@@ -479,6 +481,7 @@ public class OpenAIOkHttpClientTestBase {
                 assertContentFilterResultAllSafe(contentFilterResultsMapInChoice);
     }
 
+    @SuppressWarnings("unchecked")
     void assertChatCompletionByod(ChatCompletion chatCompletion) {
         assertNotNull(chatCompletion.id());
         assertEquals("extensions.chat.completion", chatCompletion._object_().toString());
@@ -507,6 +510,7 @@ public class OpenAIOkHttpClientTestBase {
         assertTrue(((List<JsonValue>) context.get("citations").asArray().get()).size() > 0);
     }
 
+    @SuppressWarnings("unchecked")
     void assertRaiContentFilter(BadRequestException e) {
         JsonValue errorDetails = e.body();
         assertNotNull(errorDetails);
