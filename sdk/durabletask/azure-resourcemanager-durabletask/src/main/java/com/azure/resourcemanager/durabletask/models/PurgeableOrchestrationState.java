@@ -27,7 +27,7 @@ public final class PurgeableOrchestrationState extends ExpandableStringEnum<Purg
     public static final PurgeableOrchestrationState TERMINATED = fromString("Terminated");
 
     /**
-     * The orchestration is terminated.
+     * The orchestration is canceled.
      */
     public static final PurgeableOrchestrationState CANCELED = fromString("Canceled");
 
