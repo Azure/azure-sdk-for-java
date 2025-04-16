@@ -36,7 +36,7 @@ import java.util.Objects;
  */
 public final class EventDataBatch {
     static final EventDataBatch EMPTY
-        = new EventDataBatch(0, null, null, null, EventHubsProducerInstrumentation.NOP_INSTANCE);
+        = new EventDataBatch(0, null, null, null, EventHubsProducerInstrumentation.NOOP_INSTANCE);
     private static final ClientLogger LOGGER = new ClientLogger(EventDataBatch.class);
     private final int maxMessageSize;
     private final String partitionKey;

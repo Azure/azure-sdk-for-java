@@ -232,7 +232,7 @@ public class EventDataAggregatorTest {
 
         // Act & Assert
         StepVerifier.create(aggregator).then(() -> {
-            publisher.next(event1, event2, new FlushSignal(new NopMonoSink()));
+            publisher.next(event1, event2, new FlushSignal(new NoopMonoSink()));
         }).expectNext(batch).thenCancel().verify(Duration.ofSeconds(10));
 
         // Verify that exactly two expected events were added to the batch.
@@ -347,7 +347,7 @@ public class EventDataAggregatorTest {
         when(batch.getCount()).thenAnswer(invocation -> resultSet.size());
     }
 
-    static final class NopMonoSink implements MonoSink<Void> {
+    static final class NoopMonoSink implements MonoSink<Void> {
         @Override
         public void success() {
         }
