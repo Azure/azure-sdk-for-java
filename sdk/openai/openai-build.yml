@@ -65,7 +65,7 @@ steps:
       tasks: clean build -x test -x dokkaJavadoc "-Dmaven.repo.local=$env:PIPELINE_WORKSPACE/.m2/repository" publishToMavenLocal
       jdkVersionOption: '1.11'
     displayName: Build the project and publish to the local Maven repository
-    workingDirectory: $(Agent.TempDirectory)/openai-java
+    workingDirectory: '$(Agent.TempDirectory)/openai-java'
 
   - pwsh: |
       # Define the path to the external_dependencies.txt file
