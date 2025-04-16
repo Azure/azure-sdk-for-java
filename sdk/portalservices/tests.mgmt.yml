@@ -1,0 +1,15 @@
+trigger: none
+
+pr: none
+
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+  parameters:
+    ServiceDirectory: portalservices
+    Artifacts:
+      - name: azure-resourcemanager-portalservicescopilot
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerportalservicescopilot
+    # Only run tests on Windows to save cost.
+    MatrixFilters:
+      - pool=.*(win).*
