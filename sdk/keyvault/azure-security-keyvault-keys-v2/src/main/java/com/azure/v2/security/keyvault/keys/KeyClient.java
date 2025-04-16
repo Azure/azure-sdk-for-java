@@ -7,7 +7,10 @@ import com.azure.v2.core.http.polling.LongRunningOperationStatus;
 import com.azure.v2.core.http.polling.PollResponse;
 import com.azure.v2.core.http.polling.Poller;
 import com.azure.v2.core.http.polling.PollingContext;
+import com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient;
+import com.azure.v2.security.keyvault.keys.cryptography.CryptographyClientBuilder;
 import com.azure.v2.security.keyvault.keys.implementation.KeyClientImpl;
+import com.azure.v2.security.keyvault.keys.implementation.KeyVaultKeysUtils;
 import com.azure.v2.security.keyvault.keys.implementation.models.BackupKeyResult;
 import com.azure.v2.security.keyvault.keys.implementation.models.GetRandomBytesRequest;
 import com.azure.v2.security.keyvault.keys.implementation.models.KeyCreateParameters;
@@ -131,7 +134,7 @@ public final class KeyClient {
     private final KeyClientImpl clientImpl;
 
     /**
-     * Creates an instance of {@link KeyClient} that sends requests to the given endpoint.
+     * Creates an instance of {@link KeyClient}.
      *
      * @param clientImpl The implementation client.
      */
@@ -143,9 +146,9 @@ public final class KeyClient {
      * Creates a {@link CryptographyClient} for the latest version of a given key.
      *
      * <p>To ensure correct behavior when performing operations such as {@code Decrypt}, {@code Unwrap} and
-     * {@code Verify}, it is recommended to use a {@link CryptographyClient} created for the specific key
-     * version that was used for the corresponding inverse operation: {@code Encrypt}, {@code Wrap}, or
-     * {@code Sign}, respectively.</p>
+     * {@code Verify}, it is recommended to use a {@link CryptographyClient} created for the specific key version that
+     * was used for the corresponding inverse operation: {@code Encrypt}, {@code Wrap}, or {@code Sign}, respectively.
+     * </p>
      *
      * <p>You can provide a key version either via {@link KeyClient#getCryptographyClient(String, String)} or by
      * ensuring it is included in the {@code keyIdentifier} passed to
@@ -155,11 +158,11 @@ public final class KeyClient {
      * @return An instance of {@link CryptographyClient} associated with the latest version of a key with the
      * provided name.
      *
-     * @throws IllegalArgumentException If the provided {@code keyName} is {@code null} or empty.
+     * @throws IllegalArgumentException If the provided {@code keyName} is {@code null} or an empty string.
      */
-    /*public CryptographyClient getCryptographyClient(String keyName) {
+    public CryptographyClient getCryptographyClient(String keyName) {
         return getCryptographyClient(keyName, null);
-    }*/
+    }
 
     /**
      * Creates a {@link CryptographyClient} for a given key version.
@@ -167,15 +170,18 @@ public final class KeyClient {
      * @param keyName The name of the key.
      * @param keyVersion The key version.
      * @return An instance of {@link CryptographyClient} associated with a key with the provided name and version.
-     * If {@code keyVersion} is {@code null} or empty, the client will use the latest version of the key.
+     * If {@code keyVersion} is {@code null} or an empty string, the client will use the latest version of the key.
      *
-     * @throws IllegalArgumentException If the provided {@code keyName} is {@code null} or empty.
+     * @throws IllegalArgumentException If the provided {@code keyName} is {@code null} or an empty string.
      */
-    /*public CryptographyClient getCryptographyClient(String keyName, String keyVersion) {
-        return KeyVaultKeysUtils
-            .getCryptographyClientBuilder(keyName, keyVersion, endpoint, getHttpPipeline(), serviceVersion)
-            .buildClient();
-    }*/
+    public CryptographyClient getCryptographyClient(String keyName, String keyVersion) {
+        if (isNullOrEmpty(keyName)) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'keyName' cannot be null or empty."));
+        }
+
+        return KeyVaultKeysUtils.getCryptographyClientBuilder(keyName, keyVersion, clientImpl.getVaultBaseUrl(),
+            clientImpl.getHttpPipeline(), clientImpl.getServiceVersion()).buildClient();
+    }
 
     /**
      * Creates a new key and stores it in the key vault. The create key operation can be used to create any key type in
