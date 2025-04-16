@@ -19,6 +19,7 @@ import com.azure.ai.openai.models.ChatCompletionsFunctionToolCall;
 import com.azure.ai.openai.models.ChatCompletionsFunctionToolSelection;
 import com.azure.ai.openai.models.ChatCompletionsNamedFunctionToolSelection;
 import com.azure.ai.openai.models.ChatCompletionsOptions;
+import com.azure.ai.openai.models.ChatCompletionStreamOptions;
 import com.azure.ai.openai.models.ChatCompletionsToolCall;
 import com.azure.ai.openai.models.ChatCompletionsToolSelection;
 import com.azure.ai.openai.models.ChatCompletionsToolSelectionPreset;
@@ -52,6 +53,7 @@ import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -1795,5 +1797,31 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
         assertInstanceOf(HttpResponseException.class, exception);
         assertEquals(400, exception.getResponse().getStatusCode());
         assertNotNull(exception.getMessage());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetCompletionsStreamEmitsValues(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+
+        getCompletionsRunnerForNonAzure((deploymentId, prompt) -> {
+            IterableStream<Completions> completionsList = client.getCompletionsStream(deploymentId,
+                new CompletionsOptions(prompt), new ChatCompletionStreamOptions());
+
+            completionsList.forEach(Assertions::assertNotNull);
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsEmitsValues(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+
+        getChatCompletionsRunnerForNonAzure((deploymentId, prompt) -> {
+            IterableStream<ChatCompletions> chatCompletionsList = client.getChatCompletionsStream(deploymentId,
+                new ChatCompletionsOptions(prompt), new ChatCompletionStreamOptions());
+
+            chatCompletionsList.forEach(Assertions::assertNotNull);
+        });
     }
 }

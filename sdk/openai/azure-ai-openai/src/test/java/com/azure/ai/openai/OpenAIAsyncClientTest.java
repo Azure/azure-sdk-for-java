@@ -30,6 +30,7 @@ import com.azure.ai.openai.models.CompleteUploadRequest;
 import com.azure.ai.openai.models.Completions;
 import com.azure.ai.openai.models.CompletionsFinishReason;
 import com.azure.ai.openai.models.CompletionsOptions;
+import com.azure.ai.openai.models.ChatCompletionStreamOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.FileDeletionStatus;
@@ -2321,6 +2322,34 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
             HttpResponseException httpResponseException = (HttpResponseException) error;
             assertEquals(400, httpResponseException.getResponse().getStatusCode());
             assertNotNull(httpResponseException.getMessage());
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetCompletionsStreamEmitsValues(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+
+        getCompletionsRunner((deploymentId, prompt) -> {
+            StepVerifier.create(client.getCompletionsStream(deploymentId, new CompletionsOptions(prompt),
+                new ChatCompletionStreamOptions())).recordWith(ArrayList::new).thenConsumeWhile(completion -> {
+                    assertNotNull(completion);
+                    return true;
+                }).consumeRecordedWith(messageList -> assertFalse(messageList.isEmpty())).verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsStreamEmitsValues(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+
+        getChatCompletionsRunner((deploymentId, prompt) -> {
+            StepVerifier.create(client.getChatCompletionsStream(deploymentId, new ChatCompletionsOptions(prompt),
+                new ChatCompletionStreamOptions())).recordWith(ArrayList::new).thenConsumeWhile(chatCompletion -> {
+                    assertNotNull(chatCompletion);
+                    return true;
+                }).consumeRecordedWith(messageList -> assertFalse(messageList.isEmpty())).verifyComplete();
         });
     }
 }
