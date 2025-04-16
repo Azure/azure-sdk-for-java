@@ -206,7 +206,6 @@ public final class Netty4ChannelInputStream extends InputStream {
             channel.read();
 
             Netty4Utility.awaitLatch(latch);
-            channel.pipeline().remove(handler);
 
             // Check to see if we've reach the end of the Channel.
             channelDone = handler.isChannelConsumed();
