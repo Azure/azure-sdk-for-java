@@ -61,7 +61,7 @@ dependency to your project as follows.
 <dependency>
     <groupId>com.azure.v2</groupId>
     <artifactId>azure-security-keyvault-secrets</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>5.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
