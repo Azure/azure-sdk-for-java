@@ -1,9 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.v2.security.keyvault.keys.implementation;
 
+import com.azure.v2.security.keyvault.keys.KeyServiceVersion;
+import com.azure.v2.security.keyvault.keys.cryptography.CryptographyClientBuilder;
+import com.azure.v2.security.keyvault.keys.cryptography.CryptographyServiceVersion;
 import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonReader;
 
@@ -26,29 +31,26 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 public final class KeyVaultKeysUtils {
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultKeysUtils.class);
 
-    public static final RequestOptions EMPTY_OPTIONS = new RequestOptions();
-
     /**
      * Creates a {@link CryptographyClientBuilder} based on the values passed from a Keys service client.
      *
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
-     * @param vaultUrl The URL of the KeyVault.
-     * @param httpPipeline The HttpPipeline to use for the CryptographyClient.
-     * @param serviceVersion The KeyServiceVersion of the service.
+     * @param endpoint The endpoint of the key vault or managed HSM.
+     * @param httpPipeline The HTTP pipeline to use.
+     * @param serviceVersion The version of the service.
      * @return A new {@link CryptographyClientBuilder} with the values passed from a Keys service client.
-     * @throws IllegalArgumentException If {@code keyName} is null or empty.
+     *
+     * @throws IllegalArgumentException If {@code keyName} is {@code null} or an empty string.
      */
-    /*public static CryptographyClientBuilder getCryptographyClientBuilder(String keyName, String keyVersion,
-        String vaultUrl, HttpPipeline httpPipeline, KeyServiceVersion serviceVersion) {
-        if (CoreUtils.isNullOrEmpty(keyName)) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("'keyName' cannot be null or empty."));
-        }
+    public static CryptographyClientBuilder getCryptographyClientBuilder(String keyName, String keyVersion,
+        String endpoint, HttpPipeline httpPipeline, KeyServiceVersion serviceVersion) {
 
-        return new CryptographyClientBuilder().keyIdentifier(generateKeyId(keyName, keyVersion, vaultUrl))
-            .pipeline(httpPipeline)
+        return new CryptographyClientBuilder()
+            .keyIdentifier(generateKeyId(keyName, keyVersion, endpoint))
+            .httpPipeline(httpPipeline)
             .serviceVersion(CryptographyServiceVersion.valueOf(serviceVersion.name()));
-    }*/
+    }
 
     /**
      * Generates a KeyVault Key ID from the name and version of the key and the KeyVault URL.
@@ -134,8 +136,8 @@ public final class KeyVaultKeysUtils {
 
     /**
      * Base64 URL encodes the binary value.
-     * <p>
-     * Returns null if the {@code value} is null, returns an empty string if the {@code value} is empty.
+     *
+     * <p>Returns null if the {@code value} is null, returns an empty string if the {@code value} is empty.</p>
      *
      * @param value The binary value to base64 URL encode.
      * @return The base64 URL encoded value.

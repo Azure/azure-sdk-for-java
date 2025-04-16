@@ -1,15 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.v2.security.keyvault.keys;
+package com.azure.v2.security.keyvault.keys.cryptography;
 
 import com.azure.v2.core.credentials.TokenCredential;
 import com.azure.v2.core.traits.TokenCredentialTrait;
-import com.azure.v2.security.keyvault.keys.implementation.KeyClientImpl;
+import com.azure.v2.security.keyvault.keys.cryptography.implementation.CryptographyClientImpl;
 import com.azure.v2.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
-import com.azure.v2.security.keyvault.keys.models.DeletedKey;
-import com.azure.v2.security.keyvault.keys.models.KeyVaultKey;
-import com.azure.v2.security.keyvault.keys.models.KeyVaultKeyIdentifier;
+import com.azure.v2.security.keyvault.keys.models.JsonWebKey;
 import io.clientcore.core.annotations.ServiceClientBuilder;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
@@ -23,14 +21,9 @@ import io.clientcore.core.http.pipeline.HttpRetryOptions;
 import io.clientcore.core.http.pipeline.HttpRetryPolicy;
 import io.clientcore.core.http.pipeline.UserAgentPolicy;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.traits.ConfigurationTrait;
-import io.clientcore.core.traits.EndpointTrait;
 import io.clientcore.core.traits.HttpTrait;
 import io.clientcore.core.utils.CoreUtils;
-import io.clientcore.core.utils.configuration.Configuration;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -39,34 +32,48 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of the
- * {@link KeyClient key client}, by calling {@link KeyClientBuilder#buildClient() buildClient}. It constructs an
- * instance of the desired client.
+ * {@link CryptographyClient} by calling {@link CryptographyClientBuilder#buildClient()}. It constructs an instance of
+ * the desired client.
  *
- * <p>The {@link KeyClient} provides methods to manage {@link KeyVaultKey keys} in Azure Key Vault or Managed HSM. The
- * client supports creating, retrieving, updating, deleting, purging, backing up, restoring, listing, releasing and
- * rotating the {@link KeyVaultKey keys}. The client also supports listing {@link DeletedKey deleted keys} for a
- * soft-delete enabled key vault or managed HSM.
+ * <p>The {@link CryptographyClient} provides methods to perform cryptographic operations using asymmetric and symmetric
+ * keys. The client supports encrypt, decrypt, wrap key, unwrap key, sign and verify operations using the configured
+ * key.</p>
  *
- * <p>The minimal configuration options required by {@link KeyClientBuilder} to build a {@link KeyClient} are an
- * {@link String endpoint} and {@link TokenCredential credential}.</p>
+ * <p>The minimal configuration options required by {@link CryptographyClientBuilder} to build a
+ * {@link CryptographyClient} are a {@link TokenCredential credential} and either a {@link JsonWebKey JSON Web Key} or
+ * an {@code Azure Key Vault key identifier}.</p>
  *
- * <!-- src_embed com.v2.azure.security.keyvault.keys.KeyClient.instantiation -->
- * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.instantiation -->
+ * <!-- src_embed com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.instantiation -->
+ * <!-- end com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.instantiation -->
+ *
+ * <!-- src_embed com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.withJsonWebKey.instantiation -->
+ * <!-- end com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.withJsonWebKey.instantiation -->
+ *
+ * <p>When a {@link CryptographyClient} gets created using a {@code Azure Key Vault key identifier}, the first time a
+ * cryptographic operation is attempted, the client will attempt to retrieve the key material from the service, cache
+ * it, and perform all future cryptographic operations locally, deferring to the service when that's not possible. If
+ * key retrieval and caching fails because of a non-retryable error, the client will not make any further attempts and
+ * will fall back to performing all cryptographic operations on the service side. Conversely, when a
+ * {@link CryptographyClient} gets created using a {@link JsonWebKey JSON Web Key}, all cryptographic operations will be
+ * performed locally.</p>
+ *
+ * <p>To ensure correct behavior when performing operations such as {@code Decrypt}, {@code Unwrap} and
+ * {@code Verify}, it is recommended to use a {@link CryptographyClient} created for the specific key version that was
+ * used for the corresponding inverse operation: {@code Encrypt}, {@code Wrap}, or {@code Sign}, respectively.</p>
  *
  * <p>The {@link HttpInstrumentationOptions.HttpLogLevel log level}, multiple custom {@link HttpPipelinePolicy policies}
- * and custom {@link HttpClient HTTP client} can be optionally configured in the {@link KeyClientBuilder}.</p>
+ * and custom {@link HttpClient HTTP client} can be optionally configured in the {@link CryptographyClientBuilder}.</p>
  *
- * <!-- src_embed com.azure.v2.security.keyvault.keys.KeyClient.instantiation.withHttpClient -->
- * <!-- end com.azure.v2.security.keyvault.keys.KeyClient.instantiation.withHttpClient -->
+ * <!-- src_embed com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.withHttpClient.instantiation -->
+ * <!-- end com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.withHttpClient.instantiation -->
  *
- * @see KeyClient
+ * @see CryptographyClient
  */
-@ServiceClientBuilder(serviceClients = KeyClient.class)
-public final class KeyClientBuilder
-    implements ConfigurationTrait<KeyClientBuilder>, EndpointTrait<KeyClientBuilder>, HttpTrait<KeyClientBuilder>,
-    TokenCredentialTrait<KeyClientBuilder> {
+@ServiceClientBuilder(serviceClients = CryptographyClient.class)
+public final class CryptographyClientBuilder
+    implements HttpTrait<CryptographyClientBuilder>, TokenCredentialTrait<CryptographyClientBuilder> {
 
-    private static final ClientLogger LOGGER = new ClientLogger(KeyClientBuilder.class);
+    private static final ClientLogger LOGGER = new ClientLogger(CryptographyClientBuilder.class);
     // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
     // for more information on Azure resource provider namespaces.
     // TODO (vcolin7): Figure out where to set when the tracing namespace.
@@ -80,64 +87,78 @@ public final class KeyClientBuilder
         CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
     }
 
+
     private final List<HttpPipelinePolicy> pipelinePolicies;
+
     private TokenCredential credential;
     private HttpPipeline pipeline;
-    private String endpoint;
     private HttpClient httpClient;
     private HttpInstrumentationOptions instrumentationOptions;
     private HttpRedirectOptions redirectOptions;
     private HttpRetryOptions retryOptions;
-    private Configuration configuration;
-    private KeyServiceVersion version;
+    private CryptographyServiceVersion version;
+    private JsonWebKey jsonWebKey;
+    private String keyId;
     private boolean disableChallengeResourceVerification = false;
+    private boolean isKeyCachingDisabled = false;
 
     /**
-     * Creates a {@link KeyClientBuilder} that is used to configure and create {@link KeyClient} instances.
+     * Creates a {@link CryptographyClientBuilder} that is used to configure and create {@link CryptographyClient}
+     * instances.
      */
-    public KeyClientBuilder() {
+    public CryptographyClientBuilder() {
         pipelinePolicies = new ArrayList<>();
     }
 
     /**
-     * Creates a {@link KeyClient} based on options set in the builder. Every time {@code buildClient()} is called, a
-     * new instance of {@link KeyClient} is created.
+     * Creates a {@link CryptographyClient} based on options set in the builder. Every time {@code buildClient()} is
+     * called, a new instance of {@link CryptographyClient} is created.
      *
-     * <p>If a {@link KeyClientBuilder#httpPipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
-     * {@link KeyClientBuilder#endpoint(String) endpoint} are used to create the {@link KeyClientBuilder client}. All
-     * other builder settings are ignored. If a {@code pipeline} is not set, then a
-     * {@link KeyClientBuilder#credential(TokenCredential) credential} and
-     * {@link KeyClientBuilder#endpoint(String) endpoint} are required to build the {@link KeyClient client}.</p>
+     * <p>If a {@link CryptographyClientBuilder#jsonWebKey(JsonWebKey) jsonWebKey} is set, then all other builder
+     * settings are ignored.</p>
      *
-     * @return A {@link KeyClient} based on the options set in this builder.
+     * <p>If a {@link CryptographyClientBuilder#httpPipeline(HttpPipeline)} (HttpPipeline) pipeline} is set, then the
+     * {@code pipeline} and {@link CryptographyClientBuilder#keyIdentifier(String) key identifier} are used to create
+     * the {@link CryptographyClient client}. All other builder settings are ignored. If a {@code pipeline} is not set,
+     * then a {@link CryptographyClientBuilder#credential(TokenCredential) credential} and
+     * {@link CryptographyClientBuilder#keyIdentifier(String) key identifier} are required to build the
+     * {@link CryptographyClient client}.</p>
      *
-     * @throws IllegalStateException If an {@link KeyClientBuilder#endpoint(String) endpoint} has not been set or if
-     * either of a {@link KeyClientBuilder#credential(TokenCredential) credential} or
-     * {@link KeyClientBuilder#httpPipeline(HttpPipeline) pipeline} were not provided.
+     * @return A {@link CryptographyClient} based on the options set in this builder.
+     *
+     * @throws IllegalStateException If a {@link CryptographyClientBuilder#keyIdentifier(String) key identifier} has not
+     * been set or if either of a {@link CryptographyClientBuilder#credential(TokenCredential) credential} or
+     * {@link CryptographyClientBuilder#httpPipeline(HttpPipeline) pipeline} were not provided.
      */
-    public KeyClient buildClient() {
-        Configuration configuration = this.configuration == null
-            ? Configuration.getGlobalConfiguration()
-            : this.configuration;
+    public CryptographyClient buildClient() {
+        if (jsonWebKey != null) {
+            if (isKeyCachingDisabled) {
+                throw LOGGER.logThrowableAsError(
+                    new IllegalStateException("Key caching cannot be disabled when using a JSON Web Key."));
+            }
 
-        String endpoint = getEndpoint(configuration);
-
-        if (endpoint == null) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException(
-                "An Azure Key Vault or Managed HSM endpoint is required. You can set one by using the"
-                    + " KeyClientBuilder.endpoint() method or by setting the environment variable"
-                    + " 'AZURE_KEYVAULT_ENDPOINT'."));
+            return new CryptographyClient(jsonWebKey);
         }
 
-        KeyServiceVersion version = this.version == null ? KeyServiceVersion.getLatest() : this.version;
+        if (isNullOrEmpty(keyId)) {
+            throw LOGGER.logThrowableAsError(new IllegalStateException(
+                "An Azure Key Vault or Managed HSM key identifier is required to build the cryptography client if a"
+                    + " JSON Web Key is not provided."));
+        }
+
+        CryptographyServiceVersion serviceVersion = version != null
+            ? version
+            : CryptographyServiceVersion.getLatest();
 
         if (pipeline != null) {
-            return new KeyClient(new KeyClientImpl(pipeline, endpoint, version));
+            return new CryptographyClient(new CryptographyClientImpl(keyId, pipeline, serviceVersion),
+                isKeyCachingDisabled);
         }
 
         if (credential == null) {
             throw LOGGER.logThrowableAsError(new IllegalStateException(
-                "A credential object is required. You can set one by using the KeyClientBuilder.credential() method."));
+                "A credential object is required. You can set one by using the"
+                    + " CryptographyClientBuilder.credential() method."));
         }
 
         // Closest to API goes first, closest to wire goes last.
@@ -164,34 +185,43 @@ public final class KeyClientBuilder
 
         HttpPipeline builtPipeline = httpPipelineBuilder.httpClient(httpClient).build();
 
-        return new KeyClient(new KeyClientImpl(builtPipeline, endpoint, version));
+        return new CryptographyClient(new CryptographyClientImpl(keyId, builtPipeline, serviceVersion),
+            isKeyCachingDisabled);
+    }
+
+    TokenCredential getCredential() {
+        return credential;
+    }
+
+    HttpPipeline getPipeline() {
+        return pipeline;
+    }
+
+    CryptographyServiceVersion getServiceVersion() {
+        return version;
     }
 
     /**
-     * Sets the vault endpoint URL to send HTTP requests to. You should validate that this URL references a valid Key
-     * Vault resource. Refer to the following <a href=https://aka.ms/azsdk/blog/vault-uri>documentation</a> for details.
+     * Sets the Azure Key Vault or Managed HSM  key identifier of the JSON Web Key to be used for cryptography
+     * operations. You should validate that this URL references a valid Key Vault or Managed HSM resource. Refer to the
+     * following <a href=https://aka.ms/azsdk/blog/vault-uri>documentation</a> for details.
      *
-     * @param endpoint The endpoint is used as destination on Azure to send requests to. If you have a key identifier,
-     * create a new {@link KeyVaultKeyIdentifier} to parse it and obtain the {@code endpoint} and other information
-     * via {@link KeyVaultKeyIdentifier#getEndpoint()}.
-     * @return The updated {@link KeyClientBuilder} object.
+     * <p>To ensure correct behavior when performing operations such as {@code Decrypt}, {@code Unwrap} and
+     * {@code Verify}, it is recommended to use a {@link CryptographyClient} created for the specific key version that
+     * was used for the corresponding inverse operation: {@code Encrypt} {@code Wrap}, or {@code Sign}, respectively.
+     * </p>
      *
-     * @throws IllegalArgumentException If {@code endpoint} isn't a valid URI.
-     * @throws NullPointerException If {@code endpoint} is {@code null}.
+     * @param keyId The Azure Key Vault key identifier of the JSON Web Key stored in the key vault.
+     * @return The updated {@link CryptographyClientBuilder} object.
+     *
+     * @throws IllegalArgumentException If {@code keyId} is {@code null}.
      */
-    @Override
-    public KeyClientBuilder endpoint(String endpoint) {
-        if (endpoint == null) {
-            throw LOGGER.logThrowableAsError(new NullPointerException("'endpoint' cannot be null."));
+    public CryptographyClientBuilder keyIdentifier(String keyId) {
+        if (isNullOrEmpty(keyId)) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'keyId' cannot be null or empty."));
         }
 
-        try {
-            URI uri = new URI(endpoint);
-            this.endpoint = uri.toString();
-        } catch (URISyntaxException e) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalArgumentException("The Azure Key Vault endpoint is malformed.", e));
-        }
+        this.keyId = keyId;
 
         return this;
     }
@@ -202,17 +232,38 @@ public final class KeyClientBuilder
      * on proper usage of the {@link TokenCredential} type.
      *
      * @param credential {@link TokenCredential} used to authorize requests sent to the service.
-     * @return The updated {@link KeyClientBuilder} object.
+     * @return The updated {@link CryptographyClientBuilder} object.
      *
      * @throws NullPointerException If {@code credential} is {@code null}.
      */
     @Override
-    public KeyClientBuilder credential(TokenCredential credential) {
+    public CryptographyClientBuilder credential(TokenCredential credential) {
         if (credential == null) {
             throw LOGGER.logThrowableAsError(new NullPointerException("'credential' cannot be null."));
         }
 
         this.credential = credential;
+
+        return this;
+    }
+
+    /**
+     * Sets the {@link JsonWebKey} to be used for local cryptography operations.
+     *
+     * <p>If {@code jsonWebKey} is provided, then all other builder settings are ignored.</p>
+     *
+     * @param jsonWebKey The JSON Web Key to be used for local cryptography operations.
+     *
+     * @return The updated {@link CryptographyClientBuilder} object.
+     *
+     * @throws NullPointerException If {@code jsonWebKey} is {@code null}.
+     */
+    public CryptographyClientBuilder jsonWebKey(JsonWebKey jsonWebKey) {
+        if (jsonWebKey == null) {
+            throw LOGGER.logThrowableAsError(new NullPointerException("'jsonWebKey' must not be null."));
+        }
+
+        this.jsonWebKey = jsonWebKey;
 
         return this;
     }
@@ -243,10 +294,10 @@ public final class KeyClientBuilder
      *
      * @param instrumentationOptions The {@link HttpInstrumentationOptions configuration} to use when recording
      * telemetry about HTTP requests sent to the service and responses received from it.
-     * @return The updated {@link KeyClientBuilder} object.
+     * @return The updated {@link CryptographyClientBuilder} object.
      */
     @Override
-    public KeyClientBuilder httpInstrumentationOptions(HttpInstrumentationOptions instrumentationOptions) {
+    public CryptographyClientBuilder httpInstrumentationOptions(HttpInstrumentationOptions instrumentationOptions) {
         this.instrumentationOptions = instrumentationOptions;
 
         return this;
@@ -263,12 +314,12 @@ public final class KeyClientBuilder
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param pipelinePolicy A {@link HttpPipelinePolicy pipeline policy}.
-     * @return The updated {@link KeyClientBuilder} object.
+     * @return The updated {@link CryptographyClientBuilder} object.
      *
      * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
      */
     @Override
-    public KeyClientBuilder addHttpPipelinePolicy(HttpPipelinePolicy pipelinePolicy) {
+    public CryptographyClientBuilder addHttpPipelinePolicy(HttpPipelinePolicy pipelinePolicy) {
         if (pipelinePolicy == null) {
             throw LOGGER.logThrowableAsError(new NullPointerException("'pipelinePolicy' cannot be null."));
         }
@@ -289,10 +340,10 @@ public final class KeyClientBuilder
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param client The {@link HttpClient} to use for requests.
-     * @return The updated {@link KeyClientBuilder} object.
+     * @return The updated {@link CryptographyClientBuilder} object.
      */
     @Override
-    public KeyClientBuilder httpClient(HttpClient client) {
+    public CryptographyClientBuilder httpClient(HttpClient client) {
         this.httpClient = client;
 
         return this;
@@ -309,40 +360,26 @@ public final class KeyClientBuilder
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param pipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
-     * @return The updated {@link KeyClientBuilder} object.
+     * @return The updated {@link CryptographyClientBuilder} object.
      */
     @Override
-    public KeyClientBuilder httpPipeline(HttpPipeline pipeline) {
+    public CryptographyClientBuilder httpPipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
 
         return this;
     }
 
     /**
-     * Sets the client-specific configuration used to retrieve client or global configuration properties when building a
-     * client.
-     *
-     * @param configuration Configuration store used to retrieve client configurations.
-     * @return The updated {@link KeyClientBuilder} object.
-     */
-    @Override
-    public KeyClientBuilder configuration(Configuration configuration) {
-        this.configuration = configuration;
-
-        return this;
-    }
-
-    /**
-     * Sets the {@link KeyServiceVersion service version} that is used when making API requests.
+     * Sets the {@link CryptographyServiceVersion service version} that is used when making API requests.
      *
      * <p>If a service version is not provided, the service version that will be used will be the latest known service
      * version based on the version of the client library being used. If no service version is specified, updating to a
      * newer version the client library will have the result of potentially moving to a newer service version.</p>
      *
-     * @param version {@link KeyServiceVersion} of the service API used when making requests.
-     * @return The updated {@link KeyClientBuilder} object.
+     * @param version {@link CryptographyServiceVersion} of the service API used when making requests.
+     * @return The updated {@link CryptographyClientBuilder} object.
      */
-    public KeyClientBuilder serviceVersion(KeyServiceVersion version) {
+    public CryptographyClientBuilder serviceVersion(CryptographyServiceVersion version) {
         this.version = version;
 
         return this;
@@ -359,10 +396,10 @@ public final class KeyClientBuilder
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param retryOptions The {@link HttpRetryOptions} to use for all the requests made through the client.
-     * @return The updated {@link KeyClientBuilder} object.
+     * @return The updated {@link CryptographyClientBuilder} object.
      */
     @Override
-    public KeyClientBuilder httpRetryOptions(HttpRetryOptions retryOptions) {
+    public CryptographyClientBuilder httpRetryOptions(HttpRetryOptions retryOptions) {
         this.retryOptions = retryOptions;
 
         return this;
@@ -379,10 +416,10 @@ public final class KeyClientBuilder
      * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param redirectOptions The {@link HttpRedirectOptions} to use for all the requests made through the client.
-     * @return The updated {@link KeyClientBuilder} object.
+     * @return The updated {@link CryptographyClientBuilder} object.
      */
     @Override
-    public KeyClientBuilder httpRedirectOptions(HttpRedirectOptions redirectOptions) {
+    public CryptographyClientBuilder httpRedirectOptions(HttpRedirectOptions redirectOptions) {
         this.redirectOptions = redirectOptions;
 
         return this;
@@ -392,31 +429,25 @@ public final class KeyClientBuilder
      * Disables verifying if the authentication challenge resource matches the Key Vault domain. This verification is
      * performed by default.
      *
-     * @return The updated {@link KeyClientBuilder} object.
+     * @return The updated {@link CryptographyClientBuilder} object.
      */
-    public KeyClientBuilder disableChallengeResourceVerification() {
+    public CryptographyClientBuilder disableChallengeResourceVerification() {
         this.disableChallengeResourceVerification = true;
 
         return this;
     }
 
-    private String getEndpoint(Configuration configuration) {
-        if (endpoint != null) {
-            return endpoint;
-        }
+    /**
+     * Disables local key caching and defers all cryptographic operations to the service.
+     *
+     * <p>This method will have no effect if used in conjunction with the
+     * {@link CryptographyClientBuilder#jsonWebKey(JsonWebKey)} method.</p>
+     *
+     * @return The updated {@link CryptographyClientBuilder} object.
+     */
+    public CryptographyClientBuilder disableKeyCaching() {
+        this.isKeyCachingDisabled = true;
 
-        String configEndpoint = configuration.get("AZURE_KEYVAULT_ENDPOINT");
-
-        if (isNullOrEmpty(configEndpoint)) {
-            return null;
-        }
-
-        try {
-            URI uri = new URI(configEndpoint);
-
-            return uri.toString();
-        } catch (URISyntaxException ex) {
-            return null;
-        }
+        return this;
     }
 }
