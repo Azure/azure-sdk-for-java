@@ -1669,8 +1669,8 @@ public class TestInterfaceServiceClientGenerationTests {
 
         assertNotNull(queryParams);
         assertEquals(1, queryParams.size());
-        assertTrue(queryParams.containsKey("constantParam1"));
-        assertNull(queryParams.get("constantParam1"));
+        assertTrue(queryParams.containsKey("queryparamwithequalsandnovalue"));
+        assertNull(queryParams.get("queryparamwithnoequals"));
     }
 
     @Test

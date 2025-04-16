@@ -152,10 +152,11 @@
         </dependencies>
       </plugin>
 
+      <!-- This plugin removes previously generated *ServiceImpl files before annotation processing runs, preventing FileExists errors during code generation. -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-clean-plugin</artifactId>
-        <version>3.3.1</version>
+        <version>3.4.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-clean-plugin;external_dependency} -->
         <configuration>
           <filesets>
             <fileset>

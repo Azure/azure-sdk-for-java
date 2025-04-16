@@ -146,6 +146,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
     @Override
     public Response<Foo> getFoo(String key, String label, String syncToken) {
         String url = "kv/" + UriEscapers.PATH_ESCAPER.escape(key);
+        // Append non-null query parameters
         LinkedHashMap<String, Object> queryParamMap = new LinkedHashMap<>();
         queryParamMap.put(UriEscapers.QUERY_ESCAPER.escape("label"), UriEscapers.QUERY_ESCAPER.escape(label));
         String newUrl = CoreUtils.appendQueryParams(url, queryParamMap);
@@ -235,6 +236,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
     @Override
     public Response<List<Foo>> listFoo(String uri, List<String> tags, List<String> tags2, RequestContext requestContext) {
         String url = uri + "/" + "foos";
+        // Append non-null query parameters
         LinkedHashMap<String, Object> queryParamMap = new LinkedHashMap<>();
         queryParamMap.put(UriEscapers.QUERY_ESCAPER.escape("tags"), (tags != null ? tags.stream().map(UriEscapers.QUERY_ESCAPER::escape).collect(Collectors.toList()) : null));
         queryParamMap.put(UriEscapers.QUERY_ESCAPER.escape("tags2"), (tags2 != null ? tags2.stream().map(UriEscapers.QUERY_ESCAPER::escape).collect(Collectors.toList()) : null));
@@ -526,9 +528,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
     @Override
     public HttpBinJSON getAnything(String uri, String a, int b) {
         String url = uri + "/" + "anything";
+        // Append non-null query parameters
         LinkedHashMap<String, Object> queryParamMap = new LinkedHashMap<>();
         queryParamMap.put(UriEscapers.QUERY_ESCAPER.escape("a"), UriEscapers.QUERY_ESCAPER.escape(a));
-        queryParamMap.put("b", b);
+        queryParamMap.put(UriEscapers.QUERY_ESCAPER.escape("b"), b);
         String newUrl = CoreUtils.appendQueryParams(url, queryParamMap);
         if (newUrl != null) {
             url = newUrl;
@@ -588,9 +591,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
     @Override
     public HttpBinJSON getAnythingWithEncoded(String uri, String a, int b) {
         String url = uri + "/" + "anything";
+        // Append non-null query parameters
         LinkedHashMap<String, Object> queryParamMap = new LinkedHashMap<>();
         queryParamMap.put(UriEscapers.QUERY_ESCAPER.escape("a"), a);
-        queryParamMap.put("b", b);
+        queryParamMap.put(UriEscapers.QUERY_ESCAPER.escape("b"), b);
         String newUrl = CoreUtils.appendQueryParams(url, queryParamMap);
         if (newUrl != null) {
             url = newUrl;
@@ -702,7 +706,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         String url = uri + "/" + "put";
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri(url);
-        httpRequest.getHeaders().add(HttpHeaderName.CONTENT_TYPE, String.valueOf("application/json"));
+        httpRequest.getHeaders().add(HttpHeaderName.CONTENT_TYPE, "application/json");
         httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
         if (body != null) {
             httpRequest.setBody(BinaryData.fromBytes(body));
@@ -729,7 +733,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         String url = uri + "/" + "put";
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri(url);
-        httpRequest.getHeaders().add(HttpHeaderName.CONTENT_TYPE, String.valueOf("application/json; charset=utf-8"));
+        httpRequest.getHeaders().add(HttpHeaderName.CONTENT_TYPE, "application/json; charset=utf-8");
         httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/octet-stream");
         if (body != null) {
             httpRequest.setBody(BinaryData.fromString(body));
@@ -756,7 +760,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         String url = uri + "/" + "put";
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri(url);
-        httpRequest.getHeaders().add(HttpHeaderName.CONTENT_TYPE, String.valueOf("application/octet-stream"));
+        httpRequest.getHeaders().add(HttpHeaderName.CONTENT_TYPE, "application/octet-stream");
         httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/octet-stream");
         if (body != null) {
             httpRequest.setBody(BinaryData.fromString(body));
@@ -787,7 +791,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         String url = uri + "/" + "put";
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri(url);
-        httpRequest.getHeaders().add(HttpHeaderName.CONTENT_TYPE, String.valueOf("application/octet-stream"));
+        httpRequest.getHeaders().add(HttpHeaderName.CONTENT_TYPE, "application/octet-stream");
         httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/octet-stream");
         if (body != null) {
             httpRequest.setBody(BinaryData.fromBytes(body));
@@ -981,6 +985,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
     @Override
     public HttpBinJSON get1(String uri, String queryParam) {
         String url = uri + "/" + "anything";
+        // Append non-null query parameters
         LinkedHashMap<String, Object> queryParamMap = new LinkedHashMap<>();
         queryParamMap.put("constantParam1", "constantValue1");
         queryParamMap.put("constantParam2", "constantValue2");
@@ -1016,8 +1021,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
     @Override
     public HttpBinJSON get2(String uri, String queryParam) {
         String url = uri + "/" + "anything";
+        // Append non-null query parameters
         LinkedHashMap<String, Object> queryParamMap = new LinkedHashMap<>();
-        queryParamMap.put("param", Arrays.stream("constantValue1;constantValue2".split(";")).collect(Collectors.toList()));
+        queryParamMap.put("param", Arrays.asList("constantValue1", "constantValue2"));
         String newUrl = CoreUtils.appendQueryParams(url, queryParamMap);
         if (newUrl != null) {
             url = newUrl;
@@ -1049,8 +1055,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
     @Override
     public HttpBinJSON get3(String uri, String queryParam) {
         String url = uri + "/" + "anything";
+        // Append non-null query parameters
         LinkedHashMap<String, Object> queryParamMap = new LinkedHashMap<>();
-        queryParamMap.put("param", Arrays.stream("constantValue1,constantValue2;constantValue3".split(";")).collect(Collectors.toList()));
+        queryParamMap.put("param", Arrays.asList("constantValue1,constantValue2", "constantValue3"));
         String newUrl = CoreUtils.appendQueryParams(url, queryParamMap);
         if (newUrl != null) {
             url = newUrl;
@@ -1082,9 +1089,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
     @Override
     public HttpBinJSON get4(String uri) {
         String url = uri + "/" + "anything";
+        // Append non-null query parameters
         LinkedHashMap<String, Object> queryParamMap = new LinkedHashMap<>();
-        queryParamMap.put("constantParam1", "");
-        queryParamMap.put("constantParam2", null);
+        queryParamMap.put("queryparamwithequalsandnovalue", "");
+        queryParamMap.put("queryparamwithnoequals", null);
         String newUrl = CoreUtils.appendQueryParams(url, queryParamMap);
         if (newUrl != null) {
             url = newUrl;
@@ -1116,6 +1124,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
     @Override
     public HttpBinJSON get5(String uri) {
         String url = uri + "/" + "anything";
+        // Append non-null query parameters
         LinkedHashMap<String, Object> queryParamMap = new LinkedHashMap<>();
         queryParamMap.put("constantParam1", "some=value");
         String newUrl = CoreUtils.appendQueryParams(url, queryParamMap);
@@ -1149,6 +1158,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
     @Override
     public HttpBinJSON get6(String uri) {
         String url = uri + "/" + "anything";
+        // Append non-null query parameters
         LinkedHashMap<String, Object> queryParamMap = new LinkedHashMap<>();
         String newUrl = CoreUtils.appendQueryParams(url, queryParamMap);
         if (newUrl != null) {
@@ -1181,6 +1191,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
     @Override
     public HttpBinJSON get7(String uri) {
         String url = uri + "/" + "anything";
+        // Append non-null query parameters
         LinkedHashMap<String, Object> queryParamMap = new LinkedHashMap<>();
         String newUrl = CoreUtils.appendQueryParams(url, queryParamMap);
         if (newUrl != null) {
@@ -1779,7 +1790,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         String url = uri + "/" + "anything";
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url);
-        httpRequest.getHeaders().add(HttpHeaderName.fromString("MyHeader"), String.valueOf("MyHeaderValue")).add(new HttpHeader(HttpHeaderName.fromString("MyOtherHeader"), Arrays.asList("My", "Header", "Value")));
+        httpRequest.getHeaders().add(HttpHeaderName.fromString("MyHeader"), "MyHeaderValue").add(new HttpHeader(HttpHeaderName.fromString("MyOtherHeader"), Arrays.asList("My", "Header", "Value")));
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();

@@ -7,6 +7,7 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.utils.CoreUtils;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -35,7 +36,7 @@ public final class HttpRequestContext {
     // annotated with @PathParam.
     private String path;
 
-    private final Map<String, String> headers;
+    private final Map<String, List<String>> headers;
     private final Map<String, QueryParameter> queryParams;
 
     private final Map<String, Substitution> substitutions;
@@ -167,7 +168,7 @@ public final class HttpRequestContext {
      *
      * @return the headers.
      */
-    public Map<String, String> getHeaders() {
+    public Map<String, List<String>> getHeaders() {
         return headers;
     }
 
@@ -178,7 +179,7 @@ public final class HttpRequestContext {
      * @param value the header value.
      */
     public void addHeader(String key, String value) {
-        headers.put(key, value);
+        this.headers.computeIfAbsent(key, k -> new ArrayList<>()).add(value);
     }
 
     /**
@@ -201,7 +202,12 @@ public final class HttpRequestContext {
      *
      */
     public void addQueryParam(String key, String value, boolean isMultiple, boolean shouldEncode) {
-        queryParams.put(key, new QueryParameter(value, isMultiple, shouldEncode));
+        QueryParameter existing = queryParams.get(key);
+        if (existing != null) {
+            existing.addValue(value);
+        } else {
+            queryParams.put(key, new QueryParameter(value, isMultiple, shouldEncode));
+        }
     }
 
     /**
@@ -293,27 +299,19 @@ public final class HttpRequestContext {
      * @param headers the array of headers to set.
      */
     public void addStaticHeaders(String[] headers) {
-        // If the headers array is null or empty, return immediately
         if (CoreUtils.isNullOrEmpty(headers)) {
             return;
         }
-
-        // Iterate through the headers array to process each header
         for (String header : headers) {
-            // Split the header into key-value pairs using the first occurrence of ":"
             String[] parts = header.split(":", 2);
-
-            // If no ":" is found, treat the header as a key with an empty value
             String key = parts[0].trim();
-            String value = parts.length > 1 ? "\"" + parts[1].trim() + "\"" : "";
-
-            if (this.headers.containsKey(key)) {
-                // Replace the existing value with the static header value
-                this.headers.put(key, value);
-            } else {
-                // Add the new key-value pair to the headers map
-                addHeader(key, value);
-            }
+            String value = parts.length > 1 ? parts[1].trim() : "";
+            // Split on comma, trim, and filter out empty values
+            List<String> values = Arrays.stream(value.split(","))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .collect(Collectors.toList());
+            this.headers.put(key, values);
         }
     }
 
@@ -323,30 +321,14 @@ public final class HttpRequestContext {
      * @param queryParams the array of query parameters to set.
      */
     public void addStaticQueryParams(String[] queryParams) {
-        // If the query params array is null or empty, return immediately
         if (CoreUtils.isNullOrEmpty(queryParams)) {
             return;
         }
-
-        // Iterate through the query params array to process each query param
         for (String queryParam : queryParams) {
-            // Split the query param into key-value pairs using the first occurrence of "="
             String[] parts = queryParam.split("=", 2);
-
-            // Extract the key and value, trimming any leading or trailing whitespace
             String key = parts[0].trim();
-            String value = parts.length > 1 ? "\"" + parts[1].trim() + "\"" : ""; // Surround the value with quotes
-
-            if (this.queryParams.containsKey(key)) {
-                // Append the new value to the existing key
-                QueryParameter existingParam = this.queryParams.get(key);
-                String existingValue = existingParam.getValue();
-                String combinedValue = existingValue + ";" + value; // Combine values with a delimiter
-                this.queryParams.put(key, new QueryParameter(combinedValue, true, existingParam.shouldEncode()));
-            } else {
-                // Add the new key-value pair to the query params map
-                addQueryParam(key, value, true, false);
-            }
+            String value = parts.length > 1 ? parts[1].trim() : null;
+            addQueryParam(key, value, true, false);
         }
     }
 
@@ -458,7 +440,7 @@ public final class HttpRequestContext {
      * Represents a query parameter.
      */
     public static class QueryParameter {
-        private final String value;
+        private final List<String> values;
         private final boolean isMultiple;
         private final boolean shouldEncode;
 
@@ -470,33 +452,56 @@ public final class HttpRequestContext {
          * @param shouldEncode whether the parameter and value is encoded
          */
         public QueryParameter(String value, boolean isMultiple, boolean shouldEncode) {
-            this.value = value;
+            this.values = new ArrayList<>();
+            this.values.add(value);
             this.isMultiple = isMultiple;
             this.shouldEncode = shouldEncode;
         }
 
         /**
-         * Gets the value of the query parameter.
+         * Constructs a new QueryParameter with multiple values.
          *
-         * @return the value.
+         * @param values the values of the query parameter.
+         * @param isMultiple whether the parameter can accept multiple values.
+         * @param shouldEncode whether the parameter and value is encoded
          */
-        public String getValue() {
-            return value;
+        public QueryParameter(List<String> values, boolean isMultiple, boolean shouldEncode) {
+            this.values = new ArrayList<>(values);
+            this.isMultiple = isMultiple;
+            this.shouldEncode = shouldEncode;
         }
 
         /**
-         * Checks whether the query parameter allows multiple values.
+         * Gets the values of the query parameter.
          *
-         * @return true if the parameter can accept multiple values, otherwise false.
+         * @return the values.
+         */
+        public List<String> getValues() {
+            return Collections.unmodifiableList(values);
+        }
+
+        /**
+         * Adds a value to the query parameter.
+         *
+         * @param value the value to add.
+         */
+        public void addValue(String value) {
+            this.values.add(value);
+        }
+
+        /**
+         * Checks if the query parameter can accept multiple values.
+         *
+         * @return true if it can accept multiple values, false otherwise.
          */
         public boolean isMultiple() {
             return isMultiple;
         }
 
         /**
-         * Checks whether the query parameter value is URL encoded.
+         * Checks if the query parameter and value should be encoded.
          *
-         * @return true if the parameter value is encoded, otherwise false.
+         * @return true if it should be encoded, false otherwise.
          */
         public boolean shouldEncode() {
             return shouldEncode;

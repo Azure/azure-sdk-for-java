@@ -21,6 +21,7 @@ import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.annotation.processor.models.TemplateInput;
+import io.clientcore.annotation.processor.utils.CodeGenUtils;
 import io.clientcore.annotation.processor.utils.RequestBodyHandler;
 import io.clientcore.annotation.processor.utils.TypeConverter;
 import io.clientcore.core.http.models.HttpHeader;
@@ -46,6 +47,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.type.TypeKind;
@@ -344,90 +346,86 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             return;
         }
 
-        // Add imports and declare variables
+        Statement queryParamMapDeclaration
+            = StaticJavaParser.parseStatement("LinkedHashMap<String, Object> queryParamMap = new LinkedHashMap<>();");
+        queryParamMapDeclaration.setLineComment("\n Append non-null query parameters");
+        body.addStatement(queryParamMapDeclaration);
         body.tryAddImportToParentCompilationUnit(LinkedHashMap.class);
-        body.addStatement("LinkedHashMap<String, Object> queryParamMap = new LinkedHashMap<>();");
 
-        // Iterate through query parameters
-        method.getQueryParams().forEach((key, value) -> {
+        method.getQueryParams().forEach((key, queryParameter) -> {
             if (CoreUtils.isNullOrEmpty(key)) {
                 // Skip null or empty keys
                 return;
             }
 
-            String valueExpression = value.getValue();
-            boolean isValueTypeString = method.getParameters()
-                .stream()
-                .anyMatch(parameter -> parameter.getName().equals(valueExpression)
-                    && "String".equals(parameter.getShortTypeName()));
-            boolean isValueTypeListOfString = method.getParameters()
-                .stream()
-                .anyMatch(parameter -> parameter.getName().equals(valueExpression)
-                    && "List<String>".equals(parameter.getShortTypeName()));
+            List<String> values = queryParameter.getValues();
+            boolean shouldEncode = queryParameter.shouldEncode();
 
-            if (!CoreUtils.isNullOrEmpty(valueExpression)) {
-                String encodedKey = "UriEscapers.QUERY_ESCAPER.escape(\"" + key + "\")";
+            if (values.isEmpty()) {
+                // If there are no values, put null
+                body.addStatement("queryParamMap.put(\"" + key + "\", null);");
+            } else if (values.size() == 1) {
+                String valueExpr = values.get(0);
+                boolean isParam = method.getParameters().stream().anyMatch(p -> p.getName().equals(valueExpr));
+                String valueCode;
+                String keyExpr = isParam ? "UriEscapers.QUERY_ESCAPER.escape(\"" + key + "\")" : "\"" + key + "\"";
 
-                if (valueExpression.contains(";")) {
-                    if (value.shouldEncode()) {
-                        // Treat as a String type if it contains commas
-                        body.tryAddImportToParentCompilationUnit(Arrays.class);
-                        body.tryAddImportToParentCompilationUnit(Collectors.class);
-                        body.tryAddImportToParentCompilationUnit(UriEscapers.class);
-
-                        // Split the comma-separated string and apply UriEscapers.QUERY_ESCAPER.escape
-                        body.addStatement("queryParamMap.put(" + encodedKey + ", Arrays.stream(" + valueExpression
-                            + ".split(\";\"))" + ".map(UriEscapers.QUERY_ESCAPER::escape)" // Escape each value
-                            + ".collect(Collectors.toList()));"); // Collect the escaped values into a list
-                    } else {
-                        // Remove the surrounding quotes and process the valueExpression
-                        String staticValues
-                            = valueExpression.substring(1, valueExpression.length() - 1).replace("\";\"", ";");
-
-                        body.tryAddImportToParentCompilationUnit(Arrays.class);
-                        body.tryAddImportToParentCompilationUnit(Collectors.class);
-
-                        // Generate the code to split the values and add them to the queryParamMap
-                        body.addStatement(
-                            "queryParamMap.put(\"" + key + "\", Arrays.stream(\"" + staticValues + "\".split(\";\"))" // Split by delimiter
-                                + ".collect(Collectors.toList()));"); // Collect into a list
-                    }
-                } else if (isValueTypeString) {
-                    // Handle String values
-                    if (value.shouldEncode()) {
-                        body.tryAddImportToParentCompilationUnit(UriEscapers.class);
-                        String encodedValue = "UriEscapers.QUERY_ESCAPER.escape(" + valueExpression + ")";
-                        body.addStatement("queryParamMap.put(" + encodedKey + ", " + encodedValue + ");");
-                    } else {
-                        body.addStatement("queryParamMap.put(" + encodedKey + ", " + valueExpression + ");");
-                    }
-                } else if (isValueTypeListOfString) {
-                    // Handle List<String> values
+                if (isParam && queryParameter.isMultiple()) {
+                    body.tryAddImportToParentCompilationUnit(UriEscapers.class);
                     body.tryAddImportToParentCompilationUnit(Collectors.class);
-                    if (value.shouldEncode()) {
-                        body.addStatement("queryParamMap.put(" + encodedKey + ", " + "(" + valueExpression
-                            + " != null ? " + valueExpression + ".stream()" + ".map(UriEscapers.QUERY_ESCAPER::escape)" // Escape each value
-                            + ".collect(Collectors.toList()) : null));"); // Handle null case
+                    // List<String> parameter
+                    valueCode = "(" + valueExpr + " != null ? " + valueExpr
+                        + ".stream().map(UriEscapers.QUERY_ESCAPER::escape).collect(Collectors.toList()) : null)";
+
+                    body.addStatement("queryParamMap.put(" + keyExpr + ", " + valueCode + ");");
+                } else if (isParam) {
+                    // Single parameter
+                    Optional<HttpRequestContext.MethodParameter> paramOpt = method.getParameters()
+                        .stream()
+                        .filter(parameter -> parameter.getName().equals(valueExpr))
+                        .findFirst();
+                    boolean isValueTypeString
+                        = paramOpt.isPresent() && "String".equals(paramOpt.get().getShortTypeName());
+                    if (shouldEncode && isValueTypeString) {
+                        body.tryAddImportToParentCompilationUnit(UriEscapers.class);
+                        valueCode = "UriEscapers.QUERY_ESCAPER.escape(" + valueExpr + ")";
+                        body.addStatement("queryParamMap.put(" + keyExpr + ", " + valueCode + ");");
                     } else {
-                        body.addStatement("queryParamMap.put(" + key + ", " + "(" + valueExpression + " != null ? "
-                            + valueExpression + ".stream()" + ".collect(Collectors.toList()) : null));"); // Handle null case
+                        // Non-string param: do NOT encode, just use as is
+                        valueCode = valueExpr;
+                        body.addStatement("queryParamMap.put(" + keyExpr + ", " + valueCode + ");");
                     }
-                } else if (valueExpression.startsWith("\"") && valueExpression.endsWith("\"")) {
-                    if ("\"\"".equals(valueExpression)) {
-                        // Handle empty string literal
-                        body.addStatement("queryParamMap.put(\"" + key + "\", \"\");");
-                        return;
-                    }
-                    // static header values
-                    body.addStatement("queryParamMap.put(\"" + key + "\", \""
-                        + valueExpression.substring(1, valueExpression.length() - 1).trim() + "\");");
                 } else {
-                    // Handle non-String values (e.g., int, boolean, etc.)
-                    body.addStatement("queryParamMap.put(\"" + key + "\", " + valueExpression + ");");
+                    // Static/literal value: do NOT escape key or value
+                    // If the value is an empty string, treat as "", if null, treat as null
+                    if (valueExpr == null) {
+                        body.addStatement("queryParamMap.put(\"" + key + "\", null);");
+                    } else {
+                        valueCode = "\"" + valueExpr.replace("\"", "\\\"") + "\"";
+                        body.addStatement("queryParamMap.put(\"" + key + "\", " + valueCode + ");");
+                    }
                 }
             } else {
-                // Handle null or empty values
-                body.addStatement("queryParamMap.put(\"" + key + "\", null);");
+                // Multiple values: always add as List<String>
+                String joinedValues = CodeGenUtils.toJavaArrayInitializer(values, true);
+                boolean isParam = values.stream()
+                    .allMatch(v -> method.getParameters().stream().anyMatch(p -> p.getName().equals(v)));
+                String keyExpr = isParam ? "UriEscapers.QUERY_ESCAPER.escape(\"" + key + "\")" : "\"" + key + "\"";
+
+                if (!joinedValues.trim().isEmpty()) {
+                    body.tryAddImportToParentCompilationUnit(Arrays.class);
+                    if (shouldEncode && isParam) {
+                        body.tryAddImportToParentCompilationUnit(UriEscapers.class);
+                        body.addStatement("queryParamMap.put(" + keyExpr + ", Arrays.asList(" + joinedValues + ")"
+                            + ".stream().map(UriEscapers.QUERY_ESCAPER::escape).collect(Collectors.toList()));");
+                    } else {
+                        // For static query params, do NOT escape key or value
+                        body.addStatement("queryParamMap.put(" + keyExpr + ", Arrays.asList(" + joinedValues + "));");
+                    }
+                } else {
+                    // if joinedValues is empty, put null
+                    body.addStatement("queryParamMap.put(\"" + key + "\", null);");
+                }
             }
         });
 
@@ -436,65 +434,99 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         body.addStatement("if (newUrl != null) { url = newUrl; }");
     }
 
+    /**
+     * Adds headers to the HttpRequest using the provided HttpRequestContext.
+     * Handles both static and dynamic headers, and applies correct quoting logic for static values.
+     * <p>
+     * Quoting logic:
+     * - If value starts and ends with ", use as-is.
+     * - If starts with ", append trailing ".
+     * - If ends with ", prepend leading ".
+     * - Otherwise, wrap value in quotes.
+     * <p>
+     * For dynamic headers (parameter-based), values are not quoted.
+     * For static headers (literal values), quoting is always applied.
+     * <p>
+     */
     private void addHeadersToRequest(BlockStmt body, HttpRequestContext method) {
         if (method.getHeaders().isEmpty()) {
+            // No headers to add; exit early for clarity and efficiency.
             return;
         }
 
-        StringBuilder httpRequestBuilder = new StringBuilder("httpRequest.getHeaders()"); // Start the header chaining
+        // Start building the header chain for the HttpRequest.
+        StringBuilder httpRequestBuilder = new StringBuilder("httpRequest.getHeaders()");
 
-        for (Map.Entry<String, String> header : method.getHeaders().entrySet()) {
+        for (Map.Entry<String, List<String>> header : method.getHeaders().entrySet()) {
             String headerKey = header.getKey();
-            String headerValue = header.getValue();
+            List<String> headerValues = header.getValue();
 
-            // Determine if the header value is a String type
-            boolean isStringType = method.getParameters()
-                .stream()
-                .anyMatch(parameter -> parameter.getName().equals(headerValue)
-                    && "String".equals(parameter.getShortTypeName()));
-
-            // Split the header value by commas
-            String[] values = headerValue.split(",");
-            String valueExpression;
-
-            if (values.length > 1) {
-                body.tryAddImportToParentCompilationUnit(HttpHeader.class);
-                body.tryAddImportToParentCompilationUnit(Arrays.class);   // Handle multiple values by constructing a List<String>
-                valueExpression = "Arrays.asList(" + Arrays.stream(values).map(value -> {
-                    value = value.trim(); // Trim whitespace
-                    if (value.startsWith("\"")) {
-                        value = value.substring(1); // Remove the starting quote
-                    }
-                    if (value.endsWith("\"")) {
-                        value = value.substring(0, value.length() - 1); // Remove the ending quote
-                    }
-                    return "\"" + value + "\""; // Add quotes around the trimmed value
-                }).collect(Collectors.joining(",")) // Join values with a comma
-                    + ")";
-            } else {
-                // Handle single value
-                valueExpression = isStringType ? headerValue : "String.valueOf(" + headerValue + ")";
-            }
-
-            // Check if the header key matches a constant name
-            String constantName = LOWERCASE_HEADER_TO_HTTPHEADENAME_CONSTANT.get(headerKey.toLowerCase(Locale.ROOT));
             body.tryAddImportToParentCompilationUnit(HttpHeaderName.class);
-            if (constantName != null) {
-                httpRequestBuilder.append(".add(")
-                    .append(values.length > 1
-                        ? "new HttpHeader(HttpHeaderName." + constantName + ", " + valueExpression + ")"
-                        : "HttpHeaderName." + constantName + ", " + valueExpression)
-                    .append(")");
-            } else {
-                httpRequestBuilder.append(".add(")
-                    .append(values.length > 1
-                        ? "new HttpHeader(HttpHeaderName.fromString(\"" + headerKey + "\"), " + valueExpression + ")"
-                        : "HttpHeaderName.fromString(\"" + headerKey + "\"), " + valueExpression)
-                    .append(")");
+
+            // Handle multiple header values (e.g., for repeated headers).
+            if (headerValues.size() > 1) {
+                body.tryAddImportToParentCompilationUnit(HttpHeader.class);
+                body.tryAddImportToParentCompilationUnit(Arrays.class);
+
+                // For multiple values, always treat as static and apply quoting logic.
+                String valueExpression
+                    = "Arrays.asList(" + CodeGenUtils.toJavaArrayInitializer(headerValues, true) + ")";
+
+                String constantName
+                    = LOWERCASE_HEADER_TO_HTTPHEADENAME_CONSTANT.get(headerKey.toLowerCase(Locale.ROOT));
+                if (constantName != null) {
+                    httpRequestBuilder.append(".add(new HttpHeader(HttpHeaderName.")
+                        .append(constantName)
+                        .append(", ")
+                        .append(valueExpression)
+                        .append("))");
+                } else {
+                    httpRequestBuilder.append(".add(new HttpHeader(HttpHeaderName.fromString(\"")
+                        .append(headerKey)
+                        .append("\"), ")
+                        .append(valueExpression)
+                        .append("))");
+                }
+            } else if (headerValues.size() == 1) {
+                String value = headerValues.get(0);
+                // Determine if the header value is a String type (for dynamic headers).
+                // This is used to avoid quoting parameter-based (dynamic) header values.
+                Optional<HttpRequestContext.MethodParameter> paramOpt
+                    = method.getParameters().stream().filter(p -> p.getName().equals(value)).findFirst();
+                String valueExpression;
+                if (paramOpt.isPresent()) {
+                    String paramType = paramOpt.get().getShortTypeName();
+                    if ("String".equals(paramType)) {
+                        // Dynamic header: use parameter name directly.
+                        valueExpression = value;
+                    } else {
+                        valueExpression = "String.valueOf(" + value + ")";
+                    }
+                } else {
+                    // Static header: apply quoting logic.
+                    valueExpression = CodeGenUtils.quoteHeaderValue(value);
+                }
+
+                String constantName
+                    = LOWERCASE_HEADER_TO_HTTPHEADENAME_CONSTANT.get(headerKey.toLowerCase(Locale.ROOT));
+                if (constantName != null) {
+                    httpRequestBuilder.append(".add(HttpHeaderName.")
+                        .append(constantName)
+                        .append(", ")
+                        .append(valueExpression)
+                        .append(")");
+                } else {
+                    httpRequestBuilder.append(".add(HttpHeaderName.fromString(\"")
+                        .append(headerKey)
+                        .append("\"), ")
+                        .append(valueExpression)
+                        .append(")");
+                }
             }
+            // If headerValues is empty, skip adding this header.
         }
 
-        // Finalize the statement
+        // Finalize the header chain and add it as a statement to the method body.
         body.addStatement(StaticJavaParser.parseStatement(httpRequestBuilder + ";"));
     }
 

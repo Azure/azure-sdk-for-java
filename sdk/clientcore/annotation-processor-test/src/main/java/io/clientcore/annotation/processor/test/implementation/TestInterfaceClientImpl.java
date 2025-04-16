@@ -231,7 +231,7 @@ public final class TestInterfaceClientImpl {
             method = HttpMethod.GET,
             path = "anything",
             expectedStatusCodes = { 200 },
-            queryParams = { "constantParam1=", "constantParam2" })
+            queryParams = { "queryparamwithequalsandnovalue=", "queryparamwithnoequals" })
         HttpBinJSON get4(@HostParam("uri") String uri);
 
         @HttpRequestInformation(
