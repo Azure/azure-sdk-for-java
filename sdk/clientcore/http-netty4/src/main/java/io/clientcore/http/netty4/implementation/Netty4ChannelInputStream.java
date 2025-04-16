@@ -157,7 +157,9 @@ public final class Netty4ChannelInputStream extends InputStream {
     public void close() {
         currentBuffer = null;
         additionalBuffers.clear();
-        channel.close();
+        if (!channelDone) {
+            channel.close();
+        }
     }
 
     private boolean setupNextBuffer() {

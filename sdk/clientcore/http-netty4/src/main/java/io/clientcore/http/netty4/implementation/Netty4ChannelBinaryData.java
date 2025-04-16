@@ -37,6 +37,7 @@ final class Netty4ChannelBinaryData extends BinaryData {
     // Non-final to allow nulling out after use.
     private ByteArrayOutputStream eagerContent;
 
+    private volatile boolean channelDone;
     private volatile byte[] bytes;
 
     Netty4ChannelBinaryData(ByteArrayOutputStream eagerContent, Channel channel, Long length) {
@@ -62,6 +63,7 @@ final class Netty4ChannelBinaryData extends BinaryData {
             }));
 
             awaitLatch(latch);
+            channelDone = true;
             bytes = eagerContent.toByteArray();
             eagerContent = null;
         }
@@ -122,6 +124,7 @@ final class Netty4ChannelBinaryData extends BinaryData {
                 }));
 
                 awaitLatch(latch);
+                channelDone = true;
                 eagerContent = null;
             } else {
                 // Already converted the Channel to a byte[], use it.
@@ -160,6 +163,8 @@ final class Netty4ChannelBinaryData extends BinaryData {
     @Override
     public void close() {
         eagerContent = null;
-        channel.close();
+        if (!channelDone) {
+            channel.close();
+        }
     }
 }
