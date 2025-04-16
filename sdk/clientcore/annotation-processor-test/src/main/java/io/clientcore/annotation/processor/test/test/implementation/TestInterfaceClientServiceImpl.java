@@ -19,7 +19,7 @@ import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
 import io.clientcore.core.implementation.utils.UriEscapers;
 import java.io.IOException;
-import java.io.UncheckedIOException;
+import io.clientcore.core.models.CoreException;
 import java.util.LinkedHashMap;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.annotation.processor.test.implementation.models.Foo;
@@ -76,11 +76,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
     }
 
@@ -105,11 +101,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
     }
 
@@ -126,11 +118,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
     }
 
@@ -147,11 +135,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return null;
     }
 
@@ -428,11 +412,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -458,11 +438,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -489,11 +465,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -520,11 +492,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -551,11 +519,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -591,11 +555,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -623,11 +583,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -663,11 +619,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -693,11 +645,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -723,11 +671,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -753,11 +697,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -783,11 +723,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -813,11 +749,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -873,11 +805,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -933,11 +861,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -963,11 +887,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -993,11 +913,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1023,11 +939,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1062,11 +974,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1101,11 +1009,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1140,11 +1044,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1179,11 +1079,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1210,11 +1106,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1241,11 +1133,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1272,11 +1160,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1303,11 +1187,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1324,11 +1204,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
     }
 
@@ -1460,11 +1336,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1481,11 +1353,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -1501,11 +1369,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return null;
     }
 
@@ -1522,11 +1386,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
     }
 
@@ -1543,11 +1403,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
     }
 
@@ -1564,11 +1420,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return expectedResponse;
     }
 
@@ -1585,11 +1437,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -1621,11 +1469,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1657,11 +1501,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1692,11 +1532,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1727,11 +1563,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1762,11 +1594,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1797,11 +1625,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1832,11 +1656,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1867,11 +1687,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1904,11 +1720,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1939,11 +1751,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1970,11 +1778,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -2005,11 +1809,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -2036,11 +1836,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -2052,11 +1848,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url);
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -2072,11 +1864,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -2087,11 +1875,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url);
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -2107,11 +1891,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -2122,11 +1902,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url);
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -2142,11 +1918,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -2157,11 +1929,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url);
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -2177,11 +1945,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -2241,11 +2005,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.core.models.binarydata.BinaryData) result;
     }
 
@@ -2289,7 +2049,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
      * @param serializer The serializer to use.
      * @param returnType The type of the ParameterizedType return value.
      * @return The decoded value.
-     * @throws IOException If the deserialization fails.
+     * @throws CoreException If the deserialization fails.
      */
     private static Object decodeNetworkResponse(BinaryData data, ObjectSerializer serializer, ParameterizedType returnType) {
         if (data == null) {
@@ -2305,7 +2065,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             }
             return serializer.deserializeFromBytes(data.toBytes(), token);
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+            throw LOGGER.logThrowableAsError(CoreException.from(e));
         }
     }
 }
