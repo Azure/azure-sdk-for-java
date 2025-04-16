@@ -199,12 +199,8 @@ public final class HttpRequestContext {
      * params or as a single Json
      * @param shouldEncode boolean indicating whether the query parameter value is URL encoded.
      *
-     * @throws IllegalArgumentException if a duplicate query parameter is added.
      */
     public void addQueryParam(String key, String value, boolean isMultiple, boolean shouldEncode) {
-        if (queryParams.containsKey(key)) {
-            throw new IllegalArgumentException("Cannot add duplicate query parameter '" + key + "'");
-        }
         queryParams.put(key, new QueryParameter(value, isMultiple, shouldEncode));
     }
 
@@ -296,7 +292,7 @@ public final class HttpRequestContext {
      *
      * @param headers the array of headers to set.
      */
-    public void setHeaders(String[] headers) {
+    public void addStaticHeaders(String[] headers) {
         // If the headers array is null or empty, return immediately
         if (CoreUtils.isNullOrEmpty(headers)) {
             return;
@@ -326,7 +322,7 @@ public final class HttpRequestContext {
      *
      * @param queryParams the array of query parameters to set.
      */
-    public void setQueryParams(String[] queryParams) {
+    public void addStaticQueryParams(String[] queryParams) {
         // If the query params array is null or empty, return immediately
         if (CoreUtils.isNullOrEmpty(queryParams)) {
             return;

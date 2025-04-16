@@ -1602,13 +1602,13 @@ public class TestInterfaceServiceClientGenerationTests {
         Map<String, List<String>> queryParams = json.queryParams();
 
         assertNotNull(queryParams);
-        assertEquals(2, queryParams.size());
+        assertEquals(3, queryParams.size());
         assertEquals(1, queryParams.get("constantParam1").size());
         assertEquals("constantValue1", queryParams.get("constantParam1").get(0));
         assertEquals(1, queryParams.get("constantParam2").size());
         assertEquals("constantValue2", queryParams.get("constantParam2").get(0));
-        // Assert null for 'variableParam' as it is provided as dynamic value and static headers overwrite it.
-        assertNull(queryParams.get("variableParam"));
+        assertEquals(1, queryParams.get("variableParam").size());
+        assertEquals("variableValue", queryParams.get("variableParam").get(0));
     }
 
     @Test
@@ -1626,10 +1626,10 @@ public class TestInterfaceServiceClientGenerationTests {
 
         assertNotNull(queryParams);
         assertEquals(1, queryParams.size());
-        // Assert only contains static values for same name dynamic query param i.e 'variableValue'
-        assertEquals(2, queryParams.get("param").size());
         assertEquals("constantValue1", queryParams.get("param").get(0));
         assertEquals("constantValue2", queryParams.get("param").get(1));
+        // Assert that same key name static param not overwritten
+        assertEquals(2, queryParams.get("param").size());
     }
 
     @Test
@@ -1648,7 +1648,7 @@ public class TestInterfaceServiceClientGenerationTests {
 
         assertNotNull(queryParams);
         assertEquals(1, queryParams.size());
-        // In case of static values for same param name, no dynamic values are set
+        // Assert that static value same key name query param not overwritten
         assertEquals(2, queryParams.get("param").size());
         assertEquals("constantValue1,constantValue2", queryParams.get("param").get(0));
         assertEquals("constantValue3", queryParams.get("param").get(1));

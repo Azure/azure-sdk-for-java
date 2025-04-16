@@ -322,7 +322,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             .stream()
             .anyMatch(parameter -> "uri".equals(parameter.getName()) && "String".equals(parameter.getShortTypeName()));
 
-        body.tryAddImportToParentCompilationUnit(UriEscapers.class);
         String urlStatement = useProvidedUri
             ? String.format("String url = uri + \"/\" + %s;", method.getHost())
             : String.format("String url = %s;", method.getHost());

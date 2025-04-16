@@ -104,11 +104,6 @@
   </dependencies>
 
   <build>
-    <resources>
-      <resource>
-        <directory>${project.build.directory}/generated-sources</directory>
-      </resource>
-    </resources>
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -158,21 +153,48 @@
       </plugin>
 
       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <version>3.6.0</version> <!-- {x-version-update;org.codehaus.mojo:build-helper-maven-plugin;external_dependency} -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-clean-plugin</artifactId>
+        <version>3.3.1</version>
+        <configuration>
+          <filesets>
+            <fileset>
+              <directory>src/main/java/io/clientcore/annotation/processor/test/</directory>
+              <includes>
+                <include>**/*ServiceImpl.java</include>
+              </includes>
+            </fileset>
+          </filesets>
+        </configuration>
+      </plugin>
+
+      <!-- Copy the generated impl file to src/main -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-antrun-plugin;external_dependency} -->
         <executions>
           <execution>
-            <id>add-generated-sources</id>
+            <id>copy-and-clean-generated-impl</id>
             <phase>generate-sources</phase>
-            <goals>
-              <goal>add-source</goal>
-            </goals>
             <configuration>
-              <sources>
-                <source>${basedir}/target/generated-sources</source>
-              </sources>
+              <target>
+                <available file="target/generated-sources/io/clientcore/annotation/processor/test/" type="dir" property="generated.dir.exists"/>
+                <copy todir="src/main/java/io/clientcore/annotation/processor/test/"
+                      overwrite="true"
+                      failonerror="false"
+                      verbose="true">
+                  <fileset dir="target/generated-sources/io/clientcore/annotation/processor/test/" erroronmissingdir="false">
+                    <include name="**/*.java"/>
+                  </fileset>
+                </copy>
+                <!-- Delete the generated-sources directory after copying -->
+                <delete dir="target/generated-sources/io/clientcore/annotation/processor/test/" failonerror="false"/>
+              </target>
             </configuration>
+            <goals>
+              <goal>run</goal>
+            </goals>
           </execution>
         </executions>
       </plugin>

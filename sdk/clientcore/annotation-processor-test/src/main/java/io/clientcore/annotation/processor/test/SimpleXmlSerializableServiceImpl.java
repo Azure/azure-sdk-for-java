@@ -13,9 +13,8 @@ import io.clientcore.annotation.processor.test.implementation.SimpleXmlSerializa
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
-import io.clientcore.core.implementation.utils.UriEscapers;
 import java.io.IOException;
-import java.io.UncheckedIOException;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.serialization.SerializationFormat;
 import io.clientcore.core.serialization.ObjectSerializer;
@@ -73,11 +72,7 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -102,11 +97,7 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -133,11 +124,7 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.SimpleXmlSerializable) result;
     }
 
@@ -164,11 +151,7 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.SimpleXmlSerializable) result;
     }
 
@@ -178,7 +161,7 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
      * @param serializer The serializer to use.
      * @param returnType The type of the ParameterizedType return value.
      * @return The decoded value.
-     * @throws IOException If the deserialization fails.
+     * @throws CoreException If the deserialization fails.
      */
     private static Object decodeNetworkResponse(BinaryData data, ObjectSerializer serializer, ParameterizedType returnType) {
         if (data == null) {
@@ -194,7 +177,7 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
             }
             return serializer.deserializeFromBytes(data.toBytes(), token);
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+            throw LOGGER.logThrowableAsError(CoreException.from(e));
         }
     }
 }

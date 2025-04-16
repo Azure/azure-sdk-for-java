@@ -17,16 +17,19 @@ import io.clientcore.annotation.processor.test.implementation.TestInterfaceClien
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
-import io.clientcore.core.implementation.utils.UriEscapers;
 import java.io.IOException;
-import java.io.UncheckedIOException;
+import io.clientcore.core.models.CoreException;
 import java.util.LinkedHashMap;
+import io.clientcore.core.implementation.utils.UriEscapers;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.annotation.processor.test.implementation.models.Foo;
 import io.clientcore.core.serialization.SerializationFormat;
 import io.clientcore.annotation.processor.test.implementation.models.FooListResult;
+import java.util.stream.Collectors;
 import io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON;
+import java.util.Arrays;
 import java.io.InputStream;
+import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.serialization.ObjectSerializer;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
@@ -76,11 +79,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
     }
 
@@ -105,11 +104,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
     }
 
@@ -126,11 +121,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
     }
 
@@ -147,11 +138,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return null;
     }
 
@@ -159,11 +146,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
     @Override
     public Response<Foo> getFoo(String key, String label, String syncToken) {
         String url = "kv/" + UriEscapers.PATH_ESCAPER.escape(key);
-        // Append non-null query parameters
-        String newUrl;
         LinkedHashMap<String, Object> queryParamMap = new LinkedHashMap<>();
         queryParamMap.put(UriEscapers.QUERY_ESCAPER.escape("label"), UriEscapers.QUERY_ESCAPER.escape(label));
-        newUrl = CoreUtils.appendQueryParams(url, queryParamMap);
+        String newUrl = CoreUtils.appendQueryParams(url, queryParamMap);
         if (newUrl != null) {
             url = newUrl;
         }
@@ -250,12 +235,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
     @Override
     public Response<List<Foo>> listFoo(String uri, List<String> tags, List<String> tags2, RequestContext requestContext) {
         String url = uri + "/" + "foos";
-        // Append non-null query parameters
-        String newUrl;
         LinkedHashMap<String, Object> queryParamMap = new LinkedHashMap<>();
-        queryParamMap.put("tags", tags);
-        queryParamMap.put("tags2", tags2);
-        newUrl = CoreUtils.appendQueryParams(url, queryParamMap);
+        queryParamMap.put(UriEscapers.QUERY_ESCAPER.escape("tags"), (tags != null ? tags.stream().map(UriEscapers.QUERY_ESCAPER::escape).collect(Collectors.toList()) : null));
+        queryParamMap.put(UriEscapers.QUERY_ESCAPER.escape("tags2"), (tags2 != null ? tags2.stream().map(UriEscapers.QUERY_ESCAPER::escape).collect(Collectors.toList()) : null));
+        String newUrl = CoreUtils.appendQueryParams(url, queryParamMap);
         if (newUrl != null) {
             url = newUrl;
         }
@@ -428,11 +411,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -458,11 +437,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -489,11 +464,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -520,11 +491,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -551,11 +518,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -563,12 +526,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
     @Override
     public HttpBinJSON getAnything(String uri, String a, int b) {
         String url = uri + "/" + "anything";
-        // Append non-null query parameters
-        String newUrl;
         LinkedHashMap<String, Object> queryParamMap = new LinkedHashMap<>();
         queryParamMap.put(UriEscapers.QUERY_ESCAPER.escape("a"), UriEscapers.QUERY_ESCAPER.escape(a));
         queryParamMap.put("b", b);
-        newUrl = CoreUtils.appendQueryParams(url, queryParamMap);
+        String newUrl = CoreUtils.appendQueryParams(url, queryParamMap);
         if (newUrl != null) {
             url = newUrl;
         }
@@ -591,11 +552,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -623,11 +580,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -635,12 +588,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
     @Override
     public HttpBinJSON getAnythingWithEncoded(String uri, String a, int b) {
         String url = uri + "/" + "anything";
-        // Append non-null query parameters
-        String newUrl;
         LinkedHashMap<String, Object> queryParamMap = new LinkedHashMap<>();
-        queryParamMap.put("a", a);
+        queryParamMap.put(UriEscapers.QUERY_ESCAPER.escape("a"), a);
         queryParamMap.put("b", b);
-        newUrl = CoreUtils.appendQueryParams(url, queryParamMap);
+        String newUrl = CoreUtils.appendQueryParams(url, queryParamMap);
         if (newUrl != null) {
             url = newUrl;
         }
@@ -663,11 +614,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -693,11 +640,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -723,11 +666,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -753,11 +692,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -767,6 +702,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         String url = uri + "/" + "put";
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri(url);
+        httpRequest.getHeaders().add(HttpHeaderName.CONTENT_TYPE, String.valueOf("application/json"));
         httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
         if (body != null) {
             httpRequest.setBody(BinaryData.fromBytes(body));
@@ -783,11 +719,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -797,6 +729,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         String url = uri + "/" + "put";
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri(url);
+        httpRequest.getHeaders().add(HttpHeaderName.CONTENT_TYPE, String.valueOf("application/json; charset=utf-8"));
         httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/octet-stream");
         if (body != null) {
             httpRequest.setBody(BinaryData.fromString(body));
@@ -813,11 +746,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -827,6 +756,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         String url = uri + "/" + "put";
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri(url);
+        httpRequest.getHeaders().add(HttpHeaderName.CONTENT_TYPE, String.valueOf("application/octet-stream"));
         httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/octet-stream");
         if (body != null) {
             httpRequest.setBody(BinaryData.fromString(body));
@@ -857,6 +787,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         String url = uri + "/" + "put";
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri(url);
+        httpRequest.getHeaders().add(HttpHeaderName.CONTENT_TYPE, String.valueOf("application/octet-stream"));
         httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/octet-stream");
         if (body != null) {
             httpRequest.setBody(BinaryData.fromBytes(body));
@@ -873,11 +804,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -933,11 +860,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -963,11 +886,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -993,11 +912,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1023,11 +938,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1062,11 +973,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1074,11 +981,11 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
     @Override
     public HttpBinJSON get1(String uri, String queryParam) {
         String url = uri + "/" + "anything";
-        // Append non-null query parameters
-        String newUrl;
         LinkedHashMap<String, Object> queryParamMap = new LinkedHashMap<>();
+        queryParamMap.put("constantParam1", "constantValue1");
+        queryParamMap.put("constantParam2", "constantValue2");
         queryParamMap.put(UriEscapers.QUERY_ESCAPER.escape("variableParam"), UriEscapers.QUERY_ESCAPER.escape(queryParam));
-        newUrl = CoreUtils.appendQueryParams(url, queryParamMap);
+        String newUrl = CoreUtils.appendQueryParams(url, queryParamMap);
         if (newUrl != null) {
             url = newUrl;
         }
@@ -1101,11 +1008,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1113,11 +1016,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
     @Override
     public HttpBinJSON get2(String uri, String queryParam) {
         String url = uri + "/" + "anything";
-        // Append non-null query parameters
-        String newUrl;
         LinkedHashMap<String, Object> queryParamMap = new LinkedHashMap<>();
-        queryParamMap.put(UriEscapers.QUERY_ESCAPER.escape("param"), UriEscapers.QUERY_ESCAPER.escape(queryParam));
-        newUrl = CoreUtils.appendQueryParams(url, queryParamMap);
+        queryParamMap.put("param", Arrays.stream("constantValue1;constantValue2".split(";")).collect(Collectors.toList()));
+        String newUrl = CoreUtils.appendQueryParams(url, queryParamMap);
         if (newUrl != null) {
             url = newUrl;
         }
@@ -1140,11 +1041,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1152,11 +1049,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
     @Override
     public HttpBinJSON get3(String uri, String queryParam) {
         String url = uri + "/" + "anything";
-        // Append non-null query parameters
-        String newUrl;
         LinkedHashMap<String, Object> queryParamMap = new LinkedHashMap<>();
-        queryParamMap.put(UriEscapers.QUERY_ESCAPER.escape("param"), UriEscapers.QUERY_ESCAPER.escape(queryParam));
-        newUrl = CoreUtils.appendQueryParams(url, queryParamMap);
+        queryParamMap.put("param", Arrays.stream("constantValue1,constantValue2;constantValue3".split(";")).collect(Collectors.toList()));
+        String newUrl = CoreUtils.appendQueryParams(url, queryParamMap);
         if (newUrl != null) {
             url = newUrl;
         }
@@ -1179,11 +1074,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1191,6 +1082,13 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
     @Override
     public HttpBinJSON get4(String uri) {
         String url = uri + "/" + "anything";
+        LinkedHashMap<String, Object> queryParamMap = new LinkedHashMap<>();
+        queryParamMap.put("constantParam1", "");
+        queryParamMap.put("constantParam2", null);
+        String newUrl = CoreUtils.appendQueryParams(url, queryParamMap);
+        if (newUrl != null) {
+            url = newUrl;
+        }
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url);
         // Send the request through the httpPipeline
@@ -1210,11 +1108,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1222,6 +1116,12 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
     @Override
     public HttpBinJSON get5(String uri) {
         String url = uri + "/" + "anything";
+        LinkedHashMap<String, Object> queryParamMap = new LinkedHashMap<>();
+        queryParamMap.put("constantParam1", "some=value");
+        String newUrl = CoreUtils.appendQueryParams(url, queryParamMap);
+        if (newUrl != null) {
+            url = newUrl;
+        }
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url);
         // Send the request through the httpPipeline
@@ -1241,11 +1141,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1253,6 +1149,11 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
     @Override
     public HttpBinJSON get6(String uri) {
         String url = uri + "/" + "anything";
+        LinkedHashMap<String, Object> queryParamMap = new LinkedHashMap<>();
+        String newUrl = CoreUtils.appendQueryParams(url, queryParamMap);
+        if (newUrl != null) {
+            url = newUrl;
+        }
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url);
         // Send the request through the httpPipeline
@@ -1272,11 +1173,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1284,6 +1181,11 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
     @Override
     public HttpBinJSON get7(String uri) {
         String url = uri + "/" + "anything";
+        LinkedHashMap<String, Object> queryParamMap = new LinkedHashMap<>();
+        String newUrl = CoreUtils.appendQueryParams(url, queryParamMap);
+        if (newUrl != null) {
+            url = newUrl;
+        }
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url);
         // Send the request through the httpPipeline
@@ -1303,11 +1205,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1324,11 +1222,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
     }
 
@@ -1460,11 +1354,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1481,11 +1371,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -1501,11 +1387,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return null;
     }
 
@@ -1522,11 +1404,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
     }
 
@@ -1543,11 +1421,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
     }
 
@@ -1564,11 +1438,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return expectedResponse;
     }
 
@@ -1585,11 +1455,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -1621,11 +1487,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1657,11 +1519,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1692,11 +1550,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1727,11 +1581,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1762,11 +1612,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1797,11 +1643,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1832,11 +1674,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1867,11 +1705,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1904,11 +1738,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1939,11 +1769,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -1953,6 +1779,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         String url = uri + "/" + "anything";
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url);
+        httpRequest.getHeaders().add(HttpHeaderName.fromString("MyHeader"), String.valueOf("MyHeaderValue")).add(new HttpHeader(HttpHeaderName.fromString("MyOtherHeader"), Arrays.asList("My", "Header", "Value")));
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
@@ -1970,11 +1797,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -2005,11 +1828,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -2036,11 +1855,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
     }
 
@@ -2052,11 +1867,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url);
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -2072,11 +1883,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -2087,11 +1894,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url);
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -2107,11 +1910,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -2122,11 +1921,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url);
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -2142,11 +1937,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -2157,11 +1948,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url);
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -2177,11 +1964,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -2241,11 +2024,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        try {
-            networkResponse.close();
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        networkResponse.close();
         return (io.clientcore.core.models.binarydata.BinaryData) result;
     }
 
@@ -2289,7 +2068,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
      * @param serializer The serializer to use.
      * @param returnType The type of the ParameterizedType return value.
      * @return The decoded value.
-     * @throws IOException If the deserialization fails.
+     * @throws CoreException If the deserialization fails.
      */
     private static Object decodeNetworkResponse(BinaryData data, ObjectSerializer serializer, ParameterizedType returnType) {
         if (data == null) {
@@ -2305,7 +2084,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             }
             return serializer.deserializeFromBytes(data.toBytes(), token);
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+            throw LOGGER.logThrowableAsError(CoreException.from(e));
         }
     }
 }
