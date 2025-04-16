@@ -16,6 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -266,6 +267,59 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
                 }
             }
         });
+    }
+
+    public void invoke(final InvocationContext context) {
+        if (proxyTaskGroupWrapper.isActive()) {
+            proxyTaskGroupWrapper.taskGroup().invokeIntern(context, true, null);
+        } else {
+            Set<String> processedKeys = runBeforeGroupInvoke(null);
+            if (proxyTaskGroupWrapper.isActive()) {
+                // If proxy got activated after 'runBeforeGroupInvoke()' stage due to the addition of direct
+                // 'postRunDependent's then delegate group invocation to proxy group.
+                //
+                proxyTaskGroupWrapper.taskGroup().invokeIntern(context, true, processedKeys);
+            } else {
+                invokeIntern(context, false, null);
+            }
+        }
+    }
+
+    private void invokeIntern(InvocationContext context, boolean shouldRunBeforeGroupInvoke, Set<String> skipBeforeGroupInvoke) {
+        if (!isPreparer()) {
+            throw new IllegalStateException("invokeIntern(cxt) can be called only from root TaskGroup");
+        }
+        this.taskGroupTerminateOnErrorStrategy = context.terminateOnErrorStrategy();
+        if (shouldRunBeforeGroupInvoke) {
+            // Prepare tasks and queue the ready tasks (terminal tasks with no dependencies)
+            //
+            this.runBeforeGroupInvoke(skipBeforeGroupInvoke);
+        }
+        // Runs the ready tasks concurrently
+        //
+        this.invokeReadyTasks(context);
+    }
+
+    private void invokeReadyTasks(InvocationContext context) {
+        TaskGroupEntry<TaskItem> readyTaskEntry = super.getNext();
+        final List<CompletableFuture> observables = new ArrayList<>();
+        // Enumerate the ready tasks (those with dependencies resolved) and kickoff them concurrently
+        //
+        while (readyTaskEntry != null) {
+            final TaskGroupEntry<TaskItem> currentEntry = readyTaskEntry;
+            final TaskItem currentTaskItem = currentEntry.data();
+            if (currentTaskItem instanceof ProxyTaskItem) {
+                observables.add(invokeAfterPostRun(currentEntry, context));
+            } else {
+                observables.add(invokeTask(currentEntry, context));
+            }
+            readyTaskEntry = super.getNext();
+        }
+    }
+
+    private CompletableFuture invokeAfterPostRun(TaskGroupEntry<TaskItem> currentEntry, InvocationContext context) {
+        // TODO
+        throw new UnsupportedOperationException("method [invokeAfterPostRun] not implemented in class [com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup]");
     }
 
     /**
