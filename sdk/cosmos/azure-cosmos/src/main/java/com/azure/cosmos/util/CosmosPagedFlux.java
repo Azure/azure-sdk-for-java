@@ -27,13 +27,37 @@ import java.util.function.Consumer;
  * @see CosmosPagedFluxOptions
  * @see FeedResponse
  */
-public abstract class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, FeedResponse<T>> {
+public class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, FeedResponse<T>> {
     // Ensure there can only be package-internal implementations
     CosmosPagedFlux() {}
 
-    public abstract CosmosPagedFlux<T> handle(Consumer<FeedResponse<T>> newFeedResponseConsumer);
+    @Override
+    public Flux<FeedResponse<T>> byPage() {
+        throw new UnsupportedOperationException("Has to be overridden in child classes.");
+    }
 
-    protected abstract CosmosPagedFlux<T> withDefaultPageSize(int pageSize);
+    @Override
+    public Flux<FeedResponse<T>> byPage(String s) {
+        throw new UnsupportedOperationException("Has to be overridden in child classes.");
+    }
+
+    @Override
+    public Flux<FeedResponse<T>> byPage(int i) {
+        throw new UnsupportedOperationException("Has to be overridden in child classes.");
+    }
+
+    @Override
+    public Flux<FeedResponse<T>> byPage(String s, int i) {
+        throw new UnsupportedOperationException("Has to be overridden in child classes.");
+    }
+
+    public CosmosPagedFlux<T> handle(Consumer<FeedResponse<T>> newFeedResponseConsumer) {
+        throw new UnsupportedOperationException("Has to be overridden in child classes.");
+    }
+
+    CosmosPagedFlux<T> withDefaultPageSize(int pageSize) {
+        throw new UnsupportedOperationException("Has to be overridden in child classes.");
+    }
 
     /**
      * Subscribe to consume all items of type {@code T} in the sequence respectively. This is recommended for most

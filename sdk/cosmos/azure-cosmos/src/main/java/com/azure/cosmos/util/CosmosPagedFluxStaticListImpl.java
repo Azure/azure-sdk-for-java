@@ -126,7 +126,7 @@ final class CosmosPagedFluxStaticListImpl<T> extends CosmosPagedFlux<T> {
     }
 
     @Override
-    protected CosmosPagedFlux<T> withDefaultPageSize(int pageSize) {
+    CosmosPagedFlux<T> withDefaultPageSize(int pageSize) {
         return new CosmosPagedFluxStaticListImpl<>(this.items, this.isChangeFeed, this.feedResponseConsumer, pageSize);
     }
 }

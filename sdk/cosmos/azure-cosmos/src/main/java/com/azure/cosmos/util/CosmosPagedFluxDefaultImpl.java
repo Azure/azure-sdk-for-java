@@ -5,7 +5,6 @@ package com.azure.cosmos.util;
 
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
-import com.azure.core.util.IterableStream;
 import com.azure.core.util.paging.ContinuablePagedFlux;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
@@ -13,7 +12,6 @@ import com.azure.cosmos.implementation.DiagnosticsProvider;
 import com.azure.cosmos.implementation.FeedOperationState;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.models.FeedResponse;
-import reactor.core.CoreSubscriber;
 import reactor.core.publisher.Flux;
 
 import java.time.Duration;
@@ -80,7 +78,7 @@ final class CosmosPagedFluxDefaultImpl<T> extends CosmosPagedFlux<T> {
     }
 
     @Override
-    protected CosmosPagedFlux<T> withDefaultPageSize(int pageSize) {
+    CosmosPagedFlux<T> withDefaultPageSize(int pageSize) {
         return new CosmosPagedFluxDefaultImpl<>(this.optionsFluxFunction, this.feedResponseConsumer, pageSize);
     }
 
