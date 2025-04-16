@@ -80,7 +80,7 @@ public final class TumblingWindowTrigger extends Trigger {
      * 
      * @return the innerTypeProperties value.
      */
-    private TumblingWindowTriggerTypeProperties innerTypeProperties() {
+    TumblingWindowTriggerTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

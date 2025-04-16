@@ -29,7 +29,6 @@ import java.util.stream.Stream;
 import static io.clientcore.core.instrumentation.logging.InstrumentationTestUtils.createInvalidInstrumentationContext;
 import static io.clientcore.core.instrumentation.logging.InstrumentationTestUtils.createRandomInstrumentationContext;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -269,13 +268,13 @@ public class ClientLoggerTests {
         String message = "hello world";
         ClientLogger logger = setupLogLevelAndGetLogger(logLevel);
         if (logLevel.equals(LogLevel.ERROR)) {
-            logger.atError().log(message, exception);
+            logger.atError().setThrowable(exception).log(message);
         } else if (logLevel.equals(LogLevel.WARNING)) {
-            logger.atWarning().log(message, exception);
+            logger.atWarning().setThrowable(exception).log(message);
         } else if (logLevel.equals(LogLevel.INFORMATIONAL)) {
-            logger.atInfo().log(message, exception);
+            logger.atInfo().setThrowable(exception).log(message);
         } else if (logLevel.equals(LogLevel.VERBOSE)) {
-            logger.atVerbose().log(message, exception);
+            logger.atVerbose().setThrowable(exception).log(message);
         } else {
             throw new IllegalArgumentException("Unknown log level: " + logLevel);
         }
@@ -289,18 +288,7 @@ public class ClientLoggerTests {
     public void logShouldEvaluateSupplierWithNullException(LogLevel logLevel) {
         String message = "hello world";
         ClientLogger logger = setupLogLevelAndGetLogger(logLevel);
-        if (logLevel.equals(LogLevel.ERROR)) {
-            logger.atError().log(message, null);
-        } else if (logLevel.equals(LogLevel.WARNING)) {
-            logger.atWarning().log(message, null);
-        } else if (logLevel.equals(LogLevel.INFORMATIONAL)) {
-            logger.atInfo().log(message, null);
-        } else if (logLevel.equals(LogLevel.VERBOSE)) {
-            logger.atVerbose().log(message, null);
-        } else {
-            throw new IllegalArgumentException("Unknown log level: " + logLevel);
-        }
-
+        logger.atLevel(logLevel).setThrowable(null).log(message);
         String logValues = byteArraySteamToString(logCaptureStream);
         assertTrue(logValues.contains(message));
     }
@@ -580,7 +568,8 @@ public class ClientLoggerTests {
         logger.atWarning()
             .addKeyValue("connectionId", "foo")
             .addKeyValue("linkName", "bar")
-            .log(String.format("Don't format strings when writing logs, %s!", "please"), runtimeException);
+            .setThrowable(runtimeException)
+            .log(String.format("Don't format strings when writing logs, %s!", "please"));
 
         Map<String, Object> expectedMessage = new HashMap<>();
         expectedMessage.put("message", "Don't format strings when writing logs, please!");
@@ -610,7 +599,8 @@ public class ClientLoggerTests {
         logger.atWarning()
             .addKeyValue("connectionId", "foo")
             .addKeyValue("linkName", "bar")
-            .log("hello world", ioException);
+            .setThrowable(ioException)
+            .log("hello world");
 
         Map<String, Object> expectedMessage = new HashMap<>();
         expectedMessage.put("message", "hello world");
@@ -640,7 +630,8 @@ public class ClientLoggerTests {
         logger.atWarning()
             .addKeyValue("connection\tId", "foo")
             .addKeyValue("linkName", "\rbar")
-            .log("hello \"world\"", runtimeException);
+            .setThrowable(runtimeException)
+            .log("hello \"world\"");
 
         Map<String, Object> expectedMessage = new HashMap<>();
         expectedMessage.put("message", "hello \"world\"");
@@ -667,11 +658,11 @@ public class ClientLoggerTests {
         String exceptionMessage = "An exception message";
         RuntimeException runtimeException = createIllegalStateException(exceptionMessage);
 
-        assertSame(runtimeException,
-            logger.atWarning()
-                .addKeyValue("connectionId", "foo")
-                .addKeyValue("linkName", "bar")
-                .log(null, runtimeException));
+        logger.atWarning()
+            .addKeyValue("connectionId", "foo")
+            .addKeyValue("linkName", "bar")
+            .setThrowable(runtimeException)
+            .log();
 
         Map<String, Object> expectedMessage = new HashMap<>();
         expectedMessage.put("connectionId", "foo");
@@ -697,11 +688,11 @@ public class ClientLoggerTests {
         String exceptionMessage = "An exception message";
         IOException ioException = createIOException(exceptionMessage);
 
-        assertSame(ioException,
-            logger.atWarning()
-                .addKeyValue("connectionId", "foo")
-                .addKeyValue("linkName", "bar")
-                .log(null, ioException));
+        logger.atWarning()
+            .addKeyValue("connectionId", "foo")
+            .addKeyValue("linkName", "bar")
+            .setThrowable(ioException)
+            .log();
 
         Map<String, Object> expectedMessage = new HashMap<>();
         expectedMessage.put("connectionId", "foo");
@@ -722,7 +713,7 @@ public class ClientLoggerTests {
         String message = "A log message";
         ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE);
         String expectedStackTrace = stackTraceToString(exception);
-        logger.atVerbose().log(message, exception);
+        logger.atVerbose().setThrowable(exception).log(message);
 
         Map<String, Object> expectedMessage = new HashMap<>();
         expectedMessage.put("message", message);
@@ -803,7 +794,7 @@ public class ClientLoggerTests {
             return;
         }
 
-        logger.atLevel(logLevel).log(logMessage, runtimeException);
+        logger.atLevel(logLevel).setThrowable(runtimeException).log(logMessage);
     }
 
     private void logMessage(ClientLogger logger, LogLevel logLevel, String logMessage) {

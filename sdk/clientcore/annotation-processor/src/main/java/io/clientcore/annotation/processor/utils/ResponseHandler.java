@@ -11,6 +11,7 @@ import com.github.javaparser.ast.stmt.ReturnStmt;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.implementation.TypeUtil;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.SerializationFormat;
 import io.clientcore.core.utils.CoreUtils;
@@ -21,7 +22,6 @@ import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UncheckedIOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -262,9 +262,8 @@ public final class ResponseHandler {
 
     private static void closeResponse(BlockStmt body) {
         body.tryAddImportToParentCompilationUnit(IOException.class);
-        body.tryAddImportToParentCompilationUnit(UncheckedIOException.class);
-        body.addStatement(StaticJavaParser.parseStatement("try { networkResponse.close(); } catch (IOException e) { "
-            + "throw LOGGER.logThrowableAsError(new UncheckedIOException(e)); }"));
+        body.tryAddImportToParentCompilationUnit(CoreException.class);
+        body.addStatement(StaticJavaParser.parseStatement("networkResponse.close();"));
     }
 
     /**

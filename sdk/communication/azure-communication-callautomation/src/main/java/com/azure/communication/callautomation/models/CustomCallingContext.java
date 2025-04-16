@@ -12,6 +12,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -27,6 +28,8 @@ public final class CustomCallingContext implements JsonSerializable<CustomCallin
      * Creates an instance of CustomCallingContext class.
      */
     public CustomCallingContext() {
+        this.sipHeaders = new HashMap<String, String>();
+        this.voipHeaders = new HashMap<String, String>();
         this.logger = new ClientLogger(CustomCallingContext.class);
     }
 
@@ -78,13 +81,44 @@ public final class CustomCallingContext implements JsonSerializable<CustomCallin
      *
      * @param key custom context sip x header's key.
      * @param value custom context sip x header's value.
-     * @throws IllegalStateException If sipHeaders is null
      */
     public void addSipX(String key, String value) {
+        addSipX(key, value, SipHeaderPrefix.XMSCustom);
+    }
+
+    /**
+     * Add a custom context sip X header. The provided key is appended to 'X-MS-Custom-' in last.
+     *
+     * @param key custom context sip x header's key.
+     * @param value custom context sip x header's value.
+     * @param prefix The prefix to use for the header.
+     * @throws IllegalStateException If sipHeaders is null
+     */
+    public void addSipX(String key, String value, SipHeaderPrefix prefix) {
         if (sipHeaders == null) {
             throw logger.logExceptionAsError(new IllegalStateException("Cannot add sip header, SipHeaders is null."));
         }
-        sipHeaders.put("X-MS-Custom-" + key, value);
+        if (prefix == SipHeaderPrefix.X) {
+            sipHeaders.put("X-" + key, value);
+        } else {
+            sipHeaders.put("X-MS-Custom-" + key, value);
+        }
+    }
+
+    /**
+    * Type for SipHeaderPrefix.
+    * XMSCustom is the default prefix for custom headers.
+    */
+    public enum SipHeaderPrefix {
+        /**
+         * Use the generic "X-" prefix.
+         */
+        X,
+
+        /**
+         * Use the legacy "X-MS-Custom" prefix.
+         */
+        XMSCustom
     }
 
     /**

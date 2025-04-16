@@ -51,7 +51,7 @@ public final class OdbcTableDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private OdbcTableDatasetTypeProperties innerTypeProperties() {
+    OdbcTableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

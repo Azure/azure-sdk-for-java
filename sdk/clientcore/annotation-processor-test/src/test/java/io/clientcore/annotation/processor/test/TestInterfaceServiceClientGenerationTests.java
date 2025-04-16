@@ -6,28 +6,97 @@ package io.clientcore.annotation.processor.test;
 import io.clientcore.annotation.processor.test.implementation.TestInterfaceClientImpl;
 import io.clientcore.annotation.processor.test.implementation.models.Foo;
 import io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON;
+import io.clientcore.core.annotations.ServiceInterface;
+import io.clientcore.core.http.annotations.HostParam;
+import io.clientcore.core.http.annotations.HttpRequestInformation;
 import io.clientcore.core.http.client.HttpClient;
+import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.models.HttpMethod;
+import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.HttpResponseException;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.models.ServerSentEvent;
+import io.clientcore.core.http.models.ServerSentEventListener;
+import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
+import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
+import io.clientcore.core.implementation.http.ContentType;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.serialization.ObjectSerializer;
+import io.clientcore.core.serialization.SerializationFormat;
+import io.clientcore.core.shared.HttpClientTests;
 import io.clientcore.core.shared.HttpClientTestsServer;
 import io.clientcore.core.shared.LocalTestServer;
+import io.clientcore.core.utils.UriBuilder;
 import io.clientcore.http.okhttp3.OkHttpHttpClientProvider;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Type;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
+import java.time.Duration;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.BiConsumer;
+import java.util.stream.Stream;
 import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
+import static io.clientcore.core.implementation.utils.ImplUtils.bomAwareToString;
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTimeout;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class TestInterfaceServiceClientGenerationTests {
     private static LocalTestServer server;
+    private static final byte[] EXPECTED_RETURN_BYTES = "Hello World!".getBytes(StandardCharsets.UTF_8);
+    private static final ClientLogger LOGGER = new ClientLogger(HttpClientTests.class);
+    private static final String PLAIN_RESPONSE = "plainBytesNoHeader";
+    private static final String HEADER_RESPONSE = "plainBytesWithHeader";
+    private static final String INVALID_HEADER_RESPONSE = "plainBytesInvalidHeader";
+    private static final String UTF_8_BOM_RESPONSE = "utf8BomBytes";
+    private static final String UTF_16BE_BOM_RESPONSE = "utf16BeBomBytes";
+    private static final String UTF_16LE_BOM_RESPONSE = "utf16LeBomBytes";
+    private static final String UTF_32BE_BOM_RESPONSE = "utf32BeBomBytes";
+    private static final String UTF_32LE_BOM_RESPONSE = "utf32LeBomBytes";
+    private static final String BOM_WITH_DIFFERENT_HEADER = "bomBytesWithDifferentHeader";
+    private static final String ECHO_RESPONSE = "echo";
+
     @BeforeAll
     public static void startTestServer() {
         server = HttpClientTestsServer.getHttpClientTestsServer();
@@ -47,26 +116,26 @@ public class TestInterfaceServiceClientGenerationTests {
         HttpClient client = new LocalHttpClient();
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
-        assertNotNull(testInterface);
+        TestInterfaceClientImpl.TestInterfaceClientService service
+            = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        assertNotNull(service);
     }
 
     @Test
     public void testGetFoo() {
         String wireValue
-            =
-            "{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"},\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}";
+            = "{\"bar\":\"hello.world\",\"baz\":[\"hello\",\"hello.world\"],\"qux\":{\"a.b\":\"c.d\",\"bar.a\":\"ttyy\",\"bar.b\":\"uuzz\",\"hello\":\"world\"},\"additionalProperties\":{\"bar\":\"baz\",\"a.b\":\"c.d\",\"properties.bar\":\"barbar\"}}";
 
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request ->
-            new MockHttpResponse(request, 200, BinaryData.fromString(wireValue))).build();
+        HttpPipeline pipeline = new HttpPipelineBuilder()
+            .httpClient(request -> new MockHttpResponse(request, 200, BinaryData.fromString(wireValue)))
+            .build();
 
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
-        assertNotNull(testInterface);
+        TestInterfaceClientImpl.TestInterfaceClientService service
+            = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        assertNotNull(service);
 
         // test getFoo method
-        Response<Foo> response = testInterface.getFoo("key", "label", "sync-token-value");
+        Response<Foo> response = service.getFoo("key", "label", "sync-token-value");
         assertNotNull(response);
         assertEquals(200, response.getStatusCode());
 
@@ -82,10 +151,9 @@ public class TestInterfaceServiceClientGenerationTests {
 
     @Test
     public void requestWithByteArrayReturnType() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
-        final byte[] result = testInterface.getByteArray(getServerUri(false));
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
+        final byte[] result = service.getByteArray(getServerUri(false));
 
         assertNotNull(result);
         assertEquals(100, result.length);
@@ -95,14 +163,11 @@ public class TestInterfaceServiceClientGenerationTests {
      * Tests that the response body is correctly returned as a byte array.
      */
     @Test
-    @Disabled("Disabled until we confirm the behavior of the HostParam annotation")
+    @Disabled("TODO https://github.com/Azure/azure-sdk-for-java/issues/44298")
     public void requestWithByteArrayReturnTypeAndParameterizedHostAndPath() {
-        //https://github.com/Azure/azure-sdk-for-java/issues/44298
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
-        final byte[] result
-            = testInterface.getByteArray("http", "localhost:" + server.getHttpPort(), 100);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
+        final byte[] result = service.getByteArray("http", "localhost:" + server.getHttpPort(), 100);
 
         assertNotNull(result);
         assertEquals(result.length, 100);
@@ -113,18 +178,16 @@ public class TestInterfaceServiceClientGenerationTests {
      */
     @Test
     public void getRequestWithNoReturn() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
-        assertDoesNotThrow(() -> testInterface.getNothing(getServerUri(false)));
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
+        assertDoesNotThrow(() -> service.getNothing(getServerUri(false)));
     }
 
     @Test
     public void getRequestWithAnything() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
-        final HttpBinJSON json = testInterface.getAnything(getServerUri(false));
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
+        final HttpBinJSON json = service.getAnything(getServerUri(false));
 
         assertNotNull(json);
         assertMatchWithHttpOrHttps("localhost/anything", json.uri());
@@ -132,10 +195,9 @@ public class TestInterfaceServiceClientGenerationTests {
 
     @Test
     public void getRequestWithAnythingWithPlus() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
-        final HttpBinJSON json = testInterface.getAnythingWithPlus(getServerUri(false));
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
+        final HttpBinJSON json = service.getAnythingWithPlus(getServerUri(false));
 
         assertNotNull(json);
         assertMatchWithHttpOrHttps("localhost/anything/with+plus", json.uri());
@@ -143,11 +205,9 @@ public class TestInterfaceServiceClientGenerationTests {
 
     @Test
     public void getRequestWithAnythingWithPathParam() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
-        final HttpBinJSON json
-            = testInterface.getAnythingWithPathParam(getServerUri(false), "withpathparam");
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
+        final HttpBinJSON json = service.getAnythingWithPathParam(getServerUri(false), "withpathparam");
 
         assertNotNull(json);
         assertMatchWithHttpOrHttps("localhost/anything/withpathparam", json.uri());
@@ -155,11 +215,9 @@ public class TestInterfaceServiceClientGenerationTests {
 
     @Test
     public void getRequestWithAnythingWithPathParamWithSpace() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
-        final HttpBinJSON json
-            = testInterface.getAnythingWithPathParam(getServerUri(false), "with path param");
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
+        final HttpBinJSON json = service.getAnythingWithPathParam(getServerUri(false), "with path param");
 
         assertNotNull(json);
         assertMatchWithHttpOrHttps("localhost/anything/with path param", json.uri());
@@ -167,11 +225,9 @@ public class TestInterfaceServiceClientGenerationTests {
 
     @Test
     public void getRequestWithAnythingWithPathParamWithPlus() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
-        final HttpBinJSON json
-            = testInterface.getAnythingWithPathParam(getServerUri(false), "with+path+param");
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
+        final HttpBinJSON json = service.getAnythingWithPathParam(getServerUri(false), "with+path+param");
 
         assertNotNull(json);
         assertMatchWithHttpOrHttps("localhost/anything/with+path+param", json.uri());
@@ -179,11 +235,9 @@ public class TestInterfaceServiceClientGenerationTests {
 
     @Test
     public void getRequestWithAnythingWithEncodedPathParam() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
-        final HttpBinJSON json
-            = testInterface.getAnythingWithEncodedPathParam(getServerUri(false), "withpathparam");
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
+        final HttpBinJSON json = service.getAnythingWithEncodedPathParam(getServerUri(false), "withpathparam");
 
         assertNotNull(json);
         assertMatchWithHttpOrHttps("localhost/anything/withpathparam", json.uri());
@@ -191,11 +245,10 @@ public class TestInterfaceServiceClientGenerationTests {
 
     @Test
     public void getRequestWithAnythingWithEncodedPathParamWithPercent20() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
         final HttpBinJSON json
-            = testInterface.getAnythingWithEncodedPathParam(getServerUri(false), "with%20path%20param");
+            = service.getAnythingWithEncodedPathParam(getServerUri(false), "with%20path%20param");
 
         assertNotNull(json);
         assertMatchWithHttpOrHttps("localhost/anything/with path param", json.uri());
@@ -203,11 +256,9 @@ public class TestInterfaceServiceClientGenerationTests {
 
     @Test
     public void getRequestWithAnythingWithEncodedPathParamWithPlus() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
-        final HttpBinJSON json
-            = testInterface.getAnythingWithEncodedPathParam(getServerUri(false), "with+path+param");
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
+        final HttpBinJSON json = service.getAnythingWithEncodedPathParam(getServerUri(false), "with+path+param");
 
         assertNotNull(json);
         assertMatchWithHttpOrHttps("localhost/anything/with+path+param", json.uri());
@@ -215,11 +266,9 @@ public class TestInterfaceServiceClientGenerationTests {
 
     @Test
     public void getRequestWithQueryParametersAndAnything() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
-        final HttpBinJSON json
-            = testInterface.getAnything(getServerUri(false), "A", 15);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
+        final HttpBinJSON json = service.getAnything(getServerUri(false), "A", 15);
 
         assertNotNull(json);
         assertMatchWithHttpOrHttps("localhost/anything?a=A&b=15", json.uri());
@@ -227,11 +276,9 @@ public class TestInterfaceServiceClientGenerationTests {
 
     @Test
     public void getRequestWithQueryParametersAndAnythingWithPercent20() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
-        final HttpBinJSON json
-            = testInterface.getAnything(getServerUri(false), "A%20Z", 15);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
+        final HttpBinJSON json = service.getAnything(getServerUri(false), "A%20Z", 15);
 
         assertNotNull(json);
         assertMatchWithHttpOrHttps("localhost/anything?a=A%2520Z&b=15", json.uri());
@@ -239,11 +286,9 @@ public class TestInterfaceServiceClientGenerationTests {
 
     @Test
     public void getRequestWithQueryParametersAndAnythingWithEncodedWithPercent20() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
-        final HttpBinJSON json
-            = testInterface.getAnythingWithEncoded(getServerUri(false), "x%20y", 15);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
+        final HttpBinJSON json = service.getAnythingWithEncoded(getServerUri(false), "x%20y", 15);
 
         assertNotNull(json);
         assertMatchWithHttpOrHttps("localhost/anything?a=x y&b=15", json.uri());
@@ -251,11 +296,9 @@ public class TestInterfaceServiceClientGenerationTests {
 
     @Test
     public void getRequestWithNullQueryParameter() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
-        final HttpBinJSON json
-            = testInterface.getAnything(getServerUri(false), null, 15);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
+        final HttpBinJSON json = service.getAnything(getServerUri(false), null, 15);
 
         assertNotNull(json);
         assertMatchWithHttpOrHttps("localhost/anything?b=15", json.uri());
@@ -263,11 +306,10 @@ public class TestInterfaceServiceClientGenerationTests {
 
     @Test
     public void service19PutWithHeaderApplicationOctetStreamContentTypeAndStringBodyWithEmptyBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
-        Response<HttpBinJSON> response = testInterface
-            .putWithHeaderApplicationOctetStreamContentTypeAndStringBody(getServerUri(false), "");
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
+        Response<HttpBinJSON> response
+            = service.putWithHeaderApplicationOctetStreamContentTypeAndStringBody(getServerUri(false), "");
         assertNotNull(response);
         assertEquals("application/octet-stream",
             response.getRequest().getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
@@ -277,113 +319,104 @@ public class TestInterfaceServiceClientGenerationTests {
 
     @Test
     public void service19PutWithHeaderApplicationJsonContentTypeAndByteArrayBodyWithEmptyBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
 
-        final HttpBinJSON result = testInterface
-            .putWithHeaderApplicationJsonContentTypeAndByteArrayBody(getServerUri(false), new byte[0]);
+        final HttpBinJSON result
+            = service.putWithHeaderApplicationJsonContentTypeAndByteArrayBody(getServerUri(false), new byte[0]);
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithNoContentTypeAndStringBodyWithNullBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
 
-        final HttpBinJSON result = testInterface.putWithNoContentTypeAndStringBody(getServerUri(false), null);
+        final HttpBinJSON result = service.putWithNoContentTypeAndStringBody(getServerUri(false), null);
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithNoContentTypeAndStringBodyWithEmptyBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
 
-        final HttpBinJSON result = testInterface.putWithNoContentTypeAndStringBody(getServerUri(false), "");
+        final HttpBinJSON result = service.putWithNoContentTypeAndStringBody(getServerUri(false), "");
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithNoContentTypeAndStringBodyWithNonEmptyBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
 
-        final HttpBinJSON result = testInterface.putWithNoContentTypeAndStringBody(getServerUri(false), "hello");
+        final HttpBinJSON result = service.putWithNoContentTypeAndStringBody(getServerUri(false), "hello");
 
         assertEquals("hello", result.data());
     }
 
     @Test
     public void service19PutWithNoContentTypeAndByteArrayBodyWithNullBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
 
-        final HttpBinJSON result = testInterface.putWithNoContentTypeAndByteArrayBody(getServerUri(false), null);
+        final HttpBinJSON result = service.putWithNoContentTypeAndByteArrayBody(getServerUri(false), null);
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithNoContentTypeAndByteArrayBodyWithEmptyBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
 
-        final HttpBinJSON result = testInterface.putWithNoContentTypeAndByteArrayBody(getServerUri(false), new byte[0]);
+        final HttpBinJSON result = service.putWithNoContentTypeAndByteArrayBody(getServerUri(false), new byte[0]);
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithNoContentTypeAndByteArrayBodyWithNonEmptyBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
 
-        final HttpBinJSON result = testInterface.putWithNoContentTypeAndByteArrayBody(getServerUri(false),
-            new byte[] { 0, 1, 2, 3, 4 });
+        final HttpBinJSON result
+            = service.putWithNoContentTypeAndByteArrayBody(getServerUri(false), new byte[] { 0, 1, 2, 3, 4 });
 
         assertEquals(new String(new byte[] { 0, 1, 2, 3, 4 }), result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationJsonContentTypeAndStringBodyWithNullBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
 
-        final HttpBinJSON result = testInterface
-            .putWithHeaderApplicationJsonContentTypeAndStringBody(getServerUri(false), null);
+        final HttpBinJSON result
+            = service.putWithHeaderApplicationJsonContentTypeAndStringBody(getServerUri(false), null);
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationJsonContentTypeAndStringBodyWithEmptyBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
 
-        final HttpBinJSON result = testInterface.putWithHeaderApplicationJsonContentTypeAndStringBody(getServerUri(false), "");
+        final HttpBinJSON result
+            = service.putWithHeaderApplicationJsonContentTypeAndStringBody(getServerUri(false), "");
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationJsonContentTypeAndStringBodyWithNonEmptyBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
 
-        final HttpBinJSON result = testInterface
+        final HttpBinJSON result = service
             .putWithHeaderApplicationJsonContentTypeAndStringBody(getServerUri(false), "soups and stuff");
 
         assertEquals("soups and stuff", result.data());
@@ -391,60 +424,55 @@ public class TestInterfaceServiceClientGenerationTests {
 
     @Test
     public void service19PutWithHeaderApplicationJsonContentTypeAndByteArrayBodyWithNullBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
 
-        final HttpBinJSON result = testInterface
-            .putWithHeaderApplicationJsonContentTypeAndByteArrayBody(getServerUri(false), null);
+        final HttpBinJSON result
+            = service.putWithHeaderApplicationJsonContentTypeAndByteArrayBody(getServerUri(false), null);
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationJsonContentTypeAndByteArrayBodyWithNonEmptyBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
         final byte[] requestBody = new byte[] { 0, 1, 2, 3, 4 };
 
-        final HttpBinJSON result = testInterface
-            .putWithHeaderApplicationJsonContentTypeAndByteArrayBody(getServerUri(false), requestBody);
+        final HttpBinJSON result
+            = service.putWithHeaderApplicationJsonContentTypeAndByteArrayBody(getServerUri(false), requestBody);
         String expected = new String(requestBody, StandardCharsets.UTF_8);
-        assertEquals( expected, result.data());
+        assertEquals(expected, result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationJsonContentTypeAndCharsetAndStringBodyWithNullBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
 
-        final HttpBinJSON result = testInterface
-            .putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(getServerUri(false), null);
+        final HttpBinJSON result
+            = service.putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(getServerUri(false), null);
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationJsonContentTypeAndCharsetAndStringBodyWithEmptyBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
 
-        final HttpBinJSON result = testInterface
-            .putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(getServerUri(false), "");
+        final HttpBinJSON result
+            = service.putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(getServerUri(false), "");
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationJsonContentTypeAndCharsetAndStringBodyWithNonEmptyBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
         String requestBody = "soups and stuff";
-        final HttpBinJSON result = testInterface
+        final HttpBinJSON result = service
             .putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(getServerUri(false), requestBody);
 
         assertEquals("soups and stuff", result.data());
@@ -452,51 +480,49 @@ public class TestInterfaceServiceClientGenerationTests {
 
     @Test
     public void service19PutWithHeaderApplicationOctetStreamContentTypeAndStringBodyWithNullBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
 
-        Response<HttpBinJSON> response = testInterface
-            .putWithHeaderApplicationOctetStreamContentTypeAndStringBody(getServerUri(false), null);
+        Response<HttpBinJSON> response
+            = service.putWithHeaderApplicationOctetStreamContentTypeAndStringBody(getServerUri(false), null);
         assertNotNull(response);
-        assertEquals("application/octet-stream", response.getRequest().getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
+        assertEquals("application/octet-stream",
+            response.getRequest().getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
 
         assertEquals("", response.getValue().data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationOctetStreamContentTypeAndStringBodyWithNonEmptyBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
 
-        final Response<HttpBinJSON> response = testInterface
+        final Response<HttpBinJSON> response = service
             .putWithHeaderApplicationOctetStreamContentTypeAndStringBody(getServerUri(false), "penguins");
         assertNotNull(response);
-        assertEquals("application/octet-stream", response.getRequest().getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
+        assertEquals("application/octet-stream",
+            response.getRequest().getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
 
         assertEquals("penguins", response.getValue().data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationOctetStreamContentTypeAndByteArrayBodyWithNullBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
 
-        final HttpBinJSON result = testInterface
-            .putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(getServerUri(false), null);
+        final HttpBinJSON result
+            = service.putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(getServerUri(false), null);
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithHeaderApplicationOctetStreamContentTypeAndByteArrayBodyWithEmptyBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
 
-        final HttpBinJSON result = testInterface
+        final HttpBinJSON result = service
             .putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(getServerUri(false), new byte[0]);
 
         assertEquals("", result.data());
@@ -504,11 +530,10 @@ public class TestInterfaceServiceClientGenerationTests {
 
     @Test
     public void service19PutWithHeaderApplicationOctetStreamContentTypeAndByteArrayBodyWithNonEmptyBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
 
-        final HttpBinJSON result = testInterface.putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(
+        final HttpBinJSON result = service.putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(
             getServerUri(false), new byte[] { 0, 1, 2, 3, 4 });
 
         assertEquals(new String(new byte[] { 0, 1, 2, 3, 4 }), result.data());
@@ -516,12 +541,11 @@ public class TestInterfaceServiceClientGenerationTests {
 
     @Test
     public void service19PutWithBodyParamApplicationJsonContentTypeAndStringBodyWithNullBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
 
-        final Response<HttpBinJSON> response = testInterface
-            .putWithBodyParamApplicationJsonContentTypeAndStringBody(getServerUri(false), null);
+        final Response<HttpBinJSON> response
+            = service.putWithBodyParamApplicationJsonContentTypeAndStringBody(getServerUri(false), null);
         assertNotNull(response);
         assertEquals("application/json", response.getRequest().getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
         assertEquals("", response.getValue().data());
@@ -529,12 +553,11 @@ public class TestInterfaceServiceClientGenerationTests {
 
     @Test
     public void service19PutWithBodyParamApplicationJsonContentTypeAndStringBodyWithEmptyBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
 
-        final Response<HttpBinJSON> response = testInterface
-            .putWithBodyParamApplicationJsonContentTypeAndStringBody(getServerUri(false), "");
+        final Response<HttpBinJSON> response
+            = service.putWithBodyParamApplicationJsonContentTypeAndStringBody(getServerUri(false), "");
         assertNotNull(response);
         assertEquals("application/json", response.getRequest().getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
         assertEquals("", response.getValue().data());
@@ -542,11 +565,10 @@ public class TestInterfaceServiceClientGenerationTests {
 
     @Test
     public void service19PutWithBodyParamApplicationJsonContentTypeAndStringBodyWithNonEmptyBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
 
-        final Response<HttpBinJSON> response = testInterface
+        final Response<HttpBinJSON> response = service
             .putWithBodyParamApplicationJsonContentTypeAndStringBody(getServerUri(false), "soups and stuff");
         assertNotNull(response);
         assertEquals("application/json", response.getRequest().getHeaders().getValue(HttpHeaderName.CONTENT_TYPE));
@@ -555,11 +577,10 @@ public class TestInterfaceServiceClientGenerationTests {
 
     @Test
     public void service19PutWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBodyWithNullBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
 
-        final HttpBinJSON result = testInterface
+        final HttpBinJSON result = service
             .putWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBody(getServerUri(false), null);
 
         assertEquals("", result.data());
@@ -567,23 +588,21 @@ public class TestInterfaceServiceClientGenerationTests {
 
     @Test
     public void service19PutWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBodyWithEmptyBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
 
-        final HttpBinJSON result = testInterface
-            .putWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBody(getServerUri(false), "");
+        final HttpBinJSON result
+            = service.putWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBody(getServerUri(false), "");
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBodyWithNonEmptyBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
 
-        final HttpBinJSON result = testInterface
+        final HttpBinJSON result = service
             .putWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBody(getServerUri(false), "soups and stuff");
 
         assertEquals("soups and stuff", result.data());
@@ -591,23 +610,21 @@ public class TestInterfaceServiceClientGenerationTests {
 
     @Test
     public void service19PutWithBodyParamApplicationJsonContentTypeAndByteArrayBodyWithNullBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
 
-        final HttpBinJSON result = testInterface
-            .putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(getServerUri(false), null);
+        final HttpBinJSON result
+            = service.putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(getServerUri(false), null);
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationJsonContentTypeAndByteArrayBodyWithEmptyBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
 
-        final HttpBinJSON result = testInterface
+        final HttpBinJSON result = service
             .putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(getServerUri(false), new byte[0]);
 
         assertEquals("", result.data());
@@ -615,47 +632,43 @@ public class TestInterfaceServiceClientGenerationTests {
 
     @Test
     public void service19PutWithBodyParamApplicationJsonContentTypeAndByteArrayBodyWithNonEmptyBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
 
-        final HttpBinJSON result = testInterface
-            .putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(getServerUri(false), new byte[] { 0, 1, 2, 3, 4 });
+        final HttpBinJSON result = service.putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(
+            getServerUri(false), new byte[] { 0, 1, 2, 3, 4 });
 
-        assertEquals( new String(new byte[] { 0, 1, 2, 3, 4 }), result.data());
+        assertEquals(new String(new byte[] { 0, 1, 2, 3, 4 }), result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationOctetStreamContentTypeAndStringBodyWithNullBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
 
-        final HttpBinJSON result = testInterface
-            .putWithBodyParamApplicationOctetStreamContentTypeAndStringBody(getServerUri(false), null);
+        final HttpBinJSON result
+            = service.putWithBodyParamApplicationOctetStreamContentTypeAndStringBody(getServerUri(false), null);
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationOctetStreamContentTypeAndStringBodyWithEmptyBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
 
-        final HttpBinJSON result = testInterface
-            .putWithBodyParamApplicationOctetStreamContentTypeAndStringBody(getServerUri(false), "");
+        final HttpBinJSON result
+            = service.putWithBodyParamApplicationOctetStreamContentTypeAndStringBody(getServerUri(false), "");
 
         assertEquals("", result.data());
     }
 
     @Test
     public void service19PutWithBodyParamApplicationOctetStreamContentTypeAndStringBodyWithNonEmptyBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
 
-        final HttpBinJSON result = testInterface
+        final HttpBinJSON result = service
             .putWithBodyParamApplicationOctetStreamContentTypeAndStringBody(getServerUri(false), "penguins");
 
         assertEquals("penguins", result.data());
@@ -663,11 +676,10 @@ public class TestInterfaceServiceClientGenerationTests {
 
     @Test
     public void service19PutWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBodyWithNullBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
 
-        final HttpBinJSON result = testInterface
+        final HttpBinJSON result = service
             .putWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBody(getServerUri(false), null);
 
         assertEquals("", result.data());
@@ -675,11 +687,10 @@ public class TestInterfaceServiceClientGenerationTests {
 
     @Test
     public void service19PutWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBodyWithEmptyBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
 
-        final HttpBinJSON result = testInterface
+        final HttpBinJSON result = service
             .putWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBody(getServerUri(false), new byte[0]);
 
         assertEquals("", result.data());
@@ -687,22 +698,1126 @@ public class TestInterfaceServiceClientGenerationTests {
 
     @Test
     public void service19PutWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBodyWithNonEmptyBody() {
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
-        TestInterfaceClientImpl.TestInterfaceClientService testInterface =
-            TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        TestInterfaceClientImpl.TestInterfaceClientService service =
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
 
-        final HttpBinJSON result = testInterface.putWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBody(
+        final HttpBinJSON result = service.putWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBody(
             getServerUri(false), new byte[] { 0, 1, 2, 3, 4 });
 
         assertEquals(new String(new byte[] { 0, 1, 2, 3, 4 }), result.data());
+    }
+
+    /**
+     * Tests that a response without a byte order mark or a 'Content-Type' header encodes using UTF-8.
+     */
+    @Test
+    public void plainResponse() throws IOException {
+        String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
+
+        assertEquals(expected, new String(sendRequest(PLAIN_RESPONSE), StandardCharsets.UTF_8));
+    }
+
+    /**
+     * Tests that a response with a 'Content-Type' header encodes using the specified charset.
+     */
+    @Test
+    public void headerResponse() throws IOException {
+        String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_16BE);
+
+        assertEquals(expected, new String(sendRequest(HEADER_RESPONSE), StandardCharsets.UTF_16BE));
+    }
+
+    /**
+     * Tests that a response with a 'Content-Type' containing an invalid or unsupported charset encodes using UTF-8.
+     */
+    @Test
+    public void invalidHeaderResponse() throws IOException {
+        String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
+
+        assertEquals(expected, new String(sendRequest(INVALID_HEADER_RESPONSE), StandardCharsets.UTF_8));
+    }
+
+    /**
+     * Tests that a response with a byte order mark encodes using the specified charset.
+     */
+    @Test
+    public void utf8BomResponse() throws IOException {
+        String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
+        byte[] response = sendRequest(UTF_8_BOM_RESPONSE);
+
+        assertEquals(expected, bomAwareToString(response, 0, response.length, null));
+    }
+
+    /**
+     * Tests that a response with a byte order mark encodes using the specified charset.
+     */
+    @Test
+    public void utf16BeBomResponse() throws IOException {
+        String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_16BE);
+        byte[] response = sendRequest(UTF_16BE_BOM_RESPONSE);
+
+        assertEquals(expected, bomAwareToString(response, 0, response.length, null));
+    }
+
+    /**
+     * Tests that a response with a byte order mark encodes using the specified charset.
+     */
+    @Test
+    public void utf16LeBomResponse() throws IOException {
+        String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_16LE);
+        byte[] response = sendRequest(UTF_16LE_BOM_RESPONSE);
+
+        assertEquals(expected, bomAwareToString(response, 0, response.length, null));
+    }
+
+    /**
+     * Tests that a response with a byte order mark encodes using the specified charset.
+     */
+    @Test
+    public void utf32BeBomResponse() throws IOException {
+        String expected = new String(EXPECTED_RETURN_BYTES, Charset.forName("UTF-32BE"));
+
+        assertEquals(expected, new String(sendRequest(UTF_32BE_BOM_RESPONSE), Charset.forName("UTF-32BE")));
+    }
+
+    /**
+     * Tests that a response with a byte order mark encodes using the specified charset.
+     */
+    @Test
+    public void utf32LeBomResponse() throws IOException {
+        String expected = new String(EXPECTED_RETURN_BYTES, Charset.forName("UTF-32LE"));
+
+        assertEquals(expected, new String(sendRequest(UTF_32LE_BOM_RESPONSE), Charset.forName("UTF-32LE")));
+    }
+
+    /**
+     * Tests that a response with a byte order marker and 'Content-Type' header will defer to using the BOM encoding.
+     */
+    @Test
+    public void bomWithSameHeader() throws IOException {
+        String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
+        byte[] response = sendRequest(BOM_WITH_DIFFERENT_HEADER);
+
+        assertEquals(expected, bomAwareToString(response, 0, response.length, "charset=utf-8"));
+    }
+
+    /**
+     * Tests that a response with a byte order marker and 'Content-Type' header will defer to using the BOM encoding.
+     */
+    @Test
+    public void bomWithDifferentHeader() throws IOException {
+        String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
+        byte[] response = sendRequest(BOM_WITH_DIFFERENT_HEADER);
+
+        assertEquals(expected, bomAwareToString(response, 0, response.length, "charset=utf-16"));
+    }
+
+    /**
+     * Tests that unbuffered response body can be accessed.
+     */
+    @Test
+    public void canAccessResponseBody() throws IOException {
+        BinaryData requestBody = BinaryData.fromString("test body");
+        HttpRequest request
+            = new HttpRequest().setMethod(HttpMethod.PUT).setUri(getRequestUri(ECHO_RESPONSE)).setBody(requestBody);
+
+        try (Response<BinaryData> response = getHttpClient().send(request)) {
+            assertEquals(requestBody.toString(), response.getValue().toString());
+            assertArrayEquals(requestBody.toBytes(), response.getValue().toBytes());
+        }
+    }
+
+    /**
+     * Tests that buffered response is indeed buffered, i.e. content can be accessed many times.
+     */
+    @Test
+    public void bufferedResponseCanBeReadMultipleTimes() throws IOException {
+        BinaryData requestBody = BinaryData.fromString("test body");
+        HttpRequest request
+            = new HttpRequest().setMethod(HttpMethod.PUT).setUri(getRequestUri(ECHO_RESPONSE)).setBody(requestBody);
+
+        try (Response<BinaryData> response = getHttpClient().send(request)) {
+            // Read response twice using all accessors.
+            assertEquals(requestBody.toString(), response.getValue().toString());
+            assertEquals(requestBody.toString(), response.getValue().toString());
+
+            assertArrayEquals(requestBody.toBytes(), response.getValue().toBytes());
+            assertArrayEquals(requestBody.toBytes(), response.getValue().toBytes());
+        }
+    }
+
+    /**
+     * Tests that send random bytes in various forms to an endpoint that echoes bytes back to sender.
+     *
+     * @param requestBody The BinaryData that contains random bytes.
+     * @param expectedResponseBody The expected bytes in the echo response.
+     */
+    @ParameterizedTest
+    @MethodSource("getBinaryDataBodyVariants")
+    public void canSendBinaryData(BinaryData requestBody, byte[] expectedResponseBody) throws IOException {
+        HttpRequest request
+            = new HttpRequest().setMethod(HttpMethod.PUT).setUri(getRequestUri(ECHO_RESPONSE)).setBody(requestBody);
+
+        try (Response<BinaryData> response = getHttpClient().send(request)) {
+            assertArrayEquals(expectedResponseBody, response.getValue().toBytes());
+        }
+    }
+
+    private static Stream<Arguments> getBinaryDataBodyVariants() {
+        return Stream.of(1, 2, 10, 127, 1024, 1024 + 157, 8 * 1024 + 3, 10 * 1024 * 1024 + 13).flatMap(size -> {
+            try {
+                byte[] bytes = new byte[size];
+
+                ThreadLocalRandom.current().nextBytes(bytes);
+
+                BinaryData byteArrayData = BinaryData.fromBytes(bytes);
+                String randomString = new String(bytes, StandardCharsets.UTF_8);
+                byte[] randomStringBytes = randomString.getBytes(StandardCharsets.UTF_8);
+                BinaryData stringBinaryData = BinaryData.fromString(randomString);
+                BinaryData streamData = BinaryData.fromStream(new ByteArrayInputStream(bytes), (long) bytes.length);
+
+                BinaryData objectBinaryData = BinaryData.fromObject(bytes, new ByteArraySerializer());
+                Path wholeFile = Files.createTempFile("http-client-tests", null);
+
+                wholeFile.toFile().deleteOnExit();
+
+                Files.write(wholeFile, bytes);
+                BinaryData fileData = BinaryData.fromFile(wholeFile);
+                Path sliceFile = Files.createTempFile("http-client-tests", null);
+
+                sliceFile.toFile().deleteOnExit();
+                Files.write(sliceFile, new byte[size], StandardOpenOption.APPEND);
+                Files.write(sliceFile, bytes, StandardOpenOption.APPEND);
+                Files.write(sliceFile, new byte[size], StandardOpenOption.APPEND);
+
+                BinaryData sliceFileData = BinaryData.fromFile(sliceFile, Long.valueOf(size), Long.valueOf(size));
+
+                return Stream.of(
+                    Arguments.of(Named.named("byte[]", byteArrayData), Named.named(String.valueOf(size), bytes)),
+                    Arguments.of(Named.named("String", stringBinaryData),
+                        Named.named(String.valueOf(randomStringBytes.length), randomStringBytes)),
+                    Arguments.of(Named.named("InputStream", streamData), Named.named(String.valueOf(size), bytes)),
+                    Arguments.of(Named.named("Object", objectBinaryData), Named.named(String.valueOf(size), bytes)),
+                    Arguments.of(Named.named("File", fileData), Named.named(String.valueOf(size), bytes)),
+                    Arguments.of(Named.named("File slice", sliceFileData), Named.named(String.valueOf(size), bytes)));
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    private byte[] sendRequest(String requestPath) throws IOException {
+        try (Response<BinaryData> response
+            = getHttpClient().send(new HttpRequest().setMethod(HttpMethod.GET).setUri(getRequestUri(requestPath)))) {
+            return response.getValue().toBytes();
+        }
+    }
+
+    /**
+     * Gets the request URI for given path.
+     *
+     * @param requestPath The path.
+     * @return The request URI for given path.
+     * @throws RuntimeException if uri is invalid.
+     */
+    protected URI getRequestUri(String requestPath) {
+        try {
+            return UriBuilder.parse(getServerUri(isSecure()) + "/" + requestPath).toUri();
+        } catch (URISyntaxException e) {
+            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+        }
+    }
+
+    private static class ByteArraySerializer implements ObjectSerializer {
+        @Override
+        public <T> T deserializeFromBytes(byte[] data, Type type) {
+            return null;
+        }
+
+        @Override
+        public <T> T deserializeFromStream(InputStream stream, Type type) {
+            return null;
+        }
+
+        @Override
+        public byte[] serializeToBytes(Object value) {
+            return (byte[]) value;
+        }
+
+        @Override
+        public void serializeToStream(OutputStream stream, Object value) {
+            try {
+                stream.write((byte[]) value);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        @Override
+        public boolean supportsFormat(SerializationFormat format) {
+            return false;
+        }
+    }
+
+    /**
+     * Tests that the response body is correctly returned as a byte array.
+     */
+    @Test
+    @Disabled("TODO https://github.com/Azure/azure-sdk-for-java/issues/44298")
+    public void requestWithEmptyByteArrayReturnTypeAndParameterizedHostAndPath() {
+        final byte[] result = createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
+            .getByteArray(getRequestScheme(), "localhost:" + getPort(), 0);
+
+        assertNull(result);
+    }
+
+    private static final HttpHeaderName HEADER_A = HttpHeaderName.fromString("A");
+    private static final HttpHeaderName HEADER_B = HttpHeaderName.fromString("B");
+
+    @Test
+    public void getRequestWithHeaderParametersAndAnythingReturn() {
+        final HttpBinJSON json = createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
+            .getAnythingWithHeaderParam(getRequestUri(), "A", 15);
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything", json.uri());
+        assertNotNull(json.headers());
+        HttpHeaders headers = toHttpHeaders(json.headers());
+
+        assertEquals("A", headers.getValue(HEADER_A));
+        assertListEquals(Collections.singletonList("A"), headers.getValues(HEADER_A));
+
+        assertEquals("15", headers.getValue(HEADER_B));
+        assertListEquals(Collections.singletonList("15"), headers.getValues(HEADER_B));
+    }
+
+    @Test
+    public void getRequestWithNullHeader() {
+        final HttpBinJSON json = createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
+            .getAnythingWithHeaderParam(getRequestUri(), null, 15);
+        HttpHeaders headers = toHttpHeaders(json.headers());
+
+        assertNull(headers.getValue(HEADER_A));
+        assertListEquals(null, headers.getValues(HEADER_A));
+
+        assertEquals("15", headers.getValue(HEADER_B));
+        assertListEquals(Collections.singletonList("15"), headers.getValues(HEADER_B));
+    }
+
+    @Test
+    public void postRequestWithStringBody() {
+        final HttpBinJSON json = createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
+            .post(getRequestUri(), "I'm a post body!");
+
+        assertEquals(String.class, json.data().getClass());
+        assertEquals("I'm a post body!", json.data());
+    }
+
+    @Test
+    public void postRequestWithNullBody() {
+        final HttpBinJSON result
+            = createService(TestInterfaceClientImpl.TestInterfaceClientService.class).post(getRequestUri(), null);
+
+        assertEquals("", result.data());
+    }
+
+    @Test
+    public void putRequestWithIntBody() {
+        final HttpBinJSON json
+            = createService(TestInterfaceClientImpl.TestInterfaceClientService.class).put(getRequestUri(), 42);
+
+        assertEquals(String.class, json.data().getClass());
+        assertEquals("42", json.data());
+    }
+
+    // Test all scenarios for the body length and content length comparison for sync API
+    @Test
+    public void putRequestWithBodyAndEqualContentLength() {
+        ByteBuffer body = ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8));
+        final HttpBinJSON json = createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
+            .putBodyAndContentLength(getRequestUri(), body, 4L);
+
+        assertEquals("test", json.data());
+        assertEquals(ContentType.APPLICATION_OCTET_STREAM, json.getHeaderValue("Content-Type"));
+        assertEquals("4", json.getHeaderValue("Content-Length"));
+    }
+
+    @Test
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/43728")
+    public void putRequestWithBodyLessThanContentLength() {
+        ByteBuffer body = ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8));
+        Exception unexpectedLengthException = assertThrows(Exception.class, () -> {
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
+                .putBodyAndContentLength(getRequestUri(), body, 5L);
+            body.clear();
+        });
+
+        assertTrue(unexpectedLengthException.getMessage().contains("less than"));
+    }
+
+    @Test
+    @Disabled("Add support for content length validation - confirm if service should not handle it")
+    public void putRequestWithBodyMoreThanContentLength() {
+        ByteBuffer body = ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8));
+        Exception unexpectedLengthException = assertThrows(Exception.class, () -> {
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
+                .putBodyAndContentLength(getRequestUri(), body, 3L);
+            body.clear();
+        });
+
+        assertTrue(unexpectedLengthException.getMessage().contains("more than"));
+    }
+
+    @Test
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/43728")
+    public void putRequestWithUnexpectedResponseAndNoFallthroughExceptionType() {
+        HttpResponseException e = assertThrows(HttpResponseException.class,
+            () -> createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
+                .putWithUnexpectedResponseAndNoFallthroughExceptionType(getRequestUri(), "I'm the body!"));
+
+        assertNotNull(e.getValue());
+        assertInstanceOf(LinkedHashMap.class, e.getValue());
+
+        @SuppressWarnings("unchecked")
+        final LinkedHashMap<String, String> expectedBody = (LinkedHashMap<String, String>) e.getValue();
+
+        assertEquals("I'm the body!", expectedBody.get("data"));
+    }
+
+    @ServiceInterface(name = "Service10", host = "{uri}")
+    interface Service10 {
+        static Service10 getNewInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" + ".Service10Impl");
+                return (Service10) clazz.getMethod("getNewInstance", HttpPipeline.class).invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+    }
+
+    @Test
+    public void headRequest() throws IOException {
+        try (Response<Void> response
+            = createService(TestInterfaceClientImpl.TestInterfaceClientService.class).head(getRequestUri())) {
+            assertNull(response.getValue());
+        }
+    }
+
+    @Test
+    public void headBooleanRequestReturnsResult() {
+        final boolean result
+            = createService(TestInterfaceClientImpl.TestInterfaceClientService.class).headBoolean(getRequestUri());
+
+        assertTrue(result);
+    }
+
+    @Test
+    public void voidHeadRequest() {
+        createService(TestInterfaceClientImpl.TestInterfaceClientService.class).voidHead(getRequestUri());
+    }
+
+    @Test
+    public void deleteRequest() {
+        final HttpBinJSON json
+            = createService(TestInterfaceClientImpl.TestInterfaceClientService.class).delete(getRequestUri(), false);
+
+        assertEquals(String.class, json.data().getClass());
+        assertEquals("false", json.data());
+    }
+
+    @Test
+    public void patchRequest() {
+        final HttpBinJSON json = createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
+            .patch(getRequestUri(), "body-contents");
+
+        assertEquals(String.class, json.data().getClass());
+        assertEquals("body-contents", json.data());
+    }
+
+    private static final HttpHeaderName MY_HEADER = HttpHeaderName.fromString("MyHeader");
+    private static final HttpHeaderName MY_OTHER_HEADER = HttpHeaderName.fromString("MyOtherHeader");
+
+    @Test
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/pull/44750")
+    public void headersRequest() {
+        final HttpBinJSON json
+            = createService(TestInterfaceClientImpl.TestInterfaceClientService.class).get(getRequestUri());
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything", json.uri());
+        assertNotNull(json.headers());
+        HttpHeaders headers = toHttpHeaders(json.headers());
+
+        assertEquals("MyHeaderValue", headers.getValue(MY_HEADER));
+        assertListEquals(Collections.singletonList("MyHeaderValue"), headers.getValues(MY_HEADER));
+        assertEquals("My,Header,Value", headers.getValue(MY_OTHER_HEADER));
+        assertListEquals(Arrays.asList("My", "Header", "Value"), headers.getValues(MY_OTHER_HEADER));
+    }
+
+    private static HttpHeaders toHttpHeaders(Map<String, List<String>> jsonHeaders) {
+        HttpHeaders headers = new HttpHeaders();
+        for (Map.Entry<String, List<String>> entry : jsonHeaders.entrySet()) {
+            HttpHeaderName headerName = HttpHeaderName.fromString(entry.getKey());
+            for (String value : entry.getValue()) {
+                headers.add(headerName, value);
+            }
+        }
+        return headers;
+    }
+
+    @Test
+    public void service16Put() {
+        final TestInterfaceClientImpl.TestInterfaceClientService service16
+            = createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
+        final byte[] expectedBytes = new byte[] { 1, 2, 3, 4 };
+        final HttpBinJSON httpBinJSON = service16.putByteArray(getRequestUri(), expectedBytes);
+
+        // httpbin sends the data back as a string like "\u0001\u0002\u0003\u0004"
+        assertInstanceOf(String.class, httpBinJSON.data());
+
+        final String base64String = (String) httpBinJSON.data();
+        final byte[] actualBytes = base64String.getBytes();
+
+        assertArrayEquals(expectedBytes, actualBytes);
+    }
+
+    @Test
+    @Disabled("TODO https://github.com/Azure/azure-sdk-for-java/issues/44298")
+    public void requestWithMultipleHostParams() {
+        final HttpBinJSON result = createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
+            .get(getRequestScheme(), "local", "host:" + getPort());
+
+        assertNotNull(result);
+        assertMatchWithHttpOrHttps("localhost/get", result.uri());
+    }
+
+    @Test
+    public void service18GetStatus200() {
+        createService(TestInterfaceClientImpl.TestInterfaceClientService.class).getStatus200(getRequestUri());
+    }
+
+    @Test
+    public void service18GetStatus200WithExpectedResponse200() {
+        assertDoesNotThrow(() -> createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
+            .getStatus200WithExpectedResponse200(getRequestUri()));
+    }
+
+    @Test
+    public void service18GetStatus300() {
+        createService(TestInterfaceClientImpl.TestInterfaceClientService.class).getStatus300(getRequestUri());
+    }
+
+    @Test
+    public void service18GetStatus300WithExpectedResponse300() {
+        assertDoesNotThrow(() -> createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
+            .getStatus300WithExpectedResponse300(getRequestUri()));
+    }
+
+    @Test
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/43728")
+    public void service18GetStatus400() {
+        assertThrows(HttpResponseException.class,
+            () -> createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
+                .getStatus400(getRequestUri()));
+    }
+
+    @Test
+    public void service18GetStatus400WithExpectedResponse400() {
+        assertDoesNotThrow(() -> createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
+            .getStatus400WithExpectedResponse400(getRequestUri()));
+    }
+
+    @Test
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/43728")
+    public void service18GetStatus500() {
+        assertThrows(HttpResponseException.class,
+            () -> createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
+                .getStatus500(getRequestUri()));
+    }
+
+    @Test
+    public void service18GetStatus500WithExpectedResponse500() {
+        assertDoesNotThrow(() -> createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
+            .getStatus500WithExpectedResponse500(getRequestUri()));
+    }
+
+    @Test
+    public void service20PutBodyAndHeaders() {
+        /*final Response<HttpBinHeaders, HttpBinJSON> response = createService(TestInterfaceClientImpl.TestInterfaceClientService20.class)
+            .putBodyAndHeaders(getRequestUri(), "body string");
+        assertNotNull(response);
+        assertEquals(200, response.getStatusCode());
+
+        assertEquals(Headers.class, response.getHeaders().getClass());
+
+        final HttpBinJSON body = response.getValue();
+        assertNotNull(body);
+        assertMatchWithHttpOrHttps("localhost/put", body.uri());
+        assertEquals("body string", body.data());
+
+        final HttpBinHeaders headers = response.getDeserializedHeaders();
+        assertNotNull(headers);
+        assertTrue(headers.accessControlAllowCredentials());
+        assertNotNull(headers.date());
+        assertNotEquals(0, (Object) headers.xProcessedTime());
+
+         */
+    }
+
+    @Test
+    public void service20GetVoidResponseBuffersBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+
+        TestInterfaceClientImpl.TestInterfaceClientService service
+            = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        final Response<Void> response = service.getVoidResponse(getRequestUri());
+
+        assertNotNull(response);
+        assertEquals(200, response.getStatusCode());
+        assertNull(response.getValue());
+    }
+
+    @Test
+    public void service20GetResponseBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+
+        TestInterfaceClientImpl.TestInterfaceClientService service
+            = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        final Response<HttpBinJSON> response = service.putBody(getRequestUri(), "body string");
+
+        assertNotNull(response);
+        assertEquals(200, response.getStatusCode());
+
+        final HttpBinJSON body = response.getValue();
+
+        assertNotNull(body);
+        assertMatchWithHttpOrHttps("localhost/put", body.uri());
+        assertEquals("body string", body.data());
+
+        final HttpHeaders headers = response.getHeaders();
+
+        assertNotNull(headers);
+    }
+
+    @Test
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/43728")
+    public void unexpectedHTTPOK() {
+        HttpResponseException e = assertThrows(HttpResponseException.class,
+            () -> createService(TestInterfaceClientImpl.TestInterfaceClientService.class).getBytes(getRequestUri()));
+
+        assertEquals("Status code 200, (1024-byte body)", e.getMessage());
+    }
+
+    @Test
+    public void service21GetBytes100() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+
+        TestInterfaceClientImpl.TestInterfaceClientService service
+            = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        final byte[] bytes = service.getBytes100(getRequestUri());
+
+        assertNotNull(bytes);
+        assertEquals(100, bytes.length);
+    }
+
+    @Test
+    @Disabled("None of the provided serializers support the format: TEXT.")
+    public void binaryDataUploadTest() throws Exception {
+        Path filePath = Paths.get(getClass().getClassLoader().getResource("upload.txt").toURI());
+        BinaryData data = BinaryData.fromFile(filePath);
+
+        final HttpClient httpClient = getHttpClient();
+        // Scenario: Log the body so that body buffering/replay behavior is exercised.
+
+        // Order in which policies applied will be the order in which they added to builder
+        final HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+            .addPolicy(new HttpInstrumentationPolicy(new HttpInstrumentationOptions()
+                .setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.BODY_AND_HEADERS)))
+            .build();
+        Response<HttpBinJSON> response;
+
+        TestInterfaceClientImpl.TestInterfaceClientService service
+            = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(httpPipeline);
+        response = service.put(getServerUri(isSecure()), data, Files.size(filePath));
+
+        assertEquals("The quick brown fox jumps over the lazy dog", response.getValue().data());
+    }
+
+    @Test
+    @Disabled("Add support for header collection")
+    public void service24Put() {
+        final Map<String, String> headerCollection = new HashMap<>();
+
+        headerCollection.put("DEF", "GHIJ");
+        headerCollection.put("123", "45");
+
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+
+        TestInterfaceClientImpl.TestInterfaceClientService service
+            = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        final HttpBinJSON result = service.put(getRequestUri(), headerCollection);
+
+        assertNotNull(result.headers());
+
+        HttpHeaders resultHeaders = toHttpHeaders(result.headers());
+
+        assertEquals("GHIJ", resultHeaders.getValue(HttpHeaderName.fromString("ABCDEF")));
+        assertEquals("45", resultHeaders.getValue(HttpHeaderName.fromString("ABC123")));
+    }
+
+    @Test
+    public void requestOptionsChangesBody() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService service
+            = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        HttpBinJSON response = service.put(getServerUri(isSecure()), 42,
+            RequestContext.builder()
+                .addRequestCallback(httpRequest -> httpRequest.setBody(BinaryData.fromString("24")))
+                .build());
+
+        assertNotNull(response);
+        assertNotNull(response.data());
+        assertInstanceOf(String.class, response.data());
+        assertEquals("24", response.data());
+    }
+
+    @Test
+    public void requestOptionsChangesBodyAndContentLength() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService service
+            = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        HttpBinJSON response = service.put(getServerUri(isSecure()), 42,
+            RequestContext.builder()
+                .addRequestCallback(httpRequest -> httpRequest.setBody(BinaryData.fromString("4242"))
+                    .getHeaders()
+                    .add(HttpHeaderName.CONTENT_LENGTH, "4"))
+                .build());
+
+        assertNotNull(response);
+        assertNotNull(response.data());
+        assertInstanceOf(String.class, response.data());
+        assertEquals("4242", response.data());
+        assertEquals("4", response.getHeaderValue("Content-Length"));
+    }
+
+    private static final HttpHeaderName RANDOM_HEADER = HttpHeaderName.fromString("randomHeader");
+
+    @Test
+    public void requestOptionsAddAHeader() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService service
+            = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        HttpBinJSON response = service.put(getServerUri(isSecure()), 42,
+            RequestContext.builder()
+                .addRequestCallback(
+                    httpRequest -> httpRequest.getHeaders().add(new HttpHeader(RANDOM_HEADER, "randomValue")))
+                .build());
+
+        assertNotNull(response);
+        assertNotNull(response.data());
+        assertInstanceOf(String.class, response.data());
+        assertEquals("42", response.data());
+        assertEquals("randomValue", response.getHeaderValue("randomHeader"));
+    }
+
+    @Test
+    public void requestOptionsSetsAHeader() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+        TestInterfaceClientImpl.TestInterfaceClientService service
+            = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        HttpBinJSON response = service.put(getServerUri(isSecure()), 42,
+            RequestContext.builder()
+                .addRequestCallback(httpRequest -> httpRequest.getHeaders()
+                    .add(new HttpHeader(RANDOM_HEADER, "randomValue"))
+                    .add(RANDOM_HEADER, "randomValue2"))
+                .build());
+
+        assertNotNull(response);
+        assertNotNull(response.data());
+        assertInstanceOf(String.class, response.data());
+        assertEquals("42", response.data());
+        assertListEquals(Arrays.asList("randomValue", "randomValue2"), response.getHeaderValues("randomHeader"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("voidDoesNotEagerlyReadResponseSupplier")
+    public void voidDoesNotEagerlyReadResponse(
+        BiConsumer<String, TestInterfaceClientImpl.TestInterfaceClientService> executable) {
+        assertDoesNotThrow(() -> executable.accept(getServerUri(isSecure()),
+            createService(TestInterfaceClientImpl.TestInterfaceClientService.class)));
+    }
+
+    private static Stream<BiConsumer<String, TestInterfaceClientImpl.TestInterfaceClientService>>
+        voidDoesNotEagerlyReadResponseSupplier() {
+        return Stream.of((uri, service28) -> service28.headvoid(uri), (uri, service28) -> service28.headVoid(uri),
+            (uri, service28) -> service28.headResponseVoid(uri));
+    }
+
+    @ServiceInterface(name = "Service29", host = "{uri}")
+    public interface Service29 {
+        static Service29 getNewInstance(HttpPipeline pipeline) {
+            if (pipeline == null) {
+                throw new IllegalArgumentException("pipeline cannot be null");
+            }
+            try {
+                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" + ".Service29Impl");
+                return (Service29) clazz.getMethod("getNewInstance", HttpPipeline.class).invoke(null, pipeline);
+            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
+                | InvocationTargetException e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "voiderrorreturned", expectedStatusCodes = { 200 })
+        void headvoid(@HostParam("uri") String uri);
+
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "voiderrorreturned", expectedStatusCodes = { 200 })
+        Void headVoid(@HostParam("uri") String uri);
+
+        @HttpRequestInformation(method = HttpMethod.PUT, path = "voiderrorreturned", expectedStatusCodes = { 200 })
+        Response<Void> headResponseVoid(@HostParam("uri") String uri);
+    }
+
+    @ParameterizedTest
+    @MethodSource("voidErrorReturnsErrorBodySupplier")
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/43728")
+    public void
+        voidErrorReturnsErrorBody(BiConsumer<String, TestInterfaceClientImpl.TestInterfaceClientService> executable) {
+        HttpResponseException exception = assertThrows(HttpResponseException.class, () -> executable
+            .accept(getServerUri(isSecure()), createService(TestInterfaceClientImpl.TestInterfaceClientService.class)));
+
+        assertTrue(exception.getMessage().contains("void exception body thrown"));
+    }
+
+    @Test
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/44746")
+    public void canReceiveServerSentEvents() throws IOException {
+        final int[] i = { 0 };
+        TestInterfaceClientImpl.TestInterfaceClientService service
+            = createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
+
+        service.get(getServerUri(isSecure()), sse -> {
+            String expected;
+            String id;
+            if (i[0] == 0) {
+                expected = "first event";
+                id = "1";
+                Assertions.assertEquals("test stream", sse.getComment());
+            } else {
+                expected = "This is the second message, it";
+                String line2 = "has two lines.";
+
+                id = "2";
+                Assertions.assertEquals(line2, sse.getData().get(1));
+            }
+            Assertions.assertEquals(expected, sse.getData().get(0));
+            Assertions.assertEquals(id, sse.getId());
+            if (++i[0] > 2) {
+                fail("Should not have received more than two messages.");
+            }
+        }).close();
+
+        assertEquals(2, i[0]);
+    }
+
+    /**
+     * Tests that eagerly converting implementation HTTP headers to Client Core Headers is done.
+     */
+    @Test
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/44746")
+    public void canRecognizeServerSentEvent() throws IOException {
+        BinaryData requestBody = BinaryData.fromString("test body");
+        TestInterfaceClientImpl.TestInterfaceClientService service
+            = createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
+        List<String> expected = Arrays.asList("YHOO", "+2", "10");
+
+        try (Response<BinaryData> response
+            = service.post(getServerUri(isSecure()), requestBody, sse -> assertEquals(expected, sse.getData()), null)) {
+            assertNotNull(response.getValue());
+            assertNotEquals(0, response.getValue().getLength());
+            assertNotNull(response.getValue());
+            assertEquals(String.join("\n", expected), response.getValue().toString());
+        }
+    }
+
+    @Test
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/44746")
+    public void onErrorServerSentEvents() throws IOException {
+        TestInterfaceClientImpl.TestInterfaceClientService service
+            = createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
+
+        final int[] i = { 0 };
+        service.get(getServerUri(isSecure()), new ServerSentEventListener() {
+            @Override
+            public void onEvent(ServerSentEvent sse) throws IOException {
+                throw new IOException("test exception");
+            }
+
+            @Override
+            public void onError(Throwable throwable) {
+                assertEquals("test exception", throwable.getMessage());
+                i[0]++;
+            }
+        }).close();
+
+        assertEquals(1, i[0]);
+    }
+
+    @Test
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/44746")
+    public void onRetryWithLastEventIdReceiveServerSentEvents() throws IOException {
+        TestInterfaceClientImpl.TestInterfaceClientService service
+            = createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
+
+        final int[] i = { 0 };
+        service.get(getServerUri(isSecure()), new ServerSentEventListener() {
+            @Override
+            public void onEvent(ServerSentEvent sse) {
+                i[0]++;
+                if (i[0] == 1) {
+                    assertEquals("test stream", sse.getComment());
+                    assertEquals("first event", sse.getData().get(0));
+                    assertEquals("1", sse.getId());
+                } else if (i[0] == 2) {
+                    assertTimeout(Duration.ofMillis(100L), () -> assertEquals("2", sse.getId()));
+                    assertEquals("This is the second message, it", sse.getData().get(0));
+                    assertEquals("has two lines.", sse.getData().get(1));
+                }
+                if (i[0] >= 3) {
+                    fail("Should not have received more than two messages.");
+                }
+            }
+        }).close();
+
+        assertEquals(2, i[0]);
+    }
+
+    /**
+     * Test throws Runtime exception for no listener attached.
+     */
+    @Test
+    @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/44746")
+    public void throwsExceptionForNoListener() {
+        TestInterfaceClientImpl.TestInterfaceClientService service
+            = createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
+        BinaryData requestBody = BinaryData.fromString("test body");
+
+        assertThrows(RuntimeException.class, () -> service.put(getServerUri(isSecure()), requestBody, null).close());
+    }
+
+    private static Stream<BiConsumer<String, TestInterfaceClientImpl.TestInterfaceClientService>>
+        voidErrorReturnsErrorBodySupplier() {
+        return Stream.of((uri, service29) -> service29.headvoid(uri), (uri, service29) -> service29.headVoid(uri),
+            (uri, service29) -> service29.headResponseVoid(uri));
+    }
+
+    @Test
+    public void bodyIsPresentWhenNoBodyHandlingOptionIsSet() throws IOException {
+        TestInterfaceClientImpl.TestInterfaceClientService service
+            = createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
+        HttpBinJSON httpBinJSON = service.put(getServerUri(isSecure()), 42, null);
+
+        assertNotNull(httpBinJSON);
+
+        try (Response<HttpBinJSON> response = service.putResponse(getServerUri(isSecure()), 42, null)) {
+            assertNotNull(response.getValue());
+        }
+    }
+
+    @Test
+    @Disabled("In PR https://github.com/Azure/azure-sdk-for-java/pull/44750")
+    public void queryParamsRequest() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+
+        TestInterfaceClientImpl.TestInterfaceClientService service
+            = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        final HttpBinJSON json = service.get1(getRequestUri(), "variableValue");
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything", json.uri().substring(0, json.uri().indexOf('?')));
+
+        Map<String, List<String>> queryParams = json.queryParams();
+
+        assertNotNull(queryParams);
+        assertEquals(3, queryParams.size());
+        assertEquals(1, queryParams.get("constantParam1").size());
+        assertEquals("constantValue1", queryParams.get("constantParam1").get(0));
+        assertEquals(1, queryParams.get("constantParam2").size());
+        assertEquals("constantValue2", queryParams.get("constantParam2").get(0));
+        assertEquals(1, queryParams.get("variableParam").size());
+        assertEquals("variableValue", queryParams.get("variableParam").get(0));
+    }
+
+    @Test
+    @Disabled("In PR https://github.com/Azure/azure-sdk-for-java/pull/44750")
+    public void queryParamsRequestWithMultipleValuesForSameName() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+
+        TestInterfaceClientImpl.TestInterfaceClientService service
+            = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        final HttpBinJSON json = service.get2(getRequestUri(), "variableValue");
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything", json.uri().substring(0, json.uri().indexOf('?')));
+
+        Map<String, List<String>> queryParams = json.queryParams();
+
+        assertNotNull(queryParams);
+        assertEquals(1, queryParams.size());
+        assertEquals("constantValue1", queryParams.get("param").get(0));
+        assertEquals("constantValue2", queryParams.get("param").get(1));
+        assertEquals("variableValue", queryParams.get("param").get(2));
+    }
+
+    @Test
+    @Disabled("In PR https://github.com/Azure/azure-sdk-for-java/pull/44750")
+    public void queryParamsRequestWithMultipleValuesForSameNameAndValueArray() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+
+        TestInterfaceClientImpl.TestInterfaceClientService service
+            = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+
+        final HttpBinJSON json = service.get3(getRequestUri(), "variableValue1,variableValue2,variableValue3");
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything", json.uri().substring(0, json.uri().indexOf('?')));
+
+        Map<String, List<String>> queryParams = json.queryParams();
+
+        assertNotNull(queryParams);
+        assertEquals(1, queryParams.size());
+        assertEquals(3, queryParams.get("param").size());
+        assertEquals("constantValue1%2CconstantValue2", queryParams.get("param").get(0));
+        assertEquals("constantValue3", queryParams.get("param").get(1));
+        assertEquals("variableValue1%2CvariableValue2%2CvariableValue3", queryParams.get("param").get(2));
+    }
+
+    @Test
+    @Disabled("In PR https://github.com/Azure/azure-sdk-for-java/pull/44750")
+    public void queryParamsRequestWithEmptyValues() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+
+        TestInterfaceClientImpl.TestInterfaceClientService service
+            = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        final HttpBinJSON json = service.get4(getRequestUri());
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything", json.uri().substring(0, json.uri().indexOf('?')));
+
+        Map<String, List<String>> queryParams = json.queryParams();
+
+        assertNotNull(queryParams);
+        assertEquals(1, queryParams.size());
+        assertTrue(queryParams.containsKey("constantParam1"));
+        assertNull(queryParams.get("constantParam1"));
+    }
+
+    @Test
+    @Disabled("In PR https://github.com/Azure/azure-sdk-for-java/pull/44750")
+    public void queryParamsRequestWithMoreThanOneEqualsSign() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+
+        TestInterfaceClientImpl.TestInterfaceClientService service
+            = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        final HttpBinJSON json = service.get5(getRequestUri());
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything", json.uri().substring(0, json.uri().indexOf('?')));
+
+        Map<String, List<String>> queryParams = json.queryParams();
+
+        assertNotNull(queryParams);
+        assertEquals(1, queryParams.size());
+        assertEquals("some%3Dvalue", queryParams.get("constantParam1").get(0));
+    }
+
+    @Test
+    @Disabled("In PR https://github.com/Azure/azure-sdk-for-java/pull/44750")
+    public void queryParamsRequestWithEmptyName() {
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+
+        TestInterfaceClientImpl.TestInterfaceClientService service
+            = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
+        assertThrows(IllegalStateException.class, () -> service.get6(getRequestUri()),
+            "Query parameters cannot be null or empty.");
+        assertThrows(IllegalStateException.class, () -> service.get7(getRequestUri()),
+            "Names for query parameters cannot be empty.");
+    }
+
+    // Helpers
+    protected <T> T createService(Class<T> serviceClass) {
+        final HttpClient httpClient = getHttpClient();
+        return createService(serviceClass, httpClient);
+    }
+
+    @SuppressWarnings("unchecked")
+    protected <T> T createService(Class<T> serviceClass, HttpClient httpClient) {
+        final HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient).build();
+
+        try {
+            // Invoke getNewInstance(HttpPipeline) using reflection
+            return (T) serviceClass.getMethod("getNewInstance", HttpPipeline.class).invoke(null, httpPipeline);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+            throw new RuntimeException("Failed to create service instance for " + serviceClass.getName(), e);
+        }
+    }
+
+    // Helpers
+    private static void assertListEquals(List<?> source, List<?> target) {
+        if (source != null && target != null) {
+            assertEquals(source.size(), target.size());
+
+            for (int i = 0; i < source.size(); i++) {
+                assertEquals(source.get(i), target.get(i));
+            }
+        } else if (source != null || target != null) {
+            fail("One list is null but the other is not.");
+        }
+    }
+
+    /**
+     * Get a flag indicating if communication should be secured or not (https or http).
+     *
+     * @return A flag indicating if communication should be secured or not (https or http).
+     */
+    private boolean isSecure() {
+        return false;
     }
 
     private HttpClient getHttpClient() {
         return new OkHttpHttpClientProvider().getSharedInstance();
     }
 
+    private String getRequestUri() {
+        return getServerUri(isSecure());
+    }
+
+    /**
+     * Gets the dynamic URI the server is using to properly route the request.
+     *
+     * @param secure Flag indicating if the URI should be for a secure connection or not.
+     * @return The URI the server is using.
+     */
     private String getServerUri(boolean secure) {
         return secure ? server.getHttpsUri() : server.getHttpUri();
+    }
+
+    private int getPort() {
+        return server.getHttpPort();
+    }
+
+    private String getRequestScheme() {
+        return isSecure() ? "https" : "http";
     }
 
     private static void assertMatchWithHttpOrHttps(String uri1, String uri2) {
@@ -720,5 +1835,4 @@ public class TestInterfaceServiceClientGenerationTests {
 
         fail("'" + uri2 + "' does not match with '" + s1 + "' or '" + s2 + "'.");
     }
-
 }

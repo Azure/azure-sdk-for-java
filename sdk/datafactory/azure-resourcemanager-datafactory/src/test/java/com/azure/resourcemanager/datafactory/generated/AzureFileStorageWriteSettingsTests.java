@@ -13,17 +13,18 @@ public final class AzureFileStorageWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureFileStorageWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"AzureFileStorageWriteSettings\",\"maxConcurrentConnections\":\"dataduttqjtszqexc\",\"disableMetricsCollection\":\"datawbxx\",\"copyBehavior\":\"datavekqjdrumlvk\",\"metadata\":[{\"name\":\"datahhlfvmw\",\"value\":\"dataarswsvtzotmwxq\"}],\"\":{\"wrtmjskb\":\"datadanfexlawkeqjhz\",\"mvounbyvsfqu\":\"dataenjnady\",\"xqbknoxjhedwh\":\"datar\",\"rpajbiig\":\"datamwb\"}}")
+            "{\"type\":\"AzureFileStorageWriteSettings\",\"maxConcurrentConnections\":\"datayyjngd\",\"disableMetricsCollection\":\"dataqcjfqmyfgwb\",\"copyBehavior\":\"dataqzfwgb\",\"metadata\":[{\"name\":\"dataxzyj\",\"value\":\"dataiavmqut\"},{\"name\":\"datadlz\",\"value\":\"dataokcbxr\"}],\"\":{\"ppppte\":\"datal\",\"zjplaxxfn\":\"datakktretutsy\",\"rotg\":\"dataltanvb\"}}")
             .toObject(AzureFileStorageWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureFileStorageWriteSettings model = new AzureFileStorageWriteSettings()
-            .withMaxConcurrentConnections("dataduttqjtszqexc")
-            .withDisableMetricsCollection("datawbxx")
-            .withCopyBehavior("datavekqjdrumlvk")
-            .withMetadata(Arrays.asList(new MetadataItem().withName("datahhlfvmw").withValue("dataarswsvtzotmwxq")));
+        AzureFileStorageWriteSettings model
+            = new AzureFileStorageWriteSettings().withMaxConcurrentConnections("datayyjngd")
+                .withDisableMetricsCollection("dataqcjfqmyfgwb")
+                .withCopyBehavior("dataqzfwgb")
+                .withMetadata(Arrays.asList(new MetadataItem().withName("dataxzyj").withValue("dataiavmqut"),
+                    new MetadataItem().withName("datadlz").withValue("dataokcbxr")));
         model = BinaryData.fromObject(model).toObject(AzureFileStorageWriteSettings.class);
     }
 }

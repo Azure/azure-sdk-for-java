@@ -7,6 +7,7 @@ import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.implementation.utils.ImplUtils;
 import io.clientcore.core.implementation.utils.IterableOfByteBuffersInputStream;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.ObjectSerializer;
@@ -71,8 +72,12 @@ final class ListByteBufferBinaryData extends BinaryData {
     }
 
     @Override
-    public <T> T toObject(Type type, ObjectSerializer serializer) throws IOException {
-        return serializer.deserializeFromBytes(toBytes(), type);
+    public <T> T toObject(Type type, ObjectSerializer serializer) {
+        try {
+            return serializer.deserializeFromBytes(toBytes(), type);
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(CoreException.from(e));
+        }
     }
 
     @Override
@@ -86,27 +91,39 @@ final class ListByteBufferBinaryData extends BinaryData {
     }
 
     @Override
-    public void writeTo(OutputStream outputStream) throws IOException {
-        for (ByteBuffer bb : content) {
-            ImplUtils.writeByteBufferToStream(bb, outputStream);
-        }
-    }
-
-    @Override
-    public void writeTo(WritableByteChannel channel) throws IOException {
-        for (ByteBuffer bb : content) {
-            bb = bb.duplicate();
-            while (bb.hasRemaining()) {
-                channel.write(bb);
+    public void writeTo(OutputStream outputStream) {
+        try {
+            for (ByteBuffer bb : content) {
+                ImplUtils.writeByteBufferToStream(bb, outputStream);
             }
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(CoreException.from(e));
         }
     }
 
     @Override
-    public void writeTo(JsonWriter jsonWriter) throws IOException {
+    public void writeTo(WritableByteChannel channel) {
+        try {
+            for (ByteBuffer bb : content) {
+                bb = bb.duplicate();
+                while (bb.hasRemaining()) {
+                    channel.write(bb);
+                }
+            }
+        } catch (IOException exception) {
+            throw LOGGER.logThrowableAsError(CoreException.from(exception));
+        }
+    }
+
+    @Override
+    public void writeTo(JsonWriter jsonWriter) {
         Objects.requireNonNull(jsonWriter, "'jsonWriter' cannot be null");
 
-        jsonWriter.writeBinary(toBytes());
+        try {
+            jsonWriter.writeBinary(toBytes());
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(CoreException.from(e));
+        }
     }
 
     @Override
@@ -139,7 +156,7 @@ final class ListByteBufferBinaryData extends BinaryData {
     }
 
     @Override
-    public void close() throws IOException {
+    public void close() {
         // no-op
     }
 }

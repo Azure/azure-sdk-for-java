@@ -51,7 +51,7 @@ public final class SparkLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private SparkLinkedServiceTypeProperties innerTypeProperties() {
+    SparkLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

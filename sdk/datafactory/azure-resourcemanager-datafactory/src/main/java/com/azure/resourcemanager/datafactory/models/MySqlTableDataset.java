@@ -51,7 +51,7 @@ public final class MySqlTableDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private MySqlTableDatasetTypeProperties innerTypeProperties() {
+    MySqlTableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

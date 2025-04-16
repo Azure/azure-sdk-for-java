@@ -75,6 +75,18 @@ public final class IssuerBundle implements JsonSerializable<IssuerBundle> {
     }
 
     /**
+     * Set the provider property: The issuer provider.
+     *
+     * @param provider the provider value to set.
+     * @return the IssuerBundle object itself.
+     */
+    @Generated
+    public IssuerBundle setProvider(String provider) {
+        this.provider = provider;
+        return this;
+    }
+
+    /**
      * Get the credentials property: The credentials to be used for the issuer.
      *
      * @return the credentials value.
@@ -82,6 +94,18 @@ public final class IssuerBundle implements JsonSerializable<IssuerBundle> {
     @Generated
     public IssuerCredentials getCredentials() {
         return this.credentials;
+    }
+
+    /**
+     * Set the credentials property: The credentials to be used for the issuer.
+     *
+     * @param credentials the credentials value to set.
+     * @return the IssuerBundle object itself.
+     */
+    @Generated
+    public IssuerBundle setCredentials(IssuerCredentials credentials) {
+        this.credentials = credentials;
+        return this;
     }
 
     /**
@@ -95,6 +119,18 @@ public final class IssuerBundle implements JsonSerializable<IssuerBundle> {
     }
 
     /**
+     * Set the organizationDetails property: Details of the organization as provided to the issuer.
+     *
+     * @param organizationDetails the organizationDetails value to set.
+     * @return the IssuerBundle object itself.
+     */
+    @Generated
+    public IssuerBundle setOrganizationDetails(OrganizationDetails organizationDetails) {
+        this.organizationDetails = organizationDetails;
+        return this;
+    }
+
+    /**
      * Get the attributes property: Attributes of the issuer object.
      *
      * @return the attributes value.
@@ -102,6 +138,18 @@ public final class IssuerBundle implements JsonSerializable<IssuerBundle> {
     @Generated
     public IssuerAttributes getAttributes() {
         return this.attributes;
+    }
+
+    /**
+     * Set the attributes property: Attributes of the issuer object.
+     *
+     * @param attributes the attributes value to set.
+     * @return the IssuerBundle object itself.
+     */
+    @Generated
+    public IssuerBundle setAttributes(IssuerAttributes attributes) {
+        this.attributes = attributes;
+        return this;
     }
 
     /**
@@ -149,53 +197,5 @@ public final class IssuerBundle implements JsonSerializable<IssuerBundle> {
             }
             return deserializedIssuerBundle;
         });
-    }
-
-    /**
-     * Set the provider property: The issuer provider.
-     *
-     * @param provider the provider value to set.
-     * @return the IssuerBundle object itself.
-     */
-    @Generated
-    public IssuerBundle setProvider(String provider) {
-        this.provider = provider;
-        return this;
-    }
-
-    /**
-     * Set the credentials property: The credentials to be used for the issuer.
-     *
-     * @param credentials the credentials value to set.
-     * @return the IssuerBundle object itself.
-     */
-    @Generated
-    public IssuerBundle setCredentials(IssuerCredentials credentials) {
-        this.credentials = credentials;
-        return this;
-    }
-
-    /**
-     * Set the organizationDetails property: Details of the organization as provided to the issuer.
-     *
-     * @param organizationDetails the organizationDetails value to set.
-     * @return the IssuerBundle object itself.
-     */
-    @Generated
-    public IssuerBundle setOrganizationDetails(OrganizationDetails organizationDetails) {
-        this.organizationDetails = organizationDetails;
-        return this;
-    }
-
-    /**
-     * Set the attributes property: Attributes of the issuer object.
-     *
-     * @param attributes the attributes value to set.
-     * @return the IssuerBundle object itself.
-     */
-    @Generated
-    public IssuerBundle setAttributes(IssuerAttributes attributes) {
-        this.attributes = attributes;
-        return this;
     }
 }

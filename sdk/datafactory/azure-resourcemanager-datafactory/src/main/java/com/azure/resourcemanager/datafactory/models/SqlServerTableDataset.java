@@ -51,7 +51,7 @@ public final class SqlServerTableDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private SqlServerTableDatasetTypeProperties innerTypeProperties() {
+    SqlServerTableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

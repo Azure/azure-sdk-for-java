@@ -121,8 +121,8 @@ public class AzureServiceBusMessagingAutoConfiguration {
             DefaultServiceBusNamespaceConsumerFactory factory = new DefaultServiceBusNamespaceConsumerFactory(properties, suppliers.getIfAvailable());
             factory.setDefaultCredential(defaultTokenCredentials.getIfAvailable());
             factory.setTokenCredentialResolver(tokenCredentialResolvers.getIfAvailable());
-            customizers.orderedStream().forEach(factory::addCustomizer);
-            sessionReceiverCustomizers.orderedStream().forEach(factory::addSessionReceiverCustomizer);
+            customizers.orderedStream().forEach(factory::addServiceBusClientBuilderCustomizer);
+            sessionReceiverCustomizers.orderedStream().forEach(factory::addBuilderCustomizer);
             return factory;
         }
     }
