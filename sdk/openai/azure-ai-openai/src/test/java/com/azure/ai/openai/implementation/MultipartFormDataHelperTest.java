@@ -7,7 +7,7 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -66,20 +66,11 @@ public class MultipartFormDataHelperTest {
         BinaryData binaryDataTwo = multipartRequestTwo.end().getRequestBody();
         BinaryData binaryDataThree = multipartRequestThree.end().getRequestBody();
 
-        List<BinaryData> files = new ArrayList<>();
-        files.add(binaryDataOne);
-        files.add(binaryDataTwo);
-        files.add(binaryDataThree);
+        List<BinaryData> files = Arrays.asList(binaryDataOne, binaryDataTwo, binaryDataThree);
 
-        List<String> contentTypes = new ArrayList<>();
-        contentTypes.add(null);
-        contentTypes.add("");
-        contentTypes.add("application/mocktype");
+        List<String> contentTypes = Arrays.asList(null, "", "application/mocktype");
 
-        List<String> filenames = new ArrayList<>();
-        filenames.add("Sunny");
-        filenames.add("Rainy");
-        filenames.add("Cloudy");
+        List<String> filenames = Arrays.asList("Sunny", "Rainy", "Cloudy");
 
         // Act
         MultipartFormDataHelper multipartFormDataHelper = new MultipartFormDataHelper(multipartRequestOptions)
@@ -100,15 +91,9 @@ public class MultipartFormDataHelperTest {
         // Arrange
         RequestOptions multipartRequestOptions = new RequestOptions();
 
-        List<String> contentTypes = new ArrayList<>();
-        contentTypes.add(null);
-        contentTypes.add("");
-        contentTypes.add("application/mocktype");
+        List<String> contentTypes = Arrays.asList(null, "", "application/mocktype");
 
-        List<String> filenames = new ArrayList<>();
-        filenames.add("Sunny");
-        filenames.add("Rainy");
-        filenames.add("Cloudy");
+        List<String> filenames = Arrays.asList("Sunny", "Rainy", "Cloudy");
 
         // Act
         MultipartFormDataHelper multipartFormDataHelper = new MultipartFormDataHelper(multipartRequestOptions)
