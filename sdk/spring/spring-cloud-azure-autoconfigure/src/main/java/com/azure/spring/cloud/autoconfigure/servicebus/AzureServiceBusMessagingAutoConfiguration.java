@@ -159,7 +159,9 @@ public class AzureServiceBusMessagingAutoConfiguration {
         /**
          * Creates a Service Bus template.
          *
+         * @param properties The Service Bus properties.
          * @param producerFactory A Service Bus producer factory.
+         * @param consumerFactory A Service Bus consumer factory.
          * @param messageConverter A Service Bus message converter.
          * @return A Service Bus template.
          */
