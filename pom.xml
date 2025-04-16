@@ -173,6 +173,7 @@
     <module>sdk/pineconevectordb</module>
     <module>sdk/playwrighttesting</module>
     <module>sdk/policyinsights</module>
+    <module>sdk/portalservices</module>
     <module>sdk/postgresql</module>
     <module>sdk/postgresqlflexibleserver</module>
     <module>sdk/powerbidedicated</module>
