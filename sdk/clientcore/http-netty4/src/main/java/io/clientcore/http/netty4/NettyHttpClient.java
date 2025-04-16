@@ -9,6 +9,7 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.ServerSentResult;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.models.binarydata.FileBinaryData;
@@ -92,7 +93,7 @@ class NettyHttpClient implements HttpClient {
     }
 
     @Override
-    public Response<BinaryData> send(HttpRequest request) throws IOException {
+    public Response<BinaryData> send(HttpRequest request) {
         URI uri = request.getUri();
         String host = uri.getHost();
         int port = uri.getPort() == -1 ? ("https".equalsIgnoreCase(uri.getScheme()) ? 443 : 80) : uri.getPort();
@@ -162,17 +163,21 @@ class NettyHttpClient implements HttpClient {
             latch.await();
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
-            throw LOGGER.logThrowableAsError(new IOException("Request interrupted", e));
+            throw LOGGER.logThrowableAsError(CoreException.from("Request interrupted", e));
         }
 
         Response<BinaryData> response = responseReference.get();
-        if (response != null) {
-            if (response.getValue() != BinaryData.empty()
-                && ServerSentEventUtils
-                    .isTextEventStreamContentType(response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
-                ServerSentEventListener listener = request.getServerSentEventListener();
+        if (response == null) {
+            throw CoreException.from(errorReference.get());
+        }
 
-                if (listener != null) {
+        if (response.getValue() != BinaryData.empty()
+            && ServerSentEventUtils
+                .isTextEventStreamContentType(response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
+            ServerSentEventListener listener = request.getServerSentEventListener();
+
+            if (listener != null) {
+                try {
                     ServerSentResult serverSentResult
                         = processTextEventStream(response.getValue().toStream(), listener);
 
@@ -188,22 +193,15 @@ class NettyHttpClient implements HttpClient {
 
                     response = new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                         createBodyFromServerSentResult(serverSentResult));
-                } else {
-                    throw LOGGER.logThrowableAsError(new RuntimeException(NO_LISTENER_ERROR_MESSAGE));
+                } catch (IOException ex) {
+                    throw LOGGER.logThrowableAsError(CoreException.from(ex));
                 }
-            }
-
-            return response;
-        } else {
-            Throwable error = errorReference.get();
-            if (error instanceof Error) {
-                throw (Error) error;
-            } else if (error instanceof IOException) {
-                throw (IOException) error;
             } else {
-                throw new IOException(error);
+                throw LOGGER.logThrowableAsError(new IllegalStateException(NO_LISTENER_ERROR_MESSAGE));
             }
         }
+
+        return response;
     }
 
     private ChannelFuture sendRequest(HttpRequest request, Channel channel, boolean progressAndTimeoutHandlerAdded) {
