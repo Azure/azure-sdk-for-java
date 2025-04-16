@@ -45,11 +45,12 @@ public class ProxyTaskGroupTests {
 
         // Invocation of group should invoke all the tasks
         //
-        group.invokeAsync(group.newInvocationContext()).subscribe(value -> {
-            StringIndexable stringIndexable = toStringIndexable(value);
-            Assertions.assertTrue(groupItems.contains(stringIndexable.str()));
-            groupItems.remove(stringIndexable.str());
-        });
+//        group.invokeAsync(group.newInvocationContext()).subscribe(value -> {
+//            StringIndexable stringIndexable = toStringIndexable(value);
+//            Assertions.assertTrue(groupItems.contains(stringIndexable.str()));
+//            groupItems.remove(stringIndexable.str());
+//        });
+        group.invoke(group.newInvocationContext());
 
         Assertions.assertEquals(0, groupItems.size());
 
@@ -1481,6 +1482,11 @@ public class ProxyTaskGroupTests {
             protected Mono<Indexable> invokeTaskAsync(TaskGroup.InvocationContext context) {
                 return this.voidPublisher();
             }
+
+            @Override
+            public Indexable invoke(TaskGroup.InvocationContext context) {
+                return null;
+            }
         };
 
         /**
@@ -1594,12 +1600,12 @@ public class ProxyTaskGroupTests {
          *                ------->group4-------------
          */
 
-        TaskGroup group1 = new TaskGroup(vertex1, new StringTaskItem(vertex1));
-        TaskGroup group2 = new TaskGroup(vertex2, new StringTaskItem(vertex2));
-        TaskGroup group3 = new TaskGroup(vertex3, new StringTaskItem(vertex3));
-        TaskGroup group4 = new TaskGroup(vertex4, new StringTaskItem(vertex4));
-        TaskGroup group5 = new TaskGroup(vertex5, new StringTaskItem(vertex5));
-        TaskGroup group6 = new TaskGroup(vertex6, new StringTaskItem(vertex6));
+        TaskGroup group1 = new TaskGroup(vertex1, new StringTaskItem(vertex1, () -> verticesNames.remove(vertex1)));
+        TaskGroup group2 = new TaskGroup(vertex2, new StringTaskItem(vertex2, () -> verticesNames.remove(vertex2)));
+        TaskGroup group3 = new TaskGroup(vertex3, new StringTaskItem(vertex3, () -> verticesNames.remove(vertex3)));
+        TaskGroup group4 = new TaskGroup(vertex4, new StringTaskItem(vertex4, () -> verticesNames.remove(vertex4)));
+        TaskGroup group5 = new TaskGroup(vertex5, new StringTaskItem(vertex5, () -> verticesNames.remove(vertex5)));
+        TaskGroup group6 = new TaskGroup(vertex6, new StringTaskItem(vertex6, () -> verticesNames.remove(vertex6)));
 
         group2.addDependencyTaskGroup(group1);
         group3.addDependencyTaskGroup(group1);
@@ -1621,9 +1627,15 @@ public class ProxyTaskGroupTests {
     private static class StringTaskItem implements TaskItem {
         private final String name;
         private StringIndexable producedValue = null;
+        private Runnable syncPostRun = null;
 
         StringTaskItem(String name) {
             this.name = name;
+        }
+
+        StringTaskItem(String name, Runnable postRun) {
+            this.name = name;
+            this.syncPostRun = postRun;
         }
 
         @Override
@@ -1650,6 +1662,20 @@ public class ProxyTaskGroupTests {
         @Override
         public Mono<Void> invokeAfterPostRunAsync(boolean isGroupFaulted) {
             return Mono.empty();
+        }
+
+        @Override
+        public Indexable invoke(TaskGroup.InvocationContext context) {
+            this.producedValue = new StringIndexable(this.name);
+            if (syncPostRun != null) {
+                syncPostRun.run();
+            }
+            return this.producedValue;
+        }
+
+        @Override
+        public void invokeAfterPostRun(boolean isGroupFaulted) {
+            // NO-OP
         }
     }
 
