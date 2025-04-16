@@ -13,7 +13,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Unit tests for MultipartFormDataHelper.
+ * Unit tests for {@link MultipartFormDataHelper}
  */
 public class MultipartFormDataHelperTest {
     @Test
