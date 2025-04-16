@@ -20,6 +20,7 @@ import com.azure.resourcemanager.portalservicescopilot.models.CopilotSettingsRes
 import com.azure.resourcemanager.resources.ResourceManager;
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Random;
@@ -65,6 +66,7 @@ public class PortalservicescopilotManagerTests extends TestProxyTestBase {
 
     @Test
     @LiveOnly
+    @Disabled("The client '99c13838-960f-4a77-9925-2111e5a104b4' with object id '99c13838-960f-4a77-9925-2111e5a104b4' does not have authorization to perform action 'Microsoft.PortalServices/copilotSettings/write' over scope '/providers/Microsoft.PortalServices/copilotSettings/default' or the scope is invalid.")
     public void testCreateCopilotSettingsResource() {
         CopilotSettingsResource resource = null;
         try {
