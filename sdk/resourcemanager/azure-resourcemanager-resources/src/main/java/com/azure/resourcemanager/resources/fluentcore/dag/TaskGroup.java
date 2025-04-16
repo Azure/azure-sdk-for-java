@@ -18,7 +18,9 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Supplier;
 
 /**
  * Type representing a group of task entries with dependencies between them. Initially a task
@@ -285,6 +287,14 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
         }
     }
 
+    public Indexable invoke() {
+        invoke(this.newInvocationContext());
+        if (proxyTaskGroupWrapper.isActive()) {
+            return proxyTaskGroupWrapper.taskGroup().root().taskResult();
+        }
+        return root().taskResult();
+    }
+
     private void invokeIntern(InvocationContext context, boolean shouldRunBeforeGroupInvoke, Set<String> skipBeforeGroupInvoke) {
         if (!isPreparer()) {
             throw new IllegalStateException("invokeIntern(cxt) can be called only from root TaskGroup");
@@ -302,7 +312,7 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
 
     private void invokeReadyTasks(InvocationContext context) {
         TaskGroupEntry<TaskItem> readyTaskEntry = super.getNext();
-        final List<CompletableFuture> observables = new ArrayList<>();
+        final List<CompletableFuture<Void>> observables = new ArrayList<>();
         // Enumerate the ready tasks (those with dependencies resolved) and kickoff them concurrently
         //
         while (readyTaskEntry != null) {
@@ -315,11 +325,96 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
             }
             readyTaskEntry = super.getNext();
         }
+        observables.forEach(observable -> {
+            // FIXME(xiaofei) error handling
+            try {
+                observable.get();
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            } catch (ExecutionException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
-    private CompletableFuture invokeAfterPostRun(TaskGroupEntry<TaskItem> currentEntry, InvocationContext context) {
-        // TODO
-        throw new UnsupportedOperationException("method [invokeAfterPostRun] not implemented in class [com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup]");
+    private CompletableFuture<Void> invokeAfterPostRun(TaskGroupEntry<TaskItem> entry, InvocationContext context) {
+        final ProxyTaskItem proxyTaskItem = (ProxyTaskItem) entry.data();
+        if (proxyTaskItem == null) {
+            return CompletableFuture.completedFuture(null);
+        }
+        final boolean isFaulted = entry.hasFaultedDescentDependencyTasks() || isGroupCancelled.get();
+
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                proxyTaskItem.invokeAfterPostRun(isFaulted);
+                if (isFaulted) {
+                    if (entry.hasFaultedDescentDependencyTasks()) {
+                        processFaultedTask(entry, new ErroredDependencyTaskException(), context);
+                    } else {
+                        processFaultedTask(entry, taskCancelledException, context);
+                    }
+                } else {
+                    processCompletedTask(entry, context);
+                }
+            } catch (Throwable e) {
+                processFaultedTask(entry, e, context);
+            }
+
+            return null;
+        });
+    }
+
+    private CompletableFuture<Void> invokeTask(TaskGroupEntry<TaskItem> entry, InvocationContext context) {
+        if (isGroupCancelled.get()) {
+            // One or more tasks are in faulted state, though this task MAYBE invoked if it does not
+            // have faulted tasks as transitive dependencies, we won't do it since group is cancelled
+            // due to termination strategy TERMINATE_ON_IN_PROGRESS_TASKS_COMPLETION.
+            //
+            return CompletableFuture.supplyAsync(() -> {
+                processFaultedTask(entry, taskCancelledException, context);
+                return null;
+            });
+        } else {
+            // Any cached result will be ignored for root resource
+            //
+            boolean ignoreCachedResult
+                = isRootEntry(entry) || (entry.proxy() != null && isRootEntry(entry.proxy()));
+            return CompletableFuture.supplyAsync(() -> {
+                Object skipTasks = context.get(InvocationContext.KEY_SKIP_TASKS);
+                if (!(skipTasks instanceof Set && ((Set) skipTasks).contains(entry.key()))) {
+                    try {
+                        entry.invokeTask(ignoreCachedResult, context);
+                        processCompletedTask(entry, context);
+
+                    } catch (Exception e) {
+                        processFaultedTask(entry, e, context);
+                    }
+                }
+                return null;
+            });
+        }
+    }
+
+    private void processCompletedTask(TaskGroupEntry<TaskItem> completedEntry, InvocationContext context) {
+        reportCompletion(completedEntry);
+        if (!isRootEntry(completedEntry)) {
+            invokeReadyTasks(context);
+        }
+    }
+
+    private void processFaultedTask(TaskGroupEntry<TaskItem> faultedEntry, Throwable throwable, InvocationContext context) {
+        markGroupAsCancelledIfTerminationStrategyIsIPTC();
+        reportError(faultedEntry, throwable);
+        if (isRootEntry(faultedEntry)) {
+            if (shouldPropagateException(throwable)) {
+                throw new RuntimeException(throwable);
+            }
+        } else if (shouldPropagateException(throwable)) {
+            //FIXME(xiaofei) how to concat error with the final stream?
+            Flux.concatDelayError(invokeReadyTasksAsync(context), toErrorObservable(throwable));
+        } else {
+            invokeReadyTasks(context);
+        }
     }
 
     /**
@@ -885,6 +980,16 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
             } else {
                 return this.actualTaskItem.invokeAfterPostRunAsync(isGroupFaulted).subscribeOn(Schedulers.immediate());
             }
+        }
+
+        @Override
+        public Indexable invoke(InvocationContext context) {
+            return actualTaskItem.result();
+        }
+
+        @Override
+        public void invokeAfterPostRun(boolean isGroupFaulted) {
+            this.actualTaskItem.invokeAfterPostRun(isGroupFaulted);
         }
     }
 }

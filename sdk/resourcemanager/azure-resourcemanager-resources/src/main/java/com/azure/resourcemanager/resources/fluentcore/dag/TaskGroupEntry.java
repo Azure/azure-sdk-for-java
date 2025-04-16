@@ -108,6 +108,17 @@ public final class TaskGroupEntry<TaskT extends TaskItem> extends DAGNode<TaskT,
         }
     }
 
+    public Indexable invokeTask(boolean ignoreCachedResult, final TaskGroup.InvocationContext context) {
+        if (hasFaultedDescentDependencyTasks) {
+            throw new ErroredDependencyTaskException();
+        }
+        final TaskT taskItem = this.taskItem();
+        if (!ignoreCachedResult && hasCachedResult()) {
+            return taskItem.result();
+        }
+        return taskItem.invoke(context);
+    }
+
     @Override
     protected void onFaultedResolution(String dependencyKey, Throwable throwable) {
         super.onFaultedResolution(dependencyKey, throwable);
