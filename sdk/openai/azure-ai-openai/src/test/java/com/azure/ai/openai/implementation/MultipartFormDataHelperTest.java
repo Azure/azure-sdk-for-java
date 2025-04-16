@@ -24,7 +24,7 @@ public class MultipartFormDataHelperTest {
         // Act
         MultipartFormDataHelper multipartRequest
             = new MultipartFormDataHelper(multipartRequestOptions).serializeJsonField("weather", "sunny")
-            .serializeJsonField("temperatureCelsius", 24);
+                .serializeJsonField("temperatureCelsius", 24);
 
         BinaryData requestBody = multipartRequest.end().getRequestBody();
 
