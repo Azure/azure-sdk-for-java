@@ -35,6 +35,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.URI;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
@@ -292,7 +294,14 @@ public class NettyHttpClientTests {
                 () -> httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(PROXY_TO_ADDRESS))));
 
             Throwable exception = coreException.getCause();
-            assertInstanceOf(ProxyConnectException.class, exception, exception.toString());
+            assertInstanceOf(ProxyConnectException.class, exception, () -> {
+                StringWriter stringWriter = new StringWriter();
+                stringWriter.write(exception.toString());
+                PrintWriter printWriter = new PrintWriter(stringWriter);
+                exception.printStackTrace(printWriter);
+
+                return stringWriter.toString();
+            });
 
             assertTrue(coreException.getCause().getMessage().contains("Proxy Authentication Required"),
                 () -> "Expected exception message to contain \"Proxy Authentication Required\", it was: "
