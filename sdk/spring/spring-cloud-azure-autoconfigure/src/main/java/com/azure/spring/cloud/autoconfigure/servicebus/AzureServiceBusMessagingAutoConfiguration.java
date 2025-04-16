@@ -166,10 +166,10 @@ public class AzureServiceBusMessagingAutoConfiguration {
         @Bean
         @ConditionalOnMissingBean
         @ConditionalOnBean(ServiceBusProducerFactory.class)
-        ServiceBusTemplate serviceBusTemplate(AzureServiceBusProperties properties,
-                                              ServiceBusProducerFactory producerFactory,
-                                              ServiceBusConsumerFactory consumerFactory,
-                                              ServiceBusMessageConverter messageConverter) {
+        public ServiceBusTemplate serviceBusTemplate(AzureServiceBusProperties properties,
+                                                     ServiceBusProducerFactory producerFactory,
+                                                     ServiceBusConsumerFactory consumerFactory,
+                                                     ServiceBusMessageConverter messageConverter) {
             ServiceBusTemplate serviceBusTemplate = new ServiceBusTemplate(producerFactory, consumerFactory);
             serviceBusTemplate.setMessageConverter(messageConverter);
             if (properties.getProducer().getEntityType() != null) {
