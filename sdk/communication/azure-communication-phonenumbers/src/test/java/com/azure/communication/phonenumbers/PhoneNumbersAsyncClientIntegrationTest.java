@@ -10,6 +10,7 @@ import com.azure.communication.phonenumbers.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.models.OperatorInformationOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
+import com.azure.communication.phonenumbers.models.PhoneNumberBrowseCapabilitiesRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilityType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCountry;
@@ -21,10 +22,14 @@ import com.azure.communication.phonenumbers.models.PhoneNumberOperationStatus;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
+import com.azure.communication.phonenumbers.models.PhoneNumbersBrowseRequest;
+import com.azure.communication.phonenumbers.models.PhoneNumbersBrowseResult;
+import com.azure.communication.phonenumbers.models.PhoneNumbersReservation;
 import com.azure.communication.phonenumbers.models.PurchasePhoneNumbersResult;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
 import com.azure.communication.phonenumbers.models.ReleasePhoneNumberResult;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.polling.AsyncPollResponse;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -38,11 +43,17 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrationTestBase {
+
+    private static UUID reservationId = UUID.randomUUID();
+    private static PhoneNumbersReservation reservation = new PhoneNumbersReservation(reservationId);
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
@@ -487,6 +498,264 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                 assertNotNull(result.getValue().getValues().get(0).getOperatorDetails());
             })
             .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void browseAvailablePhoneNumberSucceeds(HttpClient httpClient) {
+        PhoneNumbersBrowseRequest browseRequest
+            = new PhoneNumbersBrowseRequest().setPhoneNumberType(PhoneNumberType.TOLL_FREE)
+                .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
+                .setCapabilities(
+                    new PhoneNumberBrowseCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
+                        .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
+
+        StepVerifier.create(this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
+            .browseAvailableNumbers("US", browseRequest)).assertNext((result) -> {
+                assertEquals(PhoneNumberType.TOLL_FREE, result.getPhoneNumbers().get(0).getPhoneNumberType());
+                assertEquals(PhoneNumberAssignmentType.APPLICATION,
+                    result.getPhoneNumbers().get(0).getAssignmentType());
+            }).verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void browseAvailablePhoneNumberWrongCountryCode(HttpClient httpClient) {
+        PhoneNumbersBrowseRequest browseRequest
+            = new PhoneNumbersBrowseRequest().setPhoneNumberType(PhoneNumberType.TOLL_FREE)
+                .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
+                .setCapabilities(
+                    new PhoneNumberBrowseCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
+                        .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
+
+        StepVerifier.create(this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
+            .browseAvailableNumbers("INVALID", browseRequest)).verifyError();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void browseAvailablePhoneNumberSucceedsWithAAD(HttpClient httpClient) {
+        PhoneNumbersBrowseRequest browseRequest
+            = new PhoneNumbersBrowseRequest().setPhoneNumberType(PhoneNumberType.TOLL_FREE)
+                .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
+                .setCapabilities(
+                    new PhoneNumberBrowseCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
+                        .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
+
+        StepVerifier.create(this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers")
+            .browseAvailableNumbers("US", browseRequest)).assertNext((result) -> {
+                assertEquals(PhoneNumberType.TOLL_FREE, result.getPhoneNumbers().get(0).getPhoneNumberType());
+                assertEquals(PhoneNumberAssignmentType.APPLICATION,
+                    result.getPhoneNumbers().get(0).getAssignmentType());
+            }).verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void browseAvailablePhoneNumberWrongCountryCodeWithAAD(HttpClient httpClient) {
+        PhoneNumbersBrowseRequest browseRequest
+            = new PhoneNumbersBrowseRequest().setPhoneNumberType(PhoneNumberType.TOLL_FREE)
+                .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
+                .setCapabilities(
+                    new PhoneNumberBrowseCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
+                        .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
+
+        StepVerifier.create(this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers")
+            .browseAvailableNumbers("INVALID", browseRequest)).verifyError();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void updatePhoneNumbersReservation(HttpClient httpClient) {
+        PhoneNumbersBrowseRequest browseRequest
+            = new PhoneNumbersBrowseRequest().setPhoneNumberType(PhoneNumberType.TOLL_FREE)
+                .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
+                .setCapabilities(
+                    new PhoneNumberBrowseCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
+                        .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
+
+        PhoneNumbersBrowseResult result = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
+            .browseAvailableNumbers("US", browseRequest)
+            .block(); // Blocking to retrieve the result synchronously
+
+        assertNotNull(result);
+        assertEquals(PhoneNumberType.TOLL_FREE, result.getPhoneNumbers().get(0).getPhoneNumberType());
+        assertEquals(PhoneNumberAssignmentType.APPLICATION, result.getPhoneNumbers().get(0).getAssignmentType());
+
+        reservation.addPhoneNumber(result.getPhoneNumbers().get(0));
+
+        PhoneNumbersReservation reservationResponse
+            = this.getClientWithConnectionString(httpClient, "updatePhoneNumberReservation")
+                .createOrUpdateReservation(reservation)
+                .block();
+
+        assertEquals(reservationId, reservationResponse.getId());
+        assertNotNull(reservationResponse.getPhoneNumbers());
+        assertTrue(reservationResponse.getPhoneNumbers().containsKey(result.getPhoneNumbers().get(0).getId()));
+
+        reservationResponse = this.getClientWithConnectionString(httpClient, "getPhoneNumberReservation")
+            .getReservation(reservationId)
+            .block();
+
+        assertEquals(reservationId, reservationResponse.getId());
+
+        PagedFlux<PhoneNumbersReservation> reservationsList
+            = this.getClientWithConnectionString(httpClient, "listPhoneNumberReservations").listReservations();
+
+        StepVerifier.create(reservationsList.collectList()).assertNext(reservations -> {
+            boolean containsReservation
+                = reservations.stream().anyMatch(reservation -> reservation.getId().equals(reservationId));
+            assertTrue(containsReservation, "The reservations list does not contain the expected reservation.");
+        }).verifyComplete();
+
+        reservation.removePhoneNumber(result.getPhoneNumbers().get(0).getId());
+
+        reservationResponse = this.getClientWithConnectionString(httpClient, "updatePhoneNumberReservation")
+            .createOrUpdateReservation(reservation)
+            .block();
+        assertEquals(reservationId, reservationResponse.getId());
+        assertFalse(reservationResponse.getPhoneNumbers().containsKey(result.getPhoneNumbers().get(0).getId()));
+
+        this.getClientWithConnectionString(httpClient, "deletePhoneNumberReservation")
+            .deleteReservation(reservationId)
+            .block();
+
+        StepVerifier
+            .create(this.getClientWithConnectionString(httpClient, "getPhoneNumberReservation")
+                .getReservation(reservationId))
+            .verifyError();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void updatePhoneNumbersReservationWithAAD(HttpClient httpClient) {
+        PhoneNumbersBrowseRequest browseRequest
+            = new PhoneNumbersBrowseRequest().setPhoneNumberType(PhoneNumberType.TOLL_FREE)
+                .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
+                .setCapabilities(
+                    new PhoneNumberBrowseCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
+                        .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
+
+        PhoneNumbersBrowseResult result = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers")
+            .browseAvailableNumbers("US", browseRequest)
+            .block(); // Blocking to retrieve the result synchronously
+
+        assertNotNull(result);
+        assertEquals(PhoneNumberType.TOLL_FREE, result.getPhoneNumbers().get(0).getPhoneNumberType());
+        assertEquals(PhoneNumberAssignmentType.APPLICATION, result.getPhoneNumbers().get(0).getAssignmentType());
+
+        reservation.addPhoneNumber(result.getPhoneNumbers().get(0));
+
+        PhoneNumbersReservation reservationResponse
+            = this.getClientWithManagedIdentity(httpClient, "updatePhoneNumberReservation")
+                .createOrUpdateReservation(reservation)
+                .block();
+
+        assertEquals(reservationId, reservationResponse.getId());
+        assertNotNull(reservationResponse.getPhoneNumbers());
+        assertTrue(reservationResponse.getPhoneNumbers().containsKey(result.getPhoneNumbers().get(0).getId()));
+
+        reservationResponse = this.getClientWithManagedIdentity(httpClient, "getPhoneNumberReservation")
+            .getReservation(reservationId)
+            .block();
+
+        assertEquals(reservationId, reservationResponse.getId());
+
+        PagedFlux<PhoneNumbersReservation> reservationsList
+            = this.getClientWithManagedIdentity(httpClient, "listPhoneNumberReservations").listReservations();
+
+        StepVerifier.create(reservationsList.collectList()).assertNext(reservations -> {
+            boolean containsReservation
+                = reservations.stream().anyMatch(reservation -> reservation.getId().equals(reservationId));
+            assertTrue(containsReservation, "The reservations list does not contain the expected reservation.");
+        }).verifyComplete();
+
+        reservation.removePhoneNumber(result.getPhoneNumbers().get(0).getId());
+
+        reservationResponse = this.getClientWithManagedIdentity(httpClient, "updatePhoneNumberReservation")
+            .createOrUpdateReservation(reservation)
+            .block();
+        assertEquals(reservationId, reservationResponse.getId());
+        assertFalse(reservationResponse.getPhoneNumbers().containsKey(result.getPhoneNumbers().get(0).getId()));
+
+        this.getClientWithManagedIdentity(httpClient, "deletePhoneNumberReservation")
+            .deleteReservation(reservationId)
+            .block();
+
+        StepVerifier
+            .create(this.getClientWithManagedIdentity(httpClient, "getPhoneNumberReservation")
+                .getReservation(reservationId))
+            .verifyError();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void purchaseWithoutAgreementToNotResellFails(HttpClient httpClient) {
+        PhoneNumbersBrowseRequest browseRequest
+            = new PhoneNumbersBrowseRequest().setPhoneNumberType(PhoneNumberType.TOLL_FREE)
+                .setAssignmentType(PhoneNumberAssignmentType.APPLICATION);
+
+        PhoneNumbersBrowseResult result = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
+            .browseAvailableNumbers("FR", browseRequest)
+            .block(); // Blocking to retrieve the result synchronously
+
+        reservation.addPhoneNumber(result.getPhoneNumbers().get(0));
+
+        StepVerifier.create(this.getClientWithConnectionString(httpClient, "purchasePhoneNumberReservation")
+            .beginPurchaseReservation(reservationId)).verifyError();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void purchaseWithoutAgreementToNotResellFailsWithAAD(HttpClient httpClient) {
+        PhoneNumbersBrowseRequest browseRequest
+            = new PhoneNumbersBrowseRequest().setPhoneNumberType(PhoneNumberType.TOLL_FREE)
+                .setAssignmentType(PhoneNumberAssignmentType.APPLICATION);
+
+        PhoneNumbersBrowseResult result = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers")
+            .browseAvailableNumbers("FR", browseRequest)
+            .block(); // Blocking to retrieve the result synchronously
+
+        reservation.addPhoneNumber(result.getPhoneNumbers().get(0));
+
+        StepVerifier.create(this.getClientWithManagedIdentity(httpClient, "purchasePhoneNumberReservation")
+            .beginPurchaseReservation(reservationId)).verifyError();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void purchaseWithSearchWithoutAgreementToNotResellFails(HttpClient httpClient) {
+        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
+        capabilities.setCalling(PhoneNumberCapabilityType.INBOUND);
+        capabilities.setSms(PhoneNumberCapabilityType.NONE);
+        PhoneNumberSearchOptions searchOptions = new PhoneNumberSearchOptions().setQuantity(1);
+        PhoneNumbersAsyncClient client
+            = this.getClientWithConnectionString(httpClient, "beginSearchAvailablePhoneNumbers");
+        PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> poller
+            = setPollInterval(client.beginSearchAvailablePhoneNumbers("FR", PhoneNumberType.TOLL_FREE,
+                PhoneNumberAssignmentType.APPLICATION, capabilities, searchOptions));
+        PhoneNumberSearchResult searchResult = poller.blockLast().getFinalResult().block();
+
+        StepVerifier.create(this.getClientWithConnectionString(httpClient, "beginPurchasePhoneNumbers")
+            .beginPurchasePhoneNumbers(searchResult.getSearchId())).verifyError();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void purchaseWithSearchWithoutAgreementToNotResellWithAADFails(HttpClient httpClient) {
+        PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
+        capabilities.setCalling(PhoneNumberCapabilityType.INBOUND);
+        capabilities.setSms(PhoneNumberCapabilityType.NONE);
+        PhoneNumberSearchOptions searchOptions = new PhoneNumberSearchOptions().setQuantity(1);
+        PhoneNumbersAsyncClient client
+            = this.getClientWithManagedIdentity(httpClient, "beginSearchAvailablePhoneNumbers");
+        PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> poller
+            = setPollInterval(client.beginSearchAvailablePhoneNumbers("FR", PhoneNumberType.TOLL_FREE,
+                PhoneNumberAssignmentType.APPLICATION, capabilities, searchOptions));
+        PhoneNumberSearchResult searchResult = poller.blockLast().getFinalResult().block();
+
+        StepVerifier.create(this.getClientWithManagedIdentity(httpClient, "beginPurchasePhoneNumbers")
+            .beginPurchasePhoneNumbers(searchResult.getSearchId())).verifyError();
     }
 
     private PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult>
