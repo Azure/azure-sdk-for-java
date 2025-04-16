@@ -8,6 +8,7 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.CoreUtils;
+import io.clientcore.core.utils.ServerSentEventUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandler;
@@ -193,7 +194,7 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
                 // We're ignoring the response content.
                 CountDownLatch latch = new CountDownLatch(1);
                 eagerContent = null;
-                ctx.pipeline().addLast(new Netty4EagerConsumeNetworkResponseHandler(latch, ignored -> {
+                ctx.pipeline().addLast(new Netty4EagerConsumeChannelHandler(latch, ignored -> {
                 }));
                 awaitLatch(latch);
             } else if (bodyHandling == BodyHandling.STREAM) {
@@ -215,7 +216,7 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
             } else {
                 // All cases otherwise assume BUFFER.
                 CountDownLatch latch = new CountDownLatch(1);
-                ctx.pipeline().addLast(new Netty4EagerConsumeNetworkResponseHandler(latch, buf -> {
+                ctx.pipeline().addLast(new Netty4EagerConsumeChannelHandler(latch, buf -> {
                     try {
                         buf.readBytes(eagerContent, buf.readableBytes());
                     } catch (IOException ex) {
@@ -238,7 +239,8 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
 
         if (request.getHttpMethod() == HEAD) {
             return BodyHandling.IGNORE;
-        } else if ("application/octet-stream".equalsIgnoreCase(contentType)) {
+        } else if ("application/octet-stream".equalsIgnoreCase(contentType)
+            || ServerSentEventUtils.isTextEventStreamContentType(contentType)) {
             return BodyHandling.STREAM;
         } else {
             return BodyHandling.BUFFER;

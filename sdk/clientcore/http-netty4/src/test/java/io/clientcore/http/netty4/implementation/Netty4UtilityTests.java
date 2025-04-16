@@ -2,16 +2,25 @@
 // Licensed under the MIT License.
 package io.clientcore.http.netty4.implementation;
 
+import io.clientcore.core.http.models.HttpHeader;
+import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.utils.CoreUtils;
+import io.netty.handler.codec.http.DefaultHttpHeaders;
+import io.netty.handler.codec.http.HttpHeaderNames;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static io.clientcore.http.netty4.implementation.Netty4Utility.NETTY_VERSION_PROPERTY;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.PROPERTIES_FILE_NAME;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertLinesMatch;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Timeout(value = 3, unit = TimeUnit.MINUTES)
@@ -42,5 +51,28 @@ public class Netty4UtilityTests {
             assertTrue(artifactFullName.startsWith("io.netty:netty-"),
                 "All artifact information should start with 'io.netty:netty-'");
         }
+    }
+
+    @Test
+    public void convertNettyHeadersToClientCoreHeaders() {
+        HttpHeaders clientCoreHeaders = new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, "42")
+            .set(HttpHeaderName.CONTENT_TYPE, "application/json")
+            .set(HttpHeaderName.ACCEPT, Arrays.asList("application/json", "text/json"));
+
+        io.netty.handler.codec.http.HttpHeaders nettyHeaders
+            = new DefaultHttpHeaders().add(HttpHeaderNames.CONTENT_LENGTH, "42")
+                .add(HttpHeaderNames.CONTENT_TYPE, "application/json")
+                .add(HttpHeaderNames.ACCEPT, "application/json")
+                .add(HttpHeaderNames.ACCEPT, "text/json");
+
+        HttpHeaders convertedHeaders = Netty4Utility.convertHeaders(nettyHeaders);
+
+        assertEquals(clientCoreHeaders.getSize(), convertedHeaders.getSize());
+        clientCoreHeaders.stream().forEach(httpHeader -> {
+            HttpHeader convertedHeader = convertedHeaders.get(httpHeader.getName());
+            assertNotNull(convertedHeader, "Converted headers should contain the header names as the original headers");
+            assertLinesMatch(httpHeader.getValues(), convertedHeader.getValues(),
+                "Converted headers should have the same values as the original headers");
+        });
     }
 }

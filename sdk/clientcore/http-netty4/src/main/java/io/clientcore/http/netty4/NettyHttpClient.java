@@ -7,12 +7,15 @@ import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.http.models.ServerSentEventListener;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.ServerSentResult;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.models.binarydata.FileBinaryData;
 import io.clientcore.core.models.binarydata.InputStreamBinaryData;
 import io.clientcore.core.utils.AuthenticateChallenge;
 import io.clientcore.core.utils.ProgressReporter;
+import io.clientcore.core.utils.ServerSentEventUtils;
 import io.clientcore.http.netty4.implementation.ChannelInitializationProxyHandler;
 import io.clientcore.http.netty4.implementation.Netty4ProgressAndTimeoutHandler;
 import io.clientcore.http.netty4.implementation.Netty4ResponseHandler;
@@ -46,6 +49,8 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static io.clientcore.core.utils.ServerSentEventUtils.attemptRetry;
+import static io.clientcore.core.utils.ServerSentEventUtils.processTextEventStream;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.PROGRESS_AND_TIMEOUT_HANDLER_NAME;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.createCodec;
 import static io.netty.handler.codec.http.DefaultHttpHeadersFactory.trailersFactory;
@@ -55,6 +60,12 @@ import static io.netty.handler.codec.http.DefaultHttpHeadersFactory.trailersFact
  */
 class NettyHttpClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(NettyHttpClient.class);
+
+    /**
+     * Error message for when no {@link ServerSentEventListener} is attached to the {@link HttpRequest}.
+     */
+    private static final String NO_LISTENER_ERROR_MESSAGE
+        = "No ServerSentEventListener attached to HttpRequest to handle the text/event-stream response";
 
     private final Bootstrap bootstrap;
     private final SslContext sslContext;
@@ -156,6 +167,32 @@ class NettyHttpClient implements HttpClient {
 
         Response<BinaryData> response = responseReference.get();
         if (response != null) {
+            if (response.getValue() != BinaryData.empty()
+                && ServerSentEventUtils
+                    .isTextEventStreamContentType(response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE))) {
+                ServerSentEventListener listener = request.getServerSentEventListener();
+
+                if (listener != null) {
+                    ServerSentResult serverSentResult
+                        = processTextEventStream(response.getValue().toStream(), listener);
+
+                    if (serverSentResult.getException() != null) {
+                        // If an exception occurred while processing the text event stream, emit listener onError.
+                        listener.onError(serverSentResult.getException());
+                    }
+
+                    // If an error occurred or we want to reconnect
+                    if (!Thread.currentThread().isInterrupted() && attemptRetry(serverSentResult, request)) {
+                        return this.send(request);
+                    }
+
+                    response = new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+                        createBodyFromServerSentResult(serverSentResult));
+                } else {
+                    throw LOGGER.logThrowableAsError(new RuntimeException(NO_LISTENER_ERROR_MESSAGE));
+                }
+            }
+
             return response;
         } else {
             Throwable error = errorReference.get();
@@ -234,5 +271,11 @@ class NettyHttpClient implements HttpClient {
         if (group != null) {
             group.shutdownGracefully();
         }
+    }
+
+    private static BinaryData createBodyFromServerSentResult(ServerSentResult serverSentResult) {
+        return (serverSentResult != null && serverSentResult.getData() != null)
+            ? BinaryData.fromString(String.join("\n", serverSentResult.getData()))
+            : BinaryData.empty();
     }
 }

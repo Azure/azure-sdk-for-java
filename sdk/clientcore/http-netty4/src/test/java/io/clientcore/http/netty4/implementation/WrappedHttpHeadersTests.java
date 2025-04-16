@@ -10,6 +10,8 @@ import io.netty.handler.codec.http.HttpHeaderNames;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -144,11 +146,12 @@ public class WrappedHttpHeadersTests {
         assertEquals("42", coreHeaders.getValue(HttpHeaderName.CONTENT_LENGTH));
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void addHttpHeadersFallsBackToSuperImplementation() {
         WrappedHttpHeaders wrappedHttpHeaders = new WrappedHttpHeaders(new HttpHeaders());
-        io.netty.handler.codec.http.HttpHeaders toAdd
-            = new DefaultHttpHeaders().add("Keep-Alive", "true").add(HttpHeaderNames.CONTENT_LENGTH, "42");
+        io.netty.handler.codec.http.HttpHeaders toAdd = new DefaultHttpHeaders().add(HttpHeaderNames.KEEP_ALIVE, "true")
+            .add(HttpHeaderNames.CONTENT_LENGTH, "42");
 
         wrappedHttpHeaders.add(toAdd);
 
@@ -493,5 +496,19 @@ public class WrappedHttpHeadersTests {
     public void setAllHttpHeadersThrowsOnNull() {
         WrappedHttpHeaders wrappedHttpHeaders = new WrappedHttpHeaders(new HttpHeaders());
         assertThrows(NullPointerException.class, () -> wrappedHttpHeaders.setAll(null));
+    }
+
+    @Test
+    public void names() {
+        HttpHeaders clientCoreHeaders = new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, "42")
+            .set(HttpHeaderName.CONTENT_TYPE, "application/json")
+            .set(HttpHeaderName.ACCEPT, Arrays.asList("application/json", "text/json"));
+        WrappedHttpHeaders wrappedHttpHeaders = new WrappedHttpHeaders(clientCoreHeaders);
+
+        Set<String> expectedNames = new HashSet<>(Arrays.asList(HttpHeaderName.CONTENT_LENGTH.getCaseSensitiveName(),
+            HttpHeaderName.CONTENT_TYPE.getCaseSensitiveName(), HttpHeaderName.ACCEPT.getCaseSensitiveName()));
+        Set<String> names = wrappedHttpHeaders.names();
+
+        assertEquals(expectedNames, names);
     }
 }

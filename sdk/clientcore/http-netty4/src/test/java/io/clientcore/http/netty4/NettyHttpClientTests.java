@@ -19,7 +19,9 @@ import io.clientcore.core.http.pipeline.HttpRetryPolicy;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.ProgressReporter;
 import io.clientcore.http.netty4.implementation.MockProxyServer;
+import io.clientcore.http.netty4.implementation.Netty4ProgressAndTimeoutHandler;
 import io.clientcore.http.netty4.implementation.NettyHttpClientLocalTestServer;
+import io.netty.channel.ChannelPipeline;
 import io.netty.handler.proxy.ProxyConnectException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -312,6 +314,26 @@ public class NettyHttpClientTests {
     //            assertEquals(200, response.getStatusCode());
     //        }
     //    }
+
+    /**
+     * Tests that {@link Netty4ProgressAndTimeoutHandler} isn't added to the {@link ChannelPipeline} where there isn't
+     * a {@link ProgressReporter} and no timeouts are added.
+     */
+    @Test
+    public void progressAndTimeoutHandlerNotAdded() throws IOException {
+        HttpClient client = new NettyHttpClientBuilder().connectTimeout(Duration.ZERO)
+            .writeTimeout(Duration.ZERO)
+            .responseTimeout(Duration.ZERO)
+            .readTimeout(Duration.ZERO)
+            .build();
+
+        try (Response<BinaryData> response
+            = client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(LONG_BODY_PATH)))) {
+            assertNotNull(response);
+            assertEquals(200, response.getStatusCode());
+            assertArraysEqual(LONG_BODY, response.getValue().toBytes());
+        }
+    }
 
     private static Stream<Arguments> requestHeaderSupplier() {
         return Stream.of(Arguments.of(null, NULL_REPLACEMENT), Arguments.of("", ""), Arguments.of("aValue", "aValue"));

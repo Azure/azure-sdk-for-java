@@ -40,7 +40,7 @@ import static io.clientcore.http.netty4.implementation.Netty4Utility.createCodec
  * This class handles authorizing requests being sent through a proxy which require authentication.
  */
 public final class Netty4HttpProxyHandler extends ProxyHandler {
-    private static final String VALIDATION_ERROR_TEMPLATE = "The '%s' returned in the 'Proxy-Authentication-Info' "
+    static final String VALIDATION_ERROR_TEMPLATE = "The '%s' returned in the 'Proxy-Authentication-Info' "
         + "header doesn't match the value sent in the 'Proxy-Authorization' header. Sent: %s, received: %s.";
 
     private static final String PROXY_AUTHENTICATION_INFO = "Proxy-Authentication-Info";
@@ -218,7 +218,7 @@ public final class Netty4HttpProxyHandler extends ProxyHandler {
      * Validate the Proxy-Authorization header used in authentication against the server's Proxy-Authentication-Info
      * header. This header is an optional return by the server so this validation is guaranteed to happen.
      */
-    private void validateProxyAuthenticationInfo(String infoHeader, String authorizationHeader) {
+    static void validateProxyAuthenticationInfo(String infoHeader, String authorizationHeader) {
         // Client didn't send 'Proxy-Authorization' or server didn't return a 'Proxy-Authentication-Info' header,
         // nothing to validate.
         if (CoreUtils.isNullOrEmpty(authorizationHeader) || CoreUtils.isNullOrEmpty(infoHeader)) {
