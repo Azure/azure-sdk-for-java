@@ -120,7 +120,7 @@ public class ReplicatedResourceClientGoneForWriteTest {
         FailureValidator validator = FailureValidator
             .builder()
             .instanceOf(CosmosException.class)
-            .statusCode(410).build();
+            .statusCode(408).build();
         ReplicatedResourceClientPartitionSplitTest.validateFailure(
             storeResponseObs,
             validator,
