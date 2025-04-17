@@ -54,8 +54,8 @@ stages:
       SupportedClouds: Preview
       MatrixReplace:
         # Use dedicated storage pool in canadacentral with higher memory capacity
-        - Pool=.*LINUXPOOL.*/azsdk-pool-storage
-        - Pool=.*WINDOWSPOOL.*/azsdk-pool-storage
+        - Pool=.*LINUXPOOL.*/azsdk-pool
+        - Pool=.*WINDOWSPOOL.*/azsdk-pool
         - ${{ each additionalReplace in parameters.AdditionalMatrixReplace }}:
             - ${{ additionalReplace }}
       MatrixConfigs:
