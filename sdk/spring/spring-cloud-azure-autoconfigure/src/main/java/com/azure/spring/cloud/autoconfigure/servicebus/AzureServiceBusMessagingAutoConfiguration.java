@@ -128,7 +128,7 @@ public class AzureServiceBusMessagingAutoConfiguration {
     @Configuration(proxyBeanMethods = false)
     public static class ServiceBusTemplateConfiguration {
 
-        private ApplicationContext applicationContext;
+        private final ApplicationContext applicationContext;
 
         ServiceBusTemplateConfiguration(ApplicationContext applicationContext) {
             this.applicationContext = applicationContext;
