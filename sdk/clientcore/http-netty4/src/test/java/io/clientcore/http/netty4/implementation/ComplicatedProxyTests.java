@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package io.clientcore.http.netty4.implementation;
 
+import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.http.models.Response;
@@ -11,14 +12,17 @@ import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.AuthenticateChallenge;
 import io.clientcore.http.netty4.NettyHttpClientTests;
 import io.netty.bootstrap.Bootstrap;
+import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.http.DefaultFullHttpRequest;
+import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.proxy.HttpProxyHandler;
 import io.netty.util.concurrent.DefaultThreadFactory;
 import org.junit.jupiter.api.RepeatedTest;
@@ -31,6 +35,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import static io.clientcore.http.netty4.NettyHttpClientTests.uri;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.setOrSuppressError;
 import static io.clientcore.http.netty4.implementation.NettyHttpClientLocalTestServer.PROXY_TO_ADDRESS;
+import static io.netty.handler.codec.http.DefaultHttpHeadersFactory.trailersFactory;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -62,25 +67,18 @@ public class ComplicatedProxyTests {
             String host = uri.getHost();
             int port = uri.getPort() == -1 ? ("https".equalsIgnoreCase(uri.getScheme()) ? 443 : 80) : uri.getPort();
 
-            AtomicReference<Response<BinaryData>> responseReference = new AtomicReference<>();
-            AtomicReference<Throwable> errorReference = new AtomicReference<>();
-            CountDownLatch latch = new CountDownLatch(1);
-
             // Configure an immutable ChannelInitializer in the builder with everything that can be added on a non-per
             // request basis.
             bootstrap.handler(new ChannelInitializer<Channel>() {
                 @Override
                 protected void initChannel(Channel ch) {
-                    ch.pipeline()
-                        .addFirst(channelInitializationProxyHandler.createProxy(proxyChallenges))
-                        .addLast(new ChannelInboundHandlerAdapter() {
-                            @Override
-                            public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-                                errorReference.set(cause);
-                            }
-                        });
+                    ch.pipeline().addFirst(channelInitializationProxyHandler.createProxy(proxyChallenges));
                 }
             });
+
+            AtomicReference<Response<BinaryData>> responseReference = new AtomicReference<>();
+            AtomicReference<Throwable> errorReference = new AtomicReference<>();
+            CountDownLatch latch = new CountDownLatch(1);
 
             try {
                 bootstrap.connect(host, port).addListener((ChannelFutureListener) connectListener -> {
@@ -97,8 +95,6 @@ public class ComplicatedProxyTests {
                         if (!closeListener.isSuccess()) {
                             setOrSuppressError(errorReference, closeListener.cause());
                         }
-
-                        latch.countDown();
                     });
 
                     Throwable earlyError = errorReference.get();
@@ -109,7 +105,15 @@ public class ComplicatedProxyTests {
                         return;
                     }
 
-                    channel.pipeline().fireChannelActive();
+                    sendRequest(request, channel, errorReference).addListener((ChannelFutureListener) sendListener -> {
+                        if (!sendListener.isSuccess()) {
+                            setOrSuppressError(errorReference, sendListener.cause());
+                            sendListener.channel().close();
+                            latch.countDown();
+                        } else {
+                            sendListener.channel().read();
+                        }
+                    });
                 });
 
                 latch.await();
@@ -125,5 +129,21 @@ public class ComplicatedProxyTests {
                 fail("Request should've failed as the proxy required authentication that wasn't possible.");
             }
         }
+    }
+
+    private ChannelFuture sendRequest(HttpRequest request, Channel channel, AtomicReference<Throwable> errorReference)
+        throws InterruptedException {
+        String uri = request.getUri().toString();
+        WrappedHttpHeaders wrappedHttpHeaders = new WrappedHttpHeaders(request.getHeaders());
+
+        wrappedHttpHeaders.getCoreHeaders().set(HttpHeaderName.HOST, request.getUri().getHost());
+
+        Throwable error = errorReference.get();
+        if (error != null) {
+            return channel.newFailedFuture(error);
+        }
+
+        return channel.writeAndFlush(new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, HttpMethod.GET, uri,
+            Unpooled.EMPTY_BUFFER, wrappedHttpHeaders, trailersFactory().newHeaders()));
     }
 }
