@@ -15,6 +15,10 @@ import com.azure.spring.messaging.servicebus.support.ServiceBusMessageHeaders;
 import com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationContextAware;
 import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHeaders;
@@ -33,15 +37,16 @@ import java.util.UUID;
  * via related {@link NamespaceProperties} or producer {@link PropertiesSupplier}.
  * </p>
  */
-public class ServiceBusTemplate implements SendOperation {
+public class ServiceBusTemplate implements SendOperation, ApplicationContextAware {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusTemplate.class);
     private static final ServiceBusMessageConverter DEFAULT_CONVERTER = new ServiceBusMessageConverter();
     private static final Duration DEFAULT_PRC_SEND_TIMEOUT = Duration.ofSeconds(30);
     private final ServiceBusProducerFactory producerFactory;
-    private final ServiceBusConsumerFactory consumerFactory;
+    private ServiceBusConsumerFactory consumerFactory;
     private ServiceBusMessageConverter messageConverter = DEFAULT_CONVERTER;
     private ServiceBusEntityType defaultEntityType;
     private Duration rpcSendTimeout = DEFAULT_PRC_SEND_TIMEOUT;
+    private ApplicationContext applicationContext;
 
     /**
      * Create an instance using the supplied producer factory.
@@ -61,6 +66,16 @@ public class ServiceBusTemplate implements SendOperation {
                               ServiceBusConsumerFactory consumerFactory) {
         this.producerFactory = producerFactory;
         this.consumerFactory = consumerFactory;
+    }
+
+    /**
+     * Sets the application context
+     *
+     * @param applicationContext must not be {@literal null}
+     * @throws BeansException the bean exception
+     */
+    public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+        this.applicationContext = applicationContext;
     }
 
     @Override
@@ -136,6 +151,9 @@ public class ServiceBusTemplate implements SendOperation {
                                                         Message<U> message,
                                                         Duration sendTimeout) {
         Assert.hasText(destination, "'destination' can't be null or empty");
+        if (this.consumerFactory == null && applicationContext != null) {
+            this.consumerFactory = applicationContext.getBean(ServiceBusConsumerFactory.class);
+        }
         Assert.notNull(consumerFactory, "'consumerFactory' can't be null, please enable 'session-enabled' and 'rpc-enabled' for consumer.");
 
         ServiceBusEntityType currentEntityType = entityType;

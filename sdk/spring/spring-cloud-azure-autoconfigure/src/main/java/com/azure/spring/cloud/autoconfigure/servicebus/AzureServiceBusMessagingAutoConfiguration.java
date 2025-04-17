@@ -30,7 +30,11 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.BeanFactory;
+import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -159,27 +163,47 @@ public class AzureServiceBusMessagingAutoConfiguration {
         /**
          * Creates a Service Bus template.
          *
-         * @param properties The Service Bus properties.
          * @param producerFactory A Service Bus producer factory.
-         * @param consumerFactory A Service Bus consumer factory.
          * @param messageConverter A Service Bus message converter.
          * @return A Service Bus template.
          */
         @Bean
         @ConditionalOnMissingBean
         @ConditionalOnBean(ServiceBusProducerFactory.class)
-        public ServiceBusTemplate serviceBusTemplate(AzureServiceBusProperties properties,
-                                                     ServiceBusProducerFactory producerFactory,
-                                                     ServiceBusConsumerFactory consumerFactory,
+        public ServiceBusTemplate serviceBusTemplate(ServiceBusProducerFactory producerFactory,
                                                      ServiceBusMessageConverter messageConverter) {
-            ServiceBusTemplate serviceBusTemplate = new ServiceBusTemplate(producerFactory, consumerFactory);
+            ServiceBusTemplate serviceBusTemplate = new ServiceBusTemplate(producerFactory);
             serviceBusTemplate.setMessageConverter(messageConverter);
-            if (properties.getProducer().getEntityType() != null) {
-                serviceBusTemplate.setDefaultEntityType(properties.getProducer().getEntityType());
-            } else {
-                serviceBusTemplate.setDefaultEntityType(properties.getEntityType());
-            }
             return serviceBusTemplate;
+        }
+
+        @Bean
+        static ServiceBusTemplatePostProcessor serviceBusTemplatePostProcessor() {
+            return new ServiceBusTemplatePostProcessor();
+        }
+
+        static class ServiceBusTemplatePostProcessor implements BeanPostProcessor, BeanFactoryAware {
+
+            private BeanFactory beanFactory;
+
+            @Override
+            public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
+                if (bean instanceof ServiceBusTemplate) {
+                    ServiceBusTemplate serviceBusTemplate = (ServiceBusTemplate) bean;
+                    AzureServiceBusProperties properties = beanFactory.getBean(AzureServiceBusProperties.class);
+                    if (properties.getProducer().getEntityType() != null) {
+                        serviceBusTemplate.setDefaultEntityType(properties.getProducer().getEntityType());
+                    } else {
+                        serviceBusTemplate.setDefaultEntityType(properties.getEntityType());
+                    }
+                }
+                return bean;
+            }
+
+            @Override
+            public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
+                this.beanFactory = beanFactory;
+            }
         }
     }
 }
