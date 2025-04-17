@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static java.lang.String.format;
 import static org.apache.kafka.connect.data.Values.convertToByte;
 import static org.apache.kafka.connect.data.Values.convertToDouble;
@@ -28,6 +29,23 @@ import static org.apache.kafka.connect.data.Values.convertToShort;
 public class JsonToStruct {
     private static final Logger LOGGER = LoggerFactory.getLogger(JsonToStruct.class);
     private static final String SCHEMA_NAME_TEMPLATE = "inferred_name_%s";
+
+    public static SchemaAndValue recordToUnifiedSchema(final String entityType, final JsonNode node) {
+        checkNotNull(entityType, "Argument 'entityType' should not be null");
+
+        String jsonValue;
+        if (node == null) {
+            jsonValue = "";
+        } else {
+            jsonValue = node.toString();
+        }
+
+        Struct struct = new Struct(UnifiedMetadataSchemaConstants.SCHEMA)
+            .put(UnifiedMetadataSchemaConstants.ENTITY_TYPE_NAME, entityType)
+            .put(UnifiedMetadataSchemaConstants.JSON_VALUE_NAME, jsonValue);
+
+        return new SchemaAndValue(UnifiedMetadataSchemaConstants.SCHEMA, struct);
+    }
 
     public static SchemaAndValue recordToSchemaAndValue(final JsonNode node) {
         Schema nodeSchema = inferSchema(node);

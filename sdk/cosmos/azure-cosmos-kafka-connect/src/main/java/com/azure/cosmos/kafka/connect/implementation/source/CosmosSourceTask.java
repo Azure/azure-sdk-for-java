@@ -41,7 +41,7 @@ public class CosmosSourceTask extends SourceTask {
     private CosmosSourceTaskConfig taskConfig;
     private CosmosAsyncClient cosmosClient;
     private CosmosAsyncClient throughputControlCosmosClient;
-    private Queue<ITaskUnit> taskUnitsQueue = new LinkedList<>();
+    private final Queue<ITaskUnit> taskUnitsQueue = new LinkedList<>();
 
     @Override
     public String version() {
@@ -138,7 +138,8 @@ public class CosmosSourceTask extends SourceTask {
         Pair<ContainersMetadataTopicPartition, ContainersMetadataTopicOffset> containersMetadata = taskUnit.getContainersMetadata();
 
         // Convert JSON to Kafka Connect struct and JSON schema
-        SchemaAndValue containersMetadataSchemaAndValue = JsonToStruct.recordToSchemaAndValue(
+        SchemaAndValue containersMetadataSchemaAndValue = JsonToStruct.recordToUnifiedSchema(
+            MetadataEntityTypes.CONTAINERS_METADATA_V1,
             Utils.getSimpleObjectMapper().convertValue(
                 ContainersMetadataTopicOffset.toMap(containersMetadata.getRight()),
                 ObjectNode.class));
@@ -155,7 +156,8 @@ public class CosmosSourceTask extends SourceTask {
 
         // add the container feedRanges metadata record - it tracks the containerRid -> List[FeedRange] mapping
         for (Pair<FeedRangesMetadataTopicPartition, FeedRangesMetadataTopicOffset> feedRangesMetadata : taskUnit.getFeedRangesMetadataList()) {
-            SchemaAndValue feedRangeMetadataSchemaAndValue = JsonToStruct.recordToSchemaAndValue(
+            SchemaAndValue feedRangeMetadataSchemaAndValue = JsonToStruct.recordToUnifiedSchema(
+                MetadataEntityTypes.FEED_RANGES_METADATA_V1,
                 Utils.getSimpleObjectMapper().convertValue(
                     FeedRangesMetadataTopicOffset.toMap(feedRangesMetadata.getRight()),
                     ObjectNode.class));
