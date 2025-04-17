@@ -30,17 +30,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanFactory;
-import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
@@ -131,6 +128,12 @@ public class AzureServiceBusMessagingAutoConfiguration {
     @Configuration(proxyBeanMethods = false)
     public static class ServiceBusTemplateConfiguration {
 
+        private ApplicationContext applicationContext;
+
+        ServiceBusTemplateConfiguration(ApplicationContext applicationContext) {
+            this.applicationContext = applicationContext;
+        }
+
         /**
          * Creates a default Service Bus namespace producer factory.
          *
@@ -172,38 +175,16 @@ public class AzureServiceBusMessagingAutoConfiguration {
         @ConditionalOnBean(ServiceBusProducerFactory.class)
         public ServiceBusTemplate serviceBusTemplate(ServiceBusProducerFactory producerFactory,
                                                      ServiceBusMessageConverter messageConverter) {
-            ServiceBusTemplate serviceBusTemplate = new ServiceBusTemplate(producerFactory);
+            ServiceBusConsumerFactory consumerFactory = applicationContext.getBean(ServiceBusConsumerFactory.class);
+            AzureServiceBusProperties properties = applicationContext.getBean(AzureServiceBusProperties.class);
+            ServiceBusTemplate serviceBusTemplate = new ServiceBusTemplate(producerFactory, consumerFactory);
             serviceBusTemplate.setMessageConverter(messageConverter);
+            if (properties.getProducer().getEntityType() != null) {
+                serviceBusTemplate.setDefaultEntityType(properties.getProducer().getEntityType());
+            } else {
+                serviceBusTemplate.setDefaultEntityType(properties.getEntityType());
+            }
             return serviceBusTemplate;
-        }
-
-        @Bean
-        static ServiceBusTemplatePostProcessor serviceBusTemplatePostProcessor() {
-            return new ServiceBusTemplatePostProcessor();
-        }
-
-        static class ServiceBusTemplatePostProcessor implements BeanPostProcessor, BeanFactoryAware {
-
-            private BeanFactory beanFactory;
-
-            @Override
-            public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-                if (bean instanceof ServiceBusTemplate) {
-                    ServiceBusTemplate serviceBusTemplate = (ServiceBusTemplate) bean;
-                    AzureServiceBusProperties properties = beanFactory.getBean(AzureServiceBusProperties.class);
-                    if (properties.getProducer().getEntityType() != null) {
-                        serviceBusTemplate.setDefaultEntityType(properties.getProducer().getEntityType());
-                    } else {
-                        serviceBusTemplate.setDefaultEntityType(properties.getEntityType());
-                    }
-                }
-                return bean;
-            }
-
-            @Override
-            public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
-                this.beanFactory = beanFactory;
-            }
         }
     }
 }
