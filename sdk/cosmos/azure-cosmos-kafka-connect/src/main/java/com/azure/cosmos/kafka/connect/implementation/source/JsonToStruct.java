@@ -3,7 +3,9 @@
 
 package com.azure.cosmos.kafka.connect.implementation.source;
 
+import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.type.MapType;
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.data.SchemaAndValue;
 import org.apache.kafka.connect.data.SchemaBuilder;
@@ -13,6 +15,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -27,18 +30,16 @@ import static org.apache.kafka.connect.data.Values.convertToLong;
 import static org.apache.kafka.connect.data.Values.convertToShort;
 
 public class JsonToStruct {
+    final static MapType JACKSON_MAP_TYPE = Utils
+        .getSimpleObjectMapper()
+        .getTypeFactory()
+        .constructMapType(LinkedHashMap.class, String.class, Object.class);
+
     private static final Logger LOGGER = LoggerFactory.getLogger(JsonToStruct.class);
     private static final String SCHEMA_NAME_TEMPLATE = "inferred_name_%s";
 
-    public static SchemaAndValue recordToUnifiedSchema(final String entityType, final JsonNode node) {
+    public static SchemaAndValue recordToUnifiedSchema(final String entityType, final String jsonValue) {
         checkNotNull(entityType, "Argument 'entityType' should not be null");
-
-        String jsonValue;
-        if (node == null) {
-            jsonValue = "";
-        } else {
-            jsonValue = node.toString();
-        }
 
         Struct struct = new Struct(UnifiedMetadataSchemaConstants.SCHEMA)
             .put(UnifiedMetadataSchemaConstants.ENTITY_TYPE_NAME, entityType)
