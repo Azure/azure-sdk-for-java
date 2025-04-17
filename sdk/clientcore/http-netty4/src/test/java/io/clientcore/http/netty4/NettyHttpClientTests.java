@@ -363,7 +363,7 @@ public class NettyHttpClientTests {
         return client.send(request);
     }
 
-    private static URI uri(String path) {
+    public static URI uri(String path) {
         return URI.create(SERVER_HTTP_URI + path);
     }
 
