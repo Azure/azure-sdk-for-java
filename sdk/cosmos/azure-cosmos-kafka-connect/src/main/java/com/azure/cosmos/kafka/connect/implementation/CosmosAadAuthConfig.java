@@ -8,6 +8,16 @@ import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
 public class CosmosAadAuthConfig implements CosmosAuthConfig {
+    private static final Map<CosmosAzureEnvironment, String> ACTIVE_DIRECTORY_ENDPOINT_MAP;
+    static {
+        // for now we maintain a static list within the SDK these values do not change very frequently
+        ACTIVE_DIRECTORY_ENDPOINT_MAP = new HashMap<>();
+        ACTIVE_DIRECTORY_ENDPOINT_MAP.put(CosmosAzureEnvironment.AZURE, "https://login.microsoftonline.com/");
+        ACTIVE_DIRECTORY_ENDPOINT_MAP.put(CosmosAzureEnvironment.AZURE_CHINA, "https://login.chinacloudapi.cn/");
+        ACTIVE_DIRECTORY_ENDPOINT_MAP.put(CosmosAzureEnvironment.AZURE_US_GOVERNMENT, "https://login.microsoftonline.us/");
+        ACTIVE_DIRECTORY_ENDPOINT_MAP.put(CosmosAzureEnvironment.AZURE_GERMANY, "https://login.microsoftonline.de/");
+    }
+
     private final String clientId;
     private final String clientSecret;
     private final String authEndpointOverride;
@@ -44,5 +54,11 @@ public class CosmosAadAuthConfig implements CosmosAuthConfig {
 
     public CosmosAzureEnvironment getAzureEnvironment() {
         return azureEnvironment;
+    }
+
+    public String getAuthEndpoint() {
+        String defaultAuthEndpoint = ACTIVE_DIRECTORY_ENDPOINT_MAP.get(azureEnvironment);
+        String authEndpoint = StringUtils.isNotEmpty(authEndpointOverride) ? authEndpointOverride : defaultAuthEndpoint;
+        return authEndpoint.replaceAll("/$", "") + "/";
     }
 }

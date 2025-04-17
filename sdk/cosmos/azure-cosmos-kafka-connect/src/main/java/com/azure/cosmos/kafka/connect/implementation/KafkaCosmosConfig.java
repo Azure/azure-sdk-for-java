@@ -857,9 +857,9 @@ public class KafkaCosmosConfig extends AbstractConfig {
 
                 String authEndpointOverride = configValueMap.get(authEndpointOverrideConfig).value().toString();
                 if (!StringUtils.isEmpty(authEndpointOverride)) {
-                    UriValidator uriValidator = new UriValidator("")
+                    UriValidator uriValidator = new UriValidator("");
                     try {
-                        uriValidator.ensureValid(authEndpointOverride)
+                        uriValidator.ensureValid(authEndpointOverride);
                     } catch (ConfigException e) {
                         configValueMap
                             .get(authEndpointOverrideConfig)
