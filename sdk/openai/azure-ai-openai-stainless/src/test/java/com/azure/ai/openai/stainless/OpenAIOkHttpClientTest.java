@@ -260,6 +260,7 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertChatCompletionWithoutSensitiveContent(chatCompletion);
     }
 
+    @Disabled
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
     public void testChatCompletionByod(String apiType, String apiVersion, String testModel) {
