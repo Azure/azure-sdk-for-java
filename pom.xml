@@ -129,6 +129,7 @@
     <module>sdk/kubernetesconfiguration</module>
     <module>sdk/kusto</module>
     <module>sdk/labservices</module>
+    <module>sdk/lambdatesthyperexecute</module>
     <module>sdk/largeinstance</module>
     <module>sdk/loadtesting</module>
     <module>sdk/loganalytics</module>
