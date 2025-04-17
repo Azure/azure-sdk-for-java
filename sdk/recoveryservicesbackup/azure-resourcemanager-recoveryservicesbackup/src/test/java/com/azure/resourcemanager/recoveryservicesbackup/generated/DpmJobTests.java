@@ -22,99 +22,87 @@ public final class DpmJobTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DpmJob model = BinaryData.fromString(
-            "{\"jobType\":\"DpmJob\",\"duration\":\"PT177H19M41S\",\"dpmServerName\":\"gywwpgjxs\",\"containerName\":\"tf\",\"containerType\":\"gicgaaoepttaq\",\"workloadType\":\"dewemxswv\",\"actionsInfo\":[\"Invalid\",\"Invalid\",\"Retriable\"],\"errorDetails\":[{\"errorString\":\"hkfkimrtixokf\",\"recommendations\":[\"inljqepqwhixmo\",\"stshiy\"]},{\"errorString\":\"velfcldu\",\"recommendations\":[\"irdsvuwcob\",\"egstmninwjizci\",\"nghgshej\",\"tbxqmuluxlxq\"]},{\"errorString\":\"nersb\",\"recommendations\":[\"crwnamikz\",\"brqbsmswzi\"]},{\"errorString\":\"fuhok\",\"recommendations\":[\"swhvhczznvfbycj\",\"xjww\",\"xzv\",\"mwmxqhndvnoamld\"]}],\"extendedInfo\":{\"tasksList\":[{\"taskId\":\"hdjhhflz\",\"startTime\":\"2021-09-01T03:30:12Z\",\"endTime\":\"2021-01-13T01:47:16Z\",\"duration\":\"PT140H9M21S\",\"status\":\"lnjetaglt\"},{\"taskId\":\"oatftgzpnpbswvef\",\"startTime\":\"2021-04-22T04:47:20Z\",\"endTime\":\"2021-01-31T21:33:12Z\",\"duration\":\"PT230H41M15S\",\"status\":\"zihmipgawtxxpky\"}],\"propertyBag\":{\"pcycilrmcaykg\":\"cjxgrytf\",\"pndfcpfnznt\":\"noxuztrksx\",\"xuzvoamktcqi\":\"jtwkjaos\",\"rtltla\":\"smgbzahgxqdl\"},\"dynamicErrorMessage\":\"ltzkatbhjmznnb\"},\"entityFriendlyName\":\"qeqala\",\"backupManagementType\":\"MAB\",\"operation\":\"gunbtgfebwlnbm\",\"status\":\"reeudzqavb\",\"startTime\":\"2021-04-18T03:24:53Z\",\"endTime\":\"2021-05-03T15:28:46Z\",\"activityId\":\"lyyzglgouwtlmjj\"}")
+            "{\"jobType\":\"DpmJob\",\"duration\":\"PT188H4M57S\",\"dpmServerName\":\"xo\",\"containerName\":\"ftgz\",\"containerType\":\"pbswvefloccsrm\",\"workloadType\":\"ihmipgawtxxpk\",\"actionsInfo\":[\"Invalid\",\"Cancellable\"],\"errorDetails\":[{\"errorString\":\"rytfmpcycil\",\"recommendations\":[\"aykggnoxu\",\"t\",\"ksxwpnd\"]},{\"errorString\":\"pfnznthjtwkj\",\"recommendations\":[\"rxuzvoam\",\"tcqiosmg\",\"zah\"]}],\"extendedInfo\":{\"tasksList\":[{\"taskId\":\"yrtltlaprltzkat\",\"startTime\":\"2021-01-26T08:01:35Z\",\"endTime\":\"2021-11-05T23:53:12Z\",\"duration\":\"PT141H27M7S\",\"status\":\"s\"}],\"propertyBag\":{\"ebwlnbmhyreeudzq\":\"qalarvlagunbtg\"},\"dynamicErrorMessage\":\"bpdqmjxlyy\"},\"entityFriendlyName\":\"lgouwtlmjj\",\"backupManagementType\":\"MAB\",\"operation\":\"qtobaxkjeyt\",\"status\":\"lbfjkwr\",\"startTime\":\"2021-05-29T11:10:20Z\",\"endTime\":\"2021-06-19T00:14:04Z\",\"activityId\":\"hsyrqunj\"}")
             .toObject(DpmJob.class);
-        Assertions.assertEquals("qeqala", model.entityFriendlyName());
+        Assertions.assertEquals("lgouwtlmjj", model.entityFriendlyName());
         Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());
-        Assertions.assertEquals("gunbtgfebwlnbm", model.operation());
-        Assertions.assertEquals("reeudzqavb", model.status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-18T03:24:53Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-03T15:28:46Z"), model.endTime());
-        Assertions.assertEquals("lyyzglgouwtlmjj", model.activityId());
-        Assertions.assertEquals(Duration.parse("PT177H19M41S"), model.duration());
-        Assertions.assertEquals("gywwpgjxs", model.dpmServerName());
-        Assertions.assertEquals("tf", model.containerName());
-        Assertions.assertEquals("gicgaaoepttaq", model.containerType());
-        Assertions.assertEquals("dewemxswv", model.workloadType());
+        Assertions.assertEquals("qtobaxkjeyt", model.operation());
+        Assertions.assertEquals("lbfjkwr", model.status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-29T11:10:20Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-19T00:14:04Z"), model.endTime());
+        Assertions.assertEquals("hsyrqunj", model.activityId());
+        Assertions.assertEquals(Duration.parse("PT188H4M57S"), model.duration());
+        Assertions.assertEquals("xo", model.dpmServerName());
+        Assertions.assertEquals("ftgz", model.containerName());
+        Assertions.assertEquals("pbswvefloccsrm", model.containerType());
+        Assertions.assertEquals("ihmipgawtxxpk", model.workloadType());
         Assertions.assertEquals(JobSupportedAction.INVALID, model.actionsInfo().get(0));
-        Assertions.assertEquals("hkfkimrtixokf", model.errorDetails().get(0).errorString());
-        Assertions.assertEquals("inljqepqwhixmo", model.errorDetails().get(0).recommendations().get(0));
-        Assertions.assertEquals("hdjhhflz", model.extendedInfo().tasksList().get(0).taskId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-01T03:30:12Z"),
+        Assertions.assertEquals("rytfmpcycil", model.errorDetails().get(0).errorString());
+        Assertions.assertEquals("aykggnoxu", model.errorDetails().get(0).recommendations().get(0));
+        Assertions.assertEquals("yrtltlaprltzkat", model.extendedInfo().tasksList().get(0).taskId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-26T08:01:35Z"),
             model.extendedInfo().tasksList().get(0).startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-13T01:47:16Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-05T23:53:12Z"),
             model.extendedInfo().tasksList().get(0).endTime());
-        Assertions.assertEquals(Duration.parse("PT140H9M21S"), model.extendedInfo().tasksList().get(0).duration());
-        Assertions.assertEquals("lnjetaglt", model.extendedInfo().tasksList().get(0).status());
-        Assertions.assertEquals("cjxgrytf", model.extendedInfo().propertyBag().get("pcycilrmcaykg"));
-        Assertions.assertEquals("ltzkatbhjmznnb", model.extendedInfo().dynamicErrorMessage());
+        Assertions.assertEquals(Duration.parse("PT141H27M7S"), model.extendedInfo().tasksList().get(0).duration());
+        Assertions.assertEquals("s", model.extendedInfo().tasksList().get(0).status());
+        Assertions.assertEquals("qalarvlagunbtg", model.extendedInfo().propertyBag().get("ebwlnbmhyreeudzq"));
+        Assertions.assertEquals("bpdqmjxlyy", model.extendedInfo().dynamicErrorMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DpmJob model = new DpmJob().withEntityFriendlyName("qeqala")
+        DpmJob model = new DpmJob().withEntityFriendlyName("lgouwtlmjj")
             .withBackupManagementType(BackupManagementType.MAB)
-            .withOperation("gunbtgfebwlnbm")
-            .withStatus("reeudzqavb")
-            .withStartTime(OffsetDateTime.parse("2021-04-18T03:24:53Z"))
-            .withEndTime(OffsetDateTime.parse("2021-05-03T15:28:46Z"))
-            .withActivityId("lyyzglgouwtlmjj")
-            .withDuration(Duration.parse("PT177H19M41S"))
-            .withDpmServerName("gywwpgjxs")
-            .withContainerName("tf")
-            .withContainerType("gicgaaoepttaq")
-            .withWorkloadType("dewemxswv")
-            .withActionsInfo(
-                Arrays.asList(JobSupportedAction.INVALID, JobSupportedAction.INVALID, JobSupportedAction.RETRIABLE))
+            .withOperation("qtobaxkjeyt")
+            .withStatus("lbfjkwr")
+            .withStartTime(OffsetDateTime.parse("2021-05-29T11:10:20Z"))
+            .withEndTime(OffsetDateTime.parse("2021-06-19T00:14:04Z"))
+            .withActivityId("hsyrqunj")
+            .withDuration(Duration.parse("PT188H4M57S"))
+            .withDpmServerName("xo")
+            .withContainerName("ftgz")
+            .withContainerType("pbswvefloccsrm")
+            .withWorkloadType("ihmipgawtxxpk")
+            .withActionsInfo(Arrays.asList(JobSupportedAction.INVALID, JobSupportedAction.CANCELLABLE))
             .withErrorDetails(Arrays.asList(
-                new DpmErrorInfo().withErrorString("hkfkimrtixokf")
-                    .withRecommendations(Arrays.asList("inljqepqwhixmo", "stshiy")),
-                new DpmErrorInfo().withErrorString("velfcldu")
-                    .withRecommendations(Arrays.asList("irdsvuwcob", "egstmninwjizci", "nghgshej", "tbxqmuluxlxq")),
-                new DpmErrorInfo().withErrorString("nersb")
-                    .withRecommendations(Arrays.asList("crwnamikz", "brqbsmswzi")),
-                new DpmErrorInfo().withErrorString("fuhok")
-                    .withRecommendations(Arrays.asList("swhvhczznvfbycj", "xjww", "xzv", "mwmxqhndvnoamld"))))
+                new DpmErrorInfo().withErrorString("rytfmpcycil")
+                    .withRecommendations(Arrays.asList("aykggnoxu", "t", "ksxwpnd")),
+                new DpmErrorInfo().withErrorString("pfnznthjtwkj")
+                    .withRecommendations(Arrays.asList("rxuzvoam", "tcqiosmg", "zah"))))
             .withExtendedInfo(new DpmJobExtendedInfo()
-                .withTasksList(Arrays.asList(
-                    new DpmJobTaskDetails().withTaskId("hdjhhflz")
-                        .withStartTime(OffsetDateTime.parse("2021-09-01T03:30:12Z"))
-                        .withEndTime(OffsetDateTime.parse("2021-01-13T01:47:16Z"))
-                        .withDuration(Duration.parse("PT140H9M21S"))
-                        .withStatus("lnjetaglt"),
-                    new DpmJobTaskDetails().withTaskId("oatftgzpnpbswvef")
-                        .withStartTime(OffsetDateTime.parse("2021-04-22T04:47:20Z"))
-                        .withEndTime(OffsetDateTime.parse("2021-01-31T21:33:12Z"))
-                        .withDuration(Duration.parse("PT230H41M15S"))
-                        .withStatus("zihmipgawtxxpky")))
-                .withPropertyBag(mapOf("pcycilrmcaykg", "cjxgrytf", "pndfcpfnznt", "noxuztrksx", "xuzvoamktcqi",
-                    "jtwkjaos", "rtltla", "smgbzahgxqdl"))
-                .withDynamicErrorMessage("ltzkatbhjmznnb"));
+                .withTasksList(Arrays.asList(new DpmJobTaskDetails().withTaskId("yrtltlaprltzkat")
+                    .withStartTime(OffsetDateTime.parse("2021-01-26T08:01:35Z"))
+                    .withEndTime(OffsetDateTime.parse("2021-11-05T23:53:12Z"))
+                    .withDuration(Duration.parse("PT141H27M7S"))
+                    .withStatus("s")))
+                .withPropertyBag(mapOf("ebwlnbmhyreeudzq", "qalarvlagunbtg"))
+                .withDynamicErrorMessage("bpdqmjxlyy"));
         model = BinaryData.fromObject(model).toObject(DpmJob.class);
-        Assertions.assertEquals("qeqala", model.entityFriendlyName());
+        Assertions.assertEquals("lgouwtlmjj", model.entityFriendlyName());
         Assertions.assertEquals(BackupManagementType.MAB, model.backupManagementType());
-        Assertions.assertEquals("gunbtgfebwlnbm", model.operation());
-        Assertions.assertEquals("reeudzqavb", model.status());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-18T03:24:53Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-05-03T15:28:46Z"), model.endTime());
-        Assertions.assertEquals("lyyzglgouwtlmjj", model.activityId());
-        Assertions.assertEquals(Duration.parse("PT177H19M41S"), model.duration());
-        Assertions.assertEquals("gywwpgjxs", model.dpmServerName());
-        Assertions.assertEquals("tf", model.containerName());
-        Assertions.assertEquals("gicgaaoepttaq", model.containerType());
-        Assertions.assertEquals("dewemxswv", model.workloadType());
+        Assertions.assertEquals("qtobaxkjeyt", model.operation());
+        Assertions.assertEquals("lbfjkwr", model.status());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-29T11:10:20Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-19T00:14:04Z"), model.endTime());
+        Assertions.assertEquals("hsyrqunj", model.activityId());
+        Assertions.assertEquals(Duration.parse("PT188H4M57S"), model.duration());
+        Assertions.assertEquals("xo", model.dpmServerName());
+        Assertions.assertEquals("ftgz", model.containerName());
+        Assertions.assertEquals("pbswvefloccsrm", model.containerType());
+        Assertions.assertEquals("ihmipgawtxxpk", model.workloadType());
         Assertions.assertEquals(JobSupportedAction.INVALID, model.actionsInfo().get(0));
-        Assertions.assertEquals("hkfkimrtixokf", model.errorDetails().get(0).errorString());
-        Assertions.assertEquals("inljqepqwhixmo", model.errorDetails().get(0).recommendations().get(0));
-        Assertions.assertEquals("hdjhhflz", model.extendedInfo().tasksList().get(0).taskId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-01T03:30:12Z"),
+        Assertions.assertEquals("rytfmpcycil", model.errorDetails().get(0).errorString());
+        Assertions.assertEquals("aykggnoxu", model.errorDetails().get(0).recommendations().get(0));
+        Assertions.assertEquals("yrtltlaprltzkat", model.extendedInfo().tasksList().get(0).taskId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-26T08:01:35Z"),
             model.extendedInfo().tasksList().get(0).startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-13T01:47:16Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-05T23:53:12Z"),
             model.extendedInfo().tasksList().get(0).endTime());
-        Assertions.assertEquals(Duration.parse("PT140H9M21S"), model.extendedInfo().tasksList().get(0).duration());
-        Assertions.assertEquals("lnjetaglt", model.extendedInfo().tasksList().get(0).status());
-        Assertions.assertEquals("cjxgrytf", model.extendedInfo().propertyBag().get("pcycilrmcaykg"));
-        Assertions.assertEquals("ltzkatbhjmznnb", model.extendedInfo().dynamicErrorMessage());
+        Assertions.assertEquals(Duration.parse("PT141H27M7S"), model.extendedInfo().tasksList().get(0).duration());
+        Assertions.assertEquals("s", model.extendedInfo().tasksList().get(0).status());
+        Assertions.assertEquals("qalarvlagunbtg", model.extendedInfo().propertyBag().get("ebwlnbmhyreeudzq"));
+        Assertions.assertEquals("bpdqmjxlyy", model.extendedInfo().dynamicErrorMessage());
     }
 
     // Use "Map.of" if available

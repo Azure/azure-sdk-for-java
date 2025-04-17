@@ -143,8 +143,8 @@ class AsyncJobOperationsTest extends BatchOperationTestBase {
                     assertFalse(documentIdList.contains(details.getId()));
                     documentIdList.add(details.getId());
                     assertEquals(OperationStatus.SUCCEEDED, details.getStatus());
-                    assertNotNull(details.getOutput());
-                    assertTrue(details.getOutput().getLocation().contains(OUTPUT_FOLDER));
+                    assertNotNull(details.getOutputLocation());
+                    assertTrue(details.getOutputLocation().getLocation().contains(OUTPUT_FOLDER));
                     assertEquals(36, details.getId().length());
                 });
                 return true;

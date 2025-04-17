@@ -49,6 +49,11 @@ public final class AzureStorageContainer extends ProtectionContainer {
      */
     private AcquireStorageAccountLock acquireStorageAccountLock;
 
+    /*
+     * Re-Do Operation
+     */
+    private OperationType operationType;
+
     /**
      * Creates an instance of AzureStorageContainer class.
      */
@@ -172,6 +177,26 @@ public final class AzureStorageContainer extends ProtectionContainer {
     }
 
     /**
+     * Get the operationType property: Re-Do Operation.
+     * 
+     * @return the operationType value.
+     */
+    public OperationType operationType() {
+        return this.operationType;
+    }
+
+    /**
+     * Set the operationType property: Re-Do Operation.
+     * 
+     * @param operationType the operationType value to set.
+     * @return the AzureStorageContainer object itself.
+     */
+    public AzureStorageContainer withOperationType(OperationType operationType) {
+        this.operationType = operationType;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -244,6 +269,7 @@ public final class AzureStorageContainer extends ProtectionContainer {
         jsonWriter.writeNumberField("protectedItemCount", this.protectedItemCount);
         jsonWriter.writeStringField("acquireStorageAccountLock",
             this.acquireStorageAccountLock == null ? null : this.acquireStorageAccountLock.toString());
+        jsonWriter.writeStringField("operationType", this.operationType == null ? null : this.operationType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -287,6 +313,8 @@ public final class AzureStorageContainer extends ProtectionContainer {
                 } else if ("acquireStorageAccountLock".equals(fieldName)) {
                     deserializedAzureStorageContainer.acquireStorageAccountLock
                         = AcquireStorageAccountLock.fromString(reader.getString());
+                } else if ("operationType".equals(fieldName)) {
+                    deserializedAzureStorageContainer.operationType = OperationType.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

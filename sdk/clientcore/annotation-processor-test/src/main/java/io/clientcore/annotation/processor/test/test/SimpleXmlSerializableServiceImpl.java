@@ -13,7 +13,6 @@ import io.clientcore.annotation.processor.test.implementation.SimpleXmlSerializa
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
-import io.clientcore.core.implementation.utils.UriEscapers;
 import java.io.IOException;
 import io.clientcore.core.models.CoreException;
 import io.clientcore.core.utils.CoreUtils;

@@ -148,8 +148,10 @@ public class AnnotationProcessor extends AbstractProcessor {
         method.setPath(httpRequestInfo.path());
         method.setHttpMethod(httpRequestInfo.method());
         method.setExpectedStatusCodes(httpRequestInfo.expectedStatusCodes());
-
+        method.addStaticHeaders(httpRequestInfo.headers());
+        method.addStaticQueryParams(httpRequestInfo.queryParams());
         method.setMethodReturnType(requestMethod.getReturnType());
+
         // Process parameters
         for (VariableElement param : requestMethod.getParameters()) {
             // Cache annotations for each parameter
@@ -171,10 +173,18 @@ public class AnnotationProcessor extends AbstractProcessor {
                 method.addSubstitution(
                     new Substitution(pathParam.value(), param.getSimpleName().toString(), !pathParam.encoded()));
             } else if (headerParam != null) {
-                method.addHeader(headerParam.value(), param.getSimpleName().toString());
+                // Only add header param if the key is not already present (e.g., set by static header params)
+                String key = headerParam.value();
+                if (method.getHeaders() == null || !method.getHeaders().containsKey(key)) {
+                    method.addHeader(headerParam.value(), param.getSimpleName().toString());
+                }
             } else if (queryParam != null) {
-                method.addQueryParam(queryParam.value(), param.getSimpleName().toString(),
-                    queryParam.multipleQueryParams(), !queryParam.encoded());
+                // Only add query param if the key is not already present (e.g., set by static query params)
+                String key = queryParam.value();
+                if (method.getQueryParams() == null || !method.getQueryParams().containsKey(key)) {
+                    method.addQueryParam(key, param.getSimpleName().toString(), queryParam.multipleQueryParams(),
+                        !queryParam.encoded());
+                }
             } else if (bodyParam != null) {
                 method.setBody(
                     new HttpRequestContext.Body(bodyParam.value(), param.asType(), param.getSimpleName().toString()));
