@@ -9,8 +9,10 @@ import io.netty.buffer.Unpooled;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
+import java.nio.charset.StandardCharsets;
+
 public class JsonNodeStorePayloadTests {
-    @Test(groups = {"unit"})
+    @Test(groups = { "unit" })
     @Ignore("fallbackCharsetDecoder will only be initialized during the first time when JsonNodeStorePayload loaded," +
         " need to figure out a way to reload the class")
     public void parsingBytesWithInvalidUT8Bytes() {
@@ -26,7 +28,8 @@ public class JsonNodeStorePayloadTests {
         try {
             byte[] bytes = hexStringToByteArray(invalidHexString);
             ByteBuf byteBuf = Unpooled.wrappedBuffer(bytes);
-            JsonNodeStorePayload jsonNodeStorePayload = new JsonNodeStorePayload(new ByteBufInputStream(byteBuf), bytes.length);
+            JsonNodeStorePayload jsonNodeStorePayload = new JsonNodeStorePayload(new ByteBufInputStream(byteBuf),
+                bytes.length);
             jsonNodeStorePayload.getPayload().toString();
         } finally {
             System.clearProperty("COSMOS.CHARSET_DECODER_ERROR_ACTION_ON_MALFORMED_INPUT");
@@ -34,12 +37,29 @@ public class JsonNodeStorePayloadTests {
         }
     }
 
+    @Test(groups = { "unit" })
+    public void parseJsonNodeWithDuplicates() {
+        String jsonWithDuplicates = "{\n"
+            + "    \"name\": \"John\",\n"
+            + "    \"age\": 30,\n"
+            + "    \"name\": \"Doe\",\n"
+            + "    \"age\": 25,\n"
+            + "    \"city\": \"New York\",\n"
+            + "    \"city\": \"Los Angeles\"\n"
+            + "}\n";
+        byte[] bytes = jsonWithDuplicates.getBytes(StandardCharsets.UTF_8);
+        ByteBuf byteBuf = Unpooled.wrappedBuffer(bytes);
+        JsonNodeStorePayload jsonNodeStorePayload = new JsonNodeStorePayload(new ByteBufInputStream(byteBuf),
+            bytes.length);
+        System.out.println(jsonNodeStorePayload.getPayload().toString());
+    }
+
     private static byte[] hexStringToByteArray(String hex) {
         int len = hex.length();
         byte[] data = new byte[len / 2];
         for (int i = 0; i < len; i += 2) {
             data[i / 2] = (byte) ((Character.digit(hex.charAt(i), 16) << 4)
-                + Character.digit(hex.charAt(i+1), 16));
+                + Character.digit(hex.charAt(i + 1), 16));
         }
 
         return data;

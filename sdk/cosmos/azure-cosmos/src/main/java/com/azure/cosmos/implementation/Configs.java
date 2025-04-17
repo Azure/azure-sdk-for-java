@@ -330,6 +330,14 @@ public class Configs {
     private static final String HTTP2_MAX_CONCURRENT_STREAMS = "COSMOS.HTTP2_MAX_CONCURRENT_STREAMS";
     private static final String HTTP2_MAX_CONCURRENT_STREAMS_VARIABLE = "COSMOS_HTTP2_MAX_CONCURRENT_STREAMS";
 
+    //  Config to log json object with duplicate keys
+    private static final boolean DEFAULT_SHOULD_LOG_JSON_OBJECT_WITH_DUPLICATE_KEYS = true;
+    private static final String SHOULD_LOG_JSON_OBJECT_WITH_DUPLICATE_KEYS = "COSMOS.SHOULD_LOG_JSON_OBJECT_WITH_DUPLICATE_KEYS";
+
+    //  Config to continue process object with duplicate keys
+    private static final boolean DEFAULT_SHOULD_PROCESS_JSON_OBJECT_WITH_DUPLICATE_KEYS = true;
+    private static final String SHOULD_PROCESS_JSON_OBJECT_WITH_DUPLICATE_KEYS = "COSMOS.SHOULD_PROCESS_JSON_OBJECT_WITH_DUPLICATE_KEYS";
+
     public static int getCPUCnt() {
         return CPU_CNT;
     }
@@ -1109,5 +1117,13 @@ public class Configs {
             firstNonNull(
                 emptyToNull(System.getenv().get(EMULATOR_HOST_VARIABLE)),
                 DEFAULT_EMULATOR_HOST));
+    }
+
+    public static boolean shouldLogJsonObjectWithDuplicateKeys() {
+        return getJVMConfigAsBoolean(SHOULD_LOG_JSON_OBJECT_WITH_DUPLICATE_KEYS, DEFAULT_SHOULD_LOG_JSON_OBJECT_WITH_DUPLICATE_KEYS);
+    }
+
+    public static boolean shouldProcessJsonObjectWithDuplicateKeys() {
+        return getJVMConfigAsBoolean(SHOULD_PROCESS_JSON_OBJECT_WITH_DUPLICATE_KEYS, DEFAULT_SHOULD_PROCESS_JSON_OBJECT_WITH_DUPLICATE_KEYS);
     }
 }
