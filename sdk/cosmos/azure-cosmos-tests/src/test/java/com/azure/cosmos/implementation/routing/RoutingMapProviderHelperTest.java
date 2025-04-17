@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.Resource;
+import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.ImmutablePair;
 import org.apache.commons.lang3.StringUtils;
@@ -77,7 +78,7 @@ public class RoutingMapProviderHelperTest {
         @Override
         public Mono<Utils.ValueHolder<List<PartitionKeyRange>>> tryGetOverlappingRangesAsync(
             MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionResourceId,
-            Range<String> range, boolean forceRefresh, Map<String, Object> properties) {
+            Range<String> range, boolean forceRefresh, Map<String, Object> properties, RxDocumentServiceRequest enclosingRequest) {
             Utils.ValueHolder<List<PartitionKeyRange>> valueHolder = new Utils.ValueHolder<>();
             valueHolder.v = this.routingMap.getOverlappingRanges(range);
             return Mono.just(valueHolder);
@@ -86,7 +87,7 @@ public class RoutingMapProviderHelperTest {
         @Override
         public Mono<Utils.ValueHolder<PartitionKeyRange>> tryGetPartitionKeyRangeByIdAsync(
             MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionResourceId,
-            String partitionKeyRangeId, boolean forceRefresh, Map<String, Object> properties) {
+            String partitionKeyRangeId, boolean forceRefresh, Map<String, Object> properties, RxDocumentServiceRequest enclosingRequest) {
             return null;
         }
     }
@@ -98,7 +99,7 @@ public class RoutingMapProviderHelperTest {
         }
 
         @Override
-        public Mono<Utils.ValueHolder<List<PartitionKeyRange>>> tryGetOverlappingRangesAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionResourceId, Range<String> range, boolean forceRefresh, Map<String, Object> properties) {
+        public Mono<Utils.ValueHolder<List<PartitionKeyRange>>> tryGetOverlappingRangesAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionResourceId, Range<String> range, boolean forceRefresh, Map<String, Object> properties, RxDocumentServiceRequest enclosingRequest) {
             return Mono.just(new Utils.ValueHolder<>(null));
         }
     }

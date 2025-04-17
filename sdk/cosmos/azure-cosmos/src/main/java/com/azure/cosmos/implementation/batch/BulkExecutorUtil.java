@@ -119,7 +119,7 @@ final class BulkExecutorUtil {
                     itemBulkOperation.setPartitionKeyJson(partitionKeyInternal.toJson());
 
                     return docClientWrapper.getPartitionKeyRangeCache()
-                        .tryLookupAsync(null, collection.getResourceId(), null, null)
+                        .tryLookupAsync(null, collection.getResourceId(), null, null, null)
                         .map((Utils.ValueHolder<CollectionRoutingMap> routingMap) -> {
 
                             if (routingMap.v == null) {
@@ -191,7 +191,8 @@ final class BulkExecutorUtil {
                 null,
                 resourceAddress,
                 null,
-                obsoleteValue);
+                obsoleteValue,
+                null);
     }
 
     static boolean isWriteOperation(CosmosItemOperationType cosmosItemOperationType) {

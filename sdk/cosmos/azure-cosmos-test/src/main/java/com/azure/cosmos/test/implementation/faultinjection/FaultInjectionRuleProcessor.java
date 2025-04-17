@@ -99,7 +99,7 @@ public class FaultInjectionRuleProcessor {
             StringUtils.isNotEmpty(containerNameLink),
             "Argument 'containerNameLink' can not be null nor empty.");
 
-        return this.collectionCache.resolveByNameAsync(null, containerNameLink, null)
+        return this.collectionCache.resolveByNameAsync(null, containerNameLink, null, null)
             .flatMap(collection -> {
                 if (collection == null) {
                     return Mono.error(new IllegalStateException("Can not find collection info"));

@@ -80,7 +80,8 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
                     BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics),
                     collectionValueHolder.v.getResourceId(),
                     null,
-                    request.properties);
+                    request.properties,
+                    request);
 
                 Mono<Utils.ValueHolder<CollectionRoutingMap>> refreshedRoutingMapObs = routingMapObs.flatMap(routingMapValueHolder -> {
                     if (routingMapValueHolder.v != null) {
@@ -89,7 +90,8 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
                             null,
                             collectionValueHolder.v.getResourceId(),
                             routingMapValueHolder.v,
-                            request.properties);
+                            request.properties,
+                            request);
                     } else {
                         return Mono.just(new Utils.ValueHolder<>(null));
                     }

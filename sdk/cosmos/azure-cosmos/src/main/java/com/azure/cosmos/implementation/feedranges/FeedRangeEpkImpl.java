@@ -114,7 +114,8 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                         containerRid,
                         this.range,
                         false,
-                        null)
+                        null,
+                        request)
                     .flatMap(pkRangeHolder -> {
                         final ArrayList<String> rangeList = new ArrayList<>();
 
@@ -166,7 +167,8 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                         containerRid,
                         this.range,
                         false,
-                        null)
+                        null,
+                        request)
                     .flatMap(pkRangeHolder -> {
                         if (pkRangeHolder == null) {
                             return Mono.error(new NotFoundException(

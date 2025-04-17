@@ -93,14 +93,15 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
 
         return clientWrapper
                 .getCollectionCache()
-                .resolveByNameAsync(null, BridgeInternal.extractContainerSelfLink(this.cosmosContainer), null)
+                .resolveByNameAsync(null, BridgeInternal.extractContainerSelfLink(this.cosmosContainer), null, null)
                 .flatMap(collection -> {
                     return clientWrapper.getPartitionKeyRangeCache().tryGetOverlappingRangesAsync(
                             null,
                             collection.getResourceId(),
                             range,
                             forceRefresh,
-                            null);
+                            null,
+                        null);
                 })
                 .flatMap(pkRangesValueHolder -> {
                     if (pkRangesValueHolder == null || pkRangesValueHolder.v == null) {

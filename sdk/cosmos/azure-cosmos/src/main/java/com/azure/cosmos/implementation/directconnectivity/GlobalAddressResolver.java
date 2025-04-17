@@ -117,6 +117,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                             .CosmosContainerIdentityHelper
                             .getCosmosContainerIdentityAccessor()
                             .getContainerLink(cosmosContainerIdentity),
+                        null,
                         null)
                     .flatMapMany(collection -> {
                         if (collection == null) {
@@ -129,6 +130,7 @@ public class GlobalAddressResolver implements IAddressResolver {
                                 collection.getResourceId(),
                                 PartitionKeyInternalHelper.FullRange,
                                 true,
+                                null,
                                 null)
                             .flatMap(valueHolder -> {
 

@@ -766,7 +766,8 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                     return partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                         collectionValueHolder.v.getResourceId(),
                         null,
-                        null).flatMap(collectionRoutingMapValueHolder -> {
+                        null,
+                        request).flatMap(collectionRoutingMapValueHolder -> {
                         if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
                             //Apply the ambient session.
                             String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);

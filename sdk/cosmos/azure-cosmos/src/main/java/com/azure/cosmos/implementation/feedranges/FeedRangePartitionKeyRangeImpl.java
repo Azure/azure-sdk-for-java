@@ -85,6 +85,7 @@ public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
                         collection.getResourceId(),
                         this.partitionKeyRangeId,
                         false,
+                        null,
                         null)
                     .flatMap((pkRangeHolder) -> {
                         if (pkRangeHolder.v == null) {
@@ -93,6 +94,7 @@ public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
                                 collection.getResourceId(),
                                 partitionKeyRangeId,
                                 true,
+                                null,
                                 null);
                         } else {
                             return Mono.just(pkRangeHolder);

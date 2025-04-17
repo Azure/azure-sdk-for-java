@@ -145,7 +145,8 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
                                                    this.client.getCollectionCache().resolveByRidAsync(
                                                        /*metadataDiagnosticsCtx*/ null,
                                                                                   collectionRid,
-                                                       /*properties*/null));
+                                                       /*properties*/null,
+                                                       null));
     }
 
     public Mono<List<PartitionKeyRange>> getTargetPartitionKeyRangesById(String resourceId,
@@ -155,7 +156,8 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
                                                      resourceId,
                                                      partitionKeyRangeIdInternal,
                                                      false,
-                                                     null)
+                                                     null,
+                                       null)
                    .flatMap(partitionKeyRange -> Mono.just(Collections.singletonList(partitionKeyRange.v)));
     }
 

@@ -852,6 +852,7 @@ public class CosmosContainerTest extends TestSuiteBase {
                     clientWrapper.getCollectionCache().resolveByNameAsync(
                         null,
                         container.asyncContainer.getLink(),
+                        null,
                         null
                     ).block()))).block();
     }

@@ -332,7 +332,8 @@ class DocumentProducer<T> {
             collectionRid,
             range,
             true,
-            ModelBridgeInternal.getPropertiesFromQueryRequestOptions(cosmosQueryRequestOptions));
+            ModelBridgeInternal.getPropertiesFromQueryRequestOptions(cosmosQueryRequestOptions),
+            null);
     }
 
     private boolean isSplitOrMerge(CosmosException e) {

@@ -421,6 +421,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                 .resolveByRidAsync(
                     null,
                     createdContainer.read().getProperties().getResourceId(),
+                    null,
                     null)
                 .block();
 

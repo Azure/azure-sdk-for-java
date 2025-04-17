@@ -87,7 +87,8 @@ public class GatewayServerErrorInjector {
                         BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                         collectionValueHolder.v.getResourceId(),
                         null,
-                        null)
+                        null,
+                        request)
                     .flatMap(collectionRoutingMapValueHolder -> {
                         String partitionKeyRangeId =
                             request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);

@@ -675,6 +675,16 @@ public class CosmosQueryRequestOptions {
                 public String getCollectionRid(CosmosQueryRequestOptions options) {
                     return options.actualRequestOptions.getCollectionRid();
                 }
+
+                @Override
+                public void enableRegionReorderingForAuxiliaryRequests(CosmosQueryRequestOptions cosmosQueryRequestOptions, boolean enableRegionReorderingForAuxiliaryRequests) {
+                    cosmosQueryRequestOptions.actualRequestOptions.setEnableRegionReorderingForAuxiliaryRequests(enableRegionReorderingForAuxiliaryRequests);
+                }
+
+                @Override
+                public boolean isRegionReorderingForAuxiliaryRequestsEnabled(CosmosQueryRequestOptions cosmosQueryRequestOptions) {
+                    return cosmosQueryRequestOptions.actualRequestOptions.isEnableRegionReorderingForAuxiliaryRequest();
+                }
             });
     }
 

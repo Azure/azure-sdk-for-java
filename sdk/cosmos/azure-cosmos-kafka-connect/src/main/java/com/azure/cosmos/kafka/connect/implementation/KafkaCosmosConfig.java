@@ -42,6 +42,11 @@ public class KafkaCosmosConfig extends AbstractConfig {
     private static final String ACCOUNT_AZURE_ENVIRONMENT_DISPLAY = "The azure environment of the CosmosDB account.";
     private static final String DEFAULT_ACCOUNT_AZURE_ENVIRONMENT = CosmosAzureEnvironment.AZURE.getName();
 
+    private static final String ACCOUNT_AZURE_AAD_HOST = "azure.cosmos.account.aadHost";
+    private static final String ACCOUNT_AZURE_AAD_HOST_DOC = "The azure environment of the CosmosDB account: `Azure`, `AzureChina`, `AzureUsGovernment`, `AzureGermany`.";
+    private static final String ACCOUNT_AZURE_AAD_HOST_DISPLAY = "The azure environment of the CosmosDB account.";
+    private static final String DEFAULT_AZURE_AAD_HOST = Strings.Emtpy;
+
     private static final String ACCOUNT_TENANT_ID = "azure.cosmos.account.tenantId";
     private static final String ACCOUNT_TENANT_ID_DOC = "The tenantId of the CosmosDB account. Required for `ServicePrincipal` authentication.";
     private static final String ACCOUNT_TENANT_ID_DISPLAY = "The tenantId of the CosmosDB account.";

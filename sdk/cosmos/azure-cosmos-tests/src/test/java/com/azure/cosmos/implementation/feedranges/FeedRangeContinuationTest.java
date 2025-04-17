@@ -203,7 +203,8 @@ public class FeedRangeContinuationTest {
                 eq(containerRid),
                 any(),
                 eq(true),
-                isNull())).thenReturn(Mono.just(new Utils.ValueHolder<>(childRanges)));
+                isNull(),
+                any())).thenReturn(Mono.just(new Utils.ValueHolder<>(childRanges)));
 
         continuation.handleFeedRangeGone(clientMock, goneException).block();
         assertThat(continuation.getCompositeContinuationTokens().size()).isEqualTo(2);
@@ -265,7 +266,8 @@ public class FeedRangeContinuationTest {
                 eq(containerRid),
                 any(),
                 eq(true),
-                isNull())).thenReturn(Mono.just(new Utils.ValueHolder<>(parentRanges)));
+                isNull(),
+                any())).thenReturn(Mono.just(new Utils.ValueHolder<>(parentRanges)));
 
         continuation.handleFeedRangeGone(clientMock, goneException).block();
         assertThat(continuation.getCompositeContinuationTokens().size()).isEqualTo(2);

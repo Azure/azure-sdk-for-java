@@ -11,6 +11,8 @@ public class CrossRegionAvailabilityContextForRxDocumentServiceRequest {
 
     private final AtomicBoolean hasPerPartitionAutomaticFailoverBeenAppliedForReads = new AtomicBoolean(false);
 
+    private final AtomicBoolean enableRegionReorderingForAuxiliaryRequests = new AtomicBoolean(false);
+
     private final FeedOperationContextForCircuitBreaker feedOperationContextForCircuitBreaker;
 
     private final PointOperationContextForCircuitBreaker pointOperationContextForCircuitBreaker;
@@ -53,5 +55,13 @@ public class CrossRegionAvailabilityContextForRxDocumentServiceRequest {
 
     public boolean hasPerPartitionAutomaticFailoverBeenAppliedForReads() {
         return this.hasPerPartitionAutomaticFailoverBeenAppliedForReads.get();
+    }
+
+    public void setEnableRegionReorderingForAuxiliaryRequests(boolean enableRegionOrderingForAuxiliaryRequests) {
+        this.enableRegionReorderingForAuxiliaryRequests.set(enableRegionOrderingForAuxiliaryRequests);
+    }
+
+    public boolean isEnableRegionReorderingForAuxiliaryRequests() {
+        return this.enableRegionReorderingForAuxiliaryRequests.get();
     }
 }

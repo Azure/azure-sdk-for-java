@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.caches;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
 import com.azure.cosmos.implementation.ClearingSessionContainerClientRetryPolicy;
+import com.azure.cosmos.implementation.CrossRegionAvailabilityContextForRxDocumentServiceRequest;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.DocumentCollection;
@@ -27,7 +28,9 @@ import reactor.core.publisher.Mono;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -69,31 +72,47 @@ public class RxClientCollectionCache extends RxCollectionCache {
         this.sessionContainer = sessionContainer;
     }
 
-    protected Mono<DocumentCollection> getByRidAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, Map<String, Object> properties) {
+    protected Mono<DocumentCollection> getByRidAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, Map<String, Object> properties, RxDocumentServiceRequest enclosingRequest) {
         DocumentClientRetryPolicy retryPolicyInstance = new ClearingSessionContainerClientRetryPolicy(this.sessionContainer, this.retryPolicy.getRequestPolicy(null));
         return ObservableHelper.inlineIfPossible(
-                () -> this.readCollectionAsync(metaDataDiagnosticsContext, PathsHelper.generatePath(ResourceType.DocumentCollection, collectionRid, false), retryPolicyInstance, properties)
+                () -> this.readCollectionAsync(metaDataDiagnosticsContext, PathsHelper.generatePath(ResourceType.DocumentCollection, collectionRid, false), retryPolicyInstance, properties, enclosingRequest)
                 , retryPolicyInstance);
     }
 
-    protected Mono<DocumentCollection> getByNameAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String resourceAddress, Map<String, Object> properties) {
+    protected Mono<DocumentCollection> getByNameAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String resourceAddress, Map<String, Object> properties, RxDocumentServiceRequest enclosingRequest) {
         DocumentClientRetryPolicy retryPolicyInstance = new ClearingSessionContainerClientRetryPolicy(this.sessionContainer, this.retryPolicy.getRequestPolicy(null));
         return ObservableHelper.inlineIfPossible(
-                () -> this.readCollectionAsync(metaDataDiagnosticsContext, resourceAddress, retryPolicyInstance, properties),
+                () -> this.readCollectionAsync(metaDataDiagnosticsContext, resourceAddress, retryPolicyInstance, properties, enclosingRequest),
                 retryPolicyInstance);
     }
 
     private Mono<DocumentCollection> readCollectionAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext,
                                                          String collectionLink,
                                                          DocumentClientRetryPolicy retryPolicyInstance,
-                                                         Map<String, Object> properties) {
+                                                         Map<String, Object> properties,
+                                                         RxDocumentServiceRequest enclosingRequest) {
 
         String path = Utils.joinPath(collectionLink, null);
+
         RxDocumentServiceRequest request = RxDocumentServiceRequest.create(this.diagnosticsClientContext,
                 OperationType.Read,
                 ResourceType.DocumentCollection,
                 path,
                 new HashMap<>());
+
+        List<String> excludedRegions = (enclosingRequest != null && enclosingRequest.requestContext != null) ?
+            enclosingRequest.requestContext.getExcludeRegions() : null;
+
+        if (request.requestContext != null) {
+            if (excludedRegions != null && !excludedRegions.isEmpty()) {
+                request.requestContext.setExcludeRegions(excludedRegions);
+
+                CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest
+                    = request.requestContext.getCrossRegionAvailabilityContext();
+
+                crossRegionAvailabilityContextForRequest.setEnableRegionReorderingForAuxiliaryRequests(true);
+            }
+        }
 
         request.getHeaders().put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
 

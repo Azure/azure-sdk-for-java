@@ -252,7 +252,8 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                             this.client.getCollectionCache().resolveByRidAsync(
                                 this.diagnosticsContext,
                                 this.state.getContainerRid(),
-                                this.requestOptionProperties)
+                                this.requestOptionProperties,
+                                null)
                         );
 
                         return effectiveRangeMono

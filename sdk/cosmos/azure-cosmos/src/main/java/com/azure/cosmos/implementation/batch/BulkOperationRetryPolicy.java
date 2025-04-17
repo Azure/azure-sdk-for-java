@@ -101,14 +101,15 @@ final class BulkOperationRetryPolicy implements IRetryPolicy {
                      subStatusCode == SubStatusCodes.COMPLETING_SPLIT_OR_MERGE ||
                      subStatusCode == SubStatusCodes.COMPLETING_PARTITION_MIGRATION)) {
                 return collectionCache
-                       .resolveByNameAsync(null, collectionLink, null)
+                       .resolveByNameAsync(null, collectionLink, null, null)
                        .flatMap(collection -> this.partitionKeyRangeCache
                                                   .tryGetOverlappingRangesAsync(null /*metaDataDiagnosticsContext*/,
                                                                                 collection.getResourceId(),
                                                                                 FeedRangeEpkImpl.forFullRange()
                                                                                     .getRange(),
                                                                                 true,
-                                                                                null /*properties*/)
+                                                                                null /*properties*/,
+                                                                                null)
                                                   .then(Mono.just(true)));
             }
 

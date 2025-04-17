@@ -17,8 +17,10 @@ public interface ICollectionRoutingMapCache {
             MetadataDiagnosticsContext metaDataDiagnosticsContext,
             String collectionRid,
             CollectionRoutingMap previousValue,
-            Map<String, Object> properties) {
-        return tryLookupAsync(metaDataDiagnosticsContext, collectionRid, previousValue, false, properties);
+            Map<String, Object> properties,
+            RxDocumentServiceRequest enclosingRequest) {
+
+        return tryLookupAsync(metaDataDiagnosticsContext, collectionRid, previousValue, false, properties, enclosingRequest);
     }
 
     Mono<Utils.ValueHolder<CollectionRoutingMap>> tryLookupAsync(
@@ -26,5 +28,6 @@ public interface ICollectionRoutingMapCache {
             String collectionRid,
             CollectionRoutingMap previousValue,
             boolean forceRefreshCollectionRoutingMap,
-            Map<String, Object> properties);
+            Map<String, Object> properties,
+            RxDocumentServiceRequest enclosingRequest);
 }

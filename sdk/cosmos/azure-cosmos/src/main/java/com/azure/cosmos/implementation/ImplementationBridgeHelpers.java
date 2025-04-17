@@ -308,6 +308,10 @@ public class ImplementationBridgeHelpers {
             void setCollectionRid(CosmosQueryRequestOptions options, String collectionRid);
 
             String getCollectionRid(CosmosQueryRequestOptions options);
+
+            void enableRegionReorderingForAuxiliaryRequests(CosmosQueryRequestOptions cosmosQueryRequestOptions, boolean enableRegionReorderingForAuxiliaryRequests);
+
+            boolean isRegionReorderingForAuxiliaryRequestsEnabled(CosmosQueryRequestOptions options);
         }
     }
 

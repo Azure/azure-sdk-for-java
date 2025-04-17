@@ -208,7 +208,7 @@ public abstract class ThroughputGroupControllerBase implements IThroughputContro
 
     private Mono<Boolean> shouldUpdateRequestController(RxDocumentServiceRequest request) {
         return this.partitionKeyRangeCache.tryGetRangeByPartitionKeyRangeId(
-                null, request.requestContext.resolvedCollectionRid, request.requestContext.resolvedPartitionKeyRange.getId(), null)
+                null, request.requestContext.resolvedCollectionRid, request.requestContext.resolvedPartitionKeyRange.getId(), null, request)
             .flatMap(pkRangeHolder -> {
                 if (pkRangeHolder.v == null) {
                     return Mono.just(Boolean.FALSE);

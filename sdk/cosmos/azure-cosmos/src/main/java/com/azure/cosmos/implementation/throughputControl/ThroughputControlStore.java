@@ -265,7 +265,7 @@ public class ThroughputControlStore {
 
     private Mono<Boolean> shouldRefreshContainerController(String containerLink, RxDocumentServiceRequest request) {
         // TODO: populate diagnostics
-        return this.collectionCache.resolveByNameAsync(null, containerLink, null)
+        return this.collectionCache.resolveByNameAsync(null, containerLink, null, null)
             .flatMap(documentCollection ->
                 Mono.just(StringUtils.equals(documentCollection.getResourceId(), request.requestContext.resolvedCollectionRid)));
     }
