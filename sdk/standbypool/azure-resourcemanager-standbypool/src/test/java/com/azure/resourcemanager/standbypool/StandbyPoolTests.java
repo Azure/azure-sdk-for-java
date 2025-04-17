@@ -149,13 +149,15 @@ public class StandbyPoolTests extends TestProxyTestBase {
     }
 
     private VirtualMachineScaleSetSkuTypes getMinimalVmssSku() {
-        return computeManager.computeSkus().listByRegionAndResourceType(REGION, ComputeResourceType.VIRTUALMACHINES).stream()
-                .filter(sku -> CoreUtils.isNullOrEmpty(sku.restrictions()))
-                .filter(sku -> sku.name().getValue().startsWith("Standard"))
-                .sorted((o1, o2) -> o1.name().getValue().compareToIgnoreCase(o2.name().getValue()))
-                .map(sku -> VirtualMachineScaleSetSkuTypes.fromSkuNameAndTier(sku.name().getValue(), sku.tier().getValue()))
-                .findFirst()
-                .get();
+        return computeManager.computeSkus()
+            .listByRegionAndResourceType(REGION, ComputeResourceType.VIRTUALMACHINES)
+            .stream()
+            .filter(sku -> CoreUtils.isNullOrEmpty(sku.restrictions()))
+            .filter(sku -> sku.name().getValue().startsWith("Standard"))
+            .sorted((o1, o2) -> o1.name().getValue().compareToIgnoreCase(o2.name().getValue()))
+            .map(sku -> VirtualMachineScaleSetSkuTypes.fromSkuNameAndTier(sku.name().getValue(), sku.tier().getValue()))
+            .findFirst()
+            .get();
     }
 
     private static String randomPadding() {
