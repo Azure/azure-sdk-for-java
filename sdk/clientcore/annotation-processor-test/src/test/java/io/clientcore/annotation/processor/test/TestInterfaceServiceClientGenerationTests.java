@@ -6,9 +6,6 @@ package io.clientcore.annotation.processor.test;
 import io.clientcore.annotation.processor.test.implementation.TestInterfaceClientImpl;
 import io.clientcore.annotation.processor.test.implementation.models.Foo;
 import io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON;
-import io.clientcore.core.annotations.ServiceInterface;
-import io.clientcore.core.http.annotations.HostParam;
-import io.clientcore.core.http.annotations.HttpRequestInformation;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
@@ -1084,23 +1081,6 @@ public class TestInterfaceServiceClientGenerationTests {
         assertEquals("I'm the body!", expectedBody.get("data"));
     }
 
-    @ServiceInterface(name = "Service10", host = "{uri}")
-    interface Service10 {
-        static Service10 getNewInstance(HttpPipeline pipeline) {
-            if (pipeline == null) {
-                throw new IllegalArgumentException("pipeline cannot be null");
-            }
-            try {
-                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" + ".Service10Impl");
-                return (Service10) clazz.getMethod("getNewInstance", HttpPipeline.class).invoke(null, pipeline);
-            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
-                | InvocationTargetException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-    }
-
     @Test
     public void headRequest() throws IOException {
         try (Response<Void> response
@@ -1144,7 +1124,6 @@ public class TestInterfaceServiceClientGenerationTests {
     private static final HttpHeaderName MY_OTHER_HEADER = HttpHeaderName.fromString("MyOtherHeader");
 
     @Test
-    @Disabled("https://github.com/Azure/azure-sdk-for-java/pull/44750")
     public void headersRequest() {
         final HttpBinJSON json
             = createService(TestInterfaceClientImpl.TestInterfaceClientService.class).get(getRequestUri());
@@ -1372,7 +1351,7 @@ public class TestInterfaceServiceClientGenerationTests {
     }
 
     @Test
-    public void requestOptionsChangesBody() {
+    public void requestContextChangesBody() {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
         TestInterfaceClientImpl.TestInterfaceClientService service
             = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
@@ -1389,7 +1368,7 @@ public class TestInterfaceServiceClientGenerationTests {
     }
 
     @Test
-    public void requestOptionsChangesBodyAndContentLength() {
+    public void requestContextChangesBodyAndContentLength() {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
         TestInterfaceClientImpl.TestInterfaceClientService service
             = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
@@ -1411,7 +1390,7 @@ public class TestInterfaceServiceClientGenerationTests {
     private static final HttpHeaderName RANDOM_HEADER = HttpHeaderName.fromString("randomHeader");
 
     @Test
-    public void requestOptionsAddAHeader() {
+    public void requestContextAddAHeader() {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
         TestInterfaceClientImpl.TestInterfaceClientService service
             = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
@@ -1430,7 +1409,7 @@ public class TestInterfaceServiceClientGenerationTests {
     }
 
     @Test
-    public void requestOptionsSetsAHeader() {
+    public void requestContextSetsAHeader() {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
         TestInterfaceClientImpl.TestInterfaceClientService service
             = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
@@ -1461,31 +1440,6 @@ public class TestInterfaceServiceClientGenerationTests {
         voidDoesNotEagerlyReadResponseSupplier() {
         return Stream.of((uri, service28) -> service28.headvoid(uri), (uri, service28) -> service28.headVoid(uri),
             (uri, service28) -> service28.headResponseVoid(uri));
-    }
-
-    @ServiceInterface(name = "Service29", host = "{uri}")
-    public interface Service29 {
-        static Service29 getNewInstance(HttpPipeline pipeline) {
-            if (pipeline == null) {
-                throw new IllegalArgumentException("pipeline cannot be null");
-            }
-            try {
-                Class<?> clazz = Class.forName("io.clientcore.annotation.processor.test.shared" + ".Service29Impl");
-                return (Service29) clazz.getMethod("getNewInstance", HttpPipeline.class).invoke(null, pipeline);
-            } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
-                | InvocationTargetException e) {
-                throw new RuntimeException(e);
-            }
-        }
-
-        @HttpRequestInformation(method = HttpMethod.PUT, path = "voiderrorreturned", expectedStatusCodes = { 200 })
-        void headvoid(@HostParam("uri") String uri);
-
-        @HttpRequestInformation(method = HttpMethod.PUT, path = "voiderrorreturned", expectedStatusCodes = { 200 })
-        Void headVoid(@HostParam("uri") String uri);
-
-        @HttpRequestInformation(method = HttpMethod.PUT, path = "voiderrorreturned", expectedStatusCodes = { 200 })
-        Response<Void> headResponseVoid(@HostParam("uri") String uri);
     }
 
     @ParameterizedTest
@@ -1635,7 +1589,6 @@ public class TestInterfaceServiceClientGenerationTests {
     }
 
     @Test
-    @Disabled("In PR https://github.com/Azure/azure-sdk-for-java/pull/44750")
     public void queryParamsRequest() {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
 
@@ -1659,7 +1612,6 @@ public class TestInterfaceServiceClientGenerationTests {
     }
 
     @Test
-    @Disabled("In PR https://github.com/Azure/azure-sdk-for-java/pull/44750")
     public void queryParamsRequestWithMultipleValuesForSameName() {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
 
@@ -1676,11 +1628,11 @@ public class TestInterfaceServiceClientGenerationTests {
         assertEquals(1, queryParams.size());
         assertEquals("constantValue1", queryParams.get("param").get(0));
         assertEquals("constantValue2", queryParams.get("param").get(1));
-        assertEquals("variableValue", queryParams.get("param").get(2));
+        // Assert that same key name static param not overwritten
+        assertEquals(2, queryParams.get("param").size());
     }
 
     @Test
-    @Disabled("In PR https://github.com/Azure/azure-sdk-for-java/pull/44750")
     public void queryParamsRequestWithMultipleValuesForSameNameAndValueArray() {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
 
@@ -1696,14 +1648,13 @@ public class TestInterfaceServiceClientGenerationTests {
 
         assertNotNull(queryParams);
         assertEquals(1, queryParams.size());
-        assertEquals(3, queryParams.get("param").size());
-        assertEquals("constantValue1%2CconstantValue2", queryParams.get("param").get(0));
+        // Assert that static value same key name query param not overwritten
+        assertEquals(2, queryParams.get("param").size());
+        assertEquals("constantValue1,constantValue2", queryParams.get("param").get(0));
         assertEquals("constantValue3", queryParams.get("param").get(1));
-        assertEquals("variableValue1%2CvariableValue2%2CvariableValue3", queryParams.get("param").get(2));
     }
 
     @Test
-    @Disabled("In PR https://github.com/Azure/azure-sdk-for-java/pull/44750")
     public void queryParamsRequestWithEmptyValues() {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
 
@@ -1718,12 +1669,11 @@ public class TestInterfaceServiceClientGenerationTests {
 
         assertNotNull(queryParams);
         assertEquals(1, queryParams.size());
-        assertTrue(queryParams.containsKey("constantParam1"));
-        assertNull(queryParams.get("constantParam1"));
+        assertTrue(queryParams.containsKey("queryparamwithequalsandnovalue"));
+        assertNull(queryParams.get("queryparamwithnoequals"));
     }
 
     @Test
-    @Disabled("In PR https://github.com/Azure/azure-sdk-for-java/pull/44750")
     public void queryParamsRequestWithMoreThanOneEqualsSign() {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
 
@@ -1738,30 +1688,38 @@ public class TestInterfaceServiceClientGenerationTests {
 
         assertNotNull(queryParams);
         assertEquals(1, queryParams.size());
-        assertEquals("some%3Dvalue", queryParams.get("constantParam1").get(0));
+        assertTrue(json.uri().substring(json.uri().indexOf('?'), json.uri().length()).contains("some=value"));
     }
 
     @Test
-    @Disabled("In PR https://github.com/Azure/azure-sdk-for-java/pull/44750")
     public void queryParamsRequestWithEmptyName() {
         HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
 
         TestInterfaceClientImpl.TestInterfaceClientService service
             = TestInterfaceClientImpl.TestInterfaceClientService.getNewInstance(pipeline);
-        assertThrows(IllegalStateException.class, () -> service.get6(getRequestUri()),
-            "Query parameters cannot be null or empty.");
-        assertThrows(IllegalStateException.class, () -> service.get7(getRequestUri()),
-            "Names for query parameters cannot be empty.");
+        final HttpBinJSON json = service.get6(getRequestUri());
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything", json.uri());
+
+        Map<String, List<String>> queryParams = json.queryParams();
+
+        assertNull(queryParams);
+
+        final HttpBinJSON json7 = service.get7(getRequestUri());
+
+        assertNotNull(json);
+        assertMatchWithHttpOrHttps("localhost/anything", json7.uri());
+
+        Map<String, List<String>> queryParams7 = json.queryParams();
+
+        assertNull(queryParams7);
     }
 
     // Helpers
+    @SuppressWarnings("unchecked")
     protected <T> T createService(Class<T> serviceClass) {
         final HttpClient httpClient = getHttpClient();
-        return createService(serviceClass, httpClient);
-    }
-
-    @SuppressWarnings("unchecked")
-    protected <T> T createService(Class<T> serviceClass, HttpClient httpClient) {
         final HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient).build();
 
         try {
