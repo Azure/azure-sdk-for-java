@@ -16,6 +16,7 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.resourcemanager.compute.ComputeManager;
+import com.azure.resourcemanager.compute.models.ComputeResourceType;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSet;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetSkuTypes;
@@ -91,6 +92,8 @@ public class StandbyPoolTests extends TestProxyTestBase {
             // @embedmeStart
             // reference https://learn.microsoft.com/azure/virtual-machine-scale-sets/standby-pools-create
 
+            VirtualMachineScaleSetSkuTypes availableMinimalSku = getMinimalVmssSku();
+
             // Create virtual network and virtual machine scale set
             virtualNetwork = this.computeManager.networkManager()
                 .networks()
@@ -106,7 +109,7 @@ public class StandbyPoolTests extends TestProxyTestBase {
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
                 .withFlexibleOrchestrationMode()
-                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+                .withSku(availableMinimalSku)
                 .withExistingPrimaryNetworkSubnet(virtualNetwork, "default")
                 .withoutPrimaryInternetFacingLoadBalancer()
                 .withoutPrimaryInternalLoadBalancer()
@@ -143,6 +146,16 @@ public class StandbyPoolTests extends TestProxyTestBase {
                 computeManager.networkManager().networks().deleteById(virtualNetwork.id());
             }
         }
+    }
+
+    private VirtualMachineScaleSetSkuTypes getMinimalVmssSku() {
+        return computeManager.computeSkus().listByRegionAndResourceType(REGION, ComputeResourceType.VIRTUALMACHINES).stream()
+                .filter(sku -> CoreUtils.isNullOrEmpty(sku.restrictions()))
+                .filter(sku -> sku.name().getValue().startsWith("Standard"))
+                .sorted((o1, o2) -> o1.name().getValue().compareToIgnoreCase(o2.name().getValue()))
+                .map(sku -> VirtualMachineScaleSetSkuTypes.fromSkuNameAndTier(sku.name().getValue(), sku.tier().getValue()))
+                .findFirst()
+                .get();
     }
 
     private static String randomPadding() {
