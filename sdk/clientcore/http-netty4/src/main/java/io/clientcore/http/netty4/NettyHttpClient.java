@@ -146,7 +146,8 @@ class NettyHttpClient implements HttpClient {
                         writeTimeoutMillis, responseTimeoutMillis, readTimeoutMillis));
             }
 
-            Netty4ResponseHandler responseHandler = new Netty4ResponseHandler(request, responseReference, latch);
+            Netty4ResponseHandler responseHandler
+                = new Netty4ResponseHandler(request, responseReference, errorReference, latch);
             channel.pipeline().addLast(responseHandler);
 
             sendRequest(request, channel, addProgressAndTimeoutHandler).addListener((ChannelFutureListener) future -> {

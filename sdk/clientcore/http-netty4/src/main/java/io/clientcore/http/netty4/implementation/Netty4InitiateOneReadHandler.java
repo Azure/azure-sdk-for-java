@@ -57,12 +57,10 @@ public final class Netty4InitiateOneReadHandler extends ChannelInboundHandlerAda
         }
 
         lastRead = msg instanceof LastHttpContent;
-        ctx.fireChannelRead(msg);
     }
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
-        ctx.fireChannelReadComplete();
         latch.countDown();
         if (lastRead) {
             ctx.close();

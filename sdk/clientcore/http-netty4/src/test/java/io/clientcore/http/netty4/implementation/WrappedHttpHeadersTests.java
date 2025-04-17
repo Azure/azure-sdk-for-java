@@ -5,11 +5,14 @@ package io.clientcore.http.netty4.implementation;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.utils.DateTimeRfc1123;
 import io.netty.handler.codec.http.DefaultHttpHeaders;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import org.junit.jupiter.api.Test;
 
+import java.time.OffsetDateTime;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -178,11 +181,25 @@ public class WrappedHttpHeadersTests {
     }
 
     @Test
+    public void containsCharSequenceReturnsFalseWhenHeaderDoesNotExist() {
+        WrappedHttpHeaders wrappedHttpHeaders = new WrappedHttpHeaders(new HttpHeaders());
+
+        assertFalse(wrappedHttpHeaders.contains(HttpHeaderNames.CONTENT_LENGTH));
+    }
+
+    @Test
     public void containsCharSequence() {
         WrappedHttpHeaders wrappedHttpHeaders
             = new WrappedHttpHeaders(new HttpHeaders().set(HttpHeaderName.CONNECTION, "connection"));
 
         assertTrue(wrappedHttpHeaders.contains(HttpHeaderNames.CONNECTION));
+    }
+
+    @Test
+    public void containsStringReturnsFalseWhenHeaderDoesNotExist() {
+        WrappedHttpHeaders wrappedHttpHeaders = new WrappedHttpHeaders(new HttpHeaders());
+
+        assertFalse(wrappedHttpHeaders.contains("Content-Length"));
     }
 
     @Test
@@ -205,6 +222,13 @@ public class WrappedHttpHeadersTests {
     }
 
     @Test
+    public void getCharSequenceReturnsNullWhenHeaderDoesNotExist() {
+        WrappedHttpHeaders wrappedHttpHeaders = new WrappedHttpHeaders(new HttpHeaders());
+
+        assertNull(wrappedHttpHeaders.get(HttpHeaderNames.CONTENT_ENCODING));
+    }
+
+    @Test
     public void getCharSequenceReturnsFirstValue() {
         WrappedHttpHeaders wrappedHttpHeaders = new WrappedHttpHeaders(new HttpHeaders()
             .set(HttpHeaderName.CONTENT_ENCODING, Arrays.asList("application/json", "application/xml")));
@@ -213,11 +237,25 @@ public class WrappedHttpHeadersTests {
     }
 
     @Test
+    public void getStringReturnsNullWhenHeaderDoesNotExist() {
+        WrappedHttpHeaders wrappedHttpHeaders = new WrappedHttpHeaders(new HttpHeaders());
+
+        assertNull(wrappedHttpHeaders.get("Content-Encoding"));
+    }
+
+    @Test
     public void getStringReturnsFirstValue() {
         WrappedHttpHeaders wrappedHttpHeaders = new WrappedHttpHeaders(new HttpHeaders()
             .set(HttpHeaderName.CONTENT_ENCODING, Arrays.asList("application/json", "application/xml")));
 
         assertEquals("application/json", wrappedHttpHeaders.get("Content-Encoding"));
+    }
+
+    @Test
+    public void getAllCharSequenceReturnsEmptyListWhenHeaderDoesNotExist() {
+        WrappedHttpHeaders wrappedHttpHeaders = new WrappedHttpHeaders(new HttpHeaders());
+
+        assertSame(Collections.emptyList(), wrappedHttpHeaders.getAll(HttpHeaderNames.CONTENT_TYPE));
     }
 
     @Test
@@ -230,12 +268,26 @@ public class WrappedHttpHeadersTests {
     }
 
     @Test
-    public void getAllStringReturns() {
+    public void getAllStringReturnsEmptyListWhenHeaderDoesNotExist() {
+        WrappedHttpHeaders wrappedHttpHeaders = new WrappedHttpHeaders(new HttpHeaders());
+
+        assertSame(Collections.emptyList(), wrappedHttpHeaders.getAll("Content-Type"));
+    }
+
+    @Test
+    public void getAllString() {
         WrappedHttpHeaders wrappedHttpHeaders = new WrappedHttpHeaders(
             new HttpHeaders().set(HttpHeaderName.CONTENT_TYPE, Arrays.asList("application/json", "application/xml")));
 
         assertLinesMatch(Arrays.asList("application/json", "application/xml"),
             wrappedHttpHeaders.getAll("Content-Type"));
+    }
+
+    @Test
+    public void getIntReturnsNullWhenHeaderDoesNotExist() {
+        WrappedHttpHeaders wrappedHttpHeaders = new WrappedHttpHeaders(new HttpHeaders());
+
+        assertNull(wrappedHttpHeaders.getInt(HttpHeaderNames.CONTENT_LENGTH));
     }
 
     @Test
@@ -255,11 +307,33 @@ public class WrappedHttpHeadersTests {
     }
 
     @Test
-    public void getIntWithDefaultReturnsDefaultOnNullOrInvalidParse() {
+    public void getIntWithDefaultReturnsDefaultOnNull() {
+        WrappedHttpHeaders wrappedHttpHeaders = new WrappedHttpHeaders(new HttpHeaders());
+
+        assertEquals(1, wrappedHttpHeaders.getInt(HttpHeaderNames.CONTENT_LENGTH, 1));
+    }
+
+    @Test
+    public void getIntWithDefaultReturnsDefaultOnInvalidParse() {
         WrappedHttpHeaders wrappedHttpHeaders
             = new WrappedHttpHeaders(new HttpHeaders().set(HttpHeaderName.HOST, "host"));
 
         assertEquals(1, wrappedHttpHeaders.getInt(HttpHeaderNames.HOST, 1));
+    }
+
+    @Test
+    public void getIntReturnsActualValue() {
+        WrappedHttpHeaders wrappedHttpHeaders
+            = new WrappedHttpHeaders(new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, "42"));
+
+        assertEquals(42, wrappedHttpHeaders.getInt(HttpHeaderNames.CONTENT_LENGTH, 24));
+    }
+
+    @Test
+    public void getShortReturnsNullWhenHeaderDoesNotExist() {
+        WrappedHttpHeaders wrappedHttpHeaders = new WrappedHttpHeaders(new HttpHeaders());
+
+        assertNull(wrappedHttpHeaders.getShort(HttpHeaderNames.CONTENT_LENGTH));
     }
 
     @Test
@@ -279,10 +353,25 @@ public class WrappedHttpHeadersTests {
     }
 
     @Test
-    public void getShortWithDefaultReturnsDefaultOnNullOrInvalidParse() {
+    public void getShortWithDefaultReturnsDefaultOnNull() {
+        WrappedHttpHeaders wrappedHttpHeaders = new WrappedHttpHeaders(new HttpHeaders());
+
+        assertEquals((short) 1, wrappedHttpHeaders.getShort(HttpHeaderNames.CONTENT_LENGTH, (short) 1));
+    }
+
+    @Test
+    public void getShortWithDefaultReturnsDefaultOnInvalidParse() {
         WrappedHttpHeaders wrappedHttpHeaders = new WrappedHttpHeaders(new HttpHeaders().set(HttpHeaderName.TE, "TE"));
 
         assertEquals((short) 1, wrappedHttpHeaders.getShort(HttpHeaderNames.TE, (short) 1));
+    }
+
+    @Test
+    public void getShortReturnsActualValue() {
+        WrappedHttpHeaders wrappedHttpHeaders
+            = new WrappedHttpHeaders(new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, "42"));
+
+        assertEquals((short) 42, wrappedHttpHeaders.getShort(HttpHeaderNames.CONTENT_LENGTH, (short) 24));
     }
 
     @Test
@@ -339,15 +428,16 @@ public class WrappedHttpHeadersTests {
             () -> wrappedHttpHeaders.set(HttpHeaderNames.ACCEPT_ENCODING, Arrays.asList("gzip", null)));
     }
 
+    @SuppressWarnings("deprecation")
     @Test
     public void setCharSequenceObject() {
         WrappedHttpHeaders wrappedHttpHeaders
-            = new WrappedHttpHeaders(new HttpHeaders().set(HttpHeaderName.CONTENT_LENGTH, "24"));
-        wrappedHttpHeaders.set(HttpHeaderNames.CONTENT_LENGTH, 42);
+            = new WrappedHttpHeaders(new HttpHeaders().set(HttpHeaderName.KEEP_ALIVE, "false"));
+        wrappedHttpHeaders.set(HttpHeaderNames.KEEP_ALIVE, "true");
 
-        HttpHeader header = wrappedHttpHeaders.getCoreHeaders().get(HttpHeaderName.CONTENT_LENGTH);
+        HttpHeader header = wrappedHttpHeaders.getCoreHeaders().get(HttpHeaderName.KEEP_ALIVE);
         assertNotNull(header);
-        assertEquals("42", header.getValue());
+        assertEquals("true", header.getValue());
     }
 
     @Test
@@ -510,5 +600,56 @@ public class WrappedHttpHeadersTests {
         Set<String> names = wrappedHttpHeaders.names();
 
         assertEquals(expectedNames, names);
+    }
+
+    @Test
+    public void getTimeMillis() {
+        OffsetDateTime now = OffsetDateTime.now();
+        WrappedHttpHeaders wrappedHttpHeaders
+            = new WrappedHttpHeaders(new HttpHeaders().set(HttpHeaderName.DATE, DateTimeRfc1123.toRfc1123String(now)));
+
+        Long timeMillis = wrappedHttpHeaders.getTimeMillis(HttpHeaderNames.DATE);
+        assertNotNull(timeMillis);
+
+        // Use OffsetDateTime.toEpochSecond() * 1000L to get the expected millis as DateTimeRfc1123 only has the ability
+        // to represent to seconds. If OffsetDateTime.toInstant().toEpochMilli() is used, it will return the current
+        // time in milliseconds, which cannot be represented.
+        assertEquals(now.toEpochSecond() * 1000L, timeMillis);
+    }
+
+    @Test
+    public void getTimeMillisReturnsNullWhenHeaderDoesNotExist() {
+        WrappedHttpHeaders wrappedHttpHeaders = new WrappedHttpHeaders(new HttpHeaders());
+
+        assertNull(wrappedHttpHeaders.getTimeMillis(HttpHeaderNames.DATE));
+    }
+
+    @Test
+    public void getTimeMillisReturnsNullWhenHeaderIsNotADate() {
+        WrappedHttpHeaders wrappedHttpHeaders
+            = new WrappedHttpHeaders(new HttpHeaders().set(HttpHeaderName.DATE, "notADate"));
+
+        assertNull(wrappedHttpHeaders.getTimeMillis(HttpHeaderNames.DATE));
+    }
+
+    @Test
+    public void getTimeMillisReturnsDefaultWhenHeaderIsNotADate() {
+        WrappedHttpHeaders wrappedHttpHeaders
+            = new WrappedHttpHeaders(new HttpHeaders().set(HttpHeaderName.DATE, "notADate"));
+
+        assertEquals(42L, wrappedHttpHeaders.getTimeMillis(HttpHeaderNames.DATE, 42L));
+    }
+
+    @Test
+    public void getTimeMillisReturnsActualValue() {
+        OffsetDateTime now = OffsetDateTime.now();
+        WrappedHttpHeaders wrappedHttpHeaders
+            = new WrappedHttpHeaders(new HttpHeaders().set(HttpHeaderName.DATE, DateTimeRfc1123.toRfc1123String(now)));
+
+        // Use OffsetDateTime.toEpochSecond() * 1000L to get the expected millis as DateTimeRfc1123 only has the ability
+        // to represent to seconds. If OffsetDateTime.toInstant().toEpochMilli() is used, it will return the current
+        // time in milliseconds, which cannot be represented.
+        assertEquals(now.toEpochSecond() * 1000L,
+            wrappedHttpHeaders.getTimeMillis(HttpHeaderNames.DATE, now.toInstant().toEpochMilli()));
     }
 }

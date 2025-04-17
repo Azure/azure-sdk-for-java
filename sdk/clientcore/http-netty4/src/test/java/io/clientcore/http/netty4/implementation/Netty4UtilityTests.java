@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Timeout;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static io.clientcore.http.netty4.implementation.Netty4Utility.NETTY_VERSION_PROPERTY;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.PROPERTIES_FILE_NAME;
@@ -21,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Timeout(value = 3, unit = TimeUnit.MINUTES)
@@ -74,5 +76,44 @@ public class Netty4UtilityTests {
             assertLinesMatch(httpHeader.getValues(), convertedHeader.getValues(),
                 "Converted headers should have the same values as the original headers");
         });
+    }
+
+    @Test
+    public void setOrSuppressErrorSetsWhenUnset() {
+        AtomicReference<Throwable> unset = new AtomicReference<>();
+        RuntimeException toSet = new RuntimeException();
+
+        Netty4Utility.setOrSuppressError(unset, toSet);
+
+        assertSame(toSet, unset.get(), "The error should be set to the runtime exception that was passed.");
+    }
+
+    @Test
+    public void setOrSuppressErrorNoOpsWhenSameErrorIsSeen() {
+        RuntimeException initial = new RuntimeException();
+        AtomicReference<Throwable> sameError = new AtomicReference<>(initial);
+
+        Netty4Utility.setOrSuppressError(sameError, initial);
+
+        Throwable setError = sameError.get();
+        assertSame(initial, setError, "The error should be set to the runtime exception that was initially set.");
+        assertEquals(0, setError.getSuppressed().length,
+            "The suppressed error should be empty as the same error was seen.");
+    }
+
+    @Test
+    public void setOrSuppressErrorSuppressesWhenNewErrorIsSeen() {
+        RuntimeException initial = new RuntimeException();
+        AtomicReference<Throwable> alreadySet = new AtomicReference<>(initial);
+        RuntimeException additional = new RuntimeException();
+
+        Netty4Utility.setOrSuppressError(alreadySet, additional);
+
+        Throwable setError = alreadySet.get();
+        assertSame(initial, setError, "The error should be set to the runtime exception that was initially set.");
+        assertEquals(1, setError.getSuppressed().length,
+            "The suppressed errors should have one as a new error was seen.");
+        assertSame(additional, setError.getSuppressed()[0],
+            "The suppressed error should be the new error that was seen.");
     }
 }

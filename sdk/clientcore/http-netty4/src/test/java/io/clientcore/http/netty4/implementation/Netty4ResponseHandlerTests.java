@@ -40,7 +40,8 @@ public class Netty4ResponseHandlerTests {
         AtomicReference<Response<BinaryData>> responseReference = new AtomicReference<>();
         CountDownLatch latch = new CountDownLatch(1);
 
-        Netty4ResponseHandler responseHandler = new Netty4ResponseHandler(request, responseReference, latch);
+        Netty4ResponseHandler responseHandler
+            = new Netty4ResponseHandler(request, responseReference, new AtomicReference<>(), latch);
 
         Channel ch = createChannelWithReadHandling((ignored, channel) -> {
             Netty4ResponseHandler handler = channel.pipeline().get(Netty4ResponseHandler.class);
@@ -76,7 +77,8 @@ public class Netty4ResponseHandlerTests {
         AtomicReference<Response<BinaryData>> responseReference = new AtomicReference<>();
         CountDownLatch latch = new CountDownLatch(1);
 
-        Netty4ResponseHandler responseHandler = new Netty4ResponseHandler(request, responseReference, latch);
+        Netty4ResponseHandler responseHandler
+            = new Netty4ResponseHandler(request, responseReference, new AtomicReference<>(), latch);
 
         Channel ch = createChannelWithReadHandling((readCount, channel) -> {
             if (readCount == 0) {
@@ -129,7 +131,8 @@ public class Netty4ResponseHandlerTests {
         AtomicReference<Response<BinaryData>> responseReference = new AtomicReference<>();
         CountDownLatch latch = new CountDownLatch(1);
 
-        Netty4ResponseHandler responseHandler = new Netty4ResponseHandler(request, responseReference, latch);
+        Netty4ResponseHandler responseHandler
+            = new Netty4ResponseHandler(request, responseReference, new AtomicReference<>(), latch);
 
         Channel ch = createChannelWithReadHandling((readCount, channel) -> {
             if (readCount == 0) {

@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Timeout;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.TimeUnit;
 
@@ -62,6 +63,20 @@ public class Netty4ChannelBinaryDataTests {
             = new Netty4ChannelBinaryData(eagerContent, channelWithNoData(), (long) bytes.length);
 
         assertEquals(expected, binaryData.toString());
+    }
+
+    @Test
+    public void toByteBuffer() throws IOException {
+        byte[] bytes = "Hello world!".getBytes(StandardCharsets.UTF_8);
+        ByteBuffer expected = ByteBuffer.wrap(bytes);
+
+        ByteArrayOutputStream eagerContent = new ByteArrayOutputStream();
+        eagerContent.write(bytes);
+
+        Netty4ChannelBinaryData binaryData
+            = new Netty4ChannelBinaryData(eagerContent, channelWithNoData(), (long) bytes.length);
+
+        assertEquals(expected, binaryData.toByteBuffer());
     }
 
     @Test
