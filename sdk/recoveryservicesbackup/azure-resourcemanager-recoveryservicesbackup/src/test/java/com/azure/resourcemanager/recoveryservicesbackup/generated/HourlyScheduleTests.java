@@ -13,21 +13,21 @@ public final class HourlyScheduleTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HourlySchedule model = BinaryData.fromString(
-            "{\"interval\":2146264945,\"scheduleWindowStartTime\":\"2021-01-06T14:29:30Z\",\"scheduleWindowDuration\":2049992940}")
+            "{\"interval\":649940007,\"scheduleWindowStartTime\":\"2021-11-27T20:43:51Z\",\"scheduleWindowDuration\":1895248762}")
             .toObject(HourlySchedule.class);
-        Assertions.assertEquals(2146264945, model.interval());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-06T14:29:30Z"), model.scheduleWindowStartTime());
-        Assertions.assertEquals(2049992940, model.scheduleWindowDuration());
+        Assertions.assertEquals(649940007, model.interval());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-27T20:43:51Z"), model.scheduleWindowStartTime());
+        Assertions.assertEquals(1895248762, model.scheduleWindowDuration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HourlySchedule model = new HourlySchedule().withInterval(2146264945)
-            .withScheduleWindowStartTime(OffsetDateTime.parse("2021-01-06T14:29:30Z"))
-            .withScheduleWindowDuration(2049992940);
+        HourlySchedule model = new HourlySchedule().withInterval(649940007)
+            .withScheduleWindowStartTime(OffsetDateTime.parse("2021-11-27T20:43:51Z"))
+            .withScheduleWindowDuration(1895248762);
         model = BinaryData.fromObject(model).toObject(HourlySchedule.class);
-        Assertions.assertEquals(2146264945, model.interval());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-06T14:29:30Z"), model.scheduleWindowStartTime());
-        Assertions.assertEquals(2049992940, model.scheduleWindowDuration());
+        Assertions.assertEquals(649940007, model.interval());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-27T20:43:51Z"), model.scheduleWindowStartTime());
+        Assertions.assertEquals(1895248762, model.scheduleWindowDuration());
     }
 }

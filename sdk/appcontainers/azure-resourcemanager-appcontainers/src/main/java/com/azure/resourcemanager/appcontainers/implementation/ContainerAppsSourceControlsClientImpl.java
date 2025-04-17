@@ -99,9 +99,7 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("containerAppName") String containerAppName,
-            @PathParam("sourceControlName") String sourceControlName,
-            @HeaderParam("x-ms-github-auxiliary") String xMsGithubAuxiliary,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("sourceControlName") String sourceControlName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") SourceControlInner sourceControlEnvelope,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -113,10 +111,7 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("containerAppName") String containerAppName,
-            @PathParam("sourceControlName") String sourceControlName,
-            @HeaderParam("x-ms-github-auxiliary") String xMsGithubAuxiliary,
-            @QueryParam("ignoreWorkflowDeletionFailure") Boolean ignoreWorkflowDeletionFailure,
-            @QueryParam("deleteWorkflow") Boolean deleteWorkflow, @QueryParam("api-version") String apiVersion,
+            @PathParam("sourceControlName") String sourceControlName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -417,7 +412,6 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      * @param containerAppName Name of the Container App.
      * @param sourceControlName Name of the Container App SourceControl.
      * @param sourceControlEnvelope Properties used to create a Container App SourceControl.
-     * @param xMsGithubAuxiliary Github personal access token used for SourceControl.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -425,8 +419,7 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String containerAppName, String sourceControlName, SourceControlInner sourceControlEnvelope,
-        String xMsGithubAuxiliary) {
+        String containerAppName, String sourceControlName, SourceControlInner sourceControlEnvelope) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -456,7 +449,7 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, containerAppName, sourceControlName, xMsGithubAuxiliary, this.client.getApiVersion(),
+                resourceGroupName, containerAppName, sourceControlName, this.client.getApiVersion(),
                 sourceControlEnvelope, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -468,7 +461,6 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      * @param containerAppName Name of the Container App.
      * @param sourceControlName Name of the Container App SourceControl.
      * @param sourceControlEnvelope Properties used to create a Container App SourceControl.
-     * @param xMsGithubAuxiliary Github personal access token used for SourceControl.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -477,8 +469,7 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String containerAppName, String sourceControlName, SourceControlInner sourceControlEnvelope,
-        String xMsGithubAuxiliary, Context context) {
+        String containerAppName, String sourceControlName, SourceControlInner sourceControlEnvelope, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -508,31 +499,7 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            containerAppName, sourceControlName, xMsGithubAuxiliary, this.client.getApiVersion(), sourceControlEnvelope,
-            accept, context);
-    }
-
-    /**
-     * Create or update the SourceControl for a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param sourceControlName Name of the Container App SourceControl.
-     * @param sourceControlEnvelope Properties used to create a Container App SourceControl.
-     * @param xMsGithubAuxiliary Github personal access token used for SourceControl.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of container App SourceControl.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SourceControlInner>, SourceControlInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String containerAppName, String sourceControlName,
-        SourceControlInner sourceControlEnvelope, String xMsGithubAuxiliary) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, containerAppName,
-            sourceControlName, sourceControlEnvelope, xMsGithubAuxiliary);
-        return this.client.<SourceControlInner, SourceControlInner>getLroResult(mono, this.client.getHttpPipeline(),
-            SourceControlInner.class, SourceControlInner.class, this.client.getContext());
+            containerAppName, sourceControlName, this.client.getApiVersion(), sourceControlEnvelope, accept, context);
     }
 
     /**
@@ -551,9 +518,8 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
     private PollerFlux<PollResult<SourceControlInner>, SourceControlInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String containerAppName, String sourceControlName,
         SourceControlInner sourceControlEnvelope) {
-        final String xMsGithubAuxiliary = null;
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, containerAppName,
-            sourceControlName, sourceControlEnvelope, xMsGithubAuxiliary);
+            sourceControlName, sourceControlEnvelope);
         return this.client.<SourceControlInner, SourceControlInner>getLroResult(mono, this.client.getHttpPipeline(),
             SourceControlInner.class, SourceControlInner.class, this.client.getContext());
     }
@@ -565,7 +531,6 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      * @param containerAppName Name of the Container App.
      * @param sourceControlName Name of the Container App SourceControl.
      * @param sourceControlEnvelope Properties used to create a Container App SourceControl.
-     * @param xMsGithubAuxiliary Github personal access token used for SourceControl.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -575,10 +540,10 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SourceControlInner>, SourceControlInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String containerAppName, String sourceControlName,
-        SourceControlInner sourceControlEnvelope, String xMsGithubAuxiliary, Context context) {
+        SourceControlInner sourceControlEnvelope, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, containerAppName,
-            sourceControlName, sourceControlEnvelope, xMsGithubAuxiliary, context);
+            sourceControlName, sourceControlEnvelope, context);
         return this.client.<SourceControlInner, SourceControlInner>getLroResult(mono, this.client.getHttpPipeline(),
             SourceControlInner.class, SourceControlInner.class, context);
     }
@@ -598,10 +563,8 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SourceControlInner>, SourceControlInner> beginCreateOrUpdate(String resourceGroupName,
         String containerAppName, String sourceControlName, SourceControlInner sourceControlEnvelope) {
-        final String xMsGithubAuxiliary = null;
         return this
-            .beginCreateOrUpdateAsync(resourceGroupName, containerAppName, sourceControlName, sourceControlEnvelope,
-                xMsGithubAuxiliary)
+            .beginCreateOrUpdateAsync(resourceGroupName, containerAppName, sourceControlName, sourceControlEnvelope)
             .getSyncPoller();
     }
 
@@ -612,7 +575,6 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      * @param containerAppName Name of the Container App.
      * @param sourceControlName Name of the Container App SourceControl.
      * @param sourceControlEnvelope Properties used to create a Container App SourceControl.
-     * @param xMsGithubAuxiliary Github personal access token used for SourceControl.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -621,11 +583,10 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SourceControlInner>, SourceControlInner> beginCreateOrUpdate(String resourceGroupName,
-        String containerAppName, String sourceControlName, SourceControlInner sourceControlEnvelope,
-        String xMsGithubAuxiliary, Context context) {
+        String containerAppName, String sourceControlName, SourceControlInner sourceControlEnvelope, Context context) {
         return this
             .beginCreateOrUpdateAsync(resourceGroupName, containerAppName, sourceControlName, sourceControlEnvelope,
-                xMsGithubAuxiliary, context)
+                context)
             .getSyncPoller();
     }
 
@@ -636,26 +597,6 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      * @param containerAppName Name of the Container App.
      * @param sourceControlName Name of the Container App SourceControl.
      * @param sourceControlEnvelope Properties used to create a Container App SourceControl.
-     * @param xMsGithubAuxiliary Github personal access token used for SourceControl.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return container App SourceControl on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SourceControlInner> createOrUpdateAsync(String resourceGroupName, String containerAppName,
-        String sourceControlName, SourceControlInner sourceControlEnvelope, String xMsGithubAuxiliary) {
-        return beginCreateOrUpdateAsync(resourceGroupName, containerAppName, sourceControlName, sourceControlEnvelope,
-            xMsGithubAuxiliary).last().flatMap(this.client::getLroFinalResultOrError);
-    }
-
-    /**
-     * Create or update the SourceControl for a Container App.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param sourceControlName Name of the Container App SourceControl.
-     * @param sourceControlEnvelope Properties used to create a Container App SourceControl.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -664,9 +605,9 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SourceControlInner> createOrUpdateAsync(String resourceGroupName, String containerAppName,
         String sourceControlName, SourceControlInner sourceControlEnvelope) {
-        final String xMsGithubAuxiliary = null;
-        return beginCreateOrUpdateAsync(resourceGroupName, containerAppName, sourceControlName, sourceControlEnvelope,
-            xMsGithubAuxiliary).last().flatMap(this.client::getLroFinalResultOrError);
+        return beginCreateOrUpdateAsync(resourceGroupName, containerAppName, sourceControlName, sourceControlEnvelope)
+            .last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -676,7 +617,6 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      * @param containerAppName Name of the Container App.
      * @param sourceControlName Name of the Container App SourceControl.
      * @param sourceControlEnvelope Properties used to create a Container App SourceControl.
-     * @param xMsGithubAuxiliary Github personal access token used for SourceControl.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -685,10 +625,9 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SourceControlInner> createOrUpdateAsync(String resourceGroupName, String containerAppName,
-        String sourceControlName, SourceControlInner sourceControlEnvelope, String xMsGithubAuxiliary,
-        Context context) {
+        String sourceControlName, SourceControlInner sourceControlEnvelope, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, containerAppName, sourceControlName, sourceControlEnvelope,
-            xMsGithubAuxiliary, context).last().flatMap(this.client::getLroFinalResultOrError);
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -706,9 +645,8 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SourceControlInner createOrUpdate(String resourceGroupName, String containerAppName,
         String sourceControlName, SourceControlInner sourceControlEnvelope) {
-        final String xMsGithubAuxiliary = null;
-        return createOrUpdateAsync(resourceGroupName, containerAppName, sourceControlName, sourceControlEnvelope,
-            xMsGithubAuxiliary).block();
+        return createOrUpdateAsync(resourceGroupName, containerAppName, sourceControlName, sourceControlEnvelope)
+            .block();
     }
 
     /**
@@ -718,7 +656,6 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      * @param containerAppName Name of the Container App.
      * @param sourceControlName Name of the Container App SourceControl.
      * @param sourceControlEnvelope Properties used to create a Container App SourceControl.
-     * @param xMsGithubAuxiliary Github personal access token used for SourceControl.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -727,10 +664,9 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SourceControlInner createOrUpdate(String resourceGroupName, String containerAppName,
-        String sourceControlName, SourceControlInner sourceControlEnvelope, String xMsGithubAuxiliary,
-        Context context) {
+        String sourceControlName, SourceControlInner sourceControlEnvelope, Context context) {
         return createOrUpdateAsync(resourceGroupName, containerAppName, sourceControlName, sourceControlEnvelope,
-            xMsGithubAuxiliary, context).block();
+            context).block();
     }
 
     /**
@@ -739,9 +675,6 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param sourceControlName Name of the Container App SourceControl.
-     * @param xMsGithubAuxiliary Github personal access token used for SourceControl.
-     * @param ignoreWorkflowDeletionFailure Ignore Workflow Deletion Failure.
-     * @param deleteWorkflow Delete workflow.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -749,8 +682,7 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String containerAppName,
-        String sourceControlName, String xMsGithubAuxiliary, Boolean ignoreWorkflowDeletionFailure,
-        Boolean deleteWorkflow) {
+        String sourceControlName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -774,8 +706,7 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
-                resourceGroupName, containerAppName, sourceControlName, xMsGithubAuxiliary,
-                ignoreWorkflowDeletionFailure, deleteWorkflow, this.client.getApiVersion(), accept, context))
+                resourceGroupName, containerAppName, sourceControlName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -785,9 +716,6 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param sourceControlName Name of the Container App SourceControl.
-     * @param xMsGithubAuxiliary Github personal access token used for SourceControl.
-     * @param ignoreWorkflowDeletionFailure Ignore Workflow Deletion Failure.
-     * @param deleteWorkflow Delete workflow.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -796,8 +724,7 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String containerAppName,
-        String sourceControlName, String xMsGithubAuxiliary, Boolean ignoreWorkflowDeletionFailure,
-        Boolean deleteWorkflow, Context context) {
+        String sourceControlName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -821,32 +748,7 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
-            containerAppName, sourceControlName, xMsGithubAuxiliary, ignoreWorkflowDeletionFailure, deleteWorkflow,
-            this.client.getApiVersion(), accept, context);
-    }
-
-    /**
-     * Delete a Container App SourceControl.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param sourceControlName Name of the Container App SourceControl.
-     * @param xMsGithubAuxiliary Github personal access token used for SourceControl.
-     * @param ignoreWorkflowDeletionFailure Ignore Workflow Deletion Failure.
-     * @param deleteWorkflow Delete workflow.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String containerAppName,
-        String sourceControlName, String xMsGithubAuxiliary, Boolean ignoreWorkflowDeletionFailure,
-        Boolean deleteWorkflow) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, containerAppName,
-            sourceControlName, xMsGithubAuxiliary, ignoreWorkflowDeletionFailure, deleteWorkflow);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
-            this.client.getContext());
+            containerAppName, sourceControlName, this.client.getApiVersion(), accept, context);
     }
 
     /**
@@ -863,11 +765,8 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String containerAppName,
         String sourceControlName) {
-        final String xMsGithubAuxiliary = null;
-        final Boolean ignoreWorkflowDeletionFailure = null;
-        final Boolean deleteWorkflow = null;
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, containerAppName,
-            sourceControlName, xMsGithubAuxiliary, ignoreWorkflowDeletionFailure, deleteWorkflow);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, containerAppName, sourceControlName);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
     }
@@ -878,9 +777,6 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param sourceControlName Name of the Container App SourceControl.
-     * @param xMsGithubAuxiliary Github personal access token used for SourceControl.
-     * @param ignoreWorkflowDeletionFailure Ignore Workflow Deletion Failure.
-     * @param deleteWorkflow Delete workflow.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -889,11 +785,10 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String containerAppName,
-        String sourceControlName, String xMsGithubAuxiliary, Boolean ignoreWorkflowDeletionFailure,
-        Boolean deleteWorkflow, Context context) {
+        String sourceControlName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, containerAppName,
-            sourceControlName, xMsGithubAuxiliary, ignoreWorkflowDeletionFailure, deleteWorkflow, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, containerAppName, sourceControlName, context);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             context);
     }
@@ -912,13 +807,7 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String containerAppName,
         String sourceControlName) {
-        final String xMsGithubAuxiliary = null;
-        final Boolean ignoreWorkflowDeletionFailure = null;
-        final Boolean deleteWorkflow = null;
-        return this
-            .beginDeleteAsync(resourceGroupName, containerAppName, sourceControlName, xMsGithubAuxiliary,
-                ignoreWorkflowDeletionFailure, deleteWorkflow)
-            .getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, containerAppName, sourceControlName).getSyncPoller();
     }
 
     /**
@@ -927,9 +816,6 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param sourceControlName Name of the Container App SourceControl.
-     * @param xMsGithubAuxiliary Github personal access token used for SourceControl.
-     * @param ignoreWorkflowDeletionFailure Ignore Workflow Deletion Failure.
-     * @param deleteWorkflow Delete workflow.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -938,33 +824,8 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String containerAppName,
-        String sourceControlName, String xMsGithubAuxiliary, Boolean ignoreWorkflowDeletionFailure,
-        Boolean deleteWorkflow, Context context) {
-        return this
-            .beginDeleteAsync(resourceGroupName, containerAppName, sourceControlName, xMsGithubAuxiliary,
-                ignoreWorkflowDeletionFailure, deleteWorkflow, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Delete a Container App SourceControl.
-     * 
-     * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param containerAppName Name of the Container App.
-     * @param sourceControlName Name of the Container App SourceControl.
-     * @param xMsGithubAuxiliary Github personal access token used for SourceControl.
-     * @param ignoreWorkflowDeletionFailure Ignore Workflow Deletion Failure.
-     * @param deleteWorkflow Delete workflow.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String containerAppName, String sourceControlName,
-        String xMsGithubAuxiliary, Boolean ignoreWorkflowDeletionFailure, Boolean deleteWorkflow) {
-        return beginDeleteAsync(resourceGroupName, containerAppName, sourceControlName, xMsGithubAuxiliary,
-            ignoreWorkflowDeletionFailure, deleteWorkflow).last().flatMap(this.client::getLroFinalResultOrError);
+        String sourceControlName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, containerAppName, sourceControlName, context).getSyncPoller();
     }
 
     /**
@@ -980,11 +841,8 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String containerAppName, String sourceControlName) {
-        final String xMsGithubAuxiliary = null;
-        final Boolean ignoreWorkflowDeletionFailure = null;
-        final Boolean deleteWorkflow = null;
-        return beginDeleteAsync(resourceGroupName, containerAppName, sourceControlName, xMsGithubAuxiliary,
-            ignoreWorkflowDeletionFailure, deleteWorkflow).last().flatMap(this.client::getLroFinalResultOrError);
+        return beginDeleteAsync(resourceGroupName, containerAppName, sourceControlName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -993,9 +851,6 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param sourceControlName Name of the Container App SourceControl.
-     * @param xMsGithubAuxiliary Github personal access token used for SourceControl.
-     * @param ignoreWorkflowDeletionFailure Ignore Workflow Deletion Failure.
-     * @param deleteWorkflow Delete workflow.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
@@ -1004,10 +859,9 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String containerAppName, String sourceControlName,
-        String xMsGithubAuxiliary, Boolean ignoreWorkflowDeletionFailure, Boolean deleteWorkflow, Context context) {
-        return beginDeleteAsync(resourceGroupName, containerAppName, sourceControlName, xMsGithubAuxiliary,
-            ignoreWorkflowDeletionFailure, deleteWorkflow, context).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, containerAppName, sourceControlName, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -1022,11 +876,7 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete(String resourceGroupName, String containerAppName, String sourceControlName) {
-        final String xMsGithubAuxiliary = null;
-        final Boolean ignoreWorkflowDeletionFailure = null;
-        final Boolean deleteWorkflow = null;
-        deleteAsync(resourceGroupName, containerAppName, sourceControlName, xMsGithubAuxiliary,
-            ignoreWorkflowDeletionFailure, deleteWorkflow).block();
+        deleteAsync(resourceGroupName, containerAppName, sourceControlName).block();
     }
 
     /**
@@ -1035,19 +885,14 @@ public final class ContainerAppsSourceControlsClientImpl implements ContainerApp
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param containerAppName Name of the Container App.
      * @param sourceControlName Name of the Container App SourceControl.
-     * @param xMsGithubAuxiliary Github personal access token used for SourceControl.
-     * @param ignoreWorkflowDeletionFailure Ignore Workflow Deletion Failure.
-     * @param deleteWorkflow Delete workflow.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws DefaultErrorResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String containerAppName, String sourceControlName,
-        String xMsGithubAuxiliary, Boolean ignoreWorkflowDeletionFailure, Boolean deleteWorkflow, Context context) {
-        deleteAsync(resourceGroupName, containerAppName, sourceControlName, xMsGithubAuxiliary,
-            ignoreWorkflowDeletionFailure, deleteWorkflow, context).block();
+    public void delete(String resourceGroupName, String containerAppName, String sourceControlName, Context context) {
+        deleteAsync(resourceGroupName, containerAppName, sourceControlName, context).block();
     }
 
     /**
