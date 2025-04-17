@@ -25,7 +25,7 @@ public final class RestorePointSourceVMStorageProfile implements JsonSerializabl
     /*
      * Gets the data disks of the VM captured at the time of the restore point creation.
      */
-    private List<RestorePointSourceVMDataDisk> dataDisks;
+    private List<RestorePointSourceVMDataDisk> dataDiskList;
 
     /*
      * Gets the disk controller type of the VM captured at the time of the restore point creation.
@@ -59,22 +59,22 @@ public final class RestorePointSourceVMStorageProfile implements JsonSerializabl
     }
 
     /**
-     * Get the dataDisks property: Gets the data disks of the VM captured at the time of the restore point creation.
+     * Get the dataDiskList property: Gets the data disks of the VM captured at the time of the restore point creation.
      * 
-     * @return the dataDisks value.
+     * @return the dataDiskList value.
      */
-    public List<RestorePointSourceVMDataDisk> dataDisks() {
-        return this.dataDisks;
+    public List<RestorePointSourceVMDataDisk> dataDiskList() {
+        return this.dataDiskList;
     }
 
     /**
-     * Set the dataDisks property: Gets the data disks of the VM captured at the time of the restore point creation.
+     * Set the dataDiskList property: Gets the data disks of the VM captured at the time of the restore point creation.
      * 
-     * @param dataDisks the dataDisks value to set.
+     * @param dataDiskList the dataDiskList value to set.
      * @return the RestorePointSourceVMStorageProfile object itself.
      */
-    public RestorePointSourceVMStorageProfile withDataDisks(List<RestorePointSourceVMDataDisk> dataDisks) {
-        this.dataDisks = dataDisks;
+    public RestorePointSourceVMStorageProfile withDataDiskList(List<RestorePointSourceVMDataDisk> dataDiskList) {
+        this.dataDiskList = dataDiskList;
         return this;
     }
 
@@ -97,8 +97,8 @@ public final class RestorePointSourceVMStorageProfile implements JsonSerializabl
         if (osDisk() != null) {
             osDisk().validate();
         }
-        if (dataDisks() != null) {
-            dataDisks().forEach(e -> e.validate());
+        if (dataDiskList() != null) {
+            dataDiskList().forEach(e -> e.validate());
         }
     }
 
@@ -109,7 +109,7 @@ public final class RestorePointSourceVMStorageProfile implements JsonSerializabl
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("osDisk", this.osDisk);
-        jsonWriter.writeArrayField("dataDisks", this.dataDisks, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("dataDisks", this.dataDiskList, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -132,9 +132,9 @@ public final class RestorePointSourceVMStorageProfile implements JsonSerializabl
                 if ("osDisk".equals(fieldName)) {
                     deserializedRestorePointSourceVMStorageProfile.osDisk = RestorePointSourceVmosDisk.fromJson(reader);
                 } else if ("dataDisks".equals(fieldName)) {
-                    List<RestorePointSourceVMDataDisk> dataDisks
+                    List<RestorePointSourceVMDataDisk> dataDiskList
                         = reader.readArray(reader1 -> RestorePointSourceVMDataDisk.fromJson(reader1));
-                    deserializedRestorePointSourceVMStorageProfile.dataDisks = dataDisks;
+                    deserializedRestorePointSourceVMStorageProfile.dataDiskList = dataDiskList;
                 } else if ("diskControllerType".equals(fieldName)) {
                     deserializedRestorePointSourceVMStorageProfile.diskControllerType
                         = DiskControllerTypes.fromString(reader.getString());

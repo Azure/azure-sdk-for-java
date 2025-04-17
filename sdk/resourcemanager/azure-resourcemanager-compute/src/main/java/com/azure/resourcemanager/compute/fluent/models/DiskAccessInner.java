@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -29,6 +30,11 @@ public final class DiskAccessInner extends Resource {
      * The extended location where the disk access will be created. Extended location cannot be changed.
      */
     private ExtendedLocation extendedLocation;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -80,6 +86,15 @@ public final class DiskAccessInner extends Resource {
     public DiskAccessInner withExtendedLocation(ExtendedLocation extendedLocation) {
         this.extendedLocation = extendedLocation;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -216,6 +231,8 @@ public final class DiskAccessInner extends Resource {
                     deserializedDiskAccessInner.innerProperties = DiskAccessProperties.fromJson(reader);
                 } else if ("extendedLocation".equals(fieldName)) {
                     deserializedDiskAccessInner.extendedLocation = ExtendedLocation.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedDiskAccessInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

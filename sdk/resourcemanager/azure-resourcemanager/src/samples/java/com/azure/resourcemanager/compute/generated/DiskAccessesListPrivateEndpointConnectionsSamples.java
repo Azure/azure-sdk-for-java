@@ -14,7 +14,7 @@ public final class DiskAccessesListPrivateEndpointConnectionsSamples {
      * DiskAccessPrivateEndpointConnection_ListByDiskAccess.json
      */
     /**
-     * Sample code: Get information about a private endpoint connection under a disk access resource.
+     * Sample code: get information about a private endpoint connection under a disk access resource.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */

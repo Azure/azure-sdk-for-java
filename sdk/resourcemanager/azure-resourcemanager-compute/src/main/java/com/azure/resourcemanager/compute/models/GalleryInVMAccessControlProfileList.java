@@ -21,13 +21,12 @@ import java.util.List;
 public final class GalleryInVMAccessControlProfileList
     implements JsonSerializable<GalleryInVMAccessControlProfileList> {
     /*
-     * A list of Gallery InVMAccessControlProfiles.
+     * The GalleryInVMAccessControlProfile items on this page
      */
     private List<GalleryInVMAccessControlProfileInner> value;
 
     /*
-     * The uri to fetch the next page of inVMAccessControlProfiles in the gallery. Call ListNext() with this to fetch
-     * the next page of gallery inVMAccessControlProfiles.
+     * The link to the next page of items
      */
     private String nextLink;
 
@@ -38,7 +37,7 @@ public final class GalleryInVMAccessControlProfileList
     }
 
     /**
-     * Get the value property: A list of Gallery InVMAccessControlProfiles.
+     * Get the value property: The GalleryInVMAccessControlProfile items on this page.
      * 
      * @return the value value.
      */
@@ -47,7 +46,7 @@ public final class GalleryInVMAccessControlProfileList
     }
 
     /**
-     * Set the value property: A list of Gallery InVMAccessControlProfiles.
+     * Set the value property: The GalleryInVMAccessControlProfile items on this page.
      * 
      * @param value the value value to set.
      * @return the GalleryInVMAccessControlProfileList object itself.
@@ -58,8 +57,7 @@ public final class GalleryInVMAccessControlProfileList
     }
 
     /**
-     * Get the nextLink property: The uri to fetch the next page of inVMAccessControlProfiles in the gallery. Call
-     * ListNext() with this to fetch the next page of gallery inVMAccessControlProfiles.
+     * Get the nextLink property: The link to the next page of items.
      * 
      * @return the nextLink value.
      */
@@ -68,8 +66,7 @@ public final class GalleryInVMAccessControlProfileList
     }
 
     /**
-     * Set the nextLink property: The uri to fetch the next page of inVMAccessControlProfiles in the gallery. Call
-     * ListNext() with this to fetch the next page of gallery inVMAccessControlProfiles.
+     * Set the nextLink property: The link to the next page of items.
      * 
      * @param nextLink the nextLink value to set.
      * @return the GalleryInVMAccessControlProfileList object itself.

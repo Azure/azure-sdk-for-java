@@ -26,7 +26,7 @@ public interface LogAnalyticsClient {
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
      * 
-     * @param location The location upon which virtual-machine-sizes is queried.
+     * @param location The name of Azure region.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -42,7 +42,7 @@ public interface LogAnalyticsClient {
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
      * 
-     * @param location The location upon which virtual-machine-sizes is queried.
+     * @param location The name of Azure region.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -57,7 +57,7 @@ public interface LogAnalyticsClient {
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
      * 
-     * @param location The location upon which virtual-machine-sizes is queried.
+     * @param location The name of Azure region.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -72,7 +72,7 @@ public interface LogAnalyticsClient {
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
      * 
-     * @param location The location upon which virtual-machine-sizes is queried.
+     * @param location The name of Azure region.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -88,7 +88,7 @@ public interface LogAnalyticsClient {
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
      * 
-     * @param location The location upon which virtual-machine-sizes is queried.
+     * @param location The name of Azure region.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -103,7 +103,7 @@ public interface LogAnalyticsClient {
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
      * 
-     * @param location The location upon which virtual-machine-sizes is queried.
+     * @param location The name of Azure region.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -118,7 +118,7 @@ public interface LogAnalyticsClient {
      * Export logs that show Api requests made by this subscription in the given time window to show throttling
      * activities.
      * 
-     * @param location The location upon which virtual-machine-sizes is queried.
+     * @param location The name of Azure region.
      * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -133,8 +133,8 @@ public interface LogAnalyticsClient {
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      * 
-     * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
+     * @param location The name of Azure region.
+     * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -148,8 +148,8 @@ public interface LogAnalyticsClient {
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      * 
-     * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
+     * @param location The name of Azure region.
+     * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -162,8 +162,8 @@ public interface LogAnalyticsClient {
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      * 
-     * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
+     * @param location The name of Azure region.
+     * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -176,8 +176,8 @@ public interface LogAnalyticsClient {
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      * 
-     * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
+     * @param location The name of Azure region.
+     * @param parameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -191,8 +191,8 @@ public interface LogAnalyticsClient {
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      * 
-     * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
+     * @param location The name of Azure region.
+     * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -205,8 +205,8 @@ public interface LogAnalyticsClient {
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      * 
-     * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
+     * @param location The name of Azure region.
+     * @param parameters The request body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -218,8 +218,8 @@ public interface LogAnalyticsClient {
     /**
      * Export logs that show total throttled Api requests for this subscription in the given time window.
      * 
-     * @param location The location upon which virtual-machine-sizes is queried.
-     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
+     * @param location The name of Azure region.
+     * @param parameters The request body.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.

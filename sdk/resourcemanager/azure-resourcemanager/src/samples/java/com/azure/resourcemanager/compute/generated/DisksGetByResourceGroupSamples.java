@@ -14,7 +14,7 @@ public final class DisksGetByResourceGroupSamples {
      * json
      */
     /**
-     * Sample code: Get information about a managed disk.
+     * Sample code: get information about a managed disk.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */

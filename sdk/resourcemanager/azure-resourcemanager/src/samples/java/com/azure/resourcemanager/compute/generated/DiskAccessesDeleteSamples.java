@@ -14,7 +14,7 @@ public final class DiskAccessesDeleteSamples {
      * DiskAccess_Delete.json
      */
     /**
-     * Sample code: Delete a disk access resource.
+     * Sample code: delete a disk access resource.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */

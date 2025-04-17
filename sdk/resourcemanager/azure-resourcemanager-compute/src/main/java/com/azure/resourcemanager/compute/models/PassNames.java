@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.compute.models;
 
 /**
- * The pass name. Currently, the only allowable value is OobeSystem.
+ * Defines values for PassNames.
  */
 public enum PassNames {
     /**

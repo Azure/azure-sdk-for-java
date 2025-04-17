@@ -21,7 +21,7 @@ import java.util.List;
 public final class VirtualMachineRunCommandsListResult
     implements JsonSerializable<VirtualMachineRunCommandsListResult> {
     /*
-     * The list of run commands
+     * The list of run commands.
      */
     private List<VirtualMachineRunCommandInner> value;
 

@@ -25,7 +25,7 @@ public final class SnapshotList implements JsonSerializable<SnapshotList> {
     private List<SnapshotInner> value;
 
     /*
-     * The uri to fetch the next page of snapshots. Call ListNext() with this to fetch the next page of snapshots.
+     * The link to the next page of items
      */
     private String nextLink;
 
@@ -56,8 +56,7 @@ public final class SnapshotList implements JsonSerializable<SnapshotList> {
     }
 
     /**
-     * Get the nextLink property: The uri to fetch the next page of snapshots. Call ListNext() with this to fetch the
-     * next page of snapshots.
+     * Get the nextLink property: The link to the next page of items.
      * 
      * @return the nextLink value.
      */
@@ -66,8 +65,7 @@ public final class SnapshotList implements JsonSerializable<SnapshotList> {
     }
 
     /**
-     * Set the nextLink property: The uri to fetch the next page of snapshots. Call ListNext() with this to fetch the
-     * next page of snapshots.
+     * Set the nextLink property: The link to the next page of items.
      * 
      * @param nextLink the nextLink value to set.
      * @return the SnapshotList object itself.

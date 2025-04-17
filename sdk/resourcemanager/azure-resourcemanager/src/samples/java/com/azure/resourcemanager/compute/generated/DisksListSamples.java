@@ -14,7 +14,7 @@ public final class DisksListSamples {
      * Disk_ListBySubscription.json
      */
     /**
-     * Sample code: List all managed disks in a subscription.
+     * Sample code: list all managed disks in a subscription.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */

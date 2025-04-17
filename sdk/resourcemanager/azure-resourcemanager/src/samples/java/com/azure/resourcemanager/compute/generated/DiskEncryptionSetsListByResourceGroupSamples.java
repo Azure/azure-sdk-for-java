@@ -13,7 +13,7 @@ public final class DiskEncryptionSetsListByResourceGroupSamples {
      * diskEncryptionSetExamples/DiskEncryptionSet_ListByResourceGroup.json
      */
     /**
-     * Sample code: List all disk encryption sets in a resource group.
+     * Sample code: list all disk encryption sets in a resource group.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */

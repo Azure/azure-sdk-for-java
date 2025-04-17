@@ -20,7 +20,7 @@ import java.util.List;
 @Fluent
 public final class AvailabilitySetListResult implements JsonSerializable<AvailabilitySetListResult> {
     /*
-     * The list of availability sets
+     * The list of availability sets.
      */
     private List<AvailabilitySetInner> value;
 

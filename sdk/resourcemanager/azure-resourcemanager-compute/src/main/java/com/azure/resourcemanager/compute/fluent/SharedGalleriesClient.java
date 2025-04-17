@@ -21,7 +21,7 @@ public interface SharedGalleriesClient {
     /**
      * List shared galleries by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param sharedTo The query parameter to decide what shared galleries to fetch when doing listing operations.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -34,7 +34,7 @@ public interface SharedGalleriesClient {
     /**
      * List shared galleries by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -46,7 +46,7 @@ public interface SharedGalleriesClient {
     /**
      * List shared galleries by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -58,7 +58,7 @@ public interface SharedGalleriesClient {
     /**
      * List shared galleries by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param sharedTo The query parameter to decide what shared galleries to fetch when doing listing operations.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -72,7 +72,7 @@ public interface SharedGalleriesClient {
     /**
      * Get a shared gallery by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -86,7 +86,7 @@ public interface SharedGalleriesClient {
     /**
      * Get a shared gallery by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -99,7 +99,7 @@ public interface SharedGalleriesClient {
     /**
      * Get a shared gallery by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -113,7 +113,7 @@ public interface SharedGalleriesClient {
     /**
      * Get a shared gallery by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.

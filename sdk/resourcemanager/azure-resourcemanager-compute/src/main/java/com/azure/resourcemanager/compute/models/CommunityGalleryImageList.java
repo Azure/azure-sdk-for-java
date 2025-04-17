@@ -25,8 +25,7 @@ public final class CommunityGalleryImageList implements JsonSerializable<Communi
     private List<CommunityGalleryImageInner> value;
 
     /*
-     * The URI to fetch the next page of community gallery images. Call ListNext() with this to fetch the next page of
-     * community gallery images.
+     * The link to the next page of items
      */
     private String nextLink;
 
@@ -57,8 +56,7 @@ public final class CommunityGalleryImageList implements JsonSerializable<Communi
     }
 
     /**
-     * Get the nextLink property: The URI to fetch the next page of community gallery images. Call ListNext() with this
-     * to fetch the next page of community gallery images.
+     * Get the nextLink property: The link to the next page of items.
      * 
      * @return the nextLink value.
      */
@@ -67,8 +65,7 @@ public final class CommunityGalleryImageList implements JsonSerializable<Communi
     }
 
     /**
-     * Set the nextLink property: The URI to fetch the next page of community gallery images. Call ListNext() with this
-     * to fetch the next page of community gallery images.
+     * Set the nextLink property: The link to the next page of items.
      * 
      * @param nextLink the nextLink value to set.
      * @return the CommunityGalleryImageList object itself.

@@ -23,6 +23,7 @@ import com.azure.resourcemanager.compute.models.DiagnosticsProfile;
 import com.azure.resourcemanager.compute.models.DiffDiskOptions;
 import com.azure.resourcemanager.compute.models.DiffDiskPlacement;
 import com.azure.resourcemanager.compute.models.DiffDiskSettings;
+import com.azure.resourcemanager.compute.models.DiskControllerTypes;
 import com.azure.resourcemanager.compute.models.DiskCreateOptionTypes;
 import com.azure.resourcemanager.compute.models.DiskEncryptionSetParameters;
 import com.azure.resourcemanager.compute.models.DomainNameLabelScopeTypes;
@@ -1096,7 +1097,7 @@ public final class VirtualMachineScaleSetsCreateOrUpdateSamples {
                                 .withManagedDisk(
                                     new VirtualMachineScaleSetManagedDiskParameters().withStorageAccountType(
                                         StorageAccountTypes.STANDARD_LRS)))
-                            .withDiskControllerType("NVMe"))
+                            .withDiskControllerType(DiskControllerTypes.NVME))
                         .withNetworkProfile(
                             new VirtualMachineScaleSetNetworkProfile().withNetworkInterfaceConfigurations(
                                 Arrays.asList(new VirtualMachineScaleSetNetworkConfiguration().withName("{vmss-name}")

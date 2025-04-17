@@ -20,13 +20,12 @@ import java.util.List;
 public final class VirtualMachineImagesWithPropertiesListResult
     implements JsonSerializable<VirtualMachineImagesWithPropertiesListResult> {
     /*
-     * The list of virtual machine images.
+     * The VirtualMachineImage items on this page
      */
     private List<VirtualMachineImageInner> value;
 
     /*
-     * The URI to fetch the next page of virtual machine images. Call ListNext() with this URI to fetch the next page of
-     * virtual machine images.
+     * The link to the next page of items
      */
     private String nextLink;
 
@@ -37,7 +36,7 @@ public final class VirtualMachineImagesWithPropertiesListResult
     }
 
     /**
-     * Get the value property: The list of virtual machine images.
+     * Get the value property: The VirtualMachineImage items on this page.
      * 
      * @return the value value.
      */
@@ -46,7 +45,7 @@ public final class VirtualMachineImagesWithPropertiesListResult
     }
 
     /**
-     * Set the value property: The list of virtual machine images.
+     * Set the value property: The VirtualMachineImage items on this page.
      * 
      * @param value the value value to set.
      * @return the VirtualMachineImagesWithPropertiesListResult object itself.
@@ -57,8 +56,7 @@ public final class VirtualMachineImagesWithPropertiesListResult
     }
 
     /**
-     * Get the nextLink property: The URI to fetch the next page of virtual machine images. Call ListNext() with this
-     * URI to fetch the next page of virtual machine images.
+     * Get the nextLink property: The link to the next page of items.
      * 
      * @return the nextLink value.
      */
@@ -67,8 +65,7 @@ public final class VirtualMachineImagesWithPropertiesListResult
     }
 
     /**
-     * Set the nextLink property: The URI to fetch the next page of virtual machine images. Call ListNext() with this
-     * URI to fetch the next page of virtual machine images.
+     * Set the nextLink property: The link to the next page of items.
      * 
      * @param nextLink the nextLink value to set.
      * @return the VirtualMachineImagesWithPropertiesListResult object itself.

@@ -23,7 +23,7 @@ public final class DiskEncryptionSetsCreateOrUpdateSamples {
      * diskEncryptionSetExamples/DiskEncryptionSet_Create_WithKeyVaultFromADifferentTenant.json
      */
     /**
-     * Sample code: Create a disk encryption set with key vault from a different tenant.
+     * Sample code: create a disk encryption set with key vault from a different tenant.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
@@ -49,7 +49,7 @@ public final class DiskEncryptionSetsCreateOrUpdateSamples {
      * diskEncryptionSetExamples/DiskEncryptionSet_Create.json
      */
     /**
-     * Sample code: Create a disk encryption set.
+     * Sample code: create a disk encryption set.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
@@ -73,7 +73,7 @@ public final class DiskEncryptionSetsCreateOrUpdateSamples {
      * diskEncryptionSetExamples/DiskEncryptionSet_Create_WithKeyVaultFromADifferentSubscription.json
      */
     /**
-     * Sample code: Create a disk encryption set with key vault from a different subscription.
+     * Sample code: create a disk encryption set with key vault from a different subscription.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */

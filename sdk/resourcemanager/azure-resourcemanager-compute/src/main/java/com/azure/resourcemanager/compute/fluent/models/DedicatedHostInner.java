@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
@@ -34,6 +35,11 @@ public final class DedicatedHostInner extends Resource {
      * Microsoft.Compute SKUs for a list of possible values.
      */
     private Sku sku;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -85,6 +91,15 @@ public final class DedicatedHostInner extends Resource {
     public DedicatedHostInner withSku(Sku sku) {
         this.sku = sku;
         return this;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -329,6 +344,8 @@ public final class DedicatedHostInner extends Resource {
                     deserializedDedicatedHostInner.sku = Sku.fromJson(reader);
                 } else if ("properties".equals(fieldName)) {
                     deserializedDedicatedHostInner.innerProperties = DedicatedHostProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedDedicatedHostInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

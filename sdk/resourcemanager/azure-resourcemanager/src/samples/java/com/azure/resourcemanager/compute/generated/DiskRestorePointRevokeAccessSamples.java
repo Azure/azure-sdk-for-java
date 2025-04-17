@@ -13,7 +13,7 @@ public final class DiskRestorePointRevokeAccessSamples {
      * diskRestorePointExamples/DiskRestorePoint_EndGetAccess.json
      */
     /**
-     * Sample code: Revokes access to a diskRestorePoint.
+     * Sample code: revokes access to a diskRestorePoint.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */

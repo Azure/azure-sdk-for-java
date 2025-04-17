@@ -20,13 +20,12 @@ import java.util.List;
 @Fluent
 public final class DiskAccessList implements JsonSerializable<DiskAccessList> {
     /*
-     * A list of disk access resources.
+     * The DiskAccess items on this page
      */
     private List<DiskAccessInner> value;
 
     /*
-     * The uri to fetch the next page of disk access resources. Call ListNext() with this to fetch the next page of disk
-     * access resources.
+     * The link to the next page of items
      */
     private String nextLink;
 
@@ -37,7 +36,7 @@ public final class DiskAccessList implements JsonSerializable<DiskAccessList> {
     }
 
     /**
-     * Get the value property: A list of disk access resources.
+     * Get the value property: The DiskAccess items on this page.
      * 
      * @return the value value.
      */
@@ -46,7 +45,7 @@ public final class DiskAccessList implements JsonSerializable<DiskAccessList> {
     }
 
     /**
-     * Set the value property: A list of disk access resources.
+     * Set the value property: The DiskAccess items on this page.
      * 
      * @param value the value value to set.
      * @return the DiskAccessList object itself.
@@ -57,8 +56,7 @@ public final class DiskAccessList implements JsonSerializable<DiskAccessList> {
     }
 
     /**
-     * Get the nextLink property: The uri to fetch the next page of disk access resources. Call ListNext() with this to
-     * fetch the next page of disk access resources.
+     * Get the nextLink property: The link to the next page of items.
      * 
      * @return the nextLink value.
      */
@@ -67,8 +65,7 @@ public final class DiskAccessList implements JsonSerializable<DiskAccessList> {
     }
 
     /**
-     * Set the nextLink property: The uri to fetch the next page of disk access resources. Call ListNext() with this to
-     * fetch the next page of disk access resources.
+     * Set the nextLink property: The link to the next page of items.
      * 
      * @param nextLink the nextLink value to set.
      * @return the DiskAccessList object itself.

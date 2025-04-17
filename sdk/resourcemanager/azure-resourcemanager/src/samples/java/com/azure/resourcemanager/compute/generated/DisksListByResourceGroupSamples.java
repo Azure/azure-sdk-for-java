@@ -14,7 +14,7 @@ public final class DisksListByResourceGroupSamples {
      * Disk_ListByResourceGroup.json
      */
     /**
-     * Sample code: List all managed disks in a resource group.
+     * Sample code: list all managed disks in a resource group.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */

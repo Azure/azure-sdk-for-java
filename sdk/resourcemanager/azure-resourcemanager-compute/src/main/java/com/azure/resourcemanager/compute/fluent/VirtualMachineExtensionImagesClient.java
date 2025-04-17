@@ -17,73 +17,9 @@ import reactor.core.publisher.Mono;
  */
 public interface VirtualMachineExtensionImagesClient {
     /**
-     * Gets a virtual machine extension image.
-     * 
-     * @param location The name of a supported Azure region.
-     * @param publisherName The publisherName parameter.
-     * @param type The type parameter.
-     * @param version The version parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine extension image along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VirtualMachineExtensionImageInner>> getWithResponseAsync(String location, String publisherName,
-        String type, String version);
-
-    /**
-     * Gets a virtual machine extension image.
-     * 
-     * @param location The name of a supported Azure region.
-     * @param publisherName The publisherName parameter.
-     * @param type The type parameter.
-     * @param version The version parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine extension image on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualMachineExtensionImageInner> getAsync(String location, String publisherName, String type,
-        String version);
-
-    /**
-     * Gets a virtual machine extension image.
-     * 
-     * @param location The name of a supported Azure region.
-     * @param publisherName The publisherName parameter.
-     * @param type The type parameter.
-     * @param version The version parameter.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine extension image along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualMachineExtensionImageInner> getWithResponse(String location, String publisherName, String type,
-        String version, Context context);
-
-    /**
-     * Gets a virtual machine extension image.
-     * 
-     * @param location The name of a supported Azure region.
-     * @param publisherName The publisherName parameter.
-     * @param type The type parameter.
-     * @param version The version parameter.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a virtual machine extension image.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineExtensionImageInner get(String location, String publisherName, String type, String version);
-
-    /**
      * Gets a list of virtual machine extension image types.
      * 
-     * @param location The name of a supported Azure region.
+     * @param location The name of Azure region.
      * @param publisherName The publisherName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -98,7 +34,7 @@ public interface VirtualMachineExtensionImagesClient {
     /**
      * Gets a list of virtual machine extension image types.
      * 
-     * @param location The name of a supported Azure region.
+     * @param location The name of Azure region.
      * @param publisherName The publisherName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -111,7 +47,7 @@ public interface VirtualMachineExtensionImagesClient {
     /**
      * Gets a list of virtual machine extension image types.
      * 
-     * @param location The name of a supported Azure region.
+     * @param location The name of Azure region.
      * @param publisherName The publisherName parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -126,7 +62,7 @@ public interface VirtualMachineExtensionImagesClient {
     /**
      * Gets a list of virtual machine extension image types.
      * 
-     * @param location The name of a supported Azure region.
+     * @param location The name of Azure region.
      * @param publisherName The publisherName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -139,7 +75,7 @@ public interface VirtualMachineExtensionImagesClient {
     /**
      * Gets a list of virtual machine extension image versions.
      * 
-     * @param location The name of a supported Azure region.
+     * @param location The name of Azure region.
      * @param publisherName The publisherName parameter.
      * @param type The type parameter.
      * @param filter The filter to apply on the operation.
@@ -158,7 +94,7 @@ public interface VirtualMachineExtensionImagesClient {
     /**
      * Gets a list of virtual machine extension image versions.
      * 
-     * @param location The name of a supported Azure region.
+     * @param location The name of Azure region.
      * @param publisherName The publisherName parameter.
      * @param type The type parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -172,7 +108,7 @@ public interface VirtualMachineExtensionImagesClient {
     /**
      * Gets a list of virtual machine extension image versions.
      * 
-     * @param location The name of a supported Azure region.
+     * @param location The name of Azure region.
      * @param publisherName The publisherName parameter.
      * @param type The type parameter.
      * @param filter The filter to apply on the operation.
@@ -191,7 +127,7 @@ public interface VirtualMachineExtensionImagesClient {
     /**
      * Gets a list of virtual machine extension image versions.
      * 
-     * @param location The name of a supported Azure region.
+     * @param location The name of Azure region.
      * @param publisherName The publisherName parameter.
      * @param type The type parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -201,4 +137,68 @@ public interface VirtualMachineExtensionImagesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     List<VirtualMachineExtensionImageInner> listVersions(String location, String publisherName, String type);
+
+    /**
+     * Gets a virtual machine extension image.
+     * 
+     * @param location The name of Azure region.
+     * @param publisherName The publisherName parameter.
+     * @param type The type parameter.
+     * @param version The version parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a virtual machine extension image along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<VirtualMachineExtensionImageInner>> getWithResponseAsync(String location, String publisherName,
+        String type, String version);
+
+    /**
+     * Gets a virtual machine extension image.
+     * 
+     * @param location The name of Azure region.
+     * @param publisherName The publisherName parameter.
+     * @param type The type parameter.
+     * @param version The version parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a virtual machine extension image on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<VirtualMachineExtensionImageInner> getAsync(String location, String publisherName, String type,
+        String version);
+
+    /**
+     * Gets a virtual machine extension image.
+     * 
+     * @param location The name of Azure region.
+     * @param publisherName The publisherName parameter.
+     * @param type The type parameter.
+     * @param version The version parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a virtual machine extension image along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<VirtualMachineExtensionImageInner> getWithResponse(String location, String publisherName, String type,
+        String version, Context context);
+
+    /**
+     * Gets a virtual machine extension image.
+     * 
+     * @param location The name of Azure region.
+     * @param publisherName The publisherName parameter.
+     * @param type The type parameter.
+     * @param version The version parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a virtual machine extension image.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VirtualMachineExtensionImageInner get(String location, String publisherName, String type, String version);
 }

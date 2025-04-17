@@ -20,7 +20,7 @@ import java.util.List;
 @Fluent
 public final class DedicatedHostGroupListResult implements JsonSerializable<DedicatedHostGroupListResult> {
     /*
-     * The list of dedicated host groups
+     * The list of dedicated host groups.
      */
     private List<DedicatedHostGroupInner> value;
 

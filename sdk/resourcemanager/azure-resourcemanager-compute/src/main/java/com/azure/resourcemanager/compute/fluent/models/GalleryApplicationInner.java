@@ -6,6 +6,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -25,6 +26,11 @@ public final class GalleryApplicationInner extends Resource {
      * Describes the properties of a gallery Application Definition.
      */
     private GalleryApplicationProperties innerProperties;
+
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
 
     /*
      * The type of the resource.
@@ -54,6 +60,15 @@ public final class GalleryApplicationInner extends Resource {
      */
     private GalleryApplicationProperties innerProperties() {
         return this.innerProperties;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -325,6 +340,8 @@ public final class GalleryApplicationInner extends Resource {
                     deserializedGalleryApplicationInner.withTags(tags);
                 } else if ("properties".equals(fieldName)) {
                     deserializedGalleryApplicationInner.innerProperties = GalleryApplicationProperties.fromJson(reader);
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedGalleryApplicationInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

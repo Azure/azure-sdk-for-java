@@ -37,7 +37,7 @@ public final class VirtualMachineImageProperties implements JsonSerializable<Vir
     private OSDiskImage osDiskImage;
 
     /*
-     * The dataDiskImages property.
+     * The list of data disk images information.
      */
     private List<DataDiskImage> dataDiskImages;
 
@@ -118,7 +118,7 @@ public final class VirtualMachineImageProperties implements JsonSerializable<Vir
     }
 
     /**
-     * Get the dataDiskImages property: The dataDiskImages property.
+     * Get the dataDiskImages property: The list of data disk images information.
      * 
      * @return the dataDiskImages value.
      */
@@ -127,7 +127,7 @@ public final class VirtualMachineImageProperties implements JsonSerializable<Vir
     }
 
     /**
-     * Set the dataDiskImages property: The dataDiskImages property.
+     * Set the dataDiskImages property: The list of data disk images information.
      * 
      * @param dataDiskImages the dataDiskImages value to set.
      * @return the VirtualMachineImageProperties object itself.

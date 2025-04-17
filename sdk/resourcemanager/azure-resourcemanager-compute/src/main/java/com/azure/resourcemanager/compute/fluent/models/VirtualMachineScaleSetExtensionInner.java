@@ -19,9 +19,9 @@ import java.util.List;
 @Fluent
 public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
     /*
-     * The name of the extension.
+     * Describes the properties of a Virtual Machine Scale Set Extension.
      */
-    private String name;
+    private VirtualMachineScaleSetExtensionProperties innerProperties;
 
     /*
      * Resource type
@@ -29,9 +29,9 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
     private String type;
 
     /*
-     * Describes the properties of a Virtual Machine Scale Set Extension.
+     * Resource name
      */
-    private VirtualMachineScaleSetExtensionProperties innerProperties;
+    private String name;
 
     /*
      * Resource Id
@@ -45,23 +45,12 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
     }
 
     /**
-     * Get the name property: The name of the extension.
+     * Get the innerProperties property: Describes the properties of a Virtual Machine Scale Set Extension.
      * 
-     * @return the name value.
+     * @return the innerProperties value.
      */
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Set the name property: The name of the extension.
-     * 
-     * @param name the name value to set.
-     * @return the VirtualMachineScaleSetExtensionInner object itself.
-     */
-    public VirtualMachineScaleSetExtensionInner withName(String name) {
-        this.name = name;
-        return this;
+    private VirtualMachineScaleSetExtensionProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -74,12 +63,23 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
     }
 
     /**
-     * Get the innerProperties property: Describes the properties of a Virtual Machine Scale Set Extension.
+     * Get the name property: Resource name.
      * 
-     * @return the innerProperties value.
+     * @return the name value.
      */
-    private VirtualMachineScaleSetExtensionProperties innerProperties() {
-        return this.innerProperties;
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Set the name property: Resource name.
+     * 
+     * @param name the name value to set.
+     * @return the VirtualMachineScaleSetExtensionInner object itself.
+     */
+    public VirtualMachineScaleSetExtensionInner withName(String name) {
+        this.name = name;
+        return this;
     }
 
     /**
@@ -391,8 +391,8 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("name", this.name);
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("name", this.name);
         return jsonWriter.writeEndObject();
     }
 
@@ -414,13 +414,13 @@ public final class VirtualMachineScaleSetExtensionInner extends SubResourceReadO
 
                 if ("id".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetExtensionInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedVirtualMachineScaleSetExtensionInner.name = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    deserializedVirtualMachineScaleSetExtensionInner.type = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetExtensionInner.innerProperties
                         = VirtualMachineScaleSetExtensionProperties.fromJson(reader);
+                } else if ("type".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetExtensionInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetExtensionInner.name = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

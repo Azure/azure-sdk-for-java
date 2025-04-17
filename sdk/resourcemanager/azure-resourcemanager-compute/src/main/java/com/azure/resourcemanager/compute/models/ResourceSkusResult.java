@@ -20,13 +20,12 @@ import java.util.List;
 @Fluent
 public final class ResourceSkusResult implements JsonSerializable<ResourceSkusResult> {
     /*
-     * The list of skus available for the subscription.
+     * The ResourceSku items on this page
      */
     private List<ResourceSkuInner> value;
 
     /*
-     * The URI to fetch the next page of Resource Skus. Call ListNext() with this URI to fetch the next page of Resource
-     * Skus
+     * The link to the next page of items
      */
     private String nextLink;
 
@@ -37,7 +36,7 @@ public final class ResourceSkusResult implements JsonSerializable<ResourceSkusRe
     }
 
     /**
-     * Get the value property: The list of skus available for the subscription.
+     * Get the value property: The ResourceSku items on this page.
      * 
      * @return the value value.
      */
@@ -46,7 +45,7 @@ public final class ResourceSkusResult implements JsonSerializable<ResourceSkusRe
     }
 
     /**
-     * Set the value property: The list of skus available for the subscription.
+     * Set the value property: The ResourceSku items on this page.
      * 
      * @param value the value value to set.
      * @return the ResourceSkusResult object itself.
@@ -57,8 +56,7 @@ public final class ResourceSkusResult implements JsonSerializable<ResourceSkusRe
     }
 
     /**
-     * Get the nextLink property: The URI to fetch the next page of Resource Skus. Call ListNext() with this URI to
-     * fetch the next page of Resource Skus.
+     * Get the nextLink property: The link to the next page of items.
      * 
      * @return the nextLink value.
      */
@@ -67,8 +65,7 @@ public final class ResourceSkusResult implements JsonSerializable<ResourceSkusRe
     }
 
     /**
-     * Set the nextLink property: The URI to fetch the next page of Resource Skus. Call ListNext() with this URI to
-     * fetch the next page of Resource Skus.
+     * Set the nextLink property: The link to the next page of items.
      * 
      * @param nextLink the nextLink value to set.
      * @return the ResourceSkusResult object itself.

@@ -13,7 +13,7 @@ public final class DiskEncryptionSetsGetByResourceGroupSamples {
      * diskEncryptionSetExamples/DiskEncryptionSet_Get.json
      */
     /**
-     * Sample code: Get information about a disk encryption set.
+     * Sample code: get information about a disk encryption set.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
@@ -30,7 +30,7 @@ public final class DiskEncryptionSetsGetByResourceGroupSamples {
      * diskEncryptionSetExamples/DiskEncryptionSet_Get_WithAutoKeyRotationError.json
      */
     /**
-     * Sample code: Get information about a disk encryption set when auto-key rotation failed.
+     * Sample code: get information about a disk encryption set when auto-key rotation failed.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */

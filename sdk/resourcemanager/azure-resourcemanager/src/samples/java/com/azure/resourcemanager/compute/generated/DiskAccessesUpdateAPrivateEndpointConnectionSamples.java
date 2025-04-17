@@ -18,7 +18,7 @@ public final class DiskAccessesUpdateAPrivateEndpointConnectionSamples {
      * DiskAccessPrivateEndpointConnection_Approve.json
      */
     /**
-     * Sample code: Approve a Private Endpoint Connection under a disk access resource.
+     * Sample code: approve a Private Endpoint Connection under a disk access resource.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */

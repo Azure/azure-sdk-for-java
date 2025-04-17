@@ -5,7 +5,7 @@
 package com.azure.resourcemanager.compute.models;
 
 /**
- * The component name. Currently, the only allowable value is Microsoft-Windows-Shell-Setup.
+ * Defines values for ComponentNames.
  */
 public enum ComponentNames {
     /**
