@@ -37,7 +37,9 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.Locale;
 import java.util.Random;
 
 public class StandbyPoolTests extends TestProxyTestBase {
@@ -153,9 +155,10 @@ public class StandbyPoolTests extends TestProxyTestBase {
             .listByRegionAndResourceType(REGION, ComputeResourceType.VIRTUALMACHINES)
             .stream()
             .filter(sku -> CoreUtils.isNullOrEmpty(sku.restrictions()))
-            .filter(sku -> sku.name().getValue().startsWith("Standard"))
+            .filter(sku -> sku.name().getValue().toLowerCase(Locale.ROOT).startsWith("standard"))
             .sorted((o1, o2) -> o1.name().getValue().compareToIgnoreCase(o2.name().getValue()))
             .map(sku -> VirtualMachineScaleSetSkuTypes.fromSkuNameAndTier(sku.name().getValue(), sku.tier().getValue()))
+            .filter(sku -> Arrays.asList(VirtualMachineScaleSetSkuTypes.values()).contains(sku))
             .findFirst()
             .get();
     }
