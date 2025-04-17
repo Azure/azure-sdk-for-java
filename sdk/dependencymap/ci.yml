@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/dependencymap/ci.yml
+      - sdk/dependencymap/azure-resourcemanager-dependencymap/
+    exclude:
+      - sdk/dependencymap/pom.xml
+      - sdk/dependencymap/azure-resourcemanager-dependencymap/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/dependencymap/ci.yml
+      - sdk/dependencymap/azure-resourcemanager-dependencymap/
+    exclude:
+      - sdk/dependencymap/pom.xml
+      - sdk/dependencymap/azure-resourcemanager-dependencymap/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagerdependencymap
+    displayName: azure-resourcemanager-dependencymap
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: dependencymap
+    Artifacts:
+      - name: azure-resourcemanager-dependencymap
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagerdependencymap
+        releaseInBatch: ${{ parameters.release_azureresourcemanagerdependencymap }}

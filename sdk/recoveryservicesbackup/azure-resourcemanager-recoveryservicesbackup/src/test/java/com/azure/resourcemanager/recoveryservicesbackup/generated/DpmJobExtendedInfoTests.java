@@ -18,46 +18,41 @@ public final class DpmJobExtendedInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DpmJobExtendedInfo model = BinaryData.fromString(
-            "{\"tasksList\":[{\"taskId\":\"qtobaxkjeyt\",\"startTime\":\"2021-10-31T09:27:21Z\",\"endTime\":\"2021-07-22T08:57:15Z\",\"duration\":\"PT40H53M57S\",\"status\":\"rusnk\"},{\"taskId\":\"hsyrqunj\",\"startTime\":\"2021-06-10T18:51:05Z\",\"endTime\":\"2021-04-30T12:14:16Z\",\"duration\":\"PT90H56M59S\",\"status\":\"l\"},{\"taskId\":\"akdkifmjnnawtqab\",\"startTime\":\"2021-06-23T13:06:59Z\",\"endTime\":\"2021-05-18T06:32:42Z\",\"duration\":\"PT68H55M51S\",\"status\":\"qoweyirdhl\"}],\"propertyBag\":{\"mpizru\":\"gwflq\",\"qxpxiwfcngjsaa\":\"n\",\"kv\":\"iixtmkzj\",\"ra\":\"irhgfgrwsdp\"},\"dynamicErrorMessage\":\"vzbglbyvi\"}")
+            "{\"tasksList\":[{\"taskId\":\"nxaulk\",\"startTime\":\"2021-05-04T10:50:30Z\",\"endTime\":\"2021-07-31T21:19:31Z\",\"duration\":\"PT117H14M50S\",\"status\":\"jnnawtqa\"},{\"taskId\":\"xuckpggqoweyir\",\"startTime\":\"2021-10-13T06:42:41Z\",\"endTime\":\"2021-03-03T15:45:16Z\",\"duration\":\"PT61H45M7S\",\"status\":\"fl\"}],\"propertyBag\":{\"cng\":\"pizruwnpqxpxiw\",\"kv\":\"saasiixtmkzj\"},\"dynamicErrorMessage\":\"rhgfgrwsdpgrat\"}")
             .toObject(DpmJobExtendedInfo.class);
-        Assertions.assertEquals("qtobaxkjeyt", model.tasksList().get(0).taskId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-31T09:27:21Z"), model.tasksList().get(0).startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-22T08:57:15Z"), model.tasksList().get(0).endTime());
-        Assertions.assertEquals(Duration.parse("PT40H53M57S"), model.tasksList().get(0).duration());
-        Assertions.assertEquals("rusnk", model.tasksList().get(0).status());
-        Assertions.assertEquals("gwflq", model.propertyBag().get("mpizru"));
-        Assertions.assertEquals("vzbglbyvi", model.dynamicErrorMessage());
+        Assertions.assertEquals("nxaulk", model.tasksList().get(0).taskId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-04T10:50:30Z"), model.tasksList().get(0).startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-31T21:19:31Z"), model.tasksList().get(0).endTime());
+        Assertions.assertEquals(Duration.parse("PT117H14M50S"), model.tasksList().get(0).duration());
+        Assertions.assertEquals("jnnawtqa", model.tasksList().get(0).status());
+        Assertions.assertEquals("pizruwnpqxpxiw", model.propertyBag().get("cng"));
+        Assertions.assertEquals("rhgfgrwsdpgrat", model.dynamicErrorMessage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DpmJobExtendedInfo model = new DpmJobExtendedInfo()
             .withTasksList(Arrays.asList(
-                new DpmJobTaskDetails().withTaskId("qtobaxkjeyt")
-                    .withStartTime(OffsetDateTime.parse("2021-10-31T09:27:21Z"))
-                    .withEndTime(OffsetDateTime.parse("2021-07-22T08:57:15Z"))
-                    .withDuration(Duration.parse("PT40H53M57S"))
-                    .withStatus("rusnk"),
-                new DpmJobTaskDetails().withTaskId("hsyrqunj")
-                    .withStartTime(OffsetDateTime.parse("2021-06-10T18:51:05Z"))
-                    .withEndTime(OffsetDateTime.parse("2021-04-30T12:14:16Z"))
-                    .withDuration(Duration.parse("PT90H56M59S"))
-                    .withStatus("l"),
-                new DpmJobTaskDetails().withTaskId("akdkifmjnnawtqab")
-                    .withStartTime(OffsetDateTime.parse("2021-06-23T13:06:59Z"))
-                    .withEndTime(OffsetDateTime.parse("2021-05-18T06:32:42Z"))
-                    .withDuration(Duration.parse("PT68H55M51S"))
-                    .withStatus("qoweyirdhl")))
-            .withPropertyBag(mapOf("mpizru", "gwflq", "qxpxiwfcngjsaa", "n", "kv", "iixtmkzj", "ra", "irhgfgrwsdp"))
-            .withDynamicErrorMessage("vzbglbyvi");
+                new DpmJobTaskDetails().withTaskId("nxaulk")
+                    .withStartTime(OffsetDateTime.parse("2021-05-04T10:50:30Z"))
+                    .withEndTime(OffsetDateTime.parse("2021-07-31T21:19:31Z"))
+                    .withDuration(Duration.parse("PT117H14M50S"))
+                    .withStatus("jnnawtqa"),
+                new DpmJobTaskDetails().withTaskId("xuckpggqoweyir")
+                    .withStartTime(OffsetDateTime.parse("2021-10-13T06:42:41Z"))
+                    .withEndTime(OffsetDateTime.parse("2021-03-03T15:45:16Z"))
+                    .withDuration(Duration.parse("PT61H45M7S"))
+                    .withStatus("fl")))
+            .withPropertyBag(mapOf("cng", "pizruwnpqxpxiw", "kv", "saasiixtmkzj"))
+            .withDynamicErrorMessage("rhgfgrwsdpgrat");
         model = BinaryData.fromObject(model).toObject(DpmJobExtendedInfo.class);
-        Assertions.assertEquals("qtobaxkjeyt", model.tasksList().get(0).taskId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-31T09:27:21Z"), model.tasksList().get(0).startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-22T08:57:15Z"), model.tasksList().get(0).endTime());
-        Assertions.assertEquals(Duration.parse("PT40H53M57S"), model.tasksList().get(0).duration());
-        Assertions.assertEquals("rusnk", model.tasksList().get(0).status());
-        Assertions.assertEquals("gwflq", model.propertyBag().get("mpizru"));
-        Assertions.assertEquals("vzbglbyvi", model.dynamicErrorMessage());
+        Assertions.assertEquals("nxaulk", model.tasksList().get(0).taskId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-04T10:50:30Z"), model.tasksList().get(0).startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-31T21:19:31Z"), model.tasksList().get(0).endTime());
+        Assertions.assertEquals(Duration.parse("PT117H14M50S"), model.tasksList().get(0).duration());
+        Assertions.assertEquals("jnnawtqa", model.tasksList().get(0).status());
+        Assertions.assertEquals("pizruwnpqxpxiw", model.propertyBag().get("cng"));
+        Assertions.assertEquals("rhgfgrwsdpgrat", model.dynamicErrorMessage());
     }
 
     // Use "Map.of" if available
