@@ -37,8 +37,15 @@ public class JsonNodeStorePayload implements StorePayload<JsonNode> {
         byte[] bytes = new byte[readableBytes];
         try {
             bufferStream.read(bytes);
+            if (Configs.shouldProcessJsonObjectWithDuplicateKeys()) {
+                return Utils.getSimpleObjectMapperWithAllowDuplicates().readTree(bytes);
+            }
             return Utils.getSimpleObjectMapper().readTree(bytes);
         } catch (IOException e) {
+            if (Configs.shouldLogJsonObjectWithDuplicateKeys()) {
+                String value = new String(bytes, StandardCharsets.UTF_8);
+                logger.warn("UTF-8 string representation of JSON node: {}", value);
+            }
             if (fallbackCharsetDecoder != null) {
                 logger.warn("Unable to parse JSON, fallback to use customized charset decoder.", e);
                 return fromJsonWithFallbackCharsetDecoder(bytes);
