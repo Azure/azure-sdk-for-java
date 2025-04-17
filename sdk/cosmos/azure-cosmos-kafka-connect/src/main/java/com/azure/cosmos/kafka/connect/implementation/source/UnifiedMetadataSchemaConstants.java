@@ -8,7 +8,7 @@ final class UnifiedMetadataSchemaConstants {
     public static final String ENTITY_TYPE_NAME = "entityType";
     public static final String JSON_VALUE_NAME = "jsonValue";
 
-    public static Schema SCHEMA = SchemaBuilder
+    public static final Schema SCHEMA = SchemaBuilder
         .struct()
         .name(SCHEMA_NAME)
         .field(ENTITY_TYPE_NAME, Schema.STRING_SCHEMA)
