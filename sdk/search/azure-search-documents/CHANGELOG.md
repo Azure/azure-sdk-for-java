@@ -1,6 +1,6 @@
 # Release History
 
-## 11.8.0-beta.6 (2025-04-16)
+## 11.8.0-beta.6 (2025-04-17)
 
 ### Features Added
 
