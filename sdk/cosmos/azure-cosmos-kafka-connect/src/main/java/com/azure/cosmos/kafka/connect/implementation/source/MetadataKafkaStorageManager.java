@@ -29,12 +29,12 @@ public class MetadataKafkaStorageManager implements IMetadataReader {
 
         // The data is stored in a Struct with our unified schema
         if (topicOffsetMap.containsKey(UnifiedMetadataSchemaConstants.ENTITY_TYPE_NAME)) {
-            String entityType = (String)topicOffsetMap.get(UnifiedMetadataSchemaConstants.ENTITY_TYPE_NAME);
+            String entityType = (String) topicOffsetMap.get(UnifiedMetadataSchemaConstants.ENTITY_TYPE_NAME);
             if (MetadataEntityTypes.FEED_RANGES_METADATA_V1.equals(entityType)) {
-                String jsonValue = (String)topicOffsetMap.get(UnifiedMetadataSchemaConstants.JSON_VALUE_NAME);
+                String jsonValue = (String) topicOffsetMap.get(UnifiedMetadataSchemaConstants.JSON_VALUE_NAME);
 
                 if (jsonValue != null) {
-                    Map<String, Object> feedRangesMap ;
+                    Map<String, Object> feedRangesMap;
                     try {
                         feedRangesMap = Utils
                             .getSimpleObjectMapper()
@@ -87,9 +87,9 @@ public class MetadataKafkaStorageManager implements IMetadataReader {
 
         // The data is stored in a Struct with our unified schema
         if (topicOffsetMap.containsKey(UnifiedMetadataSchemaConstants.ENTITY_TYPE_NAME)) {
-            String entityType = (String)topicOffsetMap.get(UnifiedMetadataSchemaConstants.ENTITY_TYPE_NAME);
+            String entityType = (String) topicOffsetMap.get(UnifiedMetadataSchemaConstants.ENTITY_TYPE_NAME);
             if (MetadataEntityTypes.CONTAINERS_METADATA_V1.equals(entityType)) {
-                String jsonValue = (String)topicOffsetMap.get(UnifiedMetadataSchemaConstants.JSON_VALUE_NAME);
+                String jsonValue = (String) topicOffsetMap.get(UnifiedMetadataSchemaConstants.JSON_VALUE_NAME);
 
                 if (jsonValue != null) {
                     Map<String, Object> containerRidsMap;

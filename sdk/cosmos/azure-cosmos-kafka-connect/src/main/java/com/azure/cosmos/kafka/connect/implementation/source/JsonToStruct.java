@@ -30,7 +30,7 @@ import static org.apache.kafka.connect.data.Values.convertToLong;
 import static org.apache.kafka.connect.data.Values.convertToShort;
 
 public class JsonToStruct {
-    final static MapType JACKSON_MAP_TYPE = Utils
+    static final MapType JACKSON_MAP_TYPE = Utils
         .getSimpleObjectMapper()
         .getTypeFactory()
         .constructMapType(LinkedHashMap.class, String.class, Object.class);
