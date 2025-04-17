@@ -76,15 +76,6 @@ public interface ContainerApp {
     String managedBy();
 
     /**
-     * Gets the kind property: Metadata used to render different experiences for resources of the same type; e.g.
-     * WorkflowApp is a kind of Microsoft.App/ContainerApps type. If supported, the resource provider must validate and
-     * persist this value.
-     * 
-     * @return the kind value.
-     */
-    Kind kind();
-
-    /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
      * 
      * @return the systemData value.
@@ -99,11 +90,11 @@ public interface ContainerApp {
     ContainerAppProvisioningState provisioningState();
 
     /**
-     * Gets the deploymentErrors property: Any errors that occurred during deployment.
+     * Gets the runningStatus property: Running status of the Container App.
      * 
-     * @return the deploymentErrors value.
+     * @return the runningStatus value.
      */
-    String deploymentErrors();
+    ContainerAppRunningStatus runningStatus();
 
     /**
      * Gets the managedEnvironmentId property: Deprecated. Resource ID of the Container App's environment.
@@ -125,13 +116,6 @@ public interface ContainerApp {
      * @return the workloadProfileName value.
      */
     String workloadProfileName();
-
-    /**
-     * Gets the patchingConfiguration property: Container App auto patch configuration.
-     * 
-     * @return the patchingConfiguration value.
-     */
-    ContainerAppPropertiesPatchingConfiguration patchingConfiguration();
 
     /**
      * Gets the latestRevisionName property: Name of the latest revision of the Container App.
@@ -273,9 +257,8 @@ public interface ContainerApp {
          * to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithExtendedLocation,
-            DefinitionStages.WithIdentity, DefinitionStages.WithManagedBy, DefinitionStages.WithKind,
-            DefinitionStages.WithManagedEnvironmentId, DefinitionStages.WithEnvironmentId,
-            DefinitionStages.WithWorkloadProfileName, DefinitionStages.WithPatchingConfiguration,
+            DefinitionStages.WithIdentity, DefinitionStages.WithManagedBy, DefinitionStages.WithManagedEnvironmentId,
+            DefinitionStages.WithEnvironmentId, DefinitionStages.WithWorkloadProfileName,
             DefinitionStages.WithConfiguration, DefinitionStages.WithTemplate {
             /**
              * Executes the create request.
@@ -353,23 +336,6 @@ public interface ContainerApp {
         }
 
         /**
-         * The stage of the ContainerApp definition allowing to specify kind.
-         */
-        interface WithKind {
-            /**
-             * Specifies the kind property: Metadata used to render different experiences for resources of the same
-             * type; e.g. WorkflowApp is a kind of Microsoft.App/ContainerApps type. If supported, the resource provider
-             * must validate and persist this value..
-             * 
-             * @param kind Metadata used to render different experiences for resources of the same type; e.g.
-             * WorkflowApp is a kind of Microsoft.App/ContainerApps type. If supported, the resource provider must
-             * validate and persist this value.
-             * @return the next definition stage.
-             */
-            WithCreate withKind(Kind kind);
-        }
-
-        /**
          * The stage of the ContainerApp definition allowing to specify managedEnvironmentId.
          */
         interface WithManagedEnvironmentId {
@@ -406,19 +372,6 @@ public interface ContainerApp {
              * @return the next definition stage.
              */
             WithCreate withWorkloadProfileName(String workloadProfileName);
-        }
-
-        /**
-         * The stage of the ContainerApp definition allowing to specify patchingConfiguration.
-         */
-        interface WithPatchingConfiguration {
-            /**
-             * Specifies the patchingConfiguration property: Container App auto patch configuration..
-             * 
-             * @param patchingConfiguration Container App auto patch configuration.
-             * @return the next definition stage.
-             */
-            WithCreate withPatchingConfiguration(ContainerAppPropertiesPatchingConfiguration patchingConfiguration);
         }
 
         /**
@@ -459,8 +412,8 @@ public interface ContainerApp {
      * The template for ContainerApp update.
      */
     interface Update extends UpdateStages.WithTags, UpdateStages.WithExtendedLocation, UpdateStages.WithIdentity,
-        UpdateStages.WithManagedBy, UpdateStages.WithWorkloadProfileName, UpdateStages.WithPatchingConfiguration,
-        UpdateStages.WithConfiguration, UpdateStages.WithTemplate {
+        UpdateStages.WithManagedBy, UpdateStages.WithWorkloadProfileName, UpdateStages.WithConfiguration,
+        UpdateStages.WithTemplate {
         /**
          * Executes the update request.
          * 
@@ -551,19 +504,6 @@ public interface ContainerApp {
              * @return the next definition stage.
              */
             Update withWorkloadProfileName(String workloadProfileName);
-        }
-
-        /**
-         * The stage of the ContainerApp update allowing to specify patchingConfiguration.
-         */
-        interface WithPatchingConfiguration {
-            /**
-             * Specifies the patchingConfiguration property: Container App auto patch configuration..
-             * 
-             * @param patchingConfiguration Container App auto patch configuration.
-             * @return the next definition stage.
-             */
-            Update withPatchingConfiguration(ContainerAppPropertiesPatchingConfiguration patchingConfiguration);
         }
 
         /**
