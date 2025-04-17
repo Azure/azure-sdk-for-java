@@ -54,6 +54,7 @@ import static io.clientcore.core.utils.ServerSentEventUtils.attemptRetry;
 import static io.clientcore.core.utils.ServerSentEventUtils.processTextEventStream;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.PROGRESS_AND_TIMEOUT_HANDLER_NAME;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.createCodec;
+import static io.clientcore.http.netty4.implementation.Netty4Utility.setOrSuppressError;
 import static io.netty.handler.codec.http.DefaultHttpHeadersFactory.trailersFactory;
 
 /**
@@ -144,6 +145,11 @@ class NettyHttpClient implements HttpClient {
                 }
 
                 Channel channel = connectListener.channel();
+                channel.closeFuture().addListener(closeListener -> {
+                    if (!closeListener.isSuccess()) {
+                        setOrSuppressError(errorReference, closeListener.cause());
+                    }
+                });
 
                 // Only add CoreProgressAndTimeoutHandler if it will do anything, ex it is reporting progress or is
                 // applying timeouts.
@@ -159,16 +165,24 @@ class NettyHttpClient implements HttpClient {
                     = new Netty4ResponseHandler(request, responseReference, errorReference, latch);
                 channel.pipeline().addLast(responseHandler);
 
-                sendRequest(request, channel, addProgressAndTimeoutHandler, sendListener -> {
-                    if (!sendListener.isSuccess()) {
-                        LOGGER.atError().setThrowable(sendListener.cause()).log("Failed to send request");
-                        errorReference.set(sendListener.cause());
-                        sendListener.channel().close();
-                        latch.countDown();
-                    } else {
-                        sendListener.channel().read();
-                    }
-                });
+                Throwable earlyError = errorReference.get();
+                if (earlyError != null) {
+                    // If an error occurred between the connect and the request being sent, don't proceed with sending
+                    // the request.
+                    latch.countDown();
+                    return;
+                }
+
+                sendRequest(request, channel, addProgressAndTimeoutHandler, errorReference)
+                    .addListener((ChannelFutureListener) sendListener -> {
+                        if (!sendListener.isSuccess()) {
+                            setOrSuppressError(errorReference, sendListener.cause());
+                            sendListener.channel().close();
+                            latch.countDown();
+                        } else {
+                            sendListener.channel().read();
+                        }
+                    });
             });
 
             latch.await();
@@ -216,7 +230,7 @@ class NettyHttpClient implements HttpClient {
     }
 
     private ChannelFuture sendRequest(HttpRequest request, Channel channel, boolean progressAndTimeoutHandlerAdded,
-        ChannelFutureListener sendListener) {
+        AtomicReference<Throwable> errorReference) {
         HttpMethod nettyMethod = HttpMethod.valueOf(request.getHttpMethod().toString());
         String uri = request.getUri().toString();
         WrappedHttpHeaders wrappedHttpHeaders = new WrappedHttpHeaders(request.getHeaders());
@@ -225,23 +239,22 @@ class NettyHttpClient implements HttpClient {
         //  more once it's closer to completion.
         wrappedHttpHeaders.getCoreHeaders().set(HttpHeaderName.HOST, request.getUri().getHost());
 
-        ChannelFuture sendFuture;
         BinaryData requestBody = request.getBody();
         if (requestBody instanceof FileBinaryData) {
             FileBinaryData fileBinaryData = (FileBinaryData) requestBody;
             try {
-                sendFuture = sendChunked(channel,
+                return sendChunked(channel,
                     new ChunkedNioFile(FileChannel.open(fileBinaryData.getFile(), StandardOpenOption.READ),
                         fileBinaryData.getPosition(), fileBinaryData.getLength(), 8192),
                     new DefaultHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri, wrappedHttpHeaders),
-                    progressAndTimeoutHandlerAdded);
+                    progressAndTimeoutHandlerAdded, errorReference);
             } catch (IOException ex) {
                 return channel.newFailedFuture(ex);
             }
         } else if (requestBody instanceof InputStreamBinaryData) {
-            sendFuture = sendChunked(channel, new ChunkedStream(requestBody.toStream()),
+            return sendChunked(channel, new ChunkedStream(requestBody.toStream()),
                 new DefaultHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri, wrappedHttpHeaders),
-                progressAndTimeoutHandlerAdded);
+                progressAndTimeoutHandlerAdded, errorReference);
         } else {
             ByteBuf body = Unpooled.EMPTY_BUFFER;
             if (requestBody != null && requestBody != BinaryData.empty()) {
@@ -256,15 +269,19 @@ class NettyHttpClient implements HttpClient {
                     .set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(body.readableBytes()));
             }
 
-            sendFuture = channel.writeAndFlush(new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri, body,
+            Throwable error = errorReference.get();
+            if (error != null) {
+                return channel.newFailedFuture(error);
+            }
+
+            return channel.writeAndFlush(new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri, body,
                 wrappedHttpHeaders, trailersFactory().newHeaders()));
         }
-
-        return sendFuture.addListener(sendListener);
     }
 
     private <T> ChannelFuture sendChunked(Channel channel, ChunkedInput<T> chunkedInput,
-        io.netty.handler.codec.http.HttpRequest initialLineAndHeaders, boolean progressAndTimeoutHandlerAdded) {
+        io.netty.handler.codec.http.HttpRequest initialLineAndHeaders, boolean progressAndTimeoutHandlerAdded,
+        AtomicReference<Throwable> errorReference) {
         if (channel.pipeline().get(ChunkedWriteHandler.class) == null) {
             // Add the ChunkedWriteHandler which will handle sending the chunkedInput.
             ChunkedWriteHandler chunkedWriteHandler = new ChunkedWriteHandler();
@@ -273,6 +290,11 @@ class NettyHttpClient implements HttpClient {
             } else {
                 channel.pipeline().addLast(chunkedWriteHandler);
             }
+        }
+
+        Throwable error = errorReference.get();
+        if (error != null) {
+            return channel.newFailedFuture(error);
         }
 
         channel.write(initialLineAndHeaders);
