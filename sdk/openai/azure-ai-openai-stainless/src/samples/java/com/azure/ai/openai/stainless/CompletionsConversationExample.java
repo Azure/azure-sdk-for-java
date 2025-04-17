@@ -52,14 +52,14 @@ public final class CompletionsConversationExample {
                             .map(ChatCompletion.Choice::message)
                             .collect(toList());
 
-            messages.stream().flatMap(message -> message.content().stream()).forEach(System.out::println);
+            messages.forEach(message -> message.content().ifPresent(System.out::println));
 
             System.out.println("\n-----------------------------------\n");
 
             messages.forEach(createParamsBuilder::addMessage);
             createParamsBuilder
-                    .addDeveloperMessage("Be as snarky as possible when replying!" + "!".repeat(i))
-                    .addUserMessage("But why?" + "?".repeat(i));
+                .addDeveloperMessage("Be as snarky as possible when replying!" + new String(new char[i]).replace("\0", "!"))
+                .addUserMessage("But why?" + new String(new char[i]).replace("\0", "?"));
         }
     }
 }

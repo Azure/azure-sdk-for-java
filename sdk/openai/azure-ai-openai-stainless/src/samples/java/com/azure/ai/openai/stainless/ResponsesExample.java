@@ -33,10 +33,10 @@ public final class ResponsesExample {
                 .model(ChatModel.GPT_4O_MINI)
                 .build();
 
-        client.responses().create(createParams).output().stream()
-                .flatMap(item -> item.message().stream())
-                .flatMap(message -> message.content().stream())
-                .flatMap(content -> content.outputText().stream())
-                .forEach(outputText -> System.out.println(outputText.text()));
+        client.responses().create(createParams).output().forEach(item ->
+            item.message().ifPresent(message ->
+                message.content().forEach(content ->
+                    content.outputText().ifPresent(
+                        outputText -> System.out.println(outputText.text())))));
     }
 }

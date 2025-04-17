@@ -58,16 +58,14 @@ public final class CompletionsConversationAsyncExample {
                                 .map(ChatCompletion.Choice::message)
                                 .collect(toList());
 
-                        messages.stream()
-                                .flatMap(message -> message.content().stream())
-                                .forEach(System.out::println);
+                        messages.forEach(message -> message.content().ifPresent(System.out::println));
 
                         System.out.println("\n-----------------------------------\n");
 
                         messages.forEach(createParamsBuilder::addMessage);
                         createParamsBuilder
-                                .addDeveloperMessage("Be as snarky as possible when replying!" + "!".repeat(index))
-                                .addUserMessage("But why?" + "?".repeat(index));
+                            .addDeveloperMessage("Be as snarky as possible when replying!" + new String(new char[index]).replace("\0", "!"))
+                            .addUserMessage("But why?" + new String(new char[index]).replace("\0", "?"));
                     });
         }
 

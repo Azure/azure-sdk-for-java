@@ -43,9 +43,8 @@ public final class CompletionsStreamingAsyncExample {
         client.chat()
                 .completions()
                 .createStreaming(createParams)
-                .subscribe(completion -> completion.choices().stream()
-                        .flatMap(choice -> choice.delta().content().stream())
-                        .forEach(System.out::print))
+                .subscribe(completion -> completion.choices()
+                    .forEach(choice -> choice.delta().content().ifPresent(System.out::print)))
                 .onCompleteFuture()
                 .join();
     }

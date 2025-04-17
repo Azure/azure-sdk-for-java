@@ -43,9 +43,8 @@ public final class CompletionsAsyncExample {
         client.chat()
                 .completions()
                 .create(createParams)
-                .thenAccept(completion -> completion.choices().stream()
-                        .flatMap(choice -> choice.message().content().stream())
-                        .forEach(System.out::println))
+                .thenAccept(completion -> completion.choices()
+                    .forEach(choice -> choice.message().content().ifPresent(System.out::println)))
                 .join();
     }
 }

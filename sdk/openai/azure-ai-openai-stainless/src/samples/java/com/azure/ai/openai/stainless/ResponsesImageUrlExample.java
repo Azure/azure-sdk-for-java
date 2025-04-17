@@ -14,9 +14,11 @@ import com.openai.models.responses.ResponseCreateParams;
 import com.openai.models.responses.ResponseInputImage;
 import com.openai.models.responses.ResponseInputItem;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Base64;
-import java.util.List;
+import java.util.Collections;
 
 public final class ResponsesImageUrlExample {
     private ResponsesImageUrlExample() {}
@@ -35,7 +37,17 @@ public final class ResponsesImageUrlExample {
             .build();
 
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-        byte[] logoBytes = classloader.getResource("logo.png").openStream().readAllBytes();
+
+        InputStream inputStream = classloader.getResource("logo.png").openStream();
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        byte[] data = new byte[1024];
+        int bytesRead;
+        while ((bytesRead = inputStream.read(data, 0, data.length)) != -1) {
+            buffer.write(data, 0, bytesRead);
+        }
+        inputStream.close();
+        byte[] logoBytes = buffer.toByteArray();
+
         String logoBase64Url = "data:image/jpeg;base64," + Base64.getEncoder().encodeToString(logoBytes);
 
         ResponseInputImage logoInputImage = ResponseInputImage.builder()
@@ -48,14 +60,14 @@ public final class ResponsesImageUrlExample {
                 .addContent(logoInputImage)
                 .build());
         ResponseCreateParams createParams = ResponseCreateParams.builder()
-                .inputOfResponse(List.of(messageInputItem))
+                .inputOfResponse(Collections.singletonList(messageInputItem))
                 .model(ChatModel.GPT_4O_MINI)
                 .build();
 
         client.responses().create(createParams).output().stream()
-                .flatMap(item -> item.message().stream())
-                .flatMap(message -> message.content().stream())
-                .flatMap(content -> content.outputText().stream())
-                .forEach(outputText -> System.out.println(outputText.text()));
+            .forEach(item -> item.message().ifPresent(
+                message -> message.content().stream()
+                    .forEach(content -> content.outputText().ifPresent(
+                        outputText -> System.out.println(outputText.text())))));
     }
 }

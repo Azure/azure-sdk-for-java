@@ -14,7 +14,7 @@ import com.openai.models.ResponseFormatJsonSchema;
 import com.openai.models.ResponseFormatJsonSchema.JsonSchema;
 import com.openai.models.chat.completions.ChatCompletionCreateParams;
 
-import java.util.Map;
+import java.util.Collections;
 
 public final class StructuredOutputsExample {
     private StructuredOutputsExample() {}
@@ -41,7 +41,7 @@ public final class StructuredOutputsExample {
         JsonSchema.Schema schema = JsonSchema.Schema.builder()
                 .putAdditionalProperty("type", JsonValue.from("object"))
                 .putAdditionalProperty(
-                        "properties", JsonValue.from(Map.of("employees", Map.of("items", Map.of("type", "string")))))
+                        "properties", JsonValue.from(Collections.singletonMap("employees", Collections.singletonMap("items", Collections.singletonMap("type", "string")))))
                 .build();
         ChatCompletionCreateParams createParams = ChatCompletionCreateParams.builder()
                 .model(ChatModel.GPT_4O)
@@ -55,8 +55,7 @@ public final class StructuredOutputsExample {
                 .addUserMessage("Who works at OpenAI?")
                 .build();
 
-        client.chat().completions().create(createParams).choices().stream()
-                .flatMap(choice -> choice.message().content().stream())
-                .forEach(System.out::println);
+        client.chat().completions().create(createParams).choices().forEach(
+                choice -> choice.message().content().ifPresent(System.out::println));
     }
 }

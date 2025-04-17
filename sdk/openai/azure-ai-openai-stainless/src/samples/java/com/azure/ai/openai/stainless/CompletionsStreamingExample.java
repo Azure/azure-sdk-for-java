@@ -45,8 +45,7 @@ public final class CompletionsStreamingExample {
                 client.chat().completions().createStreaming(createParams)) {
             streamResponse.stream()
                     .flatMap(completion -> completion.choices().stream())
-                    .flatMap(choice -> choice.delta().content().stream())
-                    .forEach(System.out::print);
+                    .forEach(choice -> choice.delta().content().ifPresent(System.out::print));
         }
     }
 }

@@ -13,6 +13,8 @@ import com.openai.models.ChatModel;
 import com.openai.models.chat.completions.ChatCompletionChunk;
 import com.openai.models.chat.completions.ChatCompletionCreateParams;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public final class CompletionsStreamingCancellationExample {
     private CompletionsStreamingCancellationExample() {}
 
@@ -43,11 +45,18 @@ public final class CompletionsStreamingCancellationExample {
 
         try (StreamResponse<ChatCompletionChunk> streamResponse =
                  client.chat().completions().createStreaming(createParams)) {
+            AtomicBoolean stop = new AtomicBoolean(false);
             streamResponse.stream()
                 .flatMap(completion -> completion.choices().stream())
-                .flatMap(choice -> choice.delta().content().stream())
-                .takeWhile(text -> !text.contains("SDK")) // Stop processing when "SDK" is found
-                .forEach(System.out::print);
+                .forEach(choice -> choice.delta().content().ifPresent(text -> {
+                    if (!stop.get()) {
+                        if (text.contains("SDK")) {
+                            stop.set(true);
+                        } else {
+                            System.out.print(text);
+                        }
+                    }
+                }));
         }
     }
 }

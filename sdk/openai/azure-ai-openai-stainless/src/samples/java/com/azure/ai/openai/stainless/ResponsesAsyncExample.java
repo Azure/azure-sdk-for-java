@@ -21,8 +21,6 @@ public final class ResponsesAsyncExample {
         // - The `AZURE_OPENAI_ENDPOINT` and `AZURE_OPENAI_KEY` environment variables
         OpenAIClientAsync client = OpenAIOkHttpClientAsync.builder()
             .azureServiceVersion(AzureOpenAIServiceVersion.latestPreviewVersion())
-//            .apiKey(System.getenv("NON_AZURE_OPENAI_KEY"))
-
 
             // Gets the API key from the `AZURE_OPENAI_KEY` environment variable
             .baseUrl(System.getenv("AZURE_OPENAI_ENDPOINT"))
@@ -38,11 +36,11 @@ public final class ResponsesAsyncExample {
 
         client.responses()
                 .create(createParams)
-                .thenAccept(response -> response.output().stream()
-                        .flatMap(item -> item.message().stream())
-                        .flatMap(message -> message.content().stream())
-                        .flatMap(content -> content.outputText().stream())
-                        .forEach(outputText -> System.out.println(outputText.text())))
+                .thenAccept(response -> response.output().forEach(item ->
+                    item.message().ifPresent(message ->
+                        message.content().forEach(content ->
+                            content.outputText().ifPresent(
+                                outputText -> System.out.println(outputText.text()))))))
                 .join();
     }
 }

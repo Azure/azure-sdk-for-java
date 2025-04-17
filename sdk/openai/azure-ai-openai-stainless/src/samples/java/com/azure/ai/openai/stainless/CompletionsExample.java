@@ -41,8 +41,7 @@ public final class CompletionsExample {
                 .addUserMessage("Tell me a story about building the best SDK!")
                 .build();
 
-        client.chat().completions().create(createParams).choices().stream()
-                .flatMap(choice -> choice.message().content().stream())
-                .forEach(System.out::println);
+        client.chat().completions().create(createParams).choices()
+            .forEach(choice -> choice.message().content().ifPresent(System.out::println));
     }
 }

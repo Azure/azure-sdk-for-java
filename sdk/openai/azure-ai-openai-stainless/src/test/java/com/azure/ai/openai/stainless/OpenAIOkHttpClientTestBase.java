@@ -418,11 +418,10 @@ public class OpenAIOkHttpClientTestBase {
     @SuppressWarnings("unchecked")
     void assertFilterResult(Map<String, JsonValue> contentFilterResult, String filterName, boolean expectedFiltered,
         String expectedSeverity) {
-            Map<String, JsonValue> filterMap = (Map<String, JsonValue>)
-                    contentFilterResult.get(filterName).asObject().get();
-            assertEquals(expectedFiltered, (Boolean)
-                    filterMap.get("filtered").asBoolean().get());
-            assertEquals(expectedSeverity, filterMap.get("severity").asStringOrThrow());
+        Map<String, JsonValue> filterMap
+            = (Map<String, JsonValue>) contentFilterResult.get(filterName).asObject().get();
+        assertEquals(expectedFiltered, (Boolean) filterMap.get("filtered").asBoolean().get());
+        assertEquals(expectedSeverity, filterMap.get("severity").asStringOrThrow());
     }
 
     void assertChatCompletionWithoutSensitiveContent(ChatCompletion chatCompletion) {
@@ -453,32 +452,28 @@ public class OpenAIOkHttpClientTestBase {
 
     @SuppressWarnings("unchecked")
     void assertPromptAndContentFilterResults(ChatCompletion chatCompletion) {
-                ChatCompletion.Choice choice = chatCompletion.choices().get(0);
-                JsonValue promptFilterResults = chatCompletion._additionalProperties().get("prompt_filter_results");
-                assertNotNull(promptFilterResults);
-                assertFalse(promptFilterResults.isMissing());
+        ChatCompletion.Choice choice = chatCompletion.choices().get(0);
+        JsonValue promptFilterResults = chatCompletion._additionalProperties().get("prompt_filter_results");
+        assertNotNull(promptFilterResults);
+        assertFalse(promptFilterResults.isMissing());
 
-                List<JsonValue> promptFilterResultsList =
-                        (List<JsonValue>) promptFilterResults.asArray().get();
-                assertEquals(1, promptFilterResultsList.size());
-                JsonValue promptFilterResultJsonValue = promptFilterResultsList.get(0);
-                Map<String, JsonValue> promptFilterResultsMap =
-                        (Map<String, JsonValue>) promptFilterResultJsonValue.asObject().get();
-                assertEquals(
-                        0,
-                        ((Number) promptFilterResultsMap.get("prompt_index").asNumber().get()).intValue());
+        List<JsonValue> promptFilterResultsList = (List<JsonValue>) promptFilterResults.asArray().get();
+        assertEquals(1, promptFilterResultsList.size());
+        JsonValue promptFilterResultJsonValue = promptFilterResultsList.get(0);
+        Map<String, JsonValue> promptFilterResultsMap
+            = (Map<String, JsonValue>) promptFilterResultJsonValue.asObject().get();
+        assertEquals(0, ((Number) promptFilterResultsMap.get("prompt_index").asNumber().get()).intValue());
 
-                Map<String, JsonValue> contentFilterResultsMap = (Map<String, JsonValue>)
-                        promptFilterResultsMap.get("content_filter_results").asObject().get();
-                assertContentFilterResultAllSafe(contentFilterResultsMap);
+        Map<String, JsonValue> contentFilterResultsMap
+            = (Map<String, JsonValue>) promptFilterResultsMap.get("content_filter_results").asObject().get();
+        assertContentFilterResultAllSafe(contentFilterResultsMap);
 
-                JsonValue contentFilterResultsMapJsonValue =
-                        choice._additionalProperties().get("content_filter_results");
-                assertNotNull(contentFilterResultsMapJsonValue);
-                assertFalse(contentFilterResultsMapJsonValue.isMissing());
-                Map<String, JsonValue> contentFilterResultsMapInChoice = (Map<String, JsonValue>)
-                        contentFilterResultsMapJsonValue.asObject().get();
-                assertContentFilterResultAllSafe(contentFilterResultsMapInChoice);
+        JsonValue contentFilterResultsMapJsonValue = choice._additionalProperties().get("content_filter_results");
+        assertNotNull(contentFilterResultsMapJsonValue);
+        assertFalse(contentFilterResultsMapJsonValue.isMissing());
+        Map<String, JsonValue> contentFilterResultsMapInChoice
+            = (Map<String, JsonValue>) contentFilterResultsMapJsonValue.asObject().get();
+        assertContentFilterResultAllSafe(contentFilterResultsMapInChoice);
     }
 
     @SuppressWarnings("unchecked")
@@ -514,26 +509,23 @@ public class OpenAIOkHttpClientTestBase {
     void assertRaiContentFilter(BadRequestException e) {
         JsonValue errorDetails = e.body();
         assertNotNull(errorDetails);
-        Map<String, JsonValue> errorDetailsMap =
-            (Map<String, JsonValue>) errorDetails.asObject().get();
+        Map<String, JsonValue> errorDetailsMap = (Map<String, JsonValue>) errorDetails.asObject().get();
         JsonValue code = errorDetailsMap.get("code");
         assertNotNull(code);
         assertEquals("content_filter", code.asString().get());
         JsonValue message = errorDetailsMap.get("message");
         assertNotNull(message);
 
-        Map<String, JsonValue> innererrorMap = (Map<String, JsonValue>)
-            errorDetailsMap.get("innererror").asObject().get();
+        Map<String, JsonValue> innererrorMap
+            = (Map<String, JsonValue>) errorDetailsMap.get("innererror").asObject().get();
         assertNotNull(innererrorMap);
         JsonValue contentFilterResult = innererrorMap.get("content_filter_result");
         assertNotNull(contentFilterResult);
-        Map<String, JsonValue> contentFilterResultMap =
-            (Map<String, JsonValue>) contentFilterResult.asObject().get();
+        Map<String, JsonValue> contentFilterResultMap = (Map<String, JsonValue>) contentFilterResult.asObject().get();
 
         JsonValue hate = contentFilterResultMap.get("hate");
         assertNotNull(hate);
-        Map<String, JsonValue> hateMap =
-            (Map<String, JsonValue>) hate.asObject().get();
+        Map<String, JsonValue> hateMap = (Map<String, JsonValue>) hate.asObject().get();
         JsonValue hateFiltered = hateMap.get("filtered");
         assertNotNull(hateFiltered);
         assertFalse((Boolean) hateFiltered.asBoolean().get());
@@ -543,8 +535,7 @@ public class OpenAIOkHttpClientTestBase {
 
         JsonValue selfHarm = contentFilterResultMap.get("self_harm");
         assertNotNull(selfHarm);
-        Map<String, JsonValue> selfHarmMap =
-            (Map<String, JsonValue>) selfHarm.asObject().get();
+        Map<String, JsonValue> selfHarmMap = (Map<String, JsonValue>) selfHarm.asObject().get();
         JsonValue selfHarmFiltered = selfHarmMap.get("filtered");
         assertNotNull(selfHarmFiltered);
         assertFalse((Boolean) selfHarmFiltered.asBoolean().get());
@@ -554,8 +545,7 @@ public class OpenAIOkHttpClientTestBase {
 
         JsonValue sexual = contentFilterResultMap.get("sexual");
         assertNotNull(sexual);
-        Map<String, JsonValue> sexualMap =
-            (Map<String, JsonValue>) sexual.asObject().get();
+        Map<String, JsonValue> sexualMap = (Map<String, JsonValue>) sexual.asObject().get();
         JsonValue sexualFiltered = sexualMap.get("filtered");
         assertNotNull(sexualFiltered);
         assertFalse((Boolean) sexualFiltered.asBoolean().get());
@@ -565,8 +555,7 @@ public class OpenAIOkHttpClientTestBase {
 
         JsonValue violence = contentFilterResultMap.get("violence");
         assertNotNull(violence);
-        Map<String, JsonValue> violenceMap =
-            (Map<String, JsonValue>) violence.asObject().get();
+        Map<String, JsonValue> violenceMap = (Map<String, JsonValue>) violence.asObject().get();
 
         JsonValue violenceFiltered = violenceMap.get("filtered");
         assertNotNull(violenceFiltered);

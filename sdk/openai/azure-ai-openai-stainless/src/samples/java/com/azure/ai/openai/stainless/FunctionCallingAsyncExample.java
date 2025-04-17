@@ -21,9 +21,10 @@ import com.openai.models.chat.completions.ChatCompletionCreateParams;
 import com.openai.models.chat.completions.ChatCompletionMessageToolCall;
 import com.openai.models.chat.completions.ChatCompletionTool;
 
-import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Stream;
 
 public final class FunctionCallingAsyncExample {
     private FunctionCallingAsyncExample() {}
@@ -56,9 +57,9 @@ public final class FunctionCallingAsyncExample {
                                 .description("Gets the quality of the given SDK.")
                                 .parameters(FunctionParameters.builder()
                                         .putAdditionalProperty("type", JsonValue.from("object"))
-                                        .putAdditionalProperty(
-                                                "properties", JsonValue.from(Map.of("name", Map.of("type", "string"))))
-                                        .putAdditionalProperty("required", JsonValue.from(List.of("name")))
+                                        .putAdditionalProperty("properties", JsonValue.from(
+                                            Collections.singletonMap("name", Collections.singletonMap("type", "string"))))
+                                        .putAdditionalProperty("required", JsonValue.from(Collections.singletonList("name")))
                                         .putAdditionalProperty("additionalProperties", JsonValue.from(false))
                                         .build())
                                 .build())
@@ -73,7 +74,12 @@ public final class FunctionCallingAsyncExample {
                         .map(ChatCompletion.Choice::message)
                         .flatMap(message -> {
                             message.content().ifPresent(System.out::println);
-                            return message.toolCalls().stream().flatMap(Collection::stream);
+                            Optional<List<ChatCompletionMessageToolCall>> toolCalls = message.toolCalls();
+                            if (toolCalls.isPresent()) {
+                                return toolCalls.get().stream();
+                            } else {
+                                return Stream.empty();
+                            }
                         })
                         .forEach(toolCall -> System.out.println(callFunction(toolCall.function()))))
                 .join();

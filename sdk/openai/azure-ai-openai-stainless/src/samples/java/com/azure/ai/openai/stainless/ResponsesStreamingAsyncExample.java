@@ -6,9 +6,7 @@ package com.azure.ai.openai.stainless;
 import com.azure.identity.AuthenticationUtil;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.openai.azure.AzureOpenAIServiceVersion;
-import com.openai.client.OpenAIClient;
 import com.openai.client.OpenAIClientAsync;
-import com.openai.client.okhttp.OpenAIOkHttpClient;
 import com.openai.client.okhttp.OpenAIOkHttpClientAsync;
 import com.openai.credential.BearerTokenCredential;
 import com.openai.models.ChatModel;
@@ -37,7 +35,8 @@ public final class ResponsesStreamingAsyncExample {
 
         client.responses()
                 .createStreaming(createParams)
-                .subscribe(event -> event.outputTextDelta().ifPresent(textEvent -> System.out.print(textEvent.delta())))
+                .subscribe(event -> event.outputTextDelta().ifPresent(
+                    textEvent -> System.out.print(textEvent.delta())))
                 .onCompleteFuture()
                 .join();
     }

@@ -254,11 +254,10 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
     public void testChatCompletionByod(String apiType, String apiVersion, String testModel) {
         client = createAsyncClient(apiType, apiVersion);
         ChatCompletionCreateParams params = createParamsBuilder(testModel)
-                .messages(asList(
-                        createSystemMessageParam(),
-                        createUserMessageParam("What languages have libraries you know about for Azure OpenAI?")))
-                .additionalBodyProperties(createExtraBodyForByod())
-                .build();
+            .messages(asList(createSystemMessageParam(),
+                createUserMessageParam("What languages have libraries you know about for Azure OpenAI?")))
+            .additionalBodyProperties(createExtraBodyForByod())
+            .build();
         ChatCompletion completion = client.chat().completions().create(params).join();
         assertChatCompletionByod(completion);
     }
@@ -268,7 +267,7 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
     public void testChatCompletionTools(String apiType, String apiVersion, String testModel) {
         client = createAsyncClient(apiType, apiVersion);
         ChatCompletionCreateParams params
-                = createChatCompletionParamsWithTool(testModel, "What's the weather like today in Seattle?");
+            = createChatCompletionParamsWithTool(testModel, "What's the weather like today in Seattle?");
         ChatCompletion chatCompletion = client.chat().completions().create(params).join();
 
         assertChatCompletion(chatCompletion);
@@ -366,7 +365,8 @@ public class OpenAIOkHttpClientAsyncTest extends OpenAIOkHttpClientTestBase {
         ChatCompletionCreateParams params
             = createChatCompletionParamsWithoutFunctionCall(testModel, messages, functions);
 
-        ExecutionException thrownException = assertThrows(ExecutionException.class, () -> client.chat().completions().create(params).get());
+        ExecutionException thrownException
+            = assertThrows(ExecutionException.class, () -> client.chat().completions().create(params).get());
         BadRequestException causeException = assertInstanceOf(BadRequestException.class, thrownException.getCause());
         assertRaiContentFilter(causeException);
     }

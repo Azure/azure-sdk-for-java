@@ -18,8 +18,6 @@ import com.openai.models.responses.ResponseOutputMessage;
 import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
-
 public final class ResponsesConversationExample {
     private ResponsesConversationExample() {}
 
@@ -48,21 +46,20 @@ public final class ResponsesConversationExample {
                 .build();
 
         for (int i = 0; i < 4; i++) {
-            List<ResponseOutputMessage> messages = client.responses().create(createParams).output().stream()
-                    .flatMap(item -> item.message().stream())
-                    .collect(toList());
-
+            List<ResponseOutputMessage> messages = new ArrayList<>();
+            client.responses().create(createParams).output().forEach(
+                item ->
+                    item.message().ifPresent(messages::add));
             messages.stream()
                     .flatMap(message -> message.content().stream())
-                    .flatMap(content -> content.outputText().stream())
-                    .forEach(outputText -> System.out.println(outputText.text()));
-
+                    .forEach(content -> content.outputText().ifPresent(
+                        outputText -> System.out.println(outputText.text())));
             System.out.println("\n-----------------------------------\n");
 
             messages.forEach(message -> inputItems.add(ResponseInputItem.ofResponseOutputMessage(message)));
             inputItems.add(ResponseInputItem.ofEasyInputMessage(EasyInputMessage.builder()
                     .role(EasyInputMessage.Role.USER)
-                    .content("But why?" + "?".repeat(i))
+                    .content("But why?" + new String(new char[i]).replace("\0", "?"))
                     .build()));
             createParams = createParams.toBuilder().inputOfResponse(inputItems).build();
         }
