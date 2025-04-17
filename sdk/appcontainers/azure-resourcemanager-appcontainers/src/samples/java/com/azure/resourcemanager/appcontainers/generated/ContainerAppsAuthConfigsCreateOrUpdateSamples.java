@@ -18,8 +18,7 @@ import com.azure.resourcemanager.appcontainers.models.UnauthenticatedClientActio
 public final class ContainerAppsAuthConfigsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/AuthConfigs_CreateOrUpdate.
-     * json
+     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/AuthConfigs_CreateOrUpdate.json
      */
     /**
      * Sample code: Create or Update Container App AuthConfig.

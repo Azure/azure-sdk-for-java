@@ -14,36 +14,36 @@ public final class DaprTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         Dapr model = BinaryData.fromString(
-            "{\"enabled\":true,\"appId\":\"ltiugcxnavv\",\"appProtocol\":\"http\",\"appPort\":1911413053,\"httpReadBufferSize\":1077177476,\"httpMaxRequestSize\":1643458041,\"logLevel\":\"info\",\"enableApiLogging\":false}")
+            "{\"enabled\":false,\"appId\":\"bnxknalaulppg\",\"appProtocol\":\"grpc\",\"appPort\":1767174247,\"httpReadBufferSize\":523387413,\"httpMaxRequestSize\":1500766151,\"logLevel\":\"warn\",\"enableApiLogging\":false}")
             .toObject(Dapr.class);
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("ltiugcxnavv", model.appId());
-        Assertions.assertEquals(AppProtocol.HTTP, model.appProtocol());
-        Assertions.assertEquals(1911413053, model.appPort());
-        Assertions.assertEquals(1077177476, model.httpReadBufferSize());
-        Assertions.assertEquals(1643458041, model.httpMaxRequestSize());
-        Assertions.assertEquals(LogLevel.INFO, model.logLevel());
+        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals("bnxknalaulppg", model.appId());
+        Assertions.assertEquals(AppProtocol.GRPC, model.appProtocol());
+        Assertions.assertEquals(1767174247, model.appPort());
+        Assertions.assertEquals(523387413, model.httpReadBufferSize());
+        Assertions.assertEquals(1500766151, model.httpMaxRequestSize());
+        Assertions.assertEquals(LogLevel.WARN, model.logLevel());
         Assertions.assertEquals(false, model.enableApiLogging());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Dapr model = new Dapr().withEnabled(true)
-            .withAppId("ltiugcxnavv")
-            .withAppProtocol(AppProtocol.HTTP)
-            .withAppPort(1911413053)
-            .withHttpReadBufferSize(1077177476)
-            .withHttpMaxRequestSize(1643458041)
-            .withLogLevel(LogLevel.INFO)
+        Dapr model = new Dapr().withEnabled(false)
+            .withAppId("bnxknalaulppg")
+            .withAppProtocol(AppProtocol.GRPC)
+            .withAppPort(1767174247)
+            .withHttpReadBufferSize(523387413)
+            .withHttpMaxRequestSize(1500766151)
+            .withLogLevel(LogLevel.WARN)
             .withEnableApiLogging(false);
         model = BinaryData.fromObject(model).toObject(Dapr.class);
-        Assertions.assertEquals(true, model.enabled());
-        Assertions.assertEquals("ltiugcxnavv", model.appId());
-        Assertions.assertEquals(AppProtocol.HTTP, model.appProtocol());
-        Assertions.assertEquals(1911413053, model.appPort());
-        Assertions.assertEquals(1077177476, model.httpReadBufferSize());
-        Assertions.assertEquals(1643458041, model.httpMaxRequestSize());
-        Assertions.assertEquals(LogLevel.INFO, model.logLevel());
+        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals("bnxknalaulppg", model.appId());
+        Assertions.assertEquals(AppProtocol.GRPC, model.appProtocol());
+        Assertions.assertEquals(1767174247, model.appPort());
+        Assertions.assertEquals(523387413, model.httpReadBufferSize());
+        Assertions.assertEquals(1500766151, model.httpMaxRequestSize());
+        Assertions.assertEquals(LogLevel.WARN, model.logLevel());
         Assertions.assertEquals(false, model.enableApiLogging());
     }
 }
