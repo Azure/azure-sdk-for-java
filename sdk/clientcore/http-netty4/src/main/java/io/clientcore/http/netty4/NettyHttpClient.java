@@ -18,7 +18,6 @@ import io.clientcore.core.utils.AuthenticateChallenge;
 import io.clientcore.core.utils.ProgressReporter;
 import io.clientcore.core.utils.ServerSentEventUtils;
 import io.clientcore.http.netty4.implementation.ChannelInitializationProxyHandler;
-import io.clientcore.http.netty4.implementation.Netty4HttpProxyHandler;
 import io.clientcore.http.netty4.implementation.Netty4ProgressAndTimeoutHandler;
 import io.clientcore.http.netty4.implementation.Netty4ResponseHandler;
 import io.clientcore.http.netty4.implementation.Netty4SslInitializationHandler;
@@ -35,9 +34,6 @@ import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.DefaultHttpRequest;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpVersion;
-import io.netty.handler.logging.ByteBufFormat;
-import io.netty.handler.logging.LogLevel;
-import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.stream.ChunkedInput;
@@ -116,8 +112,6 @@ class NettyHttpClient implements HttpClient {
                 // Test whether proxying should be applied to this Channel. If so, add it.
                 if (channelInitializationProxyHandler.test(ch.remoteAddress())) {
                     ch.pipeline().addFirst(channelInitializationProxyHandler.createProxy(proxyChallenges));
-                    // Just for debugging write after close in proxying tests.
-                    ch.pipeline().addLast(new LoggingHandler(LogLevel.INFO, ByteBufFormat.HEX_DUMP));
                 }
 
                 // Add SSL handling if the request is HTTPS.
@@ -159,11 +153,6 @@ class NettyHttpClient implements HttpClient {
                     channel.pipeline()
                         .addLast(PROGRESS_AND_TIMEOUT_HANDLER_NAME, new Netty4ProgressAndTimeoutHandler(
                             progressReporter, writeTimeoutMillis, responseTimeoutMillis, readTimeoutMillis));
-                }
-
-                if (channel.pipeline().get(Netty4HttpProxyHandler.class) != null) {
-                    // Just for debugging write after close in proxying tests.
-                    channel.pipeline().addLast(new LoggingHandler(LogLevel.INFO, ByteBufFormat.HEX_DUMP));
                 }
 
                 Netty4ResponseHandler responseHandler
