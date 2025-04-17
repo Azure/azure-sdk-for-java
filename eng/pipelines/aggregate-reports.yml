@@ -31,8 +31,9 @@ extends:
             timeoutInMinutes: 180
 
             variables:
-            - name: ArtifactsJson
-              value: '${{ convertToJson(parameters.Artifacts) }}'
+              - template: /eng/pipelines/templates/variables/image.yml
+              - name: ArtifactsJson
+                value: '${{ convertToJson(parameters.Artifacts) }}'
             pool:
               name: $(LINUXPOOL)
               vmImage: $(LINUXVMIMAGE)
@@ -145,6 +146,7 @@ extends:
             timeoutInMinutes: 120
             variables:
               - template: /eng/pipelines/templates/variables/globals.yml
+              - template: /eng/pipelines/templates/variables/image.yml
               - name: DisableDockerDetector
                 value: false
 
@@ -181,6 +183,8 @@ extends:
         jobs:
           - job: ComplianceTools
             timeoutInMinutes: 120
+            variables:
+              - template: /eng/pipelines/templates/variables/image.yml
 
             pool:
               name: $(WINDOWSPOOL)
