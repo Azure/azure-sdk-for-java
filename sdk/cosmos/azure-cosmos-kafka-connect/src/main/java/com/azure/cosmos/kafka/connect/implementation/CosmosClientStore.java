@@ -62,7 +62,7 @@ public class CosmosClientStore {
 
             CosmosAadAuthConfig aadAuthConfig = (CosmosAadAuthConfig) accountConfig.getCosmosAuthConfig();
             ClientSecretCredential tokenCredential = new ClientSecretCredentialBuilder()
-                .authorityHost(ACTIVE_DIRECTORY_ENDPOINT_MAP.get(aadAuthConfig.getAzureEnvironment()).replaceAll("/$", "") + "/")
+                .authorityHost(getAuthEndpoint(aadAuthConfig))
                 .tenantId(aadAuthConfig.getTenantId())
                 .clientId(aadAuthConfig.getClientId())
                 .clientSecret(aadAuthConfig.getClientSecret())
@@ -79,6 +79,13 @@ public class CosmosClientStore {
         }
 
         return cosmosClientBuilder.buildAsyncClient();
+    }
+
+    private static String getAuthEndpoint(CosmosAadAuthConfig aadAuthConfig) {
+        String defaultAuthEndpoint = ACTIVE_DIRECTORY_ENDPOINT_MAP.get(aadAuthConfig.getAzureEnvironment());
+        String authEndpointOverride = aadAuthConfig.getAuthEndpointOverride();
+        String authEndpoint = StringUtils.isNotEmpty(authEndpointOverride) ? authEndpointOverride : defaultAuthEndpoint;
+        return authEndpoint.replaceAll("/$", "") + "/";
     }
 
     private static String getUserAgentSuffix(CosmosAccountConfig accountConfig, String sourceName) {

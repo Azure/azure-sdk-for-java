@@ -68,6 +68,11 @@ public class KafkaCosmosConfig extends AbstractConfig {
     private static final String AAD_CLIENT_SECRET_DISPLAY = "The client secret/password of the service principal.";
     private static final String DEFAULT_AAD_CLIENT_SECRET = Strings.Emtpy;
 
+    private static final String AAD_AUTH_ENDPOINT_OVERRIDE = "azure.cosmos.auth.aad.authEndpointOverride";
+    private static final String AAD_AUTH_ENDPOINT_OVERRIDE_DOC = "TODO";
+    private static final String AAD_AUTH_ENDPOINT_OVERRIDE_DISPLAY = "TODO";
+    private static final String DEFAULT_AAD_AUTH_ENDPOINT_OVERRIDE = Strings.Emtpy;
+
     private static final String USE_GATEWAY_MODE = "azure.cosmos.mode.gateway";
     private static final String USE_GATEWAY_MODE_DOC = "Flag to indicate whether to use gateway mode. By default it is false, means SDK uses direct mode. https://learn.microsoft.com/azure/cosmos-db/nosql/sdk-connection-modes";
     private static final String USE_GATEWAY_MODE_DISPLAY = "Use gateway mode.";
@@ -125,6 +130,11 @@ public class KafkaCosmosConfig extends AbstractConfig {
     private static final String THROUGHPUT_CONTROL_AAD_CLIENT_SECRET_DOC = "The client secret/password of the service principal. Required for `ServicePrincipal` authentication.";
     private static final String THROUGHPUT_CONTROL_AAD_CLIENT_SECRET_DISPLAY = "The client secret/password of the service principal.";
     private static final String DEFAULT_THROUGHPUT_CONTROL_AAD_CLIENT_SECRET = Strings.Emtpy;
+
+    private static final String THROUGHPUT_CONTROL_AAD_AUTH_ENDPOINT_OVERRIDE = "azure.cosmos.throughputControl.auth.aad.authEndpointOverride";
+    private static final String THROUGHPUT_CONTROL_AAD_AUTH_ENDPOINT_OVERRIDE_DOC = "TODO";
+    private static final String THROUGHPUT_CONTROL_AAD_AUTH_ENDPOINT_OVERRIDE_DISPLAY = "TODO";
+    private static final String DEFAULT_THROUGHPUT_CONTROL_AAD_AUTH_ENDPOINT_OVERRIDE = Strings.Emtpy;
 
     private static final String THROUGHPUT_CONTROL_PREFERRED_REGIONS_LIST = "azure.cosmos.throughputControl.preferredRegionList";
     private static final String THROUGHPUT_CONTROL_PREFERRED_REGIONS_LIST_DOC = "Preferred regions list to be used for a multi region Cosmos DB account. "
@@ -206,6 +216,7 @@ public class KafkaCosmosConfig extends AbstractConfig {
             ACCOUNT_KEY,
             AAD_CLIENT_ID,
             AAD_CLIENT_SECRET,
+            AAD_AUTH_ENDPOINT_OVERRIDE,
             APPLICATION_NAME,
             USE_GATEWAY_MODE,
             PREFERRED_REGIONS_LIST);
@@ -219,6 +230,7 @@ public class KafkaCosmosConfig extends AbstractConfig {
         String accountKeyConfig,
         String clientIdConfig,
         String clientSecretConfig,
+        String authEndpointOverrideConfig,
         String applicationNameConfig,
         String useGatewayModeConfig,
         String preferredRegionListConfig) {
@@ -230,7 +242,8 @@ public class KafkaCosmosConfig extends AbstractConfig {
         String masterKey = this.getPassword(accountKeyConfig).value();
         String clientId = this.getString(clientIdConfig);
         String clientSecret = this.getPassword(clientSecretConfig).value();
-        CosmosAuthConfig authConfig = getAuthConfig(azureEnvironment, tenantId, authType, masterKey, clientId, clientSecret);
+        String authEndpointOverride = this.getString(authEndpointOverrideConfig);
+        CosmosAuthConfig authConfig = getAuthConfig(azureEnvironment, tenantId, authType, masterKey, clientId, clientSecret, authEndpointOverride);
 
         String applicationName = this.getString(applicationNameConfig);
         boolean useGatewayMode = this.getBoolean(useGatewayModeConfig);
@@ -250,13 +263,13 @@ public class KafkaCosmosConfig extends AbstractConfig {
         CosmosAuthType authType,
         String masterKey,
         String clientId,
-        String clientSecret) {
-
+        String clientSecret,
+        String authEndpointOverride) {
         switch (authType) {
             case MASTER_KEY:
                 return new CosmosMasterKeyAuthConfig(masterKey);
             case SERVICE_PRINCIPAL:
-                return new CosmosAadAuthConfig(clientId, clientSecret, tenantId, azureEnvironment);
+                return new CosmosAadAuthConfig(clientId, clientSecret, authEndpointOverride, tenantId, azureEnvironment);
             default:
                 throw new IllegalArgumentException("AuthType " + authType + " is not supported");
         }
@@ -286,6 +299,7 @@ public class KafkaCosmosConfig extends AbstractConfig {
                 THROUGHPUT_CONTROL_ACCOUNT_KEY,
                 THROUGHPUT_CONTROL_AAD_CLIENT_ID,
                 THROUGHPUT_CONTROL_AAD_CLIENT_SECRET,
+                THROUGHPUT_CONTROL_AAD_AUTH_ENDPOINT_OVERRIDE,
                 APPLICATION_NAME,
                 THROUGHPUT_CONTROL_USE_GATEWAY_MODE,
                 THROUGHPUT_CONTROL_PREFERRED_REGIONS_LIST);
@@ -341,7 +355,7 @@ public class KafkaCosmosConfig extends AbstractConfig {
                 ACCOUNT_ENDPOINT,
                 ConfigDef.Type.STRING,
                 ConfigDef.NO_DEFAULT_VALUE,
-                new AccountEndpointValidator(),
+                new UriValidator("Account endpoint"),
                 ConfigDef.Importance.HIGH,
                 ACCOUNT_ENDPOINT_DOC,
                 accountGroupName,
@@ -416,6 +430,18 @@ public class KafkaCosmosConfig extends AbstractConfig {
                 accountGroupOrder++,
                 ConfigDef.Width.MEDIUM,
                 AAD_CLIENT_SECRET_DISPLAY
+            )
+            .define(
+                AAD_AUTH_ENDPOINT_OVERRIDE,
+                ConfigDef.Type.STRING,
+                DEFAULT_AAD_AUTH_ENDPOINT_OVERRIDE,
+                new UriValidator("Azure active directory endpoint"),
+                ConfigDef.Importance.MEDIUM,
+                AAD_AUTH_ENDPOINT_OVERRIDE_DOC,
+                accountGroupName,
+                accountGroupOrder++,
+                ConfigDef.Width.LONG,
+                AAD_AUTH_ENDPOINT_OVERRIDE_DISPLAY
             )
             .define(
                 APPLICATION_NAME,
@@ -547,6 +573,18 @@ public class KafkaCosmosConfig extends AbstractConfig {
                 throughputControlGroupOrder++,
                 ConfigDef.Width.MEDIUM,
                 THROUGHPUT_CONTROL_AAD_CLIENT_SECRET_DISPLAY
+            )
+            .define(
+                THROUGHPUT_CONTROL_AAD_AUTH_ENDPOINT_OVERRIDE,
+                ConfigDef.Type.STRING,
+                DEFAULT_THROUGHPUT_CONTROL_AAD_AUTH_ENDPOINT_OVERRIDE,
+                new UriValidator("Throughput control Azure active directory endpoint"),
+                ConfigDef.Importance.LOW,
+                THROUGHPUT_CONTROL_AAD_AUTH_ENDPOINT_OVERRIDE_DOC,
+                throughputControlGroupName,
+                throughputControlGroupOrder++,
+                ConfigDef.Width.LONG,
+                THROUGHPUT_CONTROL_AAD_AUTH_ENDPOINT_OVERRIDE_DISPLAY
             )
             .define(
                 THROUGHPUT_CONTROL_PREFERRED_REGIONS_LIST,
@@ -738,7 +776,8 @@ public class KafkaCosmosConfig extends AbstractConfig {
                 THROUGHPUT_CONTROL_AUTH_TYPE,
                 THROUGHPUT_CONTROL_ACCOUNT_KEY,
                 THROUGHPUT_CONTROL_AAD_CLIENT_ID,
-                THROUGHPUT_CONTROL_AAD_CLIENT_SECRET);
+                THROUGHPUT_CONTROL_AAD_CLIENT_SECRET,
+                THROUGHPUT_CONTROL_AAD_AUTH_ENDPOINT_OVERRIDE);
         }
 
         // if throughput control is using aad auth, then only targetThroughput is supported
@@ -763,7 +802,8 @@ public class KafkaCosmosConfig extends AbstractConfig {
             AUTH_TYPE,
             ACCOUNT_KEY,
             AAD_CLIENT_ID,
-            AAD_CLIENT_SECRET);
+            AAD_CLIENT_SECRET,
+            AAD_AUTH_ENDPOINT_OVERRIDE);
     }
 
     public static void validateAccountAuthConfigCore(
@@ -772,7 +812,8 @@ public class KafkaCosmosConfig extends AbstractConfig {
         String authTypeConfig,
         String accountKeyConfig,
         String clientIdConfig,
-        String clientSecretConfig) {
+        String clientSecretConfig,
+        String authEndpointOverrideConfig) {
 
         CosmosAuthType authType = CosmosAuthType.fromName(configValueMap.get(authTypeConfig).value().toString());
         switch (authType) {
@@ -805,6 +846,19 @@ public class KafkaCosmosConfig extends AbstractConfig {
                         .get(clientSecretConfig)
                         .addErrorMessage("ClientSecret is required for Service Principal auth type");
                 }
+
+                String authEndpointOverride = configValueMap.get(authEndpointOverrideConfig).value().toString();
+                if (!StringUtils.isEmpty(authEndpointOverride)) {
+                    UriValidator uriValidator = new UriValidator("")
+                    try {
+                        uriValidator.ensureValid(authEndpointOverride)
+                    } catch (ConfigException e) {
+                        configValueMap
+                            .get(authEndpointOverrideConfig)
+                            .addErrorMessage("AuthEndpointOverride need to be valid URI format for Service Principal auth type");
+                    }
+                }
+
                 break;
             default:
                 throw new IllegalArgumentException("AuthType " + authType + " is not supported");
@@ -840,25 +894,31 @@ public class KafkaCosmosConfig extends AbstractConfig {
         }
     }
 
-    public static class AccountEndpointValidator implements ConfigDef.Validator {
+    public class UriValidator implements ConfigDef.Validator {
+        private final String label;
+
+        public UriValidator(String label) {
+            this.label = label;
+        }
+
         @Override
         @SuppressWarnings("unchecked")
         public void ensureValid(String name, Object o) {
-            String accountEndpointUriString = (String) o;
-            if (StringUtils.isEmpty(accountEndpointUriString)) {
-                throw new ConfigException(name, o, "Account endpoint can not be empty");
+            String uri = (String) o;
+            if (StringUtils.isEmpty(uri)) {
+                throw new ConfigException(name, o, this.label+" can not be empty");
             }
 
             try {
-                new URL(accountEndpointUriString);
+                new URL(uri);
             } catch (MalformedURLException e) {
-                throw new ConfigException(name, o, "Invalid account endpoint.");
+                throw new ConfigException(name, o, this.label+" is invalid.");
             }
         }
 
         @Override
         public String toString() {
-            return "Account endpoint";
+            return label;
         }
     }
 
