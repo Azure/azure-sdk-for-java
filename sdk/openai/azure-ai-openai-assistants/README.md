@@ -356,7 +356,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/openai/azure-ai-openai-assistants/src/samples
 
 [azure_openai_access]: https://learn.microsoft.com/azure/cognitive-services/openai/overview#how-do-i-get-access-to-azure-openai
-[azure_openai_stainless]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai-stainles
+[azure_openai_stainless]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai-stainless
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 [function_tool_call_full_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai-assistants/src/samples/java/com/azure/ai/openai/assistants/FunctionToolCallSample.java
