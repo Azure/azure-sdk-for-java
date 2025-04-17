@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Prevented the usage of different schemas in the `cosmos.metadata.topic` topic helps when a customer selects output Kafka record value format as JSON_SR, AVRO or PROTOBUF (ie any SR format). With this change there is a unified schema used for the metadata topic instead. - See [PR 45018](https://github.com/Azure/azure-sdk-for-java/pull/45018)
 
 #### Other Changes
 

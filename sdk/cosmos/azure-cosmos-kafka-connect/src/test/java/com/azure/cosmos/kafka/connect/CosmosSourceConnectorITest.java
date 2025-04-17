@@ -182,7 +182,8 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
 
                 JsonNode rootJsonNode = containerMetadataRecord.value().get("payload");
                 assertThat(rootJsonNode).isNotNull();
-                assertThat(rootJsonNode.get(UnifiedMetadataSchemaConstants.ENTITY_TYPE_NAME))
+                assertThat(rootJsonNode.get(UnifiedMetadataSchemaConstants.ENTITY_TYPE_NAME)).isNotNull();
+                assertThat(rootJsonNode.get(UnifiedMetadataSchemaConstants.ENTITY_TYPE_NAME).textValue())
                     .isEqualTo(MetadataEntityTypes.CONTAINERS_METADATA_V1);
                 JsonNode jsonValueNode = rootJsonNode.get(UnifiedMetadataSchemaConstants.JSON_VALUE_NAME);
                 assertThat(jsonValueNode).isNotNull();
@@ -207,7 +208,8 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
 
                 rootJsonNode = feedRangesMetadataRecord.value().get("payload");
                 assertThat(rootJsonNode).isNotNull();
-                assertThat(rootJsonNode.get(UnifiedMetadataSchemaConstants.ENTITY_TYPE_NAME))
+                assertThat(rootJsonNode.get(UnifiedMetadataSchemaConstants.ENTITY_TYPE_NAME)).isNotNull();
+                assertThat(rootJsonNode.get(UnifiedMetadataSchemaConstants.ENTITY_TYPE_NAME).textValue())
                     .isEqualTo(MetadataEntityTypes.FEED_RANGES_METADATA_V1);
                 jsonValueNode = rootJsonNode.get(UnifiedMetadataSchemaConstants.JSON_VALUE_NAME);
                 assertThat(jsonValueNode).isNotNull();
