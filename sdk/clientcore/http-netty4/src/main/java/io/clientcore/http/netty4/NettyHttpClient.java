@@ -140,36 +140,46 @@ class NettyHttpClient implements HttpClient {
         CountDownLatch latch = new CountDownLatch(1);
 
         try {
-            Channel channel = bootstrap.connect(host, port).sync().channel();
-
-            // Only add CoreProgressAndTimeoutHandler if it will do anything, ex it is reporting progress or is
-            // applying timeouts.
-            // This is done to keep the ChannelPipeline shorter, therefore more performant, if this would
-            // effectively be a no-op.
-            if (addProgressAndTimeoutHandler) {
-                channel.pipeline()
-                    .addLast(PROGRESS_AND_TIMEOUT_HANDLER_NAME, new Netty4ProgressAndTimeoutHandler(progressReporter,
-                        writeTimeoutMillis, responseTimeoutMillis, readTimeoutMillis));
-            }
-
-            if (channel.pipeline().get(Netty4HttpProxyHandler.class) != null) {
-                // Just for debugging write after close in proxying tests.
-                channel.pipeline().addLast(new LoggingHandler(LogLevel.INFO, ByteBufFormat.HEX_DUMP));
-            }
-
-            Netty4ResponseHandler responseHandler
-                = new Netty4ResponseHandler(request, responseReference, errorReference, latch);
-            channel.pipeline().addLast(responseHandler);
-
-            sendRequest(request, channel, addProgressAndTimeoutHandler).addListener((ChannelFutureListener) future -> {
-                if (!future.isSuccess()) {
-                    LOGGER.atError().setThrowable(future.cause()).log("Failed to send request");
-                    errorReference.set(future.cause());
-                    future.channel().close();
+            bootstrap.connect(host, port).addListener((ChannelFutureListener) connectListener -> {
+                if (!connectListener.isSuccess()) {
+                    LOGGER.atError().setThrowable(connectListener.cause()).log("Failed to send request");
+                    errorReference.set(connectListener.cause());
+                    connectListener.channel().close();
                     latch.countDown();
-                } else {
-                    future.channel().read();
+                    return;
                 }
+
+                Channel channel = connectListener.channel();
+
+                // Only add CoreProgressAndTimeoutHandler if it will do anything, ex it is reporting progress or is
+                // applying timeouts.
+                // This is done to keep the ChannelPipeline shorter, therefore more performant, if this would
+                // effectively be a no-op.
+                if (addProgressAndTimeoutHandler) {
+                    channel.pipeline()
+                        .addLast(PROGRESS_AND_TIMEOUT_HANDLER_NAME, new Netty4ProgressAndTimeoutHandler(
+                            progressReporter, writeTimeoutMillis, responseTimeoutMillis, readTimeoutMillis));
+                }
+
+                if (channel.pipeline().get(Netty4HttpProxyHandler.class) != null) {
+                    // Just for debugging write after close in proxying tests.
+                    channel.pipeline().addLast(new LoggingHandler(LogLevel.INFO, ByteBufFormat.HEX_DUMP));
+                }
+
+                Netty4ResponseHandler responseHandler
+                    = new Netty4ResponseHandler(request, responseReference, errorReference, latch);
+                channel.pipeline().addLast(responseHandler);
+
+                sendRequest(request, channel, addProgressAndTimeoutHandler, sendListener -> {
+                    if (!sendListener.isSuccess()) {
+                        LOGGER.atError().setThrowable(sendListener.cause()).log("Failed to send request");
+                        errorReference.set(sendListener.cause());
+                        sendListener.channel().close();
+                        latch.countDown();
+                    } else {
+                        sendListener.channel().read();
+                    }
+                });
             });
 
             latch.await();
@@ -216,7 +226,8 @@ class NettyHttpClient implements HttpClient {
         return response;
     }
 
-    private ChannelFuture sendRequest(HttpRequest request, Channel channel, boolean progressAndTimeoutHandlerAdded) {
+    private ChannelFuture sendRequest(HttpRequest request, Channel channel, boolean progressAndTimeoutHandlerAdded,
+        ChannelFutureListener sendListener) {
         HttpMethod nettyMethod = HttpMethod.valueOf(request.getHttpMethod().toString());
         String uri = request.getUri().toString();
         WrappedHttpHeaders wrappedHttpHeaders = new WrappedHttpHeaders(request.getHeaders());
@@ -225,11 +236,12 @@ class NettyHttpClient implements HttpClient {
         //  more once it's closer to completion.
         wrappedHttpHeaders.getCoreHeaders().set(HttpHeaderName.HOST, request.getUri().getHost());
 
+        ChannelFuture sendFuture;
         BinaryData requestBody = request.getBody();
         if (requestBody instanceof FileBinaryData) {
             FileBinaryData fileBinaryData = (FileBinaryData) requestBody;
             try {
-                return sendChunked(channel,
+                sendFuture = sendChunked(channel,
                     new ChunkedNioFile(FileChannel.open(fileBinaryData.getFile(), StandardOpenOption.READ),
                         fileBinaryData.getPosition(), fileBinaryData.getLength(), 8192),
                     new DefaultHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri, wrappedHttpHeaders),
@@ -238,26 +250,28 @@ class NettyHttpClient implements HttpClient {
                 return channel.newFailedFuture(ex);
             }
         } else if (requestBody instanceof InputStreamBinaryData) {
-            return sendChunked(channel, new ChunkedStream(requestBody.toStream()),
+            sendFuture = sendChunked(channel, new ChunkedStream(requestBody.toStream()),
                 new DefaultHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri, wrappedHttpHeaders),
                 progressAndTimeoutHandlerAdded);
+        } else {
+            ByteBuf body = Unpooled.EMPTY_BUFFER;
+            if (requestBody != null && requestBody != BinaryData.empty()) {
+                // Longer term, see if there is a way to have BinaryData act as the ByteBuf body to further eliminate
+                // copying of byte[]s.
+                body = Unpooled.wrappedBuffer(requestBody.toBytes());
+            }
+            if (body.readableBytes() > 0) {
+                // TODO (alzimmer): Should we be setting Content-Length here again? Shouldn't this be handled externally
+                //  by the creator of the HttpRequest?
+                wrappedHttpHeaders.getCoreHeaders()
+                    .set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(body.readableBytes()));
+            }
+
+            sendFuture = channel.writeAndFlush(new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri, body,
+                wrappedHttpHeaders, trailersFactory().newHeaders()));
         }
 
-        ByteBuf body = Unpooled.EMPTY_BUFFER;
-        if (requestBody != null && requestBody != BinaryData.empty()) {
-            // Longer term, see if there is a way to have BinaryData act as the ByteBuf body to further eliminate
-            // copying of byte[]s.
-            body = Unpooled.wrappedBuffer(requestBody.toBytes());
-        }
-        if (body.readableBytes() > 0) {
-            // TODO (alzimmer): Should we be setting Content-Length here again? Shouldn't this be handled externally
-            //  by the creator of the HttpRequest?
-            wrappedHttpHeaders.getCoreHeaders()
-                .set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(body.readableBytes()));
-        }
-
-        return channel.writeAndFlush(new DefaultFullHttpRequest(HttpVersion.HTTP_1_1, nettyMethod, uri, body,
-            wrappedHttpHeaders, trailersFactory().newHeaders()));
+        return sendFuture.addListener(sendListener);
     }
 
     private <T> ChannelFuture sendChunked(Channel channel, ChunkedInput<T> chunkedInput,
