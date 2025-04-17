@@ -5,6 +5,9 @@ package com.azure.cosmos.kafka.connect.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkArgument;
 
 public class CosmosAadAuthConfig implements CosmosAuthConfig {

@@ -902,7 +902,7 @@ public class KafkaCosmosConfig extends AbstractConfig {
         }
     }
 
-    public class UriValidator implements ConfigDef.Validator {
+    public static class UriValidator implements ConfigDef.Validator {
         private final String label;
 
         public UriValidator(String label) {

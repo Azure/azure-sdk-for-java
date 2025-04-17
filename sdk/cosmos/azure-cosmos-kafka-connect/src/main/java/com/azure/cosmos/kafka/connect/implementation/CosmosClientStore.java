@@ -14,8 +14,6 @@ import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 
 import java.time.Duration;
-import java.util.HashMap;
-import java.util.Map;
 
 public class CosmosClientStore {
     public static CosmosAsyncClient getCosmosClient(
