@@ -26,7 +26,6 @@ import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.proxy.HttpProxyHandler;
 import io.netty.util.concurrent.DefaultThreadFactory;
 import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.Test;
 
 import java.net.URI;
 import java.util.List;
