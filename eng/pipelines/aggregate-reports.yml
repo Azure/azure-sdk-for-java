@@ -130,7 +130,12 @@ stages:
             ArtifactPath: '$(Build.ArtifactStagingDirectory)'
             ArtifactName: 'reports'
 
-        - template: /eng/pipelines/templates/steps/upload-repository-on-failure.yml
+        - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
+          parameters:
+            ArtifactName: 'repository-$(System.JobName)'
+            ArtifactPath: '$(System.DefaultWorkingDirectory)'
+            SbomEnabled: false
+            CustomCondition: or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule')))
 
       - job: Compliance
         displayName: Analyze (no build)
