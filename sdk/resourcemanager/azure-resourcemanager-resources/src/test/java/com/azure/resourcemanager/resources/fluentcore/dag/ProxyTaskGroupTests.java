@@ -8,6 +8,8 @@ import com.azure.core.util.logging.LogLevel;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -23,8 +25,9 @@ import java.util.concurrent.CountDownLatch;
 public class ProxyTaskGroupTests {
     private static final ClientLogger LOGGER = new ClientLogger(ProxyTaskGroupTests.class);
 
-    @Test
-    public void testSampleTaskGroupSanity() {
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    public void testSampleTaskGroupSanity(boolean syncStack) {
         // Prepare sample group
         //
         /**
@@ -45,12 +48,15 @@ public class ProxyTaskGroupTests {
 
         // Invocation of group should invoke all the tasks
         //
-//        group.invokeAsync(group.newInvocationContext()).subscribe(value -> {
-//            StringIndexable stringIndexable = toStringIndexable(value);
-//            Assertions.assertTrue(groupItems.contains(stringIndexable.str()));
-//            groupItems.remove(stringIndexable.str());
-//        });
-        group.invoke(group.newInvocationContext());
+        if (syncStack) {
+            group.invoke(group.newInvocationContext());
+        } else {
+            group.invokeAsync(group.newInvocationContext()).subscribe(value -> {
+                StringIndexable stringIndexable = toStringIndexable(value);
+                Assertions.assertTrue(groupItems.contains(stringIndexable.str()));
+                groupItems.remove(stringIndexable.str());
+            });
+        }
 
         Assertions.assertEquals(0, groupItems.size());
 
@@ -98,8 +104,9 @@ public class ProxyTaskGroupTests {
         Assertions.assertEquals(0, seen.size());
     }
 
-    @Test
-    public void testTaskGroupInvocationShouldNotInvokeDependentTaskGroup() {
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    public void testTaskGroupInvocationShouldNotInvokeDependentTaskGroup(boolean syncStack) {
         // Prepare group-1
         //
         /**
@@ -166,11 +173,15 @@ public class ProxyTaskGroupTests {
 
         // Invocation of group-1 should not invoke group-2
         //
-        group1.invokeAsync(group1.newInvocationContext()).subscribe(value -> {
-            StringIndexable stringIndexable = toStringIndexable(value);
-            Assertions.assertTrue(group1Items.contains(stringIndexable.str()));
-            group1Items.remove(stringIndexable.str());
-        });
+        if (syncStack) {
+            group1.invoke(group1.newInvocationContext());
+        } else {
+            group1.invokeAsync(group1.newInvocationContext()).subscribe(value -> {
+                StringIndexable stringIndexable = toStringIndexable(value);
+                Assertions.assertTrue(group1Items.contains(stringIndexable.str()));
+                group1Items.remove(stringIndexable.str());
+            });
+        }
 
         Assertions.assertEquals(0, group1Items.size());
 
@@ -218,8 +229,9 @@ public class ProxyTaskGroupTests {
         Assertions.assertEquals(0, seen.size());
     }
 
-    @Test
-    public void testTaskGroupInvocationShouldInvokeDependencyTaskGroup() {
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    public void testTaskGroupInvocationShouldInvokeDependencyTaskGroup(boolean syncStack) {
         // Prepare group-1
         //
         /**
@@ -284,15 +296,19 @@ public class ProxyTaskGroupTests {
          */
         group2.addDependencyTaskGroup(group1);
 
-        group2Items.addAll(group1Items);
 
         // Invocation of group-2 should invoke group-2 and group-1
         //
-        group2.invokeAsync(group2.newInvocationContext()).subscribe(value -> {
-            StringIndexable stringIndexable = toStringIndexable(value);
-            Assertions.assertTrue(group2Items.contains(stringIndexable.str()));
-            group2Items.remove(stringIndexable.str());
-        });
+        if (syncStack) {
+            group2.invoke(group2.newInvocationContext());
+        } else {
+            group2Items.addAll(group1Items);
+            group2.invokeAsync(group2.newInvocationContext()).subscribe(value -> {
+                StringIndexable stringIndexable = toStringIndexable(value);
+                Assertions.assertTrue(group2Items.contains(stringIndexable.str()));
+                group2Items.remove(stringIndexable.str());
+            });
+        }
 
         Assertions.assertEquals(0, group2Items.size());
 
@@ -361,8 +377,9 @@ public class ProxyTaskGroupTests {
         Assertions.assertEquals(0, seen.size());
     }
 
-    @Test
-    public void testTaskGroupInvocationShouldInvokePostRunDependentTaskGroup() {
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    public void testTaskGroupInvocationShouldInvokePostRunDependentTaskGroup(boolean syncStack) {
         // Prepare group-1
         //
         /**
@@ -430,16 +447,19 @@ public class ProxyTaskGroupTests {
 
         group1.addPostRunDependentTaskGroup(group2);
 
-        group1Items.addAll(group2Items);
-
         // Invocation of group-1 should run group-1 and it's "post run" dependent group-2
         //
-        group1.invokeAsync(group1.newInvocationContext()).subscribe(value -> {
-            StringIndexable stringIndexable = toStringIndexable(value);
-            Assertions.assertTrue(group1Items.contains(stringIndexable.str()));
-            group1Items.remove(stringIndexable.str());
-        }, throwable -> {
-        });
+        if (syncStack) {
+            group1.invoke(group1.newInvocationContext());
+        } else {
+            group1Items.addAll(group2Items);
+            group1.invokeAsync(group1.newInvocationContext()).subscribe(value -> {
+                StringIndexable stringIndexable = toStringIndexable(value);
+                Assertions.assertTrue(group1Items.contains(stringIndexable.str()));
+                group1Items.remove(stringIndexable.str());
+            }, throwable -> {
+            });
+        }
 
         Assertions.assertEquals(0, group1Items.size());
 
@@ -515,8 +535,9 @@ public class ProxyTaskGroupTests {
             .subscribe(indexable -> LOGGER.log(LogLevel.VERBOSE, indexable::key));
     }
 
-    @Test
-    public void testPostRunTaskGroupInvocationShouldInvokeDependencyTaskGroup() {
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    public void testPostRunTaskGroupInvocationShouldInvokeDependencyTaskGroup(boolean syncStack) {
         // Prepare group-1
         //
         /**
@@ -584,15 +605,18 @@ public class ProxyTaskGroupTests {
 
         group1.addPostRunDependentTaskGroup(group2);
 
-        group2Items.addAll(group1Items);
-
         // Invocation of group-2 should run group-2 and group-1
         //
-        group2.invokeAsync(group2.newInvocationContext()).subscribe(value -> {
-            StringIndexable stringIndexable = toStringIndexable(value);
-            Assertions.assertTrue(group2Items.contains(stringIndexable.str()));
-            group2Items.remove(stringIndexable.str());
-        });
+        if (syncStack) {
+            group2.invoke(group2.newInvocationContext());
+        } else {
+            group2Items.addAll(group1Items);
+            group2.invokeAsync(group2.newInvocationContext()).subscribe(value -> {
+                StringIndexable stringIndexable = toStringIndexable(value);
+                Assertions.assertTrue(group2Items.contains(stringIndexable.str()));
+                group2Items.remove(stringIndexable.str());
+            });
+        }
 
         Assertions.assertEquals(0, group2Items.size());
 
@@ -1447,12 +1471,28 @@ public class ProxyTaskGroupTests {
         Assertions.assertEquals(0, seen.size());
     }
 
-    @Test
-    public void canHandleDependenciesAndPostRunDependentsInBeforeGroupInvoke() throws InterruptedException {
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    public void canHandleDependenciesAndPostRunDependentsInBeforeGroupInvoke(boolean syncStack) throws InterruptedException {
+        final ArrayList<String> seen = new ArrayList<>();
+        CountDownLatch down = new CountDownLatch(1);
         final IndexableTaskItem itiA = new IndexableTaskItem("A") {
             @Override
             protected Mono<Indexable> invokeTaskAsync(TaskGroup.InvocationContext context) {
                 return this.voidPublisher();
+            }
+
+            @Override
+            public Indexable invoke(TaskGroup.InvocationContext context) {
+                seen.add(key());
+                down.countDown();
+                return null;
+            }
+
+            @Override
+            public void invokeAfterPostRun(boolean isGroupFaulted) {
+                // should not be called
+                seen.add(key());
             }
         };
 
@@ -1467,6 +1507,19 @@ public class ProxyTaskGroupTests {
             @Override
             protected Mono<Indexable> invokeTaskAsync(TaskGroup.InvocationContext context) {
                 return this.voidPublisher();
+            }
+
+            @Override
+            public Indexable invoke(TaskGroup.InvocationContext context) {
+                seen.add(key());
+                down.countDown();
+                return null;
+            }
+
+            @Override
+            public void invokeAfterPostRun(boolean isGroupFaulted) {
+                // should not be called
+                seen.add(key());
             }
         };
 
@@ -1485,7 +1538,15 @@ public class ProxyTaskGroupTests {
 
             @Override
             public Indexable invoke(TaskGroup.InvocationContext context) {
+                seen.add(key());
+                down.countDown();
                 return null;
+            }
+
+            @Override
+            public void invokeAfterPostRun(boolean isGroupFaulted) {
+                seen.add(key());
+                down.countDown();
             }
         };
 
@@ -1496,12 +1557,14 @@ public class ProxyTaskGroupTests {
          *            |             |
          *            |-----------> B ----> A
          */
+        if (syncStack) {
+            itiC.taskGroup().invoke(itiC.taskGroup().newInvocationContext());
+        } else {
+            itiC.taskGroup()
+                    .invokeAsync(itiC.taskGroup().newInvocationContext())
+                    .subscribe(indexable -> seen.add(indexable.key()), throwable -> down.countDown(), () -> down.countDown());
+        }
 
-        final ArrayList<String> seen = new ArrayList<>();
-        CountDownLatch down = new CountDownLatch(1);
-        itiC.taskGroup()
-            .invokeAsync(itiC.taskGroup().newInvocationContext())
-            .subscribe(indexable -> seen.add(indexable.key()), throwable -> down.countDown(), () -> down.countDown());
         down.await();
 
         boolean b1 = seen.equals(new ArrayList<>(Arrays.asList(new String[] { "A", "C", "B", "C" })));
@@ -1517,13 +1580,26 @@ public class ProxyTaskGroupTests {
 
         // ------ //
 
+        final CountDownLatch monitor = new CountDownLatch(1);
         final IndexableTaskItem itiD = new IndexableTaskItem("D") {
             @Override
             protected Mono<Indexable> invokeTaskAsync(TaskGroup.InvocationContext context) {
                 return this.voidPublisher();
             }
-        };
 
+            @Override
+            public Indexable invoke(TaskGroup.InvocationContext context) {
+                seen.add(key());
+                monitor.countDown();
+                return null;
+            }
+
+            @Override
+            public void invokeAfterPostRun(boolean isGroupFaulted) {
+                // should not be called
+                seen.add(key());
+            }
+        };
         final int[] beforeGroupInvokeCntE = new int[1];
         final IndexableTaskItem itiE = new IndexableTaskItem("E") {
             @Override
@@ -1535,6 +1611,19 @@ public class ProxyTaskGroupTests {
             @Override
             protected Mono<Indexable> invokeTaskAsync(TaskGroup.InvocationContext context) {
                 return this.voidPublisher();
+            }
+
+            @Override
+            public Indexable invoke(TaskGroup.InvocationContext context) {
+                seen.add(key());
+                monitor.countDown();
+                return null;
+            }
+
+            @Override
+            public void invokeAfterPostRun(boolean isGroupFaulted) {
+                seen.add(key());
+                down.countDown();
             }
         };
 
@@ -1550,6 +1639,19 @@ public class ProxyTaskGroupTests {
             protected Mono<Indexable> invokeTaskAsync(TaskGroup.InvocationContext context) {
                 return this.voidPublisher();
             }
+
+            @Override
+            public Indexable invoke(TaskGroup.InvocationContext context) {
+                seen.add(key());
+                monitor.countDown();
+                return null;
+            }
+
+            @Override
+            public void invokeAfterPostRun(boolean isGroupFaulted) {
+                // should not be called
+                seen.add(key());
+            }
         };
 
         /**
@@ -1560,12 +1662,15 @@ public class ProxyTaskGroupTests {
          *            |-----------> D
          */
 
-        final CountDownLatch monitor = new CountDownLatch(1);
         seen.clear();
-        itiF.taskGroup()
-            .invokeAsync(itiC.taskGroup().newInvocationContext())
-            .subscribe(indexable -> seen.add(indexable.key()), throwable -> monitor.countDown(),
-                () -> monitor.countDown());
+        if (syncStack) {
+            itiF.taskGroup().invoke(itiC.taskGroup().newInvocationContext());
+        } else {
+            itiF.taskGroup()
+                    .invokeAsync(itiC.taskGroup().newInvocationContext())
+                    .subscribe(indexable -> seen.add(indexable.key()), throwable -> monitor.countDown(),
+                            () -> monitor.countDown());
+        }
 
         monitor.await();
 
