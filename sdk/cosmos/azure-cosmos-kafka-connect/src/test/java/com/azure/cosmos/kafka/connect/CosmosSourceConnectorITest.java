@@ -6,14 +6,16 @@ package com.azure.cosmos.kafka.connect;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.cosmos.implementation.TestConfigurations;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.kafka.connect.implementation.CosmosAuthType;
 import com.azure.cosmos.kafka.connect.implementation.source.ContainersMetadataTopicOffset;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosMetadataStorageType;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
 import com.azure.cosmos.kafka.connect.implementation.source.FeedRangesMetadataTopicOffset;
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.azure.cosmos.kafka.connect.implementation.source.JsonToStruct;
+import com.azure.cosmos.kafka.connect.implementation.source.MetadataEntityTypes;
+import com.azure.cosmos.kafka.connect.implementation.source.UnifiedMetadataSchemaConstants;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -159,7 +161,7 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
             int expectedMetadataRecordsCount = metadataStorageType == CosmosMetadataStorageType.COSMOS ? 0 : 2;
             int expectedItemRecords = createdItems.size();
 
-            Unreliables.retryUntilTrue(30, TimeUnit.SECONDS, () -> {;
+            Unreliables.retryUntilTrue(30, TimeUnit.SECONDS, () -> {
                 kafkaConsumer.poll(Duration.ofMillis(1000))
                     .iterator()
                     .forEachRemaining(consumerRecord -> {
@@ -177,22 +179,50 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
                 //validate containers metadata record
                 ConsumerRecord<String, JsonNode> containerMetadataRecord = metadataRecords.get(0);
                 assertThat(containerMetadataRecord.key()).isEqualTo(databaseName + "_" + connectorName);
-                ContainersMetadataTopicOffset containersMetadataTopicOffset =
-                    ContainersMetadataTopicOffset.fromMap(
+
+                JsonNode rootJsonNode = containerMetadataRecord.value().get("payload");
+                assertThat(rootJsonNode).isNotNull();
+                assertThat(rootJsonNode.get(UnifiedMetadataSchemaConstants.ENTITY_TYPE_NAME))
+                    .isEqualTo(MetadataEntityTypes.CONTAINERS_METADATA_V1);
+                JsonNode jsonValueNode = rootJsonNode.get(UnifiedMetadataSchemaConstants.JSON_VALUE_NAME);
+                assertThat(jsonValueNode).isNotNull();
+                String jsonValue = jsonValueNode.textValue();
+                assertThat(jsonValue).isNotNull();
+
+                ContainersMetadataTopicOffset containersMetadataTopicOffset = null;
+                try {
+                    containersMetadataTopicOffset = ContainersMetadataTopicOffset.fromMap(
                         Utils.getSimpleObjectMapper()
-                            .convertValue(containerMetadataRecord.value().get("payload"), new TypeReference<Map<String, Object>>(){})
+                             .readValue(jsonValue, JsonToStruct.JACKSON_MAP_TYPE)
                     );
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException(e);
+                }
                 assertThat(containersMetadataTopicOffset.getContainerRids().size()).isEqualTo(1);
                 assertThat(containersMetadataTopicOffset.getContainerRids().contains(containerRid)).isTrue();
 
                 // validate feed ranges metadata record
                 ConsumerRecord<String, JsonNode> feedRangesMetadataRecord = metadataRecords.get(1);
                 assertThat(feedRangesMetadataRecord.key()).isEqualTo(databaseName + "_" + containerRid + "_" + connectorName);
-                FeedRangesMetadataTopicOffset feedRangesMetadataTopicOffsetOffset =
-                    FeedRangesMetadataTopicOffset.fromMap(
+
+                rootJsonNode = feedRangesMetadataRecord.value().get("payload");
+                assertThat(rootJsonNode).isNotNull();
+                assertThat(rootJsonNode.get(UnifiedMetadataSchemaConstants.ENTITY_TYPE_NAME))
+                    .isEqualTo(MetadataEntityTypes.FEED_RANGES_METADATA_V1);
+                jsonValueNode = rootJsonNode.get(UnifiedMetadataSchemaConstants.JSON_VALUE_NAME);
+                assertThat(jsonValueNode).isNotNull();
+                jsonValue = jsonValueNode.textValue();
+                assertThat(jsonValue).isNotNull();
+
+                FeedRangesMetadataTopicOffset feedRangesMetadataTopicOffsetOffset = null;
+                try {
+                    feedRangesMetadataTopicOffsetOffset = FeedRangesMetadataTopicOffset.fromMap(
                         Utils.getSimpleObjectMapper()
-                            .convertValue(feedRangesMetadataRecord.value().get("payload"), new TypeReference<Map<String, Object>>(){})
+                             .readValue(jsonValue, JsonToStruct.JACKSON_MAP_TYPE)
                     );
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException(e);
+                }
                 assertThat(feedRangesMetadataTopicOffsetOffset.getFeedRanges().size()).isEqualTo(1);
             }
 
