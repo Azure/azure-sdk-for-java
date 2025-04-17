@@ -33,7 +33,6 @@ import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static io.clientcore.http.netty4.NettyHttpClientTests.uri;
-import static io.clientcore.http.netty4.implementation.Netty4Utility.PROGRESS_AND_TIMEOUT_HANDLER_NAME;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.createCodec;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.setOrSuppressError;
 import static io.clientcore.http.netty4.implementation.NettyHttpClientLocalTestServer.PROXY_TO_ADDRESS;
@@ -102,10 +101,6 @@ public class ComplicatedProxyTests {
                             setOrSuppressError(errorReference, closeListener.cause());
                         }
                     });
-
-                    channel.pipeline()
-                        .addLast(PROGRESS_AND_TIMEOUT_HANDLER_NAME,
-                            new Netty4ProgressAndTimeoutHandler(null, 60_000, 60_000, 60_000));
 
                     Netty4ResponseHandler responseHandler
                         = new Netty4ResponseHandler(request, responseReference, errorReference, latch);
