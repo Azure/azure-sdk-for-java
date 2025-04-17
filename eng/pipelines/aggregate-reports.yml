@@ -36,7 +36,7 @@ extends:
                 value: '${{ convertToJson(parameters.Artifacts) }}'
             pool:
               name: $(LINUXPOOL)
-              vmImage: $(LINUXVMIMAGE)
+              image: $(LINUXVMIMAGE)
               os: $(LINUXOS)
             steps:
             - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
@@ -153,7 +153,7 @@ extends:
             pool:
               # CredScan build task is Windows only (https://aka.ms/credscan).
               name: $(WINDOWSPOOL)
-              vmImage: $(WINDOWSVMIMAGE)
+              image: $(WINDOWSVMIMAGE)
               os: $(WINDOWSOS)
             steps:
             - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
@@ -188,7 +188,7 @@ extends:
 
             pool:
               name: $(WINDOWSPOOL)
-              vmImage: $(WINDOWSVMIMAGE)
+              image: $(WINDOWSVMIMAGE)
               os: $(WINDOWSOS)
 
             steps:
