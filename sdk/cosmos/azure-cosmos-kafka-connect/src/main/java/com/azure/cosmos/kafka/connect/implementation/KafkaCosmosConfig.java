@@ -363,7 +363,7 @@ public class KafkaCosmosConfig extends AbstractConfig {
                 ACCOUNT_ENDPOINT,
                 ConfigDef.Type.STRING,
                 ConfigDef.NO_DEFAULT_VALUE,
-                new UriValidator("Account endpoint"),
+                new AccountEndpointValidator(),
                 ConfigDef.Importance.HIGH,
                 ACCOUNT_ENDPOINT_DOC,
                 accountGroupName,
@@ -443,7 +443,6 @@ public class KafkaCosmosConfig extends AbstractConfig {
                 AAD_AUTH_ENDPOINT_OVERRIDE,
                 ConfigDef.Type.STRING,
                 DEFAULT_AAD_AUTH_ENDPOINT_OVERRIDE,
-                new UriValidator("Azure active directory endpoint"),
                 ConfigDef.Importance.MEDIUM,
                 AAD_AUTH_ENDPOINT_OVERRIDE_DOC,
                 accountGroupName,
@@ -586,7 +585,6 @@ public class KafkaCosmosConfig extends AbstractConfig {
                 THROUGHPUT_CONTROL_AAD_AUTH_ENDPOINT_OVERRIDE,
                 ConfigDef.Type.STRING,
                 DEFAULT_THROUGHPUT_CONTROL_AAD_AUTH_ENDPOINT_OVERRIDE,
-                new UriValidator("Throughput control Azure active directory endpoint"),
                 ConfigDef.Importance.LOW,
                 THROUGHPUT_CONTROL_AAD_AUTH_ENDPOINT_OVERRIDE_DOC,
                 throughputControlGroupName,
@@ -856,11 +854,10 @@ public class KafkaCosmosConfig extends AbstractConfig {
                 }
 
                 String authEndpointOverride = configValueMap.get(authEndpointOverrideConfig).value().toString();
-                if (!StringUtils.isEmpty(authEndpointOverride)) {
-                    UriValidator uriValidator = new UriValidator("");
+                if (StringUtils.isNotEmpty(authEndpointOverride)) {
                     try {
-                        uriValidator.ensureValid(authEndpointOverride);
-                    } catch (ConfigException e) {
+                        new URL(authEndpointOverride);
+                    } catch (MalformedURLException e) {
                         configValueMap
                             .get(authEndpointOverrideConfig)
                             .addErrorMessage("AuthEndpointOverride need to be valid URI format for Service Principal auth type");
@@ -902,31 +899,25 @@ public class KafkaCosmosConfig extends AbstractConfig {
         }
     }
 
-    public static class UriValidator implements ConfigDef.Validator {
-        private final String label;
-
-        public UriValidator(String label) {
-            this.label = label;
-        }
-
+    public static class AccountEndpointValidator implements ConfigDef.Validator {
         @Override
         @SuppressWarnings("unchecked")
         public void ensureValid(String name, Object o) {
-            String uri = (String) o;
-            if (StringUtils.isEmpty(uri)) {
-                throw new ConfigException(name, o, this.label+" can not be empty");
+            String accountEndpointUriString = (String) o;
+            if (StringUtils.isEmpty(accountEndpointUriString)) {
+                throw new ConfigException(name, o, "Account endpoint can not be empty");
             }
 
             try {
-                new URL(uri);
+                new URL(accountEndpointUriString);
             } catch (MalformedURLException e) {
-                throw new ConfigException(name, o, this.label+" is invalid.");
+                throw new ConfigException(name, o, "Invalid account endpoint.");
             }
         }
 
         @Override
         public String toString() {
-            return label;
+            return "Account endpoint";
         }
     }
 
