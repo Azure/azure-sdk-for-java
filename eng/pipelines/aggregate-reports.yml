@@ -8,13 +8,15 @@ pr:
     include:
       - eng/pipelines/aggregate-reports.yml
 
-variables:
-  - template: /eng/pipelines/templates/variables/globals.yml
+parameters:
   - name: Artifacts
     type: object
     default:
       - name: aggregate-reports # fake artifact name
         groupId: reports # fake group Id
+
+variables:
+  - template: /eng/pipelines/templates/variables/globals.yml
 
 stages:
   - stage: AggregateReports
@@ -27,7 +29,7 @@ stages:
 
         variables:
         - name: ArtifactsJson
-          value: '${{ convertToJson($(Artifacts)) }}'
+          value: '${{ convertToJson(parameters.Artifacts) }}'
         pool:
           name: $(LINUXPOOL)
           vmImage: $(LINUXVMIMAGE)
