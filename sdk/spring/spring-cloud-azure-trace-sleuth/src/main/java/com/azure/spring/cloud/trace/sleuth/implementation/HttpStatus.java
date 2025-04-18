@@ -425,7 +425,6 @@ public enum HttpStatus {
      */
     NETWORK_AUTHENTICATION_REQUIRED(511, Series.SERVER_ERROR, "Network Authentication Required");
 
-
     private static final HttpStatus[] VALUES;
 
     static {
@@ -566,18 +565,13 @@ public enum HttpStatus {
         return status;
     }
 
-
     /**
      * Enumeration of HTTP status series.
      * <p>Retrievable via {@link HttpStatus#series()}.
      */
     public enum Series {
 
-        INFORMATIONAL(1),
-        SUCCESSFUL(2),
-        REDIRECTION(3),
-        CLIENT_ERROR(4),
-        SERVER_ERROR(5);
+        INFORMATIONAL(1), SUCCESSFUL(2), REDIRECTION(3), CLIENT_ERROR(4), SERVER_ERROR(5);
 
         private final int value;
 

@@ -127,7 +127,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-servicebus-jms</artifactId>
-      <version>1.0.0</version> <!-- {x-version-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
+      <version>1.0.0</version> <!-- {x-version-update;spring_com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
       <optional>true</optional>
       <exclusions>
         <exclusion>
@@ -143,7 +143,7 @@
     <dependency>
       <groupId>org.messaginghub</groupId>
       <artifactId>pooled-jms</artifactId>
-      <version>1.2.6</version> <!-- {x-version-update;org.messaginghub:pooled-jms;external_dependency} -->
+      <version>1.2.6</version> <!-- {x-version-update;spring_org.messaginghub:pooled-jms;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -287,20 +287,20 @@
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
-      <version>4.0.1</version> <!-- {x-version-update;javax.servlet:javax.servlet-api;external_dependency} -->
+      <version>4.0.1</version> <!-- {x-version-update;spring_javax.servlet:javax.servlet-api;external_dependency} -->
       <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.hibernate.validator</groupId>
       <artifactId>hibernate-validator</artifactId>
-      <version>6.2.5.Final</version> <!-- {x-version-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
+      <version>6.2.5.Final</version> <!-- {x-version-update;spring_spring_org.hibernate.validator:hibernate-validator;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
     <dependency>
       <groupId>jakarta.validation</groupId>
       <artifactId>jakarta.validation-api</artifactId>
-      <version>2.0.2</version> <!-- {x-version-update;jakarta.validation:jakarta.validation-api;external_dependency} -->
+      <version>2.0.2</version> <!-- {x-version-update;spring_jakarta.validation:jakarta.validation-api;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -328,13 +328,13 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.14.12</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.14.12</version> <!-- {x-version-update;spring_testdep_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.14.12</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.14.12</version> <!-- {x-version-update;spring_testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -346,7 +346,7 @@
     <dependency>
       <groupId>org.glassfish</groupId>
       <artifactId>jakarta.el</artifactId>
-      <version>3.0.4</version> <!-- {x-version-update;org.glassfish:jakarta.el;external_dependency} -->
+      <version>3.0.4</version> <!-- {x-version-update;spring_org.glassfish:jakarta.el;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -369,7 +369,7 @@
     <dependency>
       <groupId>redis.clients</groupId>
       <artifactId>jedis</artifactId>
-      <version>3.8.0</version> <!-- {x-version-update;spring_redis.clients:jedis;external_dependency} -->
+      <version>3.8.0</version> <!-- {x-version-update;spring_spring_redis.clients:jedis;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -377,7 +377,7 @@
     <dependency>
       <groupId>com.mysql</groupId>
       <artifactId>mysql-connector-j</artifactId>
-      <version>8.0.33</version> <!-- {x-version-update;com.mysql:mysql-connector-j;external_dependency} -->
+      <version>8.0.33</version> <!-- {x-version-update;spring_com.mysql:mysql-connector-j;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -399,14 +399,14 @@
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>testcontainers</artifactId>
-      <version>1.17.6</version> <!-- {x-version-update;org.testcontainers:testcontainers;external_dependency} -->
+      <version>1.17.6</version> <!-- {x-version-update;spring_org.testcontainers:testcontainers;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>junit-jupiter</artifactId>
-      <version>1.17.6</version> <!-- {x-version-update;org.testcontainers:junit-jupiter;external_dependency} -->
+      <version>1.17.6</version> <!-- {x-version-update;spring_org.testcontainers:junit-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
 
@@ -453,16 +453,16 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.4.1</version> <!-- {x-version-update;spring_org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.microsoft.azure:azure-servicebus-jms:[1.0.0]</include> <!-- {x-include-update;com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
-                <include>org.messaginghub:pooled-jms:[1.2.6]</include> <!-- {x-include-update;org.messaginghub:pooled-jms;external_dependency} -->
-                <include>jakarta.validation:jakarta.validation-api:[2.0.2]</include> <!-- {x-include-update;jakarta.validation:jakarta.validation-api;external_dependency} -->
-                <include>javax.servlet:javax.servlet-api:[4.0.1]</include> <!-- {x-include-update;javax.servlet:javax.servlet-api;external_dependency} -->
-                <include>org.hibernate.validator:hibernate-validator:[6.2.5.Final]</include> <!-- {x-include-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
+                <include>com.microsoft.azure:azure-servicebus-jms:[1.0.0]</include> <!-- {x-include-update;spring_com.microsoft.azure:azure-servicebus-jms;external_dependency} -->
+                <include>org.messaginghub:pooled-jms:[1.2.6]</include> <!-- {x-include-update;spring_org.messaginghub:pooled-jms;external_dependency} -->
+                <include>jakarta.validation:jakarta.validation-api:[2.0.2]</include> <!-- {x-include-update;spring_jakarta.validation:jakarta.validation-api;external_dependency} -->
+                <include>javax.servlet:javax.servlet-api:[4.0.1]</include> <!-- {x-include-update;spring_javax.servlet:javax.servlet-api;external_dependency} -->
+                <include>org.hibernate.validator:hibernate-validator:[6.2.5.Final]</include> <!-- {x-include-update;spring_spring_org.hibernate.validator:hibernate-validator;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[2.7.18]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-autoconfigure-processor:[2.7.18]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure-processor;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-autoconfigure:[2.7.18]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
@@ -478,7 +478,7 @@
                 <include>org.springframework.security:spring-security-config:[5.7.11]</include> <!-- {x-include-update;org.springframework.security:spring-security-config;external_dependency} -->
                 <include>org.springframework:spring-jms:[5.3.32]</include> <!-- {x-include-update;org.springframework:spring-jms;external_dependency} -->
                 <include>org.springframework:spring-jdbc:[5.3.32]</include> <!-- {x-include-update;org.springframework:spring-jdbc;external_dependency} -->
-                <include>redis.clients:jedis:[3.8.0]</include> <!-- {x-include-update;spring_redis.clients:jedis;external_dependency} -->
+                <include>redis.clients:jedis:[3.8.0]</include> <!-- {x-include-update;spring_spring_redis.clients:jedis;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -487,7 +487,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
-        <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+        <version>3.3.0</version> <!-- {x-version-update;spring_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <configuration>
           <archive>
             <manifestEntries>

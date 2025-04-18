@@ -42,7 +42,7 @@
     <dependency>
       <groupId>javax.servlet</groupId>
       <artifactId>javax.servlet-api</artifactId>
-      <version>4.0.1</version> <!-- {x-version-update;javax.servlet:javax.servlet-api;external_dependency} -->
+      <version>4.0.1</version> <!-- {x-version-update;spring_javax.servlet:javax.servlet-api;external_dependency} -->
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -98,13 +98,13 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
-        <version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <version>3.4.1</version> <!-- {x-version-update;spring_org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
           <rules>
             <bannedDependencies>
               <includes>
                 <include>com.azure.spring:spring-cloud-azure-feature-management:[4.20.0]</include> <!-- {x-include-update;com.azure.spring:spring-cloud-azure-feature-management;current} -->
-                <include>javax.servlet:javax.servlet-api:[4.0.1]</include> <!-- {x-include-update;javax.servlet:javax.servlet-api;external_dependency} -->
+                <include>javax.servlet:javax.servlet-api:[4.0.1]</include> <!-- {x-include-update;spring_javax.servlet:javax.servlet-api;external_dependency} -->
                 <include>org.springframework:spring-web:[5.3.32]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
                 <include>org.springframework:spring-webmvc:[5.3.32]</include> <!-- {x-include-update;org.springframework:spring-webmvc;external_dependency} -->
               </includes>

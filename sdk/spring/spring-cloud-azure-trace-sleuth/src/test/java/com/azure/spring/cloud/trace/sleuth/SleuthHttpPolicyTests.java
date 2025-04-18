@@ -73,13 +73,11 @@ public class SleuthHttpPolicyTests {
         SleuthHttpPolicy sleuthHttpPolicy = new SleuthHttpPolicy(tracer);
         // key is test-key
         CustomerProvidedKey providedKey = new CustomerProvidedKey("dGVzdC1rZXk=");
-        TokenCredential tokenCredential = new ClientSecretCredentialBuilder()
-            .clientSecret("dummy-secret")
+        TokenCredential tokenCredential = new ClientSecretCredentialBuilder().clientSecret("dummy-secret")
             .clientId("dummy-client-id")
             .tenantId("dummy-tenant-id")
             .build();
-        BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
-            .customerProvidedKey(providedKey)
+        BlobServiceClient blobServiceClient = new BlobServiceClientBuilder().customerProvidedKey(providedKey)
             .credential(tokenCredential)
             .addPolicy(sleuthHttpPolicy)
             .endpoint("https://test.blob.core.windows.net/")
@@ -104,10 +102,8 @@ public class SleuthHttpPolicyTests {
         when(httpPipelineCallContext.getData(com.azure.core.util.tracing.Tracer.DISABLE_TRACING_KEY))
             .thenReturn(Optional.of(true));
         sleuthHttpPolicy.process(httpPipelineCallContext, httpPipelineNextPolicy);
-        verify(httpPipelineCallContext, times(1))
-            .getData(com.azure.core.util.tracing.Tracer.DISABLE_TRACING_KEY);
-        verify(httpPipelineCallContext, times(0))
-            .getData(com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY);
+        verify(httpPipelineCallContext, times(1)).getData(com.azure.core.util.tracing.Tracer.DISABLE_TRACING_KEY);
+        verify(httpPipelineCallContext, times(0)).getData(com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY);
     }
 
     @Test
@@ -176,7 +172,8 @@ public class SleuthHttpPolicyTests {
         verify(span, times(1)).tag("http.status_code", "200");
     }
 
-    private void commonProcess(Span parentSpan, Span.Builder spanBuilder, HttpRequest request) throws MalformedURLException {
+    private void commonProcess(Span parentSpan, Span.Builder spanBuilder, HttpRequest request)
+        throws MalformedURLException {
         when(tracer.currentSpan()).thenReturn(parentSpan);
         when(tracer.spanBuilder()).thenReturn(spanBuilder);
         when(httpPipelineCallContext.getHttpRequest()).thenReturn(request);
@@ -196,8 +193,7 @@ public class SleuthHttpPolicyTests {
         final HttpClient httpClient = HttpClient.createDefault();
         final List<HttpPipelinePolicy> policies = new ArrayList<>();
         policies.add(new SleuthHttpPolicy(tracer));
-        final HttpPipeline httpPipeline = new HttpPipelineBuilder()
-            .httpClient(httpClient)
+        final HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
             .policies(policies.toArray(new HttpPipelinePolicy[0]))
             .build();
         return httpPipeline;

@@ -81,20 +81,15 @@ public class SleuthHttpPolicy implements HttpPipelinePolicy {
         }
 
         // run the next policy and handle success and error
-        return next.process()
-                   .doOnEach(SleuthHttpPolicy::handleResponse)
-                   .contextWrite(Context.of("TRACING_SPAN", span));
+        return next.process().doOnEach(SleuthHttpPolicy::handleResponse).contextWrite(Context.of("TRACING_SPAN", span));
     }
 
-    private static void addSpanRequestAttributes(Span span, HttpRequest request,
-                                                 HttpPipelineCallContext context) {
-        putTagIfNotEmptyOrNull(span, HTTP_USER_AGENT,
-            request.getHeaders().getValue("User-Agent"));
+    private static void addSpanRequestAttributes(Span span, HttpRequest request, HttpPipelineCallContext context) {
+        putTagIfNotEmptyOrNull(span, HTTP_USER_AGENT, request.getHeaders().getValue("User-Agent"));
         putTagIfNotEmptyOrNull(span, HTTP_METHOD, request.getHttpMethod().toString());
         putTagIfNotEmptyOrNull(span, HTTP_URL, request.getUrl().toString());
         Optional<Object> tracingNamespace = context.getData(AZ_TRACING_NAMESPACE_KEY);
-        tracingNamespace.ifPresent(o -> putTagIfNotEmptyOrNull(span, AZ_NAMESPACE_KEY,
-            o.toString()));
+        tracingNamespace.ifPresent(o -> putTagIfNotEmptyOrNull(span, AZ_NAMESPACE_KEY, o.toString()));
     }
 
     private static void putTagIfNotEmptyOrNull(Span span, String key, String value) {

@@ -88,13 +88,13 @@
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy</artifactId>
-      <version>1.14.12</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
+      <version>1.14.12</version> <!-- {x-version-update;spring_testdep_net.bytebuddy:byte-buddy;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>net.bytebuddy</groupId>
       <artifactId>byte-buddy-agent</artifactId>
-      <version>1.14.12</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <version>1.14.12</version> <!-- {x-version-update;spring_testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
 		<!-- Added this dependency to include necessary annotations used
@@ -110,7 +110,7 @@
 		<dependency>
 			<groupId>javax.annotation</groupId>
 			<artifactId>javax.annotation-api</artifactId>
-			<version>1.3.2</version> <!-- {x-version-update;javax.annotation:javax.annotation-api;external_dependency} -->
+			<version>1.3.2</version> <!-- {x-version-update;spring_javax.annotation:javax.annotation-api;external_dependency} -->
 		</dependency>
 	</dependencies>
 	<build>
@@ -154,15 +154,15 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-enforcer-plugin</artifactId>
-				<version>3.4.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+				<version>3.4.1</version> <!-- {x-version-update;spring_org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
 				<configuration>
 					<rules>
 						<bannedDependencies>
 							<includes>
-								<include>com.fasterxml.jackson.core:jackson-annotations:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
-								<include>com.fasterxml.jackson.core:jackson-databind:[2.13.5]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
-								<include>javax.annotation:javax.annotation-api:[1.3.2]</include> <!-- {x-include-update;javax.annotation:javax.annotation-api;external_dependency} -->
-								<include>org.hibernate.validator:hibernate-validator:[6.2.5.Final]</include> <!-- {x-include-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
+								<include>com.fasterxml.jackson.core:jackson-annotations:[2.13.5]</include> <!-- {x-include-update;spring_com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
+								<include>com.fasterxml.jackson.core:jackson-databind:[2.13.5]</include> <!-- {x-include-update;spring_com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+								<include>javax.annotation:javax.annotation-api:[1.3.2]</include> <!-- {x-include-update;spring_javax.annotation:javax.annotation-api;external_dependency} -->
+								<include>org.hibernate.validator:hibernate-validator:[6.2.5.Final]</include> <!-- {x-include-update;spring_spring_org.hibernate.validator:hibernate-validator;external_dependency} -->
 								<include>org.springframework.boot:spring-boot-actuator:[2.7.18]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator;external_dependency} -->
 								<include>org.springframework.boot:spring-boot-autoconfigure:[2.7.18]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
 								<include>org.springframework.cloud:spring-cloud-context:[3.1.8]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-context;external_dependency} -->
@@ -175,7 +175,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
+				<version>3.3.0</version> <!-- {x-version-update;spring_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
 				<configuration>
 					<archive>
 						<manifest>
