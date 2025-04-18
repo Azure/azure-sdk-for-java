@@ -27,13 +27,13 @@ extends:
             pool:
               name: $(LINUXPOOL)
               image: $(LINUXVMIMAGE)
-              os: linux
+              os: $(LINUXOS)
             steps:
               # Checkout a new release branch
               - pwsh: |
                   $currentDate = Get-Date -Format "yyyyMMdd"
                   Write-Host "##vso[task.setvariable variable=PatchDate]$currentDate"
-                  
+
                   $branchName = "release/patch/$currentDate"
                   Write-Host "##vso[task.setvariable variable=BaseBranchName]$branchName"
                   Write-Host "git checkout -b $branchName"

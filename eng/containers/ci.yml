@@ -34,7 +34,7 @@ extends:
         pool:
           name: $(LINUXPOOL)
           image: $(LINUXNEXTVMIMAGE)
-          os: linux
+          os: $(LINUXOS)
 
         templateContext:
           outputs:

@@ -24,7 +24,7 @@ jobs:
     pool:
       name: $(LINUXPOOL)
       image: $(LINUXVMIMAGE)
-      os: linux
+      os: $(LINUXOS)
 
     steps:
       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml

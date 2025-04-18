@@ -28,7 +28,7 @@ extends:
           pool:
             name: $(WINDOWSPOOL)
             image: $(WINDOWSVMIMAGE)
-            os: windows
+            os: $(WINDOWSOS)
           steps:
           - checkout: azure-sdk-build-tools
             path: azure-sdk-build-tools

@@ -40,7 +40,8 @@ stages:
 
       pool:
         name: $(LINUXPOOL)
-        vmImage: $(LINUXVMIMAGE)
+        image: $(LINUXVMIMAGE)
+        os: $(LINUXOS)
 
       steps:
       - task: Maven@4

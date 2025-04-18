@@ -40,7 +40,7 @@ extends:
           pool:
             name: $(LINUXPOOL)
             image: $(LINUXVMIMAGE)
-            os: linux
+            os: $(LINUXOS)
 
           steps:
             # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories as we require the GitHub
@@ -187,7 +187,7 @@ extends:
           pool:
             name: $(LINUXPOOL)
             image: $(LINUXVMIMAGE)
-            os: linux
+            os: $(LINUXOS)
 
           steps:
             - task: UsePythonVersion@0

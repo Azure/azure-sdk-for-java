@@ -31,7 +31,7 @@ stages:
         pool:
           name: $(WINDOWSPOOL)
           image: $(WINDOWSVMIMAGE)
-          os: windows
+          os: $(WINDOWSOS)
         steps:
           - checkout: azure-sdk-build-tools
             path: azure-sdk-build-tools
@@ -96,7 +96,7 @@ stages:
           pool:
             name: $(WINDOWSPOOL)
             image: $(WINDOWSVMIMAGE)
-            os: windows
+            os: $(WINDOWSOS)
           steps:
             - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
             - template: /eng/common/pipelines/templates/steps/retain-run.yml
@@ -200,7 +200,7 @@ stages:
           pool:
             name: $(WINDOWSPOOL)
             image: $(WINDOWSVMIMAGE)
-            os: windows
+            os: $(WINDOWSOS)
           steps:
             - download: none
 
@@ -249,7 +249,7 @@ stages:
           pool:
             name: $(LINUXPOOL)
             image: $(LINUXVMIMAGE)
-            os: linux
+            os: $(LINUXOS)
 
           variables:
             - template: /eng/pipelines/templates/variables/globals.yml
@@ -295,7 +295,7 @@ stages:
           pool:
             name: $(WINDOWSPOOL)
             image: $(WINDOWSVMIMAGE)
-            os: windows
+            os: $(WINDOWSOS)
           steps:
             - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
             - download: current

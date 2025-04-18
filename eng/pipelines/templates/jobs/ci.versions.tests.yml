@@ -49,7 +49,7 @@ jobs:
     pool:
       name: $(LINUXPOOL)
       image: $(LINUXVMIMAGE)
-      os: linux
+      os: $(LINUXOS)
 
     templateContext:
       outputs:
