@@ -7,6 +7,7 @@ package com.azure.security.confidentialledger;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.client.traits.ConfigurationTrait;
+import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
 import com.azure.core.credential.TokenCredential;
@@ -43,8 +44,9 @@ import java.util.Objects;
  * A builder for creating a new instance of the ConfidentialLedgerClient type.
  */
 @ServiceClientBuilder(serviceClients = { ConfidentialLedgerClient.class, ConfidentialLedgerAsyncClient.class })
-public final class ConfidentialLedgerClientBuilder implements HttpTrait<ConfidentialLedgerClientBuilder>,
-    ConfigurationTrait<ConfidentialLedgerClientBuilder>, TokenCredentialTrait<ConfidentialLedgerClientBuilder> {
+public final class ConfidentialLedgerClientBuilder
+    implements HttpTrait<ConfidentialLedgerClientBuilder>, ConfigurationTrait<ConfidentialLedgerClientBuilder>,
+    TokenCredentialTrait<ConfidentialLedgerClientBuilder>, EndpointTrait<ConfidentialLedgerClientBuilder> {
     @Generated
     private static final String SDK_NAME = "name";
 
@@ -196,20 +198,40 @@ public final class ConfidentialLedgerClientBuilder implements HttpTrait<Confiden
     }
 
     /*
-     * The Confidential Ledger URL, for example https://contoso.confidentialledger.azure.com
+     * The service endpoint
+     */
+    @Generated
+    private String endpoint;
+
+    /*
+     * The service endpoint
      */
     @Generated
     private String ledgerEndpoint;
 
     /**
      * Sets The Confidential Ledger URL, for example https://contoso.confidentialledger.azure.com.
-     * 
+     * @deprecated The ledgerEndpoint method is now deprecated and will be removed in future releases Use {@link ConfidentialLedgerClientBuilder#endpoint(endpoint)} instead.
+     *
      * @param ledgerEndpoint the ledgerEndpoint value.
      * @return the ConfidentialLedgerClientBuilder.
      */
-    @Generated
+    @Deprecated
     public ConfidentialLedgerClientBuilder ledgerEndpoint(String ledgerEndpoint) {
         this.ledgerEndpoint = ledgerEndpoint;
+        return this;
+    }
+
+    /**
+     * Sets The Confidential Ledger URL, for example https://contoso.confidentialledger.azure.com.
+     * 
+     * @param endpoint the endpoint value.
+     * @return the ConfidentialLedgerClientBuilder.
+     * {@inheritDoc}.
+     */
+    @Override
+    public ConfidentialLedgerClientBuilder endpoint(String endpoint) {
+        this.endpoint = endpoint;
         return this;
     }
 
@@ -261,7 +283,7 @@ public final class ConfidentialLedgerClientBuilder implements HttpTrait<Confiden
         ConfidentialLedgerServiceVersion localServiceVersion
             = (serviceVersion != null) ? serviceVersion : ConfidentialLedgerServiceVersion.getLatest();
         ConfidentialLedgerClientImpl client = new ConfidentialLedgerClientImpl(localPipeline,
-            JacksonAdapter.createDefaultSerializerAdapter(), this.ledgerEndpoint, localServiceVersion);
+            JacksonAdapter.createDefaultSerializerAdapter(), this.endpoint, localServiceVersion);
         return client;
     }
 
@@ -269,7 +291,7 @@ public final class ConfidentialLedgerClientBuilder implements HttpTrait<Confiden
     private void validateClient() {
         // This method is invoked from 'buildInnerClient'/'buildClient' method.
         // Developer can customize this method, to validate that the necessary conditions are met for the new client.
-        Objects.requireNonNull(ledgerEndpoint, "'ledgerEndpoint' cannot be null.");
+        Objects.requireNonNull(endpoint, "'endpoint' cannot be null.");
     }
 
     @Generated

@@ -16,14 +16,15 @@ public final class CreateLedgerEntryTests extends ConfidentialLedgerClientTestBa
     @Test
     @Disabled
     public void testCreateLedgerEntryTests() {
-        BinaryData entry = BinaryData.fromString("{\"contents\":\"New ledger entry contents.\"}");
-        RequestOptions requestOptions = new RequestOptions();
+        BinaryData entry = BinaryData.fromString(
+            "{\"contents\":\"New ledger entry contents.\",\"postHooks\":[{\"functionId\":\"myFunction2\",\"properties\":{\"arguments\":[\"arg3\",\"arg4\"],\"exportedFunctionName\":\"main\",\"runtimeOptions\":{\"log_exception_details\":true,\"max_cached_interpreters\":0,\"max_execution_time_ms\":0,\"max_heap_bytes\":0,\"max_stack_bytes\":0,\"return_exception_details\":true}}}],\"preHooks\":[{\"functionId\":\"myFunction1\",\"properties\":{\"arguments\":[\"arg1\",\"arg2\"],\"exportedFunctionName\":\"main\",\"runtimeOptions\":{\"log_exception_details\":true,\"max_cached_interpreters\":0,\"max_execution_time_ms\":0,\"max_heap_bytes\":0,\"max_stack_bytes\":0,\"return_exception_details\":true}}}]}");
+        RequestOptions requestOptions
+            = new RequestOptions().addQueryParam("collectionId", "Collection1").addQueryParam("tags", "tag1,tag2,tag3");
         Response<BinaryData> response = confidentialLedgerClient.createLedgerEntryWithResponse(entry, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
-        Assertions.assertEquals("19.2",
+        Assertions.assertEquals("2.15",
             response.getHeaders().get(HttpHeaderName.fromString("x-ms-ccf-transaction-id")).getValue());
-        Assertions.assertEquals(
-            BinaryData.fromString("{\"collectionId\":\"DEFAULT_SUBLEDGER\"}").toObject(Object.class),
+        Assertions.assertEquals(BinaryData.fromString("{\"collectionId\":\"subledger:0\"}").toObject(Object.class),
             response.getValue().toObject(Object.class));
     }
 }

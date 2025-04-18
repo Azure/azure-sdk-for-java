@@ -15,7 +15,7 @@ public class DeleteUser {
     public static void main(String[] args) {
         ConfidentialLedgerClient confidentialLedgerClient
             = new ConfidentialLedgerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
-                .ledgerEndpoint(Configuration.getGlobalConfiguration().get("LEDGERENDPOINT"))
+                .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.security.confidentialledger.generated.deleteuser.deleteuser
         RequestOptions requestOptions = new RequestOptions();
