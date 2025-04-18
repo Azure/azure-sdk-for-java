@@ -12,7 +12,7 @@ import com.azure.resourcemanager.redisenterprise.models.ExportClusterParameters;
 public final class DatabasesExportSamples {
     /*
      * x-ms-original-file:
-     * specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2024-09-01-preview/examples/
+     * specification/redisenterprise/resource-manager/Microsoft.Cache/preview/2025-05-01-preview/examples/
      * RedisEnterpriseDatabasesExport.json
      */
     /**
