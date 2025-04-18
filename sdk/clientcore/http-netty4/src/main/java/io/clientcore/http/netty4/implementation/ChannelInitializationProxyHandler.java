@@ -8,7 +8,6 @@ import io.clientcore.core.utils.AuthenticateChallenge;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.configuration.Configuration;
 import io.clientcore.http.netty4.NettyHttpClientBuilder;
-import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.proxy.HttpProxyHandler;

@@ -37,6 +37,13 @@ public final class Netty4ChannelInputStream extends InputStream {
     // from the Channel. From there either more data will be read or 'streamDone = true' will be reached.
     private int readIndex;
 
+    /**
+     * Creates an instance of {@link Netty4ChannelInputStream} that reads from the given {@link Channel}.
+     *
+     * @param eagerContent Any response body content eagerly read from the {@link Channel} when processing the initial
+     * status line and response headers.
+     * @param channel The {@link Channel} to read from.
+     */
     Netty4ChannelInputStream(ByteArrayOutputStream eagerContent, Channel channel) {
         if (eagerContent != null && eagerContent.size() > 0) {
             this.currentBuffer = eagerContent.toByteArray();
@@ -158,6 +165,8 @@ public final class Netty4ChannelInputStream extends InputStream {
         currentBuffer = null;
         additionalBuffers.clear();
         if (!channelDone) {
+            // Close the Channel, the Channel will handle counting down the latch for the read operation if it is
+            // happening when close is called.
             channel.close();
         }
     }

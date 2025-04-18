@@ -58,6 +58,8 @@ final class Netty4ChannelBinaryData extends BinaryData {
                 try {
                     buf.readBytes(eagerContent, buf.readableBytes());
                 } catch (IOException ex) {
+                    // This exception thrown here will eventually close the Channel, resulting in the latch being
+                    // counted down.
                     throw new UncheckedIOException(ex);
                 }
             }));
