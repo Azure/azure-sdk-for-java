@@ -5,14 +5,17 @@ package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.CollectionRoutingMapNotFoundException;
+import com.azure.cosmos.implementation.CosmosBulkExecutionOptionsImpl;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.ResourceThrottleRetryPolicy;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
@@ -20,6 +23,7 @@ import com.azure.cosmos.implementation.directconnectivity.WFConstants;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
 import com.azure.cosmos.models.CosmosBatchOperationResult;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemOperationType;
 import com.azure.cosmos.models.ModelBridgeInternal;
@@ -38,6 +42,9 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
 import static com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper.getEffectivePartitionKeyString;
 
 final class BulkExecutorUtil {
+
+    private static final ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor ctxAccessor =
+        ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
 
     static ServerOperationBatchRequest createBatchRequest(
         List<CosmosItemOperation> operations,
@@ -103,7 +110,8 @@ final class BulkExecutorUtil {
     static Mono<String> resolvePartitionKeyRangeId(
         AsyncDocumentClient docClientWrapper,
         CosmosAsyncContainer container,
-        CosmosItemOperation operation) {
+        CosmosItemOperation operation,
+        CosmosBulkExecutionOptionsImpl bulkExecutionOptions) {
 
         checkNotNull(operation, "expected non-null operation");
 
@@ -112,8 +120,28 @@ final class BulkExecutorUtil {
         if (operation instanceof ItemBulkOperation<?, ?>) {
             final ItemBulkOperation<?, ?> itemBulkOperation = (ItemBulkOperation<?, ?>) operation;
 
+            CosmosDiagnosticsContext diagnosticsContext
+                = ctxAccessor.create(
+                    null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                bulkExecutionOptions);
+
             return Mono.defer(() ->
-                BulkExecutorUtil.getCollectionInfoAsync(docClientWrapper, container, collectionBeforeRecreation.get())
+                BulkExecutorUtil.getCollectionInfoAsync(docClientWrapper, container, collectionBeforeRecreation.get(), diagnosticsContext)
                 .flatMap(collection -> {
                     final PartitionKeyDefinition definition = collection.getPartitionKey();
                     final PartitionKeyInternal partitionKeyInternal = getPartitionKeyInternal(operation, definition);
@@ -181,7 +209,8 @@ final class BulkExecutorUtil {
     private static Mono<DocumentCollection> getCollectionInfoAsync(
         AsyncDocumentClient documentClient,
         CosmosAsyncContainer container,
-        DocumentCollection obsoleteValue) {
+        DocumentCollection obsoleteValue,
+        CosmosDiagnosticsContext diagnosticsContext) {
 
         // Utils.joinPath sanitizes the path and make sure it ends with a single '/'.
         final String resourceAddress = Utils.joinPath(BridgeInternal.getLink(container), null);
@@ -193,7 +222,7 @@ final class BulkExecutorUtil {
                 resourceAddress,
                 null,
                 obsoleteValue,
-                null);
+                diagnosticsContext);
     }
 
     static boolean isWriteOperation(CosmosItemOperationType cosmosItemOperationType) {

@@ -4,6 +4,8 @@
 package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants.StatusCodes;
@@ -100,6 +102,15 @@ final class BulkOperationRetryPolicy implements IRetryPolicy {
             if ((subStatusCode == SubStatusCodes.PARTITION_KEY_RANGE_GONE ||
                      subStatusCode == SubStatusCodes.COMPLETING_SPLIT_OR_MERGE ||
                      subStatusCode == SubStatusCodes.COMPLETING_PARTITION_MIGRATION)) {
+
+                CosmosDiagnostics cosmosDiagnostics = exception.getDiagnostics() != null
+                    ? exception.getDiagnostics()
+                    : null;
+
+                CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics != null
+                    ? cosmosDiagnostics.getDiagnosticsContext()
+                    : null;
+
                 return collectionCache
                        .resolveByNameAsync(null, collectionLink, null, null)
                        .flatMap(collection -> this.partitionKeyRangeCache
@@ -109,7 +120,7 @@ final class BulkOperationRetryPolicy implements IRetryPolicy {
                                                                                     .getRange(),
                                                                                 true,
                                                                                 null /*properties*/,
-                                                                                null)
+                                                                                diagnosticsContext)
                                                   .then(Mono.just(true)));
             }
 
