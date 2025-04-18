@@ -25,6 +25,7 @@ import io.clientcore.http.netty4.implementation.NettyHttpClientLocalTestServer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.proxy.ProxyConnectException;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -282,7 +283,7 @@ public class NettyHttpClientTests {
      * This test validates that if the eager retrying of Proxy Authentication (407) responses uses all retries returns
      * the correct error.
      */
-    @Test
+    @RepeatedTest(100)
     public void failedProxyAuthenticationReturnsCorrectError() {
         try (MockProxyServer mockProxyServer = new MockProxyServer("1", "1")) {
             HttpClient httpClient = new NettyHttpClientBuilder()

@@ -118,7 +118,7 @@ public final class Netty4HttpProxyHandler extends ProxyHandler {
 
     @SuppressWarnings("deprecation")
     @Override
-    protected Object newInitialMessage(ChannelHandlerContext ctx) {
+    protected Object newInitialMessage(ChannelHandlerContext ctx) throws ProxyConnectException {
         // This needs to handle no authorization proxying.
         InetSocketAddress destinationAddress = this.destinationAddress();
         String hostString = HttpUtil.formatHostnameForHttp(destinationAddress);
@@ -155,7 +155,12 @@ public final class Netty4HttpProxyHandler extends ProxyHandler {
             request.headers().set(HttpHeaderNames.PROXY_AUTHORIZATION, lastUsedAuthorizationHeader);
         }
 
-        return request;
+        if (ctx.channel().isActive()) {
+            return request;
+        } else {
+            throw new HttpProxyHandler.HttpProxyConnectException(
+                exceptionMessage("Channel became inactive before 'newInitialMessage' was sent"), null);
+        }
     }
 
     @Override
