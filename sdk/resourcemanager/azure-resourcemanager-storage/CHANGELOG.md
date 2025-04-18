@@ -2,13 +2,9 @@
 
 ## 2.50.0-beta.1 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+- Add `Accepted` to Provisioning State.
 
 ## 2.49.0 (2025-03-28)
 
