@@ -7,7 +7,6 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.instrumentation.logging.LoggingEvent;
 import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.AuthUtils;
@@ -123,7 +122,6 @@ public class ComplicatedProxyTests {
                 }
             });
 
-            LoggingEvent loggingEvent = LOGGER.atInfo().addKeyValue("repetition", repetition);
             try {
                 bootstrap.connect(host, port).addListener((ChannelFutureListener) connectListener -> {
                     if (!connectListener.isSuccess()) {
@@ -134,12 +132,10 @@ public class ComplicatedProxyTests {
                         return;
                     }
 
-                    loggingEvent.log("Connected to proxy server");
-
                     Channel channel = connectListener.channel();
                     channel.closeFuture().addListener(closeListener -> {
                         if (!closeListener.isSuccess()) {
-                            loggingEvent.log("Channel closed with error");
+                            LOGGER.atInfo().addKeyValue("repetition", repetition).log("Channel closed with error");
                             setOrSuppressError(errorReference, closeListener.cause());
                         }
                     });
@@ -148,7 +144,9 @@ public class ComplicatedProxyTests {
                     if (earlyError != null) {
                         // If an error occurred between the connect and the request being sent, don't proceed with sending
                         // the request.
-                        loggingEvent.log("Channel had error before sending request");
+                        LOGGER.atInfo()
+                            .addKeyValue("repetition", repetition)
+                            .log("Channel had error before sending request");
                         latch.countDown();
                         return;
                     }
@@ -229,6 +227,7 @@ public class ComplicatedProxyTests {
         private volatile ChannelHandlerContext ctx;
         private PendingWriteQueue pendingWrites;
         private boolean finished;
+        private Boolean wasSuccess;
         private boolean suppressChannelReadComplete;
         private boolean flushedPrematurely;
         private final LazyChannelPromise connectPromise = new LazyChannelPromise();
@@ -251,9 +250,7 @@ public class ComplicatedProxyTests {
             this.repetition = repetition;
             this.writeListener = future -> {
                 if (!future.isSuccess()) {
-                    ComplicatedProxyTests.LOGGER.atInfo()
-                        .addKeyValue("repetition", repetition)
-                        .log("Failed to send request to proxy server");
+                    LOGGER.atInfo().addKeyValue("repetition", repetition).log("Failed to send request to proxy server");
                     setConnectFailure(future.cause());
                 }
             };
@@ -313,9 +310,6 @@ public class ComplicatedProxyTests {
             if (ctx.channel().isActive()) {
                 // channelActive() event has been fired already, which means this.channelActive() will
                 // not be invoked. We have to initialize here instead.
-                ComplicatedProxyTests.LOGGER.atInfo()
-                    .addKeyValue("repetition", repetition)
-                    .log("Channel is already active, sending initial message");
                 sendInitialMessage(ctx);
             }
             // channelActive() event has not been fired yet.  this.channelOpen() will be invoked
@@ -353,7 +347,6 @@ public class ComplicatedProxyTests {
             }
 
             destinationAddress = remoteAddress;
-            LOGGER.atInfo().addKeyValue("repetition", repetition).log("Connecting to proxy address");
             ctx.connect(proxyAddress, localAddress, promise);
         }
 
@@ -374,12 +367,7 @@ public class ComplicatedProxyTests {
                 }
             }, 10_000, TimeUnit.MILLISECONDS);
 
-            ComplicatedProxyTests.LOGGER.atInfo().addKeyValue("repetition", repetition).log("Sending initial message");
             sendToProxyServer(newInitialMessage());
-
-            ComplicatedProxyTests.LOGGER.atInfo()
-                .addKeyValue("repetition", repetition)
-                .log("Reading response for initial message");
             readIfNeeded(ctx);
         }
 
@@ -508,7 +496,7 @@ public class ComplicatedProxyTests {
         }
 
         private void setConnectSuccess() {
-            ComplicatedProxyTests.LOGGER.atInfo().addKeyValue("repetition", repetition).log("Setting connect success");
+            wasSuccess = true;
             finished = true;
             cancelConnectTimeoutFuture();
 
@@ -561,7 +549,7 @@ public class ComplicatedProxyTests {
         }
 
         private void setConnectFailure(Throwable cause) {
-            ComplicatedProxyTests.LOGGER.atInfo().addKeyValue("repetition", repetition).log("Setting connect failed");
+            wasSuccess = false;
             finished = true;
             cancelConnectTimeoutFuture();
 
@@ -628,15 +616,13 @@ public class ComplicatedProxyTests {
         @Override
         public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) {
             if (finished) {
-                ComplicatedProxyTests.LOGGER.atInfo()
+                LOGGER.atInfo()
                     .addKeyValue("repetition", repetition)
+                    .addKeyValue("wasSuccess", wasSuccess)
                     .log("Write called after proxy finished");
                 writePendingWrites();
                 ctx.write(msg, promise);
             } else {
-                ComplicatedProxyTests.LOGGER.atInfo()
-                    .addKeyValue("repetition", repetition)
-                    .log("Write called before proxy finished");
                 addPendingWrite(ctx, msg, promise);
             }
         }
@@ -644,15 +630,13 @@ public class ComplicatedProxyTests {
         @Override
         public void flush(ChannelHandlerContext ctx) {
             if (finished) {
-                ComplicatedProxyTests.LOGGER.atInfo()
+                LOGGER.atInfo()
                     .addKeyValue("repetition", repetition)
+                    .addKeyValue("wasSuccess", wasSuccess)
                     .log("Flush called after proxy finished");
                 writePendingWrites();
                 ctx.flush();
             } else {
-                ComplicatedProxyTests.LOGGER.atInfo()
-                    .addKeyValue("repetition", repetition)
-                    .log("Flush called before proxy finished");
                 flushedPrematurely = true;
             }
         }
