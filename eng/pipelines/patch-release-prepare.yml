@@ -33,7 +33,7 @@ extends:
               - pwsh: |
                   $currentDate = Get-Date -Format "yyyyMMdd"
                   Write-Host "##vso[task.setvariable variable=PatchDate]$currentDate"
-                  
+
                   $branchName = "release/patch/$currentDate"
                   Write-Host "##vso[task.setvariable variable=BaseBranchName]$branchName"
                   Write-Host "git checkout -b $branchName"

@@ -2,7 +2,8 @@ trigger: none
 pr: none
 
 variables:
-  - template: ../../eng/pipelines/templates/variables/globals.yml
+  - template: /eng/pipelines/templates/variables/globals.yml
+  - template: /eng/pipelines/templates/variables/image.yml
   - name: AdditionalArgs
     value: ''
 
