@@ -49,7 +49,7 @@ public class StandbyPoolTests extends TestProxyTestBase {
     private boolean testEnv;
 
     private static final Random RANDOM = new Random();
-    private static final Region REGION = Region.US_WEST2;
+    private static Region REGION;
     private String resourceGroupName = "rg" + randomPadding();
     private StandbyPoolManager standbyPoolManager;
     private ComputeManager computeManager;
@@ -72,8 +72,6 @@ public class StandbyPoolTests extends TestProxyTestBase {
         testEnv = !CoreUtils.isNullOrEmpty(testResourceGroup);
         if (testEnv) {
             resourceGroupName = testResourceGroup;
-        } else {
-            computeManager.resourceManager().resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -93,6 +91,9 @@ public class StandbyPoolTests extends TestProxyTestBase {
         Network virtualNetwork = null;
         try {
             VirtualMachineScaleSetSkuTypes availableSku = getMinimalVmssSku();
+            if (!testEnv) {
+                computeManager.resourceManager().resourceGroups().define(resourceGroupName).withRegion(REGION).create();
+            }
             // @embedmeStart
             // reference https://learn.microsoft.com/azure/virtual-machine-scale-sets/standby-pools-create
 
@@ -153,15 +154,31 @@ public class StandbyPoolTests extends TestProxyTestBase {
     private VirtualMachineScaleSetSkuTypes getMinimalVmssSku() {
         List<VirtualMachineScaleSetSkuTypes> knownSkus = Arrays.asList(VirtualMachineScaleSetSkuTypes.values());
         return computeManager.computeSkus()
-            .listByRegionAndResourceType(REGION, ComputeResourceType.VIRTUALMACHINES)
+            .listByResourceType(ComputeResourceType.VIRTUALMACHINES)
             .stream()
             .filter(sku -> CoreUtils.isNullOrEmpty(sku.restrictions()))
             .filter(sku -> sku.name().getValue().toLowerCase(Locale.ROOT).startsWith("standard"))
             .sorted((o1, o2) -> o1.name().getValue().compareToIgnoreCase(o2.name().getValue()))
-            .map(sku -> VirtualMachineScaleSetSkuTypes.fromSkuNameAndTier(sku.name().getValue(), sku.tier().getValue()))
-            .filter(knownSkus::contains)
+            .map(sku -> new VirtualMachineScaleSetSkuTypeWrapper(
+                VirtualMachineScaleSetSkuTypes.fromSkuNameAndTier(sku.name().getValue(), sku.tier().getValue()),
+                sku.regions().iterator().next()))
+            .filter(skuWrapper -> knownSkus.contains(skuWrapper.sku))
             .findFirst()
+            .map(skuWrapper -> {
+                REGION = skuWrapper.availableRegion;
+                return skuWrapper.sku;
+            })
             .get();
+    }
+
+    private static class VirtualMachineScaleSetSkuTypeWrapper {
+        private final VirtualMachineScaleSetSkuTypes sku;
+        private final Region availableRegion;
+
+        public VirtualMachineScaleSetSkuTypeWrapper(VirtualMachineScaleSetSkuTypes sku, Region availableRegion) {
+            this.sku = sku;
+            this.availableRegion = availableRegion;
+        }
     }
 
     private static String randomPadding() {
