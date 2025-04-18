@@ -11,7 +11,7 @@ import com.azure.resourcemanager.durabletask.models.TaskHubProperties;
  */
 public final class TaskHubsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-10-01-preview/TaskHubs_CreateOrUpdate.json
+     * x-ms-original-file: 2025-04-01-preview/TaskHubs_CreateOrUpdate.json
      */
     /**
      * Sample code: TaskHubs_CreateOrUpdate.

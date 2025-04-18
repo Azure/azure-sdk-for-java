@@ -22,7 +22,7 @@ public final class SchedulersListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"endpoint\":\"hfepgzgqex\",\"ipAllowlist\":[\"ocxscpaierhhbcs\"],\"sku\":{\"name\":\"l\",\"capacity\":1936652093,\"redundancyState\":\"Zone\"}},\"location\":\"j\",\"tags\":{\"jionpimexgstxgc\":\"xobnbdxkqpxok\"},\"id\":\"odgmaajrmvdjwz\",\"name\":\"lovmclwhijcoe\",\"type\":\"ctbzaq\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"endpoint\":\"bkbfkgukdkex\",\"ipAllowlist\":[\"pofm\",\"axcfjpgddtocjjx\",\"vpmouexhdzxib\",\"eojnxqbzvddn\"],\"sku\":{\"name\":\"wndeicbtwnp\",\"capacity\":1464431072,\"redundancyState\":\"Zone\"}},\"location\":\"hrhcffcyddglmjth\",\"tags\":{\"hix\":\"wpyeicxmqciwqvh\"},\"id\":\"igdtopbob\",\"name\":\"og\",\"type\":\"m\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,10 +33,10 @@ public final class SchedulersListMockTests {
 
         PagedIterable<Scheduler> response = manager.schedulers().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("j", response.iterator().next().location());
-        Assertions.assertEquals("xobnbdxkqpxok", response.iterator().next().tags().get("jionpimexgstxgc"));
-        Assertions.assertEquals("ocxscpaierhhbcs", response.iterator().next().properties().ipAllowlist().get(0));
-        Assertions.assertEquals("l", response.iterator().next().properties().sku().name());
-        Assertions.assertEquals(1936652093, response.iterator().next().properties().sku().capacity());
+        Assertions.assertEquals("hrhcffcyddglmjth", response.iterator().next().location());
+        Assertions.assertEquals("wpyeicxmqciwqvh", response.iterator().next().tags().get("hix"));
+        Assertions.assertEquals("pofm", response.iterator().next().properties().ipAllowlist().get(0));
+        Assertions.assertEquals("wndeicbtwnp", response.iterator().next().properties().sku().name());
+        Assertions.assertEquals(1464431072, response.iterator().next().properties().sku().capacity());
     }
 }

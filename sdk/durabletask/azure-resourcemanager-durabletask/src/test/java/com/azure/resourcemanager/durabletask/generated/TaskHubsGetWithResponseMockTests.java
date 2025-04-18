@@ -20,7 +20,7 @@ public final class TaskHubsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"provisioningState\":\"Accepted\",\"dashboardUrl\":\"seiphe\"},\"id\":\"lokeyy\",\"name\":\"enjbdlwtgrhp\",\"type\":\"jp\"}";
+            = "{\"properties\":{\"provisioningState\":\"Accepted\",\"dashboardUrl\":\"e\"},\"id\":\"hmenevfyexfwhybc\",\"name\":\"bvyvdcsity\",\"type\":\"naamde\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,7 +30,7 @@ public final class TaskHubsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         TaskHub response = manager.taskHubs()
-            .getWithResponse("eallnwsubisnj", "mpmngnzscxaqwoo", "hcbonqvpkvlr", com.azure.core.util.Context.NONE)
+            .getWithResponse("ndnvo", "gujjugwdkcglh", "lazjdyggdtjixhbk", com.azure.core.util.Context.NONE)
             .getValue();
 
     }

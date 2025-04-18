@@ -66,4 +66,11 @@ public interface DurableTaskManagementClient {
      * @return the TaskHubsClient object.
      */
     TaskHubsClient getTaskHubs();
+
+    /**
+     * Gets the RetentionPoliciesClient object to access its operations.
+     * 
+     * @return the RetentionPoliciesClient object.
+     */
+    RetentionPoliciesClient getRetentionPolicies();
 }

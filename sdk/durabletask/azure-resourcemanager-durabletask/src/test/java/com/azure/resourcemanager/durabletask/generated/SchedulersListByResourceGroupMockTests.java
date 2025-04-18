@@ -22,7 +22,7 @@ public final class SchedulersListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"endpoint\":\"mdwzjeiachboo\",\"ipAllowlist\":[\"lnrosfqp\",\"eeh\",\"zvypyqrimzinp\",\"swjdkirso\"],\"sku\":{\"name\":\"dqxhcrmnohjtckwh\",\"capacity\":1629637737,\"redundancyState\":\"Zone\"}},\"location\":\"yip\",\"tags\":{\"rcjxvsnbyxqabn\":\"qwpgrjbzn\",\"hurzafblj\":\"ocpcy\"},\"id\":\"gpbtoqcjmklj\",\"name\":\"vbqid\",\"type\":\"qajzyulpkudjkr\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\",\"endpoint\":\"hfepgzgqex\",\"ipAllowlist\":[\"ocxscpaierhhbcs\"],\"sku\":{\"name\":\"l\",\"capacity\":1936652093,\"redundancyState\":\"Zone\"}},\"location\":\"j\",\"tags\":{\"jionpimexgstxgc\":\"xobnbdxkqpxok\"},\"id\":\"odgmaajrmvdjwz\",\"name\":\"lovmclwhijcoe\",\"type\":\"ctbzaq\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -32,12 +32,12 @@ public final class SchedulersListByResourceGroupMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Scheduler> response
-            = manager.schedulers().listByResourceGroup("yc", com.azure.core.util.Context.NONE);
+            = manager.schedulers().listByResourceGroup("yulpkudjkr", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("yip", response.iterator().next().location());
-        Assertions.assertEquals("qwpgrjbzn", response.iterator().next().tags().get("rcjxvsnbyxqabn"));
-        Assertions.assertEquals("lnrosfqp", response.iterator().next().properties().ipAllowlist().get(0));
-        Assertions.assertEquals("dqxhcrmnohjtckwh", response.iterator().next().properties().sku().name());
-        Assertions.assertEquals(1629637737, response.iterator().next().properties().sku().capacity());
+        Assertions.assertEquals("j", response.iterator().next().location());
+        Assertions.assertEquals("xobnbdxkqpxok", response.iterator().next().tags().get("jionpimexgstxgc"));
+        Assertions.assertEquals("ocxscpaierhhbcs", response.iterator().next().properties().ipAllowlist().get(0));
+        Assertions.assertEquals("l", response.iterator().next().properties().sku().name());
+        Assertions.assertEquals(1936652093, response.iterator().next().properties().sku().capacity());
     }
 }

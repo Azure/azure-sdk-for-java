@@ -9,7 +9,7 @@ package com.azure.resourcemanager.durabletask.generated;
  */
 public final class TaskHubsDeleteSamples {
     /*
-     * x-ms-original-file: 2024-10-01-preview/TaskHubs_Delete.json
+     * x-ms-original-file: 2025-04-01-preview/TaskHubs_Delete.json
      */
     /**
      * Sample code: TaskHubs_Delete.
@@ -17,6 +17,6 @@ public final class TaskHubsDeleteSamples {
      * @param manager Entry point to DurableTaskManager.
      */
     public static void taskHubsDelete(com.azure.resourcemanager.durabletask.DurableTaskManager manager) {
-        manager.taskHubs().delete("rgopenapi", "testscheduler", "testtuskhub", com.azure.core.util.Context.NONE);
+        manager.taskHubs().delete("rgopenapi", "testscheduler", "testtaskhub", com.azure.core.util.Context.NONE);
     }
 }

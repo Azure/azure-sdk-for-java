@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public final class SchedulersCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2024-10-01-preview/Schedulers_CreateOrUpdate.json
+     * x-ms-original-file: 2025-04-01-preview/Schedulers_CreateOrUpdate.json
      */
     /**
      * Sample code: Schedulers_CreateOrUpdate.
@@ -27,7 +27,7 @@ public final class SchedulersCreateOrUpdateSamples {
             .define("testscheduler")
             .withRegion("northcentralus")
             .withExistingResourceGroup("rgopenapi")
-            .withTags(mapOf("key7131", "fakeTokenPlaceholder", "key2138", "fakeTokenPlaceholder"))
+            .withTags(mapOf("department", "research", "development", "true"))
             .withProperties(new SchedulerProperties().withIpAllowlist(Arrays.asList("10.0.0.0/8"))
                 .withSku(new SchedulerSku().withName("Dedicated")))
             .create();

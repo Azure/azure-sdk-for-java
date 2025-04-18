@@ -25,6 +25,7 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.resourcemanager.durabletask.fluent.DurableTaskManagementClient;
 import com.azure.resourcemanager.durabletask.fluent.OperationsClient;
+import com.azure.resourcemanager.durabletask.fluent.RetentionPoliciesClient;
 import com.azure.resourcemanager.durabletask.fluent.SchedulersClient;
 import com.azure.resourcemanager.durabletask.fluent.TaskHubsClient;
 import java.io.IOException;
@@ -168,6 +169,20 @@ public final class DurableTaskManagementClientImpl implements DurableTaskManagem
     }
 
     /**
+     * The RetentionPoliciesClient object to access its operations.
+     */
+    private final RetentionPoliciesClient retentionPolicies;
+
+    /**
+     * Gets the RetentionPoliciesClient object to access its operations.
+     * 
+     * @return the RetentionPoliciesClient object.
+     */
+    public RetentionPoliciesClient getRetentionPolicies() {
+        return this.retentionPolicies;
+    }
+
+    /**
      * Initializes an instance of DurableTaskManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -184,10 +199,11 @@ public final class DurableTaskManagementClientImpl implements DurableTaskManagem
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-10-01-preview";
+        this.apiVersion = "2025-04-01-preview";
         this.operations = new OperationsClientImpl(this);
         this.schedulers = new SchedulersClientImpl(this);
         this.taskHubs = new TaskHubsClientImpl(this);
+        this.retentionPolicies = new RetentionPoliciesClientImpl(this);
     }
 
     /**
