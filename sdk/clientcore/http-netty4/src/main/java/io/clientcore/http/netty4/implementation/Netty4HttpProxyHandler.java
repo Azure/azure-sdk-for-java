@@ -17,6 +17,7 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandler;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelOutboundHandler;
+import io.netty.channel.ChannelPipeline;
 import io.netty.channel.ChannelPromise;
 import io.netty.channel.PendingWriteQueue;
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
@@ -127,7 +128,9 @@ public final class Netty4HttpProxyHandler extends ChannelDuplexHandler {
     }
 
     private void addCodec(ChannelHandlerContext ctx) {
-        ctx.pipeline().addBefore(ctx.name(), "Netty4-Proxy-Codec", this.wrapper);
+        ChannelPipeline p = ctx.pipeline();
+        String name = ctx.name();
+        p.addBefore(name, null, this.wrapper);
     }
 
     private void removeEncoder() {
@@ -148,7 +151,11 @@ public final class Netty4HttpProxyHandler extends ChannelDuplexHandler {
         }
 
         destinationAddress = remoteAddress;
-        ctx.connect(proxyAddress, localAddress, promise);
+        ctx.connect(proxyAddress, localAddress, promise).addListener(future -> {
+            if (!future.isSuccess()) {
+                LOGGER.atInfo().log("Failed to connect to proxy address");
+            }
+        });
     }
 
     @Override
@@ -514,6 +521,7 @@ public final class Netty4HttpProxyHandler extends ChannelDuplexHandler {
 
     private void writePendingWrites() {
         if (pendingWrites != null) {
+            LOGGER.atInfo().log("Writing pending proxy writes");
             pendingWrites.removeAndWriteAll();
             pendingWrites = null;
         }
@@ -637,11 +645,13 @@ public final class Netty4HttpProxyHandler extends ChannelDuplexHandler {
 
         @Override
         public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
+            LOGGER.atInfo().addKeyValue("msg", msg).log("Writing to proxy");
             codec.write(ctx, msg, promise);
         }
 
         @Override
         public void flush(ChannelHandlerContext ctx) throws Exception {
+            LOGGER.atInfo().log("Flushing to proxy");
             codec.flush(ctx);
         }
     }
