@@ -71,10 +71,8 @@ public final class VirtualMachineScaleSetInner extends Resource {
     private ExtendedLocation extendedLocation;
 
     /*
-     * If eTag is provided in the response body, it may also be provided as a header per the normal etag convention.
-     * Entity tags are used for comparing two or more entities from the same requested resource. HTTP/1.1 uses entity
-     * tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26), and If-Range (section
-     * 14.27) header fields.
+     * Etag is property returned in Create/Update/Get response of the VMSS, so that customer can supply it in the header
+     * to ensure optimistic updates
      */
     private String etag;
 
@@ -222,10 +220,8 @@ public final class VirtualMachineScaleSetInner extends Resource {
     }
 
     /**
-     * Get the etag property: If eTag is provided in the response body, it may also be provided as a header per the
-     * normal etag convention. Entity tags are used for comparing two or more entities from the same requested resource.
-     * HTTP/1.1 uses entity tags in the etag (section 14.19), If-Match (section 14.24), If-None-Match (section 14.26),
-     * and If-Range (section 14.27) header fields.
+     * Get the etag property: Etag is property returned in Create/Update/Get response of the VMSS, so that customer can
+     * supply it in the header to ensure optimistic updates.
      * 
      * @return the etag value.
      */
@@ -888,7 +884,7 @@ public final class VirtualMachineScaleSetInner extends Resource {
                     deserializedVirtualMachineScaleSetInner.zones = zones;
                 } else if ("extendedLocation".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetInner.extendedLocation = ExtendedLocation.fromJson(reader);
-                } else if ("eTag".equals(fieldName)) {
+                } else if ("etag".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetInner.etag = reader.getString();
                 } else if ("systemData".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetInner.systemData = SystemData.fromJson(reader);

@@ -15,10 +15,10 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * Paged collection of DiskRestorePoint items.
+ * The List Disk Restore Points operation response.
  */
 @Fluent
-public final class DiskRestorePointListResult implements JsonSerializable<DiskRestorePointListResult> {
+public final class DiskRestorePointList implements JsonSerializable<DiskRestorePointList> {
     /*
      * The DiskRestorePoint items on this page
      */
@@ -30,9 +30,9 @@ public final class DiskRestorePointListResult implements JsonSerializable<DiskRe
     private String nextLink;
 
     /**
-     * Creates an instance of DiskRestorePointListResult class.
+     * Creates an instance of DiskRestorePointList class.
      */
-    public DiskRestorePointListResult() {
+    public DiskRestorePointList() {
     }
 
     /**
@@ -48,9 +48,9 @@ public final class DiskRestorePointListResult implements JsonSerializable<DiskRe
      * Set the value property: The DiskRestorePoint items on this page.
      * 
      * @param value the value value to set.
-     * @return the DiskRestorePointListResult object itself.
+     * @return the DiskRestorePointList object itself.
      */
-    public DiskRestorePointListResult withValue(List<DiskRestorePointInner> value) {
+    public DiskRestorePointList withValue(List<DiskRestorePointInner> value) {
         this.value = value;
         return this;
     }
@@ -68,9 +68,9 @@ public final class DiskRestorePointListResult implements JsonSerializable<DiskRe
      * Set the nextLink property: The link to the next page of items.
      * 
      * @param nextLink the nextLink value to set.
-     * @return the DiskRestorePointListResult object itself.
+     * @return the DiskRestorePointList object itself.
      */
-    public DiskRestorePointListResult withNextLink(String nextLink) {
+    public DiskRestorePointList withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }
@@ -83,14 +83,13 @@ public final class DiskRestorePointListResult implements JsonSerializable<DiskRe
     public void validate() {
         if (value() == null) {
             throw LOGGER.atError()
-                .log(new IllegalArgumentException(
-                    "Missing required property value in model DiskRestorePointListResult"));
+                .log(new IllegalArgumentException("Missing required property value in model DiskRestorePointList"));
         } else {
             value().forEach(e -> e.validate());
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(DiskRestorePointListResult.class);
+    private static final ClientLogger LOGGER = new ClientLogger(DiskRestorePointList.class);
 
     /**
      * {@inheritDoc}
@@ -104,17 +103,17 @@ public final class DiskRestorePointListResult implements JsonSerializable<DiskRe
     }
 
     /**
-     * Reads an instance of DiskRestorePointListResult from the JsonReader.
+     * Reads an instance of DiskRestorePointList from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of DiskRestorePointListResult if the JsonReader was pointing to an instance of it, or null if
-     * it was pointing to JSON null.
+     * @return An instance of DiskRestorePointList if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the DiskRestorePointListResult.
+     * @throws IOException If an error occurs while reading the DiskRestorePointList.
      */
-    public static DiskRestorePointListResult fromJson(JsonReader jsonReader) throws IOException {
+    public static DiskRestorePointList fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            DiskRestorePointListResult deserializedDiskRestorePointListResult = new DiskRestorePointListResult();
+            DiskRestorePointList deserializedDiskRestorePointList = new DiskRestorePointList();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -122,15 +121,15 @@ public final class DiskRestorePointListResult implements JsonSerializable<DiskRe
                 if ("value".equals(fieldName)) {
                     List<DiskRestorePointInner> value
                         = reader.readArray(reader1 -> DiskRestorePointInner.fromJson(reader1));
-                    deserializedDiskRestorePointListResult.value = value;
+                    deserializedDiskRestorePointList.value = value;
                 } else if ("nextLink".equals(fieldName)) {
-                    deserializedDiskRestorePointListResult.nextLink = reader.getString();
+                    deserializedDiskRestorePointList.nextLink = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedDiskRestorePointListResult;
+            return deserializedDiskRestorePointList;
         });
     }
 }

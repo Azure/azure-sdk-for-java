@@ -33,7 +33,7 @@ import com.azure.resourcemanager.compute.fluent.DiskRestorePointsClient;
 import com.azure.resourcemanager.compute.fluent.models.AccessUriInner;
 import com.azure.resourcemanager.compute.fluent.models.DiskRestorePointInner;
 import com.azure.resourcemanager.compute.models.ApiErrorException;
-import com.azure.resourcemanager.compute.models.DiskRestorePointListResult;
+import com.azure.resourcemanager.compute.models.DiskRestorePointList;
 import com.azure.resourcemanager.compute.models.GrantAccessData;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -75,7 +75,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/restorePointCollections/{restorePointCollectionName}/restorePoints/{vmRestorePointName}/diskRestorePoints")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<DiskRestorePointListResult>> listByRestorePoint(@HostParam("$host") String endpoint,
+        Mono<Response<DiskRestorePointList>> listByRestorePoint(@HostParam("$host") String endpoint,
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
             @PathParam("restorePointCollectionName") String restorePointCollectionName,
@@ -123,7 +123,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ApiErrorException.class)
-        Mono<Response<DiskRestorePointListResult>> listByRestorePointNext(
+        Mono<Response<DiskRestorePointList>> listByRestorePointNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
     }
@@ -137,8 +137,8 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DiskRestorePoint items along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the List Disk Restore Points operation response along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiskRestorePointInner>> listByRestorePointSinglePageAsync(String resourceGroupName,
@@ -184,8 +184,8 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DiskRestorePoint items along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the List Disk Restore Points operation response along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiskRestorePointInner>> listByRestorePointSinglePageAsync(String resourceGroupName,
@@ -229,7 +229,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DiskRestorePoint items as paginated response with {@link PagedFlux}.
+     * @return the List Disk Restore Points operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DiskRestorePointInner> listByRestorePointAsync(String resourceGroupName,
@@ -249,7 +249,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DiskRestorePoint items as paginated response with {@link PagedFlux}.
+     * @return the List Disk Restore Points operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DiskRestorePointInner> listByRestorePointAsync(String resourceGroupName,
@@ -267,7 +267,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DiskRestorePoint items as paginated response with {@link PagedIterable}.
+     * @return the List Disk Restore Points operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiskRestorePointInner> listByRestorePoint(String resourceGroupName,
@@ -286,7 +286,7 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DiskRestorePoint items as paginated response with {@link PagedIterable}.
+     * @return the List Disk Restore Points operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DiskRestorePointInner> listByRestorePoint(String resourceGroupName,
@@ -1002,8 +1002,8 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DiskRestorePoint items along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the List Disk Restore Points operation response along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiskRestorePointInner>> listByRestorePointNextSinglePageAsync(String nextLink) {
@@ -1031,8 +1031,8 @@ public final class DiskRestorePointsClientImpl implements DiskRestorePointsClien
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DiskRestorePoint items along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the List Disk Restore Points operation response along with {@link PagedResponse} on successful completion
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DiskRestorePointInner>> listByRestorePointNextSinglePageAsync(String nextLink,

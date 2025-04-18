@@ -33,7 +33,7 @@ public interface DiskRestorePointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DiskRestorePoint items as paginated response with {@link PagedFlux}.
+     * @return the List Disk Restore Points operation response as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<DiskRestorePointInner> listByRestorePointAsync(String resourceGroupName,
@@ -48,7 +48,7 @@ public interface DiskRestorePointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DiskRestorePoint items as paginated response with {@link PagedIterable}.
+     * @return the List Disk Restore Points operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DiskRestorePointInner> listByRestorePoint(String resourceGroupName, String restorePointCollectionName,
@@ -64,7 +64,7 @@ public interface DiskRestorePointsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return paged collection of DiskRestorePoint items as paginated response with {@link PagedIterable}.
+     * @return the List Disk Restore Points operation response as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DiskRestorePointInner> listByRestorePoint(String resourceGroupName, String restorePointCollectionName,
