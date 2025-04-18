@@ -8,11 +8,7 @@ module com.azure.v2.security.keyvault.keys {
 
     exports com.azure.v2.security.keyvault.keys;
     exports com.azure.v2.security.keyvault.keys.models;
-    exports com.azure.v2.security.keyvault.keys.cryptography;
-    exports com.azure.v2.security.keyvault.keys.cryptography.models;
 
     opens com.azure.v2.security.keyvault.keys.models to io.clientcore.core;
     opens com.azure.v2.security.keyvault.keys.implementation.models to io.clientcore.core;
-    opens com.azure.v2.security.keyvault.keys.cryptography.implementation to io.clientcore.core;
-    opens com.azure.v2.security.keyvault.keys.cryptography.models to io.clientcore.core;
 }

@@ -4,7 +4,6 @@
 
 package com.azure.v2.security.keyvault.administration.implementation;
 
-import com.azure.v2.security.keyvault.administration.KeyVaultAdministrationServiceVersion;
 import com.azure.v2.security.keyvault.administration.implementation.models.FullBackupOperation;
 import com.azure.v2.security.keyvault.administration.implementation.models.KeyVaultError;
 import com.azure.v2.security.keyvault.administration.implementation.models.RestoreOperation;
@@ -27,7 +26,7 @@ import io.clientcore.core.http.annotations.QueryParam;
 import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpResponseException;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import java.lang.reflect.InvocationTargetException;
@@ -55,17 +54,17 @@ public final class KeyVaultAdministrationClientImpl {
     }
 
     /**
-     * Service version.
+     * Version parameter.
      */
-    private final KeyVaultAdministrationServiceVersion serviceVersion;
+    private final String apiVersion;
 
     /**
-     * Gets Service version.
+     * Gets Version parameter.
      * 
-     * @return the serviceVersion value.
+     * @return the apiVersion value.
      */
-    public KeyVaultAdministrationServiceVersion getServiceVersion() {
-        return this.serviceVersion;
+    public String getApiVersion() {
+        return this.apiVersion;
     }
 
     /**
@@ -115,13 +114,12 @@ public final class KeyVaultAdministrationClientImpl {
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param vaultBaseUrl
-     * @param serviceVersion Service version.
+     * @param apiVersion Version parameter.
      */
-    public KeyVaultAdministrationClientImpl(HttpPipeline httpPipeline, String vaultBaseUrl,
-        KeyVaultAdministrationServiceVersion serviceVersion) {
+    public KeyVaultAdministrationClientImpl(HttpPipeline httpPipeline, String vaultBaseUrl, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.vaultBaseUrl = vaultBaseUrl;
-        this.serviceVersion = serviceVersion;
+        this.apiVersion = apiVersion;
         this.roleDefinitions = new RoleDefinitionsImpl(this);
         this.roleAssignments = new RoleAssignmentsImpl(this);
         this.service = KeyVaultAdministrationClientService.getNewInstance(this.httpPipeline);
@@ -153,7 +151,7 @@ public final class KeyVaultAdministrationClientImpl {
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<FullBackupOperation> fullBackupStatus(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.POST, path = "/backup", expectedStatusCodes = { 202 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
@@ -161,7 +159,7 @@ public final class KeyVaultAdministrationClientImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept,
             @BodyParam("application/json") SASTokenParameter azureStorageBlobContainerUri,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.GET,
@@ -170,7 +168,7 @@ public final class KeyVaultAdministrationClientImpl {
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<RestoreOperation> restoreStatus(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "/restore", expectedStatusCodes = { 202 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
@@ -178,7 +176,7 @@ public final class KeyVaultAdministrationClientImpl {
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept,
             @BodyParam("application/json") RestoreOperationParameters restoreBlobDetails,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.GET,
@@ -187,7 +185,7 @@ public final class KeyVaultAdministrationClientImpl {
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<SelectiveKeyRestoreOperation> selectiveKeyRestoreStatus(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("jobId") String jobId,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.PUT,
@@ -199,7 +197,7 @@ public final class KeyVaultAdministrationClientImpl {
             @PathParam("keyName") String keyName, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept,
             @BodyParam("application/json") SelectiveKeyRestoreOperationParameters restoreBlobDetails,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.PATCH,
@@ -209,7 +207,7 @@ public final class KeyVaultAdministrationClientImpl {
         Response<Setting> updateSetting(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("setting-name") String settingName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") UpdateSettingRequest parameters, RequestOptions requestOptions);
+            @BodyParam("application/json") UpdateSettingRequest parameters, RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.GET,
@@ -218,82 +216,29 @@ public final class KeyVaultAdministrationClientImpl {
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<Setting> getSetting(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("setting-name") String settingName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "/settings", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<SettingsListResult> getSettings(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
     }
 
     /**
      * Returns the status of full backup operation.
      * 
      * @param jobId The id returned as part of the backup request.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return full backup operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FullBackupOperation> fullBackupStatusWithResponse(String jobId, RequestOptions requestOptions) {
+    public Response<FullBackupOperation> fullBackupStatusWithResponse(String jobId, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.fullBackupStatus(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), jobId, accept,
-            requestOptions);
-    }
-
-    /**
-     * Creates a full backup using a user-provided SAS token to an Azure blob storage container.
-     * <p><strong>Request Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     storageResourceUri: String (Required)
-     *     token: String (Optional)
-     *     useManagedIdentity: Boolean (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
-     *     statusDetails: String (Optional)
-     *     error (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         innererror (Optional): (recursive schema, see innererror above)
-     *     }
-     *     startTime: Long (Optional)
-     *     endTime: Long (Optional)
-     *     jobId: String (Optional)
-     *     azureStorageBlobContainerUri: String (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param azureStorageBlobContainerUri Azure blob shared access signature token pointing to a valid Azure blob
-     * container where full backup needs to be stored. This token needs to be valid for at least next 24 hours from the
-     * time of making this call.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return full backup operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FullBackupOperation> fullBackupWithResponse(SASTokenParameter azureStorageBlobContainerUri,
-        RequestOptions requestOptions) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.fullBackup(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), contentType,
-            accept, azureStorageBlobContainerUri, requestOptions);
+        return service.fullBackupStatus(this.getVaultBaseUrl(), this.getApiVersion(), jobId, accept, requestContext);
     }
 
     /**
@@ -307,24 +252,23 @@ public final class KeyVaultAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public FullBackupOperation fullBackupStatus(String jobId) {
-        return fullBackupStatusWithResponse(jobId, RequestOptions.none()).getValue();
+        return fullBackupStatusWithResponse(jobId, RequestContext.none()).getValue();
     }
 
     /**
      * Returns the status of restore operation.
      * 
      * @param jobId The Job Id returned part of the restore operation.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return restore operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RestoreOperation> restoreStatusWithResponse(String jobId, RequestOptions requestOptions) {
+    public Response<RestoreOperation> restoreStatusWithResponse(String jobId, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.restoreStatus(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), jobId, accept,
-            requestOptions);
+        return service.restoreStatus(this.getVaultBaseUrl(), this.getApiVersion(), jobId, accept, requestContext);
     }
 
     /**
@@ -338,67 +282,14 @@ public final class KeyVaultAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RestoreOperation restoreStatus(String jobId) {
-        return restoreStatusWithResponse(jobId, RequestOptions.none()).getValue();
-    }
-
-    /**
-     * Restores all key materials using the SAS token pointing to a previously stored Azure Blob storage backup folder.
-     * <p><strong>Request Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     sasTokenParameters (Required): {
-     *         storageResourceUri: String (Required)
-     *         token: String (Optional)
-     *         useManagedIdentity: Boolean (Optional)
-     *     }
-     *     folderToRestore: String (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
-     *     statusDetails: String (Optional)
-     *     error (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         innererror (Optional): (recursive schema, see innererror above)
-     *     }
-     *     jobId: String (Optional)
-     *     startTime: Long (Optional)
-     *     endTime: Long (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
-     * was stored.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return restore operation along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RestoreOperation> fullRestoreOperationWithResponse(RestoreOperationParameters restoreBlobDetails,
-        RequestOptions requestOptions) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.fullRestoreOperation(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), contentType, accept, restoreBlobDetails, requestOptions);
+        return restoreStatusWithResponse(jobId, RequestContext.none()).getValue();
     }
 
     /**
      * Returns the status of the selective key restore operation.
      * 
      * @param jobId The Job Id returned part of the restore operation.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -406,10 +297,10 @@ public final class KeyVaultAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SelectiveKeyRestoreOperation> selectiveKeyRestoreStatusWithResponse(String jobId,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String accept = "application/json";
-        return service.selectiveKeyRestoreStatus(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), jobId,
-            accept, requestOptions);
+        return service.selectiveKeyRestoreStatus(this.getVaultBaseUrl(), this.getApiVersion(), jobId, accept,
+            requestContext);
     }
 
     /**
@@ -423,62 +314,7 @@ public final class KeyVaultAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SelectiveKeyRestoreOperation selectiveKeyRestoreStatus(String jobId) {
-        return selectiveKeyRestoreStatusWithResponse(jobId, RequestOptions.none()).getValue();
-    }
-
-    /**
-     * Restores all key versions of a given key using user supplied SAS token pointing to a previously stored Azure Blob
-     * storage backup folder.
-     * <p><strong>Request Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     sasTokenParameters (Required): {
-     *         storageResourceUri: String (Required)
-     *         token: String (Optional)
-     *         useManagedIdentity: Boolean (Optional)
-     *     }
-     *     folder: String (Required)
-     * }
-     * }
-     * </pre>
-     *
-     * <p><strong>Response Body Schema</strong></p>
-     *
-     * <pre>
-     * {@code
-     * {
-     *     status: String(InProgress/Succeeded/Canceled/Failed) (Optional)
-     *     statusDetails: String (Optional)
-     *     error (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
-     *         innererror (Optional): (recursive schema, see innererror above)
-     *     }
-     *     jobId: String (Optional)
-     *     startTime: Long (Optional)
-     *     endTime: Long (Optional)
-     * }
-     * }
-     * </pre>
-     *
-     * @param keyName The name of the key to be restored from the user supplied backup.
-     * @param restoreBlobDetails The Azure blob SAS token pointing to a folder where the previous successful full backup
-     * was stored.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the service returns an error.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return selective Key Restore operation along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SelectiveKeyRestoreOperation> selectiveKeyRestoreOperationWithResponse(String keyName,
-        SelectiveKeyRestoreOperationParameters restoreBlobDetails, RequestOptions requestOptions) {
-        final String contentType = "application/json";
-        final String accept = "application/json";
-        return service.selectiveKeyRestoreOperation(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-            keyName, contentType, accept, restoreBlobDetails, requestOptions);
+        return selectiveKeyRestoreStatusWithResponse(jobId, RequestContext.none()).getValue();
     }
 
     /**
@@ -488,7 +324,7 @@ public final class KeyVaultAdministrationClientImpl {
      * 
      * @param settingName The name of the account setting. Must be a valid settings option.
      * @param parameters The parameters to update an account setting.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -496,11 +332,11 @@ public final class KeyVaultAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Setting> updateSettingWithResponse(String settingName, UpdateSettingRequest parameters,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateSetting(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), settingName,
-            contentType, accept, parameters, requestOptions);
+        return service.updateSetting(this.getVaultBaseUrl(), this.getApiVersion(), settingName, contentType, accept,
+            parameters, requestContext);
     }
 
     /**
@@ -517,7 +353,7 @@ public final class KeyVaultAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Setting updateSetting(String settingName, UpdateSettingRequest parameters) {
-        return updateSettingWithResponse(settingName, parameters, RequestOptions.none()).getValue();
+        return updateSettingWithResponse(settingName, parameters, RequestContext.none()).getValue();
     }
 
     /**
@@ -526,7 +362,7 @@ public final class KeyVaultAdministrationClientImpl {
      * Retrieves the setting object of a specified setting name.
      * 
      * @param settingName The name of the account setting. Must be a valid settings option.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -535,10 +371,9 @@ public final class KeyVaultAdministrationClientImpl {
      * Retrieves the setting object of a specified setting name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Setting> getSettingWithResponse(String settingName, RequestOptions requestOptions) {
+    public Response<Setting> getSettingWithResponse(String settingName, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.getSetting(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), settingName, accept,
-            requestOptions);
+        return service.getSetting(this.getVaultBaseUrl(), this.getApiVersion(), settingName, accept, requestContext);
     }
 
     /**
@@ -556,7 +391,7 @@ public final class KeyVaultAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Setting getSetting(String settingName) {
-        return getSettingWithResponse(settingName, RequestOptions.none()).getValue();
+        return getSettingWithResponse(settingName, RequestContext.none()).getValue();
     }
 
     /**
@@ -564,17 +399,16 @@ public final class KeyVaultAdministrationClientImpl {
      * 
      * Retrieves a list of all the available account settings that can be configured.
      * 
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the settings list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SettingsListResult> getSettingsWithResponse(RequestOptions requestOptions) {
+    public Response<SettingsListResult> getSettingsWithResponse(RequestContext requestContext) {
         final String accept = "application/json";
-        return service.getSettings(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), accept,
-            requestOptions);
+        return service.getSettings(this.getVaultBaseUrl(), this.getApiVersion(), accept, requestContext);
     }
 
     /**
@@ -588,6 +422,6 @@ public final class KeyVaultAdministrationClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SettingsListResult getSettings() {
-        return getSettingsWithResponse(RequestOptions.none()).getValue();
+        return getSettingsWithResponse(RequestContext.none()).getValue();
     }
 }

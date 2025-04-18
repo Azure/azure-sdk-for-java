@@ -4,7 +4,6 @@
 
 package com.azure.v2.security.keyvault.certificates.implementation;
 
-import com.azure.v2.security.keyvault.certificates.CertificateServiceVersion;
 import com.azure.v2.security.keyvault.certificates.implementation.models.BackupCertificateResult;
 import com.azure.v2.security.keyvault.certificates.implementation.models.CertificateBundle;
 import com.azure.v2.security.keyvault.certificates.implementation.models.CertificateCreateParameters;
@@ -39,12 +38,11 @@ import io.clientcore.core.http.annotations.QueryParam;
 import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpResponseException;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.utils.Context;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -70,17 +68,17 @@ public final class CertificateClientImpl {
     }
 
     /**
-     * Service version.
+     * Version parameter.
      */
-    private final CertificateServiceVersion serviceVersion;
+    private final String apiVersion;
 
     /**
-     * Gets Service version.
+     * Gets Version parameter.
      * 
-     * @return the serviceVersion value.
+     * @return the apiVersion value.
      */
-    public CertificateServiceVersion getServiceVersion() {
-        return this.serviceVersion;
+    public String getApiVersion() {
+        return this.apiVersion;
     }
 
     /**
@@ -102,13 +100,12 @@ public final class CertificateClientImpl {
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param vaultBaseUrl
-     * @param serviceVersion Service version.
+     * @param apiVersion Version parameter.
      */
-    public CertificateClientImpl(HttpPipeline httpPipeline, String vaultBaseUrl,
-        CertificateServiceVersion serviceVersion) {
+    public CertificateClientImpl(HttpPipeline httpPipeline, String vaultBaseUrl, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.vaultBaseUrl = vaultBaseUrl;
-        this.serviceVersion = serviceVersion;
+        this.apiVersion = apiVersion;
         this.service = CertificateClientService.getNewInstance(this.httpPipeline);
     }
 
@@ -136,7 +133,7 @@ public final class CertificateClientImpl {
         Response<CertificateListResult> getCertificates(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @QueryParam("maxresults") Integer maxresults,
             @QueryParam("includePending") Boolean includePending, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.DELETE,
@@ -145,20 +142,20 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<DeletedCertificateBundle> deleteCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "/certificates/contacts", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<Contacts> setCertificateContacts(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") Contacts contacts,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "/certificates/contacts", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<Contacts> getCertificateContacts(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.DELETE,
@@ -167,13 +164,13 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<Contacts> deleteCertificateContacts(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "/certificates/issuers", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<CertificateIssuerListResult> getCertificateIssuers(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @QueryParam("maxresults") Integer maxresults,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.PUT,
@@ -183,7 +180,7 @@ public final class CertificateClientImpl {
         Response<IssuerBundle> setCertificateIssuer(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("issuer-name") String issuerName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") CertificateIssuerSetParameters parameter, RequestOptions requestOptions);
+            @BodyParam("application/json") CertificateIssuerSetParameters parameter, RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.PATCH,
@@ -193,7 +190,7 @@ public final class CertificateClientImpl {
         Response<IssuerBundle> updateCertificateIssuer(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("issuer-name") String issuerName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") CertificateIssuerUpdateParameters parameter, RequestOptions requestOptions);
+            @BodyParam("application/json") CertificateIssuerUpdateParameters parameter, RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.GET,
@@ -202,7 +199,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<IssuerBundle> getCertificateIssuer(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("issuer-name") String issuerName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.DELETE,
@@ -211,7 +208,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<IssuerBundle> deleteCertificateIssuer(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("issuer-name") String issuerName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.POST,
@@ -221,7 +218,7 @@ public final class CertificateClientImpl {
         Response<CertificateOperation> createCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") CertificateCreateParameters parameters, RequestOptions requestOptions);
+            @BodyParam("application/json") CertificateCreateParameters parameters, RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.POST,
@@ -231,7 +228,7 @@ public final class CertificateClientImpl {
         Response<CertificateBundle> importCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") CertificateImportParameters parameters, RequestOptions requestOptions);
+            @BodyParam("application/json") CertificateImportParameters parameters, RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.GET,
@@ -241,7 +238,7 @@ public final class CertificateClientImpl {
         Response<CertificateListResult> getCertificateVersions(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
             @QueryParam("maxresults") Integer maxresults, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.GET,
@@ -250,7 +247,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<CertificatePolicy> getCertificatePolicy(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.PATCH,
@@ -260,7 +257,7 @@ public final class CertificateClientImpl {
         Response<CertificatePolicy> updateCertificatePolicy(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") CertificatePolicy certificatePolicy, RequestOptions requestOptions);
+            @BodyParam("application/json") CertificatePolicy certificatePolicy, RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.PATCH,
@@ -271,7 +268,7 @@ public final class CertificateClientImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
             @PathParam("certificate-version") String certificateVersion,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") CertificateUpdateParameters parameters, RequestOptions requestOptions);
+            @BodyParam("application/json") CertificateUpdateParameters parameters, RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.GET,
@@ -281,7 +278,7 @@ public final class CertificateClientImpl {
         Response<CertificateBundle> getCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
             @PathParam("certificate-version") String certificateVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.PATCH,
@@ -292,7 +289,7 @@ public final class CertificateClientImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") CertificateOperationUpdateParameter certificateOperation,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.GET,
@@ -301,7 +298,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<CertificateOperation> getCertificateOperation(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.DELETE,
@@ -310,7 +307,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<CertificateOperation> deleteCertificateOperation(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.POST,
@@ -320,7 +317,7 @@ public final class CertificateClientImpl {
         Response<CertificateBundle> mergeCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") CertificateMergeParameters parameters, RequestOptions requestOptions);
+            @BodyParam("application/json") CertificateMergeParameters parameters, RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.POST,
@@ -329,21 +326,21 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<BackupCertificateResult> backupCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.POST, path = "/certificates/restore", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<CertificateBundle> restoreCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") CertificateRestoreParameters parameters, RequestOptions requestOptions);
+            @BodyParam("application/json") CertificateRestoreParameters parameters, RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "/deletedcertificates", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<DeletedCertificateListResult> getDeletedCertificates(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @QueryParam("maxresults") Integer maxresults,
             @QueryParam("includePending") Boolean includePending, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.GET,
@@ -352,7 +349,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<DeletedCertificateBundle> getDeletedCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.DELETE,
@@ -361,7 +358,7 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<Void> purgeDeletedCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.POST,
@@ -370,35 +367,35 @@ public final class CertificateClientImpl {
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<CertificateBundle> recoverDeletedCertificate(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("certificate-name") String certificateName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<CertificateListResult> getCertificatesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<CertificateIssuerListResult> getCertificateIssuersNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<CertificateListResult> getCertificateVersionsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<DeletedCertificateListResult> getDeletedCertificatesNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
     }
 
     /**
@@ -418,8 +415,8 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<CertificateItem> getCertificatesSinglePage(Integer maxresults, Boolean includePending) {
         final String accept = "application/json";
-        Response<CertificateListResult> res = service.getCertificates(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), maxresults, includePending, accept, RequestOptions.none());
+        Response<CertificateListResult> res = service.getCertificates(this.getVaultBaseUrl(), this.getApiVersion(),
+            maxresults, includePending, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -433,7 +430,7 @@ public final class CertificateClientImpl {
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
      * 25 results.
      * @param includePending Specifies whether to include certificates which are not completely provisioned.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -441,10 +438,10 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<CertificateItem> getCertificatesSinglePage(Integer maxresults, Boolean includePending,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String accept = "application/json";
-        Response<CertificateListResult> res = service.getCertificates(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), maxresults, includePending, accept, requestOptions);
+        Response<CertificateListResult> res = service.getCertificates(this.getVaultBaseUrl(), this.getApiVersion(),
+            maxresults, includePending, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -496,7 +493,7 @@ public final class CertificateClientImpl {
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
      * 25 results.
      * @param includePending Specifies whether to include certificates which are not completely provisioned.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -504,14 +501,11 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateItem> getCertificates(Integer maxresults, Boolean includePending,
-        RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(requestOptions != null && requestOptions.getContext() != null
-            ? requestOptions.getContext()
-            : Context.none());
+        RequestContext requestContext) {
+        RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
         return new PagedIterable<>(
-            (pagingOptions) -> getCertificatesSinglePage(maxresults, includePending, requestOptions),
-            (pagingOptions, nextLink) -> getCertificatesNextSinglePage(nextLink, requestOptionsForNextPage));
+            (pagingOptions) -> getCertificatesSinglePage(maxresults, includePending, requestContext),
+            (pagingOptions, nextLink) -> getCertificatesNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -522,7 +516,7 @@ public final class CertificateClientImpl {
      * permission.
      * 
      * @param certificateName The name of the certificate.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -531,10 +525,10 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedCertificateBundle> deleteCertificateWithResponse(String certificateName,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String accept = "application/json";
-        return service.deleteCertificate(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), certificateName,
-            accept, requestOptions);
+        return service.deleteCertificate(this.getVaultBaseUrl(), this.getApiVersion(), certificateName, accept,
+            requestContext);
     }
 
     /**
@@ -553,7 +547,7 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeletedCertificateBundle deleteCertificate(String certificateName) {
-        return deleteCertificateWithResponse(certificateName, RequestOptions.none()).getValue();
+        return deleteCertificateWithResponse(certificateName, RequestContext.none()).getValue();
     }
 
     /**
@@ -563,18 +557,18 @@ public final class CertificateClientImpl {
      * certificates/managecontacts permission.
      * 
      * @param contacts The contacts for the key vault certificate.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the contacts for the vault certificates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Contacts> setCertificateContactsWithResponse(Contacts contacts, RequestOptions requestOptions) {
+    public Response<Contacts> setCertificateContactsWithResponse(Contacts contacts, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.setCertificateContacts(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-            contentType, accept, contacts, requestOptions);
+        return service.setCertificateContacts(this.getVaultBaseUrl(), this.getApiVersion(), contentType, accept,
+            contacts, requestContext);
     }
 
     /**
@@ -591,7 +585,7 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Contacts setCertificateContacts(Contacts contacts) {
-        return setCertificateContactsWithResponse(contacts, RequestOptions.none()).getValue();
+        return setCertificateContactsWithResponse(contacts, RequestContext.none()).getValue();
     }
 
     /**
@@ -600,17 +594,16 @@ public final class CertificateClientImpl {
      * The GetCertificateContacts operation returns the set of certificate contact resources in the specified key vault.
      * This operation requires the certificates/managecontacts permission.
      * 
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the contacts for the vault certificates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Contacts> getCertificateContactsWithResponse(RequestOptions requestOptions) {
+    public Response<Contacts> getCertificateContactsWithResponse(RequestContext requestContext) {
         final String accept = "application/json";
-        return service.getCertificateContacts(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), accept,
-            requestOptions);
+        return service.getCertificateContacts(this.getVaultBaseUrl(), this.getApiVersion(), accept, requestContext);
     }
 
     /**
@@ -625,7 +618,7 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Contacts getCertificateContacts() {
-        return getCertificateContactsWithResponse(RequestOptions.none()).getValue();
+        return getCertificateContactsWithResponse(RequestContext.none()).getValue();
     }
 
     /**
@@ -634,17 +627,16 @@ public final class CertificateClientImpl {
      * Deletes the certificate contacts for a specified key vault certificate. This operation requires the
      * certificates/managecontacts permission.
      * 
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the contacts for the vault certificates.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Contacts> deleteCertificateContactsWithResponse(RequestOptions requestOptions) {
+    public Response<Contacts> deleteCertificateContactsWithResponse(RequestContext requestContext) {
         final String accept = "application/json";
-        return service.deleteCertificateContacts(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), accept,
-            requestOptions);
+        return service.deleteCertificateContacts(this.getVaultBaseUrl(), this.getApiVersion(), accept, requestContext);
     }
 
     /**
@@ -659,7 +651,7 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Contacts deleteCertificateContacts() {
-        return deleteCertificateContactsWithResponse(RequestOptions.none()).getValue();
+        return deleteCertificateContactsWithResponse(RequestContext.none()).getValue();
     }
 
     /**
@@ -679,7 +671,7 @@ public final class CertificateClientImpl {
     public PagedResponse<CertificateIssuerItem> getCertificateIssuersSinglePage(Integer maxresults) {
         final String accept = "application/json";
         Response<CertificateIssuerListResult> res = service.getCertificateIssuers(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), maxresults, accept, RequestOptions.none());
+            this.getApiVersion(), maxresults, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -692,7 +684,7 @@ public final class CertificateClientImpl {
      * 
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
      * 25 results.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -700,10 +692,10 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<CertificateIssuerItem> getCertificateIssuersSinglePage(Integer maxresults,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String accept = "application/json";
         Response<CertificateIssuerListResult> res = service.getCertificateIssuers(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), maxresults, accept, requestOptions);
+            this.getApiVersion(), maxresults, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -752,7 +744,7 @@ public final class CertificateClientImpl {
      * 
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
      * 25 results.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -760,13 +752,10 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateIssuerItem> getCertificateIssuers(Integer maxresults,
-        RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(requestOptions != null && requestOptions.getContext() != null
-            ? requestOptions.getContext()
-            : Context.none());
-        return new PagedIterable<>((pagingOptions) -> getCertificateIssuersSinglePage(maxresults, requestOptions),
-            (pagingOptions, nextLink) -> getCertificateIssuersNextSinglePage(nextLink, requestOptionsForNextPage));
+        RequestContext requestContext) {
+        RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
+        return new PagedIterable<>((pagingOptions) -> getCertificateIssuersSinglePage(maxresults, requestContext),
+            (pagingOptions, nextLink) -> getCertificateIssuersNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -778,7 +767,7 @@ public final class CertificateClientImpl {
      * @param issuerName The name of the issuer. The value you provide may be copied globally for the purpose of running
      * the service. The value provided should not include personally identifiable or sensitive information.
      * @param parameter Certificate issuer set parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -786,11 +775,11 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IssuerBundle> setCertificateIssuerWithResponse(String issuerName,
-        CertificateIssuerSetParameters parameter, RequestOptions requestOptions) {
+        CertificateIssuerSetParameters parameter, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.setCertificateIssuer(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), issuerName,
-            contentType, accept, parameter, requestOptions);
+        return service.setCertificateIssuer(this.getVaultBaseUrl(), this.getApiVersion(), issuerName, contentType,
+            accept, parameter, requestContext);
     }
 
     /**
@@ -809,7 +798,7 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IssuerBundle setCertificateIssuer(String issuerName, CertificateIssuerSetParameters parameter) {
-        return setCertificateIssuerWithResponse(issuerName, parameter, RequestOptions.none()).getValue();
+        return setCertificateIssuerWithResponse(issuerName, parameter, RequestContext.none()).getValue();
     }
 
     /**
@@ -820,7 +809,7 @@ public final class CertificateClientImpl {
      * 
      * @param issuerName The name of the issuer.
      * @param parameter Certificate issuer update parameter.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -828,11 +817,11 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IssuerBundle> updateCertificateIssuerWithResponse(String issuerName,
-        CertificateIssuerUpdateParameters parameter, RequestOptions requestOptions) {
+        CertificateIssuerUpdateParameters parameter, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateCertificateIssuer(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-            issuerName, contentType, accept, parameter, requestOptions);
+        return service.updateCertificateIssuer(this.getVaultBaseUrl(), this.getApiVersion(), issuerName, contentType,
+            accept, parameter, requestContext);
     }
 
     /**
@@ -850,7 +839,7 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IssuerBundle updateCertificateIssuer(String issuerName, CertificateIssuerUpdateParameters parameter) {
-        return updateCertificateIssuerWithResponse(issuerName, parameter, RequestOptions.none()).getValue();
+        return updateCertificateIssuerWithResponse(issuerName, parameter, RequestContext.none()).getValue();
     }
 
     /**
@@ -860,17 +849,17 @@ public final class CertificateClientImpl {
      * This operation requires the certificates/manageissuers/getissuers permission.
      * 
      * @param issuerName The name of the issuer.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the issuer for Key Vault certificate.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IssuerBundle> getCertificateIssuerWithResponse(String issuerName, RequestOptions requestOptions) {
+    public Response<IssuerBundle> getCertificateIssuerWithResponse(String issuerName, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.getCertificateIssuer(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), issuerName,
-            accept, requestOptions);
+        return service.getCertificateIssuer(this.getVaultBaseUrl(), this.getApiVersion(), issuerName, accept,
+            requestContext);
     }
 
     /**
@@ -887,7 +876,7 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IssuerBundle getCertificateIssuer(String issuerName) {
-        return getCertificateIssuerWithResponse(issuerName, RequestOptions.none()).getValue();
+        return getCertificateIssuerWithResponse(issuerName, RequestContext.none()).getValue();
     }
 
     /**
@@ -897,7 +886,7 @@ public final class CertificateClientImpl {
      * operation requires the certificates/manageissuers/deleteissuers permission.
      * 
      * @param issuerName The name of the issuer.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -905,10 +894,10 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<IssuerBundle> deleteCertificateIssuerWithResponse(String issuerName,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String accept = "application/json";
-        return service.deleteCertificateIssuer(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-            issuerName, accept, requestOptions);
+        return service.deleteCertificateIssuer(this.getVaultBaseUrl(), this.getApiVersion(), issuerName, accept,
+            requestContext);
     }
 
     /**
@@ -925,7 +914,7 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public IssuerBundle deleteCertificateIssuer(String issuerName) {
-        return deleteCertificateIssuerWithResponse(issuerName, RequestOptions.none()).getValue();
+        return deleteCertificateIssuerWithResponse(issuerName, RequestContext.none()).getValue();
     }
 
     /**
@@ -937,7 +926,7 @@ public final class CertificateClientImpl {
      * @param certificateName The name of the certificate. The value you provide may be copied globally for the purpose
      * of running the service. The value provided should not include personally identifiable or sensitive information.
      * @param parameters The parameters to create a certificate.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -945,11 +934,11 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateOperation> createCertificateWithResponse(String certificateName,
-        CertificateCreateParameters parameters, RequestOptions requestOptions) {
+        CertificateCreateParameters parameters, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createCertificate(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), certificateName,
-            contentType, accept, parameters, requestOptions);
+        return service.createCertificate(this.getVaultBaseUrl(), this.getApiVersion(), certificateName, contentType,
+            accept, parameters, requestContext);
     }
 
     /**
@@ -968,7 +957,7 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateOperation createCertificate(String certificateName, CertificateCreateParameters parameters) {
-        return createCertificateWithResponse(certificateName, parameters, RequestOptions.none()).getValue();
+        return createCertificateWithResponse(certificateName, parameters, RequestContext.none()).getValue();
     }
 
     /**
@@ -982,7 +971,7 @@ public final class CertificateClientImpl {
      * @param certificateName The name of the certificate. The value you provide may be copied globally for the purpose
      * of running the service. The value provided should not include personally identifiable or sensitive information.
      * @param parameters The parameters to import the certificate.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -990,11 +979,11 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateBundle> importCertificateWithResponse(String certificateName,
-        CertificateImportParameters parameters, RequestOptions requestOptions) {
+        CertificateImportParameters parameters, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.importCertificate(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), certificateName,
-            contentType, accept, parameters, requestOptions);
+        return service.importCertificate(this.getVaultBaseUrl(), this.getApiVersion(), certificateName, contentType,
+            accept, parameters, requestContext);
     }
 
     /**
@@ -1015,7 +1004,7 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateBundle importCertificate(String certificateName, CertificateImportParameters parameters) {
-        return importCertificateWithResponse(certificateName, parameters, RequestOptions.none()).getValue();
+        return importCertificateWithResponse(certificateName, parameters, RequestContext.none()).getValue();
     }
 
     /**
@@ -1036,7 +1025,7 @@ public final class CertificateClientImpl {
     public PagedResponse<CertificateItem> getCertificateVersionsSinglePage(String certificateName, Integer maxresults) {
         final String accept = "application/json";
         Response<CertificateListResult> res = service.getCertificateVersions(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), certificateName, maxresults, accept, RequestOptions.none());
+            this.getApiVersion(), certificateName, maxresults, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1050,7 +1039,7 @@ public final class CertificateClientImpl {
      * @param certificateName The name of the certificate.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
      * 25 results.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1058,10 +1047,10 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<CertificateItem> getCertificateVersionsSinglePage(String certificateName, Integer maxresults,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String accept = "application/json";
         Response<CertificateListResult> res = service.getCertificateVersions(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), certificateName, maxresults, accept, requestOptions);
+            this.getApiVersion(), certificateName, maxresults, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1114,7 +1103,7 @@ public final class CertificateClientImpl {
      * @param certificateName The name of the certificate.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
      * 25 results.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1122,14 +1111,11 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateItem> getCertificateVersions(String certificateName, Integer maxresults,
-        RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(requestOptions != null && requestOptions.getContext() != null
-            ? requestOptions.getContext()
-            : Context.none());
+        RequestContext requestContext) {
+        RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
         return new PagedIterable<>(
-            (pagingOptions) -> getCertificateVersionsSinglePage(certificateName, maxresults, requestOptions),
-            (pagingOptions, nextLink) -> getCertificateVersionsNextSinglePage(nextLink, requestOptionsForNextPage));
+            (pagingOptions) -> getCertificateVersionsSinglePage(certificateName, maxresults, requestContext),
+            (pagingOptions, nextLink) -> getCertificateVersionsNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -1139,7 +1125,7 @@ public final class CertificateClientImpl {
      * This operation requires the certificates/get permission.
      * 
      * @param certificateName The name of the certificate in a given key vault.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1147,10 +1133,10 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificatePolicy> getCertificatePolicyWithResponse(String certificateName,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String accept = "application/json";
-        return service.getCertificatePolicy(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-            certificateName, accept, requestOptions);
+        return service.getCertificatePolicy(this.getVaultBaseUrl(), this.getApiVersion(), certificateName, accept,
+            requestContext);
     }
 
     /**
@@ -1167,7 +1153,7 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificatePolicy getCertificatePolicy(String certificateName) {
-        return getCertificatePolicyWithResponse(certificateName, RequestOptions.none()).getValue();
+        return getCertificatePolicyWithResponse(certificateName, RequestContext.none()).getValue();
     }
 
     /**
@@ -1178,7 +1164,7 @@ public final class CertificateClientImpl {
      * 
      * @param certificateName The name of the certificate in the given vault.
      * @param certificatePolicy The policy for the certificate.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1186,11 +1172,11 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificatePolicy> updateCertificatePolicyWithResponse(String certificateName,
-        CertificatePolicy certificatePolicy, RequestOptions requestOptions) {
+        CertificatePolicy certificatePolicy, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateCertificatePolicy(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-            certificateName, contentType, accept, certificatePolicy, requestOptions);
+        return service.updateCertificatePolicy(this.getVaultBaseUrl(), this.getApiVersion(), certificateName,
+            contentType, accept, certificatePolicy, requestContext);
     }
 
     /**
@@ -1208,7 +1194,7 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificatePolicy updateCertificatePolicy(String certificateName, CertificatePolicy certificatePolicy) {
-        return updateCertificatePolicyWithResponse(certificateName, certificatePolicy, RequestOptions.none())
+        return updateCertificatePolicyWithResponse(certificateName, certificatePolicy, RequestContext.none())
             .getValue();
     }
 
@@ -1221,7 +1207,7 @@ public final class CertificateClientImpl {
      * @param certificateName The name of the certificate in the given key vault.
      * @param certificateVersion The version of the certificate.
      * @param parameters The parameters for certificate update.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1229,11 +1215,11 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateBundle> updateCertificateWithResponse(String certificateName, String certificateVersion,
-        CertificateUpdateParameters parameters, RequestOptions requestOptions) {
+        CertificateUpdateParameters parameters, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateCertificate(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), certificateName,
-            certificateVersion, contentType, accept, parameters, requestOptions);
+        return service.updateCertificate(this.getVaultBaseUrl(), this.getApiVersion(), certificateName,
+            certificateVersion, contentType, accept, parameters, requestContext);
     }
 
     /**
@@ -1253,7 +1239,7 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateBundle updateCertificate(String certificateName, String certificateVersion,
         CertificateUpdateParameters parameters) {
-        return updateCertificateWithResponse(certificateName, certificateVersion, parameters, RequestOptions.none())
+        return updateCertificateWithResponse(certificateName, certificateVersion, parameters, RequestContext.none())
             .getValue();
     }
 
@@ -1265,7 +1251,7 @@ public final class CertificateClientImpl {
      * @param certificateName The name of the certificate in the given vault.
      * @param certificateVersion The version of the certificate. This URI fragment is optional. If not specified, the
      * latest version of the certificate is returned.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1275,10 +1261,10 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateBundle> getCertificateWithResponse(String certificateName, String certificateVersion,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String accept = "application/json";
-        return service.getCertificate(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), certificateName,
-            certificateVersion, accept, requestOptions);
+        return service.getCertificate(this.getVaultBaseUrl(), this.getApiVersion(), certificateName, certificateVersion,
+            accept, requestContext);
     }
 
     /**
@@ -1298,7 +1284,7 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateBundle getCertificate(String certificateName, String certificateVersion) {
-        return getCertificateWithResponse(certificateName, certificateVersion, RequestOptions.none()).getValue();
+        return getCertificateWithResponse(certificateName, certificateVersion, RequestContext.none()).getValue();
     }
 
     /**
@@ -1309,7 +1295,7 @@ public final class CertificateClientImpl {
      * 
      * @param certificateName The name of the certificate.
      * @param certificateOperation The certificate operation response.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1317,11 +1303,11 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateOperation> updateCertificateOperationWithResponse(String certificateName,
-        CertificateOperationUpdateParameter certificateOperation, RequestOptions requestOptions) {
+        CertificateOperationUpdateParameter certificateOperation, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateCertificateOperation(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-            certificateName, contentType, accept, certificateOperation, requestOptions);
+        return service.updateCertificateOperation(this.getVaultBaseUrl(), this.getApiVersion(), certificateName,
+            contentType, accept, certificateOperation, requestContext);
     }
 
     /**
@@ -1340,7 +1326,7 @@ public final class CertificateClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateOperation updateCertificateOperation(String certificateName,
         CertificateOperationUpdateParameter certificateOperation) {
-        return updateCertificateOperationWithResponse(certificateName, certificateOperation, RequestOptions.none())
+        return updateCertificateOperationWithResponse(certificateName, certificateOperation, RequestContext.none())
             .getValue();
     }
 
@@ -1351,7 +1337,7 @@ public final class CertificateClientImpl {
      * permission.
      * 
      * @param certificateName The name of the certificate.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1361,10 +1347,10 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateOperation> getCertificateOperationWithResponse(String certificateName,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String accept = "application/json";
-        return service.getCertificateOperation(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-            certificateName, accept, requestOptions);
+        return service.getCertificateOperation(this.getVaultBaseUrl(), this.getApiVersion(), certificateName, accept,
+            requestContext);
     }
 
     /**
@@ -1383,7 +1369,7 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateOperation getCertificateOperation(String certificateName) {
-        return getCertificateOperationWithResponse(certificateName, RequestOptions.none()).getValue();
+        return getCertificateOperationWithResponse(certificateName, RequestContext.none()).getValue();
     }
 
     /**
@@ -1393,7 +1379,7 @@ public final class CertificateClientImpl {
      * certificate is no longer created. This operation requires the certificates/update permission.
      * 
      * @param certificateName The name of the certificate.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1401,10 +1387,10 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateOperation> deleteCertificateOperationWithResponse(String certificateName,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String accept = "application/json";
-        return service.deleteCertificateOperation(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-            certificateName, accept, requestOptions);
+        return service.deleteCertificateOperation(this.getVaultBaseUrl(), this.getApiVersion(), certificateName, accept,
+            requestContext);
     }
 
     /**
@@ -1421,7 +1407,7 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateOperation deleteCertificateOperation(String certificateName) {
-        return deleteCertificateOperationWithResponse(certificateName, RequestOptions.none()).getValue();
+        return deleteCertificateOperationWithResponse(certificateName, RequestContext.none()).getValue();
     }
 
     /**
@@ -1432,7 +1418,7 @@ public final class CertificateClientImpl {
      * 
      * @param certificateName The name of the certificate.
      * @param parameters The parameters to merge certificate.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1440,11 +1426,11 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateBundle> mergeCertificateWithResponse(String certificateName,
-        CertificateMergeParameters parameters, RequestOptions requestOptions) {
+        CertificateMergeParameters parameters, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.mergeCertificate(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), certificateName,
-            contentType, accept, parameters, requestOptions);
+        return service.mergeCertificate(this.getVaultBaseUrl(), this.getApiVersion(), certificateName, contentType,
+            accept, parameters, requestContext);
     }
 
     /**
@@ -1462,7 +1448,7 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateBundle mergeCertificate(String certificateName, CertificateMergeParameters parameters) {
-        return mergeCertificateWithResponse(certificateName, parameters, RequestOptions.none()).getValue();
+        return mergeCertificateWithResponse(certificateName, parameters, RequestContext.none()).getValue();
     }
 
     /**
@@ -1472,7 +1458,7 @@ public final class CertificateClientImpl {
      * will be downloaded. This operation requires the certificates/backup permission.
      * 
      * @param certificateName The name of the certificate.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1480,10 +1466,10 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BackupCertificateResult> backupCertificateWithResponse(String certificateName,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String accept = "application/json";
-        return service.backupCertificate(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), certificateName,
-            accept, requestOptions);
+        return service.backupCertificate(this.getVaultBaseUrl(), this.getApiVersion(), certificateName, accept,
+            requestContext);
     }
 
     /**
@@ -1500,7 +1486,7 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupCertificateResult backupCertificate(String certificateName) {
-        return backupCertificateWithResponse(certificateName, RequestOptions.none()).getValue();
+        return backupCertificateWithResponse(certificateName, RequestContext.none()).getValue();
     }
 
     /**
@@ -1510,7 +1496,7 @@ public final class CertificateClientImpl {
      * certificates/restore permission.
      * 
      * @param parameters The parameters to restore the certificate.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1518,11 +1504,11 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateBundle> restoreCertificateWithResponse(CertificateRestoreParameters parameters,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.restoreCertificate(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), contentType,
-            accept, parameters, requestOptions);
+        return service.restoreCertificate(this.getVaultBaseUrl(), this.getApiVersion(), contentType, accept, parameters,
+            requestContext);
     }
 
     /**
@@ -1539,7 +1525,7 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateBundle restoreCertificate(CertificateRestoreParameters parameters) {
-        return restoreCertificateWithResponse(parameters, RequestOptions.none()).getValue();
+        return restoreCertificateWithResponse(parameters, RequestContext.none()).getValue();
     }
 
     /**
@@ -1562,7 +1548,7 @@ public final class CertificateClientImpl {
         Boolean includePending) {
         final String accept = "application/json";
         Response<DeletedCertificateListResult> res = service.getDeletedCertificates(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), maxresults, includePending, accept, RequestOptions.none());
+            this.getApiVersion(), maxresults, includePending, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1577,7 +1563,7 @@ public final class CertificateClientImpl {
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
      * 25 results.
      * @param includePending Specifies whether to include certificates which are not completely provisioned.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1585,10 +1571,10 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<DeletedCertificateItem> getDeletedCertificatesSinglePage(Integer maxresults,
-        Boolean includePending, RequestOptions requestOptions) {
+        Boolean includePending, RequestContext requestContext) {
         final String accept = "application/json";
         Response<DeletedCertificateListResult> res = service.getDeletedCertificates(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), maxresults, includePending, accept, requestOptions);
+            this.getApiVersion(), maxresults, includePending, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1643,7 +1629,7 @@ public final class CertificateClientImpl {
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
      * 25 results.
      * @param includePending Specifies whether to include certificates which are not completely provisioned.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1651,14 +1637,11 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedCertificateItem> getDeletedCertificates(Integer maxresults, Boolean includePending,
-        RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(requestOptions != null && requestOptions.getContext() != null
-            ? requestOptions.getContext()
-            : Context.none());
+        RequestContext requestContext) {
+        RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
         return new PagedIterable<>(
-            (pagingOptions) -> getDeletedCertificatesSinglePage(maxresults, includePending, requestOptions),
-            (pagingOptions, nextLink) -> getDeletedCertificatesNextSinglePage(nextLink, requestOptionsForNextPage));
+            (pagingOptions) -> getDeletedCertificatesSinglePage(maxresults, includePending, requestContext),
+            (pagingOptions, nextLink) -> getDeletedCertificatesNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -1669,7 +1652,7 @@ public final class CertificateClientImpl {
      * the certificates/get permission.
      * 
      * @param certificateName The name of the certificate.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1678,10 +1661,10 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedCertificateBundle> getDeletedCertificateWithResponse(String certificateName,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String accept = "application/json";
-        return service.getDeletedCertificate(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-            certificateName, accept, requestOptions);
+        return service.getDeletedCertificate(this.getVaultBaseUrl(), this.getApiVersion(), certificateName, accept,
+            requestContext);
     }
 
     /**
@@ -1700,7 +1683,7 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeletedCertificateBundle getDeletedCertificate(String certificateName) {
-        return getDeletedCertificateWithResponse(certificateName, RequestOptions.none()).getValue();
+        return getDeletedCertificateWithResponse(certificateName, RequestContext.none()).getValue();
     }
 
     /**
@@ -1711,17 +1694,17 @@ public final class CertificateClientImpl {
      * operation requires the certificate/purge permission.
      * 
      * @param certificateName The name of the certificate.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> purgeDeletedCertificateWithResponse(String certificateName, RequestOptions requestOptions) {
+    public Response<Void> purgeDeletedCertificateWithResponse(String certificateName, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.purgeDeletedCertificate(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-            certificateName, accept, requestOptions);
+        return service.purgeDeletedCertificate(this.getVaultBaseUrl(), this.getApiVersion(), certificateName, accept,
+            requestContext);
     }
 
     /**
@@ -1738,7 +1721,7 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void purgeDeletedCertificate(String certificateName) {
-        purgeDeletedCertificateWithResponse(certificateName, RequestOptions.none());
+        purgeDeletedCertificateWithResponse(certificateName, RequestContext.none());
     }
 
     /**
@@ -1749,7 +1732,7 @@ public final class CertificateClientImpl {
      * deleted certificate's attributes). This operation requires the certificates/recover permission.
      * 
      * @param certificateName The name of the deleted certificate.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1757,10 +1740,10 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateBundle> recoverDeletedCertificateWithResponse(String certificateName,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String accept = "application/json";
-        return service.recoverDeletedCertificate(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-            certificateName, accept, requestOptions);
+        return service.recoverDeletedCertificate(this.getVaultBaseUrl(), this.getApiVersion(), certificateName, accept,
+            requestContext);
     }
 
     /**
@@ -1778,7 +1761,7 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateBundle recoverDeletedCertificate(String certificateName) {
-        return recoverDeletedCertificateWithResponse(certificateName, RequestOptions.none()).getValue();
+        return recoverDeletedCertificateWithResponse(certificateName, RequestContext.none()).getValue();
     }
 
     /**
@@ -1796,7 +1779,7 @@ public final class CertificateClientImpl {
     public PagedResponse<CertificateItem> getCertificatesNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<CertificateListResult> res
-            = service.getCertificatesNext(nextLink, this.getVaultBaseUrl(), accept, RequestOptions.none());
+            = service.getCertificatesNext(nextLink, this.getVaultBaseUrl(), accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1807,7 +1790,7 @@ public final class CertificateClientImpl {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1815,10 +1798,10 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<CertificateItem> getCertificatesNextSinglePage(String nextLink,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String accept = "application/json";
         Response<CertificateListResult> res
-            = service.getCertificatesNext(nextLink, this.getVaultBaseUrl(), accept, requestOptions);
+            = service.getCertificatesNext(nextLink, this.getVaultBaseUrl(), accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1838,7 +1821,7 @@ public final class CertificateClientImpl {
     public PagedResponse<CertificateIssuerItem> getCertificateIssuersNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<CertificateIssuerListResult> res
-            = service.getCertificateIssuersNext(nextLink, this.getVaultBaseUrl(), accept, RequestOptions.none());
+            = service.getCertificateIssuersNext(nextLink, this.getVaultBaseUrl(), accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1849,7 +1832,7 @@ public final class CertificateClientImpl {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1857,10 +1840,10 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<CertificateIssuerItem> getCertificateIssuersNextSinglePage(String nextLink,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String accept = "application/json";
         Response<CertificateIssuerListResult> res
-            = service.getCertificateIssuersNext(nextLink, this.getVaultBaseUrl(), accept, requestOptions);
+            = service.getCertificateIssuersNext(nextLink, this.getVaultBaseUrl(), accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1880,7 +1863,7 @@ public final class CertificateClientImpl {
     public PagedResponse<CertificateItem> getCertificateVersionsNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<CertificateListResult> res
-            = service.getCertificateVersionsNext(nextLink, this.getVaultBaseUrl(), accept, RequestOptions.none());
+            = service.getCertificateVersionsNext(nextLink, this.getVaultBaseUrl(), accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1891,7 +1874,7 @@ public final class CertificateClientImpl {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1899,10 +1882,10 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<CertificateItem> getCertificateVersionsNextSinglePage(String nextLink,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String accept = "application/json";
         Response<CertificateListResult> res
-            = service.getCertificateVersionsNext(nextLink, this.getVaultBaseUrl(), accept, requestOptions);
+            = service.getCertificateVersionsNext(nextLink, this.getVaultBaseUrl(), accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1922,7 +1905,7 @@ public final class CertificateClientImpl {
     public PagedResponse<DeletedCertificateItem> getDeletedCertificatesNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<DeletedCertificateListResult> res
-            = service.getDeletedCertificatesNext(nextLink, this.getVaultBaseUrl(), accept, RequestOptions.none());
+            = service.getDeletedCertificatesNext(nextLink, this.getVaultBaseUrl(), accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1933,7 +1916,7 @@ public final class CertificateClientImpl {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1941,10 +1924,10 @@ public final class CertificateClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<DeletedCertificateItem> getDeletedCertificatesNextSinglePage(String nextLink,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String accept = "application/json";
         Response<DeletedCertificateListResult> res
-            = service.getDeletedCertificatesNext(nextLink, this.getVaultBaseUrl(), accept, requestOptions);
+            = service.getDeletedCertificatesNext(nextLink, this.getVaultBaseUrl(), accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }

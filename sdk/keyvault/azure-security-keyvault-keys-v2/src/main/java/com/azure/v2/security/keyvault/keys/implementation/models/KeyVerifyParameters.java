@@ -11,7 +11,6 @@ import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.utils.Base64Uri;
-
 import java.io.IOException;
 import java.util.Objects;
 
@@ -133,7 +132,8 @@ public final class KeyVerifyParameters implements JsonSerializable<KeyVerifyPara
                 if ("alg".equals(fieldName)) {
                     algorithm = JsonWebKeySignatureAlgorithm.fromValue(reader.getString());
                 } else if ("digest".equals(fieldName)) {
-                    Base64Uri digestHolder = reader.getNullable(nonNullReader -> new Base64Uri(nonNullReader.getString()));
+                    Base64Uri digestHolder
+                        = reader.getNullable(nonNullReader -> new Base64Uri(nonNullReader.getString()));
                     if (digestHolder != null) {
                         digest = digestHolder.decodedBytes();
                     }
