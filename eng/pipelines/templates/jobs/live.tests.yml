@@ -30,6 +30,7 @@ parameters:
 
 jobs:
   - job:
+    displayName: img_$(OSVmImage)
     dependsOn: ${{ parameters.DependsOn }}
     condition: and(succeededOrFailed(), ne(${{ parameters.Matrix }}, '{}'))
     strategy:
@@ -48,7 +49,7 @@ jobs:
       ${{ if eq(parameters.OSName, 'macOS') }}:
         vmImage: $(OSVmImage)
       ${{ else }}:
-        image: $(OSVmImage)
+        image: windows-2022
       name: $(Pool)
       os: ${{ parameters.OSName }}
 
@@ -76,6 +77,11 @@ jobs:
           sbomEnabled: false
 
     steps:
+      - pwsh: |
+          write-host "--- image ---"
+          write-host $(OSVmImage)
+          write-host "--- end image ---"
+        displayName: bbp debug os
       - template: /eng/pipelines/templates/steps/initialize-test-environment.yml
         parameters:
           OS: ${{ parameters.OSName }}
