@@ -13,7 +13,6 @@ import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.utils.Base64Uri;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;

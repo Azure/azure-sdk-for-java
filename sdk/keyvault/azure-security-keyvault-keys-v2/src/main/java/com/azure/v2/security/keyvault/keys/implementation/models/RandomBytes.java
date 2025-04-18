@@ -11,7 +11,6 @@ import io.clientcore.core.serialization.json.JsonSerializable;
 import io.clientcore.core.serialization.json.JsonToken;
 import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.utils.Base64Uri;
-
 import java.io.IOException;
 import java.util.Objects;
 
@@ -21,7 +20,7 @@ import java.util.Objects;
 @Metadata(properties = { MetadataProperties.IMMUTABLE })
 public final class RandomBytes implements JsonSerializable<RandomBytes> {
     /*
-     * The bytes encoded as a base 64 URI string.
+     * The bytes encoded as a base64url string.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
     private final Base64Uri value;
@@ -41,7 +40,7 @@ public final class RandomBytes implements JsonSerializable<RandomBytes> {
     }
 
     /**
-     * Get the value property: The bytes encoded as a base 64 URI string.
+     * Get the value property: The bytes encoded as a base64url string.
      * 
      * @return the value value.
      */
@@ -82,7 +81,8 @@ public final class RandomBytes implements JsonSerializable<RandomBytes> {
                 reader.nextToken();
 
                 if ("value".equals(fieldName)) {
-                    Base64Uri valueHolder = reader.getNullable(nonNullReader -> new Base64Uri(nonNullReader.getString()));
+                    Base64Uri valueHolder
+                        = reader.getNullable(nonNullReader -> new Base64Uri(nonNullReader.getString()));
                     if (valueHolder != null) {
                         value = valueHolder.decodedBytes();
                     }
