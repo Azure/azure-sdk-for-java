@@ -82,6 +82,7 @@ public class StandbyPoolTests extends TestProxyTestBase {
     }
 
     @Test
+    @LiveOnly
     public void testStandByVirtualMachinePool() {
         // live test subscription is having issue creating VMSS resource. Only check API availability here.
         standbyPoolManager.standbyVirtualMachinePools().list().stream().count();
