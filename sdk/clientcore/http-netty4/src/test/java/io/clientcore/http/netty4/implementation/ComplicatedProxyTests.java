@@ -50,7 +50,6 @@ import io.netty.util.concurrent.EventExecutor;
 import io.netty.util.concurrent.Future;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.RepetitionInfo;
-import org.junit.jupiter.api.parallel.Isolated;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -80,7 +79,6 @@ import static org.junit.jupiter.api.Assertions.fail;
  * {@code StacklessClosedChannelException}. This attempts to replicate the problem without using the full
  * {@code NettyHttpClient}.
  */
-@Isolated
 public class ComplicatedProxyTests {
     private static final ClientLogger LOGGER = new ClientLogger(ComplicatedProxyTests.class);
 
