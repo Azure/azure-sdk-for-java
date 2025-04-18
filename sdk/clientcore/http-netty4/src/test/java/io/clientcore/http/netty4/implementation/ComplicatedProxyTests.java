@@ -50,8 +50,6 @@ import io.netty.util.concurrent.EventExecutor;
 import io.netty.util.concurrent.Future;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.RepetitionInfo;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.api.parallel.Isolated;
 
 import java.io.PrintWriter;
@@ -83,7 +81,6 @@ import static org.junit.jupiter.api.Assertions.fail;
  * {@code NettyHttpClient}.
  */
 @Isolated
-@Execution(ExecutionMode.SAME_THREAD)
 public class ComplicatedProxyTests {
     private static final ClientLogger LOGGER = new ClientLogger(ComplicatedProxyTests.class);
 
