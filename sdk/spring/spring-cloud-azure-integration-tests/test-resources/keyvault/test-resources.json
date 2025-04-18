@@ -2,10 +2,6 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "tenantId": {
-      "defaultValue": "[subscription().tenantId]",
-      "type": "string"
-    },
     "testApplicationOid": {
       "type": "String"
     },
@@ -80,10 +76,6 @@
     }
   ],
   "outputs": {
-    "AZURE_SPRING_TENANT_ID": {
-      "type": "string",
-      "value": "[parameters('tenantId')]"
-    },
     "AZURE_KEYVAULT_SECRET_ENDPOINT": {
       "type": "string",
       "value": "[variables('azureKeyVaultUri')]"

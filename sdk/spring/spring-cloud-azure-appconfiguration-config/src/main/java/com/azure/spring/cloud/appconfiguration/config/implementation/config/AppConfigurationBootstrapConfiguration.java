@@ -2,8 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation.config;
 
-import javax.naming.NamingException;
-
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -16,7 +14,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.util.StringUtils;
 
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
@@ -27,16 +24,14 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigur
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationPropertySourceLocator;
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationReplicaClientFactory;
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationReplicaClientsBuilder;
-import com.azure.spring.cloud.appconfiguration.config.implementation.FeatureFlagClient;
-import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProviderProperties;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.appconfiguration.AzureAppConfigurationProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.context.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.core.AbstractAzureHttpConfigurationProperties;
-import com.azure.spring.cloud.autoconfigure.implementation.properties.core.authentication.TokenCredentialConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.implementation.properties.utils.AzureGlobalPropertiesUtils;
+import com.azure.spring.cloud.autoconfigure.properties.core.authentication.TokenCredentialConfigurationProperties;
 import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils;
 import com.azure.spring.cloud.core.implementation.util.AzureSpringIdentifier;
@@ -52,7 +47,6 @@ import com.azure.spring.cloud.service.implementation.keyvault.secrets.SecretClie
 @EnableConfigurationProperties({ AppConfigurationProperties.class, AppConfigurationProviderProperties.class })
 @ConditionalOnClass(AppConfigurationPropertySourceLocator.class)
 @ConditionalOnProperty(prefix = AppConfigurationProperties.CONFIG_PREFIX, name = "enabled", matchIfMissing = true)
-@EnableAsync
 public class AppConfigurationBootstrapConfiguration {
 
     @Autowired
@@ -61,17 +55,15 @@ public class AppConfigurationBootstrapConfiguration {
     @Bean
     AppConfigurationPropertySourceLocator sourceLocator(AppConfigurationProperties properties,
         AppConfigurationProviderProperties appProperties, AppConfigurationReplicaClientFactory clientFactory,
-        AppConfigurationKeyVaultClientFactory keyVaultClientFactory, ReplicaLookUp replicaLookUp,
-        FeatureFlagClient featureFlagLoader)
+        AppConfigurationKeyVaultClientFactory keyVaultClientFactory)
         throws IllegalArgumentException {
 
         return new AppConfigurationPropertySourceLocator(appProperties, clientFactory, keyVaultClientFactory,
-            properties.getRefreshInterval(), properties.getStores(), replicaLookUp, featureFlagLoader);
+            properties.getRefreshInterval(), properties.getStores());
     }
 
     @Bean
-    AppConfigurationKeyVaultClientFactory appConfigurationKeyVaultClientFactory(Environment environment,
-        AppConfigurationProviderProperties appProperties)
+    AppConfigurationKeyVaultClientFactory appConfigurationKeyVaultClientFactory(Environment environment, AppConfigurationProviderProperties appProperties)
         throws IllegalArgumentException {
         AzureGlobalProperties globalSource = Binder.get(environment).bindOrCreate(AzureGlobalProperties.PREFIX,
             AzureGlobalProperties.class);
@@ -109,19 +101,8 @@ public class AppConfigurationBootstrapConfiguration {
     @Bean
     @ConditionalOnMissingBean
     AppConfigurationReplicaClientFactory buildClientFactory(AppConfigurationReplicaClientsBuilder clientBuilder,
-        AppConfigurationProperties properties, ReplicaLookUp replicaLookUp) {
-        return new AppConfigurationReplicaClientFactory(clientBuilder, properties.getStores(), replicaLookUp);
-    }
-
-    /**
-     * Loader for all feature flags. Enables de-duplicating of feature flags when multiple feature flags with the same
-     * name are loaded.
-     * @return {@link FeatureFlagClient}
-     */
-    @Bean
-    @ConditionalOnMissingBean
-    FeatureFlagClient featureFlagLoader() {
-        return new FeatureFlagClient();
+        AppConfigurationProperties properties) {
+        return new AppConfigurationReplicaClientFactory(clientBuilder, properties.getStores());
     }
 
     /**
@@ -168,11 +149,6 @@ public class AppConfigurationBootstrapConfiguration {
         clientBuilder.setIsKeyVaultConfigured(keyVaultClientFactory.isConfigured());
 
         return clientBuilder;
-    }
-
-    @Bean
-    ReplicaLookUp replicaLookUp(AppConfigurationProperties properties) throws NamingException {
-        return new ReplicaLookUp(properties);
     }
 
     private boolean isCredentialConfigured(AbstractAzureHttpConfigurationProperties properties) {

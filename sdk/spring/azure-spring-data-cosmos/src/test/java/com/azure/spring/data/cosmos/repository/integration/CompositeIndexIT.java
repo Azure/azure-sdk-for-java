@@ -15,7 +15,6 @@ import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.azure.spring.data.cosmos.repository.support.SimpleCosmosRepository;
 import com.azure.spring.data.cosmos.repository.support.SimpleReactiveCosmosRepository;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -48,11 +47,6 @@ public class CompositeIndexIT {
     @Before
     public void setup() {
         collectionManager.ensureContainersCreatedAndEmpty(template, CompositeIndexEntity.class);
-    }
-
-    @AfterClass
-    public static void cleanUp() {
-        collectionManager.deleteContainer(new CosmosEntityInformation<>(CompositeIndexEntity.class));
     }
 
     @Test

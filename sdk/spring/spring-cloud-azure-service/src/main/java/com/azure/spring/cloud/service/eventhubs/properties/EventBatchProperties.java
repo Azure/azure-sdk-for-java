@@ -13,12 +13,6 @@ import java.time.Duration;
 public class EventBatchProperties implements EventProcessorClientProperties.EventBatch {
 
     /**
-     * Creates an instance of {@link EventBatchProperties}.
-     */
-    public EventBatchProperties() {
-    }
-
-    /**
      * The max time duration to wait to receive an event before processing events.
      */
     private Duration maxWaitTime;

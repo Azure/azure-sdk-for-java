@@ -20,12 +20,6 @@ import java.util.stream.Stream;
  */
 public final class AzureStorageBlobProtocolResolver extends AbstractAzureStorageProtocolResolver {
 
-    /**
-     * Creates an instance of {@link AzureStorageBlobProtocolResolver}.
-     */
-    public AzureStorageBlobProtocolResolver() {
-    }
-
     private BlobServiceClient blobServiceClient;
 
     private static final BlobListDetails RETRIEVE_NOTHING_DETAILS = new BlobListDetails();

@@ -4,7 +4,6 @@ package com.azure.spring.data.cosmos.repository.query;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.data.repository.query.Parameter;
-import org.springframework.data.util.TypeInformation;
 
 /**
  * A single cosmos parameter of a query method.
@@ -17,7 +16,7 @@ public class CosmosParameter extends Parameter {
      * @param parameter must not be {@literal null}.
      */
     public CosmosParameter(MethodParameter parameter) {
-        super(parameter, TypeInformation.of(CosmosParameter.class));
+        super(parameter);
     }
 
     @Override

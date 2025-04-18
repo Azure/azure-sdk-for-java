@@ -7,12 +7,6 @@ package com.azure.spring.cloud.feature.management.targeting;
  */
 public final class TargetingEvaluationOptions {
 
-    /**
-     * Creates an instance of {@link TargetingEvaluationOptions}
-     */
-    public TargetingEvaluationOptions() {
-    }
-
     private boolean ignoreCase;
 
     /**

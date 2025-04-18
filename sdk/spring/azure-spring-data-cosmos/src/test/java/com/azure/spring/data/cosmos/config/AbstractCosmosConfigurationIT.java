@@ -30,7 +30,6 @@ import static org.junit.Assert.assertNotNull;
 
 public class AbstractCosmosConfigurationIT {
 
-    @SuppressWarnings("deprecation")
     @Rule
     public ExpectedException exception = ExpectedException.none();
 

@@ -13,13 +13,11 @@ import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.domain.CompositeIndexEntity;
 import com.azure.spring.data.cosmos.domain.UniqueKeyPolicyEntity;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
-import com.azure.spring.data.cosmos.exception.CosmosConflictException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.UniqueKeyPolicyEntityRepository;
 import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
 import com.azure.spring.data.cosmos.repository.support.SimpleCosmosRepository;
 import com.azure.spring.data.cosmos.repository.support.SimpleReactiveCosmosRepository;
-import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -61,18 +59,13 @@ public class UniqueKeyPolicyIT {
     @Autowired
     ReactiveCosmosTemplate reactiveTemplate;
 
-    private static CosmosEntityInformation<UniqueKeyPolicyEntity, String> information =
+    private CosmosEntityInformation<UniqueKeyPolicyEntity, String> information =
         new CosmosEntityInformation<>(UniqueKeyPolicyEntity.class);
 
     @Before
     public void setup() {
         collectionManager.ensureContainersCreatedAndEmpty(template, CompositeIndexEntity.class);
         repository.saveAll(Arrays.asList(ENTITY_1, ENTITY_2, ENTITY_3, ENTITY_4, ENTITY_5));
-    }
-
-    @AfterClass
-    public static void teardown() {
-        collectionManager.deleteContainer(information);
     }
 
     @Test
@@ -128,9 +121,9 @@ public class UniqueKeyPolicyIT {
         try {
             repository.save(entity);
             fail("Save call should have failed with unique constraints exception");
-        } catch (CosmosConflictException cosmosConflictException) {
-            assertThat(cosmosConflictException.getCosmosException().getStatusCode()).isEqualTo(409);
-            assertThat(cosmosConflictException.getCosmosException().getMessage()).contains("Unique index constraint "
+        } catch (CosmosAccessException cosmosAccessException) {
+            assertThat(cosmosAccessException.getCosmosException().getStatusCode()).isEqualTo(409);
+            assertThat(cosmosAccessException.getCosmosException().getMessage()).contains("Unique index constraint "
                 + "violation.");
         }
         //  change logical partition, now the entity should be saved
@@ -151,9 +144,9 @@ public class UniqueKeyPolicyIT {
         try {
             repository.save(entity);
             fail("Save call should have failed with unique constraints exception");
-        } catch (CosmosAccessException cosmosConflictException) {
-            assertThat(cosmosConflictException.getCosmosException().getStatusCode()).isEqualTo(409);
-            assertThat(cosmosConflictException.getCosmosException().getMessage()).contains("Unique index constraint "
+        } catch (CosmosAccessException cosmosAccessException) {
+            assertThat(cosmosAccessException.getCosmosException().getStatusCode()).isEqualTo(409);
+            assertThat(cosmosAccessException.getCosmosException().getMessage()).contains("Unique index constraint "
                 + "violation.");
         }
         //  change logical partition, now the entity should be saved

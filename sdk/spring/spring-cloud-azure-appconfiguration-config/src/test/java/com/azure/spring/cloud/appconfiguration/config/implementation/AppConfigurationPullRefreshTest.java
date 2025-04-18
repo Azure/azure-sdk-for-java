@@ -4,7 +4,6 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.when;
 
 import java.time.Duration;
 import java.util.concurrent.ExecutionException;
@@ -13,14 +12,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.MockitoSession;
-import org.mockito.quality.Strictness;
 import org.springframework.context.ApplicationEventPublisher;
 
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationRefreshUtil.RefreshEventData;
-import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
 
 import net.jcip.annotations.NotThreadSafe;
 
@@ -29,55 +26,54 @@ public class AppConfigurationPullRefreshTest {
 
     @Mock
     private ApplicationEventPublisher publisher;
-    
-    @Mock
-    private ReplicaLookUp replicaLookUpMock;
 
     private final Duration refreshInterval = Duration.ofMinutes(10);
 
-    @Mock
-    private RefreshEventData eventDataMock;
+    private RefreshEventData eventData;
 
     @Mock
     private AppConfigurationReplicaClientFactory clientFactoryMock;
-    
-    @Mock
-    private AppConfigurationRefreshUtil refreshUtilMock;
-    
-    private MockitoSession session;
 
     @BeforeEach
     public void setup() {
-        session = Mockito.mockitoSession().initMocks(this).strictness(Strictness.STRICT_STUBS).startMocking();
         MockitoAnnotations.openMocks(this);
+        eventData = new RefreshEventData();
     }
 
     @AfterEach
-    public void cleanup() throws Exception {
+    public void cleanupMethod() throws Exception {
         MockitoAnnotations.openMocks(this).close();
-        session.finishMocking();
     }
 
     @Test
     public void refreshNoChange() throws InterruptedException, ExecutionException {
-        when(refreshUtilMock.refreshStoresCheck(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(eventDataMock);
+        try (MockedStatic<AppConfigurationRefreshUtil> refreshUtils = Mockito
+            .mockStatic(AppConfigurationRefreshUtil.class)) {
+            refreshUtils
+                .when(() -> AppConfigurationRefreshUtil.refreshStoresCheck(Mockito.eq(clientFactoryMock),
+                    Mockito.eq(refreshInterval), Mockito.any(), Mockito.any()))
+                .thenReturn(eventData);
 
-        AppConfigurationPullRefresh refresh = new AppConfigurationPullRefresh(clientFactoryMock, refreshInterval,
-            (long) 0, replicaLookUpMock, refreshUtilMock);
-        assertFalse(refresh.refreshConfigurations().block());
-       
+            AppConfigurationPullRefresh refresh = new AppConfigurationPullRefresh(clientFactoryMock, refreshInterval,
+                (long) 0);
+            assertFalse(refresh.refreshConfigurations().block());
+        }
     }
 
     @Test
     public void refreshUpdate() throws InterruptedException, ExecutionException {
-        when(eventDataMock.getMessage()).thenReturn("Updated");
-        when(eventDataMock.getDoRefresh()).thenReturn(true);
-        when(refreshUtilMock.refreshStoresCheck(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any())).thenReturn(eventDataMock);
+        eventData.setMessage("Updated");
+        try (MockedStatic<AppConfigurationRefreshUtil> refreshUtils = Mockito
+            .mockStatic(AppConfigurationRefreshUtil.class)) {
+            refreshUtils
+                .when(() -> AppConfigurationRefreshUtil.refreshStoresCheck(Mockito.eq(clientFactoryMock),
+                    Mockito.eq(refreshInterval), Mockito.any(), Mockito.any()))
+                .thenReturn(eventData);
 
-        AppConfigurationPullRefresh refresh = new AppConfigurationPullRefresh(clientFactoryMock, refreshInterval,
-            (long) 0, replicaLookUpMock, refreshUtilMock);
-        refresh.setApplicationEventPublisher(publisher);
-        assertTrue(refresh.refreshConfigurations().block());
-        
+            AppConfigurationPullRefresh refresh = new AppConfigurationPullRefresh(clientFactoryMock, refreshInterval,
+                (long) 0);
+            refresh.setApplicationEventPublisher(publisher);
+            assertTrue(refresh.refreshConfigurations().block());
+        }
     }
 }

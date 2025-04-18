@@ -62,13 +62,6 @@ public interface TokenCredentialOptionsProvider {
          */
         boolean isManagedIdentityEnabled();
 
-        /**
-         * Get the custom {@link com.azure.core.credential.TokenCredential} bean name. Default return null.
-         * @return the token credential bean name.
-         */
-        default String getTokenCredentialBeanName() {
-            return null;
-        }
     }
 
 }

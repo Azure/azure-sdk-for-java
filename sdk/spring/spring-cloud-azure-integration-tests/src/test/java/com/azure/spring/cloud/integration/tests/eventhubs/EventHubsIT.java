@@ -74,8 +74,6 @@ public class EventHubsIT {
     @Test
     public void testEventHubOperation() throws InterruptedException {
         LOGGER.info("EventHubsIT begin.");
-        // Wait for eventhub initialization to complete
-        Thread.sleep(20000);
         producerClient.send(Arrays.asList(new EventData(DATA)));
         producerClient.close();
         processorClient.start();
@@ -84,7 +82,7 @@ public class EventHubsIT {
             Assertions.assertEquals(DATA, event.getData().getBodyAsString());
         }
         Assertions.assertTrue(processorClient.isRunning());
-        LATCH.await(40, TimeUnit.SECONDS);
+        LATCH.await(15, TimeUnit.SECONDS);
         Assertions.assertEquals(DATA, MESSAGE);
         LOGGER.info("EventHubsIT end.");
     }

@@ -41,7 +41,6 @@ public class SimpleCosmosRepositoryUnitTest {
     @Mock
     CosmosEntityInformation<Person, String> entityInformation;
 
-    @SuppressWarnings("deprecation")
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 

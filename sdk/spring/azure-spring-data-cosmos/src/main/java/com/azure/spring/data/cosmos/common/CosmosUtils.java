@@ -19,12 +19,6 @@ import java.util.UUID;
  */
 public class CosmosUtils {
 
-    /**
-     * Creates an instance of {@link CosmosUtils}
-     */
-    public CosmosUtils() {
-    }
-
     private static final Logger LOGGER = LoggerFactory.getLogger(CosmosUtils.class);
 
     /**

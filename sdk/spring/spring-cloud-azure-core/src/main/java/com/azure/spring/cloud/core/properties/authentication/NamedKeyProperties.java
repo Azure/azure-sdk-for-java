@@ -8,12 +8,6 @@ package com.azure.spring.cloud.core.properties.authentication;
  */
 public final class NamedKeyProperties {
 
-    /**
-     * Creates an instance of {@link NamedKeyProperties}.
-     */
-    public NamedKeyProperties() {
-    }
-
     private String name;
     private String key;
 

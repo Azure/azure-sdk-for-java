@@ -17,12 +17,6 @@ import java.util.stream.Stream;
  */
 public final class AzureStorageFileProtocolResolver extends AbstractAzureStorageProtocolResolver {
 
-    /**
-     * Creates an instance of {@link AzureStorageFileProtocolResolver}.
-     */
-    public AzureStorageFileProtocolResolver() {
-    }
-
     private ShareServiceClient shareServiceClient;
 
     /**

@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.implementation.storage.common;
 
-import com.azure.spring.cloud.autoconfigure.implementation.properties.core.retry.RetryConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.core.retry.RetryConfigurationProperties;
 import com.azure.spring.cloud.service.implementation.storage.common.StorageRetry;
 
 import java.time.Duration;

@@ -27,7 +27,7 @@ public interface AuthenticationDescriptor<T> {
 
     /**
      * Get the consumer function for credential.
-     * @return the consumer function.
+     * @return the cunsumer function.
      */
     Consumer<T> getConsumer();
 }

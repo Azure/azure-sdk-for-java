@@ -4,13 +4,10 @@
 package com.azure.spring.cloud.service.implementation.servicebus.factory;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
-import com.azure.spring.cloud.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.cloud.core.implementation.properties.PropertyMapper;
 import com.azure.spring.cloud.service.implementation.servicebus.properties.ServiceBusSenderClientProperties;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import org.springframework.util.Assert;
-
-import java.util.List;
 
 /**
  * Service Bus client builder factory, it builds the {@link ServiceBusClientBuilder.ServiceBusSenderClientBuilder}.
@@ -19,13 +16,14 @@ public class ServiceBusSenderClientBuilderFactory
     extends AbstractServiceBusSubClientBuilderFactory<ServiceBusClientBuilder.ServiceBusSenderClientBuilder,
         ServiceBusSenderClientProperties> {
 
+    private final ServiceBusSenderClientProperties senderClientProperties;
+
     /**
      * Create a {@link ServiceBusSenderClientBuilderFactory} instance with the {@link ServiceBusSenderClientProperties}.
      * @param senderClientProperties the properties of a Service Bus sender client.
      */
-    public ServiceBusSenderClientBuilderFactory(ServiceBusSenderClientProperties senderClientProperties,
-                                                List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> serviceClientBuilderCustomizers) {
-        this(null, senderClientProperties, serviceClientBuilderCustomizers);
+    public ServiceBusSenderClientBuilderFactory(ServiceBusSenderClientProperties senderClientProperties) {
+        this(null, senderClientProperties);
     }
 
     /**
@@ -38,13 +36,8 @@ public class ServiceBusSenderClientBuilderFactory
      */
     public ServiceBusSenderClientBuilderFactory(ServiceBusClientBuilder serviceBusClientBuilder,
                                                 ServiceBusSenderClientProperties senderClientProperties) {
-        this(serviceBusClientBuilder, senderClientProperties, null);
-    }
-
-    private ServiceBusSenderClientBuilderFactory(ServiceBusClientBuilder serviceBusClientBuilder,
-                                                 ServiceBusSenderClientProperties senderClientProperties,
-                                                 List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> serviceClientBuilderCustomizers) {
-        super(serviceBusClientBuilder, senderClientProperties, serviceClientBuilderCustomizers);
+        super(serviceBusClientBuilder, senderClientProperties);
+        this.senderClientProperties = senderClientProperties;
     }
 
     @Override
@@ -54,16 +47,17 @@ public class ServiceBusSenderClientBuilderFactory
 
     @Override
     protected void configureService(ServiceBusClientBuilder.ServiceBusSenderClientBuilder builder) {
-        Assert.notNull(properties.getEntityType(), "Entity type cannot be null.");
-        Assert.notNull(properties.getEntityName(), "Entity name cannot be null.");
+        Assert.notNull(senderClientProperties.getEntityType(), "Entity type cannot be null.");
+        Assert.notNull(senderClientProperties.getEntityName(), "Entity name cannot be null.");
         super.configureService(builder);
         final PropertyMapper propertyMapper = new PropertyMapper();
 
-        if (ServiceBusEntityType.QUEUE == properties.getEntityType()) {
-            propertyMapper.from(properties.getEntityName()).to(builder::queueName);
-        } else if (ServiceBusEntityType.TOPIC == properties.getEntityType()) {
-            propertyMapper.from(properties.getEntityName()).to(builder::topicName);
+        if (ServiceBusEntityType.QUEUE == senderClientProperties.getEntityType()) {
+            propertyMapper.from(senderClientProperties.getEntityName()).to(builder::queueName);
+        } else if (ServiceBusEntityType.TOPIC == senderClientProperties.getEntityType()) {
+            propertyMapper.from(senderClientProperties.getEntityName()).to(builder::topicName);
         }
+
     }
 
 }

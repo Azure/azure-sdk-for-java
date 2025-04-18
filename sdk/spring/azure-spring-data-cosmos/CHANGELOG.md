@@ -1,98 +1,9 @@
 ## Release History
 
-### 5.23.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
-
-#### Other Changes
-
-### 5.22.0 (2025-04-08)
-
-#### Bugs Fixed
-* Fixing bug when the PartitionKey is on a parent entity that was introduced when bulk support was added - See [PR 43801](https://github.com/Azure/azure-sdk-for-java/pull/43801).
+### 3.47.0 (2025-04-11)
 
 #### Other Changes
 * Updated `azure-cosmos` to version `4.68.0`.
-
-### 5.21.0 (2025-03-20)
-
-#### Features Added
-* Added `readMany()` API support to `findAllByIds()` - See [PR 43759](https://github.com/Azure/azure-sdk-for-java/pull/43759).
-
-#### Bugs Fixed
-* Fixing bug when the PartitionKey is on a parent entity that was introduced when bulk support was added - See [PR 43801](https://github.com/Azure/azure-sdk-for-java/pull/43801).
-
-#### Other Changes
-* Updated `azure-cosmos` to version `4.67.0`.
-
-### 5.20.1 (2025-03-03)
-
-#### Other Changes
-* Upgrade `azure-sdk-bom` to 1.2.31.
-
-### 5.20.0 (2025-02-12)
-
-#### Features Added
-* Improved the Exception Handling of 'azure-spring-data-cosmos' to throw more detailed exceptions and not always the same exception - See [PR 42902](https://github.com/Azure/azure-sdk-for-java/pull/42902).
-* Implemented sum() support for annotated queries - See [PR 43239](https://github.com/Azure/azure-sdk-for-java/pull/43239).
-
-#### Other Changes
-* Updated `azure-cosmos` to version `4.66.0`.
-
-### 5.19.0 (2024-12-17)
-
-#### Bugs Fixed
-* Fixing bug that `java.math.BigInteger` and `java.math.BigDecimal` in models can cause reflection errors on Java 17 - See [PR 40239](https://github.com/Azure/azure-sdk-for-java/pull/40239)
-
-#### Other Changes
-* Updated `azure-cosmos` to version `4.65.0`.
-
-### 5.18.0 (2024-11-05)
-> [!IMPORTANT]
-> We strongly recommend our customers to use version 5.18.0 and above.
-#### Other Changes
-* Updated `azure-cosmos` to version `4.64.0`.
-
-### 5.17.1 (2024-10-11)
-
-#### Bugs Fixed
-* Fixed issue that some classes do not support Java 17.
-
-### 5.17.0 (2024-10-09)
-
-#### Other Changes
-* regular release
-
-### 5.16.0 (2024-09-09)
-
-#### Other Changes
-* Updated `azure-cosmos` to version `4.63.2`.
-
-### 5.15.0 (2024-08-07)
-
-#### Other Changes
-* Updated `azure-cosmos` to version `4.63.0`.
-
-### 5.14.0 (2024-07-05)
-
-#### Features Added
-* Added hierarchical or sub-partitioning support to 'azure-spring-data-cosmos' - See [PR 40928](https://github.com/Azure/azure-sdk-for-java/pull/40928).
-
-#### Other Changes
-* Updated `azure-cosmos` to version `4.62.0`.
-
-### 5.13.0 (2024-06-06)
-
-#### Features Added
-* Added support for `@Transient` annotation - see [PR 40401](https://github.com/Azure/azure-sdk-for-java/pull/40401).
-
-#### Bugs Fixed
-* Fixing bug with annotated queries that have no where clause but do have a sort - See [PR 40165](https://github.com/Azure/azure-sdk-for-java/pull/40165).
-* Fixing bug with Spring JPA keywords that don't lead to criteria creation - See [PR 40204](https://github.com/Azure/azure-sdk-for-java/pull/40204).
 
 ### 3.46.0 (2024-06-03)
 
@@ -331,6 +242,8 @@
 * Updated `azure-cosmos` to version `4.38.0`.
 
 ### 3.28.1 (2022-10-07)
+> [!IMPORTANT]
+> We strongly recommend our customers to use version 3.28.1 and above.
 #### Other Changes
 * Updated `azure-cosmos` to version `4.37.1`.
 

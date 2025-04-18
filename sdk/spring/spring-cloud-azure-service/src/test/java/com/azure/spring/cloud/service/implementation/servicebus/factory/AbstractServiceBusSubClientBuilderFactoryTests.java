@@ -10,25 +10,20 @@ import com.azure.identity.ClientCertificateCredential;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.UsernamePasswordCredential;
-import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.cloud.core.properties.proxy.AmqpProxyProperties;
 import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import com.azure.spring.cloud.service.implementation.AzureGenericServiceClientBuilderFactoryBaseTests;
 import com.azure.spring.cloud.service.implementation.servicebus.properties.ServiceBusClientCommonTestProperties;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
+import org.mockito.verification.VerificationMode;
 
 import java.time.Duration;
 
-import static com.azure.spring.cloud.service.implementation.servicebus.factory.ServiceBusClientBuilderFactoryTests.CONNECTION_STRING_FORMAT;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-@SuppressWarnings("deprecation")
 abstract class AbstractServiceBusSubClientBuilderFactoryTests<B,
     P extends ServiceBusClientCommonTestProperties,
     F extends AbstractServiceBusSubClientBuilderFactory<B, ?>> extends AzureGenericServiceClientBuilderFactoryBaseTests<P, F> {
@@ -36,32 +31,16 @@ abstract class AbstractServiceBusSubClientBuilderFactoryTests<B,
     abstract void verifyServicePropertiesConfigured(boolean isShareServiceClientBuilder);
     abstract void buildClient(B builder);
 
-    protected String customEndpoint = "https://custom.endpoint.test";
-    ServiceBusClientBuilderFactory sharedClientBuilderFactory;
-    ServiceBusClientBuilder sharedClientBuilder;
-    ServiceBusClientBuilder clientBuilder;
-
-    protected ServiceBusClientBuilder getSharedServiceBusClientBuilder(P properties) {
-        if (properties.isShareServiceBusClientBuilder()) {
-            if (this.sharedClientBuilder == null && this.clientBuilder == null) {
-                this.sharedClientBuilderFactory = spy(new TestServiceBusClientBuilderFactory(properties));
-                this.sharedClientBuilder = this.sharedClientBuilderFactory.build();
-            }
-            return this.sharedClientBuilder;
-        }
-        return null;
+    @Test
+    void fqdnConfigured() {
+        verifyFqdnConfigured(true);
+        verifyFqdnConfigured(false);
     }
 
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void fqdnConfigured(boolean isShareServiceClientBuilder) {
-        verifyFqdnConfigured(isShareServiceClientBuilder);
-    }
-
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void servicePropertiesConfigured(boolean isShareServiceClientBuilder) {
-        verifyServicePropertiesConfigured(isShareServiceClientBuilder);
+    @Test
+    void servicePropertiesConfigured() {
+        verifyServicePropertiesConfigured(true);
+        verifyServicePropertiesConfigured(false);
     }
 
     @Test
@@ -71,72 +50,62 @@ abstract class AbstractServiceBusSubClientBuilderFactoryTests<B,
         buildClient(builder);
     }
 
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void clientSecretTokenCredentialConfigured(boolean isShareServiceClientBuilder) {
-        verifyClientSecretTokenCredentialConfigured(isShareServiceClientBuilder);
+    @Test
+    void clientSecretTokenCredentialConfigured() {
+        verifyClientSecretTokenCredentialConfigured(true);
+        verifyClientSecretTokenCredentialConfigured(false);
     }
 
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void clientCertificateTokenCredentialConfigured(boolean isShareServiceClientBuilder) {
-        verifyClientCertificateCredentialConfigured(isShareServiceClientBuilder);
+    @Test
+    void clientCertificateTokenCredentialConfigured() {
+        verifyClientCertificateCredentialConfigured(true);
+        verifyClientCertificateCredentialConfigured(false);
     }
 
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void usernamePasswordTokenCredentialConfigured(boolean isShareServiceClientBuilder) {
-        verifyUsernamePasswordCredentialConfigured(isShareServiceClientBuilder);
+    @Test
+    void usernamePasswordTokenCredentialConfigured() {
+        verifyUsernamePasswordCredentialConfigured(true);
+        verifyUsernamePasswordCredentialConfigured(false);
     }
 
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void managedIdentityTokenCredentialConfigured(boolean isShareServiceClientBuilder) {
-        verifyManagedIdentityCredentialConfigured(isShareServiceClientBuilder);
+    @Test
+    void managedIdentityTokenCredentialConfigured() {
+        verifyManagedIdentityCredentialConfigured(true);
+        verifyManagedIdentityCredentialConfigured(false);
     }
 
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void proxyPropertiesConfigured(boolean isShareServiceClientBuilder) {
-        verifyProxyPropertiesConfigured(isShareServiceClientBuilder);
+    @Test
+    void proxyPropertiesConfigured() {
+        verifyProxyPropertiesConfigured(true);
+        verifyProxyPropertiesConfigured(false);
     }
 
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void fixedRetrySettingsCanWork(boolean isShareServiceClientBuilder) {
-        verifyFixedRetryPropertiesConfigured(isShareServiceClientBuilder);
+    @Test
+    void fixedRetrySettingsCanWork() {
+        verifyFixedRetryPropertiesConfigured(true);
+        verifyFixedRetryPropertiesConfigured(false);
     }
 
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void exponentialRetrySettingsCanWork(boolean isShareServiceClientBuilder) {
-        exponentialRetryPropertiesConfigured(isShareServiceClientBuilder);
+    @Test
+    void exponentialRetrySettingsCanWork() {
+        exponentialRetryPropertiesConfigured(true);
+        exponentialRetryPropertiesConfigured(false);
     }
 
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void transportTypeConfigured(boolean isShareServiceClientBuilder) {
-        verifyTransportTypeConfigured(isShareServiceClientBuilder);
+    @Test
+    void transportTypeConfigured() {
+        verifyTransportTypeConfigured(true);
+        verifyTransportTypeConfigured(false);
     }
 
-    @ParameterizedTest
-    @ValueSource(booleans = { true, false })
-    void connectionStringConfigured(boolean isShareServiceClientBuilder) {
-        P properties = createMinimalServiceProperties();
-        properties.setShareServiceBusClientBuilder(isShareServiceClientBuilder);
-        String connectionString = String.format(CONNECTION_STRING_FORMAT, "test-namespace");
-        properties.setConnectionString(connectionString);
-        final F factory = createClientBuilderFactoryWithMockBuilder(properties);
-        doReturn(isShareServiceClientBuilder).when(factory).isShareServiceBusClientBuilder();
-        B builder = factory.build();
-        buildClient(builder);
-
-        verify(factory.getServiceBusClientBuilder(), times(1)).connectionString(connectionString);
+    @Test
+    void connectionStringConfigured() {
+        verifyConnectionConfigured(true);
+        verifyConnectionConfigured(false);
     }
 
     private void verifyFqdnConfigured(boolean isShareServiceClientBuilder) {
         P properties = createMinimalServiceProperties();
-        properties.setShareServiceBusClientBuilder(isShareServiceClientBuilder);
         properties.setNamespace("another-namespace");
         final F factory = createClientBuilderFactoryWithMockBuilder(properties);
         doReturn(isShareServiceClientBuilder).when(factory).isShareServiceBusClientBuilder();
@@ -144,57 +113,51 @@ abstract class AbstractServiceBusSubClientBuilderFactoryTests<B,
         B builder = factory.build();
         buildClient(builder);
 
-        verify(factory.getServiceBusClientBuilder(),
-            times(1)).fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
+        VerificationMode calledTimes = isShareServiceClientBuilder ? times(0) : times(1);
+        verify(factory.getServiceBusClientBuilder(), calledTimes).fullyQualifiedNamespace(properties.getFullyQualifiedNamespace());
     }
 
     private void verifyClientSecretTokenCredentialConfigured(boolean isShareServiceClientBuilder) {
-        P properties = createMinimalServiceProperties();
-        properties.setShareServiceBusClientBuilder(isShareServiceClientBuilder);
-        final F factory = factoryWithClientSecretTokenCredentialConfigured(properties);
+        final F factory = factoryWithClientSecretTokenCredentialConfigured(createMinimalServiceProperties());
         doReturn(isShareServiceClientBuilder).when(factory).isShareServiceBusClientBuilder();
         B builder = factory.build();
         buildClient(builder);
 
-        verify(factory.getServiceBusClientBuilder(), times(1)).credential(any(ClientSecretCredential.class));
+        VerificationMode calledTimes = isShareServiceClientBuilder ? times(0) : times(1);
+        verify(factory.getServiceBusClientBuilder(), calledTimes).credential(any(ClientSecretCredential.class));
     }
-
     private void verifyClientCertificateCredentialConfigured(boolean isShareServiceClientBuilder) {
-        P properties = createMinimalServiceProperties();
-        properties.setShareServiceBusClientBuilder(isShareServiceClientBuilder);
-        final F factory = factoryWithClientCertificateTokenCredentialConfigured(properties);
+        final F factory = factoryWithClientCertificateTokenCredentialConfigured(createMinimalServiceProperties());
         doReturn(isShareServiceClientBuilder).when(factory).isShareServiceBusClientBuilder();
         B builder = factory.build();
         buildClient(builder);
 
-        verify(factory.getServiceBusClientBuilder(), times(1)).credential(any(ClientCertificateCredential.class));
+        VerificationMode calledTimes = isShareServiceClientBuilder ? times(0) : times(1);
+        verify(factory.getServiceBusClientBuilder(), calledTimes).credential(any(ClientCertificateCredential.class));
     }
 
     private void verifyUsernamePasswordCredentialConfigured(boolean isShareServiceClientBuilder) {
-        P properties = createMinimalServiceProperties();
-        properties.setShareServiceBusClientBuilder(isShareServiceClientBuilder);
-        final F factory = factoryWithUsernamePasswordTokenCredentialConfigured(properties);
+        final F factory = factoryWithUsernamePasswordTokenCredentialConfigured(createMinimalServiceProperties());
         doReturn(isShareServiceClientBuilder).when(factory).isShareServiceBusClientBuilder();
         B builder = factory.build();
         buildClient(builder);
 
-        verify(factory.getServiceBusClientBuilder(), times(1)).credential(any(UsernamePasswordCredential.class));
+        VerificationMode calledTimes = isShareServiceClientBuilder ? times(0) : times(1);
+        verify(factory.getServiceBusClientBuilder(), calledTimes).credential(any(UsernamePasswordCredential.class));
     }
 
     private void verifyManagedIdentityCredentialConfigured(boolean isShareServiceClientBuilder) {
-        P properties = createMinimalServiceProperties();
-        properties.setShareServiceBusClientBuilder(isShareServiceClientBuilder);
-        final F factory = factoryWithManagedIdentityTokenCredentialConfigured(properties);
+        final F factory = factoryWithManagedIdentityTokenCredentialConfigured(createMinimalServiceProperties());
         doReturn(isShareServiceClientBuilder).when(factory).isShareServiceBusClientBuilder();
         B builder = factory.build();
         buildClient(builder);
 
-        verify(factory.getServiceBusClientBuilder(), times(1)).credential(any(ManagedIdentityCredential.class));
+        VerificationMode calledTimes = isShareServiceClientBuilder ? times(0) : times(1);
+        verify(factory.getServiceBusClientBuilder(), calledTimes).credential(any(ManagedIdentityCredential.class));
     }
 
     private void verifyProxyPropertiesConfigured(boolean isShareServiceClientBuilder) {
         P properties = createMinimalServiceProperties();
-        properties.setShareServiceBusClientBuilder(isShareServiceClientBuilder);
         AmqpProxyProperties proxyProperties = properties.getProxy();
         proxyProperties.setHostname("localhost");
         proxyProperties.setPort(8080);
@@ -206,12 +169,12 @@ abstract class AbstractServiceBusSubClientBuilderFactoryTests<B,
         B builder = factory.build();
         buildClient(builder);
 
-        verify(factory.getServiceBusClientBuilder(), times(1)).proxyOptions(any(ProxyOptions.class));
+        VerificationMode calledTimes = isShareServiceClientBuilder ? times(0) : times(1);
+        verify(factory.getServiceBusClientBuilder(), calledTimes).proxyOptions(any(ProxyOptions.class));
     }
 
     private void verifyFixedRetryPropertiesConfigured(boolean isShareServiceClientBuilder) {
         P properties = createMinimalServiceProperties();
-        properties.setShareServiceBusClientBuilder(isShareServiceClientBuilder);
         properties.getRetry().setMode(RetryOptionsProvider.RetryMode.FIXED);
         properties.getRetry().getFixed().setMaxRetries(2);
         properties.getRetry().setTryTimeout(Duration.ofSeconds(3));
@@ -221,12 +184,12 @@ abstract class AbstractServiceBusSubClientBuilderFactoryTests<B,
         B builder = factory.build();
         buildClient(builder);
 
-        verify(factory.getServiceBusClientBuilder(), times(1)).retryOptions(any(AmqpRetryOptions.class));
+        VerificationMode calledTimes = isShareServiceClientBuilder ? times(0) : times(1);
+        verify(factory.getServiceBusClientBuilder(), calledTimes).retryOptions(any(AmqpRetryOptions.class));
     }
 
     private void exponentialRetryPropertiesConfigured(boolean isShareServiceClientBuilder) {
         P properties = createMinimalServiceProperties();
-        properties.setShareServiceBusClientBuilder(isShareServiceClientBuilder);
         properties.getRetry().setMode(RetryOptionsProvider.RetryMode.EXPONENTIAL);
         properties.getRetry().getExponential().setMaxRetries(2);
         properties.getRetry().getExponential().setBaseDelay(Duration.ofSeconds(3));
@@ -238,12 +201,12 @@ abstract class AbstractServiceBusSubClientBuilderFactoryTests<B,
         B builder = factory.build();
         buildClient(builder);
 
-        verify(factory.getServiceBusClientBuilder(), times(1)).retryOptions(any(AmqpRetryOptions.class));
+        VerificationMode calledTimes = isShareServiceClientBuilder ? times(0) : times(1);
+        verify(factory.getServiceBusClientBuilder(), calledTimes).retryOptions(any(AmqpRetryOptions.class));
     }
 
     private void verifyTransportTypeConfigured(boolean isShareServiceClientBuilder) {
         P properties = createMinimalServiceProperties();
-        properties.setShareServiceBusClientBuilder(isShareServiceClientBuilder);
         AmqpTransportType transportType = AmqpTransportType.AMQP_WEB_SOCKETS;
         properties.getClient().setTransportType(transportType);
 
@@ -252,7 +215,19 @@ abstract class AbstractServiceBusSubClientBuilderFactoryTests<B,
         B builder = factory.build();
         buildClient(builder);
 
-        verify(factory.getServiceBusClientBuilder(), times(1)).transportType(transportType);
+        VerificationMode calledTimes = isShareServiceClientBuilder ? times(0) : times(1);
+        verify(factory.getServiceBusClientBuilder(), calledTimes).transportType(transportType);
     }
 
+    private void verifyConnectionConfigured(boolean isShareServiceClientBuilder) {
+        P properties = createMinimalServiceProperties();
+        properties.setConnectionString("test-connection-string");
+        final F factory = createClientBuilderFactoryWithMockBuilder(properties);
+        doReturn(isShareServiceClientBuilder).when(factory).isShareServiceBusClientBuilder();
+        B builder = factory.build();
+        buildClient(builder);
+
+        VerificationMode calledTimes = isShareServiceClientBuilder ? times(0) : times(1);
+        verify(factory.getServiceBusClientBuilder(), calledTimes).connectionString("test-connection-string");
+    }
 }

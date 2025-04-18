@@ -12,12 +12,6 @@ import java.time.Instant;
  */
 public class StartPositionProperties implements EventProcessorClientProperties.StartPosition {
 
-    /**
-     * Creates an instance of {@link StartPositionProperties}.
-     */
-    public StartPositionProperties() {
-    }
-
     private String offset;
     private Long sequenceNumber;
     private Instant enqueuedDateTime;

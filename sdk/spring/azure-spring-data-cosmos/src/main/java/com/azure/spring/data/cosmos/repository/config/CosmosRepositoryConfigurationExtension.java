@@ -24,18 +24,11 @@ import java.util.Collections;
  */
 public class CosmosRepositoryConfigurationExtension extends RepositoryConfigurationExtensionSupport {
 
-    /**
-     * Creates an instance of {@link CosmosRepositoryConfigurationExtension}.
-     */
-    public CosmosRepositoryConfigurationExtension() {
-    }
-
     @Override
     public String getModuleName() {
         return Constants.COSMOS_MODULE_NAME;
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public String getModulePrefix() {
         return Constants.COSMOS_MODULE_PREFIX;

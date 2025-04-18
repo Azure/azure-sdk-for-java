@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.integration.tests.eventhubs.binder;
 
-import com.azure.spring.cloud.integration.tests.eventhubs.TestEventHubsClientConfiguration;
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.checkpoint.Checkpointer;
 import org.junit.jupiter.api.Assertions;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
@@ -31,7 +29,6 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles(value = { "eventhubs-binder", "manual" })
-@Import(TestEventHubsClientConfiguration.class)
 class EventHubsBinderManualModeIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsBinderManualModeIT.class);
@@ -79,11 +76,10 @@ class EventHubsBinderManualModeIT {
     @Test
     void testSendAndReceiveMessage() throws InterruptedException {
         LOGGER.info("EventHubBinderManualModeIT begin.");
-        // Wait for eventhub initialization to complete
-        Thread.sleep(20000);
+        EventHubsBinderManualModeIT.LATCH.await(15, TimeUnit.SECONDS);
         LOGGER.info("Send a message:" + MESSAGE + ".");
         many.emitNext(new GenericMessage<>(MESSAGE), Sinks.EmitFailureHandler.FAIL_FAST);
-        assertThat(EventHubsBinderManualModeIT.LATCH.await(40, TimeUnit.SECONDS)).isTrue();
+        assertThat(EventHubsBinderManualModeIT.LATCH.await(30, TimeUnit.SECONDS)).isTrue();
         LOGGER.info("EventHubBinderManualModeIT end.");
     }
 }

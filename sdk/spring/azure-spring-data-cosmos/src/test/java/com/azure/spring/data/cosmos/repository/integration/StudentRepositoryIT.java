@@ -8,8 +8,6 @@ import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.Student;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.StudentRepository;
-import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -72,11 +70,6 @@ public class StudentRepositoryIT {
     public void setUp() {
         collectionManager.ensureContainersCreatedAndEmpty(template, Student.class);
         this.repository.saveAll(PEOPLE);
-    }
-
-    @AfterClass
-    public static void teardown() {
-        collectionManager.deleteContainer(new CosmosEntityInformation<>(Student.class));
     }
 
     @Test

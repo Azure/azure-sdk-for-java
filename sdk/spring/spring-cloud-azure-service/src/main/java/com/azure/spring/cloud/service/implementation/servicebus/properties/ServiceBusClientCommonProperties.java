@@ -27,9 +27,4 @@ public interface ServiceBusClientCommonProperties extends AzureProperties, Retry
 
     ServiceBusEntityType getEntityType();
 
-    /**
-     * Get the custom endpoint address.
-     * @return the custom endpoint address.
-     */
-    String getCustomEndpointAddress();
 }

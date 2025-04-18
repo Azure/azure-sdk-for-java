@@ -11,9 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableAsync;
 
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationPullRefresh;
-import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationRefreshUtil;
 import com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationReplicaClientFactory;
-import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProperties;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationProviderProperties;
 
@@ -26,30 +24,18 @@ import com.azure.spring.cloud.appconfiguration.config.implementation.properties.
 public class AppConfigurationAutoConfiguration {
 
     /**
-     * Creates an instance of {@link AppConfigurationAutoConfiguration}
-     */
-    public AppConfigurationAutoConfiguration() {
-    }
-
-    /**
      * Auto Watch
      */
     @Configuration
     @ConditionalOnClass(RefreshEndpoint.class)
     public static class AppConfigurationWatchAutoConfiguration {
 
-        /**
-         * Creates an instance of {@link AppConfigurationWatchAutoConfiguration}
-         */
-        public AppConfigurationWatchAutoConfiguration() {
-        }
-
         @Bean
         @ConditionalOnMissingBean
         AppConfigurationRefresh appConfigurationRefresh(AppConfigurationProperties properties,
-            AppConfigurationProviderProperties appProperties, AppConfigurationReplicaClientFactory clientFactory, ReplicaLookUp replicaLookUp) {
+            AppConfigurationProviderProperties appProperties, AppConfigurationReplicaClientFactory clientFactory) {
             return new AppConfigurationPullRefresh(clientFactory, properties.getRefreshInterval(),
-                appProperties.getDefaultMinBackoff(), replicaLookUp, new AppConfigurationRefreshUtil());
+                appProperties.getDefaultMinBackoff());
         }
     }
 }

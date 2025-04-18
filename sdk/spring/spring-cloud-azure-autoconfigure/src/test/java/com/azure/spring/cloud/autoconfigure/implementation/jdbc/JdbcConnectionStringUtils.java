@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
 
-class JdbcConnectionStringUtils {
+public class JdbcConnectionStringUtils {
 
     private static String buildEnhancedPropertiesOrderedString(Map<String, String> enhancedProperties, String queryDelimiter) {
         String enhancedPropertyString = new TreeMap<>(enhancedProperties).entrySet()
@@ -18,11 +18,11 @@ class JdbcConnectionStringUtils {
         return enhancedPropertyString;
     }
 
-    static String enhanceJdbcUrl(DatabaseType databaseType, String baseUrl, String... properties) {
+    public static String enhanceJdbcUrl(DatabaseType databaseType, String baseUrl, String... properties) {
         return enhanceJdbcUrl(databaseType, true, baseUrl, properties);
     }
 
-    static String enhanceJdbcUrl(DatabaseType databaseType, boolean hasOriginalProperties, String baseUrl, String... properties) {
+    public static String enhanceJdbcUrl(DatabaseType databaseType, boolean hasOriginalProperties, String baseUrl, String... properties) {
         Map<String, String> enhancedProperties = new HashMap<>(databaseType.getDefaultEnhancedProperties());
         for (String property : properties) {
             String[] split = property.split("=");

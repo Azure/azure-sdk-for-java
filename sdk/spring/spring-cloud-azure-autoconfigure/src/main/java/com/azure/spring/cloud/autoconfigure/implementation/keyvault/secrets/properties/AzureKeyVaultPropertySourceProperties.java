@@ -27,7 +27,7 @@ public class AzureKeyVaultPropertySourceProperties extends AbstractAzureHttpConf
      */
     private SecretServiceVersion serviceVersion;
     /**
-     * Name of this property source. Each name must be unique.
+     * Name of this property source.
      */
     private String name;
     /**

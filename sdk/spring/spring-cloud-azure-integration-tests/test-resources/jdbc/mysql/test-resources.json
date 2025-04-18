@@ -2,10 +2,6 @@
   "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
   "contentVersion": "1.0.0.0",
   "parameters": {
-    "tenantId": {
-      "defaultValue": "[subscription().tenantId]",
-      "type": "string"
-    },
     "testApplicationId": {
       "type": "string"
     },
@@ -16,13 +12,6 @@
     "baseName": {
       "defaultValue": "[resourceGroup().name]",
       "type": "String"
-    },
-    "azsdkPipelineSubnetList": {
-      "type": "array",
-      "defaultValue": [],
-      "metadata": {
-        "description": "Subnets used by azure pipeline VMs. Required for SQL resource access."
-      }
     },
     "serverName": {
       "type": "string",
@@ -215,22 +204,6 @@
       }
     },
     {
-      "copy": {
-        "name": "serverName_vnetrule",
-        "count": "[length(parameters('azsdkPipelineSubnetList'))]"
-      },
-      "condition": "[variables('notSkipCondition')]",
-      "type": "Microsoft.DBforMySQL/servers/virtualNetworkRules",
-      "apiVersion": "2017-12-01",
-      "name": "[format('{0}/{1}-{2}', parameters('serverName'), 'vnetrule', copyIndex())]",
-      "properties": {
-        "virtualNetworkSubnetId": "[parameters('azsdkPipelineSubnetList')[copyIndex()]]"
-      },
-      "dependsOn": [
-        "[resourceId('Microsoft.DBforMySQL/servers', parameters('serverName'))]"
-      ]
-    },
-    {
       "condition": "[variables('notSkipCondition')]",
       "type": "Microsoft.DBforMySQL/servers/securityAlertPolicies",
       "apiVersion": "2017-12-01",
@@ -252,10 +225,6 @@
     }
   ],
   "outputs": {
-    "AZURE_SPRING_TENANT_ID": {
-      "type": "string",
-      "value": "[parameters('tenantId')]"
-    },
     "AZURE_MYSQL_ACCOUNT_NAME": {
       "type": "string",
       "value": "[parameters('serverName')]"

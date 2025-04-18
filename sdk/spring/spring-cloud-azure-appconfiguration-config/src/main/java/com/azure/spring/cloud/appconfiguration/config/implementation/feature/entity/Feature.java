@@ -2,7 +2,15 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity;
 
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEFAULT_REQUIREMENT_TYPE;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.REQUIREMENT_TYPE;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -12,20 +20,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public final class Feature {
 
-    @JsonProperty("id")
-    private String id;
+    @JsonProperty("key")
+    private String key;
 
-    @JsonProperty("description")
-    private String description;
+    @JsonProperty("enabled-for")
+    private Map<Integer, FeatureFlagFilter> enabledFor;
 
-    @JsonProperty("enabled")
-    private boolean enabled;
-
-    @JsonProperty("conditions")
-    private Conditions conditions;
-
-    @JsonProperty("telemetry")
-    private FeatureTelemetry telemetry;
+    @JsonProperty(REQUIREMENT_TYPE)
+    private String requirementType = DEFAULT_REQUIREMENT_TYPE;
 
     /**
      * Feature Flag object.
@@ -35,87 +37,62 @@ public final class Feature {
 
     /**
      * Feature Flag object.
-     *
+     * 
      * @param key Name of the Feature Flag
      * @param featureItem Configurations of the Feature Flag.
      */
-    public Feature(FeatureFlagConfigurationSetting featureFlag, String requirementType, FeatureTelemetry telemetry) {
-        this.id = featureFlag.getFeatureId();
-        this.description = featureFlag.getDescription();
-        this.enabled = featureFlag.isEnabled();
+    public Feature(String key, FeatureFlagConfigurationSetting featureItem, String requirementType) {
+        this.key = key;
+        List<FeatureFlagFilter> filterMapper = featureItem.getClientFilters();
 
-        this.conditions = new Conditions(featureFlag.getClientFilters(), requirementType);
+        enabledFor = new HashMap<>();
 
-        this.setTelemetry(telemetry);
+        for (int i = 0; i < filterMapper.size(); i++) {
+            enabledFor.put(i, filterMapper.get(i));
+        }
+        this.requirementType = requirementType;
     }
 
     /**
-     * @return the id
+     * @return the key
      */
-    public String getId() {
-        return id;
+    public String getKey() {
+        return key;
     }
 
     /**
-     * @param id the id to set
+     * @param key the key to set
      */
-    public void setId(String id) {
-        this.id = id;
+    public void setKey(String key) {
+        this.key = key;
     }
 
     /**
-     * @return the description
+     * @return the enabledFor
      */
-    public String getDescription() {
-        return description;
+    public Map<Integer, FeatureFlagFilter> getEnabledFor() {
+        return enabledFor;
     }
 
     /**
-     * @param description the description to set
+     * @param enabledFor the enabledFor to set
      */
-    public void setDescription(String description) {
-        this.description = description;
+    public void setEnabledFor(Map<Integer, FeatureFlagFilter> enabledFor) {
+        this.enabledFor = enabledFor;
     }
 
     /**
-     * @return the enabled
+     * @return the requirementType
      */
-    public boolean isEnabled() {
-        return enabled;
+    public String getRequirementType() {
+        return requirementType;
     }
 
     /**
-     * @param enabled the enabled to set
+     * @param requirementType the requirementType to set
      */
-    public void setEnabled(boolean enabled) {
-        this.enabled = enabled;
+    public void setRequirementType(String requirementType) {
+        this.requirementType = requirementType;
     }
 
-    /**
-     * @return the conditions
-     */
-    public Conditions getConditions() {
-        return conditions;
-    }
-
-    /**
-     * @param conditions the conditions to set
-     */
-    public void setConditions(Conditions conditions) {
-        this.conditions = conditions;
-    }
-
-    /**
-     * @return the telemetry
-     */
-    public FeatureTelemetry getTelemetry() {
-        return telemetry;
-    }
-
-    /**
-     * @param telemetry the telemetry to set
-     */
-    public void setTelemetry(FeatureTelemetry telemetry) {
-        this.telemetry = telemetry;
-    }
 }

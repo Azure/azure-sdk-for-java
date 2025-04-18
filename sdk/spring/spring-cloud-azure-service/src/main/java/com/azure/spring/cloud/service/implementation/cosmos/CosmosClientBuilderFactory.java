@@ -91,6 +91,7 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
 
         map.from(this.cosmosClientProperties.getEndpoint()).to(builder::endpoint);
         map.from(this.cosmosClientProperties.getConsistencyLevel()).to(builder::consistencyLevel);
+        map.from(this.cosmosClientProperties.getClientTelemetryEnabled()).to(builder::clientTelemetryEnabled);
         map.from(this.cosmosClientProperties.getConnectionSharingAcrossClientsEnabled()).to(builder::connectionSharingAcrossClientsEnabled);
         map.from(this.cosmosClientProperties.getContentResponseOnWriteEnabled()).to(builder::contentResponseOnWriteEnabled);
         map.from(this.cosmosClientProperties.getEndpointDiscoveryEnabled()).to(builder::endpointDiscoveryEnabled);

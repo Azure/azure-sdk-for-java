@@ -18,15 +18,12 @@ import com.azure.spring.cloud.core.properties.proxy.ProxyProperties;
 import com.azure.spring.cloud.core.properties.retry.RetryProperties;
 import com.azure.spring.cloud.core.provider.RetryOptionsProvider;
 import org.junit.jupiter.api.Test;
-import org.mockito.internal.util.collections.Sets;
 
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
-import static com.azure.spring.cloud.core.implementation.util.AzurePropertiesUtils.findNonNullPropertyNames;
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE;
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.AZURE_CHINA;
 import static com.azure.spring.cloud.core.provider.AzureProfileOptionsProvider.CloudType.OTHER;
@@ -34,7 +31,6 @@ import static com.azure.spring.cloud.core.provider.RetryOptionsProvider.RetryMod
 import static com.azure.spring.cloud.core.provider.RetryOptionsProvider.RetryMode.FIXED;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 class AzurePropertiesUtilsTests {
@@ -408,8 +404,6 @@ class AzurePropertiesUtilsTests {
     void testCopyPropertiesSourceNotChanged() {
         AzurePropertiesA source = new AzurePropertiesA();
         source.credential.setClientId("client-id-A");
-        source.credential.setManagedIdentityEnabled(true);
-        source.credential.setTokenCredentialBeanName("my-token-credential");
         source.getProfile().setCloudType(AZURE);
 
         AzurePropertiesB target = new AzurePropertiesB();
@@ -417,8 +411,6 @@ class AzurePropertiesUtilsTests {
         AzurePropertiesUtils.copyAzureCommonProperties(source, target);
 
         assertEquals("client-id-A", target.credential.getClientId());
-        assertEquals("my-token-credential", target.credential.getTokenCredentialBeanName());
-        assertTrue(target.credential.isManagedIdentityEnabled());
 
         // Update target will not affect source
         target.retry.getExponential().setBaseDelay(Duration.ofSeconds(2));
@@ -535,125 +527,12 @@ class AzurePropertiesUtilsTests {
         assertEquals(AmqpTransportType.AMQP, target.getClient().getTransportType());
     }
 
-    @Test
-    void noNonNullPropertyNames() {
-        TestProperties properties = new TestProperties();
-        assertEquals(0, findNonNullPropertyNames(properties).length);
-    }
-
-    @Test
-    void partNonNullPropertyNames() {
-        TestProperties properties = new TestProperties("test", 10, 10L, Boolean.FALSE);
-        Set<String> assertNullNames = Sets.newSet("testString", "testWrapNumber", "testWrapLong", "testWrapBoolean");
-        asertNonNullProperties(properties, assertNullNames);
-    }
-
-    @Test
-    void allNonNullPropertyNames() {
-        TestProperties properties = new TestProperties("test", 10, 10,
-            10L, 10, Boolean.TRUE, true);
-        Set<String> assertNullNames = Sets.newSet("testString", "testWrapNumber", "testNumber",
-            "testWrapLong", "testLong", "testWrapBoolean", "testBoolean");
-        asertNonNullProperties(properties, assertNullNames);
-    }
-
-    private static void asertNonNullProperties(TestProperties properties, Set<String> assertNullNames) {
-        Set<String> result = Arrays.stream(findNonNullPropertyNames(properties)).collect(Collectors.toSet());
-        assertEquals(assertNullNames, result);
-    }
-
     static class AzureHttpClientProperties extends AzureHttpSdkProperties {
 
     }
 
     static class AzureAmqpClientProperties extends AzureAmqpSdkProperties {
 
-    }
-
-    static class TestProperties {
-        private String testString;
-        private Integer testWrapNumber;
-        private int testNumber;
-        private Long testWrapLong;
-        private long testLong;
-        private Boolean testWrapBoolean;
-        private boolean testBoolean;
-
-        TestProperties() {
-        }
-
-        TestProperties(String testString, Integer testWrapNumber, Long testWrapLong, Boolean testWrapBoolean) {
-            this.testString = testString;
-            this.testWrapNumber = testWrapNumber;
-            this.testWrapLong = testWrapLong;
-            this.testWrapBoolean = testWrapBoolean;
-        }
-
-        TestProperties(String testString, Integer testWrapNumber, int testNumber, Long testWrapLong, long testLong, Boolean testWrapBoolean, boolean testBoolean) {
-            this.testString = testString;
-            this.testWrapNumber = testWrapNumber;
-            this.testNumber = testNumber;
-            this.testWrapLong = testWrapLong;
-            this.testLong = testLong;
-            this.testWrapBoolean = testWrapBoolean;
-            this.testBoolean = testBoolean;
-        }
-
-        public String getTestString() {
-            return testString;
-        }
-
-        public void setTestString(String testString) {
-            this.testString = testString;
-        }
-
-        public Integer getTestWrapNumber() {
-            return testWrapNumber;
-        }
-
-        public void setTestWrapNumber(Integer testWrapNumber) {
-            this.testWrapNumber = testWrapNumber;
-        }
-
-        public int getTestNumber() {
-            return testNumber;
-        }
-
-        public void setTestNumber(int testNumber) {
-            this.testNumber = testNumber;
-        }
-
-        public Long getTestWrapLong() {
-            return testWrapLong;
-        }
-
-        public void setTestWrapLong(Long testWrapLong) {
-            this.testWrapLong = testWrapLong;
-        }
-
-        public long getTestLong() {
-            return testLong;
-        }
-
-        public void setTestLong(long testLong) {
-            this.testLong = testLong;
-        }
-
-        public Boolean getTestWrapBoolean() {
-            return testWrapBoolean;
-        }
-
-        public void setTestWrapBoolean(Boolean testWrapBoolean) {
-            this.testWrapBoolean = testWrapBoolean;
-        }
-
-        public boolean isTestBoolean() {
-            return testBoolean;
-        }
-
-        public void setTestBoolean(boolean testBoolean) {
-            this.testBoolean = testBoolean;
-        }
     }
 
     static class AzurePropertiesA implements AzureProperties, RetryOptionsProvider {

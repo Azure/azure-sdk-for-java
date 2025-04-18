@@ -48,19 +48,12 @@ public final class TestUtils {
     }
 
     static FeatureFlagConfigurationSetting createItemFeatureFlag(String prefix, String key, String value, String label,
-         String contentType) {
-        return createItemFeatureFlag(prefix, key, value, label, contentType, null);
-    }
-
-    static FeatureFlagConfigurationSetting createItemFeatureFlag(String prefix, String key, String value, String label,
-        String contentType, String eTag) {
+        String contentType) {
         FeatureFlagConfigurationSetting item = new FeatureFlagConfigurationSetting(key, true);
-        item.setValue(value);
         item.setClientFilters(new ArrayList<>());
         item.setKey(prefix + key);
         item.setLabel(label);
         item.setContentType(contentType);
-        item.setETag(eTag);
 
         try {
             JsonNode node = MAPPER.readTree(value).get("conditions").get("client_filters");
@@ -102,7 +95,7 @@ public final class TestUtils {
 
     static void addStore(AppConfigurationProperties properties, String storeEndpoint, String connectionString,
         String keyFilter) {
-        addStore(properties, storeEndpoint, connectionString, keyFilter, null);
+        addStore(properties, storeEndpoint, connectionString, keyFilter, "\0");
     }
 
     static void addStore(AppConfigurationProperties properties, String storeEndpoint, String connectionString,

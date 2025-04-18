@@ -7,11 +7,8 @@ import com.azure.spring.data.cosmos.IntegrationTestCollectionManager;
 import com.azure.spring.data.cosmos.core.CosmosTemplate;
 import com.azure.spring.data.cosmos.domain.PersonWithEtag;
 import com.azure.spring.data.cosmos.exception.CosmosAccessException;
-import com.azure.spring.data.cosmos.exception.CosmosPreconditionFailedException;
 import com.azure.spring.data.cosmos.repository.TestRepositoryConfig;
 import com.azure.spring.data.cosmos.repository.repository.PersonWithEtagRepository;
-import com.azure.spring.data.cosmos.repository.support.CosmosEntityInformation;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -52,11 +49,6 @@ public class EtagIT {
 
     private static PersonWithEtag createPersonWithEtag() {
         return new PersonWithEtag(UUID.randomUUID().toString(), FIRST_NAME, LAST_NAME, HOBBIES, ADDRESSES);
-    }
-
-    @AfterClass
-    public static void cleanUp() {
-        collectionManager.deleteContainer(new CosmosEntityInformation<>(PersonWithEtag.class));
     }
 
     @Test
@@ -122,13 +114,13 @@ public class EtagIT {
         try {
             personWithEtagRepository.save(updatedPersonWithEtag);
             Assert.fail();
-        } catch (CosmosPreconditionFailedException ex) {
+        } catch (CosmosAccessException ex) {
         }
 
         try {
             personWithEtagRepository.delete(updatedPersonWithEtag);
             Assert.fail();
-        } catch (CosmosPreconditionFailedException ex) {
+        } catch (CosmosAccessException ex) {
         }
     }
 

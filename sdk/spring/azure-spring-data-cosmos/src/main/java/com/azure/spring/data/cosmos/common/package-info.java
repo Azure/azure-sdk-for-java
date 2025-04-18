@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Azure Event Hubs service abstraction.
+ * This package contains the classes of utils for cosmosdb
  */
 package com.azure.spring.data.cosmos.common;

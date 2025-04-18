@@ -5,6 +5,7 @@ package com.azure.spring.cloud.appconfiguration.config;
 import java.util.Map;
 
 import org.springframework.context.ApplicationEventPublisherAware;
+import org.springframework.scheduling.annotation.Async;
 
 import reactor.core.publisher.Mono;
 
@@ -12,7 +13,6 @@ import reactor.core.publisher.Mono;
  * Enables checking of Configuration updates.
  */
 public interface AppConfigurationRefresh extends ApplicationEventPublisherAware {
-
     /**
      * Checks configurations to see if configurations should be reloaded. If the refresh interval has passed and a
      * trigger has been updated configuration are reloaded.
@@ -20,6 +20,7 @@ public interface AppConfigurationRefresh extends ApplicationEventPublisherAware 
      * @return Mono with a boolean of if a RefreshEvent was published. If refreshConfigurations is currently being run
      * elsewhere this method will return right away as <b>false</b>.
      */
+    @Async
     Mono<Boolean> refreshConfigurations();
 
     /**

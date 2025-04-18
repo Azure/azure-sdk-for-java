@@ -16,6 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.query.Parameter;
 import org.springframework.data.repository.query.ResultProcessor;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -95,10 +96,8 @@ public class StringBasedReactiveCosmosQuery extends AbstractReactiveCosmosQuery 
         SqlQuerySpec querySpec = new SqlQuerySpec(stripExtraWhitespaceFromString(expandedQuery), sqlParameters);
         if (isCountQuery()) {
             final String container = ((SimpleReactiveCosmosEntityMetadata<?>) getQueryMethod().getEntityInformation()).getContainerName();
-            return this.operations.count(querySpec, container);
-        } else if (isSumQuery()) {
-            final String container = ((SimpleReactiveCosmosEntityMetadata<?>) getQueryMethod().getEntityInformation()).getContainerName();
-            return this.operations.sum(querySpec, container);
+            final Mono<Long> mono = this.operations.count(querySpec, container);
+            return mono;
         } else {
             Flux<?> flux = this.operations.runQuery(querySpec, accessor.getSort(), processor.getReturnedType().getDomainType(),
                                                     processor.getReturnedType().getReturnedType());
@@ -122,14 +121,6 @@ public class StringBasedReactiveCosmosQuery extends AbstractReactiveCosmosQuery 
 
     protected boolean isCountQuery() {
         return StringBasedCosmosQuery.isCountQuery(query, getQueryMethod().getReturnedObjectType());
-    }
-
-    /**
-     * This method is used to determine if the query is a sum query.
-     * @return boolean if the query is a sum query
-     */
-    protected boolean isSumQuery() {
-        return StringBasedCosmosQuery.isSumQuery(query, getQueryMethod().getReturnedObjectType());
     }
 
 }

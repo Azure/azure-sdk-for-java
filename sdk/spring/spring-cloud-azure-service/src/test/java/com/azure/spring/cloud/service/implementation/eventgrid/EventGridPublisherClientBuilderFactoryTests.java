@@ -17,9 +17,7 @@ import org.mockito.verification.VerificationMode;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 class EventGridPublisherClientBuilderFactoryTests extends
     AzureHttpClientBuilderFactoryBaseTests<

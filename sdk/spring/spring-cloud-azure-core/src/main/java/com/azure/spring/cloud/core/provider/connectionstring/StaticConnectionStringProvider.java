@@ -5,8 +5,6 @@ package com.azure.spring.cloud.core.provider.connectionstring;
 
 /**
  * A static implementation of {@link ServiceConnectionStringProvider}, with static value of connection string.
- *
- * @param <T> The service type.
  */
 public final class StaticConnectionStringProvider<T> implements ServiceConnectionStringProvider<T> {
 

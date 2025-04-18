@@ -1,2 +1,0 @@
-com.azure.spring.cloud.appconfiguration.config.AppConfigurationAutoConfiguration
-com.azure.spring.cloud.appconfiguration.config.implementation.config.AppConfigurationBootstrapConfiguration

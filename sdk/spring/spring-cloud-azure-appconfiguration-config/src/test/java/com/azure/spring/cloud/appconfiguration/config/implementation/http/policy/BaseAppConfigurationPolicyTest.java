@@ -11,7 +11,6 @@ import static org.mockito.Mockito.when;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Optional;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,6 +47,7 @@ public class BaseAppConfigurationPolicyTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
+        BaseAppConfigurationPolicy.setWatchRequests(false);
     }
 
     @AfterEach
@@ -55,7 +55,6 @@ public class BaseAppConfigurationPolicyTest {
         MockitoAnnotations.openMocks(this).close();
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void startupThenWatchUpdateTest() throws MalformedURLException {
         URL url = new URL("https://www.test.url/kv");
@@ -78,7 +77,7 @@ public class BaseAppConfigurationPolicyTest {
         request.setHeader(USER_AGENT_TYPE, "PreExistingUserAgent");
 
         when(contextMock.getHttpRequest()).thenReturn(request);
-        when(contextMock.getData("refresh")).thenReturn(Optional.of(true));
+        BaseAppConfigurationPolicy.setWatchRequests(true);
 
         policy.process(contextMock, nextMock);
 
@@ -99,7 +98,6 @@ public class BaseAppConfigurationPolicyTest {
             contextMock.getHttpRequest().getHeaders().get(CORRELATION_CONTEXT).getValue());
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void devIsConfigured() throws MalformedURLException {
         BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy(
@@ -115,7 +113,6 @@ public class BaseAppConfigurationPolicyTest {
             contextMock.getHttpRequest().getHeaders().get(CORRELATION_CONTEXT).getValue());
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void keyVaultIsConfigured() throws MalformedURLException {
         BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy(
@@ -131,7 +128,6 @@ public class BaseAppConfigurationPolicyTest {
             contextMock.getHttpRequest().getHeaders().get(CORRELATION_CONTEXT).getValue());
     }
 
-    @SuppressWarnings("deprecation")
     @Test
     public void devAndKeyVaultAreConfigured() throws MalformedURLException {
         BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy(

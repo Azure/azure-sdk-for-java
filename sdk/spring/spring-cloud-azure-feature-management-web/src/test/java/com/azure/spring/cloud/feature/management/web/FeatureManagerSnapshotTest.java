@@ -10,6 +10,8 @@ import static org.mockito.Mockito.when;
 
 import java.util.concurrent.ExecutionException;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInfo;
@@ -20,7 +22,6 @@ import org.mockito.MockitoAnnotations;
 
 import com.azure.spring.cloud.feature.management.FeatureManager;
 
-import jakarta.servlet.http.HttpServletRequest;
 import reactor.core.publisher.Mono;
 
 public class FeatureManagerSnapshotTest {

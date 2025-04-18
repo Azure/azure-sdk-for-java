@@ -5,7 +5,6 @@ package com.azure.spring.cloud.service.implementation.identity.credential.provid
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.extensions.implementation.credential.TokenCredentialProviderOptions;
-import com.azure.identity.extensions.implementation.credential.provider.DefaultTokenCredentialProvider;
 import com.azure.identity.extensions.implementation.credential.provider.TokenCredentialProvider;
 import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
@@ -14,7 +13,7 @@ import org.springframework.context.ApplicationContextAware;
 import java.util.Objects;
 
 /**
- * TokenCredentialProvider implementation for Spring context.
+ * TokenCredentialProvider contains spring context.
  */
 public class SpringTokenCredentialProvider implements TokenCredentialProvider, ApplicationContextAware {
 
@@ -24,12 +23,6 @@ public class SpringTokenCredentialProvider implements TokenCredentialProvider, A
     private ApplicationContext applicationContext;
     private String tokenCredentialBeanName = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
 
-    /**
-     * Create a {@link SpringTokenCredentialProvider} instance with a {@link TokenCredentialProviderOptions}.
-     * If option token-credential-bean-name is specified, it will get this bean from application context,
-     * otherwise it will delegate {@link DefaultTokenCredentialProvider} to create a token credential.
-     * @param options the token credential provider options.
-     */
     public SpringTokenCredentialProvider(TokenCredentialProviderOptions options) {
         String beanName = options == null ? null : options.getTokenCredentialBeanName();
         if (beanName != null && !beanName.isEmpty()) {

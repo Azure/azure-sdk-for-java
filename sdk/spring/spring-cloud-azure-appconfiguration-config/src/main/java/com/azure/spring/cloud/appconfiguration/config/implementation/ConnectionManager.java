@@ -4,16 +4,13 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.azure.spring.cloud.appconfiguration.config.AppConfigurationStoreHealth;
-import com.azure.spring.cloud.appconfiguration.config.implementation.autofailover.ReplicaLookUp;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationStoreMonitoring;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.ConfigStore;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.FeatureFlagStore;
@@ -30,8 +27,6 @@ public class ConnectionManager {
     // Used if multiple connection method is given.
     private List<AppConfigurationReplicaClient> clients;
 
-    private Map<String, AppConfigurationReplicaClient> autoFailoverClients;
-
     private String currentReplica;
 
     private AppConfigurationStoreHealth health;
@@ -40,22 +35,17 @@ public class ConnectionManager {
 
     private final ConfigStore configStore;
 
-    private final ReplicaLookUp replicaLookUp;
-
     /**
      * Creates a set of connections to an app configuration store.
      * @param clientBuilder Builder for App Configuration Clients
      * @param configStore Connection info for the store
      */
-    ConnectionManager(AppConfigurationReplicaClientsBuilder clientBuilder, ConfigStore configStore,
-        ReplicaLookUp replicaLookUp) {
+    ConnectionManager(AppConfigurationReplicaClientsBuilder clientBuilder, ConfigStore configStore) {
         this.clientBuilder = clientBuilder;
         this.configStore = configStore;
         this.originEndpoint = configStore.getEndpoint();
         this.health = AppConfigurationStoreHealth.NOT_LOADED;
         this.currentReplica = configStore.getEndpoint();
-        this.autoFailoverClients = new HashMap<>();
-        this.replicaLookUp = replicaLookUp;
     }
 
     /**
@@ -73,7 +63,7 @@ public class ConnectionManager {
     /**
      * @return the originEndpoint
      */
-    String getMainEndpoint() {
+    String getOriginEndpoint() {
         return originEndpoint;
     }
 
@@ -102,9 +92,7 @@ public class ConnectionManager {
         boolean foundCurrent = !useCurrent;
 
         if (clients.size() == 1) {
-            if (clients.get(0).getBackoffEndTime().isBefore(Instant.now())) {
-                availableClients.add(clients.get(0));
-            }
+            availableClients.add(clients.get(0));
         } else if (clients.size() > 0) {
             for (AppConfigurationReplicaClient replicaClient : clients) {
                 if (replicaClient.getEndpoint().equals(currentReplica)) {
@@ -115,39 +103,18 @@ public class ConnectionManager {
                     availableClients.add(replicaClient);
                 }
             }
-        }
-
-        if (availableClients.size() == 0) {
-            List<String> autoFailoverEndpoints = replicaLookUp.getAutoFailoverEndpoints(configStore.getEndpoint());
-
-            if (autoFailoverEndpoints.size() > 0) {
-                for (String failoverEndpoint : autoFailoverEndpoints) {
-                    AppConfigurationReplicaClient client = autoFailoverClients.get(failoverEndpoint);
-                    if (client == null) {
-                        client = clientBuilder.buildClient(failoverEndpoint, configStore);
-                        autoFailoverClients.put(failoverEndpoint, client);
-                    }
-                    if (client.getBackoffEndTime().isBefore(Instant.now())) {
-                        availableClients.add(client);
-                        break;
-                    }
-                }
+            if (availableClients.size() == 0) {
+                this.health = AppConfigurationStoreHealth.DOWN;
+            } else {
+                this.health = AppConfigurationStoreHealth.UP;
             }
-        }
-        if (clients.size() > 0 && availableClients.size() == 0) {
-            this.health = AppConfigurationStoreHealth.DOWN;
-        } else if (clients.size() > 0) {
-            this.health = AppConfigurationStoreHealth.UP;
         }
 
         return availableClients;
     }
 
     List<String> getAllEndpoints() {
-        List<String> endpoints = clients.stream().map(AppConfigurationReplicaClient::getEndpoint)
-            .collect(Collectors.toList());
-        endpoints.addAll(replicaLookUp.getAutoFailoverEndpoints(configStore.getEndpoint()));
-        return endpoints;
+        return clients.stream().map(AppConfigurationReplicaClient::getEndpoint).collect(Collectors.toList());
     }
 
     /**
@@ -160,13 +127,9 @@ public class ConnectionManager {
                 int failedAttempt = client.getFailedAttempts();
                 long backoffTime = BackoffTimeCalculator.calculateBackoff(failedAttempt);
                 client.updateBackoffEndTime(Instant.now().plusNanos(backoffTime));
-                return;
+                break;
             }
         }
-
-        int failedAttempt = autoFailoverClients.get(endpoint).getFailedAttempts();
-        long backoffTime = BackoffTimeCalculator.calculateBackoff(failedAttempt);
-        autoFailoverClients.get(endpoint).updateBackoffEndTime(Instant.now().plusNanos(backoffTime));
     }
 
     /**
@@ -176,8 +139,6 @@ public class ConnectionManager {
      */
     void updateSyncToken(String endpoint, String syncToken) {
         clients.stream().filter(client -> client.getEndpoint().equals(endpoint)).findFirst()
-            .ifPresent(client -> client.updateSyncToken(syncToken));
-        autoFailoverClients.values().stream().filter(client -> client.getEndpoint().equals(endpoint)).findFirst()
             .ifPresent(client -> client.updateSyncToken(syncToken));
     }
 

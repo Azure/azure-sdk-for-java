@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.integration.tests.eventhubs.binder;
 
-import com.azure.spring.cloud.integration.tests.eventhubs.TestEventHubsClientConfiguration;
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.checkpoint.Checkpointer;
 import org.junit.jupiter.api.Assertions;
@@ -14,9 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Import;
+import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.Message;
-import org.springframework.messaging.support.ErrorMessage;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.context.ActiveProfiles;
 import reactor.core.publisher.Mono;
@@ -28,7 +26,6 @@ import java.util.function.Supplier;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 @ActiveProfiles(value = { "eventhubs-binder", "message" })
-@Import(TestEventHubsClientConfiguration.class)
 class EventHubsBinderConsumeErrorIT {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsBinderConsumeErrorIT.class);
@@ -66,27 +63,21 @@ class EventHubsBinderConsumeErrorIT {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                throw new RuntimeException("Consumption exception test");
+                throw new RuntimeException();
             };
         }
 
-        @Bean
-        Consumer<ErrorMessage> consumeError() {
-            return exception -> {
-                try {
-                    EXCHANGER.exchange("ERROR!");
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            };
+        @ServiceActivator(inputChannel = "test-eventhub-message.$Default.errors")
+        void consumeError(Message<?> message) throws InterruptedException {
+            EXCHANGER.exchange("ERROR!");
         }
     }
 
     @Test
-    @Timeout(90)
+    @Timeout(70)
     void integrationTest() throws InterruptedException {
         // Wait for eventhub initialization to complete
-        Thread.sleep(20000);
+        Thread.sleep(15000);
         one.emitValue(new GenericMessage<>(MESSAGE), Sinks.EmitFailureHandler.FAIL_FAST);
         String msg = TestConfig.EXCHANGER.exchange(MESSAGE);
         Assertions.assertEquals(MESSAGE, msg);

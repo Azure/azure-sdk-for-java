@@ -64,14 +64,12 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
         AzurePropertiesUtils.mergeAzureCommonProperties(this, this.producer, properties);
 
         propertyMapper.from(this.getDomainName()).to(properties::setDomainName);
-        propertyMapper.from(this.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
         propertyMapper.from(this.getNamespace()).to(properties::setNamespace);
         propertyMapper.from(this.getConnectionString()).to(properties::setConnectionString);
         propertyMapper.from(this.getEntityName()).to(properties::setEntityName);
         propertyMapper.from(this.getEntityType()).to(properties::setEntityType);
 
         propertyMapper.from(this.producer.getDomainName()).to(properties::setDomainName);
-        propertyMapper.from(this.producer.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
         propertyMapper.from(this.producer.getNamespace()).to(properties::setNamespace);
         propertyMapper.from(this.producer.getConnectionString()).to(properties::setConnectionString);
         propertyMapper.from(this.producer.getEntityType()).to(properties::setEntityType);
@@ -88,14 +86,12 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
         AzurePropertiesUtils.mergeAzureCommonProperties(this, this.consumer, properties);
 
         propertyMapper.from(this.getDomainName()).to(properties::setDomainName);
-        propertyMapper.from(this.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
         propertyMapper.from(this.getNamespace()).to(properties::setNamespace);
         propertyMapper.from(this.getConnectionString()).to(properties::setConnectionString);
         propertyMapper.from(this.getEntityName()).to(properties::setEntityName);
         propertyMapper.from(this.getEntityType()).to(properties::setEntityType);
 
         propertyMapper.from(this.consumer.getDomainName()).to(properties::setDomainName);
-        propertyMapper.from(this.consumer.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
         propertyMapper.from(this.consumer.getNamespace()).to(properties::setNamespace);
         propertyMapper.from(this.consumer.getConnectionString()).to(properties::setConnectionString);
         propertyMapper.from(this.consumer.getEntityType()).to(properties::setEntityType);
@@ -120,14 +116,12 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
         AzurePropertiesUtils.mergeAzureCommonProperties(this, this.processor, properties);
 
         propertyMapper.from(this.getDomainName()).to(properties::setDomainName);
-        propertyMapper.from(this.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
         propertyMapper.from(this.getNamespace()).to(properties::setNamespace);
         propertyMapper.from(this.getConnectionString()).to(properties::setConnectionString);
         propertyMapper.from(this.getEntityName()).to(properties::setEntityName);
         propertyMapper.from(this.getEntityType()).to(properties::setEntityType);
 
         propertyMapper.from(this.processor.getDomainName()).to(properties::setDomainName);
-        propertyMapper.from(this.processor.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
         propertyMapper.from(this.processor.getNamespace()).to(properties::setNamespace);
         propertyMapper.from(this.processor.getConnectionString()).to(properties::setConnectionString);
         propertyMapper.from(this.processor.getEntityType()).to(properties::setEntityType);
@@ -255,7 +249,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
      */
     public static class Processor extends Consumer implements ServiceBusProcessorClientProperties {
         /**
-         * Max concurrent messages to process. When session enabled, it applies to each session.
+         * Max concurrent messages to process.
          */
         private Integer maxConcurrentCalls;
         /**
@@ -267,11 +261,6 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
          * Whether to automatically start the processor after initialization.
          */
         private boolean autoStartup = true;
-
-        /**
-         * Sets the maximum amount of time to wait for a message to be received for the currently active session.
-         */
-        private Duration sessionIdleTimeout;
 
         public Integer getMaxConcurrentCalls() {
             return maxConcurrentCalls;
@@ -295,14 +284,6 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties
 
         public void setAutoStartup(boolean autoStartup) {
             this.autoStartup = autoStartup;
-        }
-
-        public Duration getSessionIdleTimeout() {
-            return sessionIdleTimeout;
-        }
-
-        public void setSessionIdleTimeout(Duration sessionIdleTimeout) {
-            this.sessionIdleTimeout = sessionIdleTimeout;
         }
     }
 

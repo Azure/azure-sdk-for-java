@@ -68,8 +68,7 @@ public class AzureTokenCredentialResolver implements AzureCredentialResolver<Tok
                         .clientId(clientId);
 
                 if (StringUtils.hasText(properties.getClientCertificatePassword())) {
-                    builder.pfxCertificate(clientCertificatePath)
-                           .clientCertificatePassword(properties.getClientCertificatePassword());
+                    builder.pfxCertificate(clientCertificatePath, properties.getClientCertificatePassword());
                 } else {
                     builder.pemCertificate(clientCertificatePath);
                 }

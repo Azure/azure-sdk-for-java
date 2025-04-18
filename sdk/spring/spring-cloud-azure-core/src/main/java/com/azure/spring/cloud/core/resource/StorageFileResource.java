@@ -112,7 +112,6 @@ public final class StorageFileResource extends AzureStorageResource {
      *
      * @return the URL of the storage file client.
      */
-    @SuppressWarnings("deprecation")
     @Override
     public URL getURL() throws IOException {
         return new URL(this.shareFileClient.getFileUrl());

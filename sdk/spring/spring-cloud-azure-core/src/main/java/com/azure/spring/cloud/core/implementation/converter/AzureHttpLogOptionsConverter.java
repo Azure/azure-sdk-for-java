@@ -18,7 +18,6 @@ public final class AzureHttpLogOptionsConverter implements Converter<HttpLogging
 
     }
 
-    @SuppressWarnings("deprecation")
     @Override
     public HttpLogOptions convert(HttpLoggingOptionsProvider.HttpLoggingOptions logging) {
         HttpLogOptions logOptions = new HttpLogOptions();

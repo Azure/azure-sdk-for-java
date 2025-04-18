@@ -2,6 +2,6 @@
 // Licensed under the MIT License.
 
 /**
- * Spring Cloud Azure's Service Bus JMS extension.
+ * Cosmosdb class for spring
  */
 package com.azure.spring.data.cosmos;
