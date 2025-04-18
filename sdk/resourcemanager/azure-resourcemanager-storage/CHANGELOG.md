@@ -4,7 +4,7 @@
 
 ### Other Changes
 
-- Add `Accepted` to Provisioning State.
+- Add `Accepted` to `ProvisioningState`.
 
 ## 2.49.0 (2025-03-28)
 
