@@ -101,7 +101,6 @@ org.openrewrite.recipe:rewrite-recipe-bom;3.0.2
 ## Spring boot dependency versions
 org.springframework.boot:spring-boot-actuator;2.7.18
 org.springframework.boot:spring-boot-actuator-autoconfigure;2.7.18
-org.springframework.boot:spring-boot-autoconfigure-processor;2.7.18
 org.springframework.boot:spring-boot-autoconfigure;2.7.18
 org.springframework.boot:spring-boot-configuration-metadata;2.7.18
 org.springframework.boot:spring-boot-configuration-processor;2.7.18
@@ -113,7 +112,6 @@ org.springframework.boot:spring-boot-starter-web;2.7.18
 org.springframework.boot:spring-boot-starter;2.7.18
 org.springframework.boot:spring-boot-test;2.7.18
 org.springframework.data:spring-data-commons;2.7.18
-org.springframework.data:spring-data-mongodb;3.4.18
 org.springframework.data:spring-data-redis;2.7.18
 org.springframework.integration:spring-integration-core;5.5.20
 org.springframework.kafka:spring-kafka;2.9.11

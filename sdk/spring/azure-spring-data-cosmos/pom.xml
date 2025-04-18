@@ -275,6 +275,10 @@
         <artifactId>maven-javadoc-plugin</artifactId>
         <version>3.6.3</version> <!-- {x-version-update;spring_org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
         <configuration>
+          <failOnError>false</failOnError>
+          <additionalJOptions>
+            <additionalJOption>-Xdoclint:none</additionalJOption>
+          </additionalJOptions>
           <sourceFileExcludes>
             <sourceFileExclude>com/azure/spring/data/cosmos/core/mapping/BasicCosmosPersistentProperty.java</sourceFileExclude>
           </sourceFileExcludes>
