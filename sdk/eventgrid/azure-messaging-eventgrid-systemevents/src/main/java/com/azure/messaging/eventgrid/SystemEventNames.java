@@ -107,6 +107,7 @@ import com.azure.messaging.eventgrid.systemevents.ContainerServiceNodePoolRollin
 import com.azure.messaging.eventgrid.systemevents.DataBoxCopyCompletedEventData;
 import com.azure.messaging.eventgrid.systemevents.DataBoxCopyStartedEventData;
 import com.azure.messaging.eventgrid.systemevents.DataBoxOrderCompletedEventData;
+import com.azure.messaging.eventgrid.systemevents.EdgeSolutionVersionPublishedEventData;
 import com.azure.messaging.eventgrid.systemevents.EventGridMqttClientCreatedOrUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.EventGridMqttClientDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.EventGridMqttClientSessionConnectedEventData;
@@ -776,6 +777,11 @@ public final class SystemEventNames {
     public static final String DATA_BOX_ORDER_COMPLETED = "Microsoft.DataBox.OrderCompleted";
 
     /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.Edge.SolutionVersionPublished event.
+     */
+    public static final String EDGE_SOLUTION_VERSION_PUBLISHED = "Microsoft.Edge.SolutionVersionPublished";
+
+    /**
      * Event data for Microsoft.EventGrid.MQTTClientCreatedOrUpdated event.
      */
     public static final String EVENT_GRID_MQTT_CLIENT_CREATED_OR_UPDATED
@@ -1379,6 +1385,7 @@ public final class SystemEventNames {
             put(DATA_BOX_COPY_COMPLETED, DataBoxCopyCompletedEventData.class);
             put(DATA_BOX_COPY_STARTED, DataBoxCopyStartedEventData.class);
             put(DATA_BOX_ORDER_COMPLETED, DataBoxOrderCompletedEventData.class);
+            put(EDGE_SOLUTION_VERSION_PUBLISHED, EdgeSolutionVersionPublishedEventData.class);
             put(EVENT_GRID_MQTT_CLIENT_CREATED_OR_UPDATED, EventGridMqttClientCreatedOrUpdatedEventData.class);
             put(EVENT_GRID_MQTT_CLIENT_DELETED, EventGridMqttClientDeletedEventData.class);
             put(EVENT_GRID_MQTT_CLIENT_SESSION_CONNECTED, EventGridMqttClientSessionConnectedEventData.class);
