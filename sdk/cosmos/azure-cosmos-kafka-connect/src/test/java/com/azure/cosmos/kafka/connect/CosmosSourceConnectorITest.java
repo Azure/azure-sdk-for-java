@@ -12,10 +12,10 @@ import com.azure.cosmos.kafka.connect.implementation.source.ContainersMetadataTo
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosMetadataStorageType;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
 import com.azure.cosmos.kafka.connect.implementation.source.FeedRangesMetadataTopicOffset;
-import com.azure.cosmos.kafka.connect.implementation.source.JsonToStruct;
 import com.azure.cosmos.kafka.connect.implementation.source.MetadataEntityTypes;
 import com.azure.cosmos.kafka.connect.implementation.source.UnifiedMetadataSchemaConstants;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -194,7 +194,7 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
                 try {
                     containersMetadataTopicOffset = ContainersMetadataTopicOffset.fromMap(
                         Utils.getSimpleObjectMapper()
-                             .readValue(jsonValue, JsonToStruct.JACKSON_MAP_TYPE)
+                             .readValue(jsonValue, new TypeReference<Map<String, Object>>() {})
                     );
                 } catch (JsonProcessingException e) {
                     throw new RuntimeException(e);
@@ -220,7 +220,7 @@ public class CosmosSourceConnectorITest extends KafkaCosmosIntegrationTestSuiteB
                 try {
                     feedRangesMetadataTopicOffsetOffset = FeedRangesMetadataTopicOffset.fromMap(
                         Utils.getSimpleObjectMapper()
-                             .readValue(jsonValue, JsonToStruct.JACKSON_MAP_TYPE)
+                             .readValue(jsonValue, new TypeReference<Map<String, Object>>() {})
                     );
                 } catch (JsonProcessingException e) {
                     throw new RuntimeException(e);
