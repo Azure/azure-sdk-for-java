@@ -12,8 +12,6 @@ import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 
 import javax.net.ssl.SSLException;
@@ -51,31 +49,6 @@ public class NettyHttpClientHttpClientWithHttpsTests extends HttpClientTests {
         if (server != null) {
             server.stop();
         }
-    }
-
-    @Disabled("Need to implement server sent event support in NettyHttpClient")
-    @Test
-    public void canReceiveServerSentEvents() {
-    }
-
-    @Disabled("Need to implement server sent event support in NettyHttpClient")
-    @Test
-    public void canRecognizeServerSentEvent() {
-    }
-
-    @Disabled("Need to implement server sent event support in NettyHttpClient")
-    @Test
-    public void onErrorServerSentEvents() {
-    }
-
-    @Disabled("Need to implement server sent event support in NettyHttpClient")
-    @Test
-    public void onRetryWithLastEventIdReceiveServerSentEvents() {
-    }
-
-    @Disabled("Need to implement server sent event support in NettyHttpClient")
-    @Test
-    public void throwsExceptionForNoListener() {
     }
 
     @Override

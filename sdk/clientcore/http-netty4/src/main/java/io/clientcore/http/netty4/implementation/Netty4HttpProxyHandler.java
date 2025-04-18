@@ -11,6 +11,9 @@ import io.clientcore.core.utils.AuthenticateChallenge;
 import io.clientcore.core.utils.CoreUtils;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandler;
+import io.netty.channel.ChannelOutboundHandler;
+import io.netty.channel.ChannelPromise;
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpClientCodec;
@@ -27,6 +30,7 @@ import io.netty.handler.proxy.ProxyConnectException;
 import io.netty.handler.proxy.ProxyHandler;
 
 import java.net.InetSocketAddress;
+import java.net.SocketAddress;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,10 +41,10 @@ import static io.clientcore.core.utils.AuthUtils.parseAuthenticationOrAuthorizat
 import static io.clientcore.http.netty4.implementation.Netty4Utility.createCodec;
 
 /**
- * This class handles authorizing requests being sent through a proxy which require authentication.
+ * This class handles authorizing requests being sent through a proxy that requires authentication.
  */
 public final class Netty4HttpProxyHandler extends ProxyHandler {
-    private static final String VALIDATION_ERROR_TEMPLATE = "The '%s' returned in the 'Proxy-Authentication-Info' "
+    static final String VALIDATION_ERROR_TEMPLATE = "The '%s' returned in the 'Proxy-Authentication-Info' "
         + "header doesn't match the value sent in the 'Proxy-Authorization' header. Sent: %s, received: %s.";
 
     private static final String PROXY_AUTHENTICATION_INFO = "Proxy-Authentication-Info";
@@ -58,7 +62,7 @@ public final class Netty4HttpProxyHandler extends ProxyHandler {
 
     private final ProxyOptions proxyOptions;
     private final AtomicReference<List<AuthenticateChallenge>> proxyChallengeHolder;
-    private final HttpClientCodec codec;
+    private final HttpClientCodecWrapper wrapper;
 
     private String authScheme = NONE;
     private String lastUsedAuthorizationHeader;
@@ -78,7 +82,7 @@ public final class Netty4HttpProxyHandler extends ProxyHandler {
 
         this.proxyOptions = proxyOptions;
         this.proxyChallengeHolder = proxyChallengeHolder;
-        this.codec = createCodec();
+        this.wrapper = new HttpClientCodecWrapper();
     }
 
     // Cannot share instances of CoreHttpProxyHandler across ChannelPipelines.
@@ -99,22 +103,22 @@ public final class Netty4HttpProxyHandler extends ProxyHandler {
 
     @Override
     protected void addCodec(ChannelHandlerContext ctx) {
-        ctx.pipeline().addBefore(ctx.name(), "Netty4-Proxy-Codec", this.codec);
+        ctx.pipeline().addBefore(ctx.name(), "Netty4-Proxy-Codec", this.wrapper);
     }
 
     @Override
     protected void removeEncoder(ChannelHandlerContext ctx) {
-        this.codec.removeOutboundHandler();
+        this.wrapper.codec.removeOutboundHandler();
     }
 
     @Override
     protected void removeDecoder(ChannelHandlerContext ctx) {
-        this.codec.removeInboundHandler();
+        this.wrapper.codec.removeInboundHandler();
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    protected Object newInitialMessage(ChannelHandlerContext ctx) {
+    protected Object newInitialMessage(ChannelHandlerContext ctx) throws ProxyConnectException {
         // This needs to handle no authorization proxying.
         InetSocketAddress destinationAddress = this.destinationAddress();
         String hostString = HttpUtil.formatHostnameForHttp(destinationAddress);
@@ -151,7 +155,12 @@ public final class Netty4HttpProxyHandler extends ProxyHandler {
             request.headers().set(HttpHeaderNames.PROXY_AUTHORIZATION, lastUsedAuthorizationHeader);
         }
 
-        return request;
+        if (ctx.channel().isActive()) {
+            return request;
+        } else {
+            throw new HttpProxyHandler.HttpProxyConnectException(
+                exceptionMessage("Channel became inactive before 'newInitialMessage' was sent"), null);
+        }
     }
 
     @Override
@@ -218,7 +227,7 @@ public final class Netty4HttpProxyHandler extends ProxyHandler {
      * Validate the Proxy-Authorization header used in authentication against the server's Proxy-Authentication-Info
      * header. This header is an optional return by the server so this validation is guaranteed to happen.
      */
-    private void validateProxyAuthenticationInfo(String infoHeader, String authorizationHeader) {
+    static void validateProxyAuthenticationInfo(String infoHeader, String authorizationHeader) {
         // Client didn't send 'Proxy-Authorization' or server didn't return a 'Proxy-Authentication-Info' header,
         // nothing to validate.
         if (CoreUtils.isNullOrEmpty(authorizationHeader) || CoreUtils.isNullOrEmpty(infoHeader)) {
@@ -252,6 +261,108 @@ public final class Netty4HttpProxyHandler extends ProxyHandler {
                 throw LOGGER.logThrowableAsError(new IllegalStateException(
                     String.format(VALIDATION_ERROR_TEMPLATE, name, sentValue, receivedValue)));
             }
+        }
+    }
+
+    private static final class HttpClientCodecWrapper implements ChannelInboundHandler, ChannelOutboundHandler {
+        final HttpClientCodec codec = createCodec();
+
+        @Override
+        public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
+            codec.handlerAdded(ctx);
+        }
+
+        @Override
+        public void handlerRemoved(ChannelHandlerContext ctx) throws Exception {
+            codec.handlerRemoved(ctx);
+        }
+
+        @SuppressWarnings("deprecation")
+        @Override
+        public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+            codec.exceptionCaught(ctx, cause);
+        }
+
+        @Override
+        public void channelRegistered(ChannelHandlerContext ctx) throws Exception {
+            codec.channelRegistered(ctx);
+        }
+
+        @Override
+        public void channelUnregistered(ChannelHandlerContext ctx) throws Exception {
+            codec.channelUnregistered(ctx);
+        }
+
+        @Override
+        public void channelActive(ChannelHandlerContext ctx) throws Exception {
+            codec.channelActive(ctx);
+        }
+
+        @Override
+        public void channelInactive(ChannelHandlerContext ctx) throws Exception {
+            codec.channelInactive(ctx);
+        }
+
+        @Override
+        public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+            codec.channelRead(ctx, msg);
+        }
+
+        @Override
+        public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+            codec.channelReadComplete(ctx);
+        }
+
+        @Override
+        public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
+            codec.userEventTriggered(ctx, evt);
+        }
+
+        @Override
+        public void channelWritabilityChanged(ChannelHandlerContext ctx) throws Exception {
+            codec.channelWritabilityChanged(ctx);
+        }
+
+        @Override
+        public void bind(ChannelHandlerContext ctx, SocketAddress localAddress, ChannelPromise promise)
+            throws Exception {
+            codec.bind(ctx, localAddress, promise);
+        }
+
+        @Override
+        public void connect(ChannelHandlerContext ctx, SocketAddress remoteAddress, SocketAddress localAddress,
+            ChannelPromise promise) throws Exception {
+            codec.connect(ctx, remoteAddress, localAddress, promise);
+        }
+
+        @Override
+        public void disconnect(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
+            codec.disconnect(ctx, promise);
+        }
+
+        @Override
+        public void close(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
+            codec.close(ctx, promise);
+        }
+
+        @Override
+        public void deregister(ChannelHandlerContext ctx, ChannelPromise promise) throws Exception {
+            codec.deregister(ctx, promise);
+        }
+
+        @Override
+        public void read(ChannelHandlerContext ctx) throws Exception {
+            codec.read(ctx);
+        }
+
+        @Override
+        public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
+            codec.write(ctx, msg, promise);
+        }
+
+        @Override
+        public void flush(ChannelHandlerContext ctx) throws Exception {
+            codec.flush(ctx);
         }
     }
 }

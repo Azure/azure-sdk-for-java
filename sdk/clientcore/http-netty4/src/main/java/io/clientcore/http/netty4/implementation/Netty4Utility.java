@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Helper class containing utility methods.
@@ -182,6 +183,30 @@ public final class Netty4Utility {
         } else {
             return headers.getAll(nettyHeaderName);
         }
+    }
+
+    /**
+     * Utility method that either sets ({@link AtomicReference#set(Object)}) the error reference or updates the existing
+     * error reference value with a suppressed exception ({@link Throwable#addSuppressed(Throwable)}).
+     *
+     * @param errorReference The {@link AtomicReference} to set or update.
+     * @param error The error to set or suppress.
+     */
+    public static void setOrSuppressError(AtomicReference<Throwable> errorReference, Throwable error) {
+        errorReference.accumulateAndGet(error, (existing, newError) -> {
+            if (existing == null) {
+                // No error has been set, set the new error.
+                return newError;
+            } else if (existing == newError) {
+                // Case where two different locations threw the same error. Throwable isn't allowed to suppress itself,
+                // so return the existing error.
+                return existing;
+            } else {
+                // An existing error already exists, suppress the new error so we don't lose information.
+                existing.addSuppressed(newError);
+                return existing;
+            }
+        });
     }
 
     /**

@@ -8,6 +8,7 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.CoreUtils;
+import io.clientcore.core.utils.ServerSentEventUtils;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandler;
@@ -29,6 +30,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import static io.clientcore.core.http.models.HttpMethod.HEAD;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.awaitLatch;
 import static io.clientcore.http.netty4.implementation.Netty4Utility.readByteBufIntoOutputStream;
+import static io.clientcore.http.netty4.implementation.Netty4Utility.setOrSuppressError;
 
 /**
  * A {@link ChannelInboundHandler} implementation that appropriately handles the response reading from the server based
@@ -40,6 +42,7 @@ import static io.clientcore.http.netty4.implementation.Netty4Utility.readByteBuf
 public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
     private final HttpRequest request;
     private final AtomicReference<Response<BinaryData>> responseReference;
+    private final AtomicReference<Throwable> errorReference;
     private final CountDownLatch latch;
 
     private int statusCode;
@@ -59,15 +62,19 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
      * @param request The request that resulted in the response.
      * @param responseReference The reference to the {@link Response} that will be created from the response headers and
      * body.
+     * @param errorReference The reference to the {@link Throwable} that will be set if an error occurs while reading
+     * the response.
      * @param latch The latch to wait for the response to be processed.
      * @throws NullPointerException If {@code request}, {@code responseReference}, or {@code latch} is null.
      */
     public Netty4ResponseHandler(HttpRequest request, AtomicReference<Response<BinaryData>> responseReference,
-        CountDownLatch latch) {
+        AtomicReference<Throwable> errorReference, CountDownLatch latch) {
         this.request = Objects.requireNonNull(request,
             "Cannot create an instance of CoreResponseHandler with a null 'request'.");
         this.responseReference = Objects.requireNonNull(responseReference,
             "Cannot create an instance of CoreResponseHandler with a null 'responseReference'.");
+        this.errorReference = Objects.requireNonNull(errorReference,
+            "Cannot create an instance of CoreResponseHandler with a null 'errorReference'.");
         this.latch
             = Objects.requireNonNull(latch, "Cannot create an instance of CoreResponseHandler with a null 'latch'.");
     }
@@ -79,8 +86,8 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+        setOrSuppressError(errorReference, cause);
         latch.countDown();
-        ctx.fireExceptionCaught(cause);
     }
 
     @Override
@@ -193,7 +200,7 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
                 // We're ignoring the response content.
                 CountDownLatch latch = new CountDownLatch(1);
                 eagerContent = null;
-                ctx.pipeline().addLast(new Netty4EagerConsumeNetworkResponseHandler(latch, ignored -> {
+                ctx.pipeline().addLast(new Netty4EagerConsumeChannelHandler(latch, ignored -> {
                 }));
                 awaitLatch(latch);
             } else if (bodyHandling == BodyHandling.STREAM) {
@@ -215,7 +222,7 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
             } else {
                 // All cases otherwise assume BUFFER.
                 CountDownLatch latch = new CountDownLatch(1);
-                ctx.pipeline().addLast(new Netty4EagerConsumeNetworkResponseHandler(latch, buf -> {
+                ctx.pipeline().addLast(new Netty4EagerConsumeChannelHandler(latch, buf -> {
                     try {
                         buf.readBytes(eagerContent, buf.readableBytes());
                     } catch (IOException ex) {
@@ -238,7 +245,8 @@ public final class Netty4ResponseHandler extends ChannelInboundHandlerAdapter {
 
         if (request.getHttpMethod() == HEAD) {
             return BodyHandling.IGNORE;
-        } else if ("application/octet-stream".equalsIgnoreCase(contentType)) {
+        } else if ("application/octet-stream".equalsIgnoreCase(contentType)
+            || ServerSentEventUtils.isTextEventStreamContentType(contentType)) {
             return BodyHandling.STREAM;
         } else {
             return BodyHandling.BUFFER;

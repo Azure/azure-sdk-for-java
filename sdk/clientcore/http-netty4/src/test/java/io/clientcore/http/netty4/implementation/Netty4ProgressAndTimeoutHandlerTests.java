@@ -5,7 +5,6 @@ package io.clientcore.http.netty4.implementation;
 import io.clientcore.http.netty4.mocking.MockChannel;
 import io.clientcore.http.netty4.mocking.MockChannelHandlerContext;
 import io.clientcore.http.netty4.mocking.MockEventExecutor;
-import io.clientcore.http.netty4.mocking.MockUnsafe;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
@@ -194,7 +193,7 @@ public class Netty4ProgressAndTimeoutHandlerTests {
         Netty4ProgressAndTimeoutHandler netty4ProgressAndTimeoutHandler
             = new Netty4ProgressAndTimeoutHandler(null, 100, 0, 0);
 
-        Channel channel = new MockChannel(new MockUnsafe());
+        Channel channel = new MockChannel();
         MockChannelHandlerContext ctx = new MockChannelHandlerContext(channel, new MockEventExecutor());
 
         // Fake that the scheduled timer completed before any write operations happened.
@@ -208,7 +207,7 @@ public class Netty4ProgressAndTimeoutHandlerTests {
         Netty4ProgressAndTimeoutHandler netty4ProgressAndTimeoutHandler
             = new Netty4ProgressAndTimeoutHandler(null, 500, 0, 0);
 
-        Channel channel = new MockChannel(new MockUnsafe());
+        Channel channel = new MockChannel();
         EventExecutor eventExecutor = new DefaultEventLoop();
         ChannelPromise channelPromise = new DefaultChannelPromise(channel, eventExecutor) {
             @Override
