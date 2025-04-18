@@ -9,14 +9,13 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-import com.azure.resourcemanager.carbonoptimization.fluent.models.CarbonEmissionDataInner;
 import java.io.IOException;
 
 /**
  * Response for Top Items For ResourceGroup.
  */
 @Immutable
-public final class ResourceGroupCarbonEmissionTopItemsSummaryData extends CarbonEmissionDataInner {
+public final class ResourceGroupCarbonEmissionTopItemsSummaryData extends CarbonEmissionData {
     /*
      * The data type of the query result, indicating the format of the returned response.
      */
@@ -41,31 +40,6 @@ public final class ResourceGroupCarbonEmissionTopItemsSummaryData extends Carbon
      * Resource Group url, value format is '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroup}'
      */
     private String resourceGroupUrl;
-
-    /*
-     * The change in carbon emissions between the current and previous period, calculated as: latestMonthEmissions -
-     * previousMonthEmissions.
-     */
-    private Double monthlyEmissionsChangeValue;
-
-    /*
-     * The percentage change in carbon emissions between the current and previous DateRange. This is calculated as:
-     * (latestMonthEmissions - previousMonthEmissions) / previousMonthEmissions.
-     */
-    private Double monthOverMonthEmissionsChangeRatio;
-
-    /*
-     * Total carbon emissions for the previous month’s date range, which is the same period as the specified date range
-     * but shifted left by one month (e.g., if the specified range is March - June, the previous month’s range will be
-     * Feb - May). The value is measured in kgCO2E.
-     */
-    private double previousMonthEmissions;
-
-    /*
-     * Total carbon emissions for the specified query parameters, measured in kgCO2E. This value represents total
-     * emissions over the specified date range (e.g., March-June).
-     */
-    private double latestMonthEmissions;
 
     /**
      * Creates an instance of ResourceGroupCarbonEmissionTopItemsSummaryData class.
@@ -118,52 +92,6 @@ public final class ResourceGroupCarbonEmissionTopItemsSummaryData extends Carbon
      */
     public String resourceGroupUrl() {
         return this.resourceGroupUrl;
-    }
-
-    /**
-     * Get the monthlyEmissionsChangeValue property: The change in carbon emissions between the current and previous
-     * period, calculated as: latestMonthEmissions - previousMonthEmissions.
-     * 
-     * @return the monthlyEmissionsChangeValue value.
-     */
-    @Override
-    public Double monthlyEmissionsChangeValue() {
-        return this.monthlyEmissionsChangeValue;
-    }
-
-    /**
-     * Get the monthOverMonthEmissionsChangeRatio property: The percentage change in carbon emissions between the
-     * current and previous DateRange. This is calculated as: (latestMonthEmissions - previousMonthEmissions) /
-     * previousMonthEmissions.
-     * 
-     * @return the monthOverMonthEmissionsChangeRatio value.
-     */
-    @Override
-    public Double monthOverMonthEmissionsChangeRatio() {
-        return this.monthOverMonthEmissionsChangeRatio;
-    }
-
-    /**
-     * Get the previousMonthEmissions property: Total carbon emissions for the previous month’s date range, which is the
-     * same period as the specified date range but shifted left by one month (e.g., if the specified range is March -
-     * June, the previous month’s range will be Feb - May). The value is measured in kgCO2E.
-     * 
-     * @return the previousMonthEmissions value.
-     */
-    @Override
-    public double previousMonthEmissions() {
-        return this.previousMonthEmissions;
-    }
-
-    /**
-     * Get the latestMonthEmissions property: Total carbon emissions for the specified query parameters, measured in
-     * kgCO2E. This value represents total emissions over the specified date range (e.g., March-June).
-     * 
-     * @return the latestMonthEmissions value.
-     */
-    @Override
-    public double latestMonthEmissions() {
-        return this.latestMonthEmissions;
     }
 
     /**
@@ -233,17 +161,17 @@ public final class ResourceGroupCarbonEmissionTopItemsSummaryData extends Carbon
                 reader.nextToken();
 
                 if ("latestMonthEmissions".equals(fieldName)) {
-                    deserializedResourceGroupCarbonEmissionTopItemsSummaryData.latestMonthEmissions
-                        = reader.getDouble();
+                    deserializedResourceGroupCarbonEmissionTopItemsSummaryData
+                        .withLatestMonthEmissions(reader.getDouble());
                 } else if ("previousMonthEmissions".equals(fieldName)) {
-                    deserializedResourceGroupCarbonEmissionTopItemsSummaryData.previousMonthEmissions
-                        = reader.getDouble();
+                    deserializedResourceGroupCarbonEmissionTopItemsSummaryData
+                        .withPreviousMonthEmissions(reader.getDouble());
                 } else if ("monthOverMonthEmissionsChangeRatio".equals(fieldName)) {
-                    deserializedResourceGroupCarbonEmissionTopItemsSummaryData.monthOverMonthEmissionsChangeRatio
-                        = reader.getNullable(JsonReader::getDouble);
+                    deserializedResourceGroupCarbonEmissionTopItemsSummaryData
+                        .withMonthOverMonthEmissionsChangeRatio(reader.getNullable(JsonReader::getDouble));
                 } else if ("monthlyEmissionsChangeValue".equals(fieldName)) {
-                    deserializedResourceGroupCarbonEmissionTopItemsSummaryData.monthlyEmissionsChangeValue
-                        = reader.getNullable(JsonReader::getDouble);
+                    deserializedResourceGroupCarbonEmissionTopItemsSummaryData
+                        .withMonthlyEmissionsChangeValue(reader.getNullable(JsonReader::getDouble));
                 } else if ("itemName".equals(fieldName)) {
                     deserializedResourceGroupCarbonEmissionTopItemsSummaryData.itemName = reader.getString();
                 } else if ("categoryType".equals(fieldName)) {

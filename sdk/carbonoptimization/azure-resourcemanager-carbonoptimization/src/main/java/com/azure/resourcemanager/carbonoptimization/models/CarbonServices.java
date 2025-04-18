@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.carbonoptimization.models;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
@@ -16,24 +15,25 @@ public interface CarbonServices {
      * API for Carbon Emissions Reports.
      * 
      * @param queryParameters Query parameters.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of carbon emission results as paginated response with {@link PagedIterable}.
+     * @return list of carbon emission results along with {@link Response}.
      */
-    PagedIterable<CarbonEmissionData> queryCarbonEmissionReports(QueryFilter queryParameters);
+    Response<CarbonEmissionDataListResult> queryCarbonEmissionReportsWithResponse(QueryFilter queryParameters,
+        Context context);
 
     /**
      * API for Carbon Emissions Reports.
      * 
      * @param queryParameters Query parameters.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of carbon emission results as paginated response with {@link PagedIterable}.
+     * @return list of carbon emission results.
      */
-    PagedIterable<CarbonEmissionData> queryCarbonEmissionReports(QueryFilter queryParameters, Context context);
+    CarbonEmissionDataListResult queryCarbonEmissionReports(QueryFilter queryParameters);
 
     /**
      * API for query carbon emission data available date range.
