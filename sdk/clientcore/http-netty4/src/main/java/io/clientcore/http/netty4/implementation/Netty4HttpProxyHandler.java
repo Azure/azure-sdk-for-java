@@ -343,9 +343,11 @@ public final class Netty4HttpProxyHandler extends ChannelDuplexHandler {
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         if (finished) {
+            LOGGER.atInfo().setThrowable(cause).log("Caught exception after proxy handling finished");
             ctx.fireExceptionCaught(cause);
         } else {
             // Exception was raised before the connection attempt is finished.
+            LOGGER.atInfo().setThrowable(cause).log("Caught exception before proxy handling finished");
             setConnectFailure(cause);
         }
     }
@@ -568,6 +570,7 @@ public final class Netty4HttpProxyHandler extends ChannelDuplexHandler {
         @SuppressWarnings("deprecation")
         @Override
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+            LOGGER.atInfo().setThrowable(cause).log("Caught exception in codec");
             codec.exceptionCaught(ctx, cause);
         }
 
