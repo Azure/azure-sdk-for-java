@@ -114,6 +114,7 @@ input-file:
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/1501c199b9bd720722c4d2b1d9d308494d7d62a9/specification/eventgrid/data-plane/Microsoft.AVS/stable/2018-01-01/PrivateCloud.json
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/1501c199b9bd720722c4d2b1d9d308494d7d62a9/specification/eventgrid/data-plane/Microsoft.ApiCenter/stable/2018-01-01/ApiCenter.json
 - https://raw.githubusercontent.com/Azure/azure-rest-api-specs/1501c199b9bd720722c4d2b1d9d308494d7d62a9/specification/eventgrid/data-plane/Microsoft.ResourceNotifications/stable/2018-01-01/ContainerServiceEventResources.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/1501c199b9bd720722c4d2b1d9d308494d7d62a9/specification/eventgrid/data-plane/Microsoft.Edge/stable/2018-01-01/Edge.json
 
 ```
 
