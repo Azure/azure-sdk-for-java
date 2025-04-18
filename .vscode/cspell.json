@@ -1,3 +1,4 @@
+
 {
   "version": "0.2",
   "language": "en",
@@ -212,8 +213,8 @@
     "apacheavro",
     "Apim",
     "AUHours",
-    "autodetection",
     "autoscale",
+    "autodetection",
     "awps",
     "azconfig",
     "azsdk",
@@ -222,8 +223,13 @@
     "azurestackhci",
     "backoff",
     "boringssl",
-    "branchcoverage",
     "BYOD",
+    "Dgpg",
+    "Dskip",
+    "mvnw",
+    "TBLPROPERTIES",
+    "Cyclomatic",
+    "branchcoverage",
     "cacerts",
     "checkstyle",
     "Classpath",
@@ -236,39 +242,36 @@
     "creds",
     "credscan",
     "curr",
-    "Cyclomatic",
     "dall",
-    "dall-e",
     "DALL-E",
+    "dall-e",
     "databind",
     "databricks",
     "DAZURE",
-    "dcis",
-    "ddos",
-    "deallocate",
-    "decryptor",
-    "deid",
     "deidentification",
     "deidentificationclient",
     "deidentified",
-    "deidentify",
+    "deid",
     "deidservices",
+    "deidentify",
+    "ddos",
+    "dcis",
+    "deallocate",
+    "decryptor",
     "Deserialization",
     "destfile",
     "Dgenerate",
-    "Dgpg",
-    "dicom",
     "Dincludes",
-    "dlocal",
+    "Dshade",
+    "Dverbose",
+    "dicom",
     "doclint",
     "doclinting",
     "doctitle",
-    "Dshade",
-    "Dskip",
+    "dlocal",
     "dtlk",
     "dtlksd",
     "dummyrg",
-    "Dverbose",
     "eastus",
     "embedme",
     "encryptor",
@@ -286,9 +289,9 @@
     "gapra",
     "gltf",
     "gmavenplus",
-    "graalvm",
     "gson",
     "guids",
+    "graalvm",
     "hana",
     "hanaonazure",
     "hdfs",
@@ -298,9 +301,9 @@
     "hvac",
     "hybridkubernetes",
     "hyunwoongko",
-    "idnum",
     "includable",
     "includables",
+    "idnum",
     "insights",
     "intellij",
     "Intellij",
@@ -313,11 +316,11 @@
     "javadocs",
     "Jdbc",
     "JSESSIONID",
+    "junitxml",
     "jtoken",
     "jtokkit",
-    "junitxml",
-    "kasobol",
     "keyvault",
+    "kasobol",
     "knuddelsgmbh",
     "kube",
     "kubeconfig",
@@ -346,26 +349,25 @@
     "msal",
     "msix",
     "MSRC",
-    "mvnw",
     "netapp",
     "Netezza",
-    "OAI",
     "odata",
+    "OAI",
     "ODBC",
     "okhttp",
+    "OTLP",
     "OLTP",
     "onboarded",
     "Onco",
     "onenote",
     "openai",
-    "OTLP",
     "passthrough",
     "Pnative",
     "premf",
+    "pwsh",
     "protonj",
     "prueba",
     "PSQL",
-    "pwsh",
     "PZLA",
     "qpid",
     "racdw",
@@ -397,7 +399,6 @@
     "ssis",
     "substringof",
     "Sybase",
-    "TBLPROPERTIES",
     "tcnative",
     "testdb",
     "TFVC",
@@ -486,7 +487,7 @@
     },
     {
       "filename": "sdk/identity/cgmanifest.json",
-      "words": [
+      "words":[
         "pwdb",
         "bcprov"
       ]
@@ -512,8 +513,7 @@
     {
       "filename": "sdk/maps/azure-maps-traffic/src/main/java/com/azure/maps/traffic/models/TrafficFlowSegmentOptions.java",
       "words": [
-        "EPSG",
-        "KMPH"
+        "EPSG", "KMPH"
       ]
     },
     {
@@ -683,43 +683,43 @@
         },
         {
           "name": "excludePackageNames",
-          "pattern": "/<excludePackageNames>([\\s\\S]*?)</excludePackageNames>/im"
+          "pattern": "/<excludePackageNames>([\\s\\S]*?)<\/excludePackageNames>/im"
         },
         {
           "name": "heapDumpOnOom",
-          "pattern": "/<heapDumpOnOom>([\\s\\S]*?)</heapDumpOnOom>/im"
+          "pattern": "/<heapDumpOnOom>([\\s\\S]*?)<\/heapDumpOnOom>/im"
         },
         {
           "name": "environmentVariables",
-          "pattern": "/<environmentVariables>([\\s\\S]*?)</environmentVariables>/im"
+          "pattern": "/<environmentVariables>([\\s\\S]*?)<\/environmentVariables>/im"
         },
         {
           "name": "javaModulesSurefireArgLine",
-          "pattern": "/<javaModulesSurefireArgLine>([\\s\\S]*?)</javaModulesSurefireArgLine>/im"
+          "pattern": "/<javaModulesSurefireArgLine>([\\s\\S]*?)<\/javaModulesSurefireArgLine>/im"
         },
         {
           "name": "additionalSurefireArgLine",
-          "pattern": "/<additionalSurefireArgLine>([\\s\\S]*?)</additionalSurefireArgLine>/im"
+          "pattern": "/<additionalSurefireArgLine>([\\s\\S]*?)<\/additionalSurefireArgLine>/im"
         },
         {
           "name": "argLine",
-          "pattern": "/<argLine>([\\s\\S]*?)</argLine>/im"
+          "pattern": "/<argLine>([\\s\\S]*?)<\/argLine>/im"
         },
         {
           "name": "property",
-          "pattern": "/<property>([\\s\\S]*?)</property>/im"
+          "pattern": "/<property>([\\s\\S]*?)<\/property>/im"
         },
         {
           "name": "manifestEntries",
-          "pattern": "/<manifestEntries>([\\s\\S]*?)</manifestEntries>/im"
+          "pattern": "/<manifestEntries>([\\s\\S]*?)<\/manifestEntries>/im"
         },
         {
           "name": "compilerArguments",
-          "pattern": "/<compilerArguments>([\\s\\S]*?)</compilerArguments>/im"
+          "pattern": "/<compilerArguments>([\\s\\S]*?)<\/compilerArguments>/im"
         },
         {
           "name": "annotationProcessors",
-          "pattern": "/<annotationProcessors>([\\s\\S]*?)</annotationProcessors>/im"
+          "pattern": "/<annotationProcessors>([\\s\\S]*?)<\/annotationProcessors>/im"
         }
       ],
       "ignoreRegExpList": [
@@ -796,7 +796,7 @@
       "words": [
         "Pfast",
         "Pdirect",
-        "Pmulti",
+	    "Pmulti",
         "Psplit",
         "Pquery",
         "Pcfp",
@@ -1273,7 +1273,7 @@
         "Adls"
       ],
       "ignoreRegExpList": [
-        "///\\s*(BEGIN:|END:).*/"
+        "/\/\/\\s*(BEGIN:|END:).*/"
       ]
     },
     {
