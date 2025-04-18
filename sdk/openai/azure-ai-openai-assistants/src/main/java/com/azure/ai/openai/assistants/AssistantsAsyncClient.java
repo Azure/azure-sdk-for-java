@@ -2380,8 +2380,7 @@ public final class AssistantsAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         UpdateMessageRequest updateMessageRequestObj = new UpdateMessageRequest().setMetadata(metadata);
         BinaryData updateMessageRequest = BinaryData.fromObject(updateMessageRequestObj);
-        return updateMessageWithResponse(threadId, messageId, updateMessageRequest, requestOptions)
-            .flatMap(FluxUtil::toMono)
+        return updateMessageWithResponse(threadId, messageId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ThreadMessage.class));
     }
 
@@ -2405,8 +2404,7 @@ public final class AssistantsAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         UpdateMessageRequest updateMessageRequestObj = new UpdateMessageRequest();
         BinaryData updateMessageRequest = BinaryData.fromObject(updateMessageRequestObj);
-        return updateMessageWithResponse(threadId, messageId, updateMessageRequest, requestOptions)
-            .flatMap(FluxUtil::toMono)
+        return updateMessageWithResponse(threadId, messageId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ThreadMessage.class));
     }
 
@@ -2585,7 +2583,7 @@ public final class AssistantsAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         UpdateRunRequest updateRunRequestObj = new UpdateRunRequest().setMetadata(metadata);
         BinaryData updateRunRequest = BinaryData.fromObject(updateRunRequestObj);
-        return updateRunWithResponse(threadId, runId, updateRunRequest, requestOptions).flatMap(FluxUtil::toMono)
+        return updateRunWithResponse(threadId, runId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ThreadRun.class));
     }
 
@@ -2610,7 +2608,7 @@ public final class AssistantsAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         UpdateRunRequest updateRunRequestObj = new UpdateRunRequest();
         BinaryData updateRunRequest = BinaryData.fromObject(updateRunRequestObj);
-        return updateRunWithResponse(threadId, runId, updateRunRequest, requestOptions).flatMap(FluxUtil::toMono)
+        return updateRunWithResponse(threadId, runId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(ThreadRun.class));
     }
 

@@ -2394,8 +2394,7 @@ public final class AssistantsClient {
         RequestOptions requestOptions = new RequestOptions();
         UpdateMessageRequest updateMessageRequestObj = new UpdateMessageRequest().setMetadata(metadata);
         BinaryData updateMessageRequest = BinaryData.fromObject(updateMessageRequestObj);
-        return updateMessageWithResponse(threadId, messageId, updateMessageRequest, requestOptions).getValue()
-            .toObject(ThreadMessage.class);
+        return updateMessageWithResponse(threadId, messageId, requestOptions).getValue().toObject(ThreadMessage.class);
     }
 
     /**
@@ -2418,8 +2417,7 @@ public final class AssistantsClient {
         RequestOptions requestOptions = new RequestOptions();
         UpdateMessageRequest updateMessageRequestObj = new UpdateMessageRequest();
         BinaryData updateMessageRequest = BinaryData.fromObject(updateMessageRequestObj);
-        return updateMessageWithResponse(threadId, messageId, updateMessageRequest, requestOptions).getValue()
-            .toObject(ThreadMessage.class);
+        return updateMessageWithResponse(threadId, messageId, requestOptions).getValue().toObject(ThreadMessage.class);
     }
 
     /**
@@ -2589,8 +2587,7 @@ public final class AssistantsClient {
         RequestOptions requestOptions = new RequestOptions();
         UpdateRunRequest updateRunRequestObj = new UpdateRunRequest().setMetadata(metadata);
         BinaryData updateRunRequest = BinaryData.fromObject(updateRunRequestObj);
-        return updateRunWithResponse(threadId, runId, updateRunRequest, requestOptions).getValue()
-            .toObject(ThreadRun.class);
+        return updateRunWithResponse(threadId, runId, requestOptions).getValue().toObject(ThreadRun.class);
     }
 
     /**
@@ -2613,8 +2610,7 @@ public final class AssistantsClient {
         RequestOptions requestOptions = new RequestOptions();
         UpdateRunRequest updateRunRequestObj = new UpdateRunRequest();
         BinaryData updateRunRequest = BinaryData.fromObject(updateRunRequestObj);
-        return updateRunWithResponse(threadId, runId, updateRunRequest, requestOptions).getValue()
-            .toObject(ThreadRun.class);
+        return updateRunWithResponse(threadId, runId, requestOptions).getValue().toObject(ThreadRun.class);
     }
 
     /**

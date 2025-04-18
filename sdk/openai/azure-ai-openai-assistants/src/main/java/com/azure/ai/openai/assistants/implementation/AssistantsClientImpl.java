@@ -22,6 +22,7 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.RetryPolicy;
@@ -405,9 +406,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateMessage(@HostParam("endpoint") String endpoint,
             @PathParam("threadId") String threadId, @PathParam("messageId") String messageId,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData updateMessageRequest, RequestOptions requestOptions,
-            Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/threads/{threadId}/messages/{messageId}")
         @ExpectedResponses({ 200 })
@@ -417,9 +416,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateMessageSync(@HostParam("endpoint") String endpoint,
             @PathParam("threadId") String threadId, @PathParam("messageId") String messageId,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData updateMessageRequest, RequestOptions requestOptions,
-            Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/threads/{threadId}/runs")
         @ExpectedResponses({ 200 })
@@ -491,8 +488,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> updateRun(@HostParam("endpoint") String endpoint,
             @PathParam("threadId") String threadId, @PathParam("runId") String runId,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData updateRunRequest, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/threads/{threadId}/runs/{runId}")
         @ExpectedResponses({ 200 })
@@ -502,8 +498,7 @@ public final class AssistantsClientImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> updateRunSync(@HostParam("endpoint") String endpoint,
             @PathParam("threadId") String threadId, @PathParam("runId") String runId,
-            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") BinaryData updateRunRequest, RequestOptions requestOptions, Context context);
+            @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
         @Post("/threads/{threadId}/runs/{runId}/submit_tool_outputs")
         @ExpectedResponses({ 200 })
@@ -2583,6 +2578,14 @@ public final class AssistantsClientImpl {
 
     /**
      * Modifies an existing message on an existing thread.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -2635,7 +2638,6 @@ public final class AssistantsClientImpl {
      * 
      * @param threadId The ID of the thread containing the specified message to modify.
      * @param messageId The ID of the message to modify on the specified thread.
-     * @param updateMessageRequest The updateMessageRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2646,15 +2648,28 @@ public final class AssistantsClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateMessageWithResponseAsync(String threadId, String messageId,
-        BinaryData updateMessageRequest, RequestOptions requestOptions) {
-        final String contentType = "application/json";
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateMessage(this.getEndpoint(), threadId, messageId,
-            contentType, accept, updateMessageRequest, requestOptions, context));
+        RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+        requestOptionsLocal.addRequestCallback(requestLocal -> {
+            if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
+                requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
+            }
+        });
+        return FluxUtil.withContext(context -> service.updateMessage(this.getEndpoint(), threadId, messageId, accept,
+            requestOptionsLocal, context));
     }
 
     /**
      * Modifies an existing message on an existing thread.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -2707,7 +2722,6 @@ public final class AssistantsClientImpl {
      * 
      * @param threadId The ID of the thread containing the specified message to modify.
      * @param messageId The ID of the message to modify on the specified thread.
-     * @param updateMessageRequest The updateMessageRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2717,11 +2731,16 @@ public final class AssistantsClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateMessageWithResponse(String threadId, String messageId,
-        BinaryData updateMessageRequest, RequestOptions requestOptions) {
-        final String contentType = "application/json";
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.updateMessageSync(this.getEndpoint(), threadId, messageId, contentType, accept,
-            updateMessageRequest, requestOptions, Context.NONE);
+        RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+        requestOptionsLocal.addRequestCallback(requestLocal -> {
+            if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
+                requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
+            }
+        });
+        return service.updateMessageSync(this.getEndpoint(), threadId, messageId, accept, requestOptionsLocal,
+            Context.NONE);
     }
 
     /**
@@ -3360,6 +3379,14 @@ public final class AssistantsClientImpl {
 
     /**
      * Modifies an existing thread run.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -3428,7 +3455,6 @@ public final class AssistantsClientImpl {
      * 
      * @param threadId The ID of the thread associated with the specified run.
      * @param runId The ID of the run to modify.
-     * @param updateRunRequest The updateRunRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3439,15 +3465,28 @@ public final class AssistantsClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateRunWithResponseAsync(String threadId, String runId,
-        BinaryData updateRunRequest, RequestOptions requestOptions) {
-        final String contentType = "application/json";
+        RequestOptions requestOptions) {
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateRun(this.getEndpoint(), threadId, runId, contentType,
-            accept, updateRunRequest, requestOptions, context));
+        RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+        requestOptionsLocal.addRequestCallback(requestLocal -> {
+            if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
+                requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
+            }
+        });
+        return FluxUtil.withContext(
+            context -> service.updateRun(this.getEndpoint(), threadId, runId, accept, requestOptionsLocal, context));
     }
 
     /**
      * Modifies an existing thread run.
+     * <p><strong>Header Parameters</strong></p>
+     * <table border="1">
+     * <caption>Header Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>Content-Type</td><td>String</td><td>No</td><td>The content type. Allowed values:
+     * "application/json".</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addHeader}
      * <p><strong>Request Body Schema</strong></p>
      * 
      * <pre>
@@ -3516,7 +3555,6 @@ public final class AssistantsClientImpl {
      * 
      * @param threadId The ID of the thread associated with the specified run.
      * @param runId The ID of the run to modify.
-     * @param updateRunRequest The updateRunRequest parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3525,12 +3563,15 @@ public final class AssistantsClientImpl {
      * @return data representing a single evaluation run of an assistant thread along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateRunWithResponse(String threadId, String runId, BinaryData updateRunRequest,
-        RequestOptions requestOptions) {
-        final String contentType = "application/json";
+    public Response<BinaryData> updateRunWithResponse(String threadId, String runId, RequestOptions requestOptions) {
         final String accept = "application/json";
-        return service.updateRunSync(this.getEndpoint(), threadId, runId, contentType, accept, updateRunRequest,
-            requestOptions, Context.NONE);
+        RequestOptions requestOptionsLocal = requestOptions == null ? new RequestOptions() : requestOptions;
+        requestOptionsLocal.addRequestCallback(requestLocal -> {
+            if (requestLocal.getBody() != null && requestLocal.getHeaders().get(HttpHeaderName.CONTENT_TYPE) == null) {
+                requestLocal.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
+            }
+        });
+        return service.updateRunSync(this.getEndpoint(), threadId, runId, accept, requestOptionsLocal, Context.NONE);
     }
 
     /**
