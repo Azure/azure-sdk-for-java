@@ -16,7 +16,6 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.identity.AzurePowerShellCredentialBuilder;
 import com.azure.resourcemanager.compute.ComputeManager;
-import com.azure.resourcemanager.compute.models.ComputeResourceType;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSet;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetSkuTypes;
@@ -26,6 +25,7 @@ import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolRes
 import com.azure.resourcemanager.standbypool.models.StandbyVirtualMachinePoolResourceProperties;
 import com.azure.resourcemanager.standbypool.models.VirtualMachineState;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -37,10 +37,7 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.interfaces.RSAPublicKey;
-import java.util.Arrays;
 import java.util.Base64;
-import java.util.List;
-import java.util.Locale;
 import java.util.Random;
 
 public class StandbyPoolTests extends TestProxyTestBase {
@@ -49,7 +46,7 @@ public class StandbyPoolTests extends TestProxyTestBase {
     private boolean testEnv;
 
     private static final Random RANDOM = new Random();
-    private static Region REGION;
+    private static final Region REGION = Region.US_WEST2;
     private String resourceGroupName = "rg" + randomPadding();
     private StandbyPoolManager standbyPoolManager;
     private ComputeManager computeManager;
@@ -72,6 +69,8 @@ public class StandbyPoolTests extends TestProxyTestBase {
         testEnv = !CoreUtils.isNullOrEmpty(testResourceGroup);
         if (testEnv) {
             resourceGroupName = testResourceGroup;
+        } else {
+            computeManager.resourceManager().resourceGroups().define(resourceGroupName).withRegion(REGION).create();
         }
     }
 
@@ -83,17 +82,22 @@ public class StandbyPoolTests extends TestProxyTestBase {
     }
 
     @Test
+    public void testStandByVirtualMachinePool() {
+        // live test subscription is having issue creating VMSS resource. Only check API availability here.
+        standbyPoolManager.standbyVirtualMachinePools().list().stream().count();
+        standbyPoolManager.standbyContainerGroupPools().list().stream().count();
+        Assertions.assertTrue(standbyPoolManager.operations().list().stream().findAny().isPresent());
+    }
+
+    @Test
     @LiveOnly
+    @Disabled("Live test subscription only has available VMSS/VirtualMachine SKUs in centraleuap region. Network resource doesn't support this region.")
     public void testStandbyVirtualMachinePool() {
         String poolName = "pool" + randomPadding();
         StandbyVirtualMachinePoolResource standbyVirtualMachinePool = null;
         VirtualMachineScaleSet virtualMachineScaleSet = null;
         Network virtualNetwork = null;
         try {
-            VirtualMachineScaleSetSkuTypes availableSku = getMinimalVmssSku();
-            if (!testEnv) {
-                computeManager.resourceManager().resourceGroups().define(resourceGroupName).withRegion(REGION).create();
-            }
             // @embedmeStart
             // reference https://learn.microsoft.com/azure/virtual-machine-scale-sets/standby-pools-create
 
@@ -112,7 +116,7 @@ public class StandbyPoolTests extends TestProxyTestBase {
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
                 .withFlexibleOrchestrationMode()
-                .withSku(availableSku)
+                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
                 .withExistingPrimaryNetworkSubnet(virtualNetwork, "default")
                 .withoutPrimaryInternetFacingLoadBalancer()
                 .withoutPrimaryInternalLoadBalancer()
@@ -148,36 +152,6 @@ public class StandbyPoolTests extends TestProxyTestBase {
 
                 computeManager.networkManager().networks().deleteById(virtualNetwork.id());
             }
-        }
-    }
-
-    private VirtualMachineScaleSetSkuTypes getMinimalVmssSku() {
-        List<VirtualMachineScaleSetSkuTypes> knownSkus = Arrays.asList(VirtualMachineScaleSetSkuTypes.values());
-        return computeManager.computeSkus()
-            .listByResourceType(ComputeResourceType.VIRTUALMACHINES)
-            .stream()
-            .filter(sku -> CoreUtils.isNullOrEmpty(sku.restrictions()))
-            .filter(sku -> sku.name().getValue().toLowerCase(Locale.ROOT).startsWith("standard"))
-            .sorted((o1, o2) -> o1.name().getValue().compareToIgnoreCase(o2.name().getValue()))
-            .map(sku -> new VirtualMachineScaleSetSkuTypeWrapper(
-                VirtualMachineScaleSetSkuTypes.fromSkuNameAndTier(sku.name().getValue(), sku.tier().getValue()),
-                sku.regions().iterator().next()))
-            .filter(skuWrapper -> knownSkus.contains(skuWrapper.sku))
-            .findFirst()
-            .map(skuWrapper -> {
-                REGION = skuWrapper.availableRegion;
-                return skuWrapper.sku;
-            })
-            .get();
-    }
-
-    private static class VirtualMachineScaleSetSkuTypeWrapper {
-        private final VirtualMachineScaleSetSkuTypes sku;
-        private final Region availableRegion;
-
-        public VirtualMachineScaleSetSkuTypeWrapper(VirtualMachineScaleSetSkuTypes sku, Region availableRegion) {
-            this.sku = sku;
-            this.availableRegion = availableRegion;
         }
     }
 
