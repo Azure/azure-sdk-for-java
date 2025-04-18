@@ -15,7 +15,7 @@ public final class SapSupportedResourceSkusResultInnerTests {
             "{\"supportedSkus\":[{\"vmSku\":\"rvrnsvshqjohxc\",\"isAppServerCertified\":true,\"isDatabaseCertified\":true},{\"vmSku\":\"asrru\",\"isAppServerCertified\":true,\"isDatabaseCertified\":true},{\"vmSku\":\"fsubcgjbirxbpy\",\"isAppServerCertified\":false,\"isDatabaseCertified\":false}]}")
             .toObject(SapSupportedResourceSkusResultInner.class);
         Assertions.assertEquals("rvrnsvshqjohxc", model.supportedSkus().get(0).vmSku());
-        Assertions.assertEquals(true, model.supportedSkus().get(0).isAppServerCertified());
-        Assertions.assertEquals(true, model.supportedSkus().get(0).isDatabaseCertified());
+        Assertions.assertTrue(model.supportedSkus().get(0).isAppServerCertified());
+        Assertions.assertTrue(model.supportedSkus().get(0).isDatabaseCertified());
     }
 }

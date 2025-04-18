@@ -564,7 +564,8 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     config.bulkEnabled shouldEqual true
     config.pointMaxConcurrency.isDefined shouldEqual false
     config.bulkMaxPendingOperations.isDefined shouldEqual false
-
+    config.maxInitialNoProgressIntervalInSeconds shouldEqual 180
+    config.maxRetryNoProgressIntervalInSeconds shouldEqual 45 * 60
   }
 
   it should "parse point write config" in {
@@ -597,6 +598,8 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     config.maxRetryCount shouldEqual 8
     config.bulkEnabled shouldEqual true
     config.bulkMaxPendingOperations.get shouldEqual 12
+    config.maxInitialNoProgressIntervalInSeconds shouldEqual 180
+    config.maxRetryNoProgressIntervalInSeconds shouldEqual 45 * 60
   }
 
   it should "parse partitioning config with custom Strategy" in {
@@ -1342,6 +1345,25 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
           throw e
         }
     }
+  }
+
+  "CosmosWriteConfig" should "parse custom no-progress intervals for bulk write config" in {
+    val userConfig = Map(
+      "spark.cosmos.write.strategy" -> "ItemAppend",
+      "spark.cosmos.write.maxRetryCount" -> "9",
+      "spark.cosmos.write.bulk.maxPendingOperations" -> "13",
+      "spark.cosmos.write.flush.noProgress.maxIntervalInSeconds" -> "157",
+      "spark.cosmos.write.flush.noProgress.maxRetryIntervalInSeconds" -> "314"
+    )
+
+    val config = CosmosWriteConfig.parseWriteConfig(userConfig, StructType(Nil))
+
+    config.itemWriteStrategy shouldEqual ItemWriteStrategy.ItemAppend
+    config.maxRetryCount shouldEqual 9
+    config.bulkEnabled shouldEqual true
+    config.bulkMaxPendingOperations.get shouldEqual 13
+    config.maxInitialNoProgressIntervalInSeconds shouldEqual 157
+    config.maxRetryNoProgressIntervalInSeconds shouldEqual 314
   }
 
   private case class PatchColumnConfigParameterTest
