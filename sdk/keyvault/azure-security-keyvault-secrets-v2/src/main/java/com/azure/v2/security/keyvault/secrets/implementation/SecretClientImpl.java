@@ -4,7 +4,6 @@
 
 package com.azure.v2.security.keyvault.secrets.implementation;
 
-import com.azure.v2.security.keyvault.secrets.SecretServiceVersion;
 import com.azure.v2.security.keyvault.secrets.implementation.models.BackupSecretResult;
 import com.azure.v2.security.keyvault.secrets.implementation.models.DeletedSecretBundle;
 import com.azure.v2.security.keyvault.secrets.implementation.models.DeletedSecretItem;
@@ -28,12 +27,11 @@ import io.clientcore.core.http.annotations.QueryParam;
 import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpResponseException;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.utils.Context;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -59,17 +57,17 @@ public final class SecretClientImpl {
     }
 
     /**
-     * Service version.
+     * Version parameter.
      */
-    private final SecretServiceVersion serviceVersion;
+    private final String apiVersion;
 
     /**
-     * Gets Service version.
+     * Gets Version parameter.
      * 
-     * @return the serviceVersion value.
+     * @return the apiVersion value.
      */
-    public SecretServiceVersion getServiceVersion() {
-        return this.serviceVersion;
+    public String getApiVersion() {
+        return this.apiVersion;
     }
 
     /**
@@ -91,12 +89,12 @@ public final class SecretClientImpl {
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param vaultBaseUrl
-     * @param serviceVersion Service version.
+     * @param apiVersion Version parameter.
      */
-    public SecretClientImpl(HttpPipeline httpPipeline, String vaultBaseUrl, SecretServiceVersion serviceVersion) {
+    public SecretClientImpl(HttpPipeline httpPipeline, String vaultBaseUrl, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.vaultBaseUrl = vaultBaseUrl;
-        this.serviceVersion = serviceVersion;
+        this.apiVersion = apiVersion;
         this.service = SecretClientService.getNewInstance(this.httpPipeline);
     }
 
@@ -123,7 +121,7 @@ public final class SecretClientImpl {
         Response<SecretBundle> setSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") SecretSetParameters parameters, RequestOptions requestOptions);
+            @BodyParam("application/json") SecretSetParameters parameters, RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.DELETE,
@@ -132,7 +130,7 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<DeletedSecretBundle> deleteSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.PATCH,
@@ -143,7 +141,7 @@ public final class SecretClientImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
             @PathParam("secret-version") String secretVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") SecretUpdateParameters parameters,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.GET,
@@ -153,13 +151,13 @@ public final class SecretClientImpl {
         Response<SecretBundle> getSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
             @PathParam("secret-version") String secretVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "/secrets", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<SecretListResult> getSecrets(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @QueryParam("maxresults") Integer maxresults,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.GET,
@@ -169,13 +167,13 @@ public final class SecretClientImpl {
         Response<SecretListResult> getSecretVersions(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
             @QueryParam("maxresults") Integer maxresults, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "/deletedsecrets", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<DeletedSecretListResult> getDeletedSecrets(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @QueryParam("maxresults") Integer maxresults,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.GET,
@@ -184,7 +182,7 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<DeletedSecretBundle> getDeletedSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.DELETE,
@@ -193,7 +191,7 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<Void> purgeDeletedSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.POST,
@@ -202,7 +200,7 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<SecretBundle> recoverDeletedSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.POST,
@@ -211,33 +209,33 @@ public final class SecretClientImpl {
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<BackupSecretResult> backupSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.POST, path = "/secrets/restore", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<SecretBundle> restoreSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") SecretRestoreParameters parameters,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<SecretListResult> getSecretsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<SecretListResult> getSecretVersionsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<DeletedSecretListResult> getDeletedSecretsNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
     }
 
     /**
@@ -249,7 +247,7 @@ public final class SecretClientImpl {
      * @param secretName The name of the secret. The value you provide may be copied globally for the purpose of running
      * the service. The value provided should not include personally identifiable or sensitive information.
      * @param parameters The parameters for setting the secret.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -257,11 +255,11 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecretBundle> setSecretWithResponse(String secretName, SecretSetParameters parameters,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.setSecret(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), secretName, contentType,
-            accept, parameters, requestOptions);
+        return service.setSecret(this.getVaultBaseUrl(), this.getApiVersion(), secretName, contentType, accept,
+            parameters, requestContext);
     }
 
     /**
@@ -280,7 +278,7 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecretBundle setSecret(String secretName, SecretSetParameters parameters) {
-        return setSecretWithResponse(secretName, parameters, RequestOptions.none()).getValue();
+        return setSecretWithResponse(secretName, parameters, RequestContext.none()).getValue();
     }
 
     /**
@@ -290,7 +288,7 @@ public final class SecretClientImpl {
      * version of a secret. This operation requires the secrets/delete permission.
      * 
      * @param secretName The name of the secret.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -298,10 +296,9 @@ public final class SecretClientImpl {
      * it will be purged.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeletedSecretBundle> deleteSecretWithResponse(String secretName, RequestOptions requestOptions) {
+    public Response<DeletedSecretBundle> deleteSecretWithResponse(String secretName, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.deleteSecret(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), secretName, accept,
-            requestOptions);
+        return service.deleteSecret(this.getVaultBaseUrl(), this.getApiVersion(), secretName, accept, requestContext);
     }
 
     /**
@@ -319,7 +316,7 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeletedSecretBundle deleteSecret(String secretName) {
-        return deleteSecretWithResponse(secretName, RequestOptions.none()).getValue();
+        return deleteSecretWithResponse(secretName, RequestContext.none()).getValue();
     }
 
     /**
@@ -332,7 +329,7 @@ public final class SecretClientImpl {
      * @param secretName The name of the secret.
      * @param secretVersion The version of the secret.
      * @param parameters The parameters for update secret operation.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -340,11 +337,11 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecretBundle> updateSecretWithResponse(String secretName, String secretVersion,
-        SecretUpdateParameters parameters, RequestOptions requestOptions) {
+        SecretUpdateParameters parameters, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateSecret(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), secretName,
-            secretVersion, contentType, accept, parameters, requestOptions);
+        return service.updateSecret(this.getVaultBaseUrl(), this.getApiVersion(), secretName, secretVersion,
+            contentType, accept, parameters, requestContext);
     }
 
     /**
@@ -364,7 +361,7 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecretBundle updateSecret(String secretName, String secretVersion, SecretUpdateParameters parameters) {
-        return updateSecretWithResponse(secretName, secretVersion, parameters, RequestOptions.none()).getValue();
+        return updateSecretWithResponse(secretName, secretVersion, parameters, RequestContext.none()).getValue();
     }
 
     /**
@@ -376,7 +373,7 @@ public final class SecretClientImpl {
      * @param secretName The name of the secret.
      * @param secretVersion The version of the secret. This URI fragment is optional. If not specified, the latest
      * version of the secret is returned.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -386,10 +383,10 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecretBundle> getSecretWithResponse(String secretName, String secretVersion,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String accept = "application/json";
-        return service.getSecret(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), secretName,
-            secretVersion, accept, requestOptions);
+        return service.getSecret(this.getVaultBaseUrl(), this.getApiVersion(), secretName, secretVersion, accept,
+            requestContext);
     }
 
     /**
@@ -410,7 +407,7 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecretBundle getSecret(String secretName, String secretVersion) {
-        return getSecretWithResponse(secretName, secretVersion, RequestOptions.none()).getValue();
+        return getSecretWithResponse(secretName, secretVersion, RequestContext.none()).getValue();
     }
 
     /**
@@ -430,8 +427,8 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<SecretItem> getSecretsSinglePage(Integer maxresults) {
         final String accept = "application/json";
-        Response<SecretListResult> res = service.getSecrets(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), maxresults, accept, RequestOptions.none());
+        Response<SecretListResult> res = service.getSecrets(this.getVaultBaseUrl(), this.getApiVersion(), maxresults,
+            accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -445,17 +442,17 @@ public final class SecretClientImpl {
      * 
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
      * 25 results.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the secret list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<SecretItem> getSecretsSinglePage(Integer maxresults, RequestOptions requestOptions) {
+    public PagedResponse<SecretItem> getSecretsSinglePage(Integer maxresults, RequestContext requestContext) {
         final String accept = "application/json";
-        Response<SecretListResult> res = service.getSecrets(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), maxresults, accept, requestOptions);
+        Response<SecretListResult> res
+            = service.getSecrets(this.getVaultBaseUrl(), this.getApiVersion(), maxresults, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -507,20 +504,17 @@ public final class SecretClientImpl {
      * 
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
      * 25 results.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the secret list result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SecretItem> getSecrets(Integer maxresults, RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(requestOptions != null && requestOptions.getContext() != null
-            ? requestOptions.getContext()
-            : Context.none());
-        return new PagedIterable<>((pagingOptions) -> getSecretsSinglePage(maxresults, requestOptions),
-            (pagingOptions, nextLink) -> getSecretsNextSinglePage(nextLink, requestOptionsForNextPage));
+    public PagedIterable<SecretItem> getSecrets(Integer maxresults, RequestContext requestContext) {
+        RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
+        return new PagedIterable<>((pagingOptions) -> getSecretsSinglePage(maxresults, requestContext),
+            (pagingOptions, nextLink) -> getSecretsNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -540,8 +534,8 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<SecretItem> getSecretVersionsSinglePage(String secretName, Integer maxresults) {
         final String accept = "application/json";
-        Response<SecretListResult> res = service.getSecretVersions(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), secretName, maxresults, accept, RequestOptions.none());
+        Response<SecretListResult> res = service.getSecretVersions(this.getVaultBaseUrl(), this.getApiVersion(),
+            secretName, maxresults, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -555,7 +549,7 @@ public final class SecretClientImpl {
      * @param secretName The name of the secret.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
      * 25 results.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -563,10 +557,10 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<SecretItem> getSecretVersionsSinglePage(String secretName, Integer maxresults,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String accept = "application/json";
-        Response<SecretListResult> res = service.getSecretVersions(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), secretName, maxresults, accept, requestOptions);
+        Response<SecretListResult> res = service.getSecretVersions(this.getVaultBaseUrl(), this.getApiVersion(),
+            secretName, maxresults, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -619,7 +613,7 @@ public final class SecretClientImpl {
      * @param secretName The name of the secret.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
      * 25 results.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -627,14 +621,11 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SecretItem> getSecretVersions(String secretName, Integer maxresults,
-        RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(requestOptions != null && requestOptions.getContext() != null
-            ? requestOptions.getContext()
-            : Context.none());
+        RequestContext requestContext) {
+        RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
         return new PagedIterable<>(
-            (pagingOptions) -> getSecretVersionsSinglePage(secretName, maxresults, requestOptions),
-            (pagingOptions, nextLink) -> getSecretVersionsNextSinglePage(nextLink, requestOptionsForNextPage));
+            (pagingOptions) -> getSecretVersionsSinglePage(secretName, maxresults, requestContext),
+            (pagingOptions, nextLink) -> getSecretVersionsNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -653,8 +644,8 @@ public final class SecretClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<DeletedSecretItem> getDeletedSecretsSinglePage(Integer maxresults) {
         final String accept = "application/json";
-        Response<DeletedSecretListResult> res = service.getDeletedSecrets(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), maxresults, accept, RequestOptions.none());
+        Response<DeletedSecretListResult> res = service.getDeletedSecrets(this.getVaultBaseUrl(), this.getApiVersion(),
+            maxresults, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -667,7 +658,7 @@ public final class SecretClientImpl {
      * 
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
      * 25 results.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -675,10 +666,10 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<DeletedSecretItem> getDeletedSecretsSinglePage(Integer maxresults,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String accept = "application/json";
-        Response<DeletedSecretListResult> res = service.getDeletedSecrets(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), maxresults, accept, requestOptions);
+        Response<DeletedSecretListResult> res = service.getDeletedSecrets(this.getVaultBaseUrl(), this.getApiVersion(),
+            maxresults, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -727,20 +718,17 @@ public final class SecretClientImpl {
      * 
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
      * 25 results.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the deleted secret list result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeletedSecretItem> getDeletedSecrets(Integer maxresults, RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(requestOptions != null && requestOptions.getContext() != null
-            ? requestOptions.getContext()
-            : Context.none());
-        return new PagedIterable<>((pagingOptions) -> getDeletedSecretsSinglePage(maxresults, requestOptions),
-            (pagingOptions, nextLink) -> getDeletedSecretsNextSinglePage(nextLink, requestOptionsForNextPage));
+    public PagedIterable<DeletedSecretItem> getDeletedSecrets(Integer maxresults, RequestContext requestContext) {
+        RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
+        return new PagedIterable<>((pagingOptions) -> getDeletedSecretsSinglePage(maxresults, requestContext),
+            (pagingOptions, nextLink) -> getDeletedSecretsNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -750,7 +738,7 @@ public final class SecretClientImpl {
      * requires the secrets/get permission.
      * 
      * @param secretName The name of the secret.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -760,10 +748,10 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedSecretBundle> getDeletedSecretWithResponse(String secretName,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String accept = "application/json";
-        return service.getDeletedSecret(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), secretName,
-            accept, requestOptions);
+        return service.getDeletedSecret(this.getVaultBaseUrl(), this.getApiVersion(), secretName, accept,
+            requestContext);
     }
 
     /**
@@ -782,7 +770,7 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeletedSecretBundle getDeletedSecret(String secretName) {
-        return getDeletedSecretWithResponse(secretName, RequestOptions.none()).getValue();
+        return getDeletedSecretWithResponse(secretName, RequestContext.none()).getValue();
     }
 
     /**
@@ -793,17 +781,17 @@ public final class SecretClientImpl {
      * permission.
      * 
      * @param secretName The name of the secret.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> purgeDeletedSecretWithResponse(String secretName, RequestOptions requestOptions) {
+    public Response<Void> purgeDeletedSecretWithResponse(String secretName, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.purgeDeletedSecret(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), secretName,
-            accept, requestOptions);
+        return service.purgeDeletedSecret(this.getVaultBaseUrl(), this.getApiVersion(), secretName, accept,
+            requestContext);
     }
 
     /**
@@ -820,7 +808,7 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void purgeDeletedSecret(String secretName) {
-        purgeDeletedSecretWithResponse(secretName, RequestOptions.none());
+        purgeDeletedSecretWithResponse(secretName, RequestContext.none());
     }
 
     /**
@@ -830,17 +818,17 @@ public final class SecretClientImpl {
      * vault. This operation requires the secrets/recover permission.
      * 
      * @param secretName The name of the deleted secret.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a secret consisting of a value, id and its attributes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SecretBundle> recoverDeletedSecretWithResponse(String secretName, RequestOptions requestOptions) {
+    public Response<SecretBundle> recoverDeletedSecretWithResponse(String secretName, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.recoverDeletedSecret(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), secretName,
-            accept, requestOptions);
+        return service.recoverDeletedSecret(this.getVaultBaseUrl(), this.getApiVersion(), secretName, accept,
+            requestContext);
     }
 
     /**
@@ -857,7 +845,7 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecretBundle recoverDeletedSecret(String secretName) {
-        return recoverDeletedSecretWithResponse(secretName, RequestOptions.none()).getValue();
+        return recoverDeletedSecretWithResponse(secretName, RequestContext.none()).getValue();
     }
 
     /**
@@ -867,17 +855,16 @@ public final class SecretClientImpl {
      * downloaded. This operation requires the secrets/backup permission.
      * 
      * @param secretName The name of the secret.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the backup secret result, containing the backup blob.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BackupSecretResult> backupSecretWithResponse(String secretName, RequestOptions requestOptions) {
+    public Response<BackupSecretResult> backupSecretWithResponse(String secretName, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.backupSecret(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), secretName, accept,
-            requestOptions);
+        return service.backupSecret(this.getVaultBaseUrl(), this.getApiVersion(), secretName, accept, requestContext);
     }
 
     /**
@@ -894,7 +881,7 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupSecretResult backupSecret(String secretName) {
-        return backupSecretWithResponse(secretName, RequestOptions.none()).getValue();
+        return backupSecretWithResponse(secretName, RequestContext.none()).getValue();
     }
 
     /**
@@ -904,7 +891,7 @@ public final class SecretClientImpl {
      * permission.
      * 
      * @param parameters The parameters to restore the secret.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -912,11 +899,11 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecretBundle> restoreSecretWithResponse(SecretRestoreParameters parameters,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.restoreSecret(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), contentType, accept,
-            parameters, requestOptions);
+        return service.restoreSecret(this.getVaultBaseUrl(), this.getApiVersion(), contentType, accept, parameters,
+            requestContext);
     }
 
     /**
@@ -933,7 +920,7 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SecretBundle restoreSecret(SecretRestoreParameters parameters) {
-        return restoreSecretWithResponse(parameters, RequestOptions.none()).getValue();
+        return restoreSecretWithResponse(parameters, RequestContext.none()).getValue();
     }
 
     /**
@@ -951,7 +938,7 @@ public final class SecretClientImpl {
     public PagedResponse<SecretItem> getSecretsNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<SecretListResult> res
-            = service.getSecretsNext(nextLink, this.getVaultBaseUrl(), accept, RequestOptions.none());
+            = service.getSecretsNext(nextLink, this.getVaultBaseUrl(), accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -962,17 +949,17 @@ public final class SecretClientImpl {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the secret list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<SecretItem> getSecretsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    public PagedResponse<SecretItem> getSecretsNextSinglePage(String nextLink, RequestContext requestContext) {
         final String accept = "application/json";
         Response<SecretListResult> res
-            = service.getSecretsNext(nextLink, this.getVaultBaseUrl(), accept, requestOptions);
+            = service.getSecretsNext(nextLink, this.getVaultBaseUrl(), accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -992,7 +979,7 @@ public final class SecretClientImpl {
     public PagedResponse<SecretItem> getSecretVersionsNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<SecretListResult> res
-            = service.getSecretVersionsNext(nextLink, this.getVaultBaseUrl(), accept, RequestOptions.none());
+            = service.getSecretVersionsNext(nextLink, this.getVaultBaseUrl(), accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1003,17 +990,17 @@ public final class SecretClientImpl {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the secret list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<SecretItem> getSecretVersionsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    public PagedResponse<SecretItem> getSecretVersionsNextSinglePage(String nextLink, RequestContext requestContext) {
         final String accept = "application/json";
         Response<SecretListResult> res
-            = service.getSecretVersionsNext(nextLink, this.getVaultBaseUrl(), accept, requestOptions);
+            = service.getSecretVersionsNext(nextLink, this.getVaultBaseUrl(), accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1033,7 +1020,7 @@ public final class SecretClientImpl {
     public PagedResponse<DeletedSecretItem> getDeletedSecretsNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<DeletedSecretListResult> res
-            = service.getDeletedSecretsNext(nextLink, this.getVaultBaseUrl(), accept, RequestOptions.none());
+            = service.getDeletedSecretsNext(nextLink, this.getVaultBaseUrl(), accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1044,7 +1031,7 @@ public final class SecretClientImpl {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1052,10 +1039,10 @@ public final class SecretClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<DeletedSecretItem> getDeletedSecretsNextSinglePage(String nextLink,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String accept = "application/json";
         Response<DeletedSecretListResult> res
-            = service.getDeletedSecretsNext(nextLink, this.getVaultBaseUrl(), accept, requestOptions);
+            = service.getDeletedSecretsNext(nextLink, this.getVaultBaseUrl(), accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }

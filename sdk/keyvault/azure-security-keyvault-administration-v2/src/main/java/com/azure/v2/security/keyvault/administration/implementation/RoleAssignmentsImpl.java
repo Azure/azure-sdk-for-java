@@ -4,7 +4,6 @@
 
 package com.azure.v2.security.keyvault.administration.implementation;
 
-import com.azure.v2.security.keyvault.administration.KeyVaultAdministrationServiceVersion;
 import com.azure.v2.security.keyvault.administration.implementation.models.KeyVaultError;
 import com.azure.v2.security.keyvault.administration.implementation.models.RoleAssignment;
 import com.azure.v2.security.keyvault.administration.implementation.models.RoleAssignmentCreateParameters;
@@ -21,12 +20,11 @@ import io.clientcore.core.http.annotations.QueryParam;
 import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpResponseException;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.utils.Context;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -51,15 +49,6 @@ public final class RoleAssignmentsImpl {
     RoleAssignmentsImpl(KeyVaultAdministrationClientImpl client) {
         this.service = RoleAssignmentsService.getNewInstance(client.getHttpPipeline());
         this.client = client;
-    }
-
-    /**
-     * Gets Service version.
-     * 
-     * @return the serviceVersion value.
-     */
-    public KeyVaultAdministrationServiceVersion getServiceVersion() {
-        return client.getServiceVersion();
     }
 
     /**
@@ -89,7 +78,7 @@ public final class RoleAssignmentsImpl {
         Response<RoleAssignment> delete(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("roleAssignmentName") String roleAssignmentName, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.PUT,
@@ -100,7 +89,7 @@ public final class RoleAssignmentsImpl {
             @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("roleAssignmentName") String roleAssignmentName, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") RoleAssignmentCreateParameters parameters, RequestOptions requestOptions);
+            @BodyParam("application/json") RoleAssignmentCreateParameters parameters, RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.GET,
@@ -110,7 +99,7 @@ public final class RoleAssignmentsImpl {
         Response<RoleAssignment> get(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("roleAssignmentName") String roleAssignmentName, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.GET,
@@ -119,14 +108,14 @@ public final class RoleAssignmentsImpl {
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<RoleAssignmentListResult> listForScope(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam(value = "scope", encoded = true) String scope,
-            @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<RoleAssignmentListResult> listForScopeNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
     }
 
     /**
@@ -134,7 +123,7 @@ public final class RoleAssignmentsImpl {
      * 
      * @param scope The scope of the role assignment to delete.
      * @param roleAssignmentName The name of the role assignment to delete.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -142,10 +131,10 @@ public final class RoleAssignmentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RoleAssignment> deleteWithResponse(String scope, String roleAssignmentName,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String accept = "application/json";
-        return service.delete(this.client.getVaultBaseUrl(), this.client.getServiceVersion().getVersion(), scope,
-            roleAssignmentName, accept, requestOptions);
+        return service.delete(this.client.getVaultBaseUrl(), this.client.getApiVersion(), scope, roleAssignmentName,
+            accept, requestContext);
     }
 
     /**
@@ -160,7 +149,7 @@ public final class RoleAssignmentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoleAssignment delete(String scope, String roleAssignmentName) {
-        return deleteWithResponse(scope, roleAssignmentName, RequestOptions.none()).getValue();
+        return deleteWithResponse(scope, roleAssignmentName, RequestContext.none()).getValue();
     }
 
     /**
@@ -169,7 +158,7 @@ public final class RoleAssignmentsImpl {
      * @param scope The scope of the role assignment to create.
      * @param roleAssignmentName The name of the role assignment to create. It can be any valid GUID.
      * @param parameters Parameters for the role assignment.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -177,11 +166,11 @@ public final class RoleAssignmentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RoleAssignment> createWithResponse(String scope, String roleAssignmentName,
-        RoleAssignmentCreateParameters parameters, RequestOptions requestOptions) {
+        RoleAssignmentCreateParameters parameters, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.create(this.client.getVaultBaseUrl(), this.client.getServiceVersion().getVersion(), scope,
-            roleAssignmentName, contentType, accept, parameters, requestOptions);
+        return service.create(this.client.getVaultBaseUrl(), this.client.getApiVersion(), scope, roleAssignmentName,
+            contentType, accept, parameters, requestContext);
     }
 
     /**
@@ -197,7 +186,7 @@ public final class RoleAssignmentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoleAssignment create(String scope, String roleAssignmentName, RoleAssignmentCreateParameters parameters) {
-        return createWithResponse(scope, roleAssignmentName, parameters, RequestOptions.none()).getValue();
+        return createWithResponse(scope, roleAssignmentName, parameters, RequestContext.none()).getValue();
     }
 
     /**
@@ -205,7 +194,7 @@ public final class RoleAssignmentsImpl {
      * 
      * @param scope The scope of the role assignment.
      * @param roleAssignmentName The name of the role assignment to get.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -213,10 +202,10 @@ public final class RoleAssignmentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RoleAssignment> getWithResponse(String scope, String roleAssignmentName,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String accept = "application/json";
-        return service.get(this.client.getVaultBaseUrl(), this.client.getServiceVersion().getVersion(), scope,
-            roleAssignmentName, accept, requestOptions);
+        return service.get(this.client.getVaultBaseUrl(), this.client.getApiVersion(), scope, roleAssignmentName,
+            accept, requestContext);
     }
 
     /**
@@ -231,7 +220,7 @@ public final class RoleAssignmentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RoleAssignment get(String scope, String roleAssignmentName) {
-        return getWithResponse(scope, roleAssignmentName, RequestOptions.none()).getValue();
+        return getWithResponse(scope, roleAssignmentName, RequestContext.none()).getValue();
     }
 
     /**
@@ -250,7 +239,7 @@ public final class RoleAssignmentsImpl {
     public PagedResponse<RoleAssignment> listForScopeSinglePage(String scope, String filter) {
         final String accept = "application/json";
         Response<RoleAssignmentListResult> res = service.listForScope(this.client.getVaultBaseUrl(),
-            this.client.getServiceVersion().getVersion(), scope, filter, accept, RequestOptions.none());
+            this.client.getApiVersion(), scope, filter, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -262,7 +251,7 @@ public final class RoleAssignmentsImpl {
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
      * above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope for
      * the specified principal.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -270,10 +259,10 @@ public final class RoleAssignmentsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<RoleAssignment> listForScopeSinglePage(String scope, String filter,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String accept = "application/json";
         Response<RoleAssignmentListResult> res = service.listForScope(this.client.getVaultBaseUrl(),
-            this.client.getServiceVersion().getVersion(), scope, filter, accept, requestOptions);
+            this.client.getApiVersion(), scope, filter, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -319,20 +308,17 @@ public final class RoleAssignmentsImpl {
      * @param filter The filter to apply on the operation. Use $filter=atScope() to return all role assignments at or
      * above the scope. Use $filter=principalId eq {id} to return all role assignments at, above or below the scope for
      * the specified principal.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return role assignments for a scope.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RoleAssignment> listForScope(String scope, String filter, RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(requestOptions != null && requestOptions.getContext() != null
-            ? requestOptions.getContext()
-            : Context.none());
-        return new PagedIterable<>((pagingOptions) -> listForScopeSinglePage(scope, filter, requestOptions),
-            (pagingOptions, nextLink) -> listForScopeNextSinglePage(nextLink, requestOptionsForNextPage));
+    public PagedIterable<RoleAssignment> listForScope(String scope, String filter, RequestContext requestContext) {
+        RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
+        return new PagedIterable<>((pagingOptions) -> listForScopeSinglePage(scope, filter, requestContext),
+            (pagingOptions, nextLink) -> listForScopeNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -348,7 +334,7 @@ public final class RoleAssignmentsImpl {
     public PagedResponse<RoleAssignment> listForScopeNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<RoleAssignmentListResult> res
-            = service.listForScopeNext(nextLink, this.client.getVaultBaseUrl(), accept, RequestOptions.none());
+            = service.listForScopeNext(nextLink, this.client.getVaultBaseUrl(), accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -357,17 +343,17 @@ public final class RoleAssignmentsImpl {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return role assignment list operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<RoleAssignment> listForScopeNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    public PagedResponse<RoleAssignment> listForScopeNextSinglePage(String nextLink, RequestContext requestContext) {
         final String accept = "application/json";
         Response<RoleAssignmentListResult> res
-            = service.listForScopeNext(nextLink, this.client.getVaultBaseUrl(), accept, requestOptions);
+            = service.listForScopeNext(nextLink, this.client.getVaultBaseUrl(), accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }

@@ -4,7 +4,6 @@
 
 package com.azure.v2.security.keyvault.keys.implementation;
 
-import com.azure.v2.security.keyvault.keys.KeyServiceVersion;
 import com.azure.v2.security.keyvault.keys.implementation.models.BackupKeyResult;
 import com.azure.v2.security.keyvault.keys.implementation.models.DeletedKeyBundle;
 import com.azure.v2.security.keyvault.keys.implementation.models.DeletedKeyItem;
@@ -39,12 +38,11 @@ import io.clientcore.core.http.annotations.QueryParam;
 import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpResponseException;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.utils.Context;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -70,17 +68,17 @@ public final class KeyClientImpl {
     }
 
     /**
-     * Service version.
+     * Version parameter.
      */
-    private final KeyServiceVersion serviceVersion;
+    private final String apiVersion;
 
     /**
-     * Gets Service version.
+     * Gets Version parameter.
      * 
-     * @return the serviceVersion value.
+     * @return the apiVersion value.
      */
-    public KeyServiceVersion getServiceVersion() {
-        return this.serviceVersion;
+    public String getApiVersion() {
+        return this.apiVersion;
     }
 
     /**
@@ -102,12 +100,12 @@ public final class KeyClientImpl {
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param vaultBaseUrl
-     * @param serviceVersion Service version.
+     * @param apiVersion Version parameter.
      */
-    public KeyClientImpl(HttpPipeline httpPipeline, String vaultBaseUrl, KeyServiceVersion serviceVersion) {
+    public KeyClientImpl(HttpPipeline httpPipeline, String vaultBaseUrl, String apiVersion) {
         this.httpPipeline = httpPipeline;
         this.vaultBaseUrl = vaultBaseUrl;
-        this.serviceVersion = serviceVersion;
+        this.apiVersion = apiVersion;
         this.service = KeyClientService.getNewInstance(this.httpPipeline);
     }
 
@@ -136,7 +134,7 @@ public final class KeyClientImpl {
         Response<KeyBundle> createKey(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") KeyCreateParameters parameters, RequestOptions requestOptions);
+            @BodyParam("application/json") KeyCreateParameters parameters, RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.POST,
@@ -145,20 +143,20 @@ public final class KeyClientImpl {
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<KeyBundle> rotateKey(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "/keys/{key-name}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<KeyBundle> importKey(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") KeyImportParameters parameters, RequestOptions requestOptions);
+            @BodyParam("application/json") KeyImportParameters parameters, RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.DELETE, path = "/keys/{key-name}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<DeletedKeyBundle> deleteKey(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.PATCH,
@@ -169,7 +167,7 @@ public final class KeyClientImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
             @PathParam("key-version") String keyVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") KeyUpdateParameters parameters,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.GET,
@@ -179,7 +177,7 @@ public final class KeyClientImpl {
         Response<KeyBundle> getKey(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
             @PathParam("key-version") String keyVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.GET,
@@ -189,13 +187,13 @@ public final class KeyClientImpl {
         Response<KeyListResult> getKeyVersions(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
             @QueryParam("maxresults") Integer maxresults, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "/keys", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<KeyListResult> getKeys(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @QueryParam("maxresults") Integer maxresults,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.POST,
@@ -204,14 +202,14 @@ public final class KeyClientImpl {
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<BackupKeyResult> backupKey(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.POST, path = "/keys/restore", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<KeyBundle> restoreKey(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") KeyRestoreParameters parameters,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.POST,
@@ -222,7 +220,7 @@ public final class KeyClientImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
             @PathParam("key-version") String keyVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") KeyOperationsParameters parameters,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.POST,
@@ -233,7 +231,7 @@ public final class KeyClientImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
             @PathParam("key-version") String keyVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") KeyOperationsParameters parameters,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.POST,
@@ -244,7 +242,7 @@ public final class KeyClientImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
             @PathParam("key-version") String keyVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") KeySignParameters parameters,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.POST,
@@ -255,7 +253,7 @@ public final class KeyClientImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
             @PathParam("key-version") String keyVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") KeyVerifyParameters parameters,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.POST,
@@ -266,7 +264,7 @@ public final class KeyClientImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
             @PathParam("key-version") String keyVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") KeyOperationsParameters parameters,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.POST,
@@ -277,7 +275,7 @@ public final class KeyClientImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
             @PathParam("key-version") String keyVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") KeyOperationsParameters parameters,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.POST,
@@ -288,13 +286,13 @@ public final class KeyClientImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
             @PathParam("key-version") String keyVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") KeyReleaseParameters parameters,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "/deletedkeys", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<DeletedKeyListResult> getDeletedKeys(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @QueryParam("maxresults") Integer maxresults,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.GET,
@@ -303,7 +301,7 @@ public final class KeyClientImpl {
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<DeletedKeyBundle> getDeletedKey(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.DELETE,
@@ -312,7 +310,7 @@ public final class KeyClientImpl {
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<Void> purgeDeletedKey(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.POST,
@@ -321,7 +319,7 @@ public final class KeyClientImpl {
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<KeyBundle> recoverDeletedKey(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.GET,
@@ -330,7 +328,7 @@ public final class KeyClientImpl {
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<KeyRotationPolicy> getKeyRotationPolicy(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
-            @HeaderParam("Accept") String accept, RequestOptions requestOptions);
+            @HeaderParam("Accept") String accept, RequestContext requestContext);
 
         @HttpRequestInformation(
             method = HttpMethod.PUT,
@@ -340,33 +338,33 @@ public final class KeyClientImpl {
         Response<KeyRotationPolicy> updateKeyRotationPolicy(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("key-name") String keyName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") KeyRotationPolicy keyRotationPolicy, RequestOptions requestOptions);
+            @BodyParam("application/json") KeyRotationPolicy keyRotationPolicy, RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.POST, path = "/rng", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<RandomBytes> getRandomBytes(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Content-Type") String contentType,
             @HeaderParam("Accept") String accept, @BodyParam("application/json") GetRandomBytesRequest parameters,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<KeyListResult> getKeyVersionsNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<KeyListResult> getKeysNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.GET, path = "{nextLink}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<DeletedKeyListResult> getDeletedKeysNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink,
             @HostParam("vaultBaseUrl") String vaultBaseUrl, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
     }
 
     /**
@@ -379,7 +377,7 @@ public final class KeyClientImpl {
      * provide may be copied globally for the purpose of running the service. The value provided should not include
      * personally identifiable or sensitive information.
      * @param parameters The parameters to create a key.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -387,11 +385,11 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyBundle> createKeyWithResponse(String keyName, KeyCreateParameters parameters,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.createKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, contentType,
-            accept, parameters, requestOptions);
+        return service.createKey(this.getVaultBaseUrl(), this.getApiVersion(), keyName, contentType, accept, parameters,
+            requestContext);
     }
 
     /**
@@ -411,7 +409,7 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyBundle createKey(String keyName, KeyCreateParameters parameters) {
-        return createKeyWithResponse(keyName, parameters, RequestOptions.none()).getValue();
+        return createKeyWithResponse(keyName, parameters, RequestContext.none()).getValue();
     }
 
     /**
@@ -420,17 +418,16 @@ public final class KeyClientImpl {
      * The operation will rotate the key based on the key policy. It requires the keys/rotate permission.
      * 
      * @param keyName The name of key to be rotated. The system will generate a new version in the specified key.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a KeyBundle consisting of a WebKey plus its attributes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyBundle> rotateKeyWithResponse(String keyName, RequestOptions requestOptions) {
+    public Response<KeyBundle> rotateKeyWithResponse(String keyName, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.rotateKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, accept,
-            requestOptions);
+        return service.rotateKey(this.getVaultBaseUrl(), this.getApiVersion(), keyName, accept, requestContext);
     }
 
     /**
@@ -446,7 +443,7 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyBundle rotateKey(String keyName) {
-        return rotateKeyWithResponse(keyName, RequestOptions.none()).getValue();
+        return rotateKeyWithResponse(keyName, RequestContext.none()).getValue();
     }
 
     /**
@@ -458,7 +455,7 @@ public final class KeyClientImpl {
      * @param keyName Name for the imported key. The value you provide may be copied globally for the purpose of running
      * the service. The value provided should not include personally identifiable or sensitive information.
      * @param parameters The parameters to import a key.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -466,11 +463,11 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyBundle> importKeyWithResponse(String keyName, KeyImportParameters parameters,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.importKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, contentType,
-            accept, parameters, requestOptions);
+        return service.importKey(this.getVaultBaseUrl(), this.getApiVersion(), keyName, contentType, accept, parameters,
+            requestContext);
     }
 
     /**
@@ -489,7 +486,7 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyBundle importKey(String keyName, KeyImportParameters parameters) {
-        return importKeyWithResponse(keyName, parameters, RequestOptions.none()).getValue();
+        return importKeyWithResponse(keyName, parameters, RequestContext.none()).getValue();
     }
 
     /**
@@ -500,17 +497,16 @@ public final class KeyClientImpl {
      * Encrypt/Decrypt operations. This operation requires the keys/delete permission.
      * 
      * @param keyName The name of the key to delete.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a DeletedKeyBundle consisting of a WebKey plus its Attributes and deletion info.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeletedKeyBundle> deleteKeyWithResponse(String keyName, RequestOptions requestOptions) {
+    public Response<DeletedKeyBundle> deleteKeyWithResponse(String keyName, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.deleteKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, accept,
-            requestOptions);
+        return service.deleteKey(this.getVaultBaseUrl(), this.getApiVersion(), keyName, accept, requestContext);
     }
 
     /**
@@ -528,7 +524,7 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeletedKeyBundle deleteKey(String keyName) {
-        return deleteKeyWithResponse(keyName, RequestOptions.none()).getValue();
+        return deleteKeyWithResponse(keyName, RequestContext.none()).getValue();
     }
 
     /**
@@ -541,7 +537,7 @@ public final class KeyClientImpl {
      * @param keyName The name of key to update.
      * @param keyVersion The version of the key to update.
      * @param parameters The parameters of the key to update.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -549,11 +545,11 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyBundle> updateKeyWithResponse(String keyName, String keyVersion, KeyUpdateParameters parameters,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
-            contentType, accept, parameters, requestOptions);
+        return service.updateKey(this.getVaultBaseUrl(), this.getApiVersion(), keyName, keyVersion, contentType, accept,
+            parameters, requestContext);
     }
 
     /**
@@ -573,7 +569,7 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyBundle updateKey(String keyName, String keyVersion, KeyUpdateParameters parameters) {
-        return updateKeyWithResponse(keyName, keyVersion, parameters, RequestOptions.none()).getValue();
+        return updateKeyWithResponse(keyName, keyVersion, parameters, RequestContext.none()).getValue();
     }
 
     /**
@@ -585,7 +581,7 @@ public final class KeyClientImpl {
      * @param keyName The name of the key to get.
      * @param keyVersion Adding the version parameter retrieves a specific version of a key. This URI fragment is
      * optional. If not specified, the latest version of the key is returned.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -594,10 +590,10 @@ public final class KeyClientImpl {
      * The get key operation is applicable to all key types.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyBundle> getKeyWithResponse(String keyName, String keyVersion, RequestOptions requestOptions) {
+    public Response<KeyBundle> getKeyWithResponse(String keyName, String keyVersion, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.getKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
-            accept, requestOptions);
+        return service.getKey(this.getVaultBaseUrl(), this.getApiVersion(), keyName, keyVersion, accept,
+            requestContext);
     }
 
     /**
@@ -618,7 +614,7 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyBundle getKey(String keyName, String keyVersion) {
-        return getKeyWithResponse(keyName, keyVersion, RequestOptions.none()).getValue();
+        return getKeyWithResponse(keyName, keyVersion, RequestContext.none()).getValue();
     }
 
     /**
@@ -638,8 +634,8 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<KeyItem> getKeyVersionsSinglePage(String keyName, Integer maxresults) {
         final String accept = "application/json";
-        Response<KeyListResult> res = service.getKeyVersions(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), keyName, maxresults, accept, RequestOptions.none());
+        Response<KeyListResult> res = service.getKeyVersions(this.getVaultBaseUrl(), this.getApiVersion(), keyName,
+            maxresults, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -653,7 +649,7 @@ public final class KeyClientImpl {
      * @param keyName The name of the key.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
      * 25 results.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -661,10 +657,10 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<KeyItem> getKeyVersionsSinglePage(String keyName, Integer maxresults,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String accept = "application/json";
-        Response<KeyListResult> res = service.getKeyVersions(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), keyName, maxresults, accept, requestOptions);
+        Response<KeyListResult> res = service.getKeyVersions(this.getVaultBaseUrl(), this.getApiVersion(), keyName,
+            maxresults, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -717,20 +713,17 @@ public final class KeyClientImpl {
      * @param keyName The name of the key.
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
      * 25 results.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the key list result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyItem> getKeyVersions(String keyName, Integer maxresults, RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(requestOptions != null && requestOptions.getContext() != null
-            ? requestOptions.getContext()
-            : Context.none());
-        return new PagedIterable<>((pagingOptions) -> getKeyVersionsSinglePage(keyName, maxresults, requestOptions),
-            (pagingOptions, nextLink) -> getKeyVersionsNextSinglePage(nextLink, requestOptionsForNextPage));
+    public PagedIterable<KeyItem> getKeyVersions(String keyName, Integer maxresults, RequestContext requestContext) {
+        RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
+        return new PagedIterable<>((pagingOptions) -> getKeyVersionsSinglePage(keyName, maxresults, requestContext),
+            (pagingOptions, nextLink) -> getKeyVersionsNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -751,8 +744,8 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<KeyItem> getKeysSinglePage(Integer maxresults) {
         final String accept = "application/json";
-        Response<KeyListResult> res = service.getKeys(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-            maxresults, accept, RequestOptions.none());
+        Response<KeyListResult> res
+            = service.getKeys(this.getVaultBaseUrl(), this.getApiVersion(), maxresults, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -767,17 +760,17 @@ public final class KeyClientImpl {
      * 
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
      * 25 results.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the key list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KeyItem> getKeysSinglePage(Integer maxresults, RequestOptions requestOptions) {
+    public PagedResponse<KeyItem> getKeysSinglePage(Integer maxresults, RequestContext requestContext) {
         final String accept = "application/json";
-        Response<KeyListResult> res = service.getKeys(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(),
-            maxresults, accept, requestOptions);
+        Response<KeyListResult> res
+            = service.getKeys(this.getVaultBaseUrl(), this.getApiVersion(), maxresults, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -832,20 +825,17 @@ public final class KeyClientImpl {
      * 
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
      * 25 results.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the key list result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyItem> getKeys(Integer maxresults, RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(requestOptions != null && requestOptions.getContext() != null
-            ? requestOptions.getContext()
-            : Context.none());
-        return new PagedIterable<>((pagingOptions) -> getKeysSinglePage(maxresults, requestOptions),
-            (pagingOptions, nextLink) -> getKeysNextSinglePage(nextLink, requestOptionsForNextPage));
+    public PagedIterable<KeyItem> getKeys(Integer maxresults, RequestContext requestContext) {
+        RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
+        return new PagedIterable<>((pagingOptions) -> getKeysSinglePage(maxresults, requestContext),
+            (pagingOptions, nextLink) -> getKeysNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -862,17 +852,16 @@ public final class KeyClientImpl {
      * area. This operation requires the key/backup permission.
      * 
      * @param keyName The name of the key.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the backup key result, containing the backup blob.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BackupKeyResult> backupKeyWithResponse(String keyName, RequestOptions requestOptions) {
+    public Response<BackupKeyResult> backupKeyWithResponse(String keyName, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.backupKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, accept,
-            requestOptions);
+        return service.backupKey(this.getVaultBaseUrl(), this.getApiVersion(), keyName, accept, requestContext);
     }
 
     /**
@@ -896,7 +885,7 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public BackupKeyResult backupKey(String keyName) {
-        return backupKeyWithResponse(keyName, RequestOptions.none()).getValue();
+        return backupKeyWithResponse(keyName, RequestContext.none()).getValue();
     }
 
     /**
@@ -913,18 +902,18 @@ public final class KeyClientImpl {
      * operation requires the keys/restore permission.
      * 
      * @param parameters The parameters to restore the key.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a KeyBundle consisting of a WebKey plus its attributes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyBundle> restoreKeyWithResponse(KeyRestoreParameters parameters, RequestOptions requestOptions) {
+    public Response<KeyBundle> restoreKeyWithResponse(KeyRestoreParameters parameters, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.restoreKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), contentType, accept,
-            parameters, requestOptions);
+        return service.restoreKey(this.getVaultBaseUrl(), this.getApiVersion(), contentType, accept, parameters,
+            requestContext);
     }
 
     /**
@@ -948,7 +937,7 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyBundle restoreKey(KeyRestoreParameters parameters) {
-        return restoreKeyWithResponse(parameters, RequestOptions.none()).getValue();
+        return restoreKeyWithResponse(parameters, RequestContext.none()).getValue();
     }
 
     /**
@@ -965,7 +954,7 @@ public final class KeyClientImpl {
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
      * @param parameters The parameters for the encryption operation.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -973,11 +962,11 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyOperationResult> encryptWithResponse(String keyName, String keyVersion,
-        KeyOperationsParameters parameters, RequestOptions requestOptions) {
+        KeyOperationsParameters parameters, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.encrypt(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
-            contentType, accept, parameters, requestOptions);
+        return service.encrypt(this.getVaultBaseUrl(), this.getApiVersion(), keyName, keyVersion, contentType, accept,
+            parameters, requestContext);
     }
 
     /**
@@ -1001,7 +990,7 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyOperationResult encrypt(String keyName, String keyVersion, KeyOperationsParameters parameters) {
-        return encryptWithResponse(keyName, keyVersion, parameters, RequestOptions.none()).getValue();
+        return encryptWithResponse(keyName, keyVersion, parameters, RequestContext.none()).getValue();
     }
 
     /**
@@ -1018,7 +1007,7 @@ public final class KeyClientImpl {
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
      * @param parameters The parameters for the decryption operation.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1026,11 +1015,11 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyOperationResult> decryptWithResponse(String keyName, String keyVersion,
-        KeyOperationsParameters parameters, RequestOptions requestOptions) {
+        KeyOperationsParameters parameters, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.decrypt(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
-            contentType, accept, parameters, requestOptions);
+        return service.decrypt(this.getVaultBaseUrl(), this.getApiVersion(), keyName, keyVersion, contentType, accept,
+            parameters, requestContext);
     }
 
     /**
@@ -1054,7 +1043,7 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyOperationResult decrypt(String keyName, String keyVersion, KeyOperationsParameters parameters) {
-        return decryptWithResponse(keyName, keyVersion, parameters, RequestOptions.none()).getValue();
+        return decryptWithResponse(keyName, keyVersion, parameters, RequestContext.none()).getValue();
     }
 
     /**
@@ -1066,7 +1055,7 @@ public final class KeyClientImpl {
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
      * @param parameters The parameters for the signing operation.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1074,11 +1063,11 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyOperationResult> signWithResponse(String keyName, String keyVersion,
-        KeySignParameters parameters, RequestOptions requestOptions) {
+        KeySignParameters parameters, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.sign(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
-            contentType, accept, parameters, requestOptions);
+        return service.sign(this.getVaultBaseUrl(), this.getApiVersion(), keyName, keyVersion, contentType, accept,
+            parameters, requestContext);
     }
 
     /**
@@ -1097,7 +1086,7 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyOperationResult sign(String keyName, String keyVersion, KeySignParameters parameters) {
-        return signWithResponse(keyName, keyVersion, parameters, RequestOptions.none()).getValue();
+        return signWithResponse(keyName, keyVersion, parameters, RequestContext.none()).getValue();
     }
 
     /**
@@ -1111,7 +1100,7 @@ public final class KeyClientImpl {
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
      * @param parameters The parameters for verify operations.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1119,11 +1108,11 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVerifyResult> verifyWithResponse(String keyName, String keyVersion,
-        KeyVerifyParameters parameters, RequestOptions requestOptions) {
+        KeyVerifyParameters parameters, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.verify(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
-            contentType, accept, parameters, requestOptions);
+        return service.verify(this.getVaultBaseUrl(), this.getApiVersion(), keyName, keyVersion, contentType, accept,
+            parameters, requestContext);
     }
 
     /**
@@ -1144,7 +1133,7 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVerifyResult verify(String keyName, String keyVersion, KeyVerifyParameters parameters) {
-        return verifyWithResponse(keyName, keyVersion, parameters, RequestOptions.none()).getValue();
+        return verifyWithResponse(keyName, keyVersion, parameters, RequestContext.none()).getValue();
     }
 
     /**
@@ -1159,7 +1148,7 @@ public final class KeyClientImpl {
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
      * @param parameters The parameters for wrap operation.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1167,11 +1156,11 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyOperationResult> wrapKeyWithResponse(String keyName, String keyVersion,
-        KeyOperationsParameters parameters, RequestOptions requestOptions) {
+        KeyOperationsParameters parameters, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.wrapKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
-            contentType, accept, parameters, requestOptions);
+        return service.wrapKey(this.getVaultBaseUrl(), this.getApiVersion(), keyName, keyVersion, contentType, accept,
+            parameters, requestContext);
     }
 
     /**
@@ -1193,7 +1182,7 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyOperationResult wrapKey(String keyName, String keyVersion, KeyOperationsParameters parameters) {
-        return wrapKeyWithResponse(keyName, keyVersion, parameters, RequestOptions.none()).getValue();
+        return wrapKeyWithResponse(keyName, keyVersion, parameters, RequestContext.none()).getValue();
     }
 
     /**
@@ -1207,7 +1196,7 @@ public final class KeyClientImpl {
      * @param keyName The name of the key.
      * @param keyVersion The version of the key.
      * @param parameters The parameters for the key operation.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1215,11 +1204,11 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyOperationResult> unwrapKeyWithResponse(String keyName, String keyVersion,
-        KeyOperationsParameters parameters, RequestOptions requestOptions) {
+        KeyOperationsParameters parameters, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.unwrapKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
-            contentType, accept, parameters, requestOptions);
+        return service.unwrapKey(this.getVaultBaseUrl(), this.getApiVersion(), keyName, keyVersion, contentType, accept,
+            parameters, requestContext);
     }
 
     /**
@@ -1240,7 +1229,7 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyOperationResult unwrapKey(String keyName, String keyVersion, KeyOperationsParameters parameters) {
-        return unwrapKeyWithResponse(keyName, keyVersion, parameters, RequestOptions.none()).getValue();
+        return unwrapKeyWithResponse(keyName, keyVersion, parameters, RequestContext.none()).getValue();
     }
 
     /**
@@ -1252,7 +1241,7 @@ public final class KeyClientImpl {
      * @param keyName The name of the key to get.
      * @param keyVersion Adding the version parameter retrieves a specific version of a key.
      * @param parameters The parameters for the key release operation.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1260,11 +1249,11 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<ReleaseKeyResult> releaseWithResponse(String keyName, String keyVersion,
-        KeyReleaseParameters parameters, RequestOptions requestOptions) {
+        KeyReleaseParameters parameters, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.release(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, keyVersion,
-            contentType, accept, parameters, requestOptions);
+        return service.release(this.getVaultBaseUrl(), this.getApiVersion(), keyName, keyVersion, contentType, accept,
+            parameters, requestContext);
     }
 
     /**
@@ -1283,7 +1272,7 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ReleaseKeyResult release(String keyName, String keyVersion, KeyReleaseParameters parameters) {
-        return releaseWithResponse(keyName, keyVersion, parameters, RequestOptions.none()).getValue();
+        return releaseWithResponse(keyName, keyVersion, parameters, RequestContext.none()).getValue();
     }
 
     /**
@@ -1304,8 +1293,8 @@ public final class KeyClientImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PagedResponse<DeletedKeyItem> getDeletedKeysSinglePage(Integer maxresults) {
         final String accept = "application/json";
-        Response<DeletedKeyListResult> res = service.getDeletedKeys(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), maxresults, accept, RequestOptions.none());
+        Response<DeletedKeyListResult> res = service.getDeletedKeys(this.getVaultBaseUrl(), this.getApiVersion(),
+            maxresults, accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1320,17 +1309,17 @@ public final class KeyClientImpl {
      * 
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
      * 25 results.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of keys that have been deleted in this vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DeletedKeyItem> getDeletedKeysSinglePage(Integer maxresults, RequestOptions requestOptions) {
+    public PagedResponse<DeletedKeyItem> getDeletedKeysSinglePage(Integer maxresults, RequestContext requestContext) {
         final String accept = "application/json";
-        Response<DeletedKeyListResult> res = service.getDeletedKeys(this.getVaultBaseUrl(),
-            this.getServiceVersion().getVersion(), maxresults, accept, requestOptions);
+        Response<DeletedKeyListResult> res
+            = service.getDeletedKeys(this.getVaultBaseUrl(), this.getApiVersion(), maxresults, accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1385,20 +1374,17 @@ public final class KeyClientImpl {
      * 
      * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to
      * 25 results.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of keys that have been deleted in this vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DeletedKeyItem> getDeletedKeys(Integer maxresults, RequestOptions requestOptions) {
-        RequestOptions requestOptionsForNextPage = new RequestOptions();
-        requestOptionsForNextPage.setContext(requestOptions != null && requestOptions.getContext() != null
-            ? requestOptions.getContext()
-            : Context.none());
-        return new PagedIterable<>((pagingOptions) -> getDeletedKeysSinglePage(maxresults, requestOptions),
-            (pagingOptions, nextLink) -> getDeletedKeysNextSinglePage(nextLink, requestOptionsForNextPage));
+    public PagedIterable<DeletedKeyItem> getDeletedKeys(Integer maxresults, RequestContext requestContext) {
+        RequestContext requestContextForNextPage = requestContext != null ? requestContext : RequestContext.none();
+        return new PagedIterable<>((pagingOptions) -> getDeletedKeysSinglePage(maxresults, requestContext),
+            (pagingOptions, nextLink) -> getDeletedKeysNextSinglePage(nextLink, requestContextForNextPage));
     }
 
     /**
@@ -1409,7 +1395,7 @@ public final class KeyClientImpl {
      * keys/get permission.
      * 
      * @param keyName The name of the key.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1418,10 +1404,9 @@ public final class KeyClientImpl {
      * The Get Deleted Key operation is applicable for soft-delete enabled vaults.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeletedKeyBundle> getDeletedKeyWithResponse(String keyName, RequestOptions requestOptions) {
+    public Response<DeletedKeyBundle> getDeletedKeyWithResponse(String keyName, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.getDeletedKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, accept,
-            requestOptions);
+        return service.getDeletedKey(this.getVaultBaseUrl(), this.getApiVersion(), keyName, accept, requestContext);
     }
 
     /**
@@ -1441,7 +1426,7 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeletedKeyBundle getDeletedKey(String keyName) {
-        return getDeletedKeyWithResponse(keyName, RequestOptions.none()).getValue();
+        return getDeletedKeyWithResponse(keyName, RequestContext.none()).getValue();
     }
 
     /**
@@ -1452,17 +1437,16 @@ public final class KeyClientImpl {
      * keys/purge permission.
      * 
      * @param keyName The name of the key.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> purgeDeletedKeyWithResponse(String keyName, RequestOptions requestOptions) {
+    public Response<Void> purgeDeletedKeyWithResponse(String keyName, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.purgeDeletedKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, accept,
-            requestOptions);
+        return service.purgeDeletedKey(this.getVaultBaseUrl(), this.getApiVersion(), keyName, accept, requestContext);
     }
 
     /**
@@ -1479,7 +1463,7 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void purgeDeletedKey(String keyName) {
-        purgeDeletedKeyWithResponse(keyName, RequestOptions.none());
+        purgeDeletedKeyWithResponse(keyName, RequestContext.none());
     }
 
     /**
@@ -1491,17 +1475,16 @@ public final class KeyClientImpl {
      * the keys/recover permission.
      * 
      * @param keyName The name of the deleted key.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a KeyBundle consisting of a WebKey plus its attributes.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyBundle> recoverDeletedKeyWithResponse(String keyName, RequestOptions requestOptions) {
+    public Response<KeyBundle> recoverDeletedKeyWithResponse(String keyName, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.recoverDeletedKey(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName, accept,
-            requestOptions);
+        return service.recoverDeletedKey(this.getVaultBaseUrl(), this.getApiVersion(), keyName, accept, requestContext);
     }
 
     /**
@@ -1520,7 +1503,7 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyBundle recoverDeletedKey(String keyName) {
-        return recoverDeletedKeyWithResponse(keyName, RequestOptions.none()).getValue();
+        return recoverDeletedKeyWithResponse(keyName, RequestContext.none()).getValue();
     }
 
     /**
@@ -1530,17 +1513,17 @@ public final class KeyClientImpl {
      * operation requires the keys/get permission.
      * 
      * @param keyName The name of the key in a given key vault.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return management policy for a key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyRotationPolicy> getKeyRotationPolicyWithResponse(String keyName, RequestOptions requestOptions) {
+    public Response<KeyRotationPolicy> getKeyRotationPolicyWithResponse(String keyName, RequestContext requestContext) {
         final String accept = "application/json";
-        return service.getKeyRotationPolicy(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName,
-            accept, requestOptions);
+        return service.getKeyRotationPolicy(this.getVaultBaseUrl(), this.getApiVersion(), keyName, accept,
+            requestContext);
     }
 
     /**
@@ -1557,7 +1540,7 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyRotationPolicy getKeyRotationPolicy(String keyName) {
-        return getKeyRotationPolicyWithResponse(keyName, RequestOptions.none()).getValue();
+        return getKeyRotationPolicyWithResponse(keyName, RequestContext.none()).getValue();
     }
 
     /**
@@ -1568,7 +1551,7 @@ public final class KeyClientImpl {
      * 
      * @param keyName The name of the key in the given vault.
      * @param keyRotationPolicy The policy for the key.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1576,11 +1559,11 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyRotationPolicy> updateKeyRotationPolicyWithResponse(String keyName,
-        KeyRotationPolicy keyRotationPolicy, RequestOptions requestOptions) {
+        KeyRotationPolicy keyRotationPolicy, RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.updateKeyRotationPolicy(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), keyName,
-            contentType, accept, keyRotationPolicy, requestOptions);
+        return service.updateKeyRotationPolicy(this.getVaultBaseUrl(), this.getApiVersion(), keyName, contentType,
+            accept, keyRotationPolicy, requestContext);
     }
 
     /**
@@ -1598,7 +1581,7 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyRotationPolicy updateKeyRotationPolicy(String keyName, KeyRotationPolicy keyRotationPolicy) {
-        return updateKeyRotationPolicyWithResponse(keyName, keyRotationPolicy, RequestOptions.none()).getValue();
+        return updateKeyRotationPolicyWithResponse(keyName, keyRotationPolicy, RequestContext.none()).getValue();
     }
 
     /**
@@ -1607,7 +1590,7 @@ public final class KeyClientImpl {
      * Get the requested number of bytes containing random values from a managed HSM.
      * 
      * @param parameters The request object to get random bytes.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1617,11 +1600,11 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RandomBytes> getRandomBytesWithResponse(GetRandomBytesRequest parameters,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
         final String contentType = "application/json";
         final String accept = "application/json";
-        return service.getRandomBytes(this.getVaultBaseUrl(), this.getServiceVersion().getVersion(), contentType,
-            accept, parameters, requestOptions);
+        return service.getRandomBytes(this.getVaultBaseUrl(), this.getApiVersion(), contentType, accept, parameters,
+            requestContext);
     }
 
     /**
@@ -1639,7 +1622,7 @@ public final class KeyClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public RandomBytes getRandomBytes(GetRandomBytesRequest parameters) {
-        return getRandomBytesWithResponse(parameters, RequestOptions.none()).getValue();
+        return getRandomBytesWithResponse(parameters, RequestContext.none()).getValue();
     }
 
     /**
@@ -1657,7 +1640,7 @@ public final class KeyClientImpl {
     public PagedResponse<KeyItem> getKeyVersionsNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<KeyListResult> res
-            = service.getKeyVersionsNext(nextLink, this.getVaultBaseUrl(), accept, RequestOptions.none());
+            = service.getKeyVersionsNext(nextLink, this.getVaultBaseUrl(), accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1668,17 +1651,17 @@ public final class KeyClientImpl {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the key list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KeyItem> getKeyVersionsNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    public PagedResponse<KeyItem> getKeyVersionsNextSinglePage(String nextLink, RequestContext requestContext) {
         final String accept = "application/json";
         Response<KeyListResult> res
-            = service.getKeyVersionsNext(nextLink, this.getVaultBaseUrl(), accept, requestOptions);
+            = service.getKeyVersionsNext(nextLink, this.getVaultBaseUrl(), accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1698,7 +1681,7 @@ public final class KeyClientImpl {
     public PagedResponse<KeyItem> getKeysNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<KeyListResult> res
-            = service.getKeysNext(nextLink, this.getVaultBaseUrl(), accept, RequestOptions.none());
+            = service.getKeysNext(nextLink, this.getVaultBaseUrl(), accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1709,16 +1692,16 @@ public final class KeyClientImpl {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the key list result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<KeyItem> getKeysNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    public PagedResponse<KeyItem> getKeysNextSinglePage(String nextLink, RequestContext requestContext) {
         final String accept = "application/json";
-        Response<KeyListResult> res = service.getKeysNext(nextLink, this.getVaultBaseUrl(), accept, requestOptions);
+        Response<KeyListResult> res = service.getKeysNext(nextLink, this.getVaultBaseUrl(), accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1738,7 +1721,7 @@ public final class KeyClientImpl {
     public PagedResponse<DeletedKeyItem> getDeletedKeysNextSinglePage(String nextLink) {
         final String accept = "application/json";
         Response<DeletedKeyListResult> res
-            = service.getDeletedKeysNext(nextLink, this.getVaultBaseUrl(), accept, RequestOptions.none());
+            = service.getDeletedKeysNext(nextLink, this.getVaultBaseUrl(), accept, RequestContext.none());
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
@@ -1749,17 +1732,17 @@ public final class KeyClientImpl {
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The context to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of keys that have been deleted in this vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PagedResponse<DeletedKeyItem> getDeletedKeysNextSinglePage(String nextLink, RequestOptions requestOptions) {
+    public PagedResponse<DeletedKeyItem> getDeletedKeysNextSinglePage(String nextLink, RequestContext requestContext) {
         final String accept = "application/json";
         Response<DeletedKeyListResult> res
-            = service.getDeletedKeysNext(nextLink, this.getVaultBaseUrl(), accept, requestOptions);
+            = service.getDeletedKeysNext(nextLink, this.getVaultBaseUrl(), accept, requestContext);
         return new PagedResponse<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getValue(),
             null, res.getValue().getNextLink(), null, null, null);
     }
