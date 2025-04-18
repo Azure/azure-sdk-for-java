@@ -443,7 +443,7 @@ jobs:
       JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
       OsVmImage: $(LINUXVMIMAGE)
       Pool: $(LINUXPOOL)
-      os: linux
+      Os: linux
       MatrixConfigs:
         - ${{ each config in parameters.MatrixConfigs }}:
           - ${{ config }}
