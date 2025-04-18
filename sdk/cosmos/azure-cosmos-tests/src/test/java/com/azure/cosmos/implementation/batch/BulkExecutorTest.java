@@ -59,14 +59,14 @@ public class BulkExecutorTest extends BatchTestBase {
         super(clientBuilder);
     }
 
-    @AfterClass(groups = { "emulator" }, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
+    @AfterClass(groups = { "emulator", "emulator-vnext" }, timeOut = 3 * SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         logger.info("starting ....");
         safeDeleteDatabase(database);
         safeClose(client);
     }
 
-    @AfterMethod(groups = { "emulator" })
+    @AfterMethod(groups = { "emulator", "emulator-vnext" })
     public void afterTest() throws Exception {
         if (this.container != null) {
             try {
@@ -79,14 +79,23 @@ public class BulkExecutorTest extends BatchTestBase {
         }
     }
 
-    @BeforeMethod(groups = { "emulator" })
+    @BeforeMethod(groups = { "emulator", "emulator-vnext" })
     public void beforeTest() throws Exception {
         this.container = null;
     }
 
-    @BeforeClass(groups = { "emulator" }, timeOut = SETUP_TIMEOUT)
+    @BeforeClass(groups = { "emulator"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosContainerTest() {
         client = getClientBuilder().buildAsyncClient();
+        database = createDatabase(client, preExistingDatabaseId);
+    }
+
+    @BeforeClass(groups = { "emulator-vnext" }, timeOut = SETUP_TIMEOUT)
+    public void before_CosmosContainerTestEmulatorVNext() {
+        this.client = getClientBuilder()
+            .gatewayMode()
+            .contentResponseOnWriteEnabled(true)
+            .buildAsyncClient();
         database = createDatabase(client, preExistingDatabaseId);
     }
 
@@ -98,7 +107,7 @@ public class BulkExecutorTest extends BatchTestBase {
         return database.getContainer(collectionName);
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator", "emulator-vnext" }, timeOut = TIMEOUT)
     public void executeBulk_cancel() throws InterruptedException {
         int totalRequest = 100;
         this.container = createContainer(database);
@@ -147,7 +156,7 @@ public class BulkExecutorTest extends BatchTestBase {
     }
 
     // Write operations should not be retried on a gone exception because the operation might have succeeded.
-    @Test(groups = { "emulator" }, timeOut =  TIMEOUT)
+    @Test(groups = { "emulator", "emulator-vnext" }, timeOut =  TIMEOUT)
     public void executeBulk_OnGoneFailure() {
         this.container = createContainer(database);
         if (!ImplementationBridgeHelpers
@@ -232,7 +241,7 @@ public class BulkExecutorTest extends BatchTestBase {
         }
     }
 
-    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    @Test(groups = { "emulator", "emulator-vnext" }, timeOut = TIMEOUT)
     public void executeBulk_complete() throws InterruptedException {
         int totalRequest = 10;
         this.container = createContainer(database);
