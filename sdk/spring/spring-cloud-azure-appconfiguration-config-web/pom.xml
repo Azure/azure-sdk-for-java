@@ -17,6 +17,7 @@
 	<properties>
 		<javadocDoclet></javadocDoclet>
 		<javadocDocletOptions></javadocDocletOptions>
+    <maven.javadoc.skip>true</maven.javadoc.skip>
     <spotless.skip>true</spotless.skip>
   </properties>
 
