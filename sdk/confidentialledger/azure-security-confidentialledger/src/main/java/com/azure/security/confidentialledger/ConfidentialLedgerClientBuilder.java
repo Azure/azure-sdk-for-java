@@ -204,6 +204,10 @@ public final class ConfidentialLedgerClientBuilder
     private String endpoint;
 
     /**
+     * Sets The Confidential Ledger URL, for example https://contoso.confidentialledger.azure.com.
+     * 
+     * @param endpoint the endpoint value.
+     * @return the ConfidentialLedgerClientBuilder.
      * {@inheritDoc}.
      */
     @Generated
@@ -212,6 +216,14 @@ public final class ConfidentialLedgerClientBuilder
         return this;
     }
 
+    /**
+     * Sets The Confidential Ledger URL, for example https://contoso.confidentialledger.azure.com.
+     * 
+     * @param endpoint the endpoint value.
+     * @return the ConfidentialLedgerClientBuilder.
+     * {@inheritDoc}.
+     */
+    @Generated
     @Override
     public ConfidentialLedgerClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
