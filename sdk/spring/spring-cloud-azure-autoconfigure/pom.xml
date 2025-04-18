@@ -293,7 +293,7 @@
     <dependency>
       <groupId>org.hibernate.validator</groupId>
       <artifactId>hibernate-validator</artifactId>
-      <version>6.2.5.Final</version> <!-- {x-version-update;spring_spring_org.hibernate.validator:hibernate-validator;external_dependency} -->
+      <version>6.2.5.Final</version> <!-- {x-version-update;spring_org.hibernate.validator:hibernate-validator;external_dependency} -->
       <optional>true</optional>
     </dependency>
 
@@ -462,7 +462,7 @@
                 <include>org.messaginghub:pooled-jms:[1.2.6]</include> <!-- {x-include-update;spring_org.messaginghub:pooled-jms;external_dependency} -->
                 <include>jakarta.validation:jakarta.validation-api:[2.0.2]</include> <!-- {x-include-update;spring_jakarta.validation:jakarta.validation-api;external_dependency} -->
                 <include>javax.servlet:javax.servlet-api:[4.0.1]</include> <!-- {x-include-update;spring_javax.servlet:javax.servlet-api;external_dependency} -->
-                <include>org.hibernate.validator:hibernate-validator:[6.2.5.Final]</include> <!-- {x-include-update;spring_spring_org.hibernate.validator:hibernate-validator;external_dependency} -->
+                <include>org.hibernate.validator:hibernate-validator:[6.2.5.Final]</include> <!-- {x-include-update;spring_org.hibernate.validator:hibernate-validator;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[2.7.18]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-autoconfigure-processor:[2.7.18]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure-processor;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-autoconfigure:[2.7.18]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->

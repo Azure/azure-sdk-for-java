@@ -514,3 +514,4 @@ spring_io.opentelemetry.instrumentation:opentelemetry-spring-boot-starter;2.4.0-
 spring_io.opentelemetry.instrumentation:opentelemetry-jdbc;2.4.0-alpha
 spring_org.junit.jupiter:junit-jupiter-api;5.9.3
 spring_org.junit.jupiter:junit-jupiter-params;5.9.3
+spring_org.junit.jupiter:junit-jupiter-engine;5.9.3
