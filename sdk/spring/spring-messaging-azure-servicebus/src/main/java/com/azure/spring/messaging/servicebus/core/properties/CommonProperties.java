@@ -13,12 +13,6 @@ import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType
  */
 public class CommonProperties extends AzureAmqpSdkProperties implements ServiceBusClientCommonProperties {
 
-    /**
-     * Create an instance of {@link CommonProperties}.
-     */
-    public CommonProperties() {
-    }
-
     private String domainName;
 
     /**
@@ -28,7 +22,6 @@ public class CommonProperties extends AzureAmqpSdkProperties implements ServiceB
     private String connectionString;
     private String entityName;
     private ServiceBusEntityType entityType;
-    private String customEndpointAddress;
 
     private String extractFqdnFromConnectionString() {
         if (this.connectionString == null) {
@@ -112,18 +105,5 @@ public class CommonProperties extends AzureAmqpSdkProperties implements ServiceB
      */
     public void setEntityType(ServiceBusEntityType entityType) {
         this.entityType = entityType;
-    }
-
-    @Override
-    public String getCustomEndpointAddress() {
-        return customEndpointAddress;
-    }
-
-    /**
-     * Set the custom endpoint address.
-     * @param customEndpointAddress the custom endpoint address.
-     */
-    public void setCustomEndpointAddress(String customEndpointAddress) {
-        this.customEndpointAddress = customEndpointAddress;
     }
 }

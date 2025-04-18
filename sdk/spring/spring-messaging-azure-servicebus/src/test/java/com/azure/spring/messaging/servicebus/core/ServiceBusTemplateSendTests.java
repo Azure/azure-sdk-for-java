@@ -16,8 +16,8 @@ import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.GenericMessage;
 import reactor.core.publisher.Mono;
 
+import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -45,6 +45,7 @@ public class ServiceBusTemplateSendTests extends SendOperationTests<ServiceBusTe
     @BeforeEach
     public void setUp() {
         this.producerFactory = mock(ServiceBusProducerFactory.class);
+
         ServiceBusConsumerFactory consumerFactory = mock(ServiceBusConsumerFactory.class);
         this.mockSenderClient = mock(ServiceBusSenderAsyncClient.class);
 
@@ -61,12 +62,12 @@ public class ServiceBusTemplateSendTests extends SendOperationTests<ServiceBusTe
         Map<String, Object> valueMap = new HashMap<>(message.getHeaders());
         valueMap.put(MessageHeaders.REPLY_CHANNEL, replyEntity);
         message = new GenericMessage<>("testPayload", valueMap);
-
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testSendAndReceive() {
-        when(mockReceiverClient.receiveMessages(1)).thenReturn(mock());
+        when(mockReceiverClient.receiveMessages(1)).thenReturn(mock(IterableStream.class));
         final ServiceBusReceivedMessage replyMessage = this.sendOperation.sendAndReceive(destination, null, message);
 
         assertNull(replyMessage);
@@ -76,8 +77,9 @@ public class ServiceBusTemplateSendTests extends SendOperationTests<ServiceBusTe
     }
 
     @Test
+    @SuppressWarnings("unchecked")
     public void testSendAndReceiveReturnNull() {
-        when(mockReceiverClient.receiveMessages(1)).thenReturn(new IterableStream<>(List.of()));
+        when(mockReceiverClient.receiveMessages(1)).thenReturn(new IterableStream<ServiceBusReceivedMessage>(Collections.EMPTY_LIST));
         assertNull(this.sendOperation.sendAndReceive(destination, null, message));
     }
 

@@ -17,10 +17,9 @@ public abstract class AbstractProcessorInstrumentationTests<T> {
 
     private IllegalArgumentException exception;
     private T errorContext;
-    private final Duration window = Duration.ofSeconds(2);
+    private Duration window = Duration.ofSeconds(2);
 
     public abstract T getErrorContext(RuntimeException exception);
-
     public abstract AbstractProcessorInstrumentation<T> getProcessorInstrumentation(Instrumentation.Type type,
                                                                                     Duration window);
 
@@ -46,11 +45,13 @@ public abstract class AbstractProcessorInstrumentationTests<T> {
 
     @ParameterizedTest
     @EnumSource(value = Instrumentation.Type.class)
-    void isDown(Instrumentation.Type type) throws InterruptedException {
+    void isDown(Instrumentation.Type type) {
         AbstractProcessorInstrumentation<T> instrumentation = getProcessorInstrumentation(type, window);
         instrumentation.markError(errorContext);
         assertEquals(Instrumentation.Status.DOWN, instrumentation.getStatus());
-        Thread.sleep(window.toMillis() + 1_000);
+        sleepSeconds(1);
+        assertEquals(Instrumentation.Status.DOWN, instrumentation.getStatus());
+        sleepSeconds(2);
         assertEquals(Instrumentation.Status.UP, instrumentation.getStatus());
     }
 
@@ -62,5 +63,13 @@ public abstract class AbstractProcessorInstrumentationTests<T> {
         assertEquals(exception, instrumentation.getException());
         instrumentation.markError(null);
         assertNull(instrumentation.getException());
+    }
+
+    private void sleepSeconds(long sleep) {
+        try {
+            Thread.sleep(sleep * 1000);
+        } catch (InterruptedException e) {
+
+        }
     }
 }

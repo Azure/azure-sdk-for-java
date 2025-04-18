@@ -97,13 +97,11 @@ public class DefaultServiceBusNamespaceConsumerFactoryTests {
 
     @Test
     void customizerShouldBeCalledOnEachCreatedClient() {
-        AtomicInteger shareClientCalledTimes = new AtomicInteger();
         AtomicInteger sessionClientCalledTimes = new AtomicInteger();
         AtomicInteger dedicatedSessionClientCalledTimes = new AtomicInteger();
 
         DefaultServiceBusNamespaceConsumerFactory factory = (DefaultServiceBusNamespaceConsumerFactory) this.consumerFactory;
 
-        factory.addServiceBusClientBuilderCustomizer(builder -> shareClientCalledTimes.getAndIncrement());
         factory.addBuilderCustomizer(builder -> sessionClientCalledTimes.getAndIncrement());
 
         factory.addBuilderCustomizer("queue-1", builder -> dedicatedSessionClientCalledTimes.getAndIncrement());
@@ -115,7 +113,6 @@ public class DefaultServiceBusNamespaceConsumerFactoryTests {
         factory.createReceiver("topic-1", ServiceBusEntityType.TOPIC);
         factory.createReceiver("topic-2", ServiceBusEntityType.TOPIC);
 
-        assertEquals(4, shareClientCalledTimes.get());
         assertEquals(4, sessionClientCalledTimes.get());
         assertEquals(2, dedicatedSessionClientCalledTimes.get());
     }

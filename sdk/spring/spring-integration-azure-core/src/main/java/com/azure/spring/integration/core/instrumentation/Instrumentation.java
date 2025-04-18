@@ -39,7 +39,6 @@ public interface Instrumentation {
     Type getType();
 
     /**
-     * Return the exception.
      * @return the exception.
      */
     Throwable getException();

@@ -11,13 +11,6 @@ import org.springframework.beans.factory.BeanNameAware;
  * The base implementation for the {@link MessageListenerContainer}.
  */
 public abstract class AbstractMessageListenerContainer implements MessageListenerContainer, BeanNameAware {
-
-    /**
-     * Creates an instance of {@link AbstractMessageListenerContainer}.
-     */
-    public AbstractMessageListenerContainer() {
-    }
-
     private static final Logger LOG = LoggerFactory.getLogger(AbstractMessageListenerContainer.class);
 
     /**

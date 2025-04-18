@@ -12,7 +12,7 @@ import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties
 /**
  * A merger used to merge a {@link ConsumerProperties} with its parent {@link NamespaceProperties}. When a property is
  * set in the child, it will be kept. For those properties not set in the child, it will use the value in the parent.
- * @since 5.22.0
+ * @since 4.20.0
  */
 public class ConsumerPropertiesParentMerger implements PropertiesMerger<ConsumerProperties, NamespaceProperties> {
 
@@ -39,7 +39,6 @@ public class ConsumerPropertiesParentMerger implements PropertiesMerger<Consumer
         propertyMapper.from(parent.getConnectionString()).to(properties::setConnectionString);
         propertyMapper.from(parent.getEntityName()).to(properties::setEntityName);
         propertyMapper.from(parent.getEntityType()).to(properties::setEntityType);
-        propertyMapper.from(parent.getCustomEndpointAddress()).to(properties::setCustomEndpointAddress);
 
         // If a same property appears in both two objects, the value from the child will take precedence.
         copyConsumerPropertiesIfNotNull(child, properties);
@@ -55,7 +54,6 @@ public class ConsumerPropertiesParentMerger implements PropertiesMerger<Consumer
         propertyMapper.from(source.getConnectionString()).to(target::setConnectionString);
         propertyMapper.from(source.getEntityName()).to(target::setEntityName);
         propertyMapper.from(source.getEntityType()).to(target::setEntityType);
-        propertyMapper.from(source.getCustomEndpointAddress()).to(target::setCustomEndpointAddress);
 
         propertyMapper.from(source.getSessionEnabled()).to(target::setSessionEnabled);
         propertyMapper.from(source.getAutoComplete()).to(target::setAutoComplete);

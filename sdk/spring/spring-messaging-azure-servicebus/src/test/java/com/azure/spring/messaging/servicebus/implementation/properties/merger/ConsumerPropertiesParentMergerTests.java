@@ -21,13 +21,11 @@ public class ConsumerPropertiesParentMergerTests {
     void childNotProvidedShouldUseParent() {
         ConsumerProperties child = new ConsumerProperties();
         child.setSessionEnabled(true);
-        String customEndpoint = "https://test.address.com:443";
         NamespaceProperties parent = new NamespaceProperties();
         parent.setConnectionString("parent-connection-str");
         parent.getProxy().setHostname("parent-hostname");
         parent.getProfile().setCloudType(AZURE_US_GOVERNMENT);
         parent.setDomainName("parent-domain");
-        parent.setCustomEndpointAddress(customEndpoint);
         parent.getClient().setTransportType(AmqpTransportType.AMQP_WEB_SOCKETS);
 
         ConsumerProperties result = merger.merge(child, parent);
@@ -38,7 +36,6 @@ public class ConsumerPropertiesParentMergerTests {
         assertEquals(AzureEnvironment.AZURE_US_GOVERNMENT.getActiveDirectoryEndpoint(),
             result.getProfile().getEnvironment().getActiveDirectoryEndpoint());
         assertEquals("parent-domain", result.getDomainName());
-        assertEquals(customEndpoint, result.getCustomEndpointAddress());
         assertEquals(AmqpTransportType.AMQP_WEB_SOCKETS, result.getClient().getTransportType());
         assertTrue(result.getSessionEnabled());
     }
@@ -51,7 +48,6 @@ public class ConsumerPropertiesParentMergerTests {
         child.setPrefetchCount(3);
         child.getProfile().setCloudType(AZURE_CHINA);
         child.setDomainName("child-domain");
-        child.setCustomEndpointAddress("https://child.address.com:443");
         child.getClient().setTransportType(AmqpTransportType.AMQP);
 
         NamespaceProperties parent = new NamespaceProperties();
@@ -59,7 +55,6 @@ public class ConsumerPropertiesParentMergerTests {
         parent.getProxy().setHostname("parent-hostname");
         parent.getProfile().setCloudType(AZURE_US_GOVERNMENT);
         parent.setDomainName("parent-domain");
-        parent.setCustomEndpointAddress("https://parent.address.com:443");
         parent.getClient().setTransportType(AmqpTransportType.AMQP_WEB_SOCKETS);
 
         ConsumerProperties result = merger.merge(child, parent);
@@ -68,7 +63,6 @@ public class ConsumerPropertiesParentMergerTests {
         assertEquals("child-hostname", result.getProxy().getHostname());
         assertEquals(3, result.getPrefetchCount());
         assertEquals("child-domain", result.getDomainName());
-        assertEquals("https://child.address.com:443", result.getCustomEndpointAddress());
         assertEquals(AZURE_CHINA, result.getProfile().getCloudType());
         assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryEndpoint(),
             result.getProfile().getEnvironment().getActiveDirectoryEndpoint());

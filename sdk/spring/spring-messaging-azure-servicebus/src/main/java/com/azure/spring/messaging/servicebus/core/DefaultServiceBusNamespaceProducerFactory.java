@@ -43,8 +43,6 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
     private final PropertiesSupplier<String, ProducerProperties> propertiesSupplier;
     private final Map<String, ServiceBusSenderAsyncClient> clients = new ConcurrentHashMap<>();
     private final SenderPropertiesParentMerger parentMerger = new SenderPropertiesParentMerger();
-
-    private final List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> serviceBusClientBuilderCustomizers = new ArrayList<>();
     private final List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> customizers = new ArrayList<>();
     private final Map<String, List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>>> dedicatedCustomizers = new HashMap<>();
     private AzureCredentialResolver<TokenCredential> tokenCredentialResolver = null;
@@ -78,7 +76,7 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
     public ServiceBusSenderAsyncClient createProducer(String name, ServiceBusEntityType entityType) {
         ProducerProperties producerProperties = this.propertiesSupplier.getProperties(name) != null
             ? this.propertiesSupplier.getProperties(name) : new ProducerProperties();
-        if (entityType != null) {
+        if (producerProperties.getEntityType() == null && entityType != null) {
             producerProperties.setEntityType(entityType);
         }
         return doCreateProducer(name, producerProperties);
@@ -109,7 +107,7 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
             ProducerProperties producerProperties = parentMerger.merge(properties, this.namespaceProperties);
             producerProperties.setEntityName(entityName);
 
-            ServiceBusSenderClientBuilderFactory factory = new ServiceBusSenderClientBuilderFactory(producerProperties, this.serviceBusClientBuilderCustomizers);
+            ServiceBusSenderClientBuilderFactory factory = new ServiceBusSenderClientBuilderFactory(producerProperties);
 
             factory.setDefaultTokenCredential(this.defaultCredential);
             factory.setTokenCredentialResolver(this.tokenCredentialResolver);
@@ -140,20 +138,6 @@ public final class DefaultServiceBusNamespaceProducerFactory implements ServiceB
      */
     public void setDefaultCredential(TokenCredential defaultCredential) {
         this.defaultCredential = defaultCredential;
-    }
-
-    /**
-     * Add a {@link com.azure.messaging.servicebus.ServiceBusClientBuilder}
-     * customizer to customize the shared client builder created in this factory, it's used to build other sender clients.
-     *
-     * @param customizer the provided builder customizer.
-     */
-    public void addServiceBusClientBuilderCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder> customizer) {
-        if (customizer == null) {
-            LOGGER.debug("The provided '{}' customizer is null, will ignore it.", ServiceBusClientBuilder.class.getName());
-        } else {
-            this.serviceBusClientBuilderCustomizers.add(customizer);
-        }
     }
 
     /**

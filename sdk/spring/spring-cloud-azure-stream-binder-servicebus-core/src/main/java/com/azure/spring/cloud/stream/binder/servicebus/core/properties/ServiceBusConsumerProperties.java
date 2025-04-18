@@ -14,14 +14,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
  */
 public class ServiceBusConsumerProperties extends ProcessorProperties implements ServiceBusEntityOptionsProvider {
 
-    /**
-     * Create an instance of {@link ServiceBusConsumerProperties}.
-     */
-    public ServiceBusConsumerProperties() {
-    }
-
     private boolean requeueRejected;
-
     private Long maxSizeInMegabytes = 1024L;
     private Duration defaultMessageTimeToLive = MAX_DURATION;
 
@@ -43,7 +36,6 @@ public class ServiceBusConsumerProperties extends ProcessorProperties implements
         this.requeueRejected = requeueRejected;
     }
 
-    @Override
     public Long getMaxSizeInMegabytes() {
         return maxSizeInMegabytes;
     }
@@ -56,7 +48,6 @@ public class ServiceBusConsumerProperties extends ProcessorProperties implements
         this.maxSizeInMegabytes = maxSizeInMegabytes;
     }
 
-    @Override
     public Duration getDefaultMessageTimeToLive() {
         return defaultMessageTimeToLive;
     }

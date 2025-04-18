@@ -7,13 +7,12 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusSessionReceiverClient;
-import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.messaging.PropertiesSupplier;
-import com.azure.spring.messaging.converter.AzureMessageConverter;
 import com.azure.spring.messaging.core.SendOperation;
+import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.messaging.servicebus.core.properties.NamespaceProperties;
-import com.azure.spring.messaging.servicebus.implementation.support.converter.ServiceBusMessageConverter;
 import com.azure.spring.messaging.servicebus.support.ServiceBusMessageHeaders;
+import com.azure.spring.messaging.servicebus.support.converter.ServiceBusMessageConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
@@ -40,7 +39,7 @@ public class ServiceBusTemplate implements SendOperation {
     private static final Duration DEFAULT_PRC_SEND_TIMEOUT = Duration.ofSeconds(30);
     private final ServiceBusProducerFactory producerFactory;
     private final ServiceBusConsumerFactory consumerFactory;
-    private AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> messageConverter = DEFAULT_CONVERTER;
+    private ServiceBusMessageConverter messageConverter = DEFAULT_CONVERTER;
     private ServiceBusEntityType defaultEntityType;
     private Duration rpcSendTimeout = DEFAULT_PRC_SEND_TIMEOUT;
 
@@ -56,7 +55,7 @@ public class ServiceBusTemplate implements SendOperation {
      * Create an instance using the supplied producer factory, processor factory, it supports request-reply pattern.
      * @param producerFactory the producer factory.
      * @param consumerFactory the consumer factory.
-     * @since 5.22.0
+     * @since 4.20.0
      */
     public ServiceBusTemplate(@NonNull ServiceBusProducerFactory producerFactory,
                               ServiceBusConsumerFactory consumerFactory) {
@@ -86,7 +85,7 @@ public class ServiceBusTemplate implements SendOperation {
      * @return the reply message of the response. If the reply message fails to be obtained, null is returned.
      *
      * @throws IllegalStateException if sender or receiver is already disposed.
-     * @since 5.22.0
+     * @since 4.20.0
      */
     public <U> ServiceBusReceivedMessage sendAndReceive(String destination,
                                                         Message<U> message) {
@@ -107,11 +106,11 @@ public class ServiceBusTemplate implements SendOperation {
      * @return the reply message of the response. If the reply message fails to be obtained, null is returned.
      *
      * @throws IllegalStateException if sender or receiver is already disposed.
-     * @since 5.22.0
+     * @since 4.20.0
      */
     public <U> ServiceBusReceivedMessage sendAndReceive(String destination,
-                                    ServiceBusEntityType entityType,
-                                    Message<U> message) {
+                                                        ServiceBusEntityType entityType,
+                                                        Message<U> message) {
         return sendAndReceive(destination, entityType, message, rpcSendTimeout);
     }
 
@@ -130,12 +129,12 @@ public class ServiceBusTemplate implements SendOperation {
      * @return the reply message of the response. If the reply message fails to be obtained, null is returned.
      *
      * @throws IllegalStateException if sender or receiver is already disposed.
-     * @since 5.22.0
+     * @since 4.20.0
      */
     public <U> ServiceBusReceivedMessage sendAndReceive(String destination,
-                                    ServiceBusEntityType entityType,
-                                    Message<U> message,
-                                    Duration sendTimeout) {
+                                                        ServiceBusEntityType entityType,
+                                                        Message<U> message,
+                                                        Duration sendTimeout) {
         Assert.hasText(destination, "'destination' can't be null or empty");
         Assert.notNull(consumerFactory, "'consumerFactory' can't be null, please enable 'session-enabled' and 'rpc-enabled' for consumer.");
 
@@ -157,7 +156,7 @@ public class ServiceBusTemplate implements SendOperation {
             LOGGER.debug("Provided reply-to session id ‘{}’ for entity '{}', it should be unique.", replyToSessionId, destination);
         }
 
-        ServiceBusSenderAsyncClient senderAsyncClient = this.producerFactory.createProducer(destination, defaultEntityType);
+        ServiceBusSenderAsyncClient senderAsyncClient = this.producerFactory.createProducer(destination, currentEntityType);
         senderAsyncClient.sendMessage(serviceBusMessage).block(sendTimeout);
 
         ServiceBusSessionReceiverClient sessionReceiver = consumerFactory.createReceiver(replyDestination, currentEntityType);
@@ -170,10 +169,10 @@ public class ServiceBusTemplate implements SendOperation {
     }
 
     /**
-     * Set the message converter to use.
+     * Set the message converter.
      * @param messageConverter the message converter.
      */
-    public void setMessageConverter(AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> messageConverter) {
+    public void setMessageConverter(ServiceBusMessageConverter messageConverter) {
         this.messageConverter = messageConverter;
     }
 
@@ -181,7 +180,7 @@ public class ServiceBusTemplate implements SendOperation {
      * Get the message converter.
      * @return the message converter.
      */
-    public AzureMessageConverter<ServiceBusReceivedMessage, ServiceBusMessage> getMessageConverter() {
+    public ServiceBusMessageConverter getMessageConverter() {
         return messageConverter;
     }
 
@@ -197,7 +196,7 @@ public class ServiceBusTemplate implements SendOperation {
     /**
      * Set the timeout for sending message for request-reply pattern. If not set, the default {@link #DEFAULT_PRC_SEND_TIMEOUT} will be used.
      * @param rpcSendTimeout the timeout of sending messages.
-     * @since 5.22.0
+     * @since 4.20.0
      */
     public void setRpcSendTimeout(Duration rpcSendTimeout) {
         if (rpcSendTimeout != null) {

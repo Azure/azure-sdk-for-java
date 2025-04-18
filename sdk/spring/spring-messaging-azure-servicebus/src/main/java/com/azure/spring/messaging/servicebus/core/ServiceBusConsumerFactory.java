@@ -3,13 +3,12 @@
 
 package com.azure.spring.messaging.servicebus.core;
 
-
 import com.azure.messaging.servicebus.ServiceBusSessionReceiverClient;
 import com.azure.spring.cloud.service.servicebus.properties.ServiceBusEntityType;
 
 /**
  * The strategy to produce {@link ServiceBusSessionReceiverClient} instance.
- * @since 5.22.0
+ * @since 4.20.0
  */
 public interface ServiceBusConsumerFactory {
 

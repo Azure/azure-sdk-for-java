@@ -55,7 +55,6 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
     private final List<Listener> listeners = new ArrayList<>();
     private final NamespaceProperties namespaceProperties;
     private final PropertiesSupplier<ConsumerIdentifier, ProcessorProperties> propertiesSupplier;
-    private final List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> serviceBusClientBuilderCustomizers = new ArrayList<>();
     private final List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> customizers = new ArrayList<>();
     private final List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>> sessionCustomizers = new ArrayList<>();
     private final Map<ConsumerIdentifier, List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>>> dedicatedCustomizers = new HashMap<>();
@@ -175,7 +174,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
             if (Boolean.TRUE.equals(processorProperties.getSessionEnabled())) {
 
                 ServiceBusSessionProcessorClientBuilderFactory factory =
-                    new ServiceBusSessionProcessorClientBuilderFactory(processorProperties, this.serviceBusClientBuilderCustomizers, messageListener, errorHandler);
+                    new ServiceBusSessionProcessorClientBuilderFactory(processorProperties, messageListener, errorHandler);
 
                 factory.setDefaultTokenCredential(this.defaultCredential);
                 factory.setTokenCredentialResolver(this.tokenCredentialResolver);
@@ -187,7 +186,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
                 client = builder.buildProcessorClient();
             } else {
                 ServiceBusProcessorClientBuilderFactory factory =
-                    new ServiceBusProcessorClientBuilderFactory(processorProperties, this.serviceBusClientBuilderCustomizers, messageListener, errorHandler);
+                    new ServiceBusProcessorClientBuilderFactory(processorProperties, messageListener, errorHandler);
 
                 factory.setDefaultTokenCredential(this.defaultCredential);
                 factory.setTokenCredentialResolver(this.tokenCredentialResolver);
@@ -238,20 +237,6 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
     }
 
     /**
-     * Add a {@link com.azure.messaging.servicebus.ServiceBusClientBuilder}
-     * customizer to customize the shared client builder created in this factory, it's used to build other processor clients.
-     *
-     * @param customizer the provided builder customizer.
-     */
-    public void addServiceBusClientBuilderCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder> customizer) {
-        if (customizer == null) {
-            LOGGER.debug("The provided '{}' customizer is null, will ignore it.", ServiceBusClientBuilder.class.getName());
-        } else {
-            this.serviceBusClientBuilderCustomizers.add(customizer);
-        }
-    }
-
-    /**
      * Add a {@link com.azure.messaging.servicebus.ServiceBusClientBuilder.ServiceBusProcessorClientBuilder}
      * customizer to customize all the non-session clients created from this factory.
      *
@@ -259,7 +244,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
      */
     public void addBuilderCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder> customizer) {
         if (customizer == null) {
-            LOGGER.debug("The provided '{}' customizer is null, will ignore it.", 
+            LOGGER.debug("The provided '{}' customizer is null, will ignore it.",
                 ServiceBusClientBuilder.ServiceBusProcessorClientBuilder.class.getName());
         } else {
             this.customizers.add(customizer);
@@ -274,7 +259,7 @@ public final class DefaultServiceBusNamespaceProcessorFactory implements Service
      */
     public void addSessionBuilderCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder> customizer) {
         if (customizer == null) {
-            LOGGER.debug("The provided '{}' customizer is null, will ignore it.", 
+            LOGGER.debug("The provided '{}' customizer is null, will ignore it.",
                 ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder.class.getName());
         } else {
             this.sessionCustomizers.add(customizer);

@@ -11,7 +11,8 @@ trigger:
     include:
       - sdk/spring/
     exclude:
-      - sdk/spring/spring-cloud-azure-starter-monitor-test/
+      - sdk/spring/spring-cloud-azure-starter-monitor/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-monitor-test/pom.xml
 
 pr:
   branches:
@@ -24,7 +25,8 @@ pr:
     include:
       - sdk/spring/
     exclude:
-      - sdk/spring/spring-cloud-azure-starter-monitor-test/
+      - sdk/spring/spring-cloud-azure-starter-monitor/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-monitor-test/pom.xml
 
 # Note - the name parameter cannot contain dashes (-) which is why both
 # a name and displayName are required. Each parameter corresponds to a
@@ -40,16 +42,16 @@ parameters:
   displayName: 'spring-cloud-azure-core'
   type: boolean
   default: true
-- name: release_springcloudazuredockercompose
-  displayName: 'spring-cloud-azure-docker-compose'
-  type: boolean
-  default: true
 - name: release_springcloudazureservice
   displayName: 'spring-cloud-azure-service'
   type: boolean
   default: true
 - name: release_springcloudazureresourcemanager
   displayName: 'spring-cloud-azure-resourcemanager'
+  type: boolean
+  default: true
+- name: release_springcloudazuretracesleuth
+  displayName: 'spring-cloud-azure-trace-sleuth'
   type: boolean
   default: true
 - name: release_springmessagingazure
@@ -124,10 +126,6 @@ parameters:
   displayName: 'spring-cloud-azure-starter-data-cosmos'
   type: boolean
   default: true
-- name: release_springcloudazurestarterdataredislettuce
-  displayName: 'spring-cloud-azure-starter-data-redis-lettuce'
-  type: boolean
-  default: true
 - name: release_springcloudazurestartereventhubs
   displayName: 'spring-cloud-azure-starter-eventhubs'
   type: boolean
@@ -142,10 +140,6 @@ parameters:
   default: true
 - name: release_springcloudazurestarterkeyvaultcertificates
   displayName: 'spring-cloud-azure-starter-keyvault-certificates'
-  type: boolean
-  default: true
-- name: release_springcloudazurestarterkeyvaultjca
-  displayName: 'spring-cloud-azure-starter-keyvault-jca'
   type: boolean
   default: true
 - name: release_springcloudazurestarterkeyvaultsecrets
@@ -220,8 +214,8 @@ parameters:
   displayName: 'spring-cloud-azure-starter-jdbc-postgresql'
   type: boolean
   default: true
-- name: release_springcloudazuretestcontainers
-  displayName: 'spring-cloud-azure-testcontainers'
+- name: release_springcloudazurestarterredis
+  displayName: 'spring-cloud-azure-starter-redis'
   type: boolean
   default: true
 - name: release_springcloudazureappconfigurationconfig
@@ -244,11 +238,6 @@ parameters:
   displayName: 'spring-cloud-azure-starter-appconfiguration-config'
   type: boolean
   default: true
-- name: release_springcloudazurestartermonitor
-  displayName: 'spring-cloud-azure-starter-monitor'
-  type: boolean
-  default: true
-
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
@@ -265,12 +254,6 @@ extends:
         skipPublishDocMs: true
         skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazurecore }}
-      - name: spring-cloud-azure-docker-compose
-        groupId: com.azure.spring
-        safeName: springcloudazuredockercompose
-        skipPublishDocMs: true
-        skipVerifyChangelog: true
-        releaseInBatch: ${{ parameters.release_springcloudazuredockercompose }}
       - name: spring-cloud-azure-service
         groupId: com.azure.spring
         safeName: springcloudazureservice
@@ -283,6 +266,12 @@ extends:
         skipPublishDocMs: true
         skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazureresourcemanager }}
+      - name: spring-cloud-azure-trace-sleuth
+        groupId: com.azure.spring
+        safeName: springcloudazuretracesleuth
+        skipPublishDocMs: true
+        skipVerifyChangelog: true
+        releaseInBatch: ${{ parameters.release_springcloudazuretracesleuth }}
       - name: spring-messaging-azure
         groupId: com.azure.spring
         safeName: springmessagingazure
@@ -398,13 +387,6 @@ extends:
         skipPublishDocMs: true
         skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazurestarterdatacosmos }}
-      - name: spring-cloud-azure-starter-data-redis-lettuce
-        groupId: com.azure.spring
-        safeName: springcloudazurestarterdataredislettuce
-        skipPublishDocGithubIo: true
-        skipPublishDocMs: true
-        skipVerifyChangelog: true
-        releaseInBatch: ${{ parameters.release_springcloudazurestarterdataredislettuce }}
       - name: spring-cloud-azure-starter-eventhubs
         groupId: com.azure.spring
         safeName: springcloudazurestartereventhubs
@@ -433,13 +415,6 @@ extends:
         skipPublishDocMs: true
         skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazurestarterkeyvaultcertificates }}
-      - name: spring-cloud-azure-starter-keyvault-jca
-        groupId: com.azure.spring
-        safeName: springcloudazurestarterkeyvaultjca
-        skipPublishDocGithubIo: true
-        skipPublishDocMs: true
-        skipVerifyChangelog: true
-        releaseInBatch: ${{ parameters.release_springcloudazurestarterkeyvaultjca }}
       - name: spring-cloud-azure-starter-keyvault-secrets
         groupId: com.azure.spring
         safeName: springcloudazurestarterkeyvaultsecrets
@@ -562,12 +537,13 @@ extends:
         skipPublishDocMs: true
         skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazurestarterjdbcpostgresql }}
-      - name: spring-cloud-azure-testcontainers
+      - name: spring-cloud-azure-starter-redis
         groupId: com.azure.spring
-        safeName: springcloudazuretestcontainers
+        safeName: springcloudazurestarterredis
+        skipPublishDocGithubIo: true
         skipPublishDocMs: true
         skipVerifyChangelog: true
-        releaseInBatch: ${{ parameters.release_springcloudazuretestcontainers }}
+        releaseInBatch: ${{ parameters.release_springcloudazurestarterredis }}
       - name: spring-cloud-azure-appconfiguration-config
         groupId: com.azure.spring
         safeName: springcloudazureappconfigurationconfig
@@ -603,12 +579,3 @@ extends:
         skipPublishDocMs: true
         skipVerifyChangelog: true
         releaseInBatch: ${{ parameters.release_springcloudazurestarterappconfigurationconfig }}
-      - name: spring-cloud-azure-starter-monitor
-        groupId: com.azure.spring
-        safeName: springcloudazurestartermonitor
-        skipPublishDocGithubIo: true
-        skipPublishDocMs: true
-        skipVerifyChangelog: true
-        releaseInBatch: ${{ parameters.release_springcloudazurestartermonitor }}
-    MatrixFilters:
-        - JavaTestVersion=^(?!1.8|1.11).*

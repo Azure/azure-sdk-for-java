@@ -12,12 +12,6 @@ import com.azure.storage.queue.QueueServiceVersion;
  */
 public class StorageQueueProperties extends AzureHttpSdkProperties implements QueueServiceClientProperties {
 
-    /**
-     * Create an instance of {@link StorageQueueProperties}.
-     */
-    public StorageQueueProperties() {
-    }
-
     private static final String QUEUE_ENDPOINT_PATTERN = "https://%s.queue%s";
 
     /**
@@ -49,7 +43,7 @@ public class StorageQueueProperties extends AzureHttpSdkProperties implements Qu
      */
     private QueueServiceVersion serviceVersion;
     /**
-     * How queue message body is represented in HTTP requests and responses. All Supported types are: NONE, BASE64.
+     * How queue message body is represented in HTTP requests and responses.
      */
     private QueueMessageEncoding messageEncoding;
 

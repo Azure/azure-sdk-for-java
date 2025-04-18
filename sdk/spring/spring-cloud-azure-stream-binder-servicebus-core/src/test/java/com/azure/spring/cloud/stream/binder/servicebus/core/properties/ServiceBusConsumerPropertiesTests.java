@@ -175,5 +175,4 @@ class ServiceBusConsumerPropertiesTests {
     void defaultMessageTimeToLive() {
         assertEquals(consumerProperties.getDefaultMessageTimeToLive(), MAX_DURATION);
     }
-
 }

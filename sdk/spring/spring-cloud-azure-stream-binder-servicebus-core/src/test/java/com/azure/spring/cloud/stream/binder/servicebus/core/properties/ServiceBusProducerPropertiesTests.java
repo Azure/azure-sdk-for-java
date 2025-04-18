@@ -107,7 +107,6 @@ class ServiceBusProducerPropertiesTests {
         assertNull(producerProperties.getClient().getTransportType());
     }
 
-
     @Test
     void defaultMaxSizeInMegabytes() {
         assertEquals(producerProperties.getMaxSizeInMegabytes(), 1024L);

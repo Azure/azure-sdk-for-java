@@ -10,12 +10,6 @@ import com.azure.spring.cloud.service.implementation.eventhubs.properties.EventH
  */
 public class ConsumerProperties extends CommonProperties implements EventHubConsumerProperties {
 
-    /**
-     * Create an instance of {@link ConsumerProperties}
-     */
-    public ConsumerProperties() {
-    }
-
     private String consumerGroup;
     private Integer prefetchCount;
 

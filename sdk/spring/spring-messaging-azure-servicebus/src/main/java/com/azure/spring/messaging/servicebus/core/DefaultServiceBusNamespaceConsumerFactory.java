@@ -37,7 +37,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * if a configuration entry is provided at both producer and namespace level, the producer level configuration will
  * take advantage.
  * </p>
- * @since 5.22.0
+ * @since 4.20.0
  */
 public final class DefaultServiceBusNamespaceConsumerFactory implements ServiceBusConsumerFactory, DisposableBean {
     private static final Logger LOGGER = LoggerFactory.getLogger(DefaultServiceBusNamespaceConsumerFactory.class);
@@ -46,7 +46,6 @@ public final class DefaultServiceBusNamespaceConsumerFactory implements ServiceB
     private final PropertiesSupplier<ConsumerIdentifier, ConsumerProperties> propertiesSupplier;
     private final Map<String, ServiceBusSessionReceiverClient> clients = new ConcurrentHashMap<>();
     private final ConsumerPropertiesParentMerger parentMerger = new ConsumerPropertiesParentMerger();
-    private final List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> customizers = new ArrayList<>();
     private final List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder>> sessionReceiverCustomizers = new ArrayList<>();
     private final Map<String, List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder>>> dedicatedSessionReceiverCustomizers = new HashMap<>();
     private AzureCredentialResolver<TokenCredential> tokenCredentialResolver = null;
@@ -80,7 +79,7 @@ public final class DefaultServiceBusNamespaceConsumerFactory implements ServiceB
     public ServiceBusSessionReceiverClient createReceiver(String name, ServiceBusEntityType entityType) {
         ConsumerProperties consumerProperties = this.propertiesSupplier.getProperties(new ConsumerIdentifier(name)) != null
             ? this.propertiesSupplier.getProperties(new ConsumerIdentifier(name)) : new ConsumerProperties();
-        if (entityType != null) {
+        if (consumerProperties.getEntityType() == null && entityType != null) {
             consumerProperties.setEntityType(entityType);
         }
         return doCreateReceiver(name, consumerProperties);
@@ -114,7 +113,7 @@ public final class DefaultServiceBusNamespaceConsumerFactory implements ServiceB
             ServiceBusSessionReceiverClient receiverClient;
             if (Boolean.TRUE.equals(consumerProperties.getSessionEnabled())) {
                 ServiceBusSessionReceiverClientBuilderFactory factory =
-                    new ServiceBusSessionReceiverClientBuilderFactory(consumerProperties, this.customizers);
+                    new ServiceBusSessionReceiverClientBuilderFactory(consumerProperties);
 
                 factory.setDefaultTokenCredential(this.defaultCredential);
                 factory.setTokenCredentialResolver(this.tokenCredentialResolver);
@@ -156,20 +155,6 @@ public final class DefaultServiceBusNamespaceConsumerFactory implements ServiceB
      */
     public void setDefaultCredential(TokenCredential defaultCredential) {
         this.defaultCredential = defaultCredential;
-    }
-
-    /**
-     * Add a {@link ServiceBusClientBuilder}
-     * customizer to customize the shared client builder created in this factory, it's used to build other sender clients.
-     *
-     * @param customizer the provided builder customizer.
-     */
-    public void addServiceBusClientBuilderCustomizer(AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder> customizer) {
-        if (customizer == null) {
-            LOGGER.debug("The provided '{}' customizer is null, will ignore it.", ServiceBusClientBuilder.class.getName());
-        } else {
-            this.customizers.add(customizer);
-        }
     }
 
     /**
