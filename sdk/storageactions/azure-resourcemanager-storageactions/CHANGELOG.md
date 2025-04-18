@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.4 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,30 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.3 (2025-04-18)
+
+- Azure Resource Manager StorageActions client library for Java. This package contains Microsoft Azure SDK for StorageActions Management SDK. The Azure Storage Actions Management API. Package tag package-2023-01-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.ProvisioningState` was modified
+
+* `models.ProvisioningState[] values()` -> `java.util.Collection values()`
+* `valueOf(java.lang.String)` was removed
+* `toString()` was removed
+
+#### `models.OnFailure` was modified
+
+* `valueOf(java.lang.String)` was removed
+* `toString()` was removed
+* `models.OnFailure[] values()` -> `java.util.Collection values()`
+
+#### `models.OnSuccess` was modified
+
+* `models.OnSuccess[] values()` -> `java.util.Collection values()`
+* `toString()` was removed
+* `valueOf(java.lang.String)` was removed
 
 ## 1.0.0-beta.2 (2024-12-03)
 

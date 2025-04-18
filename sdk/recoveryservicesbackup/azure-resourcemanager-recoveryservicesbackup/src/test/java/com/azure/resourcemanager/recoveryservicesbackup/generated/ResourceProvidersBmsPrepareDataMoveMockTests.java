@@ -6,8 +6,8 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.DataMoveLevel;
@@ -28,14 +28,14 @@ public final class ResourceProvidersBmsPrepareDataMoveMockTests {
         RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         manager.resourceProviders()
-            .bmsPrepareDataMove("g", "syparybjufp",
-                new PrepareDataMoveRequest().withTargetResourceId("bjczjnciuiyqvlda")
-                    .withTargetRegion("wvppi")
-                    .withDataMoveLevel(DataMoveLevel.CONTAINER)
-                    .withSourceContainerArmIds(Arrays.asList("lgcndhzxrrfcfsrh", "hgsnxuwwkpph", "fsbzxlbzxo"))
+            .bmsPrepareDataMove("fnqt", "jtoma",
+                new PrepareDataMoveRequest().withTargetResourceId("swbnfddepldwqjns")
+                    .withTargetRegion("zygleexahvm")
+                    .withDataMoveLevel(DataMoveLevel.VAULT)
+                    .withSourceContainerArmIds(Arrays.asList("brcary", "sjjzyvoaqajuveh"))
                     .withIgnoreMoved(true),
                 com.azure.core.util.Context.NONE);
 
