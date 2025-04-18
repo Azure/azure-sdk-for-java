@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
@@ -225,7 +227,13 @@ class ChangeFeedQueryImpl<T> {
                         checkNotNull(documentCollectionValueHolder, "Argument 'documentCollectionValueHolder' cannot be null!");
                         checkNotNull(documentCollectionValueHolder.v, "Argument 'documentCollectionValueHolder.v' cannot be null!");
 
-                        return client.getPartitionKeyRangeCache().tryLookupAsync(null, documentCollectionValueHolder.v.getResourceId(), null, null, request)
+                        DiagnosticsClientContext diagnosticsClientContext = request.getDiagnosticsClientContext();
+                        CosmosDiagnostics cosmosDiagnostics = diagnosticsClientContext != null ?
+                            diagnosticsClientContext.getMostRecentlyCreatedDiagnostics() : null;
+                        CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics != null ?
+                            cosmosDiagnostics.getDiagnosticsContext() : null;
+
+                        return client.getPartitionKeyRangeCache().tryLookupAsync(null, documentCollectionValueHolder.v.getResourceId(), null, null, diagnosticsContext)
                             .flatMap(collectionRoutingMapValueHolder -> {
 
                                 checkNotNull(collectionRoutingMapValueHolder, "Argument 'collectionRoutingMapValueHolder' cannot be null!");

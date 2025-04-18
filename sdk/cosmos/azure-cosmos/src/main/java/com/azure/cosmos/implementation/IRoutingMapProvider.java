@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.implementation.routing.Range;
 import reactor.core.publisher.Mono;
 
@@ -22,9 +23,19 @@ public interface IRoutingMapProvider {
         /// <param name="range">This method will return all ranges which overlap this range.</param>
         /// <param name="forceRefresh">Whether forcefully refreshing the routing map is necessary</param>
         /// <returns>List of effective partition key ranges for a collection or null if collection doesn't exist.</returns>
-        Mono<Utils.ValueHolder<List<PartitionKeyRange>>> tryGetOverlappingRangesAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionResourceId, Range<String> range,
-                                                                                      boolean forceRefresh /* = false */, Map<String, Object> properties, RxDocumentServiceRequest enclosingRequest);
+        Mono<Utils.ValueHolder<List<PartitionKeyRange>>> tryGetOverlappingRangesAsync(
+            MetadataDiagnosticsContext metaDataDiagnosticsContext,
+            String collectionResourceId,
+            Range<String> range,
+            boolean forceRefresh /* = false */,
+            Map<String, Object> properties,
+            CosmosDiagnosticsContext diagnosticsContext);
 
-        Mono<Utils.ValueHolder<PartitionKeyRange>> tryGetPartitionKeyRangeByIdAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionResourceId, String partitionKeyRangeId,
-                                                                                    boolean forceRefresh /* = false */, Map<String, Object> properties, RxDocumentServiceRequest enclosingRequest);
+        Mono<Utils.ValueHolder<PartitionKeyRange>> tryGetPartitionKeyRangeByIdAsync(
+            MetadataDiagnosticsContext metaDataDiagnosticsContext,
+            String collectionResourceId,
+            String partitionKeyRangeId,
+            boolean forceRefresh /* = false */,
+            Map<String, Object> properties,
+            CosmosDiagnosticsContext diagnosticsContext);
 }

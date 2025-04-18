@@ -1164,7 +1164,7 @@ public class CosmosAsyncContainer {
                     null,
                     this.getLinkWithoutTrailingSlash(),
                     null,
-                    null)
+                    state.getDiagnosticsContextSnapshot())
                 .flatMapMany(
                     collection -> {
                         if (collection == null) {

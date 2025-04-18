@@ -88,7 +88,7 @@ public class GatewayServerErrorInjector {
                         collectionValueHolder.v.getResourceId(),
                         null,
                         null,
-                        request)
+                        null)
                     .flatMap(collectionRoutingMapValueHolder -> {
                         String partitionKeyRangeId =
                             request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);

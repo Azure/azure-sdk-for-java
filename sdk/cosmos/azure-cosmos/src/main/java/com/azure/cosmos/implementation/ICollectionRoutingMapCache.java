@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.implementation.routing.CollectionRoutingMap;
 import reactor.core.publisher.Mono;
 
@@ -18,9 +19,9 @@ public interface ICollectionRoutingMapCache {
             String collectionRid,
             CollectionRoutingMap previousValue,
             Map<String, Object> properties,
-            RxDocumentServiceRequest enclosingRequest) {
+            CosmosDiagnosticsContext diagnosticsContext) {
 
-        return tryLookupAsync(metaDataDiagnosticsContext, collectionRid, previousValue, false, properties, enclosingRequest);
+        return tryLookupAsync(metaDataDiagnosticsContext, collectionRid, previousValue, false, properties, diagnosticsContext);
     }
 
     Mono<Utils.ValueHolder<CollectionRoutingMap>> tryLookupAsync(
@@ -29,5 +30,5 @@ public interface ICollectionRoutingMapCache {
             CollectionRoutingMap previousValue,
             boolean forceRefreshCollectionRoutingMap,
             Map<String, Object> properties,
-            RxDocumentServiceRequest enclosingRequest);
+            CosmosDiagnosticsContext diagnosticsContext);
 }

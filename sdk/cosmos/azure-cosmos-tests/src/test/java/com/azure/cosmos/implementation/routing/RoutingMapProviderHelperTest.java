@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.implementation.routing;
 
+import com.azure.cosmos.CosmosDiagnosticsContext;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -77,8 +79,13 @@ public class RoutingMapProviderHelperTest {
 
         @Override
         public Mono<Utils.ValueHolder<List<PartitionKeyRange>>> tryGetOverlappingRangesAsync(
-            MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionResourceId,
-            Range<String> range, boolean forceRefresh, Map<String, Object> properties, RxDocumentServiceRequest enclosingRequest) {
+            MetadataDiagnosticsContext metaDataDiagnosticsContext,
+            String collectionResourceId,
+            Range<String> range,
+            boolean forceRefresh,
+            Map<String, Object> properties,
+            CosmosDiagnosticsContext diagnosticsContext) {
+
             Utils.ValueHolder<List<PartitionKeyRange>> valueHolder = new Utils.ValueHolder<>();
             valueHolder.v = this.routingMap.getOverlappingRanges(range);
             return Mono.just(valueHolder);
@@ -86,8 +93,13 @@ public class RoutingMapProviderHelperTest {
 
         @Override
         public Mono<Utils.ValueHolder<PartitionKeyRange>> tryGetPartitionKeyRangeByIdAsync(
-            MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionResourceId,
-            String partitionKeyRangeId, boolean forceRefresh, Map<String, Object> properties, RxDocumentServiceRequest enclosingRequest) {
+            MetadataDiagnosticsContext metaDataDiagnosticsContext,
+            String collectionResourceId,
+            String partitionKeyRangeId,
+            boolean forceRefresh,
+            Map<String, Object> properties,
+            CosmosDiagnosticsContext diagnosticsContext) {
+
             return null;
         }
     }
@@ -99,7 +111,14 @@ public class RoutingMapProviderHelperTest {
         }
 
         @Override
-        public Mono<Utils.ValueHolder<List<PartitionKeyRange>>> tryGetOverlappingRangesAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionResourceId, Range<String> range, boolean forceRefresh, Map<String, Object> properties, RxDocumentServiceRequest enclosingRequest) {
+        public Mono<Utils.ValueHolder<List<PartitionKeyRange>>> tryGetOverlappingRangesAsync(
+            MetadataDiagnosticsContext metaDataDiagnosticsContext,
+            String collectionResourceId,
+            Range<String> range,
+            boolean forceRefresh,
+            Map<String, Object> properties,
+            CosmosDiagnosticsContext diagnosticsContext) {
+
             return Mono.just(new Utils.ValueHolder<>(null));
         }
     }
@@ -202,18 +221,20 @@ public class RoutingMapProviderHelperTest {
                                                                           "coll1",
                                                                           Arrays.asList(new Range<String>("000D", "0012", true, false),
                                                                                         new Range<String>("0012", "0015", true, false),
-                                                                                        new Range<>("0015", "0020", true, false)));
+                                                                                        new Range<>("0015", "0020", true, false)),
+                                                                          null);
         assertThat("2,3,4").isEqualTo(overlappingRanges.block().stream().map(func).collect(Collectors.joining(",")));
 
         overlappingRanges = RoutingMapProviderHelper.getOverlappingRanges(routingMapProviderMock,
                                                                           "coll1",
-                                                                          Arrays.asList(new Range<String>("000D", "0012", true, false)));
+                                                                          Arrays.asList(new Range<String>("000D", "0012", true, false)),
+                                                                          null);
         assertThat("2").isEqualTo(overlappingRanges.block().stream().map(func).collect(Collectors.joining(",")));
 
         //duplicate ranges
         List<Range<String>> sortedRanges = Arrays.asList(new Range<>("", "FF", true, false),
                                                          new Range<>("", "FF", true, false));
-        overlappingRanges = RoutingMapProviderHelper.getOverlappingRanges(routingMapProviderMock, "coll1", sortedRanges);
+        overlappingRanges = RoutingMapProviderHelper.getOverlappingRanges(routingMapProviderMock, "coll1", sortedRanges, null);
         List<PartitionKeyRange> overLappingRangeList = overlappingRanges.block();
         assertThat(overLappingRangeList).isNotNull();
         assertThat(7).isEqualTo(overLappingRangeList.size());
@@ -221,7 +242,7 @@ public class RoutingMapProviderHelperTest {
 
         sortedRanges = Arrays.asList(new Range<>("", "000D", true, false),
                                                          new Range<>("", "000D", true, false));
-        overlappingRanges = RoutingMapProviderHelper.getOverlappingRanges(routingMapProviderMock, "coll1", sortedRanges);
+        overlappingRanges = RoutingMapProviderHelper.getOverlappingRanges(routingMapProviderMock, "coll1", sortedRanges, null);
         overLappingRangeList = overlappingRanges.block();
         assertThat(overLappingRangeList).isNotNull();
         assertThat(2).isEqualTo(overLappingRangeList.size());
@@ -241,7 +262,8 @@ public class RoutingMapProviderHelperTest {
         Mono<List<PartitionKeyRange>> overlappingRanges;
         overlappingRanges = RoutingMapProviderHelper.getOverlappingRanges(routingMapProviderMock,
             "coll1",
-            Arrays.asList(new Range<String>("", "FF", true, false)));
+            Arrays.asList(new Range<String>("", "FF", true, false)),
+            null);
         assertThat("").isEqualTo(overlappingRanges.block().stream().map(func).collect(Collectors.joining(",")));
     }
 }

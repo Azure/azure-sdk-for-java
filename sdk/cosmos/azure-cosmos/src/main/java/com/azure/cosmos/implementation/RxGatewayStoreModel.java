@@ -5,6 +5,8 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
+import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
@@ -763,11 +765,19 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                         }
                         return Mono.empty();
                     }
+
+                    DiagnosticsClientContext diagnosticsClientContext
+                        = request.getDiagnosticsClientContext();
+                    CosmosDiagnostics cosmosDiagnostics
+                        = diagnosticsClientContext.getMostRecentlyCreatedDiagnostics();
+                    CosmosDiagnosticsContext cosmosDiagnosticsContext
+                        = cosmosDiagnostics.getDiagnosticsContext();
+
                     return partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                         collectionValueHolder.v.getResourceId(),
                         null,
                         null,
-                        request).flatMap(collectionRoutingMapValueHolder -> {
+                        cosmosDiagnosticsContext).flatMap(collectionRoutingMapValueHolder -> {
                         if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
                             //Apply the ambient session.
                             String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);

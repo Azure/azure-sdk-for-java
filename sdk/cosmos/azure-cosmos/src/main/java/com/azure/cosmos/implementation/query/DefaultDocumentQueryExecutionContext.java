@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.BackoffRetryUtility;
 import com.azure.cosmos.implementation.Constants;
@@ -135,8 +136,8 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
     			    newCosmosQueryRequestOptions, createRequestFunc, executeFunc, maxPageSize, this.client.getGlobalEndpointManager(), this.client.getGlobalPartitionEndpointManagerForCircuitBreaker());
     }
 
-    public Mono<List<PartitionKeyRange>> getTargetPartitionKeyRanges(String resourceId, List<Range<String>> queryRanges) {
-        return RoutingMapProviderHelper.getOverlappingRanges(client.getPartitionKeyRangeCache(), resourceId, queryRanges);
+    public Mono<List<PartitionKeyRange>> getTargetPartitionKeyRanges(String resourceId, List<Range<String>> queryRanges, CosmosDiagnosticsContext diagnosticsContext) {
+        return RoutingMapProviderHelper.getOverlappingRanges(client.getPartitionKeyRangeCache(), resourceId, queryRanges, diagnosticsContext);
     }
 
     public Mono<Range<String>> getTargetRange(String collectionRid, FeedRangeInternal feedRangeInternal) {
@@ -149,15 +150,15 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
                                                        null));
     }
 
-    public Mono<List<PartitionKeyRange>> getTargetPartitionKeyRangesById(String resourceId,
-                                                                                      String partitionKeyRangeIdInternal) {
+    public Mono<List<PartitionKeyRange>> getTargetPartitionKeyRangesById(String resourceId, String partitionKeyRangeIdInternal, CosmosDiagnosticsContext diagnosticsContext) {
         return client.getPartitionKeyRangeCache()
                    .tryGetPartitionKeyRangeByIdAsync(null,
                                                      resourceId,
                                                      partitionKeyRangeIdInternal,
                                                      false,
                                                      null,
-                                       null)
+                                                     diagnosticsContext)
+
                    .flatMap(partitionKeyRange -> Mono.just(Collections.singletonList(partitionKeyRange.v)));
     }
 

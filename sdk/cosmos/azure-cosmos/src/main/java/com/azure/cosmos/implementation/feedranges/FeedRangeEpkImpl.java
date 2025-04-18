@@ -4,7 +4,10 @@
 package com.azure.cosmos.implementation.feedranges;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -108,6 +111,13 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
 
                 final String containerRid = collection.getResourceId();
 
+                DiagnosticsClientContext diagnosticsClientContext
+                    = request.getDiagnosticsClientContext();
+                CosmosDiagnostics cosmosDiagnostics
+                    = diagnosticsClientContext.getMostRecentlyCreatedDiagnostics();
+                CosmosDiagnosticsContext cosmosDiagnosticsContext
+                    = cosmosDiagnostics.getDiagnosticsContext();
+
                 return routingMapProvider
                     .tryGetOverlappingRangesAsync(
                         metadataDiagnosticsCtx,
@@ -115,7 +125,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                         this.range,
                         false,
                         null,
-                        request)
+                        cosmosDiagnosticsContext)
                     .flatMap(pkRangeHolder -> {
                         final ArrayList<String> rangeList = new ArrayList<>();
 
@@ -161,6 +171,13 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                 final String containerRid = collection.getResourceId();
                 request.setEffectiveRange(this.range);
 
+                DiagnosticsClientContext diagnosticsClientContext
+                    = request.getDiagnosticsClientContext();
+                CosmosDiagnostics cosmosDiagnostics
+                    = diagnosticsClientContext.getMostRecentlyCreatedDiagnostics();
+                CosmosDiagnosticsContext cosmosDiagnosticsContext
+                    = cosmosDiagnostics.getDiagnosticsContext();
+
                 return routingMapProvider
                     .tryGetOverlappingRangesAsync(
                         metadataDiagnosticsCtx,
@@ -168,7 +185,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                         this.range,
                         false,
                         null,
-                        request)
+                        cosmosDiagnosticsContext)
                     .flatMap(pkRangeHolder -> {
                         if (pkRangeHolder == null) {
                             return Mono.error(new NotFoundException(

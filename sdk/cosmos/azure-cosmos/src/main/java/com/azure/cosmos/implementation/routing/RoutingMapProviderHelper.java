@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.implementation.routing;
 
+import com.azure.cosmos.CosmosDiagnosticsContext;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import reactor.core.publisher.Flux;
@@ -82,7 +84,8 @@ public final class RoutingMapProviderHelper {
 
     public static Mono<List<PartitionKeyRange>> getOverlappingRanges(
         IRoutingMapProvider routingMapProvider,
-        String resourceId, List<Range<String>> sortedRanges) {
+        String resourceId, List<Range<String>> sortedRanges,
+        CosmosDiagnosticsContext diagnosticsContext) {
 
         if (routingMapProvider == null){
             throw new IllegalArgumentException("routingMapProvider");
@@ -122,7 +125,7 @@ public final class RoutingMapProviderHelper {
                 queryRange = sortedRange;
             }
 
-            return routingMapProvider.tryGetOverlappingRangesAsync(null, resourceId, queryRange, false, null, null)
+            return routingMapProvider.tryGetOverlappingRangesAsync(null, resourceId, queryRange, false, null, diagnosticsContext)
                        .map(ranges -> ranges.v != null ? ranges.v : new ArrayList<PartitionKeyRange>())
                        .map(targetRanges::addAll)
                        .flatMap(aBoolean -> {

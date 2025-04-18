@@ -4,7 +4,10 @@
 package com.azure.cosmos.implementation.feedranges;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
@@ -124,6 +127,13 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
                     this.partitionKey,
                     collection.getPartitionKey());
 
+                DiagnosticsClientContext diagnosticsClientContext
+                    = request.getDiagnosticsClientContext();
+                CosmosDiagnostics cosmosDiagnostics
+                    = diagnosticsClientContext.getMostRecentlyCreatedDiagnostics();
+                CosmosDiagnosticsContext cosmosDiagnosticsContext
+                    = cosmosDiagnostics.getDiagnosticsContext();
+
                 return routingMapProvider
                     .tryGetOverlappingRangesAsync(
                         metadataDiagnosticsCtx,
@@ -131,7 +141,7 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
                         Range.getPointRange(effectivePartitionKey),
                         false,
                         null,
-                        request)
+                        cosmosDiagnosticsContext)
                     .flatMap(pkRangeHolder -> {
                         ArrayList<String> rangeList = new ArrayList<>(1);
 

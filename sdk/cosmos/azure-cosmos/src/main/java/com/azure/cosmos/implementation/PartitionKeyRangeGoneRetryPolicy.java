@@ -3,6 +3,8 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.caches.IPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
@@ -76,12 +78,19 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
 
             return collectionObs.flatMap(collectionValueHolder -> {
 
+                DiagnosticsClientContext diagnosticsClientContext
+                    = request.getDiagnosticsClientContext();
+                CosmosDiagnostics cosmosDiagnostics
+                    = diagnosticsClientContext.getMostRecentlyCreatedDiagnostics();
+                CosmosDiagnosticsContext cosmosDiagnosticsContext
+                    = cosmosDiagnostics.getDiagnosticsContext();
+
                 Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMapObs = this.partitionKeyRangeCache.tryLookupAsync(
                     BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics),
                     collectionValueHolder.v.getResourceId(),
                     null,
                     request.properties,
-                    request);
+                    cosmosDiagnosticsContext);
 
                 Mono<Utils.ValueHolder<CollectionRoutingMap>> refreshedRoutingMapObs = routingMapObs.flatMap(routingMapValueHolder -> {
                     if (routingMapValueHolder.v != null) {
@@ -91,7 +100,7 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
                             collectionValueHolder.v.getResourceId(),
                             routingMapValueHolder.v,
                             request.properties,
-                            request);
+                            cosmosDiagnosticsContext);
                     } else {
                         return Mono.just(new Utils.ValueHolder<>(null));
                     }

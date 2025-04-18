@@ -3,6 +3,8 @@
 package com.azure.cosmos.implementation.caches;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
 import com.azure.cosmos.implementation.ClearingSessionContainerClientRetryPolicy;
 import com.azure.cosmos.implementation.CrossRegionAvailabilityContextForRxDocumentServiceRequest;
@@ -13,9 +15,11 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IAuthorizationTokenProvider;
 import com.azure.cosmos.implementation.IRetryPolicyFactory;
 import com.azure.cosmos.implementation.ISessionContainer;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.ObservableHelper;
 import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.OverridableRequestOptions;
 import com.azure.cosmos.implementation.PathsHelper;
 import com.azure.cosmos.implementation.RequestVerb;
 import com.azure.cosmos.implementation.ResourceType;
@@ -46,6 +50,9 @@ public class RxClientCollectionCache extends RxCollectionCache {
     private final IRetryPolicyFactory retryPolicy;
     private final ISessionContainer sessionContainer;
 
+    private static final ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor diagnosticsContextAccessor
+        = ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
+
     public RxClientCollectionCache(DiagnosticsClientContext diagnosticsClientContext,
                                    ISessionContainer sessionContainer,
                                    RxStoreModel storeModel,
@@ -72,17 +79,17 @@ public class RxClientCollectionCache extends RxCollectionCache {
         this.sessionContainer = sessionContainer;
     }
 
-    protected Mono<DocumentCollection> getByRidAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, Map<String, Object> properties, RxDocumentServiceRequest enclosingRequest) {
+    protected Mono<DocumentCollection> getByRidAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String collectionRid, Map<String, Object> properties, CosmosDiagnosticsContext diagnosticsContext) {
         DocumentClientRetryPolicy retryPolicyInstance = new ClearingSessionContainerClientRetryPolicy(this.sessionContainer, this.retryPolicy.getRequestPolicy(null));
         return ObservableHelper.inlineIfPossible(
-                () -> this.readCollectionAsync(metaDataDiagnosticsContext, PathsHelper.generatePath(ResourceType.DocumentCollection, collectionRid, false), retryPolicyInstance, properties, enclosingRequest)
+                () -> this.readCollectionAsync(metaDataDiagnosticsContext, PathsHelper.generatePath(ResourceType.DocumentCollection, collectionRid, false), retryPolicyInstance, properties, diagnosticsContext)
                 , retryPolicyInstance);
     }
 
-    protected Mono<DocumentCollection> getByNameAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String resourceAddress, Map<String, Object> properties, RxDocumentServiceRequest enclosingRequest) {
+    protected Mono<DocumentCollection> getByNameAsync(MetadataDiagnosticsContext metaDataDiagnosticsContext, String resourceAddress, Map<String, Object> properties, CosmosDiagnosticsContext diagnosticsContext) {
         DocumentClientRetryPolicy retryPolicyInstance = new ClearingSessionContainerClientRetryPolicy(this.sessionContainer, this.retryPolicy.getRequestPolicy(null));
         return ObservableHelper.inlineIfPossible(
-                () -> this.readCollectionAsync(metaDataDiagnosticsContext, resourceAddress, retryPolicyInstance, properties, enclosingRequest),
+                () -> this.readCollectionAsync(metaDataDiagnosticsContext, resourceAddress, retryPolicyInstance, properties, diagnosticsContext),
                 retryPolicyInstance);
     }
 
@@ -90,7 +97,7 @@ public class RxClientCollectionCache extends RxCollectionCache {
                                                          String collectionLink,
                                                          DocumentClientRetryPolicy retryPolicyInstance,
                                                          Map<String, Object> properties,
-                                                         RxDocumentServiceRequest enclosingRequest) {
+                                                         CosmosDiagnosticsContext diagnosticsContext) {
 
         String path = Utils.joinPath(collectionLink, null);
 
@@ -100,18 +107,15 @@ public class RxClientCollectionCache extends RxCollectionCache {
                 path,
                 new HashMap<>());
 
-        List<String> excludedRegions = (enclosingRequest != null && enclosingRequest.requestContext != null) ?
-            enclosingRequest.requestContext.getExcludeRegions() : null;
+        List<String> excludeRegions = new ArrayList<>();
 
-        if (request.requestContext != null) {
-            if (excludedRegions != null && !excludedRegions.isEmpty()) {
-                request.requestContext.setExcludeRegions(excludedRegions);
+        if (diagnosticsContext != null) {
+            OverridableRequestOptions requestOptions
+                = diagnosticsContextAccessor.getRequestOptions(diagnosticsContext);
 
-                CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest
-                    = request.requestContext.getCrossRegionAvailabilityContext();
+            excludeRegions.addAll(requestOptions.getExcludedRegions());
 
-                crossRegionAvailabilityContextForRequest.setEnableRegionReorderingForAuxiliaryRequests(true);
-            }
+            request.requestContext.setExcludeRegions(excludeRegions);
         }
 
         request.getHeaders().put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
