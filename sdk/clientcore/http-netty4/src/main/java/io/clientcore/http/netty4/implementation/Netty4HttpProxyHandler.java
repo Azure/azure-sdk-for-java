@@ -378,6 +378,7 @@ public final class Netty4HttpProxyHandler extends ChannelDuplexHandler {
     }
 
     private void setConnectSuccess() {
+        LOGGER.atInfo().log("Successfully connected to proxy server");
         finished = true;
         cancelConnectTimeoutFuture();
 

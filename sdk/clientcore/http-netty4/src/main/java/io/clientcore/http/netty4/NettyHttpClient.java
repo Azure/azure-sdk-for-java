@@ -147,6 +147,7 @@ class NettyHttpClient implements HttpClient {
                 Channel channel = connectListener.channel();
                 channel.closeFuture().addListener(closeListener -> {
                     if (!closeListener.isSuccess()) {
+                        LOGGER.atError().setThrowable(closeListener.cause()).log("Channel closed with error");
                         setOrSuppressError(errorReference, closeListener.cause());
                     }
                 });

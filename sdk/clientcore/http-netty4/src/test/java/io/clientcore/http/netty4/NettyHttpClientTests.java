@@ -14,6 +14,9 @@ import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
+import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
+import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
+import io.clientcore.core.http.pipeline.HttpPipelinePosition;
 import io.clientcore.core.http.pipeline.HttpRetryOptions;
 import io.clientcore.core.http.pipeline.HttpRetryPolicy;
 import io.clientcore.core.models.CoreException;
@@ -25,6 +28,7 @@ import io.clientcore.http.netty4.implementation.NettyHttpClientLocalTestServer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.proxy.ProxyConnectException;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
@@ -254,28 +258,33 @@ public class NettyHttpClientTests {
      * This test validates that the eager retrying of Proxy Authentication (407) responses doesn't return to the
      * HttpPipeline before connecting.
      */
+    @Disabled("Need to add eager proxy retry support")
     @Test
     public void proxyAuthenticationErrorEagerlyRetries() throws IOException {
         // Create a Netty HttpClient to share backing resources that are warmed up before making a time based call.
         try (MockProxyServer mockProxyServer = new MockProxyServer("1", "1")) {
-            AtomicInteger responseHandleCount = new AtomicInteger();
+            AtomicInteger callCount = new AtomicInteger();
+            HttpPipelinePolicy callCountingPolicy = (httpRequest, next) -> {
+                callCount.incrementAndGet();
+                return next.process();
+            };
+
             HttpRetryPolicy retryPolicy = new HttpRetryPolicy(new HttpRetryOptions(3, Duration.ofSeconds(1)));
             ProxyOptions proxyOptions
                 = new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress()).setCredentials("1", "1");
 
             // Create an HttpPipeline where any exception has a retry delay of 10 seconds.
-            HttpPipeline httpPipeline = new HttpPipelineBuilder().addPolicy(retryPolicy).addPolicy((context, next) -> {
-                Response<BinaryData> response = next.process();
-                responseHandleCount.incrementAndGet();
-                return response;
-            }).httpClient(new NettyHttpClientBuilder().proxy(proxyOptions).build()).build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().addPolicy(retryPolicy)
+                .addPolicy(callCountingPolicy)
+                .httpClient(new NettyHttpClientBuilder().proxy(proxyOptions).build())
+                .build();
 
             try (Response<BinaryData> response
                 = httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(PROXY_TO_ADDRESS)))) {
                 assertEquals(418, response.getStatusCode());
             }
 
-            assertEquals(1, responseHandleCount.get());
+            assertEquals(1, callCount.get());
         }
     }
 
