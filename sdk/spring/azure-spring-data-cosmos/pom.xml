@@ -216,6 +216,11 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <configuration>
+          <compilerArgs>
+            <arg>-Xlint:none</arg>
+          </compilerArgs>
+        </configuration>
         <executions>
           <execution>
             <id>compile-9</id>

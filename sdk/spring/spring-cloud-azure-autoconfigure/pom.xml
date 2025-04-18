@@ -464,10 +464,10 @@
                 <include>javax.servlet:javax.servlet-api:[4.0.1]</include> <!-- {x-include-update;spring_javax.servlet:javax.servlet-api;external_dependency} -->
                 <include>org.hibernate.validator:hibernate-validator:[6.2.5.Final]</include> <!-- {x-include-update;spring_org.hibernate.validator:hibernate-validator;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-actuator-autoconfigure:[2.7.18]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-actuator-autoconfigure;external_dependency} -->
-                <include>org.springframework.boot:spring-boot-autoconfigure-processor:[2.7.18]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure-processor;external_dependency} -->
+                <include>org.springframework.boot:spring-boot-autoconfigure-processor:[2.7.18]</include> <!-- {x-include-update;spring_org.springframework.boot:spring-boot-autoconfigure-processor;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-autoconfigure:[2.7.18]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-autoconfigure;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-configuration-processor:[2.7.18]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
-                <include>org.springframework.data:spring-data-mongodb:[3.4.18]</include> <!-- {x-include-update;org.springframework.data:spring-data-mongodb;external_dependency} -->
+                <include>org.springframework.data:spring-data-mongodb:[3.4.18]</include> <!-- {x-include-update;spring_org.springframework.data:spring-data-mongodb;external_dependency} -->
                 <include>org.springframework.data:spring-data-redis:[2.7.18]</include> <!-- {x-include-update;org.springframework.data:spring-data-redis;external_dependency} -->
                 <include>org.springframework.kafka:spring-kafka:[2.9.11]</include> <!-- {x-include-update;org.springframework.kafka:spring-kafka;external_dependency} -->
                 <include>org.springframework.cloud:spring-cloud-starter-stream-kafka:[3.2.10]</include> <!-- {x-include-update;org.springframework.cloud:spring-cloud-starter-stream-kafka;external_dependency} -->
