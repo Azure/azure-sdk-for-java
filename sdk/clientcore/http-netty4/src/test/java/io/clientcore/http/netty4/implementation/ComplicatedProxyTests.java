@@ -26,6 +26,9 @@ import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.proxy.HttpProxyHandler;
 import io.netty.util.concurrent.DefaultThreadFactory;
 import org.junit.jupiter.api.RepeatedTest;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
+import org.junit.jupiter.api.parallel.Isolated;
 
 import java.net.URI;
 import java.util.List;
@@ -45,10 +48,12 @@ import static org.junit.jupiter.api.Assertions.fail;
  * {@code StacklessClosedChannelException}. This attempts to replicate the problem without using the full
  * {@code NettyHttpClient}.
  */
+@Isolated
+@Execution(ExecutionMode.SAME_THREAD)
 public class ComplicatedProxyTests {
     private static final ClientLogger LOGGER = new ClientLogger(ComplicatedProxyTests.class);
 
-    @RepeatedTest(100)
+    @RepeatedTest(1000)
     public void complicatedProxyIssue() {
         try (MockProxyServer mockProxyServer = new MockProxyServer("1", "1")) {
             ChannelInitializationProxyHandler channelInitializationProxyHandler = new ChannelInitializationProxyHandler(
