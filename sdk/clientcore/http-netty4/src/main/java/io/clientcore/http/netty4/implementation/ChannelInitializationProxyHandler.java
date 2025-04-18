@@ -85,8 +85,8 @@ public final class ChannelInitializationProxyHandler implements Predicate<Socket
         } else if (proxyOptions.getType() == ProxyOptions.Type.SOCKS5) {
             return new Socks5ProxyHandler(proxyOptions.getAddress(), proxyOptions.getUsername(),
                 proxyOptions.getPassword());
-        } else if (proxyOptions.getUsername() != null && proxyOptions.getPassword() != null) {
-            return new Netty4HttpProxyHandler(proxyOptions, proxyChallenges);
+//        } else if (proxyOptions.getUsername() != null && proxyOptions.getPassword() != null) {
+//            return new Netty4HttpProxyHandler(proxyOptions, proxyChallenges);
         } else {
             return new HttpProxyHandler(proxyOptions.getAddress());
         }
