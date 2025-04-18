@@ -13,6 +13,7 @@ import com.azure.resourcemanager.elasticsan.fluent.VolumeGroupsClient;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeGroupInner;
 import com.azure.resourcemanager.elasticsan.models.VolumeGroup;
 import com.azure.resourcemanager.elasticsan.models.VolumeGroups;
+import com.azure.resourcemanager.elasticsan.models.XMsAccessSoftDeletedResources;
 
 public final class VolumeGroupsImpl implements VolumeGroups {
     private static final ClientLogger LOGGER = new ClientLogger(VolumeGroupsImpl.class);
@@ -34,9 +35,9 @@ public final class VolumeGroupsImpl implements VolumeGroups {
     }
 
     public PagedIterable<VolumeGroup> listByElasticSan(String resourceGroupName, String elasticSanName,
-        Context context) {
-        PagedIterable<VolumeGroupInner> inner
-            = this.serviceClient().listByElasticSan(resourceGroupName, elasticSanName, context);
+        XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources, Context context) {
+        PagedIterable<VolumeGroupInner> inner = this.serviceClient()
+            .listByElasticSan(resourceGroupName, elasticSanName, xMsAccessSoftDeletedResources, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new VolumeGroupImpl(inner1, this.manager()));
     }
 
