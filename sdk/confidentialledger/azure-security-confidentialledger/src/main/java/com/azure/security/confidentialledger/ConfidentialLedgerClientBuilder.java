@@ -211,9 +211,8 @@ public final class ConfidentialLedgerClientBuilder
 
     /**
      * Sets The Confidential Ledger URL, for example https://contoso.confidentialledger.azure.com.
-     * @deprecated
-     * This method is no longer acceptable to set confidential ledger endpoint. The ledgerEndpoint is now deprecated and will be removed in future releases.
-     * <p> Use {@link ConfidentialLedgerClientBuilder#endpoint(endpoint)} instead.
+     * @deprecated The ledgerEndpoint method is now deprecated and will be removed in future releases Use {@link ConfidentialLedgerClientBuilder#endpoint(endpoint)} instead.
+     *
      * @param ledgerEndpoint the ledgerEndpoint value.
      * @return the ConfidentialLedgerClientBuilder.
      */
