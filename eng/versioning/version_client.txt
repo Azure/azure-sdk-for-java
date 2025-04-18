@@ -201,7 +201,6 @@ com.azure:identity-test-function;1.0.0-beta.1;1.0.0-beta.1
 com.azure:identity-test-vm;1.0.0-beta.1;1.0.0-beta.1
 com.azure:identity-test-webapp;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-ai-vision-face;1.0.0-beta.2;1.0.0-beta.3
-com.azure.spring:azure-monitor-spring-native-test;1.0.0-beta.1;1.0.0-beta.1
 com.azure.spring:spring-cloud-azure-appconfiguration-config-web;4.19.0;4.20.0
 com.azure.spring:spring-cloud-azure-appconfiguration-config;4.19.0;4.20.0
 com.azure.spring:spring-cloud-azure-feature-management-web;4.19.0;4.20.0
@@ -236,7 +235,6 @@ com.azure.spring:spring-cloud-azure-starter-redis;4.19.0;4.20.0
 com.azure.spring:spring-cloud-azure-starter-keyvault;4.19.0;4.20.0
 com.azure.spring:spring-cloud-azure-starter-keyvault-certificates;4.19.0;4.20.0
 com.azure.spring:spring-cloud-azure-starter-keyvault-secrets;4.19.0;4.20.0
-com.azure.spring:spring-cloud-azure-starter-monitor;1.0.0-beta.6;1.0.0-beta.7
 com.azure.spring:spring-cloud-azure-starter-servicebus-jms;4.19.0;4.20.0
 com.azure.spring:spring-cloud-azure-starter-servicebus;4.19.0;4.20.0
 com.azure.spring:spring-cloud-azure-starter-storage;4.19.0;4.20.0
@@ -522,6 +520,5 @@ spring_com.azure:azure-messaging-eventgrid;4.29.1;4.29.1
 spring_com.azure:azure-identity-extensions;1.2.2;1.2.2
 spring_com.azure:azure-core-amqp;2.9.16;2.9.16
 spring_com.azure:azure-core-management;1.17.0;1.17.0
-spring_com.azure:azure-monitor-opentelemetry-exporter;1.0.0-beta.32;1.0.0-beta.32
 spring_com.azure:azure-core-test;1.27.0-beta.8;1.27.0-beta.8
 spring_com.azure:azure-core-serializer-json-jackson;1.5.8;1.5.8
