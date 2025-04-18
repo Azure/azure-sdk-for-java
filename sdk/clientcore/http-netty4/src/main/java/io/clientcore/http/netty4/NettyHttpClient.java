@@ -34,6 +34,7 @@ import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.DefaultHttpRequest;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpVersion;
+import io.netty.handler.proxy.ProxyHandler;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.handler.stream.ChunkedInput;
@@ -111,8 +112,16 @@ class NettyHttpClient implements HttpClient {
             @Override
             protected void initChannel(Channel ch) throws SSLException {
                 // Test whether proxying should be applied to this Channel. If so, add it.
-                if (channelInitializationProxyHandler.test(ch.remoteAddress())) {
-                    ch.pipeline().addFirst(channelInitializationProxyHandler.createProxy(proxyChallenges));
+                boolean hasProxy = channelInitializationProxyHandler.test(ch.remoteAddress());
+                if (hasProxy) {
+                    ProxyHandler proxyHandler = channelInitializationProxyHandler.createProxy(proxyChallenges);
+                    proxyHandler.connectFuture().addListener(future -> {
+                        if (!future.isSuccess()) {
+                            LOGGER.atError().setThrowable(future.cause()).log("Failed to connect to proxy");
+                        }
+                    });
+
+                    ch.pipeline().addFirst(proxyHandler);
                 }
 
                 // Add SSL handling if the request is HTTPS.

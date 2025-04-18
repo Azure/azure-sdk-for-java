@@ -10,16 +10,10 @@ import io.clientcore.core.utils.AuthUtils;
 import io.clientcore.core.utils.AuthenticateChallenge;
 import io.clientcore.core.utils.CoreUtils;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelDuplexHandler;
-import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandler;
-import io.netty.channel.ChannelOption;
 import io.netty.channel.ChannelOutboundHandler;
-import io.netty.channel.ChannelPipeline;
 import io.netty.channel.ChannelPromise;
-import io.netty.channel.PendingWriteQueue;
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.HttpClientCodec;
@@ -33,20 +27,14 @@ import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.handler.proxy.HttpProxyHandler;
 import io.netty.handler.proxy.ProxyConnectException;
-import io.netty.handler.proxy.ProxyConnectionEvent;
-import io.netty.util.ReferenceCountUtil;
-import io.netty.util.concurrent.DefaultPromise;
-import io.netty.util.concurrent.EventExecutor;
-import io.netty.util.concurrent.Future;
+import io.netty.handler.proxy.ProxyHandler;
 
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.net.URI;
-import java.nio.channels.ConnectionPendingException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static io.clientcore.core.utils.AuthUtils.parseAuthenticationOrAuthorizationHeader;
@@ -55,30 +43,19 @@ import static io.clientcore.http.netty4.implementation.Netty4Utility.createCodec
 /**
  * This class handles authorizing requests being sent through a proxy that requires authentication.
  */
-public final class Netty4HttpProxyHandler extends ChannelDuplexHandler {
+public final class Netty4HttpProxyHandler extends ProxyHandler {
     static final String VALIDATION_ERROR_TEMPLATE = "The '%s' returned in the 'Proxy-Authentication-Info' "
         + "header doesn't match the value sent in the 'Proxy-Authorization' header. Sent: %s, received: %s.";
-
-    private final SocketAddress proxyAddress;
-    private volatile SocketAddress destinationAddress;
-
-    private volatile ChannelHandlerContext ctx;
-    private PendingWriteQueue pendingWrites;
-    private boolean finished;
-    private boolean suppressChannelReadComplete;
-    private boolean flushedPrematurely;
-    private final LazyChannelPromise connectPromise = new LazyChannelPromise();
-    private Future<?> connectTimeoutFuture;
-    private final ChannelFutureListener writeListener = future -> {
-        if (!future.isSuccess()) {
-            LOGGER.atInfo().log("Writing to proxy server failed");
-            setConnectFailure(future.cause());
-        }
-    };
 
     private static final String PROXY_AUTHENTICATION_INFO = "Proxy-Authentication-Info";
     private static final HttpHeaderName PROXY_AUTHENTICATION_INFO_NAME
         = HttpHeaderName.fromString(PROXY_AUTHENTICATION_INFO);
+
+    private static final String NONE = "none";
+    private static final String HTTP = "http";
+
+    private static final String CNONCE = "cnonce";
+    private static final String NC = "nc";
 
     // CoreHttpProxyHandler will be created for each network request that is using proxy, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(Netty4HttpProxyHandler.class);
@@ -87,7 +64,7 @@ public final class Netty4HttpProxyHandler extends ChannelDuplexHandler {
     private final AtomicReference<List<AuthenticateChallenge>> proxyChallengeHolder;
     private final HttpClientCodecWrapper wrapper;
 
-    private String authScheme = "none";
+    private String authScheme = NONE;
     private String lastUsedAuthorizationHeader;
 
     private HttpResponseStatus status;
@@ -101,7 +78,8 @@ public final class Netty4HttpProxyHandler extends ChannelDuplexHandler {
      */
     public Netty4HttpProxyHandler(ProxyOptions proxyOptions,
         AtomicReference<List<AuthenticateChallenge>> proxyChallengeHolder) {
-        this.proxyAddress = proxyOptions.getAddress();
+        super(proxyOptions.getAddress());
+
         this.proxyOptions = proxyOptions;
         this.proxyChallengeHolder = proxyChallengeHolder;
         this.wrapper = new HttpClientCodecWrapper();
@@ -114,76 +92,35 @@ public final class Netty4HttpProxyHandler extends ChannelDuplexHandler {
     }
 
     @Override
-    public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-        this.ctx = ctx;
-        addCodec(ctx);
-
-        if (ctx.channel().isActive()) {
-            // channelActive() event has been fired already, which means this.channelActive() will
-            // not be invoked. We have to initialize here instead.
-            sendInitialMessage(ctx);
-        }
-        // channelActive() event has not been fired yet.  this.channelOpen() will be invoked
-        // and initialization will occur there.
+    public String protocol() {
+        return HTTP;
     }
 
-    private void addCodec(ChannelHandlerContext ctx) {
-        ChannelPipeline p = ctx.pipeline();
-        String name = ctx.name();
-        p.addBefore(name, null, this.wrapper);
+    @Override
+    public String authScheme() {
+        return authScheme;
     }
 
-    private void removeEncoder() {
+    @Override
+    protected void addCodec(ChannelHandlerContext ctx) {
+        ctx.pipeline().addBefore(ctx.name(), "Netty4-Proxy-Codec", this.wrapper);
+    }
+
+    @Override
+    protected void removeEncoder(ChannelHandlerContext ctx) {
         this.wrapper.codec.removeOutboundHandler();
     }
 
-    private void removeDecoder() {
+    @Override
+    protected void removeDecoder(ChannelHandlerContext ctx) {
         this.wrapper.codec.removeInboundHandler();
     }
 
-    @Override
-    public void connect(ChannelHandlerContext ctx, SocketAddress remoteAddress, SocketAddress localAddress,
-        ChannelPromise promise) {
-
-        if (destinationAddress != null) {
-            promise.setFailure(new ConnectionPendingException());
-            return;
-        }
-
-        destinationAddress = remoteAddress;
-        ctx.connect(proxyAddress, localAddress, promise).addListener(future -> {
-            if (!future.isSuccess()) {
-                LOGGER.atInfo().log("Failed to connect to proxy address");
-            }
-        });
-    }
-
-    @Override
-    public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        sendInitialMessage(ctx);
-        ctx.fireChannelActive();
-    }
-
-    private void sendInitialMessage(final ChannelHandlerContext ctx) throws Exception {
-        Integer channelOption = ctx.channel().config().getOption(ChannelOption.CONNECT_TIMEOUT_MILLIS);
-        final long connectTimeoutMillis = (channelOption != null) ? channelOption : 10_000;
-        if (connectTimeoutMillis > 0) {
-            connectTimeoutFuture = ctx.executor().schedule(() -> {
-                if (!connectPromise.isDone()) {
-                    setConnectFailure(new ProxyConnectException(exceptionMessage("timeout")));
-                }
-            }, connectTimeoutMillis, TimeUnit.MILLISECONDS);
-        }
-
-        sendToProxyServer(newInitialMessage(ctx));
-
-        readIfNeeded(ctx);
-    }
-
     @SuppressWarnings("deprecation")
-    private Object newInitialMessage(ChannelHandlerContext ctx) throws ProxyConnectException {
+    @Override
+    protected Object newInitialMessage(ChannelHandlerContext ctx) throws ProxyConnectException {
         // This needs to handle no authorization proxying.
-        InetSocketAddress destinationAddress = (InetSocketAddress) this.destinationAddress;
+        InetSocketAddress destinationAddress = this.destinationAddress();
         String hostString = HttpUtil.formatHostnameForHttp(destinationAddress);
         int port = destinationAddress.getPort();
         String url = hostString + ":" + port;
@@ -226,7 +163,8 @@ public final class Netty4HttpProxyHandler extends ChannelDuplexHandler {
         }
     }
 
-    private boolean handleResponse(Object o) throws ProxyConnectException {
+    @Override
+    protected boolean handleResponse(ChannelHandlerContext ctx, Object o) throws ProxyConnectException {
         if (o instanceof HttpResponse) {
             if (status != null) {
                 throw LOGGER.logThrowableAsWarning(new RuntimeException("Received too many responses for a request"));
@@ -304,8 +242,8 @@ public final class Netty4HttpProxyHandler extends ChannelDuplexHandler {
          * authorization header. This is the server performing validation to the client that it received the
          * information.
          */
-        validateProxyAuthenticationInfoValue("cnonce", authenticationInfoPieces, authorizationPieces);
-        validateProxyAuthenticationInfoValue("nc", authenticationInfoPieces, authorizationPieces);
+        validateProxyAuthenticationInfoValue(CNONCE, authenticationInfoPieces, authorizationPieces);
+        validateProxyAuthenticationInfoValue(NC, authenticationInfoPieces, authorizationPieces);
     }
 
     /*
@@ -326,235 +264,6 @@ public final class Netty4HttpProxyHandler extends ChannelDuplexHandler {
         }
     }
 
-    private void sendToProxyServer(Object msg) {
-        ctx.writeAndFlush(msg).addListener(writeListener);
-    }
-
-    @Override
-    public void channelInactive(ChannelHandlerContext ctx) {
-        if (finished) {
-            ctx.fireChannelInactive();
-        } else {
-            // Disconnected before connected to the destination.
-            setConnectFailure(new ProxyConnectException(exceptionMessage("disconnected")));
-        }
-    }
-
-    @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
-        if (finished) {
-            LOGGER.atInfo().setThrowable(cause).log("Caught exception after proxy handling finished");
-            ctx.fireExceptionCaught(cause);
-        } else {
-            // Exception was raised before the connection attempt is finished.
-            LOGGER.atInfo().setThrowable(cause).log("Caught exception before proxy handling finished");
-            setConnectFailure(cause);
-        }
-    }
-
-    @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
-        if (finished) {
-            // Received a message after the connection has been established; pass through.
-            suppressChannelReadComplete = false;
-            ctx.fireChannelRead(msg);
-        } else {
-            suppressChannelReadComplete = true;
-            Throwable cause = null;
-            try {
-                boolean done = handleResponse(msg);
-                if (done) {
-                    setConnectSuccess();
-                }
-            } catch (Throwable t) {
-                cause = t;
-            } finally {
-                ReferenceCountUtil.release(msg);
-                if (cause != null) {
-                    setConnectFailure(cause);
-                }
-            }
-        }
-    }
-
-    private void setConnectSuccess() {
-        LOGGER.atInfo().log("Successfully connected to proxy server");
-        finished = true;
-        cancelConnectTimeoutFuture();
-
-        if (!connectPromise.isDone()) {
-            boolean removedCodec = true;
-
-            removedCodec &= safeRemoveEncoder();
-
-            ctx.fireUserEventTriggered(new ProxyConnectionEvent("http", authScheme, proxyAddress, destinationAddress));
-
-            removedCodec &= safeRemoveDecoder();
-
-            if (removedCodec) {
-                writePendingWrites();
-
-                if (flushedPrematurely) {
-                    ctx.flush();
-                }
-                connectPromise.trySuccess(ctx.channel());
-            } else {
-                // We are at inconsistent state because we failed to remove all codec handlers.
-                Exception cause
-                    = new ProxyConnectException("failed to remove all codec handlers added by the proxy handler; bug?");
-                failPendingWritesAndClose(cause);
-            }
-        }
-    }
-
-    private boolean safeRemoveDecoder() {
-        try {
-            removeDecoder();
-            return true;
-        } catch (Exception e) {
-            LOGGER.atWarning().setThrowable(e).log("Failed to remove proxy decoders");
-        }
-
-        return false;
-    }
-
-    private boolean safeRemoveEncoder() {
-        try {
-            removeEncoder();
-            return true;
-        } catch (Exception e) {
-            LOGGER.atWarning().setThrowable(e).log("Failed to remove proxy encoders");
-        }
-
-        return false;
-    }
-
-    private void setConnectFailure(Throwable cause) {
-        finished = true;
-        cancelConnectTimeoutFuture();
-
-        if (!connectPromise.isDone()) {
-
-            if (!(cause instanceof ProxyConnectException)) {
-                cause = new ProxyConnectException(exceptionMessage(cause.toString()), cause);
-            }
-
-            safeRemoveDecoder();
-            safeRemoveEncoder();
-            failPendingWritesAndClose(cause);
-        }
-    }
-
-    private void failPendingWritesAndClose(Throwable cause) {
-        failPendingWrites(cause);
-        connectPromise.tryFailure(cause);
-        ctx.fireExceptionCaught(cause);
-        ctx.close();
-    }
-
-    private void cancelConnectTimeoutFuture() {
-        if (connectTimeoutFuture != null) {
-            connectTimeoutFuture.cancel(false);
-            connectTimeoutFuture = null;
-        }
-    }
-
-    /**
-     * Decorates the specified exception message with the common information such as the current protocol,
-     * authentication scheme, proxy address, and destination address.
-     */
-    private String exceptionMessage(String msg) {
-        if (msg == null) {
-            msg = "";
-        }
-
-        StringBuilder buf = new StringBuilder(128 + msg.length()).append("http, ")
-            .append(authScheme)
-            .append(", ")
-            .append(proxyAddress)
-            .append(" => ")
-            .append(destinationAddress);
-        if (!msg.isEmpty()) {
-            buf.append(", ").append(msg);
-        }
-
-        return buf.toString();
-    }
-
-    @Override
-    public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-        if (suppressChannelReadComplete) {
-            suppressChannelReadComplete = false;
-
-            readIfNeeded(ctx);
-        } else {
-            ctx.fireChannelReadComplete();
-        }
-    }
-
-    @Override
-    public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
-        if (finished) {
-            LOGGER.atInfo().log("Writing to channel after proxy handling finished");
-            writePendingWrites();
-            ctx.write(msg, promise);
-        } else {
-            LOGGER.atInfo().log("Writing to channel before proxy handling finished");
-            addPendingWrite(ctx, msg, promise);
-        }
-    }
-
-    @Override
-    public void flush(ChannelHandlerContext ctx) {
-        if (finished) {
-            LOGGER.atInfo().log("Flushing channel after proxy handling finished");
-            writePendingWrites();
-            ctx.flush();
-        } else {
-            LOGGER.atInfo().log("Flushing channel before proxy handling finished");
-            flushedPrematurely = true;
-        }
-    }
-
-    private static void readIfNeeded(ChannelHandlerContext ctx) {
-        if (!ctx.channel().config().isAutoRead()) {
-            ctx.read();
-        }
-    }
-
-    private void writePendingWrites() {
-        if (pendingWrites != null) {
-            LOGGER.atInfo().log("Writing pending proxy writes");
-            pendingWrites.removeAndWriteAll();
-            pendingWrites = null;
-        }
-    }
-
-    private void failPendingWrites(Throwable cause) {
-        if (pendingWrites != null) {
-            pendingWrites.removeAndFailAll(cause);
-            pendingWrites = null;
-        }
-    }
-
-    private void addPendingWrite(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) {
-        PendingWriteQueue pendingWrites = this.pendingWrites;
-        if (pendingWrites == null) {
-            this.pendingWrites = pendingWrites = new PendingWriteQueue(ctx);
-        }
-        pendingWrites.add(msg, promise);
-    }
-
-    private final class LazyChannelPromise extends DefaultPromise<Channel> {
-        @Override
-        protected EventExecutor executor() {
-            if (ctx == null) {
-                throw new IllegalStateException();
-            }
-            return ctx.executor();
-        }
-    }
-
     private static final class HttpClientCodecWrapper implements ChannelInboundHandler, ChannelOutboundHandler {
         final HttpClientCodec codec = createCodec();
 
@@ -571,7 +280,6 @@ public final class Netty4HttpProxyHandler extends ChannelDuplexHandler {
         @SuppressWarnings("deprecation")
         @Override
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-            LOGGER.atInfo().setThrowable(cause).log("Caught exception in codec");
             codec.exceptionCaught(ctx, cause);
         }
 
@@ -649,13 +357,11 @@ public final class Netty4HttpProxyHandler extends ChannelDuplexHandler {
 
         @Override
         public void write(ChannelHandlerContext ctx, Object msg, ChannelPromise promise) throws Exception {
-            LOGGER.atInfo().addKeyValue("msg", msg).log("Writing to proxy");
             codec.write(ctx, msg, promise);
         }
 
         @Override
         public void flush(ChannelHandlerContext ctx) throws Exception {
-            LOGGER.atInfo().log("Flushing to proxy");
             codec.flush(ctx);
         }
     }

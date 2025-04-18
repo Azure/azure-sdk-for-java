@@ -79,14 +79,14 @@ public final class ChannelInitializationProxyHandler implements Predicate<Socket
      * received {@code Proxy-Authenticate} headers from the proxy.
      * @return The {@link ProxyHandler} that will handle proxying.
      */
-    public ChannelDuplexHandler createProxy(AtomicReference<List<AuthenticateChallenge>> proxyChallenges) {
+    public ProxyHandler createProxy(AtomicReference<List<AuthenticateChallenge>> proxyChallenges) {
         if (proxyOptions.getType() == ProxyOptions.Type.SOCKS4) {
             return new Socks4ProxyHandler(proxyOptions.getAddress(), proxyOptions.getUsername());
         } else if (proxyOptions.getType() == ProxyOptions.Type.SOCKS5) {
             return new Socks5ProxyHandler(proxyOptions.getAddress(), proxyOptions.getUsername(),
                 proxyOptions.getPassword());
-//        } else if (proxyOptions.getUsername() != null && proxyOptions.getPassword() != null) {
-//            return new Netty4HttpProxyHandler(proxyOptions, proxyChallenges);
+        } else if (proxyOptions.getUsername() != null && proxyOptions.getPassword() != null) {
+            return new Netty4HttpProxyHandler(proxyOptions, proxyChallenges);
         } else {
             return new HttpProxyHandler(proxyOptions.getAddress());
         }
