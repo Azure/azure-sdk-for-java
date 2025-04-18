@@ -3,6 +3,8 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.Exceptions;
@@ -247,7 +249,11 @@ class DocumentProducer<T> {
                 feedRange,
                 dce,
                 this.operationContextTextProvider.get());
-            Mono<Utils.ValueHolder<List<PartitionKeyRange>>> replacementRangesObs = getReplacementRanges(feedRange.getRange());
+
+            CosmosDiagnostics cosmosDiagnostics = dce.getDiagnostics();
+            CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics != null ? cosmosDiagnostics.getDiagnosticsContext() : null;
+
+            Mono<Utils.ValueHolder<List<PartitionKeyRange>>> replacementRangesObs = getReplacementRanges(feedRange.getRange(), diagnosticsContext);
 
             // Since new DocumentProducers are instantiated for the new replacement ranges, if for the new
             // replacement partitions split happens the corresponding DocumentProducer can recursively handle splits.
@@ -326,14 +332,14 @@ class DocumentProducer<T> {
                 this.operationContextTextProvider);
     }
 
-    private Mono<Utils.ValueHolder<List<PartitionKeyRange>>> getReplacementRanges(Range<String> range) {
+    private Mono<Utils.ValueHolder<List<PartitionKeyRange>>> getReplacementRanges(Range<String> range, CosmosDiagnosticsContext diagnosticsContext) {
         return client.getPartitionKeyRangeCache().tryGetOverlappingRangesAsync(
             null,
             collectionRid,
             range,
             true,
             ModelBridgeInternal.getPropertiesFromQueryRequestOptions(cosmosQueryRequestOptions),
-            null);
+            diagnosticsContext);
     }
 
     private boolean isSplitOrMerge(CosmosException e) {
