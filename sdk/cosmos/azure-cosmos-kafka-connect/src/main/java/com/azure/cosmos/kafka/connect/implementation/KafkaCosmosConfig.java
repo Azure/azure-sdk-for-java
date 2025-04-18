@@ -135,15 +135,6 @@ public class KafkaCosmosConfig extends AbstractConfig {
     private static final String THROUGHPUT_CONTROL_AAD_CLIENT_SECRET_DISPLAY = "The client secret/password of the service principal.";
     private static final String DEFAULT_THROUGHPUT_CONTROL_AAD_CLIENT_SECRET = Strings.Emtpy;
 
-    private static final String THROUGHPUT_CONTROL_AAD_AUTH_ENDPOINT_OVERRIDE = "azure.cosmos.throughputControl.auth.aad.authEndpointOverride";
-    private static final String THROUGHPUT_CONTROL_AAD_AUTH_ENDPOINT_OVERRIDE_DOC = "Overrides the Azure Active Directory (AAD) authentication endpoint. "
-        + "This is useful when the Cosmos DB account resides in a non-public Azure cloud environment such as Azure China, Azure US Government, or Azure Germany. "
-        + "By default, the SDK uses the standard AAD endpoint for the public Azure cloud. Set this value if your deployment requires a custom authority URI "
-        + "(e.g., https://login.chinacloudapi.cn/).";
-    private static final String THROUGHPUT_CONTROL_AAD_AUTH_ENDPOINT_OVERRIDE_DISPLAY =
-        "The Azure Active Directory (AAD) authentication endpoint override. Set this if you are using a cloud environment other than public Azure.";
-    private static final String DEFAULT_THROUGHPUT_CONTROL_AAD_AUTH_ENDPOINT_OVERRIDE = Strings.Emtpy;
-
     private static final String THROUGHPUT_CONTROL_PREFERRED_REGIONS_LIST = "azure.cosmos.throughputControl.preferredRegionList";
     private static final String THROUGHPUT_CONTROL_PREFERRED_REGIONS_LIST_DOC = "Preferred regions list to be used for a multi region Cosmos DB account. "
         + "This is a comma separated value (e.g., `[East US, West US]` or `East US, West US`) provided preferred regions will be used as hint. "
@@ -307,7 +298,7 @@ public class KafkaCosmosConfig extends AbstractConfig {
                 THROUGHPUT_CONTROL_ACCOUNT_KEY,
                 THROUGHPUT_CONTROL_AAD_CLIENT_ID,
                 THROUGHPUT_CONTROL_AAD_CLIENT_SECRET,
-                THROUGHPUT_CONTROL_AAD_AUTH_ENDPOINT_OVERRIDE,
+                AAD_AUTH_ENDPOINT_OVERRIDE,
                 APPLICATION_NAME,
                 THROUGHPUT_CONTROL_USE_GATEWAY_MODE,
                 THROUGHPUT_CONTROL_PREFERRED_REGIONS_LIST);
@@ -582,17 +573,6 @@ public class KafkaCosmosConfig extends AbstractConfig {
                 THROUGHPUT_CONTROL_AAD_CLIENT_SECRET_DISPLAY
             )
             .define(
-                THROUGHPUT_CONTROL_AAD_AUTH_ENDPOINT_OVERRIDE,
-                ConfigDef.Type.STRING,
-                DEFAULT_THROUGHPUT_CONTROL_AAD_AUTH_ENDPOINT_OVERRIDE,
-                ConfigDef.Importance.LOW,
-                THROUGHPUT_CONTROL_AAD_AUTH_ENDPOINT_OVERRIDE_DOC,
-                throughputControlGroupName,
-                throughputControlGroupOrder++,
-                ConfigDef.Width.LONG,
-                THROUGHPUT_CONTROL_AAD_AUTH_ENDPOINT_OVERRIDE_DISPLAY
-            )
-            .define(
                 THROUGHPUT_CONTROL_PREFERRED_REGIONS_LIST,
                 ConfigDef.Type.STRING,
                 DEFAULT_THROUGHPUT_CONTROL_PREFERRED_REGIONS_LIST,
@@ -783,7 +763,7 @@ public class KafkaCosmosConfig extends AbstractConfig {
                 THROUGHPUT_CONTROL_ACCOUNT_KEY,
                 THROUGHPUT_CONTROL_AAD_CLIENT_ID,
                 THROUGHPUT_CONTROL_AAD_CLIENT_SECRET,
-                THROUGHPUT_CONTROL_AAD_AUTH_ENDPOINT_OVERRIDE);
+                AAD_AUTH_ENDPOINT_OVERRIDE);
         }
 
         // if throughput control is using aad auth, then only targetThroughput is supported

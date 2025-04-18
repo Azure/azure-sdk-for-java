@@ -271,32 +271,6 @@ public class CosmosSinkConnectorTest extends KafkaCosmosTestSuiteBase {
     }
 
     @Test(groups = { "unit" })
-    public void sinkConfigWithThroughputControlAuthEndpointOverride() {
-        String tenantId = "tenantId";
-        String clientId = "clientId";
-        String clientSecret = "clientSecret";
-        String authEndpoint = "https://login.example.com/";
-
-        Map<String, String> sinkConfigMap = this.getValidSinkConfig();
-        sinkConfigMap.put("azure.cosmos.throughputControl.auth.type", CosmosAuthType.SERVICE_PRINCIPAL.getName());
-        sinkConfigMap.put("azure.cosmos.throughputControl.account.tenantId", tenantId);
-        sinkConfigMap.put("azure.cosmos.throughputControl.auth.aad.clientId", clientId);
-        sinkConfigMap.put("azure.cosmos.throughputControl.auth.aad.clientSecret", clientSecret);
-        sinkConfigMap.put("azure.cosmos.throughputControl.auth.aad.authEndpointOverride", authEndpoint);
-
-        CosmosSinkConfig sinkConfig = new CosmosSinkConfig(sinkConfigMap);
-        assertThat(sinkConfig.getThroughputControlConfig()).isNotNull();
-        assertThat(sinkConfig.getThroughputControlConfig().getCosmosAuthConfig())
-                .isInstanceOf(CosmosAadAuthConfig.class);
-        CosmosAadAuthConfig cosmosAadAuthConfig = (CosmosAadAuthConfig) sinkConfig.getThroughputControlConfig()
-                .getCosmosAuthConfig();
-        assertThat(cosmosAadAuthConfig.getTenantId()).isEqualTo(tenantId);
-        assertThat(cosmosAadAuthConfig.getClientId()).isEqualTo(clientId);
-        assertThat(cosmosAadAuthConfig.getClientSecret()).isEqualTo(clientSecret);
-        assertThat(cosmosAadAuthConfig.getAuthEndpoint()).isEqualTo(authEndpoint);
-    }
-
-    @Test(groups = { "unit" })
     public void sinkConfigWithThroughputControl() {
         String throughputControlGroupName = "test";
         int targetThroughput= 6;
