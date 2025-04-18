@@ -48,8 +48,7 @@ import io.netty.util.concurrent.DefaultPromise;
 import io.netty.util.concurrent.DefaultThreadFactory;
 import io.netty.util.concurrent.EventExecutor;
 import io.netty.util.concurrent.Future;
-import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.RepetitionInfo;
+import org.junit.jupiter.api.Test;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -82,101 +81,107 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class ComplicatedProxyTests {
     private static final ClientLogger LOGGER = new ClientLogger(ComplicatedProxyTests.class);
 
-    @RepeatedTest(1000)
-    public void complicatedProxyIssue(RepetitionInfo repetitionInfo) {
+    @Test
+    public void complicatedProxyIssue() {
         try (MockProxyServer mockProxyServer = new MockProxyServer("1", "1")) {
-            ProxyOptions proxyOptions
-                = new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress()).setCredentials("2", "2");
-            AtomicReference<List<AuthenticateChallenge>> proxyChallenges = new AtomicReference<>();
-            int repetition = repetitionInfo.getCurrentRepetition();
-
             Bootstrap bootstrap = new Bootstrap().channel(NioSocketChannel.class)
                 .group(new NioEventLoopGroup(new DefaultThreadFactory("complicated-proxy-issue")))
                 .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 10_000);
             // Disable auto-read as we want to control when and how data is read from the channel.
             bootstrap.option(ChannelOption.AUTO_READ, false);
 
-            HttpRequest request = new HttpRequest().setUri(uri(PROXY_TO_ADDRESS));
+            for (int repetition = 0; repetition < 10_000; repetition++) {
+                ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress())
+                    .setCredentials("2", "2");
+                AtomicReference<List<AuthenticateChallenge>> proxyChallenges = new AtomicReference<>();
 
-            URI uri = request.getUri();
-            String host = uri.getHost();
-            int port = uri.getPort() == -1 ? ("https".equalsIgnoreCase(uri.getScheme()) ? 443 : 80) : uri.getPort();
+                HttpRequest request = new HttpRequest().setUri(uri(PROXY_TO_ADDRESS));
 
-            AtomicReference<Response<BinaryData>> responseReference = new AtomicReference<>();
-            AtomicReference<Throwable> errorReference = new AtomicReference<>();
-            CountDownLatch latch = new CountDownLatch(1);
+                URI uri = request.getUri();
+                String host = uri.getHost();
+                int port = uri.getPort() == -1 ? ("https".equalsIgnoreCase(uri.getScheme()) ? 443 : 80) : uri.getPort();
 
-            // Configure an immutable ChannelInitializer in the builder with everything that can be added on a non-per
-            // request basis.
-            bootstrap.handler(new ChannelInitializer<Channel>() {
-                @Override
-                protected void initChannel(Channel ch) {
-                    ch.pipeline()
-                        .addFirst(
-                            new ComplicatedProxyHandler(proxyOptions, proxyChallenges, repetition, errorReference));
-                }
-            });
+                AtomicReference<Response<BinaryData>> responseReference = new AtomicReference<>();
+                AtomicReference<Throwable> errorReference = new AtomicReference<>();
+                CountDownLatch latch = new CountDownLatch(1);
 
-            try {
-                bootstrap.connect(host, port).addListener((ChannelFutureListener) connectListener -> {
-                    if (!connectListener.isSuccess()) {
-                        LOGGER.atError().setThrowable(connectListener.cause()).log("Failed to connect to host/proxy");
-                        errorReference.set(connectListener.cause());
-                        connectListener.channel().close();
-                        latch.countDown();
-                        return;
+                // Configure an immutable ChannelInitializer in the builder with everything that can be added on a non-per
+                // request basis.
+                final int finalRepetition = repetition;
+                bootstrap.handler(new ChannelInitializer<Channel>() {
+                    @Override
+                    protected void initChannel(Channel ch) {
+                        ch.pipeline()
+                            .addFirst(new ComplicatedProxyHandler(proxyOptions, proxyChallenges, finalRepetition,
+                                errorReference));
                     }
+                });
 
-                    Channel channel = connectListener.channel();
-                    channel.closeFuture().addListener(closeListener -> {
-                        if (!closeListener.isSuccess()) {
-                            LOGGER.atInfo().addKeyValue("repetition", repetition).log("Channel closed with error");
-                            setOrSuppressError(errorReference, closeListener.cause());
+                try {
+                    bootstrap.connect(host, port).addListener((ChannelFutureListener) connectListener -> {
+                        if (!connectListener.isSuccess()) {
+                            LOGGER.atError()
+                                .setThrowable(connectListener.cause())
+                                .log("Failed to connect to host/proxy");
+                            errorReference.set(connectListener.cause());
+                            connectListener.channel().close();
+                            latch.countDown();
+                            return;
                         }
-                    });
 
-                    Throwable earlyError = errorReference.get();
-                    if (earlyError != null) {
-                        // If an error occurred between the connect and the request being sent, don't proceed with sending
-                        // the request.
-                        LOGGER.atInfo()
-                            .addKeyValue("repetition", repetition)
-                            .log("Channel had error before sending request");
-                        latch.countDown();
-                        return;
-                    }
-
-                    sendRequest(request, channel, errorReference, repetition)
-                        .addListener((ChannelFutureListener) sendListener -> {
-                            if (!sendListener.isSuccess()) {
-                                setOrSuppressError(errorReference, sendListener.cause());
-                                sendListener.channel().close();
-                                latch.countDown();
-                            } else {
-                                sendListener.channel().read();
+                        Channel channel = connectListener.channel();
+                        channel.closeFuture().addListener(closeListener -> {
+                            if (!closeListener.isSuccess()) {
+                                LOGGER.atInfo()
+                                    .addKeyValue("repetition", finalRepetition)
+                                    .log("Channel closed with error");
+                                setOrSuppressError(errorReference, closeListener.cause());
                             }
                         });
-                });
 
-                latch.await();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                throw LOGGER.logThrowableAsError(CoreException.from("Request interrupted", e));
-            }
+                        Throwable earlyError = errorReference.get();
+                        if (earlyError != null) {
+                            // If an error occurred between the connect and the request being sent, don't proceed with sending
+                            // the request.
+                            LOGGER.atInfo()
+                                .addKeyValue("repetition", finalRepetition)
+                                .log("Channel had error before sending request");
+                            latch.countDown();
+                            return;
+                        }
 
-            Response<BinaryData> response = responseReference.get();
-            if (response == null) {
-                Throwable exception = errorReference.get();
-                assertInstanceOf(ProxyConnectException.class, exception, () -> {
-                    StringWriter stringWriter = new StringWriter();
-                    stringWriter.write(exception.toString());
-                    PrintWriter printWriter = new PrintWriter(stringWriter);
-                    exception.printStackTrace(printWriter);
+                        sendRequest(request, channel, errorReference, finalRepetition)
+                            .addListener((ChannelFutureListener) sendListener -> {
+                                if (!sendListener.isSuccess()) {
+                                    setOrSuppressError(errorReference, sendListener.cause());
+                                    sendListener.channel().close();
+                                    latch.countDown();
+                                } else {
+                                    sendListener.channel().read();
+                                }
+                            });
+                    });
 
-                    return stringWriter.toString();
-                });
-            } else {
-                fail("Request should've failed as the proxy required authentication that wasn't possible.");
+                    latch.await();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    throw LOGGER.logThrowableAsError(CoreException.from("Request interrupted", e));
+                }
+
+                Response<BinaryData> response = responseReference.get();
+                if (response == null) {
+                    Throwable exception = errorReference.get();
+                    assertInstanceOf(ProxyConnectException.class, exception, () -> {
+                        StringWriter stringWriter = new StringWriter();
+                        stringWriter.write(exception.toString());
+                        PrintWriter printWriter = new PrintWriter(stringWriter);
+                        exception.printStackTrace(printWriter);
+
+                        return stringWriter.toString();
+                    });
+                } else {
+                    fail("Request should've failed as the proxy required authentication that wasn't possible.");
+                }
             }
         }
     }
