@@ -26,7 +26,6 @@
     </developer>
   </developers>
   <properties>
-    <maven.javadoc.skip>true</maven.javadoc.skip>
     <spotless.skip>true</spotless.skip>
   </properties>
   <dependencies>
@@ -60,6 +59,17 @@
   </dependencies>
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-javadoc-plugin</artifactId>
+        <version>3.6.3</version> <!-- {x-version-update;spring_org.apache.maven.plugins:maven-javadoc-plugin;external_dependency} -->
+        <configuration>
+          <failOnError>false</failOnError>
+          <additionalJOptions>
+            <additionalJOption>-Xdoclint:none</additionalJOption>
+          </additionalJOptions>
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>

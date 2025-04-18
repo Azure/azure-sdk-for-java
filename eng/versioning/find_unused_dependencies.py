@@ -11,7 +11,9 @@ from utils import load_version_map_from_file
 from utils import version_update_marker
 
 IGNORED_DEPENDENCIES = {'springboot3_org.springframework.boot:spring-boot-dependencies',
-                        'springboot3_org.springframework.cloud:spring-cloud-dependencies'}
+                        'springboot3_org.springframework.cloud:spring-cloud-dependencies',
+                        'spring_org.springframework.boot:spring-boot-autoconfigure-processor',
+                        'spring_org.springframework.data:spring-data-mongodb'}
 
 def fixup_version_map(version_file, version_map):
     # uses the util function to load the version map from the file, then adds a bool to each entry to track if it is visisted
