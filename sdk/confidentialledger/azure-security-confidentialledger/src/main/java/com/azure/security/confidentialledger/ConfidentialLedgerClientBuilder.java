@@ -214,7 +214,6 @@ public final class ConfidentialLedgerClientBuilder
      * 
      * @param ledgerEndpoint the ledgerEndpoint value.
      * @return the ConfidentialLedgerClientBuilder.
-     * {@inheritDoc}.
      */
     @Generated
     public ConfidentialLedgerClientBuilder ledgerEndpoint(String ledgerEndpoint) {
