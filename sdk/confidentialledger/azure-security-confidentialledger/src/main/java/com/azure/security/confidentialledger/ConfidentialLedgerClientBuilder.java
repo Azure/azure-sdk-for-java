@@ -207,6 +207,11 @@ public final class ConfidentialLedgerClientBuilder
      * {@inheritDoc}.
      */
     @Generated
+    public ConfidentialLedgerClientBuilder ledgerEndpoint(String endpoint) {
+        this.endpoint = endpoint;
+        return this;
+    }
+
     @Override
     public ConfidentialLedgerClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
