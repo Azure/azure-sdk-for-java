@@ -37,8 +37,10 @@ import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.security.interfaces.RSAPublicKey;
+import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Base64;
+import java.util.List;
 import java.util.Locale;
 import java.util.Random;
 
@@ -91,10 +93,9 @@ public class StandbyPoolTests extends TestProxyTestBase {
         VirtualMachineScaleSet virtualMachineScaleSet = null;
         Network virtualNetwork = null;
         try {
+            VirtualMachineScaleSetSkuTypes availableSku = getMinimalVmssSku();
             // @embedmeStart
             // reference https://learn.microsoft.com/azure/virtual-machine-scale-sets/standby-pools-create
-
-            VirtualMachineScaleSetSkuTypes availableMinimalSku = getMinimalVmssSku();
 
             // Create virtual network and virtual machine scale set
             virtualNetwork = this.computeManager.networkManager()
@@ -111,7 +112,7 @@ public class StandbyPoolTests extends TestProxyTestBase {
                 .withRegion(REGION)
                 .withExistingResourceGroup(resourceGroupName)
                 .withFlexibleOrchestrationMode()
-                .withSku(availableMinimalSku)
+                .withSku(availableSku)
                 .withExistingPrimaryNetworkSubnet(virtualNetwork, "default")
                 .withoutPrimaryInternetFacingLoadBalancer()
                 .withoutPrimaryInternalLoadBalancer()
@@ -151,6 +152,7 @@ public class StandbyPoolTests extends TestProxyTestBase {
     }
 
     private VirtualMachineScaleSetSkuTypes getMinimalVmssSku() {
+        List<VirtualMachineScaleSetSkuTypes> knownSkus = Arrays.asList(VirtualMachineScaleSetSkuTypes.values());
         return computeManager.computeSkus()
             .listByRegionAndResourceType(REGION, ComputeResourceType.VIRTUALMACHINES)
             .stream()
@@ -158,7 +160,7 @@ public class StandbyPoolTests extends TestProxyTestBase {
             .filter(sku -> sku.name().getValue().toLowerCase(Locale.ROOT).startsWith("standard"))
             .sorted((o1, o2) -> o1.name().getValue().compareToIgnoreCase(o2.name().getValue()))
             .map(sku -> VirtualMachineScaleSetSkuTypes.fromSkuNameAndTier(sku.name().getValue(), sku.tier().getValue()))
-            .filter(sku -> Arrays.asList(VirtualMachineScaleSetSkuTypes.values()).contains(sku))
+            .filter(knownSkus::contains)
             .findFirst()
             .get();
     }
