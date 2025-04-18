@@ -106,6 +106,10 @@ class NettyHttpClient implements HttpClient {
         boolean addProgressAndTimeoutHandler
             = progressReporter != null || writeTimeoutMillis > 0 || responseTimeoutMillis > 0 || readTimeoutMillis > 0;
 
+        AtomicReference<Response<BinaryData>> responseReference = new AtomicReference<>();
+        AtomicReference<Throwable> errorReference = new AtomicReference<>();
+        CountDownLatch latch = new CountDownLatch(1);
+
         // Configure an immutable ChannelInitializer in the builder with everything that can be added on a non-per
         // request basis.
         bootstrap.handler(new ChannelInitializer<Channel>() {
@@ -117,7 +121,7 @@ class NettyHttpClient implements HttpClient {
                     ProxyHandler proxyHandler = channelInitializationProxyHandler.createProxy(proxyChallenges);
                     proxyHandler.connectFuture().addListener(future -> {
                         if (!future.isSuccess()) {
-                            LOGGER.atError().setThrowable(future.cause()).log("Failed to connect to proxy");
+                            setOrSuppressError(errorReference, future.cause());
                         }
                     });
 
@@ -138,10 +142,6 @@ class NettyHttpClient implements HttpClient {
                 ch.pipeline().addLast(createCodec());
             }
         });
-
-        AtomicReference<Response<BinaryData>> responseReference = new AtomicReference<>();
-        AtomicReference<Throwable> errorReference = new AtomicReference<>();
-        CountDownLatch latch = new CountDownLatch(1);
 
         try {
             bootstrap.connect(host, port).addListener((ChannelFutureListener) connectListener -> {
