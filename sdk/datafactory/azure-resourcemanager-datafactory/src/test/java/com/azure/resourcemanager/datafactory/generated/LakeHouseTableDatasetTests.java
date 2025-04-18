@@ -19,7 +19,7 @@ public final class LakeHouseTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LakeHouseTableDataset model = BinaryData.fromString(
-            "{\"type\":\"LakeHouseTable\",\"typeProperties\":{\"schema\":\"datairgkn\",\"table\":\"datawla\"},\"description\":\"dajy\",\"structure\":\"databjgipvspe\",\"schema\":\"datazhydt\",\"linkedServiceName\":{\"referenceName\":\"bmtrsdplvia\",\"parameters\":{\"gcneviccwb\":\"datarmawo\",\"oi\":\"dataysclwbjgiynqr\",\"eyydx\":\"dataweofvsxauphzefi\",\"exccwldgfq\":\"datagtiivzkd\"}},\"parameters\":{\"cncrvjcullmfw\":{\"type\":\"SecureString\",\"defaultValue\":\"datatacrsc\"}},\"annotations\":[\"dataeowoszzw\",\"datacsjgfxvc\",\"datamubyguqhgnmsvjfg\",\"datapryyircb\"],\"folder\":{\"name\":\"jrbvyrkbuatxkzn\"},\"\":{\"kevday\":\"datambxo\"}}")
+            "{\"type\":\"LakehouseTable\",\"typeProperties\":{\"schema\":\"datairgkn\",\"table\":\"datawla\"},\"description\":\"dajy\",\"structure\":\"databjgipvspe\",\"schema\":\"datazhydt\",\"linkedServiceName\":{\"referenceName\":\"bmtrsdplvia\",\"parameters\":{\"gcneviccwb\":\"datarmawo\",\"oi\":\"dataysclwbjgiynqr\",\"eyydx\":\"dataweofvsxauphzefi\",\"exccwldgfq\":\"datagtiivzkd\"}},\"parameters\":{\"cncrvjcullmfw\":{\"type\":\"SecureString\",\"defaultValue\":\"datatacrsc\"}},\"annotations\":[\"dataeowoszzw\",\"datacsjgfxvc\",\"datamubyguqhgnmsvjfg\",\"datapryyircb\"],\"folder\":{\"name\":\"jrbvyrkbuatxkzn\"},\"\":{\"kevday\":\"datambxo\"}}")
             .toObject(LakeHouseTableDataset.class);
         Assertions.assertEquals("dajy", model.description());
         Assertions.assertEquals("bmtrsdplvia", model.linkedServiceName().referenceName());

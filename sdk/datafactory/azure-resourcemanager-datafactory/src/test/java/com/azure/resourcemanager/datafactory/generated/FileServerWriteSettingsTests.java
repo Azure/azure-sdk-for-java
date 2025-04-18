@@ -13,19 +13,16 @@ public final class FileServerWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FileServerWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"FileServerWriteSettings\",\"maxConcurrentConnections\":\"dataeegzhhfnaqc\",\"disableMetricsCollection\":\"datapcklowuthfwphn\",\"copyBehavior\":\"datalbljehw\",\"metadata\":[{\"name\":\"dataofneaqahz\",\"value\":\"datanapxhtqwsd\"},{\"name\":\"dataaovubfl\",\"value\":\"datakeub\"},{\"name\":\"dataibuabpvdwhvn\",\"value\":\"databu\"},{\"name\":\"datadkqo\",\"value\":\"dataukvink\"}],\"\":{\"fhdyasklmy\":\"datazqbo\",\"awljatvfddq\":\"datahclxwede\"}}")
+            "{\"type\":\"FileServerWriteSettings\",\"maxConcurrentConnections\":\"datarbullqnfz\",\"disableMetricsCollection\":\"datagursbzm\",\"copyBehavior\":\"datawax\",\"metadata\":[{\"name\":\"datatzdvx\",\"value\":\"datadaajlhgsuqmrkya\"}],\"\":{\"xhpqlxnb\":\"databds\",\"aingadkr\":\"dataj\"}}")
             .toObject(FileServerWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FileServerWriteSettings model = new FileServerWriteSettings().withMaxConcurrentConnections("dataeegzhhfnaqc")
-            .withDisableMetricsCollection("datapcklowuthfwphn")
-            .withCopyBehavior("datalbljehw")
-            .withMetadata(Arrays.asList(new MetadataItem().withName("dataofneaqahz").withValue("datanapxhtqwsd"),
-                new MetadataItem().withName("dataaovubfl").withValue("datakeub"),
-                new MetadataItem().withName("dataibuabpvdwhvn").withValue("databu"),
-                new MetadataItem().withName("datadkqo").withValue("dataukvink")));
+        FileServerWriteSettings model = new FileServerWriteSettings().withMaxConcurrentConnections("datarbullqnfz")
+            .withDisableMetricsCollection("datagursbzm")
+            .withCopyBehavior("datawax")
+            .withMetadata(Arrays.asList(new MetadataItem().withName("datatzdvx").withValue("datadaajlhgsuqmrkya")));
         model = BinaryData.fromObject(model).toObject(FileServerWriteSettings.class);
     }
 }

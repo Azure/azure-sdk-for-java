@@ -13,18 +13,17 @@ public final class LakeHouseWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         LakeHouseWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"LakeHouseWriteSettings\",\"maxConcurrentConnections\":\"datarezpuzkwi\",\"disableMetricsCollection\":\"datafin\",\"copyBehavior\":\"datasdtlpshxjhans\",\"metadata\":[{\"name\":\"datalcnk\",\"value\":\"datasqvfyoksstal\"},{\"name\":\"dataqlxjjltuymnaaqh\",\"value\":\"dataaa\"},{\"name\":\"datadlvccuvcvaf\",\"value\":\"databyjgdjvyclasd\"}],\"\":{\"gsnpv\":\"datanupftek\"}}")
+            "{\"type\":\"LakeHouseWriteSettings\",\"maxConcurrentConnections\":\"datakrrp\",\"disableMetricsCollection\":\"datadoli\",\"copyBehavior\":\"datazsglavdtttyd\",\"metadata\":[{\"name\":\"datazrqkjqcshby\",\"value\":\"datamveyrcikedmoufju\"}],\"\":{\"qxhmrilwkcgusvp\":\"datauicvjyjszmle\",\"gwqi\":\"datataulxxznfxdqqzik\",\"rzxvffq\":\"dataodhaslpaae\"}}")
             .toObject(LakeHouseWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LakeHouseWriteSettings model = new LakeHouseWriteSettings().withMaxConcurrentConnections("datarezpuzkwi")
-            .withDisableMetricsCollection("datafin")
-            .withCopyBehavior("datasdtlpshxjhans")
-            .withMetadata(Arrays.asList(new MetadataItem().withName("datalcnk").withValue("datasqvfyoksstal"),
-                new MetadataItem().withName("dataqlxjjltuymnaaqh").withValue("dataaa"),
-                new MetadataItem().withName("datadlvccuvcvaf").withValue("databyjgdjvyclasd")));
+        LakeHouseWriteSettings model = new LakeHouseWriteSettings().withMaxConcurrentConnections("datakrrp")
+            .withDisableMetricsCollection("datadoli")
+            .withCopyBehavior("datazsglavdtttyd")
+            .withMetadata(
+                Arrays.asList(new MetadataItem().withName("datazrqkjqcshby").withValue("datamveyrcikedmoufju")));
         model = BinaryData.fromObject(model).toObject(LakeHouseWriteSettings.class);
     }
 }

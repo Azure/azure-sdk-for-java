@@ -15,24 +15,26 @@ public final class DataLakeAnalyticsUsqlActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DataLakeAnalyticsUsqlActivityTypeProperties model = BinaryData.fromString(
-            "{\"scriptPath\":\"dataqzmwxoogi\",\"scriptLinkedService\":{\"referenceName\":\"gnplzbtvpuigtnjy\",\"parameters\":{\"extlyyvebpykzhr\":\"datavvitxoitnqmiwlri\"}},\"degreeOfParallelism\":\"datasbtwpvmz\",\"priority\":\"dataxepapmv\",\"parameters\":{\"kylu\":\"datas\",\"tefbbr\":\"dataxndmtasxsnb\",\"oh\":\"datalofkvshozjkwjwv\"},\"runtimeVersion\":\"datasg\",\"compilationMode\":\"datafzstyacbekc\"}")
+            "{\"scriptPath\":\"datarrreftwhiivxy\",\"scriptLinkedService\":{\"referenceName\":\"vjezikuzlfnbzek\",\"parameters\":{\"yhncqyo\":\"datajbkwrvc\",\"nxggwx\":\"datavvpxsd\",\"ykovgxamhmq\":\"dataqyhtlnnpft\"}},\"degreeOfParallelism\":\"datayoylcwzkcreufdp\",\"priority\":\"dataelcrwh\",\"parameters\":{\"uvbo\":\"datasxybalsmia\",\"byyvxjelsjhgrvy\":\"dataqzypvc\",\"ikujjdoelaw\":\"dataluhkhiycddon\",\"kotvoszgcy\":\"databkez\"},\"runtimeVersion\":\"datajxnahqwvvferl\",\"compilationMode\":\"datafz\"}")
             .toObject(DataLakeAnalyticsUsqlActivityTypeProperties.class);
-        Assertions.assertEquals("gnplzbtvpuigtnjy", model.scriptLinkedService().referenceName());
+        Assertions.assertEquals("vjezikuzlfnbzek", model.scriptLinkedService().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         DataLakeAnalyticsUsqlActivityTypeProperties model
-            = new DataLakeAnalyticsUsqlActivityTypeProperties().withScriptPath("dataqzmwxoogi")
-                .withScriptLinkedService(new LinkedServiceReference().withReferenceName("gnplzbtvpuigtnjy")
-                    .withParameters(mapOf("extlyyvebpykzhr", "datavvitxoitnqmiwlri")))
-                .withDegreeOfParallelism("datasbtwpvmz")
-                .withPriority("dataxepapmv")
-                .withParameters(mapOf("kylu", "datas", "tefbbr", "dataxndmtasxsnb", "oh", "datalofkvshozjkwjwv"))
-                .withRuntimeVersion("datasg")
-                .withCompilationMode("datafzstyacbekc");
+            = new DataLakeAnalyticsUsqlActivityTypeProperties().withScriptPath("datarrreftwhiivxy")
+                .withScriptLinkedService(new LinkedServiceReference().withReferenceName("vjezikuzlfnbzek")
+                    .withParameters(
+                        mapOf("yhncqyo", "datajbkwrvc", "nxggwx", "datavvpxsd", "ykovgxamhmq", "dataqyhtlnnpft")))
+                .withDegreeOfParallelism("datayoylcwzkcreufdp")
+                .withPriority("dataelcrwh")
+                .withParameters(mapOf("uvbo", "datasxybalsmia", "byyvxjelsjhgrvy", "dataqzypvc", "ikujjdoelaw",
+                    "dataluhkhiycddon", "kotvoszgcy", "databkez"))
+                .withRuntimeVersion("datajxnahqwvvferl")
+                .withCompilationMode("datafz");
         model = BinaryData.fromObject(model).toObject(DataLakeAnalyticsUsqlActivityTypeProperties.class);
-        Assertions.assertEquals("gnplzbtvpuigtnjy", model.scriptLinkedService().referenceName());
+        Assertions.assertEquals("vjezikuzlfnbzek", model.scriptLinkedService().referenceName());
     }
 
     // Use "Map.of" if available

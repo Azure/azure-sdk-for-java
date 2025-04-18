@@ -1,6 +1,6 @@
 # Release History
 
-## 4.10.0-beta.1 (Unreleased)
+## 4.10.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,21 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.10.0-beta.1 (2025-04-10)
+
+### Features Added
+- Added new key wrapping algorithms: `CKM_AES_KEY_WRAP` and `CKM_AES_KEY_WRAP_PAD`. ([#44788](https://github.com/Azure/azure-sdk-for-java/pull/44788)
+- Added new signing algorithms: `HS256`, `HS384`, and `HS512`. ([#44788](https://github.com/Azure/azure-sdk-for-java/pull/44788)
+- Added support for getting a key's attestation material on Azure Managed HSM. ([#44788](https://github.com/Azure/azure-sdk-for-java/pull/44788)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
+- Upgraded `azure-json` from `1.4.0` to version `1.5.0`.
+- Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
 
 ## 4.9.4 (2025-03-24)
 
@@ -19,7 +34,6 @@
 - Upgraded `azure-json` from `1.4.0` to version `1.5.0`.
 - Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
 - Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
-
 
 ## 4.9.3 (2025-03-04)
 

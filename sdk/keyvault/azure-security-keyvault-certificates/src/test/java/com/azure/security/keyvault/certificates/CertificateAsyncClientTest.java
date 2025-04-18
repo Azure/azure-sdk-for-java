@@ -996,8 +996,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getTestParameters")
-    public void importPemCertificate(HttpClient httpClient, CertificateServiceVersion serviceVersion)
-        throws IOException {
+    public void importPemCertificate(HttpClient httpClient, CertificateServiceVersion serviceVersion) {
         createCertificateAsyncClient(httpClient, serviceVersion);
 
         importPemCertificateRunner((importCertificateOptions) -> StepVerifier

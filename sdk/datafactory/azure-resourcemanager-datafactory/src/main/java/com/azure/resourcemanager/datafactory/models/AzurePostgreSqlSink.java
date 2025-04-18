@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * A copy activity Azure PostgreSQL sink.
+ * A copy activity Azure Database for PostgreSQL sink.
  */
 @Fluent
 public final class AzurePostgreSqlSink extends CopySink {
@@ -26,6 +26,16 @@ public final class AzurePostgreSqlSink extends CopySink {
      * A query to execute before starting the copy. Type: string (or Expression with resultType string).
      */
     private Object preCopyScript;
+
+    /*
+     * The write behavior for the operation. Default is Bulk Insert.
+     */
+    private AzurePostgreSqlWriteMethodEnum writeMethod;
+
+    /*
+     * Azure Database for PostgreSQL upsert option settings
+     */
+    private AzurePostgreSqlSinkUpsertSettings upsertSettings;
 
     /**
      * Creates an instance of AzurePostgreSqlSink class.
@@ -62,6 +72,46 @@ public final class AzurePostgreSqlSink extends CopySink {
      */
     public AzurePostgreSqlSink withPreCopyScript(Object preCopyScript) {
         this.preCopyScript = preCopyScript;
+        return this;
+    }
+
+    /**
+     * Get the writeMethod property: The write behavior for the operation. Default is Bulk Insert.
+     * 
+     * @return the writeMethod value.
+     */
+    public AzurePostgreSqlWriteMethodEnum writeMethod() {
+        return this.writeMethod;
+    }
+
+    /**
+     * Set the writeMethod property: The write behavior for the operation. Default is Bulk Insert.
+     * 
+     * @param writeMethod the writeMethod value to set.
+     * @return the AzurePostgreSqlSink object itself.
+     */
+    public AzurePostgreSqlSink withWriteMethod(AzurePostgreSqlWriteMethodEnum writeMethod) {
+        this.writeMethod = writeMethod;
+        return this;
+    }
+
+    /**
+     * Get the upsertSettings property: Azure Database for PostgreSQL upsert option settings.
+     * 
+     * @return the upsertSettings value.
+     */
+    public AzurePostgreSqlSinkUpsertSettings upsertSettings() {
+        return this.upsertSettings;
+    }
+
+    /**
+     * Set the upsertSettings property: Azure Database for PostgreSQL upsert option settings.
+     * 
+     * @param upsertSettings the upsertSettings value to set.
+     * @return the AzurePostgreSqlSink object itself.
+     */
+    public AzurePostgreSqlSink withUpsertSettings(AzurePostgreSqlSinkUpsertSettings upsertSettings) {
+        this.upsertSettings = upsertSettings;
         return this;
     }
 
@@ -126,6 +176,9 @@ public final class AzurePostgreSqlSink extends CopySink {
      */
     @Override
     public void validate() {
+        if (upsertSettings() != null) {
+            upsertSettings().validate();
+        }
     }
 
     /**
@@ -142,6 +195,8 @@ public final class AzurePostgreSqlSink extends CopySink {
         jsonWriter.writeUntypedField("disableMetricsCollection", disableMetricsCollection());
         jsonWriter.writeStringField("type", this.type);
         jsonWriter.writeUntypedField("preCopyScript", this.preCopyScript);
+        jsonWriter.writeStringField("writeMethod", this.writeMethod == null ? null : this.writeMethod.toString());
+        jsonWriter.writeJsonField("upsertSettings", this.upsertSettings);
         if (additionalProperties() != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties().entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -182,6 +237,11 @@ public final class AzurePostgreSqlSink extends CopySink {
                     deserializedAzurePostgreSqlSink.type = reader.getString();
                 } else if ("preCopyScript".equals(fieldName)) {
                     deserializedAzurePostgreSqlSink.preCopyScript = reader.readUntyped();
+                } else if ("writeMethod".equals(fieldName)) {
+                    deserializedAzurePostgreSqlSink.writeMethod
+                        = AzurePostgreSqlWriteMethodEnum.fromString(reader.getString());
+                } else if ("upsertSettings".equals(fieldName)) {
+                    deserializedAzurePostgreSqlSink.upsertSettings = AzurePostgreSqlSinkUpsertSettings.fromJson(reader);
                 } else {
                     if (additionalProperties == null) {
                         additionalProperties = new LinkedHashMap<>();

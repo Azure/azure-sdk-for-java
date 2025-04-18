@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0-beta.2 (Unreleased)
+## 1.2.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,190 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.1.0 (2025-04-17)
+
+- Azure Resource Manager ContainerAppsApi client library for Java. This package contains Microsoft Azure SDK for ContainerAppsApi Management SDK.  Package tag package-2025-01-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.SessionContainer` was added
+
+* `models.Runtime` was added
+
+* `models.SessionPoolUpdatableProperties` was added
+
+* `models.JavaComponentPropertiesScale` was added
+
+* `models.ScaleConfiguration` was added
+
+* `models.PoolManagementType` was added
+
+* `models.CertificateKeyVaultProperties` was added
+
+* `models.IdentitySettingsLifeCycle` was added
+
+* `models.SessionPoolProvisioningState` was added
+
+* `models.SpringBootAdminComponent` was added
+
+* `models.JavaComponentServiceBind` was added
+
+* `models.SessionPool$UpdateStages` was added
+
+* `models.JavaComponentConfigurationProperty` was added
+
+* `models.SpringCloudConfigComponent` was added
+
+* `models.SessionPool$Definition` was added
+
+* `models.LifecycleConfiguration` was added
+
+* `models.JavaComponent$Definition` was added
+
+* `models.SessionPool$DefinitionStages` was added
+
+* `models.SessionIngress` was added
+
+* `models.SessionPool` was added
+
+* `models.NfsAzureFileProperties` was added
+
+* `models.ContainerAppRunningStatus` was added
+
+* `models.SessionContainerResources` was added
+
+* `models.SessionPoolSecret` was added
+
+* `models.SessionPool$Update` was added
+
+* `models.JavaComponentsCollection` was added
+
+* `models.JavaComponent` was added
+
+* `models.SessionNetworkStatus` was added
+
+* `models.RuntimeJava` was added
+
+* `models.JavaComponent$UpdateStages` was added
+
+* `models.JavaComponentProvisioningState` was added
+
+* `models.ManagedIdentitySetting` was added
+
+* `models.CustomContainerTemplate` was added
+
+* `models.SessionNetworkConfiguration` was added
+
+* `models.DynamicPoolConfiguration` was added
+
+* `models.IdentitySettings` was added
+
+* `models.JavaComponent$DefinitionStages` was added
+
+* `models.ContainerType` was added
+
+* `models.SessionRegistryCredentials` was added
+
+* `models.JavaComponentType` was added
+
+* `models.JavaComponentProperties` was added
+
+* `models.LifecycleType` was added
+
+* `models.ContainerAppsSessionPools` was added
+
+* `models.SessionPoolCollection` was added
+
+* `models.JavaComponent$Update` was added
+
+* `models.JavaComponentIngress` was added
+
+* `models.JavaComponents` was added
+
+* `models.SpringCloudEurekaComponent` was added
+
+#### `models.ManagedEnvironment$Update` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.QueueScaleRule` was modified
+
+* `withAccountName(java.lang.String)` was added
+* `identity()` was added
+* `accountName()` was added
+* `withIdentity(java.lang.String)` was added
+
+#### `models.ManagedEnvironment$Definition` was modified
+
+* `withIdentity(models.ManagedServiceIdentity)` was added
+
+#### `models.ManagedEnvironmentStorageProperties` was modified
+
+* `nfsAzureFile()` was added
+* `withNfsAzureFile(models.NfsAzureFileProperties)` was added
+
+#### `models.JobConfiguration` was modified
+
+* `identitySettings()` was added
+* `withIdentitySettings(java.util.List)` was added
+
+#### `models.TcpScaleRule` was modified
+
+* `withIdentity(java.lang.String)` was added
+* `identity()` was added
+
+#### `models.Scale` was modified
+
+* `pollingInterval()` was added
+* `withPollingInterval(java.lang.Integer)` was added
+* `cooldownPeriod()` was added
+* `withCooldownPeriod(java.lang.Integer)` was added
+
+#### `models.ManagedEnvironment` was modified
+
+* `identity()` was added
+
+#### `models.HttpScaleRule` was modified
+
+* `identity()` was added
+* `withIdentity(java.lang.String)` was added
+
+#### `models.CertificateProperties` was modified
+
+* `certificateKeyVaultProperties()` was added
+* `withCertificateKeyVaultProperties(models.CertificateKeyVaultProperties)` was added
+
+#### `models.ContainerApp` was modified
+
+* `runningStatus()` was added
+
+#### `models.JobScaleRule` was modified
+
+* `withIdentity(java.lang.String)` was added
+* `identity()` was added
+
+#### `ContainerAppsApiManager` was modified
+
+* `containerAppsSessionPools()` was added
+* `javaComponents()` was added
+
+#### `models.CustomScaleRule` was modified
+
+* `identity()` was added
+* `withIdentity(java.lang.String)` was added
+
+#### `models.CustomDomainConfiguration` was modified
+
+* `withCertificateKeyVaultProperties(models.CertificateKeyVaultProperties)` was added
+* `certificateKeyVaultProperties()` was added
+
+#### `models.Configuration` was modified
+
+* `withIdentitySettings(java.util.List)` was added
+* `runtime()` was added
+* `identitySettings()` was added
+* `withRuntime(models.Runtime)` was added
 
 ## 1.1.0-beta.1 (2024-10-17)
 

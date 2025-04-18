@@ -20,7 +20,7 @@ public class ListProcessedDocumentsWithinAJob {
         String jobName = Configuration.getGlobalConfiguration().get("DEID_JOB_NAME");
         PagedIterable<DeidentificationDocumentDetails> result = deidentificationClient.listJobDocuments(jobName);
         for (DeidentificationDocumentDetails documentDetails : result) {
-            System.out.println(documentDetails.getInput().getLocation() + " - " + documentDetails.getStatus());
+            System.out.println(documentDetails.getInputLocation().getLocation() + " - " + documentDetails.getStatus());
         }
         // END:com.azure.health.deidentification.samples.list_processed_documents_within_a_job
     }

@@ -21,44 +21,46 @@ public final class TumblingWindowTriggerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TumblingWindowTrigger model = BinaryData.fromString(
-            "{\"type\":\"TumblingWindowTrigger\",\"pipeline\":{\"pipelineReference\":{\"referenceName\":\"jov\",\"name\":\"heijmwajvuwa\"},\"parameters\":{\"twow\":\"datamdlpbkfsl\",\"bobgwvhdbie\":\"datawrnkuwgrtvy\"}},\"typeProperties\":{\"frequency\":\"Hour\",\"interval\":181282605,\"startTime\":\"2021-02-19T11:56:14Z\",\"endTime\":\"2021-11-19T15:00:37Z\",\"delay\":\"datacaschhfmidkd\",\"maxConcurrency\":1051348296,\"retryPolicy\":{\"count\":\"datatessvmdoxxcvug\",\"intervalInSeconds\":102399606},\"dependsOn\":[{\"type\":\"DependencyReference\"},{\"type\":\"DependencyReference\"}]},\"description\":\"uukhssret\",\"runtimeState\":\"Disabled\",\"annotations\":[\"datazkc\"],\"\":{\"ogmcblwhzvnisinp\":\"dataqtdwk\",\"jajahngaczggfia\":\"datacwwpuka\",\"ozxotwra\":\"datamuptnhuybtmtokoh\"}}")
+            "{\"type\":\"TumblingWindowTrigger\",\"pipeline\":{\"pipelineReference\":{\"referenceName\":\"plolcalyvcxv\",\"name\":\"xdeqntblt\"},\"parameters\":{\"rmwdofgfspzwa\":\"dataqbyubswzaf\",\"wvjcdjvlwczw\":\"datacu\",\"fckrmrbaoidt\":\"datakkscooqnvht\",\"cbvkoughjsxp\":\"datam\"}},\"typeProperties\":{\"frequency\":\"Month\",\"interval\":189437887,\"startTime\":\"2021-11-09T02:05:30Z\",\"endTime\":\"2021-04-24T18:13:15Z\",\"delay\":\"datadnihx\",\"maxConcurrency\":1902437036,\"retryPolicy\":{\"count\":\"datatsbpvyvsc\",\"intervalInSeconds\":2016822910},\"dependsOn\":[{\"type\":\"DependencyReference\"},{\"type\":\"DependencyReference\"},{\"type\":\"DependencyReference\"},{\"type\":\"DependencyReference\"}]},\"description\":\"daqqklvyibrohfvb\",\"runtimeState\":\"Started\",\"annotations\":[\"datadlsanglwnkkzt\"],\"\":{\"hj\":\"dataj\",\"tyozwnpuyh\":\"dataqajyrhrywucpdzb\",\"rhabbdqnefofuj\":\"dataaylsmehlzplz\",\"rqkvufnphb\":\"datawqpkhgrdgyilo\"}}")
             .toObject(TumblingWindowTrigger.class);
-        Assertions.assertEquals("uukhssret", model.description());
-        Assertions.assertEquals("jov", model.pipeline().pipelineReference().referenceName());
-        Assertions.assertEquals("heijmwajvuwa", model.pipeline().pipelineReference().name());
-        Assertions.assertEquals(TumblingWindowFrequency.HOUR, model.frequency());
-        Assertions.assertEquals(181282605, model.interval());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-19T11:56:14Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-19T15:00:37Z"), model.endTime());
-        Assertions.assertEquals(1051348296, model.maxConcurrency());
-        Assertions.assertEquals(102399606, model.retryPolicy().intervalInSeconds());
+        Assertions.assertEquals("daqqklvyibrohfvb", model.description());
+        Assertions.assertEquals("plolcalyvcxv", model.pipeline().pipelineReference().referenceName());
+        Assertions.assertEquals("xdeqntblt", model.pipeline().pipelineReference().name());
+        Assertions.assertEquals(TumblingWindowFrequency.MONTH, model.frequency());
+        Assertions.assertEquals(189437887, model.interval());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-09T02:05:30Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-24T18:13:15Z"), model.endTime());
+        Assertions.assertEquals(1902437036, model.maxConcurrency());
+        Assertions.assertEquals(2016822910, model.retryPolicy().intervalInSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TumblingWindowTrigger model = new TumblingWindowTrigger().withDescription("uukhssret")
-            .withAnnotations(Arrays.asList("datazkc"))
+        TumblingWindowTrigger model = new TumblingWindowTrigger().withDescription("daqqklvyibrohfvb")
+            .withAnnotations(Arrays.asList("datadlsanglwnkkzt"))
             .withPipeline(new TriggerPipelineReference()
-                .withPipelineReference(new PipelineReference().withReferenceName("jov").withName("heijmwajvuwa"))
-                .withParameters(mapOf("twow", "datamdlpbkfsl", "bobgwvhdbie", "datawrnkuwgrtvy")))
-            .withFrequency(TumblingWindowFrequency.HOUR)
-            .withInterval(181282605)
-            .withStartTime(OffsetDateTime.parse("2021-02-19T11:56:14Z"))
-            .withEndTime(OffsetDateTime.parse("2021-11-19T15:00:37Z"))
-            .withDelay("datacaschhfmidkd")
-            .withMaxConcurrency(1051348296)
-            .withRetryPolicy(new RetryPolicy().withCount("datatessvmdoxxcvug").withIntervalInSeconds(102399606))
-            .withDependsOn(Arrays.asList(new DependencyReference(), new DependencyReference()));
+                .withPipelineReference(new PipelineReference().withReferenceName("plolcalyvcxv").withName("xdeqntblt"))
+                .withParameters(mapOf("rmwdofgfspzwa", "dataqbyubswzaf", "wvjcdjvlwczw", "datacu", "fckrmrbaoidt",
+                    "datakkscooqnvht", "cbvkoughjsxp", "datam")))
+            .withFrequency(TumblingWindowFrequency.MONTH)
+            .withInterval(189437887)
+            .withStartTime(OffsetDateTime.parse("2021-11-09T02:05:30Z"))
+            .withEndTime(OffsetDateTime.parse("2021-04-24T18:13:15Z"))
+            .withDelay("datadnihx")
+            .withMaxConcurrency(1902437036)
+            .withRetryPolicy(new RetryPolicy().withCount("datatsbpvyvsc").withIntervalInSeconds(2016822910))
+            .withDependsOn(Arrays.asList(new DependencyReference(), new DependencyReference(),
+                new DependencyReference(), new DependencyReference()));
         model = BinaryData.fromObject(model).toObject(TumblingWindowTrigger.class);
-        Assertions.assertEquals("uukhssret", model.description());
-        Assertions.assertEquals("jov", model.pipeline().pipelineReference().referenceName());
-        Assertions.assertEquals("heijmwajvuwa", model.pipeline().pipelineReference().name());
-        Assertions.assertEquals(TumblingWindowFrequency.HOUR, model.frequency());
-        Assertions.assertEquals(181282605, model.interval());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-19T11:56:14Z"), model.startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-19T15:00:37Z"), model.endTime());
-        Assertions.assertEquals(1051348296, model.maxConcurrency());
-        Assertions.assertEquals(102399606, model.retryPolicy().intervalInSeconds());
+        Assertions.assertEquals("daqqklvyibrohfvb", model.description());
+        Assertions.assertEquals("plolcalyvcxv", model.pipeline().pipelineReference().referenceName());
+        Assertions.assertEquals("xdeqntblt", model.pipeline().pipelineReference().name());
+        Assertions.assertEquals(TumblingWindowFrequency.MONTH, model.frequency());
+        Assertions.assertEquals(189437887, model.interval());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-09T02:05:30Z"), model.startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-04-24T18:13:15Z"), model.endTime());
+        Assertions.assertEquals(1902437036, model.maxConcurrency());
+        Assertions.assertEquals(2016822910, model.retryPolicy().intervalInSeconds());
     }
 
     // Use "Map.of" if available

@@ -68,6 +68,13 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
     private String target;
 
     /*
+     * Specifies whether the certificate chain preserves its original order. The default value is false, which sets the
+     * leaf certificate at index 0.
+     */
+    @Generated
+    private Boolean preserveCertOrder;
+
+    /*
      * Identifier for the certificate operation.
      */
     @Generated
@@ -101,6 +108,18 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
     }
 
     /**
+     * Set the issuerParameters property: Parameters for the issuer of the X509 component of a certificate.
+     *
+     * @param issuerParameters the issuerParameters value to set.
+     * @return the CertificateOperation object itself.
+     */
+    @Generated
+    public CertificateOperation setIssuerParameters(IssuerParameters issuerParameters) {
+        this.issuerParameters = issuerParameters;
+        return this;
+    }
+
+    /**
      * Get the csr property: The certificate signing request (CSR) that is being used in the certificate operation.
      *
      * @return the csr value.
@@ -108,6 +127,18 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
     @Generated
     public byte[] getCsr() {
         return CoreUtils.clone(this.csr);
+    }
+
+    /**
+     * Set the csr property: The certificate signing request (CSR) that is being used in the certificate operation.
+     *
+     * @param csr the csr value to set.
+     * @return the CertificateOperation object itself.
+     */
+    @Generated
+    public CertificateOperation setCsr(byte[] csr) {
+        this.csr = CoreUtils.clone(csr);
+        return this;
     }
 
     /**
@@ -121,6 +152,18 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
     }
 
     /**
+     * Set the cancellationRequested property: Indicates if cancellation was requested on the certificate operation.
+     *
+     * @param cancellationRequested the cancellationRequested value to set.
+     * @return the CertificateOperation object itself.
+     */
+    @Generated
+    public CertificateOperation setCancellationRequested(Boolean cancellationRequested) {
+        this.cancellationRequested = cancellationRequested;
+        return this;
+    }
+
+    /**
      * Get the status property: Status of the certificate operation.
      *
      * @return the status value.
@@ -128,6 +171,18 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
     @Generated
     public String getStatus() {
         return this.status;
+    }
+
+    /**
+     * Set the status property: Status of the certificate operation.
+     *
+     * @param status the status value to set.
+     * @return the CertificateOperation object itself.
+     */
+    @Generated
+    public CertificateOperation setStatus(String status) {
+        this.status = status;
+        return this;
     }
 
     /**
@@ -141,6 +196,18 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
     }
 
     /**
+     * Set the statusDetails property: The status details of the certificate operation.
+     *
+     * @param statusDetails the statusDetails value to set.
+     * @return the CertificateOperation object itself.
+     */
+    @Generated
+    public CertificateOperation setStatusDetails(String statusDetails) {
+        this.statusDetails = statusDetails;
+        return this;
+    }
+
+    /**
      * Get the error property: Error encountered, if any, during the certificate operation.
      *
      * @return the error value.
@@ -148,6 +215,18 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
     @Generated
     public CertificateOperationError getError() {
         return this.error;
+    }
+
+    /**
+     * Set the error property: Error encountered, if any, during the certificate operation.
+     *
+     * @param error the error value to set.
+     * @return the CertificateOperation object itself.
+     */
+    @Generated
+    public CertificateOperation setError(CertificateOperationError error) {
+        this.error = error;
+        return this;
     }
 
     /**
@@ -161,6 +240,42 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
     }
 
     /**
+     * Set the target property: Location which contains the result of the certificate operation.
+     *
+     * @param target the target value to set.
+     * @return the CertificateOperation object itself.
+     */
+    @Generated
+    public CertificateOperation setTarget(String target) {
+        this.target = target;
+        return this;
+    }
+
+    /**
+     * Get the preserveCertOrder property: Specifies whether the certificate chain preserves its original order. The
+     * default value is false, which sets the leaf certificate at index 0.
+     *
+     * @return the preserveCertOrder value.
+     */
+    @Generated
+    public Boolean isPreserveCertOrder() {
+        return this.preserveCertOrder;
+    }
+
+    /**
+     * Set the preserveCertOrder property: Specifies whether the certificate chain preserves its original order. The
+     * default value is false, which sets the leaf certificate at index 0.
+     *
+     * @param preserveCertOrder the preserveCertOrder value to set.
+     * @return the CertificateOperation object itself.
+     */
+    @Generated
+    public CertificateOperation setPreserveCertOrder(Boolean preserveCertOrder) {
+        this.preserveCertOrder = preserveCertOrder;
+        return this;
+    }
+
+    /**
      * Get the requestId property: Identifier for the certificate operation.
      *
      * @return the requestId value.
@@ -168,6 +283,18 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
     @Generated
     public String getRequestId() {
         return this.requestId;
+    }
+
+    /**
+     * Set the requestId property: Identifier for the certificate operation.
+     *
+     * @param requestId the requestId value to set.
+     * @return the CertificateOperation object itself.
+     */
+    @Generated
+    public CertificateOperation setRequestId(String requestId) {
+        this.requestId = requestId;
+        return this;
     }
 
     /**
@@ -184,6 +311,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
         jsonWriter.writeStringField("status_details", this.statusDetails);
         jsonWriter.writeJsonField("error", this.error);
         jsonWriter.writeStringField("target", this.target);
+        jsonWriter.writeBooleanField("preserveCertOrder", this.preserveCertOrder);
         jsonWriter.writeStringField("request_id", this.requestId);
         return jsonWriter.writeEndObject();
     }
@@ -219,6 +347,8 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
                     deserializedCertificateOperation.error = CertificateOperationError.fromJson(reader);
                 } else if ("target".equals(fieldName)) {
                     deserializedCertificateOperation.target = reader.getString();
+                } else if ("preserveCertOrder".equals(fieldName)) {
+                    deserializedCertificateOperation.preserveCertOrder = reader.getNullable(JsonReader::getBoolean);
                 } else if ("request_id".equals(fieldName)) {
                     deserializedCertificateOperation.requestId = reader.getString();
                 } else {
@@ -227,101 +357,5 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
             }
             return deserializedCertificateOperation;
         });
-    }
-
-    /**
-     * Set the issuerParameters property: Parameters for the issuer of the X509 component of a certificate.
-     *
-     * @param issuerParameters the issuerParameters value to set.
-     * @return the CertificateOperation object itself.
-     */
-    @Generated
-    public CertificateOperation setIssuerParameters(IssuerParameters issuerParameters) {
-        this.issuerParameters = issuerParameters;
-        return this;
-    }
-
-    /**
-     * Set the csr property: The certificate signing request (CSR) that is being used in the certificate operation.
-     *
-     * @param csr the csr value to set.
-     * @return the CertificateOperation object itself.
-     */
-    @Generated
-    public CertificateOperation setCsr(byte[] csr) {
-        this.csr = CoreUtils.clone(csr);
-        return this;
-    }
-
-    /**
-     * Set the cancellationRequested property: Indicates if cancellation was requested on the certificate operation.
-     *
-     * @param cancellationRequested the cancellationRequested value to set.
-     * @return the CertificateOperation object itself.
-     */
-    @Generated
-    public CertificateOperation setCancellationRequested(Boolean cancellationRequested) {
-        this.cancellationRequested = cancellationRequested;
-        return this;
-    }
-
-    /**
-     * Set the status property: Status of the certificate operation.
-     *
-     * @param status the status value to set.
-     * @return the CertificateOperation object itself.
-     */
-    @Generated
-    public CertificateOperation setStatus(String status) {
-        this.status = status;
-        return this;
-    }
-
-    /**
-     * Set the statusDetails property: The status details of the certificate operation.
-     *
-     * @param statusDetails the statusDetails value to set.
-     * @return the CertificateOperation object itself.
-     */
-    @Generated
-    public CertificateOperation setStatusDetails(String statusDetails) {
-        this.statusDetails = statusDetails;
-        return this;
-    }
-
-    /**
-     * Set the target property: Location which contains the result of the certificate operation.
-     *
-     * @param target the target value to set.
-     * @return the CertificateOperation object itself.
-     */
-    @Generated
-    public CertificateOperation setTarget(String target) {
-        this.target = target;
-        return this;
-    }
-
-    /**
-     * Set the requestId property: Identifier for the certificate operation.
-     *
-     * @param requestId the requestId value to set.
-     * @return the CertificateOperation object itself.
-     */
-    @Generated
-    public CertificateOperation setRequestId(String requestId) {
-        this.requestId = requestId;
-        return this;
-    }
-
-    /**
-     * Set the error property: Error encountered, if any, during the certificate operation.
-     *
-     * @param error the error value to set.
-     * @return the CertificateOperation object itself.
-     */
-    @Generated
-    public CertificateOperation setError(CertificateOperationError error) {
-        this.error = error;
-        return this;
     }
 }

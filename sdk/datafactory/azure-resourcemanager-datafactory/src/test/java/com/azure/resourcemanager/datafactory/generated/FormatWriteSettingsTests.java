@@ -13,7 +13,7 @@ public final class FormatWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FormatWriteSettings model
-            = BinaryData.fromString("{\"type\":\"FormatWriteSettings\",\"\":{\"wwexbotbrepef\":\"datahbzetss\"}}")
+            = BinaryData.fromString("{\"type\":\"FormatWriteSettings\",\"\":{\"uyqdj\":\"datawawymahboind\"}}")
                 .toObject(FormatWriteSettings.class);
     }
 

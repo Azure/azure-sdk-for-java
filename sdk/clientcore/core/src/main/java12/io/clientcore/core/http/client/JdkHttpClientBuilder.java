@@ -316,7 +316,9 @@ public class JdkHttpClientBuilder {
         try (Reader reader = Files.newBufferedReader(path)) {
             properties.load(reader);
         } catch (IOException e) {
-            LOGGER.atWarning().addKeyValue("path", path).log("Cannot read net properties.", e);
+            LOGGER.atWarning().addKeyValue("path", path)
+                .setThrowable(e)
+                .log("Cannot read net properties.");
         }
         return properties;
     }

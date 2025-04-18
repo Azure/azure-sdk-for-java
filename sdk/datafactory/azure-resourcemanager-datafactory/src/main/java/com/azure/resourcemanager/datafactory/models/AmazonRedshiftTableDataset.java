@@ -51,7 +51,7 @@ public final class AmazonRedshiftTableDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private AmazonRedshiftTableDatasetTypeProperties innerTypeProperties() {
+    AmazonRedshiftTableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

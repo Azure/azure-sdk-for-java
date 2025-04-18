@@ -51,7 +51,7 @@ public final class SybaseTableDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private SybaseTableDatasetTypeProperties innerTypeProperties() {
+    SybaseTableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

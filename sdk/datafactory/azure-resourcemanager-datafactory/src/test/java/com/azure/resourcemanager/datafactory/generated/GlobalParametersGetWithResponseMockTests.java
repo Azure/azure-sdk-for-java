@@ -6,8 +6,8 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.datafactory.DataFactoryManager;
 import com.azure.resourcemanager.datafactory.models.GlobalParameterResource;
@@ -22,19 +22,20 @@ public final class GlobalParametersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"uzyyniv\":{\"type\":\"Int\",\"value\":\"datanlpjivtzs\"},\"mtxvnelw\":{\"type\":\"Array\",\"value\":\"dataqiijkvops\"},\"ytdborujflt\":{\"type\":\"String\",\"value\":\"datadm\"},\"gugvrwnweiwkbkh\":{\"type\":\"Bool\",\"value\":\"datawfwlfq\"}},\"name\":\"qacc\",\"type\":\"bdjott\",\"etag\":\"kqsxgaojwulat\",\"id\":\"jzv\"}";
+            = "{\"properties\":{\"r\":{\"type\":\"Float\",\"value\":\"datarphdakwwiezeut\"}},\"name\":\"wmo\",\"type\":\"qlwzatvnejlocmql\",\"etag\":\"lpqlwtxshvozh\",\"id\":\"lmwvcehkvafcjekt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         DataFactoryManager manager = DataFactoryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        GlobalParameterResource response
-            = manager.globalParameters().getWithResponse("lf", "ftz", "g", com.azure.core.util.Context.NONE).getValue();
+        GlobalParameterResource response = manager.globalParameters()
+            .getWithResponse("dpqkcbflzzd", "frewirrsuf", "tmseuqg", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("jzv", response.id());
-        Assertions.assertEquals(GlobalParameterType.INT, response.properties().get("uzyyniv").type());
+        Assertions.assertEquals("lmwvcehkvafcjekt", response.id());
+        Assertions.assertEquals(GlobalParameterType.FLOAT, response.properties().get("r").type());
     }
 }

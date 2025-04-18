@@ -51,7 +51,7 @@ public final class SalesforceServiceCloudV2ObjectDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private SalesforceServiceCloudV2ObjectDatasetTypeProperties innerTypeProperties() {
+    SalesforceServiceCloudV2ObjectDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

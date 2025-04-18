@@ -51,7 +51,7 @@ public final class QuickbaseLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private QuickbaseLinkedServiceTypeProperties innerTypeProperties() {
+    QuickbaseLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

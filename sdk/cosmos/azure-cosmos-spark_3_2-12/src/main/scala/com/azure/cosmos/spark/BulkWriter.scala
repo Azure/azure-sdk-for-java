@@ -998,13 +998,13 @@ private class BulkWriter
 
     val secondsWithoutProgress = numberOfIntervalsWithIdenticalActiveOperationSnapshots.get *
       writeConfig.flushCloseIntervalInSeconds
-    val maxAllowedIntervalWithoutAnyProgressExceeded =
-      secondsWithoutProgress >= writeConfig.maxRetryNoProgressIntervalInSeconds ||
-        (commitAttempt == 1
-          && allowRetryOnNewBulkWriterInstance
-          && this.activeReadManyOperations.isEmpty
-          && this.pendingReadManyRetries.isEmpty
-          && secondsWithoutProgress >= writeConfig.maxNoProgressIntervalInSeconds)
+    val maxNoProgressIntervalInSeconds = if (commitAttempt == 1 && allowRetryOnNewBulkWriterInstance
+      && this.activeReadManyOperations.isEmpty && this.pendingReadManyRetries.isEmpty) {
+      writeConfig.maxInitialNoProgressIntervalInSeconds
+    } else {
+      writeConfig.maxRetryNoProgressIntervalInSeconds
+    }
+    val maxAllowedIntervalWithoutAnyProgressExceeded = secondsWithoutProgress >= maxNoProgressIntervalInSeconds
 
     if (maxAllowedIntervalWithoutAnyProgressExceeded) {
 
@@ -1022,14 +1022,14 @@ private class BulkWriter
         new BulkWriterNoProgressException(
           s"Stale bulk ingestion identified in $operationName - the following active operations have not been " +
             s"completed (first ${BulkWriter.maxItemOperationsToShowInErrorMessage} shown) or progressed after " +
-            s"${writeConfig.maxNoProgressIntervalInSeconds} seconds: $operationsLog",
+            s"$maxNoProgressIntervalInSeconds seconds: $operationsLog",
           commitAttempt,
           retriableRemainingOperations)
       } else {
         new BulkWriterNoProgressException(
           s"Stale bulk ingestion as well as readMany operations identified in $operationName - the following active operations have not been " +
             s"completed (first ${BulkWriter.maxItemOperationsToShowInErrorMessage} shown) or progressed after " +
-            s"${writeConfig.maxRetryNoProgressIntervalInSeconds} : $operationsLog",
+            s"${maxNoProgressIntervalInSeconds} : $operationsLog",
           commitAttempt,
           None)
       }

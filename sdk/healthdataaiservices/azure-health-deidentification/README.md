@@ -64,7 +64,7 @@ You can de-identify text directly using the `DeidentificationClient`:
 String inputText = "Hello, my name is John Smith.";
 
 DeidentificationContent content = new DeidentificationContent(inputText);
-content.setOperation(DeidentificationOperationType.SURROGATE);
+content.setOperationType(DeidentificationOperationType.SURROGATE);
 
 DeidentificationResult result = deidentificationClient.deidentifyText(content);
 System.out.println("De-identified output: " + (result != null ? result.getOutputText() : null));
@@ -87,7 +87,7 @@ DeidentificationJob job = new DeidentificationJob(
         .setOverwrite(true)
 );
 
-job.setOperation(DeidentificationOperationType.REDACT);
+job.setOperationType(DeidentificationOperationType.REDACT);
 
 String jobName = Configuration.getGlobalConfiguration().get("DEID_JOB_NAME", "MyJob-" + Instant.now().toEpochMilli());
 DeidentificationJob result = deidentificationClient.beginDeidentifyDocuments(jobName, job)
@@ -122,7 +122,7 @@ DeidentificationClient deidentificationClient = new DeidentificationClientBuilde
 String inputText = "Hello, my name is John Smith.";
 
 DeidentificationContent content = new DeidentificationContent(inputText);
-content.setOperation(DeidentificationOperationType.SURROGATE);
+content.setOperationType(DeidentificationOperationType.SURROGATE);
 
 DeidentificationResult result = deidentificationClient.deidentifyText(content);
 System.out.println("De-identified output: " + (result != null ? result.getOutputText() : null));
@@ -139,7 +139,7 @@ DeidentificationJob job = new DeidentificationJob(
         .setOverwrite(true)
 );
 
-job.setOperation(DeidentificationOperationType.REDACT);
+job.setOperationType(DeidentificationOperationType.REDACT);
 
 String jobName = Configuration.getGlobalConfiguration().get("DEID_JOB_NAME", "MyJob-" + Instant.now().toEpochMilli());
 DeidentificationJob result = deidentificationClient.beginDeidentifyDocuments(jobName, job)
@@ -161,7 +161,7 @@ System.out.println(jobName + " - " + result.getStatus());
 ```java com.azure.health.deidentification.samples.list_deidentification_jobs
 PagedIterable<DeidentificationJob> result = deidentificationClient.listJobs();
 for (DeidentificationJob job : result) {
-    System.out.println(job.getName() + " - " + job.getStatus());
+    System.out.println(job.getJobName() + " - " + job.getStatus());
 }
 ```
 
@@ -171,7 +171,7 @@ for (DeidentificationJob job : result) {
 String jobName = Configuration.getGlobalConfiguration().get("DEID_JOB_NAME");
 PagedIterable<DeidentificationDocumentDetails> result = deidentificationClient.listJobDocuments(jobName);
 for (DeidentificationDocumentDetails documentDetails : result) {
-    System.out.println(documentDetails.getInput().getLocation() + " - " + documentDetails.getStatus());
+    System.out.println(documentDetails.getInputLocation().getLocation() + " - " + documentDetails.getStatus());
 }
 ```
 
