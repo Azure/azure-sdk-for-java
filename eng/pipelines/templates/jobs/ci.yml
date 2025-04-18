@@ -76,7 +76,7 @@ jobs:
     pool:
       name: $(LINUXPOOL)
       image: $(LINUXVMIMAGE)
-      os: $(LINUXOS)
+      os: linux
 
     steps:
       # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
@@ -259,7 +259,7 @@ jobs:
     pool:
       name: $(LINUXPOOL)
       image: $(LINUXVMIMAGE)
-      os: $(LINUXOS)
+      os: linux
 
     steps:
       - task: UsePythonVersion@0
@@ -443,7 +443,7 @@ jobs:
       JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
       OsVmImage: $(LINUXVMIMAGE)
       Pool: $(LINUXPOOL)
-      Os: $(LINUXOS)
+      os: linux
       MatrixConfigs:
         - ${{ each config in parameters.MatrixConfigs }}:
           - ${{ config }}

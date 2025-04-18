@@ -18,7 +18,7 @@ stages:
         pool:
           name: $(WINDOWSPOOL)
           image: $(WINDOWSVMIMAGE)
-          os: $(WINDOWSOS)
+          os: windows
         steps:
           - checkout: azure-sdk-build-tools
             path: azure-sdk-build-tools
@@ -88,7 +88,7 @@ stages:
             pool:
               name: $(WINDOWSPOOL)
               image: $(WINDOWSVMIMAGE)
-              os: $(WINDOWSOS)
+              os: windows
             steps:
               - download: current
                 displayName: 'Download Artifact: packages-signed'
@@ -135,7 +135,7 @@ stages:
             pool:
               name: $(WINDOWSPOOL)
               image: $(WINDOWSVMIMAGE)
-              os: $(WINDOWSOS)
+              os: windows
             steps:
               - download: current
                 displayName: 'Download Artifact: packages-signed'

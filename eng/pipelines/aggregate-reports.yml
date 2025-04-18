@@ -37,7 +37,7 @@ extends:
             pool:
               name: $(LINUXPOOL)
               image: $(LINUXVMIMAGE)
-              os: $(LINUXOS)
+              os: linux
             steps:
             - template: /eng/pipelines/templates/steps/generate-project-list-and-cache-maven-repository.yml
               parameters:
@@ -154,7 +154,7 @@ extends:
               # CredScan build task is Windows only (https://aka.ms/credscan).
               name: $(WINDOWSPOOL)
               image: $(WINDOWSVMIMAGE)
-              os: $(WINDOWSOS)
+              os: windows
             steps:
             - task: ms.vss-governance-buildtask.governance-build-task-component-detection.ComponentGovernanceComponentDetection@0
               # ComponentGovernance is currently unable to run on pull requests of public projects. Running on non-PR
@@ -189,7 +189,7 @@ extends:
             pool:
               name: $(WINDOWSPOOL)
               image: $(WINDOWSVMIMAGE)
-              os: $(WINDOWSOS)
+              os: windows
 
             steps:
               - template: /eng/common/pipelines/templates/steps/policheck.yml

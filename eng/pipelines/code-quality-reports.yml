@@ -28,7 +28,7 @@ extends:
             pool:
               name: $(LINUXPOOL)
               image: $(LINUXVMIMAGE)
-              os: $(LINUXOS)
+              os: linux
 
             steps:
               # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories

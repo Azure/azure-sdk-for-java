@@ -15,7 +15,7 @@ stages:
         pool:
           name: $(WINDOWSPOOL)
           image: $(WINDOWSVMIMAGE)
-          os: $(WINDOWSOS)
+          os: windows
 
         steps:
         - pwsh: |
