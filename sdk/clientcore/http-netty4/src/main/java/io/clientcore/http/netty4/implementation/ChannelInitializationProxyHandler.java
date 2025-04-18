@@ -8,6 +8,7 @@ import io.clientcore.core.utils.AuthenticateChallenge;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.configuration.Configuration;
 import io.clientcore.http.netty4.NettyHttpClientBuilder;
+import io.netty.channel.ChannelDuplexHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.proxy.HttpProxyHandler;
@@ -78,7 +79,7 @@ public final class ChannelInitializationProxyHandler implements Predicate<Socket
      * received {@code Proxy-Authenticate} headers from the proxy.
      * @return The {@link ProxyHandler} that will handle proxying.
      */
-    public ProxyHandler createProxy(AtomicReference<List<AuthenticateChallenge>> proxyChallenges) {
+    public ChannelDuplexHandler createProxy(AtomicReference<List<AuthenticateChallenge>> proxyChallenges) {
         if (proxyOptions.getType() == ProxyOptions.Type.SOCKS4) {
             return new Socks4ProxyHandler(proxyOptions.getAddress(), proxyOptions.getUsername());
         } else if (proxyOptions.getType() == ProxyOptions.Type.SOCKS5) {
