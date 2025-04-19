@@ -47,16 +47,8 @@ public class CosmosAadAuthConfig implements CosmosAuthConfig {
         return clientSecret;
     }
 
-    public String getAuthEndpointOverride() {
-        return authEndpointOverride;
-    }
-
     public String getTenantId() {
         return tenantId;
-    }
-
-    public CosmosAzureEnvironment getAzureEnvironment() {
-        return azureEnvironment;
     }
 
     public String getAuthEndpoint() {
