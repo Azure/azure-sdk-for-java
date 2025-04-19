@@ -12,6 +12,7 @@ import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.s
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.CollectionConfigurationInfo;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.MonitoringDataPoint;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.quickpulse.swagger.models.PublishHeaders;
+import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.IKeyMasker;
 import com.azure.monitor.opentelemetry.autoconfigure.implementation.utils.Strings;
 
 import java.io.IOException;
@@ -19,6 +20,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
@@ -55,7 +57,7 @@ class QuickPulseDataSender implements Runnable {
         this.instrumentationKey = instrumentationKey;
         this.configuration = configuration;
         logger.verbose("QuickPulseDataSender initialized with endpointUrl: {}, instrumentationKey: {}",
-            endpointUrl.get().toString(), instrumentationKey.get());
+            Objects.toString(endpointUrl.get()), Objects.toString(IKeyMasker.mask(instrumentationKey.get())));
     }
 
     @Override
