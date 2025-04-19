@@ -10,6 +10,30 @@ description: This recipe migrates the azure.core.http package to the next genera
 recipeList:
 
   # --------------------------------------------------------------------
+  # HttpRequest
+  # --------------------------------------------------------------------
+
+  - com.azure.openrewrite.core.http.HttpRequestCustomRecipe
+
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: 'com.azure.core.http.HttpRequest getUrl()'
+      newMethodName: 'getUri'
+
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: 'com.azure.core.http.HttpRequest setUrl()'
+      newMethodName: 'setUri'
+
+  - org.openrewrite.java.ChangeMethodName:
+      methodPattern: 'com.azure.core.http.HttpRequest setHttpMethod(..)'
+      newMethodName: 'setMethod'
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.HttpRequest
+      newFullyQualifiedTypeName: io.clientcore.core.http.models.HttpRequest
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
   # ContentType
   # --------------------------------------------------------------------
 
@@ -164,29 +188,7 @@ recipeList:
 
   # TODO: Migrate Methods and Fields
 
-  # --------------------------------------------------------------------
-  # HttpRequest
-  # --------------------------------------------------------------------
 
-  - com.azure.openrewrite.core.http.HttpRequestCustomRecipe
-
-  - org.openrewrite.java.ChangeMethodName:
-      methodPattern: 'com.azure.core.http.HttpRequest getUrl()'
-      newMethodName: 'getUri'
-
-  - org.openrewrite.java.ChangeMethodName:
-      methodPattern: 'com.azure.core.http.HttpRequest setUrl()'
-      newMethodName: 'setUri'
-
-  - org.openrewrite.java.ChangeMethodName:
-        methodPattern: 'com.azure.core.http.HttpRequest setHttpMethod(..)'
-        newMethodName: 'setMethod'
-
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.http.HttpRequest
-      newFullyQualifiedTypeName: io.clientcore.core.http.models.HttpRequest
-
-  # TODO: Migrate Methods and Fields
 
   # --------------------------------------------------------------------
   # HttpResponse

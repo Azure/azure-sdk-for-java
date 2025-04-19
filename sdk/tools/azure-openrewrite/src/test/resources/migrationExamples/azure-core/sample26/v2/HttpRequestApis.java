@@ -35,20 +35,18 @@ public class HttpRequestApis {
         HttpHeaders headers = request1.getHeaders();
         request2 = request2.setHeaders(new HttpHeaders(5));
         request1
-            .getHeaders().set(HttpHeaderName.fromString("key"), "value")
-            .set(HttpHeaderName.ACCEPT, "application/json");
+            .setHeaders(request1.getHeaders().set(HttpHeaderName.fromString("key"), "value"))
+            .setHeaders(request1.getHeaders().set(HttpHeaderName.ACCEPT, "application/json"));
 
         BinaryData body = request2.getBody();
         request3 = request3.setBody(BinaryData.fromString("new Body"));
         request4 = request4.setBody(BinaryData.fromBytes(new byte[4]));
         request1 = request1.setBody(BinaryData.fromString("test"));
         HttpRequest request5 = new HttpRequest()
-            .setMethod(request1.getHttpMethod())
+            .setHttpMethod(request1.getHttpMethod())
             .setUri(request1.getUri())
             .setHeaders(new HttpHeaders(request1.getHeaders()))
             .setBody(request1.getBody());
-
-
 
     }
 }
