@@ -34,6 +34,11 @@ public enum ProvisioningState {
     VALIDATE_SUBSCRIPTION_QUOTA_END("ValidateSubscriptionQuotaEnd"),
 
     /**
+     * Enum value Accepted.
+     */
+    ACCEPTED("Accepted"),
+
+    /**
      * Enum value Deleting.
      */
     DELETING("Deleting"),
