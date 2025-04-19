@@ -17,28 +17,19 @@ import com.azure.v2.security.keyvault.administration.implementation.models.Selec
 import com.azure.v2.security.keyvault.administration.implementation.models.SelectiveKeyRestoreOperationParameters;
 import com.azure.v2.security.keyvault.administration.models.KeyVaultBackupOperation;
 import com.azure.v2.security.keyvault.administration.models.KeyVaultRestoreOperation;
-import com.azure.v2.security.keyvault.administration.models.KeyVaultRestoreResult;
 import com.azure.v2.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreOperation;
-import com.azure.v2.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreResult;
-import io.clientcore.core.annotations.ReturnType;
 import io.clientcore.core.annotations.ServiceClient;
-import io.clientcore.core.annotations.ServiceMethod;
 import io.clientcore.core.http.models.HttpResponseException;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.models.binarydata.BinaryData;
-import io.clientcore.core.utils.Context;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
-import java.time.Duration;
 import java.util.Locale;
-import java.util.function.Function;
 
 import static com.azure.v2.security.keyvault.administration.KeyVaultAdministrationUtil.toLongRunningOperationStatus;
 import static com.azure.v2.security.keyvault.administration.KeyVaultAdministrationUtil.transformToLongRunningOperation;
-import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
 /**
  * This class provides methods to perform full a backup and restore of a key vault,
@@ -151,7 +142,7 @@ public final class KeyVaultBackupClient {
             return Poller.createPoller(Duration.ofSeconds(1),
                 pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                     backupWithResponse(blobStorageUrl, sasToken).getValue()),
-                pollingContext -> backupPollOperation(pollingContext.getLatestResponse(), RequestOptions.none()),
+                pollingContext -> backupPollOperation(pollingContext.getLatestResponse(), RequestContext.none()),
                 (pollingContext, firstResponse) -> {
                     throw new RuntimeException("Cancellation is not supported");
                 }, pollingContext -> pollingContext.getLatestResponse().getValue().getAzureStorageBlobContainerUrl());
@@ -165,18 +156,16 @@ public final class KeyVaultBackupClient {
             .setUseManagedIdentity(sasToken == null);
 
         try (Response<FullBackupOperation> backupOperationResponse =
-            clientImpl.fullBackupWithResponse(sasTokenParameter, RequestOptions.none())) {
+            clientImpl.fullBackupWithResponse(sasTokenParameter, RequestContext.none())) {
 
             return new Response<>(backupOperationResponse.getRequest(), backupOperationResponse.getStatusCode(),
                 backupOperationResponse.getHeaders(), (KeyVaultBackupOperation) transformToLongRunningOperation(
                     backupOperationResponse.getValue()));
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
         }
     }
 
     private PollResponse<KeyVaultBackupOperation> backupPollOperation(
-        PollResponse<KeyVaultBackupOperation> pollResponse, RequestOptions requestOptions) {
+        PollResponse<KeyVaultBackupOperation> pollResponse, RequestContext requestContext) {
 
         try {
             if (pollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED
@@ -196,7 +185,7 @@ public final class KeyVaultBackupClient {
             final String jobId = keyVaultBackupOperation.getOperationId();
 
             try (Response<FullBackupOperation> response = clientImpl.fullBackupStatusWithResponse(jobId,
-                requestOptions)) {
+                requestContext)) {
 
                 return processOperationResponse(
                     new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
@@ -207,8 +196,6 @@ public final class KeyVaultBackupClient {
             LOGGER.logThrowableAsError(e);
 
             return new PollResponse<>(LongRunningOperationStatus.FAILED, null);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
         }
     }
 
@@ -265,20 +252,16 @@ public final class KeyVaultBackupClient {
             folderName);
 
         try (Response<RestoreOperation> response = clientImpl.fullRestoreOperationWithResponse(
-            restoreOperationParameters, RequestOptions.none())) {
+            restoreOperationParameters, RequestContext.none())) {
 
             return new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                 (KeyVaultRestoreOperation) transformToLongRunningOperation(response.getValue()));
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
         }
     }
 
     private KeyVaultRestoreOperation restoreActivationOperation(String folderUrl, String sasToken) {
         try (Response<KeyVaultRestoreOperation> response = restoreWithResponse(folderUrl, sasToken)) {
             return response.getValue();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
         }
     }
 
@@ -306,7 +289,7 @@ public final class KeyVaultBackupClient {
             final String jobId = keyVaultRestoreOperation.getOperationId();
 
             try (Response<RestoreOperation> response = clientImpl.restoreStatusWithResponse(jobId,
-                RequestOptions.none())) {
+                RequestContext.none())) {
 
                 return processOperationResponse(
                     new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
@@ -317,8 +300,6 @@ public final class KeyVaultBackupClient {
             LOGGER.logThrowableAsError(e);
 
             return new PollResponse<>(LongRunningOperationStatus.FAILED, null);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
         }
     }
 
@@ -387,14 +368,12 @@ public final class KeyVaultBackupClient {
 
         try (Response<SelectiveKeyRestoreOperation> selectiveKeyRestoreOperationResponse =
             clientImpl.selectiveKeyRestoreOperationWithResponse(keyName, selectiveKeyRestoreOperationParameters,
-                RequestOptions.none())) {
+                RequestContext.none())) {
 
             return new Response<>(selectiveKeyRestoreOperationResponse.getRequest(),
                 selectiveKeyRestoreOperationResponse.getStatusCode(), selectiveKeyRestoreOperationResponse.getHeaders(),
                 (KeyVaultSelectiveKeyRestoreOperation) transformToLongRunningOperation(
                     selectiveKeyRestoreOperationResponse.getValue()));
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
         }
     }
 
@@ -405,8 +384,6 @@ public final class KeyVaultBackupClient {
             folderUrl, sasToken)) {
 
             return response.getValue();
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
         }
     }
 
@@ -435,7 +412,7 @@ public final class KeyVaultBackupClient {
             final String jobId = keyVaultSelectiveKeyRestoreOperation.getOperationId();
 
             try (Response<SelectiveKeyRestoreOperation> response = clientImpl.selectiveKeyRestoreStatusWithResponse(
-                jobId, RequestOptions.none())) {
+                jobId, RequestContext.none())) {
 
                 return processOperationResponse(
                     new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
@@ -446,8 +423,6 @@ public final class KeyVaultBackupClient {
             LOGGER.logThrowableAsError(e);
 
             return new PollResponse<>(LongRunningOperationStatus.FAILED, null);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
         }
     }
 

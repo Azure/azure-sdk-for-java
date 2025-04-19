@@ -3,11 +3,9 @@
 
 package com.azure.v2.security.keyvault.keys.implementation;
 
-import com.azure.v2.security.keyvault.keys.KeyServiceVersion;
 import com.azure.v2.security.keyvault.keys.cryptography.CryptographyClientBuilder;
 import com.azure.v2.security.keyvault.keys.cryptography.CryptographyServiceVersion;
 import io.clientcore.core.http.models.HttpResponseException;
-import io.clientcore.core.http.models.RequestOptions;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonReader;
@@ -44,12 +42,12 @@ public final class KeyVaultKeysUtils {
      * @throws IllegalArgumentException If {@code keyName} is {@code null} or an empty string.
      */
     public static CryptographyClientBuilder getCryptographyClientBuilder(String keyName, String keyVersion,
-        String endpoint, HttpPipeline httpPipeline, KeyServiceVersion serviceVersion) {
+        String endpoint, HttpPipeline httpPipeline, String serviceVersion) {
 
         return new CryptographyClientBuilder()
             .keyIdentifier(generateKeyId(keyName, keyVersion, endpoint))
             .httpPipeline(httpPipeline)
-            .serviceVersion(CryptographyServiceVersion.valueOf(serviceVersion.name()));
+            .serviceVersion(CryptographyServiceVersion.valueOf(serviceVersion));
     }
 
     /**

@@ -15,11 +15,10 @@ import io.clientcore.core.annotations.ReturnType;
 import io.clientcore.core.annotations.ServiceClient;
 import io.clientcore.core.annotations.ServiceMethod;
 import io.clientcore.core.http.models.HttpResponseException;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.utils.Context;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -36,6 +35,7 @@ import static com.azure.v2.security.keyvault.administration.KeyVaultAdministrati
 import static com.azure.v2.security.keyvault.administration.KeyVaultAdministrationUtil.validateAndGetRoleDefinitionCreateParameters;
 import static com.azure.v2.security.keyvault.administration.KeyVaultAdministrationUtil.validateRoleAssignmentParameters;
 import static com.azure.v2.security.keyvault.administration.KeyVaultAdministrationUtil.validateRoleDefinitionParameters;
+import static io.clientcore.core.utils.CoreUtils.extractSizeFromContentRange;
 import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
 
 /**
@@ -177,7 +177,7 @@ public final class KeyVaultAccessControlClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyVaultRoleDefinition> listRoleDefinitions(KeyVaultRoleScope roleScope) {
-        return listRoleDefinitions(roleScope, RequestOptions.none());
+        return listRoleDefinitions(roleScope, RequestContext.none());
     }
 
     /**
@@ -185,16 +185,16 @@ public final class KeyVaultAccessControlClient {
      *
      * <p><strong>Iterate through role definitions</strong></p>
      * <p>Lists all role definitions in the key vault and prints out their details.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.listRoleDefinitions#KeyVaultRoleScope-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.listRoleDefinitions#KeyVaultRoleScope-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.listRoleDefinitions#KeyVaultRoleScope-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.listRoleDefinitions#KeyVaultRoleScope-RequestContext -->
      *
      * <p><strong>Iterate through role definitions by page</strong></p>
      * <p>Iterates through the role definitions in the key vault by page and prints out their details.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.listRoleDefinitions.iterableByPage#KeyVaultRoleScope-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.listRoleDefinitions.iterableByPage#KeyVaultRoleScope-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.listRoleDefinitions.iterableByPage#KeyVaultRoleScope-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.listRoleDefinitions.iterableByPage#KeyVaultRoleScope-RequestContext -->
      *
      * @param roleScope The role scope of the role definitions. It is required and cannot be {@code null}.
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link PagedIterable} of role definitions for the given role scope.
      *
@@ -203,21 +203,15 @@ public final class KeyVaultAccessControlClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyVaultRoleDefinition> listRoleDefinitions(KeyVaultRoleScope roleScope,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
 
         try {
             Objects.requireNonNull(roleScope, String.format(CANNOT_BE_NULL, "'roleScope'"));
 
-            RequestOptions requestOptionsForNextPage = new RequestOptions();
-
-            requestOptionsForNextPage.setContext(requestOptions != null && requestOptions.getContext() != null
-                ? requestOptions.getContext()
-                : Context.none());
-
             return mapPages(pagingOptions -> clientImpl.getRoleDefinitions()
-                    .listSinglePage(roleScope.getValue(), null, requestOptions),
+                    .listSinglePage(roleScope.getValue(), null, requestContext),
                 (pagingOptions, nextLink) -> clientImpl.getRoleDefinitions()
-                    .listNextSinglePage(nextLink, requestOptionsForNextPage),
+                    .listNextSinglePage(nextLink, requestContext.toBuilder().build()),
                 KeyVaultAdministrationUtil::roleDefinitionToKeyVaultRoleDefinition);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -286,12 +280,12 @@ public final class KeyVaultAccessControlClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Creates or updates a role definition. Prints out details of the response returned by the service and the
      * created or updated role definition.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.setRoleDefinitionWithResponse#SetRoleDefinitionOptions-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.setRoleDefinitionWithResponse#SetRoleDefinitionOptions-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.setRoleDefinitionWithResponse#SetRoleDefinitionOptions-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.setRoleDefinitionWithResponse#SetRoleDefinitionOptions-RequestContext -->
      *
      * @param options The configurable options to create or update a role definition. It is required and cannot be
      * {@code null}.
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      *
      * @return A response object whose {@link Response#getValue() value} contains the created or updated role
      * definition.
@@ -304,12 +298,12 @@ public final class KeyVaultAccessControlClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultRoleDefinition> setRoleDefinitionWithResponse(SetRoleDefinitionOptions options,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
 
         try {
             return mapResponse(clientImpl.getRoleDefinitions()
                     .createOrUpdateWithResponse(options.getRoleScope().toString(), options.getRoleDefinitionName(),
-                        validateAndGetRoleDefinitionCreateParameters(options), requestOptions),
+                        validateAndGetRoleDefinitionCreateParameters(options), requestContext),
                 KeyVaultAdministrationUtil::roleDefinitionToKeyVaultRoleDefinition);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -354,14 +348,14 @@ public final class KeyVaultAccessControlClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Gets a role definition. Prints out details of the response returned by the service and the retrieved role
      * definition.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.getRoleDefinitionWithResponse#KeyVaultRoleScope-String-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.getRoleDefinitionWithResponse#KeyVaultRoleScope-String-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.getRoleDefinitionWithResponse#KeyVaultRoleScope-String-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.getRoleDefinitionWithResponse#KeyVaultRoleScope-String-RequestContext -->
      *
      * @param roleScope The role scope of the role definition. It is required and cannot be {@code null}. Managed HSM
      * only supports {@code '/'}.
      * @param roleDefinitionName The name of the role definition. It is required and cannot be {@code null} or an empty
      * string.
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      *
      * @return A response object whose {@link Response#getValue() value} contains the retrieved role definition.
      *
@@ -372,13 +366,13 @@ public final class KeyVaultAccessControlClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultRoleDefinition> getRoleDefinitionWithResponse(KeyVaultRoleScope roleScope,
-        String roleDefinitionName, RequestOptions requestOptions) {
+        String roleDefinitionName, RequestContext requestContext) {
 
         try {
             validateRoleDefinitionParameters(roleScope, roleDefinitionName);
 
             return mapResponse(clientImpl.getRoleDefinitions()
-                    .getWithResponse(roleScope.toString(), roleDefinitionName, requestOptions),
+                    .getWithResponse(roleScope.toString(), roleDefinitionName, requestContext),
                 KeyVaultAdministrationUtil::roleDefinitionToKeyVaultRoleDefinition);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -418,14 +412,14 @@ public final class KeyVaultAccessControlClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Deletes a role definition. Prints out details of the response returned by the service.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.deleteRoleDefinitionWithResponse#KeyVaultRoleScope-String-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.deleteRoleDefinitionWithResponse#KeyVaultRoleScope-String-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.deleteRoleDefinitionWithResponse#KeyVaultRoleScope-String-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.deleteRoleDefinitionWithResponse#KeyVaultRoleScope-String-RequestContext -->
      *
      * @param roleScope The role scope of the role definition. It is required and cannot be {@code null}. Managed HSM
      * only supports {@code '/'}.
      * @param roleDefinitionName The name of the role definition. It is required and cannot be {@code null} or an empty
      * string.
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      *
      * @return An empty response object.
      *
@@ -435,10 +429,10 @@ public final class KeyVaultAccessControlClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteRoleDefinitionWithResponse(KeyVaultRoleScope roleScope, String roleDefinitionName,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
 
         try (Response<RoleDefinition> response = clientImpl.getRoleDefinitions()
-            .deleteWithResponse(roleScope.toString(), roleDefinitionName, requestOptions)) {
+            .deleteWithResponse(roleScope.toString(), roleDefinitionName, requestContext)) {
 
             validateRoleDefinitionParameters(roleScope, roleDefinitionName);
 
@@ -449,8 +443,6 @@ public final class KeyVaultAccessControlClient {
             }
 
             throw LOGGER.logThrowableAsError(e);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 
@@ -472,7 +464,7 @@ public final class KeyVaultAccessControlClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyVaultRoleAssignment> listRoleAssignments(KeyVaultRoleScope roleScope) {
-        return listRoleAssignments(roleScope, RequestOptions.none());
+        return listRoleAssignments(roleScope, RequestContext.none());
     }
 
     /**
@@ -480,12 +472,12 @@ public final class KeyVaultAccessControlClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Lists all role assignments in the key vault and prints out their details.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.listRoleAssignments#KeyVaultRoleScope-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.listRoleAssignments#KeyVaultRoleScope-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.listRoleAssignments#KeyVaultRoleScope-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.listRoleAssignments#KeyVaultRoleScope-RequestContext -->
      *
      * @param roleScope The role scope of the role assignment. It is required and cannot be {@code null}. Managed HSM
      * only supports {@code '/'}.
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      *
      * @return A {@link PagedIterable} containing the role assignments for the given role scope.
      *
@@ -494,21 +486,15 @@ public final class KeyVaultAccessControlClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<KeyVaultRoleAssignment> listRoleAssignments(KeyVaultRoleScope roleScope,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
 
         try {
             Objects.requireNonNull(roleScope, String.format(CANNOT_BE_NULL, "'roleScope'"));
 
-            RequestOptions requestOptionsForNextPage = new RequestOptions();
-
-            requestOptionsForNextPage.setContext(requestOptions != null && requestOptions.getContext() != null
-                ? requestOptions.getContext()
-                : Context.none());
-
             return mapPages(pagingOptions -> clientImpl.getRoleAssignments()
-                    .listForScopeSinglePage(roleScope.toString(), null, requestOptions),
+                    .listForScopeSinglePage(roleScope.toString(), null, requestContext),
                 (pagingOptions, nextLink) -> clientImpl.getRoleAssignments()
-                    .listForScopeNextSinglePage(nextLink, requestOptionsForNextPage),
+                    .listForScopeNextSinglePage(nextLink, requestContext.toBuilder().build()),
                 KeyVaultAdministrationUtil::roleAssignmentToKeyVaultRoleAssignment);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -592,8 +578,8 @@ public final class KeyVaultAccessControlClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Creates a role assignment. Prints out details of the response returned by the service and the created role
      * assignment.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.createRoleAssignmentWithResponse#KeyVaultRoleScope-String-String-String-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.createRoleAssignmentWithResponse#KeyVaultRoleScope-String-String-String-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.createRoleAssignmentWithResponse#KeyVaultRoleScope-String-String-String-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.createRoleAssignmentWithResponse#KeyVaultRoleScope-String-String-String-RequestContext -->
      *
      * @param roleScope The role scope of the role assignment to create. It is required and cannot be {@code null}.
      * @param roleAssignmentName The name of the role assignment. It can be any valid UUID. It is required and cannot be
@@ -602,7 +588,7 @@ public final class KeyVaultAccessControlClient {
      * or an empty string.
      * @param principalId The principal ID assigned to the role. This maps to the ID inside the Active Directory. It is
      * required and cannot be {@code null} or an empty string.
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      *
      * @return A response object whose {@link Response#getValue() value} contains the created role assignment.
      *
@@ -614,14 +600,14 @@ public final class KeyVaultAccessControlClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultRoleAssignment> createRoleAssignmentWithResponse(KeyVaultRoleScope roleScope,
-        String roleDefinitionId, String principalId, String roleAssignmentName, RequestOptions requestOptions) {
+        String roleDefinitionId, String principalId, String roleAssignmentName, RequestContext requestContext) {
 
         try {
             RoleAssignmentCreateParameters parameters = validateAndGetRoleAssignmentCreateParameters(roleScope,
                 roleDefinitionId, principalId, roleAssignmentName);
 
             return mapResponse(clientImpl.getRoleAssignments()
-                    .createWithResponse(roleScope.toString(), roleAssignmentName, parameters, requestOptions),
+                    .createWithResponse(roleScope.toString(), roleAssignmentName, parameters, requestContext),
                 KeyVaultAdministrationUtil::roleAssignmentToKeyVaultRoleAssignment);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -665,13 +651,13 @@ public final class KeyVaultAccessControlClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Deletes a role assignment. Prints out details of the response returned by the service and the retrieved role
      * assignment.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.getRoleAssignmentWithResponse#KeyVaultRoleScope-String-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.getRoleAssignmentWithResponse#KeyVaultRoleScope-String-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.getRoleAssignmentWithResponse#KeyVaultRoleScope-String-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.getRoleAssignmentWithResponse#KeyVaultRoleScope-String-RequestContext -->
      *
      * @param roleScope The role scope of the role assignment. It is required and cannot be {@code null}.
      * @param roleAssignmentName The name of the role assignment. It is required and cannot be {@code null} or an empty
      * string.
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      *
      * @return A response object whose {@link Response#getValue() value} contains the retrieved role assignment.
      *
@@ -682,13 +668,13 @@ public final class KeyVaultAccessControlClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultRoleAssignment> getRoleAssignmentWithResponse(KeyVaultRoleScope roleScope,
-        String roleAssignmentName, RequestOptions requestOptions) {
+        String roleAssignmentName, RequestContext requestContext) {
 
         try {
             validateRoleAssignmentParameters(roleScope, roleAssignmentName);
 
             return mapResponse(clientImpl.getRoleAssignments()
-                    .getWithResponse(roleScope.toString(), roleAssignmentName, requestOptions),
+                    .getWithResponse(roleScope.toString(), roleAssignmentName, requestContext),
                 KeyVaultAdministrationUtil::roleAssignmentToKeyVaultRoleAssignment);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -727,12 +713,12 @@ public final class KeyVaultAccessControlClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Deletes a role assignment. Prints out details of the response returned by the service.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.deleteRoleAssignmentWithResponse#KeyVaultRoleScope-String-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.deleteRoleAssignmentWithResponse#KeyVaultRoleScope-String-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.deleteRoleAssignmentWithResponse#KeyVaultRoleScope-String-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultAccessControlClient.deleteRoleAssignmentWithResponse#KeyVaultRoleScope-String-RequestContext -->
      *
      * @param roleScope The role scope of the role assignment. It is required and cannot be {@code null}.
      * @param roleAssignmentName The name of the role assignment. It is required and cannot be {@code null} or an empty
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      *
      * @return An empty response object.
      *
@@ -742,10 +728,10 @@ public final class KeyVaultAccessControlClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteRoleAssignmentWithResponse(KeyVaultRoleScope roleScope, String roleAssignmentName,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
 
         try (Response<RoleAssignment> response = clientImpl.getRoleAssignments()
-            .deleteWithResponse(roleScope.toString(), roleAssignmentName, requestOptions)) {
+            .deleteWithResponse(roleScope.toString(), roleAssignmentName, requestContext)) {
 
             validateRoleAssignmentParameters(roleScope, roleAssignmentName);
 
@@ -756,8 +742,6 @@ public final class KeyVaultAccessControlClient {
             }
 
             throw LOGGER.logThrowableAsError(e);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 }

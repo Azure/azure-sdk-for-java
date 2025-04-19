@@ -21,6 +21,7 @@ import io.clientcore.core.http.pipeline.HttpRedirectOptions;
 import io.clientcore.core.http.pipeline.HttpRedirectPolicy;
 import io.clientcore.core.http.pipeline.HttpRetryOptions;
 import io.clientcore.core.http.pipeline.HttpRetryPolicy;
+import io.clientcore.core.http.pipeline.UserAgentOptions;
 import io.clientcore.core.http.pipeline.UserAgentPolicy;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.traits.ConfigurationTrait;
@@ -135,7 +136,7 @@ public final class SecretClientBuilder
         SecretServiceVersion version = this.version == null ? SecretServiceVersion.getLatest() : this.version;
 
         if (pipeline != null) {
-            return new SecretClientImpl(pipeline, endpoint, version);
+            return new SecretClientImpl(pipeline, endpoint, version.getVersion());
         }
 
         if (credential == null) {
@@ -146,9 +147,13 @@ public final class SecretClientBuilder
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        // TODO (vcolin7): Get applicationId from instrumentationOptions once
-        //  https://github.com/Azure/azure-sdk-for-java/pull/44764 is merged.
-        policies.add(new UserAgentPolicy(null, CLIENT_NAME, CLIENT_VERSION));
+        // TODO (vcolin7): Figure out where to get applicationId from.
+        UserAgentOptions userAgentOptions = new UserAgentOptions()
+            //.setApplicationId(null)
+            .setSdkName(CLIENT_NAME)
+            .setSdkVersion(CLIENT_VERSION);
+
+        policies.add(new UserAgentPolicy(userAgentOptions));
         policies.add(redirectOptions == null ? new HttpRedirectPolicy() : new HttpRedirectPolicy(redirectOptions));
         policies.add(retryOptions == null ? new HttpRetryPolicy() : new HttpRetryPolicy(retryOptions));
         policies.addAll(pipelinePolicies);
@@ -167,7 +172,7 @@ public final class SecretClientBuilder
 
         HttpPipeline builtPipeline = httpPipelineBuilder.httpClient(httpClient).build();
 
-        return new SecretClientImpl(builtPipeline, endpoint, version);
+        return new SecretClientImpl(builtPipeline, endpoint, version.getVersion());
     }
 
     /**
@@ -314,7 +319,8 @@ public final class SecretClientBuilder
      * @param pipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
      * @return The updated {@link SecretClientBuilder} object.
      */
-    @Override
+    // TODO (vcolin7): Uncomment annotation if the method is added back to HttpTrait.
+    //@Override
     public SecretClientBuilder httpPipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
 
