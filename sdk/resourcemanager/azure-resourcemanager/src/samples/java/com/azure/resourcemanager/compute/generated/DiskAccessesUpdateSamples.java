@@ -18,7 +18,7 @@ public final class DiskAccessesUpdateSamples {
      * DiskAccess_Update.json
      */
     /**
-     * Sample code: Update a disk access resource.
+     * Sample code: update a disk access resource.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */

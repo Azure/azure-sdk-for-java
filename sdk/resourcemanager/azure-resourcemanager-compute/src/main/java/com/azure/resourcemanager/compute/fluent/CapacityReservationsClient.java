@@ -25,369 +25,55 @@ import reactor.core.publisher.Mono;
  */
 public interface CapacityReservationsClient {
     /**
-     * The operation to create or update a capacity reservation. Please note some properties can be set only during
-     * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
+     * Lists all of the capacity reservations in the specified capacity reservation group. Use the nextLink property in
+     * the response to get the next page of capacity reservations.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param parameters Parameters supplied to the Create capacity reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation along with {@link Response} on successful completion
-     * of {@link Mono}.
+     * @return the list capacity reservation operation response as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
-        String capacityReservationGroupName, String capacityReservationName, CapacityReservationInner parameters);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedFlux<CapacityReservationInner> listByCapacityReservationGroupAsync(String resourceGroupName,
+        String capacityReservationGroupName);
 
     /**
-     * The operation to create or update a capacity reservation. Please note some properties can be set only during
-     * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
+     * Lists all of the capacity reservations in the specified capacity reservation group. Use the nextLink property in
+     * the response to get the next page of capacity reservations.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param parameters Parameters supplied to the Create capacity reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of specifies information about the capacity reservation.
+     * @return the list capacity reservation operation response as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<CapacityReservationInner>, CapacityReservationInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String capacityReservationGroupName, String capacityReservationName,
-        CapacityReservationInner parameters);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<CapacityReservationInner> listByCapacityReservationGroup(String resourceGroupName,
+        String capacityReservationGroupName);
 
     /**
-     * The operation to create or update a capacity reservation. Please note some properties can be set only during
-     * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
+     * Lists all of the capacity reservations in the specified capacity reservation group. Use the nextLink property in
+     * the response to get the next page of capacity reservations.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param parameters Parameters supplied to the Create capacity reservation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies information about the capacity reservation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CapacityReservationInner>, CapacityReservationInner> beginCreateOrUpdate(
-        String resourceGroupName, String capacityReservationGroupName, String capacityReservationName,
-        CapacityReservationInner parameters);
-
-    /**
-     * The operation to create or update a capacity reservation. Please note some properties can be set only during
-     * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param parameters Parameters supplied to the Create capacity reservation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies information about the capacity reservation.
+     * @return the list capacity reservation operation response as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CapacityReservationInner>, CapacityReservationInner> beginCreateOrUpdate(
-        String resourceGroupName, String capacityReservationGroupName, String capacityReservationName,
-        CapacityReservationInner parameters, Context context);
-
-    /**
-     * The operation to create or update a capacity reservation. Please note some properties can be set only during
-     * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param parameters Parameters supplied to the Create capacity reservation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CapacityReservationInner> createOrUpdateAsync(String resourceGroupName, String capacityReservationGroupName,
-        String capacityReservationName, CapacityReservationInner parameters);
-
-    /**
-     * The operation to create or update a capacity reservation. Please note some properties can be set only during
-     * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param parameters Parameters supplied to the Create capacity reservation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CapacityReservationInner createOrUpdate(String resourceGroupName, String capacityReservationGroupName,
-        String capacityReservationName, CapacityReservationInner parameters);
-
-    /**
-     * The operation to create or update a capacity reservation. Please note some properties can be set only during
-     * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param parameters Parameters supplied to the Create capacity reservation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CapacityReservationInner createOrUpdate(String resourceGroupName, String capacityReservationGroupName,
-        String capacityReservationName, CapacityReservationInner parameters, Context context);
-
-    /**
-     * The operation to update a capacity reservation.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param parameters Parameters supplied to the Update capacity reservation operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation along with {@link Response} on successful completion
-     * of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
-        String capacityReservationGroupName, String capacityReservationName, CapacityReservationUpdate parameters);
-
-    /**
-     * The operation to update a capacity reservation.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param parameters Parameters supplied to the Update capacity reservation operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of specifies information about the capacity reservation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<CapacityReservationInner>, CapacityReservationInner> beginUpdateAsync(
-        String resourceGroupName, String capacityReservationGroupName, String capacityReservationName,
-        CapacityReservationUpdate parameters);
-
-    /**
-     * The operation to update a capacity reservation.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param parameters Parameters supplied to the Update capacity reservation operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies information about the capacity reservation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CapacityReservationInner>, CapacityReservationInner> beginUpdate(String resourceGroupName,
-        String capacityReservationGroupName, String capacityReservationName, CapacityReservationUpdate parameters);
-
-    /**
-     * The operation to update a capacity reservation.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param parameters Parameters supplied to the Update capacity reservation operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of specifies information about the capacity reservation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<CapacityReservationInner>, CapacityReservationInner> beginUpdate(String resourceGroupName,
-        String capacityReservationGroupName, String capacityReservationName, CapacityReservationUpdate parameters,
-        Context context);
-
-    /**
-     * The operation to update a capacity reservation.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param parameters Parameters supplied to the Update capacity reservation operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CapacityReservationInner> updateAsync(String resourceGroupName, String capacityReservationGroupName,
-        String capacityReservationName, CapacityReservationUpdate parameters);
-
-    /**
-     * The operation to update a capacity reservation.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param parameters Parameters supplied to the Update capacity reservation operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CapacityReservationInner update(String resourceGroupName, String capacityReservationGroupName,
-        String capacityReservationName, CapacityReservationUpdate parameters);
-
-    /**
-     * The operation to update a capacity reservation.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param parameters Parameters supplied to the Update capacity reservation operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return specifies information about the capacity reservation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    CapacityReservationInner update(String resourceGroupName, String capacityReservationGroupName,
-        String capacityReservationName, CapacityReservationUpdate parameters, Context context);
-
-    /**
-     * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
-     * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
-        String capacityReservationGroupName, String capacityReservationName);
-
-    /**
-     * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
-     * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String capacityReservationGroupName,
-        String capacityReservationName);
-
-    /**
-     * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
-     * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String capacityReservationGroupName,
-        String capacityReservationName);
-
-    /**
-     * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
-     * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String capacityReservationGroupName,
-        String capacityReservationName, Context context);
-
-    /**
-     * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
-     * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAsync(String resourceGroupName, String capacityReservationGroupName,
-        String capacityReservationName);
-
-    /**
-     * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
-     * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String capacityReservationGroupName, String capacityReservationName);
-
-    /**
-     * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
-     * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
-     * details.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param capacityReservationGroupName The name of the capacity reservation group.
-     * @param capacityReservationName The name of the capacity reservation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String capacityReservationGroupName, String capacityReservationName,
-        Context context);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<CapacityReservationInner> listByCapacityReservationGroup(String resourceGroupName,
+        String capacityReservationGroupName, Context context);
 
     /**
      * The operation that retrieves information about the capacity reservation.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
      * @param expand The expand expression to apply on the operation. 'InstanceView' retrieves a snapshot of the runtime
@@ -407,7 +93,7 @@ public interface CapacityReservationsClient {
     /**
      * The operation that retrieves information about the capacity reservation.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -422,7 +108,7 @@ public interface CapacityReservationsClient {
     /**
      * The operation that retrieves information about the capacity reservation.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
      * @param expand The expand expression to apply on the operation. 'InstanceView' retrieves a snapshot of the runtime
@@ -441,7 +127,7 @@ public interface CapacityReservationsClient {
     /**
      * The operation that retrieves information about the capacity reservation.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
      * @param capacityReservationName The name of the capacity reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -454,48 +140,362 @@ public interface CapacityReservationsClient {
         String capacityReservationName);
 
     /**
-     * Lists all of the capacity reservations in the specified capacity reservation group. Use the nextLink property in
-     * the response to get the next page of capacity reservations.
+     * The operation to create or update a capacity reservation. Please note some properties can be set only during
+     * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
+     * @param capacityReservationName The name of the capacity reservation.
+     * @param parameters Parameters supplied to the Create capacity reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list capacity reservation operation response as paginated response with {@link PagedFlux}.
+     * @return specifies information about the capacity reservation along with {@link Response} on successful completion
+     * of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<CapacityReservationInner> listByCapacityReservationGroupAsync(String resourceGroupName,
-        String capacityReservationGroupName);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String capacityReservationGroupName, String capacityReservationName, CapacityReservationInner parameters);
 
     /**
-     * Lists all of the capacity reservations in the specified capacity reservation group. Use the nextLink property in
-     * the response to get the next page of capacity reservations.
+     * The operation to create or update a capacity reservation. Please note some properties can be set only during
+     * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
+     * @param capacityReservationName The name of the capacity reservation.
+     * @param parameters Parameters supplied to the Create capacity reservation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list capacity reservation operation response as paginated response with {@link PagedIterable}.
+     * @return the {@link PollerFlux} for polling of specifies information about the capacity reservation.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CapacityReservationInner> listByCapacityReservationGroup(String resourceGroupName,
-        String capacityReservationGroupName);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<CapacityReservationInner>, CapacityReservationInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String capacityReservationGroupName, String capacityReservationName,
+        CapacityReservationInner parameters);
 
     /**
-     * Lists all of the capacity reservations in the specified capacity reservation group. Use the nextLink property in
-     * the response to get the next page of capacity reservations.
+     * The operation to create or update a capacity reservation. Please note some properties can be set only during
+     * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param capacityReservationGroupName The name of the capacity reservation group.
+     * @param capacityReservationName The name of the capacity reservation.
+     * @param parameters Parameters supplied to the Create capacity reservation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of specifies information about the capacity reservation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CapacityReservationInner>, CapacityReservationInner> beginCreateOrUpdate(
+        String resourceGroupName, String capacityReservationGroupName, String capacityReservationName,
+        CapacityReservationInner parameters);
+
+    /**
+     * The operation to create or update a capacity reservation. Please note some properties can be set only during
+     * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param capacityReservationGroupName The name of the capacity reservation group.
+     * @param capacityReservationName The name of the capacity reservation.
+     * @param parameters Parameters supplied to the Create capacity reservation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list capacity reservation operation response as paginated response with {@link PagedIterable}.
+     * @return the {@link SyncPoller} for polling of specifies information about the capacity reservation.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CapacityReservationInner> listByCapacityReservationGroup(String resourceGroupName,
-        String capacityReservationGroupName, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CapacityReservationInner>, CapacityReservationInner> beginCreateOrUpdate(
+        String resourceGroupName, String capacityReservationGroupName, String capacityReservationName,
+        CapacityReservationInner parameters, Context context);
+
+    /**
+     * The operation to create or update a capacity reservation. Please note some properties can be set only during
+     * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param capacityReservationGroupName The name of the capacity reservation group.
+     * @param capacityReservationName The name of the capacity reservation.
+     * @param parameters Parameters supplied to the Create capacity reservation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the capacity reservation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<CapacityReservationInner> createOrUpdateAsync(String resourceGroupName, String capacityReservationGroupName,
+        String capacityReservationName, CapacityReservationInner parameters);
+
+    /**
+     * The operation to create or update a capacity reservation. Please note some properties can be set only during
+     * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param capacityReservationGroupName The name of the capacity reservation group.
+     * @param capacityReservationName The name of the capacity reservation.
+     * @param parameters Parameters supplied to the Create capacity reservation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the capacity reservation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CapacityReservationInner createOrUpdate(String resourceGroupName, String capacityReservationGroupName,
+        String capacityReservationName, CapacityReservationInner parameters);
+
+    /**
+     * The operation to create or update a capacity reservation. Please note some properties can be set only during
+     * capacity reservation creation. Please refer to https://aka.ms/CapacityReservation for more details.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param capacityReservationGroupName The name of the capacity reservation group.
+     * @param capacityReservationName The name of the capacity reservation.
+     * @param parameters Parameters supplied to the Create capacity reservation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the capacity reservation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CapacityReservationInner createOrUpdate(String resourceGroupName, String capacityReservationGroupName,
+        String capacityReservationName, CapacityReservationInner parameters, Context context);
+
+    /**
+     * The operation to update a capacity reservation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param capacityReservationGroupName The name of the capacity reservation group.
+     * @param capacityReservationName The name of the capacity reservation.
+     * @param parameters Parameters supplied to the Update capacity reservation operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the capacity reservation along with {@link Response} on successful completion
+     * of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName,
+        String capacityReservationGroupName, String capacityReservationName, CapacityReservationUpdate parameters);
+
+    /**
+     * The operation to update a capacity reservation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param capacityReservationGroupName The name of the capacity reservation group.
+     * @param capacityReservationName The name of the capacity reservation.
+     * @param parameters Parameters supplied to the Update capacity reservation operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of specifies information about the capacity reservation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<CapacityReservationInner>, CapacityReservationInner> beginUpdateAsync(
+        String resourceGroupName, String capacityReservationGroupName, String capacityReservationName,
+        CapacityReservationUpdate parameters);
+
+    /**
+     * The operation to update a capacity reservation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param capacityReservationGroupName The name of the capacity reservation group.
+     * @param capacityReservationName The name of the capacity reservation.
+     * @param parameters Parameters supplied to the Update capacity reservation operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of specifies information about the capacity reservation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CapacityReservationInner>, CapacityReservationInner> beginUpdate(String resourceGroupName,
+        String capacityReservationGroupName, String capacityReservationName, CapacityReservationUpdate parameters);
+
+    /**
+     * The operation to update a capacity reservation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param capacityReservationGroupName The name of the capacity reservation group.
+     * @param capacityReservationName The name of the capacity reservation.
+     * @param parameters Parameters supplied to the Update capacity reservation operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of specifies information about the capacity reservation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<CapacityReservationInner>, CapacityReservationInner> beginUpdate(String resourceGroupName,
+        String capacityReservationGroupName, String capacityReservationName, CapacityReservationUpdate parameters,
+        Context context);
+
+    /**
+     * The operation to update a capacity reservation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param capacityReservationGroupName The name of the capacity reservation group.
+     * @param capacityReservationName The name of the capacity reservation.
+     * @param parameters Parameters supplied to the Update capacity reservation operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the capacity reservation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<CapacityReservationInner> updateAsync(String resourceGroupName, String capacityReservationGroupName,
+        String capacityReservationName, CapacityReservationUpdate parameters);
+
+    /**
+     * The operation to update a capacity reservation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param capacityReservationGroupName The name of the capacity reservation group.
+     * @param capacityReservationName The name of the capacity reservation.
+     * @param parameters Parameters supplied to the Update capacity reservation operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the capacity reservation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CapacityReservationInner update(String resourceGroupName, String capacityReservationGroupName,
+        String capacityReservationName, CapacityReservationUpdate parameters);
+
+    /**
+     * The operation to update a capacity reservation.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param capacityReservationGroupName The name of the capacity reservation group.
+     * @param capacityReservationName The name of the capacity reservation.
+     * @param parameters Parameters supplied to the Update capacity reservation operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return specifies information about the capacity reservation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CapacityReservationInner update(String resourceGroupName, String capacityReservationGroupName,
+        String capacityReservationName, CapacityReservationUpdate parameters, Context context);
+
+    /**
+     * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
+     * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
+     * details.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param capacityReservationGroupName The name of the capacity reservation group.
+     * @param capacityReservationName The name of the capacity reservation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String capacityReservationGroupName, String capacityReservationName);
+
+    /**
+     * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
+     * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
+     * details.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param capacityReservationGroupName The name of the capacity reservation group.
+     * @param capacityReservationName The name of the capacity reservation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String capacityReservationGroupName,
+        String capacityReservationName);
+
+    /**
+     * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
+     * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
+     * details.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param capacityReservationGroupName The name of the capacity reservation group.
+     * @param capacityReservationName The name of the capacity reservation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String capacityReservationGroupName,
+        String capacityReservationName);
+
+    /**
+     * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
+     * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
+     * details.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param capacityReservationGroupName The name of the capacity reservation group.
+     * @param capacityReservationName The name of the capacity reservation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String capacityReservationGroupName,
+        String capacityReservationName, Context context);
+
+    /**
+     * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
+     * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
+     * details.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param capacityReservationGroupName The name of the capacity reservation group.
+     * @param capacityReservationName The name of the capacity reservation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteAsync(String resourceGroupName, String capacityReservationGroupName,
+        String capacityReservationName);
+
+    /**
+     * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
+     * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
+     * details.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param capacityReservationGroupName The name of the capacity reservation group.
+     * @param capacityReservationName The name of the capacity reservation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String capacityReservationGroupName, String capacityReservationName);
+
+    /**
+     * The operation to delete a capacity reservation. This operation is allowed only when all the associated resources
+     * are disassociated from the capacity reservation. Please refer to https://aka.ms/CapacityReservation for more
+     * details.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param capacityReservationGroupName The name of the capacity reservation group.
+     * @param capacityReservationName The name of the capacity reservation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String capacityReservationGroupName, String capacityReservationName,
+        Context context);
 }

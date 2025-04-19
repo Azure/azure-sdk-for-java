@@ -9,41 +9,44 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.compute.fluent.models.ComputeOperationValueInner;
+import com.azure.resourcemanager.compute.fluent.models.OperationInner;
 
 /**
  * An instance of this class provides access to all the operations defined in OperationsClient.
  */
 public interface OperationsClient {
     /**
-     * Gets a list of compute operations.
+     * List the operations for the provider.
      * 
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of compute operations as paginated response with {@link PagedFlux}.
+     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<ComputeOperationValueInner> listAsync();
+    PagedFlux<OperationInner> listAsync();
 
     /**
-     * Gets a list of compute operations.
+     * List the operations for the provider.
      * 
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of compute operations as paginated response with {@link PagedIterable}.
+     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ComputeOperationValueInner> list();
+    PagedIterable<OperationInner> list();
 
     /**
-     * Gets a list of compute operations.
+     * List the operations for the provider.
      * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a list of compute operations as paginated response with {@link PagedIterable}.
+     * @return a list of REST API operations supported by an Azure Resource Provider as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ComputeOperationValueInner> list(Context context);
+    PagedIterable<OperationInner> list(Context context);
 }

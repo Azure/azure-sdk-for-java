@@ -140,7 +140,7 @@ public final class VirtualMachineImageInner extends VirtualMachineImageResourceI
     }
 
     /**
-     * Get the dataDiskImages property: The dataDiskImages property.
+     * Get the dataDiskImages property: The list of data disk images information.
      * 
      * @return the dataDiskImages value.
      */
@@ -149,7 +149,7 @@ public final class VirtualMachineImageInner extends VirtualMachineImageResourceI
     }
 
     /**
-     * Set the dataDiskImages property: The dataDiskImages property.
+     * Set the dataDiskImages property: The list of data disk images information.
      * 
      * @param dataDiskImages the dataDiskImages value to set.
      * @return the VirtualMachineImageInner object itself.

@@ -20,13 +20,12 @@ import java.util.List;
 @Fluent
 public final class DiskEncryptionSetList implements JsonSerializable<DiskEncryptionSetList> {
     /*
-     * A list of disk encryption sets.
+     * The DiskEncryptionSet items on this page
      */
     private List<DiskEncryptionSetInner> value;
 
     /*
-     * The uri to fetch the next page of disk encryption sets. Call ListNext() with this to fetch the next page of disk
-     * encryption sets.
+     * The link to the next page of items
      */
     private String nextLink;
 
@@ -37,7 +36,7 @@ public final class DiskEncryptionSetList implements JsonSerializable<DiskEncrypt
     }
 
     /**
-     * Get the value property: A list of disk encryption sets.
+     * Get the value property: The DiskEncryptionSet items on this page.
      * 
      * @return the value value.
      */
@@ -46,7 +45,7 @@ public final class DiskEncryptionSetList implements JsonSerializable<DiskEncrypt
     }
 
     /**
-     * Set the value property: A list of disk encryption sets.
+     * Set the value property: The DiskEncryptionSet items on this page.
      * 
      * @param value the value value to set.
      * @return the DiskEncryptionSetList object itself.
@@ -57,8 +56,7 @@ public final class DiskEncryptionSetList implements JsonSerializable<DiskEncrypt
     }
 
     /**
-     * Get the nextLink property: The uri to fetch the next page of disk encryption sets. Call ListNext() with this to
-     * fetch the next page of disk encryption sets.
+     * Get the nextLink property: The link to the next page of items.
      * 
      * @return the nextLink value.
      */
@@ -67,8 +65,7 @@ public final class DiskEncryptionSetList implements JsonSerializable<DiskEncrypt
     }
 
     /**
-     * Set the nextLink property: The uri to fetch the next page of disk encryption sets. Call ListNext() with this to
-     * fetch the next page of disk encryption sets.
+     * Set the nextLink property: The link to the next page of items.
      * 
      * @param nextLink the nextLink value to set.
      * @return the DiskEncryptionSetList object itself.

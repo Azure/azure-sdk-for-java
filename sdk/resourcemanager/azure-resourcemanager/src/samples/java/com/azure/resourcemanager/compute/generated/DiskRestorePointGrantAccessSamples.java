@@ -17,7 +17,7 @@ public final class DiskRestorePointGrantAccessSamples {
      * diskRestorePointExamples/DiskRestorePoint_BeginGetAccess.json
      */
     /**
-     * Sample code: Grants access to a diskRestorePoint.
+     * Sample code: grants access to a diskRestorePoint.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */

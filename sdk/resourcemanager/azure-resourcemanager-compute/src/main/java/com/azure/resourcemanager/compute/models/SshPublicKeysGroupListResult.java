@@ -20,7 +20,7 @@ import java.util.List;
 @Fluent
 public final class SshPublicKeysGroupListResult implements JsonSerializable<SshPublicKeysGroupListResult> {
     /*
-     * The list of SSH public keys
+     * The list of SSH public keys.
      */
     private List<SshPublicKeyResourceInner> value;
 

@@ -16,7 +16,7 @@ public final class DiskAccessesCreateOrUpdateSamples {
      * DiskAccess_Create.json
      */
     /**
-     * Sample code: Create a disk access resource.
+     * Sample code: create a disk access resource.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */

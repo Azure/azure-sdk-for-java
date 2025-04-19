@@ -22,225 +22,9 @@ import reactor.core.publisher.Mono;
  */
 public interface RestorePointsClient {
     /**
-     * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the restore point collection.
-     * @param restorePointName The name of the restore point.
-     * @param parameters Parameters supplied to the Create restore point operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return restore Point details along with {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
-        String restorePointCollectionName, String restorePointName, RestorePointInner parameters);
-
-    /**
-     * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the restore point collection.
-     * @param restorePointName The name of the restore point.
-     * @param parameters Parameters supplied to the Create restore point operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of restore Point details.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<RestorePointInner>, RestorePointInner> beginCreateAsync(String resourceGroupName,
-        String restorePointCollectionName, String restorePointName, RestorePointInner parameters);
-
-    /**
-     * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the restore point collection.
-     * @param restorePointName The name of the restore point.
-     * @param parameters Parameters supplied to the Create restore point operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of restore Point details.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(String resourceGroupName,
-        String restorePointCollectionName, String restorePointName, RestorePointInner parameters);
-
-    /**
-     * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the restore point collection.
-     * @param restorePointName The name of the restore point.
-     * @param parameters Parameters supplied to the Create restore point operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of restore Point details.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(String resourceGroupName,
-        String restorePointCollectionName, String restorePointName, RestorePointInner parameters, Context context);
-
-    /**
-     * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the restore point collection.
-     * @param restorePointName The name of the restore point.
-     * @param parameters Parameters supplied to the Create restore point operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return restore Point details on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RestorePointInner> createAsync(String resourceGroupName, String restorePointCollectionName,
-        String restorePointName, RestorePointInner parameters);
-
-    /**
-     * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the restore point collection.
-     * @param restorePointName The name of the restore point.
-     * @param parameters Parameters supplied to the Create restore point operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return restore Point details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RestorePointInner create(String resourceGroupName, String restorePointCollectionName, String restorePointName,
-        RestorePointInner parameters);
-
-    /**
-     * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the restore point collection.
-     * @param restorePointName The name of the restore point.
-     * @param parameters Parameters supplied to the Create restore point operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return restore Point details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RestorePointInner create(String resourceGroupName, String restorePointCollectionName, String restorePointName,
-        RestorePointInner parameters, Context context);
-
-    /**
-     * The operation to delete the restore point.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the Restore Point Collection.
-     * @param restorePointName The name of the restore point.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response} on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
-        String restorePointCollectionName, String restorePointName);
-
-    /**
-     * The operation to delete the restore point.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the Restore Point Collection.
-     * @param restorePointName The name of the restore point.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link PollerFlux} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String restorePointCollectionName,
-        String restorePointName);
-
-    /**
-     * The operation to delete the restore point.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the Restore Point Collection.
-     * @param restorePointName The name of the restore point.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String restorePointCollectionName,
-        String restorePointName);
-
-    /**
-     * The operation to delete the restore point.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the Restore Point Collection.
-     * @param restorePointName The name of the restore point.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of long-running operation.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String restorePointCollectionName,
-        String restorePointName, Context context);
-
-    /**
-     * The operation to delete the restore point.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the Restore Point Collection.
-     * @param restorePointName The name of the restore point.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return A {@link Mono} that completes when a successful response is received.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAsync(String resourceGroupName, String restorePointCollectionName, String restorePointName);
-
-    /**
-     * The operation to delete the restore point.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the Restore Point Collection.
-     * @param restorePointName The name of the restore point.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String restorePointCollectionName, String restorePointName);
-
-    /**
-     * The operation to delete the restore point.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param restorePointCollectionName The name of the Restore Point Collection.
-     * @param restorePointName The name of the restore point.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String restorePointCollectionName, String restorePointName, Context context);
-
-    /**
      * The operation to get the restore point.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
      * @param expand The expand expression to apply on the operation. 'InstanceView' retrieves information about the
@@ -257,7 +41,7 @@ public interface RestorePointsClient {
     /**
      * The operation to get the restore point.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -272,7 +56,7 @@ public interface RestorePointsClient {
     /**
      * The operation to get the restore point.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
      * @param expand The expand expression to apply on the operation. 'InstanceView' retrieves information about the
@@ -290,7 +74,7 @@ public interface RestorePointsClient {
     /**
      * The operation to get the restore point.
      * 
-     * @param resourceGroupName The name of the resource group.
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param restorePointCollectionName The name of the restore point collection.
      * @param restorePointName The name of the restore point.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -300,4 +84,220 @@ public interface RestorePointsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     RestorePointInner get(String resourceGroupName, String restorePointCollectionName, String restorePointName);
+
+    /**
+     * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param restorePointCollectionName The name of the restore point collection.
+     * @param restorePointName The name of the restore point.
+     * @param parameters Parameters supplied to the Create restore point operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return restore Point details along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName,
+        String restorePointCollectionName, String restorePointName, RestorePointInner parameters);
+
+    /**
+     * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param restorePointCollectionName The name of the restore point collection.
+     * @param restorePointName The name of the restore point.
+     * @param parameters Parameters supplied to the Create restore point operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of restore Point details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<RestorePointInner>, RestorePointInner> beginCreateAsync(String resourceGroupName,
+        String restorePointCollectionName, String restorePointName, RestorePointInner parameters);
+
+    /**
+     * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param restorePointCollectionName The name of the restore point collection.
+     * @param restorePointName The name of the restore point.
+     * @param parameters Parameters supplied to the Create restore point operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of restore Point details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(String resourceGroupName,
+        String restorePointCollectionName, String restorePointName, RestorePointInner parameters);
+
+    /**
+     * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param restorePointCollectionName The name of the restore point collection.
+     * @param restorePointName The name of the restore point.
+     * @param parameters Parameters supplied to the Create restore point operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of restore Point details.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<RestorePointInner>, RestorePointInner> beginCreate(String resourceGroupName,
+        String restorePointCollectionName, String restorePointName, RestorePointInner parameters, Context context);
+
+    /**
+     * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param restorePointCollectionName The name of the restore point collection.
+     * @param restorePointName The name of the restore point.
+     * @param parameters Parameters supplied to the Create restore point operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return restore Point details on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<RestorePointInner> createAsync(String resourceGroupName, String restorePointCollectionName,
+        String restorePointName, RestorePointInner parameters);
+
+    /**
+     * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param restorePointCollectionName The name of the restore point collection.
+     * @param restorePointName The name of the restore point.
+     * @param parameters Parameters supplied to the Create restore point operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return restore Point details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RestorePointInner create(String resourceGroupName, String restorePointCollectionName, String restorePointName,
+        RestorePointInner parameters);
+
+    /**
+     * The operation to create the restore point. Updating properties of an existing restore point is not allowed.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param restorePointCollectionName The name of the restore point collection.
+     * @param restorePointName The name of the restore point.
+     * @param parameters Parameters supplied to the Create restore point operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return restore Point details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RestorePointInner create(String resourceGroupName, String restorePointCollectionName, String restorePointName,
+        RestorePointInner parameters, Context context);
+
+    /**
+     * The operation to delete the restore point.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param restorePointCollectionName The name of the restore point collection.
+     * @param restorePointName The name of the restore point.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String restorePointCollectionName, String restorePointName);
+
+    /**
+     * The operation to delete the restore point.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param restorePointCollectionName The name of the restore point collection.
+     * @param restorePointName The name of the restore point.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String restorePointCollectionName,
+        String restorePointName);
+
+    /**
+     * The operation to delete the restore point.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param restorePointCollectionName The name of the restore point collection.
+     * @param restorePointName The name of the restore point.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String restorePointCollectionName,
+        String restorePointName);
+
+    /**
+     * The operation to delete the restore point.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param restorePointCollectionName The name of the restore point collection.
+     * @param restorePointName The name of the restore point.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String restorePointCollectionName,
+        String restorePointName, Context context);
+
+    /**
+     * The operation to delete the restore point.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param restorePointCollectionName The name of the restore point collection.
+     * @param restorePointName The name of the restore point.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> deleteAsync(String resourceGroupName, String restorePointCollectionName, String restorePointName);
+
+    /**
+     * The operation to delete the restore point.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param restorePointCollectionName The name of the restore point collection.
+     * @param restorePointName The name of the restore point.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String restorePointCollectionName, String restorePointName);
+
+    /**
+     * The operation to delete the restore point.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param restorePointCollectionName The name of the restore point collection.
+     * @param restorePointName The name of the restore point.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String restorePointCollectionName, String restorePointName, Context context);
 }

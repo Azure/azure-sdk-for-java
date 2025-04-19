@@ -5,8 +5,8 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
@@ -16,31 +16,91 @@ import java.util.Map;
  * The Update Resource model definition.
  */
 @Fluent
-public class UpdateResourceDefinition extends ProxyResource {
+public class UpdateResourceDefinition implements JsonSerializable<UpdateResourceDefinition> {
+    /*
+     * Resource Id
+     */
+    private String id;
+
+    /*
+     * Resource name
+     */
+    private String name;
+
+    /*
+     * Resource type
+     */
+    private String type;
+
     /*
      * Resource tags
      */
     private Map<String, String> tags;
 
-    /*
-     * The type of the resource.
-     */
-    private String type;
-
-    /*
-     * The name of the resource.
-     */
-    private String name;
-
-    /*
-     * Fully qualified resource Id for the resource.
-     */
-    private String id;
-
     /**
      * Creates an instance of UpdateResourceDefinition class.
      */
     public UpdateResourceDefinition() {
+    }
+
+    /**
+     * Get the id property: Resource Id.
+     * 
+     * @return the id value.
+     */
+    public String id() {
+        return this.id;
+    }
+
+    /**
+     * Set the id property: Resource Id.
+     * 
+     * @param id the id value to set.
+     * @return the UpdateResourceDefinition object itself.
+     */
+    UpdateResourceDefinition withId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
+     * Get the name property: Resource name.
+     * 
+     * @return the name value.
+     */
+    public String name() {
+        return this.name;
+    }
+
+    /**
+     * Set the name property: Resource name.
+     * 
+     * @param name the name value to set.
+     * @return the UpdateResourceDefinition object itself.
+     */
+    UpdateResourceDefinition withName(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the type property: Resource type.
+     * 
+     * @return the type value.
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Set the type property: Resource type.
+     * 
+     * @param type the type value to set.
+     * @return the UpdateResourceDefinition object itself.
+     */
+    UpdateResourceDefinition withType(String type) {
+        this.type = type;
+        return this;
     }
 
     /**
@@ -61,36 +121,6 @@ public class UpdateResourceDefinition extends ProxyResource {
     public UpdateResourceDefinition withTags(Map<String, String> tags) {
         this.tags = tags;
         return this;
-    }
-
-    /**
-     * Get the type property: The type of the resource.
-     * 
-     * @return the type value.
-     */
-    @Override
-    public String type() {
-        return this.type;
-    }
-
-    /**
-     * Get the name property: The name of the resource.
-     * 
-     * @return the name value.
-     */
-    @Override
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Get the id property: Fully qualified resource Id for the resource.
-     * 
-     * @return the id value.
-     */
-    @Override
-    public String id() {
-        return this.id;
     }
 
     /**
@@ -117,7 +147,6 @@ public class UpdateResourceDefinition extends ProxyResource {
      * @param jsonReader The JsonReader being read.
      * @return An instance of UpdateResourceDefinition if the JsonReader was pointing to an instance of it, or null if
      * it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the UpdateResourceDefinition.
      */
     public static UpdateResourceDefinition fromJson(JsonReader jsonReader) throws IOException {

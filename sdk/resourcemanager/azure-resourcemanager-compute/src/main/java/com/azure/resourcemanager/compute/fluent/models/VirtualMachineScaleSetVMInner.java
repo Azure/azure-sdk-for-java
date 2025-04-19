@@ -7,6 +7,7 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
+import com.azure.core.management.SystemData;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
@@ -34,6 +35,11 @@ import java.util.Map;
 @Fluent
 public final class VirtualMachineScaleSetVMInner extends Resource {
     /*
+     * Describes the properties of a virtual machine scale set virtual machine.
+     */
+    private VirtualMachineScaleSetVMPropertiesInner innerProperties;
+
+    /*
      * The virtual machine instance ID.
      */
     private String instanceId;
@@ -42,11 +48,6 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * The virtual machine SKU.
      */
     private Sku sku;
-
-    /*
-     * Describes the properties of a virtual machine scale set virtual machine.
-     */
-    private VirtualMachineScaleSetVMPropertiesInner innerProperties;
 
     /*
      * Specifies information about the marketplace image used to create the virtual machine. This element is only used
@@ -78,6 +79,11 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
     private String etag;
 
     /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    private SystemData systemData;
+
+    /*
      * The type of the resource.
      */
     private String type;
@@ -99,6 +105,15 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
     }
 
     /**
+     * Get the innerProperties property: Describes the properties of a virtual machine scale set virtual machine.
+     * 
+     * @return the innerProperties value.
+     */
+    private VirtualMachineScaleSetVMPropertiesInner innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the instanceId property: The virtual machine instance ID.
      * 
      * @return the instanceId value.
@@ -114,15 +129,6 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      */
     public Sku sku() {
         return this.sku;
-    }
-
-    /**
-     * Get the innerProperties property: Describes the properties of a virtual machine scale set virtual machine.
-     * 
-     * @return the innerProperties value.
-     */
-    private VirtualMachineScaleSetVMPropertiesInner innerProperties() {
-        return this.innerProperties;
     }
 
     /**
@@ -199,6 +205,15 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      */
     public String etag() {
         return this.etag;
+    }
+
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
     }
 
     /**
@@ -648,11 +663,11 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (sku() != null) {
-            sku().validate();
-        }
         if (innerProperties() != null) {
             innerProperties().validate();
+        }
+        if (sku() != null) {
+            sku().validate();
         }
         if (plan() != null) {
             plan().validate();
@@ -707,13 +722,13 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedVirtualMachineScaleSetVMInner.withTags(tags);
+                } else if ("properties".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMInner.innerProperties
+                        = VirtualMachineScaleSetVMPropertiesInner.fromJson(reader);
                 } else if ("instanceId".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetVMInner.instanceId = reader.getString();
                 } else if ("sku".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetVMInner.sku = Sku.fromJson(reader);
-                } else if ("properties".equals(fieldName)) {
-                    deserializedVirtualMachineScaleSetVMInner.innerProperties
-                        = VirtualMachineScaleSetVMPropertiesInner.fromJson(reader);
                 } else if ("plan".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetVMInner.plan = Plan.fromJson(reader);
                 } else if ("resources".equals(fieldName)) {
@@ -727,6 +742,8 @@ public final class VirtualMachineScaleSetVMInner extends Resource {
                     deserializedVirtualMachineScaleSetVMInner.identity = VirtualMachineIdentity.fromJson(reader);
                 } else if ("etag".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetVMInner.etag = reader.getString();
+                } else if ("systemData".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMInner.systemData = SystemData.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

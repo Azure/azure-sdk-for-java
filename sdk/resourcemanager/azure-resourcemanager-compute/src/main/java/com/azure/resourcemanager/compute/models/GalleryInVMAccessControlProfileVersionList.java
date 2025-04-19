@@ -21,13 +21,12 @@ import java.util.List;
 public final class GalleryInVMAccessControlProfileVersionList
     implements JsonSerializable<GalleryInVMAccessControlProfileVersionList> {
     /*
-     * A list of Gallery InVMAccessControlProfile Versions.
+     * The GalleryInVMAccessControlProfileVersion items on this page
      */
     private List<GalleryInVMAccessControlProfileVersionInner> value;
 
     /*
-     * The uri to fetch the next page of inVMAccessControlProfile versions. Call ListNext() with this to fetch the next
-     * page of gallery inVMAccessControlProfile versions.
+     * The link to the next page of items
      */
     private String nextLink;
 
@@ -38,7 +37,7 @@ public final class GalleryInVMAccessControlProfileVersionList
     }
 
     /**
-     * Get the value property: A list of Gallery InVMAccessControlProfile Versions.
+     * Get the value property: The GalleryInVMAccessControlProfileVersion items on this page.
      * 
      * @return the value value.
      */
@@ -47,7 +46,7 @@ public final class GalleryInVMAccessControlProfileVersionList
     }
 
     /**
-     * Set the value property: A list of Gallery InVMAccessControlProfile Versions.
+     * Set the value property: The GalleryInVMAccessControlProfileVersion items on this page.
      * 
      * @param value the value value to set.
      * @return the GalleryInVMAccessControlProfileVersionList object itself.
@@ -59,8 +58,7 @@ public final class GalleryInVMAccessControlProfileVersionList
     }
 
     /**
-     * Get the nextLink property: The uri to fetch the next page of inVMAccessControlProfile versions. Call ListNext()
-     * with this to fetch the next page of gallery inVMAccessControlProfile versions.
+     * Get the nextLink property: The link to the next page of items.
      * 
      * @return the nextLink value.
      */
@@ -69,8 +67,7 @@ public final class GalleryInVMAccessControlProfileVersionList
     }
 
     /**
-     * Set the nextLink property: The uri to fetch the next page of inVMAccessControlProfile versions. Call ListNext()
-     * with this to fetch the next page of gallery inVMAccessControlProfile versions.
+     * Set the nextLink property: The link to the next page of items.
      * 
      * @param nextLink the nextLink value to set.
      * @return the GalleryInVMAccessControlProfileVersionList object itself.

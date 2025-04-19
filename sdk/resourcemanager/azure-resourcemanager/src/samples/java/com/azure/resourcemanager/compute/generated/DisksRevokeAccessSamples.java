@@ -14,7 +14,7 @@ public final class DisksRevokeAccessSamples {
      * Disk_EndGetAccess.json
      */
     /**
-     * Sample code: Revoke access to a managed disk.
+     * Sample code: revoke access to a managed disk.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */

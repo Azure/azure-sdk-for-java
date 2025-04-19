@@ -13,7 +13,7 @@ public final class DiskEncryptionSetsListAssociatedResourcesSamples {
      * diskEncryptionSetExamples/DiskEncryptionSet_ListAssociatedResources.json
      */
     /**
-     * Sample code: List all resources that are encrypted with this disk encryption set.
+     * Sample code: list all resources that are encrypted with this disk encryption set.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */

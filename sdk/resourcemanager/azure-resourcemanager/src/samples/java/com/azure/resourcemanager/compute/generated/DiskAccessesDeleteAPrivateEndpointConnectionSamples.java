@@ -14,7 +14,7 @@ public final class DiskAccessesDeleteAPrivateEndpointConnectionSamples {
      * DiskAccessPrivateEndpointConnection_Delete.json
      */
     /**
-     * Sample code: Delete a private endpoint connection under a disk access resource.
+     * Sample code: delete a private endpoint connection under a disk access resource.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */

@@ -8,7 +8,7 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * Defines values for AccessLevel.
+ * The Access Level, accepted values include None, Read, Write.
  */
 public final class AccessLevel extends ExpandableStringEnum<AccessLevel> {
     /**

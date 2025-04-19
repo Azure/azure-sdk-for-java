@@ -13,7 +13,7 @@ public final class DiskEncryptionSetsDeleteSamples {
      * diskEncryptionSetExamples/DiskEncryptionSet_Delete.json
      */
     /**
-     * Sample code: Delete a disk encryption set.
+     * Sample code: delete a disk encryption set.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */

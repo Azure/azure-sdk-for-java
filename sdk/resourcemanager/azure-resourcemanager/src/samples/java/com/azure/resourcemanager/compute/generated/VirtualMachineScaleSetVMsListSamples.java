@@ -23,7 +23,7 @@ public final class VirtualMachineScaleSetVMsListSamples {
             .manager()
             .serviceClient()
             .getVirtualMachineScaleSetVMs()
-            .list("rgcompute", "aaaaaaaaaaaaaaaaaaaaaaaaaaaa", null, null, null, com.azure.core.util.Context.NONE);
+            .list("rgcompute", "aaaaaaaaaaaaaa", null, null, null, com.azure.core.util.Context.NONE);
     }
 
     /*

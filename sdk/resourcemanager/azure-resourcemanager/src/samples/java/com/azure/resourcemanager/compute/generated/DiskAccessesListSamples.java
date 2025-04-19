@@ -14,7 +14,7 @@ public final class DiskAccessesListSamples {
      * DiskAccess_ListBySubscription.json
      */
     /**
-     * Sample code: List all disk access resources in a subscription.
+     * Sample code: list all disk access resources in a subscription.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */

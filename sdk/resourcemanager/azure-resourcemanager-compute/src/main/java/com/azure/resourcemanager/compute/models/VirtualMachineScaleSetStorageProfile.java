@@ -40,9 +40,10 @@ public final class VirtualMachineScaleSetStorageProfile
     private List<VirtualMachineScaleSetDataDisk> dataDisks;
 
     /*
-     * The diskControllerType property.
+     * Specifies the disk controller type configured for the virtual machines in the scale set. Minimum api-version:
+     * 2022-08-01
      */
-    private String diskControllerType;
+    private DiskControllerTypes diskControllerType;
 
     /**
      * Creates an instance of VirtualMachineScaleSetStorageProfile class.
@@ -123,21 +124,23 @@ public final class VirtualMachineScaleSetStorageProfile
     }
 
     /**
-     * Get the diskControllerType property: The diskControllerType property.
+     * Get the diskControllerType property: Specifies the disk controller type configured for the virtual machines in
+     * the scale set. Minimum api-version: 2022-08-01.
      * 
      * @return the diskControllerType value.
      */
-    public String diskControllerType() {
+    public DiskControllerTypes diskControllerType() {
         return this.diskControllerType;
     }
 
     /**
-     * Set the diskControllerType property: The diskControllerType property.
+     * Set the diskControllerType property: Specifies the disk controller type configured for the virtual machines in
+     * the scale set. Minimum api-version: 2022-08-01.
      * 
      * @param diskControllerType the diskControllerType value to set.
      * @return the VirtualMachineScaleSetStorageProfile object itself.
      */
-    public VirtualMachineScaleSetStorageProfile withDiskControllerType(String diskControllerType) {
+    public VirtualMachineScaleSetStorageProfile withDiskControllerType(DiskControllerTypes diskControllerType) {
         this.diskControllerType = diskControllerType;
         return this;
     }
@@ -168,7 +171,8 @@ public final class VirtualMachineScaleSetStorageProfile
         jsonWriter.writeJsonField("imageReference", this.imageReference);
         jsonWriter.writeJsonField("osDisk", this.osDisk);
         jsonWriter.writeArrayField("dataDisks", this.dataDisks, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeStringField("diskControllerType", this.diskControllerType);
+        jsonWriter.writeStringField("diskControllerType",
+            this.diskControllerType == null ? null : this.diskControllerType.toString());
         return jsonWriter.writeEndObject();
     }
 
@@ -198,7 +202,8 @@ public final class VirtualMachineScaleSetStorageProfile
                         = reader.readArray(reader1 -> VirtualMachineScaleSetDataDisk.fromJson(reader1));
                     deserializedVirtualMachineScaleSetStorageProfile.dataDisks = dataDisks;
                 } else if ("diskControllerType".equals(fieldName)) {
-                    deserializedVirtualMachineScaleSetStorageProfile.diskControllerType = reader.getString();
+                    deserializedVirtualMachineScaleSetStorageProfile.diskControllerType
+                        = DiskControllerTypes.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

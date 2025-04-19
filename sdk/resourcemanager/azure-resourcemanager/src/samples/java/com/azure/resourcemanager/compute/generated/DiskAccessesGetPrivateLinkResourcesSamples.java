@@ -14,7 +14,7 @@ public final class DiskAccessesGetPrivateLinkResourcesSamples {
      * DiskAccessPrivateLinkResources_Get.json
      */
     /**
-     * Sample code: List all possible private link resources under disk access resource.
+     * Sample code: list all possible private link resources under disk access resource.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */

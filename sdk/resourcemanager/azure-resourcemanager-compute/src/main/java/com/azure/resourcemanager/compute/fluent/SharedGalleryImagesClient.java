@@ -21,7 +21,7 @@ public interface SharedGalleryImagesClient {
     /**
      * List shared gallery images by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param sharedTo The query parameter to decide what shared galleries to fetch when doing listing operations.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -35,7 +35,7 @@ public interface SharedGalleryImagesClient {
     /**
      * List shared gallery images by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -48,7 +48,7 @@ public interface SharedGalleryImagesClient {
     /**
      * List shared gallery images by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -61,7 +61,7 @@ public interface SharedGalleryImagesClient {
     /**
      * List shared gallery images by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param sharedTo The query parameter to decide what shared galleries to fetch when doing listing operations.
      * @param context The context to associate with this operation.
@@ -77,7 +77,7 @@ public interface SharedGalleryImagesClient {
     /**
      * Get a shared gallery image by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
      * listed.
@@ -94,7 +94,7 @@ public interface SharedGalleryImagesClient {
     /**
      * Get a shared gallery image by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
      * listed.
@@ -109,7 +109,7 @@ public interface SharedGalleryImagesClient {
     /**
      * Get a shared gallery image by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
      * listed.
@@ -126,7 +126,7 @@ public interface SharedGalleryImagesClient {
     /**
      * Get a shared gallery image by subscription id or tenant id.
      * 
-     * @param location Resource location.
+     * @param location The name of Azure region.
      * @param galleryUniqueName The unique name of the Shared Gallery.
      * @param galleryImageName The name of the Shared Gallery Image Definition from which the Image Versions are to be
      * listed.

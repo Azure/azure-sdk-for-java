@@ -20,7 +20,7 @@ import java.util.List;
 @Fluent
 public final class ImageListResult implements JsonSerializable<ImageListResult> {
     /*
-     * The list of Images.
+     * The list of Images
      */
     private List<ImageInner> value;
 

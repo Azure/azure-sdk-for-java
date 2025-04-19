@@ -22,6 +22,11 @@ public final class DedicatedHostSizeListResult implements JsonSerializable<Dedic
      */
     private List<String> value;
 
+    /*
+     * The link to the next page of items.
+     */
+    private String nextLink;
+
     /**
      * Creates an instance of DedicatedHostSizeListResult class.
      */
@@ -49,6 +54,26 @@ public final class DedicatedHostSizeListResult implements JsonSerializable<Dedic
     }
 
     /**
+     * Get the nextLink property: The link to the next page of items.
+     * 
+     * @return the nextLink value.
+     */
+    public String nextLink() {
+        return this.nextLink;
+    }
+
+    /**
+     * Set the nextLink property: The link to the next page of items.
+     * 
+     * @param nextLink the nextLink value to set.
+     * @return the DedicatedHostSizeListResult object itself.
+     */
+    public DedicatedHostSizeListResult withNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -63,6 +88,7 @@ public final class DedicatedHostSizeListResult implements JsonSerializable<Dedic
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("nextLink", this.nextLink);
         return jsonWriter.writeEndObject();
     }
 
@@ -84,6 +110,8 @@ public final class DedicatedHostSizeListResult implements JsonSerializable<Dedic
                 if ("value".equals(fieldName)) {
                     List<String> value = reader.readArray(reader1 -> reader1.getString());
                     deserializedDedicatedHostSizeListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedDedicatedHostSizeListResult.nextLink = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

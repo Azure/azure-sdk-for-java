@@ -13,7 +13,7 @@ public final class DiskRestorePointListByRestorePointSamples {
      * diskRestorePointExamples/DiskRestorePoint_ListByVmRestorePoint.json
      */
     /**
-     * Sample code: Get an incremental disk restorePoint resource.
+     * Sample code: get an incremental disk restorePoint resource.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */

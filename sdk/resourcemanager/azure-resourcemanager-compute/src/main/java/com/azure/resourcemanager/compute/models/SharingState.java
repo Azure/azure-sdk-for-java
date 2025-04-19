@@ -8,8 +8,6 @@ import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
 /**
- * The sharing state of the gallery.
- * 
  * The sharing state of the gallery, which only appears in the response.
  */
 public final class SharingState extends ExpandableStringEnum<SharingState> {

@@ -25,17 +25,17 @@ public final class GalleryImageUpdate extends UpdateResourceDefinition {
     private GalleryImageProperties innerProperties;
 
     /*
-     * The type of the resource.
+     * Resource type
      */
     private String type;
 
     /*
-     * The name of the resource.
+     * Resource name
      */
     private String name;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * Resource Id
      */
     private String id;
 
@@ -55,7 +55,7 @@ public final class GalleryImageUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the type property: Resource type.
      * 
      * @return the type value.
      */
@@ -65,7 +65,7 @@ public final class GalleryImageUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Get the name property: The name of the resource.
+     * Get the name property: Resource name.
      * 
      * @return the name value.
      */
@@ -75,7 +75,7 @@ public final class GalleryImageUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the id property: Resource Id.
      * 
      * @return the id value.
      */
@@ -414,7 +414,7 @@ public final class GalleryImageUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Get the architecture property: CPU architecture supported by an OS disk.
+     * Get the architecture property: The architecture of the image. Applicable to OS disks only.
      * 
      * @return the architecture value.
      */
@@ -423,7 +423,7 @@ public final class GalleryImageUpdate extends UpdateResourceDefinition {
     }
 
     /**
-     * Set the architecture property: CPU architecture supported by an OS disk.
+     * Set the architecture property: The architecture of the image. Applicable to OS disks only.
      * 
      * @param architecture the architecture value to set.
      * @return the GalleryImageUpdate object itself.
@@ -488,7 +488,6 @@ public final class GalleryImageUpdate extends UpdateResourceDefinition {
      * @param jsonReader The JsonReader being read.
      * @return An instance of GalleryImageUpdate if the JsonReader was pointing to an instance of it, or null if it was
      * pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the GalleryImageUpdate.
      */
     public static GalleryImageUpdate fromJson(JsonReader jsonReader) throws IOException {

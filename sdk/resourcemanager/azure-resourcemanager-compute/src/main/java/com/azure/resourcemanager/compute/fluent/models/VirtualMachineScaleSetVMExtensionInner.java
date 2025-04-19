@@ -20,14 +20,9 @@ import java.util.List;
 @Fluent
 public final class VirtualMachineScaleSetVMExtensionInner extends SubResourceReadOnly {
     /*
-     * The name of the extension.
+     * Describes the properties of a Virtual Machine Extension.
      */
-    private String name;
-
-    /*
-     * Resource type
-     */
-    private String type;
+    private VirtualMachineExtensionProperties innerProperties;
 
     /*
      * The location of the extension.
@@ -35,9 +30,14 @@ public final class VirtualMachineScaleSetVMExtensionInner extends SubResourceRea
     private String location;
 
     /*
-     * Describes the properties of a Virtual Machine Extension.
+     * Resource type
      */
-    private VirtualMachineExtensionProperties innerProperties;
+    private String type;
+
+    /*
+     * Resource name
+     */
+    private String name;
 
     /*
      * Resource Id
@@ -51,21 +51,12 @@ public final class VirtualMachineScaleSetVMExtensionInner extends SubResourceRea
     }
 
     /**
-     * Get the name property: The name of the extension.
+     * Get the innerProperties property: Describes the properties of a Virtual Machine Extension.
      * 
-     * @return the name value.
+     * @return the innerProperties value.
      */
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Get the type property: Resource type.
-     * 
-     * @return the type value.
-     */
-    public String type() {
-        return this.type;
+    private VirtualMachineExtensionProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -89,12 +80,21 @@ public final class VirtualMachineScaleSetVMExtensionInner extends SubResourceRea
     }
 
     /**
-     * Get the innerProperties property: Describes the properties of a Virtual Machine Extension.
+     * Get the type property: Resource type.
      * 
-     * @return the innerProperties value.
+     * @return the type value.
      */
-    private VirtualMachineExtensionProperties innerProperties() {
-        return this.innerProperties;
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Get the name property: Resource name.
+     * 
+     * @return the name value.
+     */
+    public String name() {
+        return this.name;
     }
 
     /**
@@ -429,8 +429,8 @@ public final class VirtualMachineScaleSetVMExtensionInner extends SubResourceRea
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("location", this.location);
         jsonWriter.writeJsonField("properties", this.innerProperties);
+        jsonWriter.writeStringField("location", this.location);
         return jsonWriter.writeEndObject();
     }
 
@@ -452,15 +452,15 @@ public final class VirtualMachineScaleSetVMExtensionInner extends SubResourceRea
 
                 if ("id".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetVMExtensionInner.id = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    deserializedVirtualMachineScaleSetVMExtensionInner.name = reader.getString();
-                } else if ("type".equals(fieldName)) {
-                    deserializedVirtualMachineScaleSetVMExtensionInner.type = reader.getString();
-                } else if ("location".equals(fieldName)) {
-                    deserializedVirtualMachineScaleSetVMExtensionInner.location = reader.getString();
                 } else if ("properties".equals(fieldName)) {
                     deserializedVirtualMachineScaleSetVMExtensionInner.innerProperties
                         = VirtualMachineExtensionProperties.fromJson(reader);
+                } else if ("location".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMExtensionInner.location = reader.getString();
+                } else if ("type".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMExtensionInner.type = reader.getString();
+                } else if ("name".equals(fieldName)) {
+                    deserializedVirtualMachineScaleSetVMExtensionInner.name = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

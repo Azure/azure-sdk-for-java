@@ -14,7 +14,7 @@ public final class DisksDeleteSamples {
      * Disk_Delete.json
      */
     /**
-     * Sample code: Delete a managed disk.
+     * Sample code: delete a managed disk.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */

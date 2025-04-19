@@ -13,7 +13,7 @@ public final class DiskEncryptionSetsListSamples {
      * diskEncryptionSetExamples/DiskEncryptionSet_ListBySubscription.json
      */
     /**
-     * Sample code: List all disk encryption sets in a subscription.
+     * Sample code: list all disk encryption sets in a subscription.
      * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
