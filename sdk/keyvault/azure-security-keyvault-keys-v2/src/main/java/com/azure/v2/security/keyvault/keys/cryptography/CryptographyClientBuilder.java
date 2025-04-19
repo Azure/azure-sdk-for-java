@@ -1,0 +1,453 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.v2.security.keyvault.keys.cryptography;
+
+import com.azure.v2.core.credentials.TokenCredential;
+import com.azure.v2.core.traits.TokenCredentialTrait;
+import com.azure.v2.security.keyvault.keys.cryptography.implementation.CryptographyClientImpl;
+import com.azure.v2.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
+import com.azure.v2.security.keyvault.keys.models.JsonWebKey;
+import io.clientcore.core.annotations.ServiceClientBuilder;
+import io.clientcore.core.http.client.HttpClient;
+import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
+import io.clientcore.core.http.pipeline.HttpInstrumentationPolicy;
+import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
+import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
+import io.clientcore.core.http.pipeline.HttpRedirectOptions;
+import io.clientcore.core.http.pipeline.HttpRedirectPolicy;
+import io.clientcore.core.http.pipeline.HttpRetryOptions;
+import io.clientcore.core.http.pipeline.HttpRetryPolicy;
+import io.clientcore.core.http.pipeline.UserAgentPolicy;
+import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.traits.HttpTrait;
+import io.clientcore.core.utils.CoreUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
+
+/**
+ * This class provides a fluent builder API to help aid the configuration and instantiation of the
+ * {@link CryptographyClient} by calling {@link CryptographyClientBuilder#buildClient()}. It constructs an instance of
+ * the desired client.
+ *
+ * <p>The {@link CryptographyClient} provides methods to perform cryptographic operations using asymmetric and symmetric
+ * keys. The client supports encrypt, decrypt, wrap key, unwrap key, sign and verify operations using the configured
+ * key.</p>
+ *
+ * <p>The minimal configuration options required by {@link CryptographyClientBuilder} to build a
+ * {@link CryptographyClient} are a {@link TokenCredential credential} and either a {@link JsonWebKey JSON Web Key} or
+ * an {@code Azure Key Vault key identifier}.</p>
+ *
+ * <!-- src_embed com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.instantiation -->
+ * <!-- end com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.instantiation -->
+ *
+ * <!-- src_embed com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.withJsonWebKey.instantiation -->
+ * <!-- end com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.withJsonWebKey.instantiation -->
+ *
+ * <p>When a {@link CryptographyClient} gets created using a {@code Azure Key Vault key identifier}, the first time a
+ * cryptographic operation is attempted, the client will attempt to retrieve the key material from the service, cache
+ * it, and perform all future cryptographic operations locally, deferring to the service when that's not possible. If
+ * key retrieval and caching fails because of a non-retryable error, the client will not make any further attempts and
+ * will fall back to performing all cryptographic operations on the service side. Conversely, when a
+ * {@link CryptographyClient} gets created using a {@link JsonWebKey JSON Web Key}, all cryptographic operations will be
+ * performed locally.</p>
+ *
+ * <p>To ensure correct behavior when performing operations such as {@code Decrypt}, {@code Unwrap} and
+ * {@code Verify}, it is recommended to use a {@link CryptographyClient} created for the specific key version that was
+ * used for the corresponding inverse operation: {@code Encrypt}, {@code Wrap}, or {@code Sign}, respectively.</p>
+ *
+ * <p>The {@link HttpInstrumentationOptions.HttpLogLevel log level}, multiple custom {@link HttpPipelinePolicy policies}
+ * and custom {@link HttpClient HTTP client} can be optionally configured in the {@link CryptographyClientBuilder}.</p>
+ *
+ * <!-- src_embed com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.withHttpClient.instantiation -->
+ * <!-- end com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.withHttpClient.instantiation -->
+ *
+ * @see CryptographyClient
+ */
+@ServiceClientBuilder(serviceClients = CryptographyClient.class)
+public final class CryptographyClientBuilder
+    implements HttpTrait<CryptographyClientBuilder>, TokenCredentialTrait<CryptographyClientBuilder> {
+
+    private static final ClientLogger LOGGER = new ClientLogger(CryptographyClientBuilder.class);
+    // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
+    // for more information on Azure resource provider namespaces.
+    // TODO (vcolin7): Figure out where to set when the tracing namespace.
+    // private static final String KEYVAULT_TRACING_NAMESPACE_VALUE = "Microsoft.KeyVault";
+    private static final String CLIENT_NAME;
+    private static final String CLIENT_VERSION;
+
+    static {
+        Map<String, String> properties = CoreUtils.getProperties("azure-security-keyvault-keys.properties");
+        CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
+        CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
+    }
+
+
+    private final List<HttpPipelinePolicy> pipelinePolicies;
+
+    private TokenCredential credential;
+    private HttpPipeline pipeline;
+    private HttpClient httpClient;
+    private HttpInstrumentationOptions instrumentationOptions;
+    private HttpRedirectOptions redirectOptions;
+    private HttpRetryOptions retryOptions;
+    private CryptographyServiceVersion version;
+    private JsonWebKey jsonWebKey;
+    private String keyId;
+    private boolean disableChallengeResourceVerification = false;
+    private boolean isKeyCachingDisabled = false;
+
+    /**
+     * Creates a {@link CryptographyClientBuilder} that is used to configure and create {@link CryptographyClient}
+     * instances.
+     */
+    public CryptographyClientBuilder() {
+        pipelinePolicies = new ArrayList<>();
+    }
+
+    /**
+     * Creates a {@link CryptographyClient} based on options set in the builder. Every time {@code buildClient()} is
+     * called, a new instance of {@link CryptographyClient} is created.
+     *
+     * <p>If a {@link CryptographyClientBuilder#jsonWebKey(JsonWebKey) jsonWebKey} is set, then all other builder
+     * settings are ignored.</p>
+     *
+     * <p>If a {@link CryptographyClientBuilder#httpPipeline(HttpPipeline)} (HttpPipeline) pipeline} is set, then the
+     * {@code pipeline} and {@link CryptographyClientBuilder#keyIdentifier(String) key identifier} are used to create
+     * the {@link CryptographyClient client}. All other builder settings are ignored. If a {@code pipeline} is not set,
+     * then a {@link CryptographyClientBuilder#credential(TokenCredential) credential} and
+     * {@link CryptographyClientBuilder#keyIdentifier(String) key identifier} are required to build the
+     * {@link CryptographyClient client}.</p>
+     *
+     * @return A {@link CryptographyClient} based on the options set in this builder.
+     *
+     * @throws IllegalStateException If a {@link CryptographyClientBuilder#keyIdentifier(String) key identifier} has not
+     * been set or if either of a {@link CryptographyClientBuilder#credential(TokenCredential) credential} or
+     * {@link CryptographyClientBuilder#httpPipeline(HttpPipeline) pipeline} were not provided.
+     */
+    public CryptographyClient buildClient() {
+        if (jsonWebKey != null) {
+            if (isKeyCachingDisabled) {
+                throw LOGGER.logThrowableAsError(
+                    new IllegalStateException("Key caching cannot be disabled when using a JSON Web Key."));
+            }
+
+            return new CryptographyClient(jsonWebKey);
+        }
+
+        if (isNullOrEmpty(keyId)) {
+            throw LOGGER.logThrowableAsError(new IllegalStateException(
+                "An Azure Key Vault or Managed HSM key identifier is required to build the cryptography client if a"
+                    + " JSON Web Key is not provided."));
+        }
+
+        CryptographyServiceVersion serviceVersion = version != null
+            ? version
+            : CryptographyServiceVersion.getLatest();
+
+        if (pipeline != null) {
+            return new CryptographyClient(new CryptographyClientImpl(keyId, pipeline, serviceVersion),
+                isKeyCachingDisabled);
+        }
+
+        if (credential == null) {
+            throw LOGGER.logThrowableAsError(new IllegalStateException(
+                "A credential object is required. You can set one by using the"
+                    + " CryptographyClientBuilder.credential() method."));
+        }
+
+        // Closest to API goes first, closest to wire goes last.
+        List<HttpPipelinePolicy> policies = new ArrayList<>();
+
+        // TODO (vcolin7): Get applicationId from instrumentationOptions once
+        //  https://github.com/Azure/azure-sdk-for-java/pull/44764 is merged.
+        policies.add(new UserAgentPolicy(null, CLIENT_NAME, CLIENT_VERSION));
+        policies.add(redirectOptions == null ? new HttpRedirectPolicy() : new HttpRedirectPolicy(redirectOptions));
+        policies.add(retryOptions == null ? new HttpRetryPolicy() : new HttpRetryPolicy(retryOptions));
+        policies.addAll(pipelinePolicies);
+        policies.add(new KeyVaultCredentialPolicy(credential, disableChallengeResourceVerification));
+
+        HttpInstrumentationOptions instrumentationOptions = this.instrumentationOptions == null
+            ? new HttpInstrumentationOptions()
+            : this.instrumentationOptions;
+
+        policies.add(new HttpInstrumentationPolicy(instrumentationOptions));
+
+        HttpPipelineBuilder httpPipelineBuilder = new HttpPipelineBuilder();
+
+        // Add all policies to the pipeline.
+        policies.forEach(httpPipelineBuilder::addPolicy);
+
+        HttpPipeline builtPipeline = httpPipelineBuilder.httpClient(httpClient).build();
+
+        return new CryptographyClient(new CryptographyClientImpl(keyId, builtPipeline, serviceVersion),
+            isKeyCachingDisabled);
+    }
+
+    TokenCredential getCredential() {
+        return credential;
+    }
+
+    HttpPipeline getPipeline() {
+        return pipeline;
+    }
+
+    CryptographyServiceVersion getServiceVersion() {
+        return version;
+    }
+
+    /**
+     * Sets the Azure Key Vault or Managed HSM  key identifier of the JSON Web Key to be used for cryptography
+     * operations. You should validate that this URL references a valid Key Vault or Managed HSM resource. Refer to the
+     * following <a href=https://aka.ms/azsdk/blog/vault-uri>documentation</a> for details.
+     *
+     * <p>To ensure correct behavior when performing operations such as {@code Decrypt}, {@code Unwrap} and
+     * {@code Verify}, it is recommended to use a {@link CryptographyClient} created for the specific key version that
+     * was used for the corresponding inverse operation: {@code Encrypt} {@code Wrap}, or {@code Sign}, respectively.
+     * </p>
+     *
+     * @param keyId The Azure Key Vault key identifier of the JSON Web Key stored in the key vault.
+     * @return The updated {@link CryptographyClientBuilder} object.
+     *
+     * @throws IllegalArgumentException If {@code keyId} is {@code null}.
+     */
+    public CryptographyClientBuilder keyIdentifier(String keyId) {
+        if (isNullOrEmpty(keyId)) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'keyId' cannot be null or empty."));
+        }
+
+        this.keyId = keyId;
+
+        return this;
+    }
+
+    /**
+     * Sets the {@link TokenCredential} used to authorize requests sent to the service. Refer to the Azure SDK for Java
+     * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a> documentation for more details
+     * on proper usage of the {@link TokenCredential} type.
+     *
+     * @param credential {@link TokenCredential} used to authorize requests sent to the service.
+     * @return The updated {@link CryptographyClientBuilder} object.
+     *
+     * @throws NullPointerException If {@code credential} is {@code null}.
+     */
+    @Override
+    public CryptographyClientBuilder credential(TokenCredential credential) {
+        if (credential == null) {
+            throw LOGGER.logThrowableAsError(new NullPointerException("'credential' cannot be null."));
+        }
+
+        this.credential = credential;
+
+        return this;
+    }
+
+    /**
+     * Sets the {@link JsonWebKey} to be used for local cryptography operations.
+     *
+     * <p>If {@code jsonWebKey} is provided, then all other builder settings are ignored.</p>
+     *
+     * @param jsonWebKey The JSON Web Key to be used for local cryptography operations.
+     *
+     * @return The updated {@link CryptographyClientBuilder} object.
+     *
+     * @throws NullPointerException If {@code jsonWebKey} is {@code null}.
+     */
+    public CryptographyClientBuilder jsonWebKey(JsonWebKey jsonWebKey) {
+        if (jsonWebKey == null) {
+            throw LOGGER.logThrowableAsError(new NullPointerException("'jsonWebKey' must not be null."));
+        }
+
+        this.jsonWebKey = jsonWebKey;
+
+        return this;
+    }
+
+    /**
+     * Sets the {@link HttpInstrumentationOptions instrumentation configuration} to use when recording telemetry about
+     * HTTP requests sent to the service and responses received from it.
+     * <p>
+     * By default, when instrumentation options are not provided (explicitly or via environment variables), the
+     * following defaults are used:
+     * <ul>
+     *     <li>Detailed HTTP logging about requests and responses is disabled</li>
+     *     <li>Distributed tracing is enabled. If OpenTelemetry is found on the classpath, HTTP requests are
+     *     captured as OpenTelemetry spans.
+     *     If OpenTelemetry is not found on the classpath, the same information is captured in logs.
+     *     HTTP request spans contain basic information about the request, such as the HTTP method, URL, status code and
+     *     duration.
+     *     See {@link HttpInstrumentationPolicy} for
+     *     the details.</li>
+     * </ul>
+     *
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the {@link HttpTrait} APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, an HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param instrumentationOptions The {@link HttpInstrumentationOptions configuration} to use when recording
+     * telemetry about HTTP requests sent to the service and responses received from it.
+     * @return The updated {@link CryptographyClientBuilder} object.
+     */
+    @Override
+    public CryptographyClientBuilder httpInstrumentationOptions(HttpInstrumentationOptions instrumentationOptions) {
+        this.instrumentationOptions = instrumentationOptions;
+
+        return this;
+    }
+
+    /**
+     * Adds a {@link HttpPipelinePolicy pipeline policy} to apply on each request sent.
+     *
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the {@link HttpTrait} APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, an HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param pipelinePolicy A {@link HttpPipelinePolicy pipeline policy}.
+     * @return The updated {@link CryptographyClientBuilder} object.
+     *
+     * @throws NullPointerException If {@code pipelinePolicy} is {@code null}.
+     */
+    @Override
+    public CryptographyClientBuilder addHttpPipelinePolicy(HttpPipelinePolicy pipelinePolicy) {
+        if (pipelinePolicy == null) {
+            throw LOGGER.logThrowableAsError(new NullPointerException("'pipelinePolicy' cannot be null."));
+        }
+
+        pipelinePolicies.add(pipelinePolicy);
+
+        return this;
+    }
+
+    /**
+     * Sets the {@link HttpClient} to use for sending and receiving requests to and from the service.
+     *
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the {@link HttpTrait} APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, an HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param client The {@link HttpClient} to use for requests.
+     * @return The updated {@link CryptographyClientBuilder} object.
+     */
+    @Override
+    public CryptographyClientBuilder httpClient(HttpClient client) {
+        this.httpClient = client;
+
+        return this;
+    }
+
+    /**
+     * Sets the {@link HttpPipeline} to use for the service client.
+     *
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the {@link HttpTrait} APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, an HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param pipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
+     * @return The updated {@link CryptographyClientBuilder} object.
+     */
+    @Override
+    public CryptographyClientBuilder httpPipeline(HttpPipeline pipeline) {
+        this.pipeline = pipeline;
+
+        return this;
+    }
+
+    /**
+     * Sets the {@link CryptographyServiceVersion service version} that is used when making API requests.
+     *
+     * <p>If a service version is not provided, the service version that will be used will be the latest known service
+     * version based on the version of the client library being used. If no service version is specified, updating to a
+     * newer version the client library will have the result of potentially moving to a newer service version.</p>
+     *
+     * @param version {@link CryptographyServiceVersion} of the service API used when making requests.
+     * @return The updated {@link CryptographyClientBuilder} object.
+     */
+    public CryptographyClientBuilder serviceVersion(CryptographyServiceVersion version) {
+        this.version = version;
+
+        return this;
+    }
+
+    /**
+     * Sets the {@link HttpRetryOptions} for all the requests made through the client.
+     *
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the {@link HttpTrait} APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, an HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param retryOptions The {@link HttpRetryOptions} to use for all the requests made through the client.
+     * @return The updated {@link CryptographyClientBuilder} object.
+     */
+    @Override
+    public CryptographyClientBuilder httpRetryOptions(HttpRetryOptions retryOptions) {
+        this.retryOptions = retryOptions;
+
+        return this;
+    }
+
+    /**
+     * Sets the {@link HttpRedirectOptions} for all the requests made through the client.
+     *
+     * <p><strong>Note:</strong> It is important to understand the precedence order of the {@link HttpTrait} APIs. In
+     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
+     * they will be ignored. If no {@link HttpPipeline} is specified, an HTTP pipeline will be constructed internally
+     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
+     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
+     * documentation of types that implement this trait to understand the full set of implications.</p>
+     *
+     * @param redirectOptions The {@link HttpRedirectOptions} to use for all the requests made through the client.
+     * @return The updated {@link CryptographyClientBuilder} object.
+     */
+    @Override
+    public CryptographyClientBuilder httpRedirectOptions(HttpRedirectOptions redirectOptions) {
+        this.redirectOptions = redirectOptions;
+
+        return this;
+    }
+
+    /**
+     * Disables verifying if the authentication challenge resource matches the Key Vault domain. This verification is
+     * performed by default.
+     *
+     * @return The updated {@link CryptographyClientBuilder} object.
+     */
+    public CryptographyClientBuilder disableChallengeResourceVerification() {
+        this.disableChallengeResourceVerification = true;
+
+        return this;
+    }
+
+    /**
+     * Disables local key caching and defers all cryptographic operations to the service.
+     *
+     * <p>This method will have no effect if used in conjunction with the
+     * {@link CryptographyClientBuilder#jsonWebKey(JsonWebKey)} method.</p>
+     *
+     * @return The updated {@link CryptographyClientBuilder} object.
+     */
+    public CryptographyClientBuilder disableKeyCaching() {
+        this.isKeyCachingDisabled = true;
+
+        return this;
+    }
+}
