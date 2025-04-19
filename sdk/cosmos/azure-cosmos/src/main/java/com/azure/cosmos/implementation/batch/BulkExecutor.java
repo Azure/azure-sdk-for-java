@@ -387,7 +387,7 @@ public final class BulkExecutor<TContext> implements Disposable {
                                 getThreadInfo());
 
                             // resolve partition key range id again for operations which comes in main sink due to gone retry.
-                            return BulkExecutorUtil.resolvePartitionKeyRangeId(this.docClientWrapper, this.container, operation)
+                            return BulkExecutorUtil.resolvePartitionKeyRangeId(this.docClientWrapper, this.container, operation, this.cosmosBulkExecutionOptions)
                                                    .map((String pkRangeId) -> {
                                                        PartitionScopeThresholds partitionScopeThresholds =
                                                            this.partitionScopeThresholds.computeIfAbsent(

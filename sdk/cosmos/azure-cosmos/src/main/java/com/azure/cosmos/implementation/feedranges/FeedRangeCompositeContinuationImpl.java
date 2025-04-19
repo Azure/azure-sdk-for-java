@@ -510,7 +510,8 @@ final class FeedRangeCompositeContinuationImpl extends FeedRangeContinuation {
                 this.getContainerRid(),
                 effectiveRange,
                 forceRefresh,
-                null);
+                null,
+            null);
     }
 
     private static CompositeContinuationToken tryParseAsCompositeContinuationToken(

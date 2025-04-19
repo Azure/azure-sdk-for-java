@@ -25,6 +25,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
@@ -102,8 +103,17 @@ class QueryPlanRetriever {
         CosmosEndToEndOperationLatencyPolicyConfig end2EndConfig = qryOptAccessor
             .getImpl(nonNullRequestOptions)
             .getCosmosEndToEndLatencyPolicyConfig();
+
+        List<String> excludeRegions = qryOptAccessor
+            .getImpl(nonNullRequestOptions)
+            .getExcludedRegions();
+
         if (end2EndConfig != null) {
             queryPlanRequest.requestContext.setEndToEndOperationLatencyPolicyConfig(end2EndConfig);
+        }
+
+        if (excludeRegions != null && !excludeRegions.isEmpty()) {
+            queryPlanRequest.requestContext.setExcludeRegions(excludeRegions);
         }
 
         BiFunction<Supplier<DocumentClientRetryPolicy>, RxDocumentServiceRequest, Mono<PartitionedQueryExecutionInfo>> executeFunc =

@@ -4,10 +4,13 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.InvalidPartitionExceptionRetryPolicy;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
@@ -58,8 +61,8 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         Long endLSN,
         OperationContextAndListenerTuple operationContext,
         GlobalEndpointManager globalEndpointManager,
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker) {
-        super(executeFunc, true, top, maxItemCount, operationContext, null, globalEndpointManager, globalPartitionEndpointManagerForCircuitBreaker);
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker) {
+        super(executeFunc, true, top, maxItemCount, operationContext, null, globalEndpointManager, globalPartitionEndpointManagerForPerPartitionCircuitBreaker);
 
         checkNotNull(client, "Argument 'client' must not be null.");
         checkNotNull(createRequestFunc, "Argument 'createRequestFunc' must not be null.");
@@ -202,6 +205,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         private final DocumentClientRetryPolicy nextRetryPolicy;
         private final Map<String, Object> requestOptionProperties;
         private MetadataDiagnosticsContext diagnosticsContext;
+        private DiagnosticsClientContext diagnosticsClientContext;
         private final RetryContext retryContext;
         private final Supplier<String> operationContextTextProvider;
 
@@ -229,6 +233,7 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
         public void onBeforeSendRequest(RxDocumentServiceRequest request) {
             this.diagnosticsContext =
                 BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
+            this.diagnosticsClientContext = request.getDiagnosticsClientContext();
             this.nextRetryPolicy.onBeforeSendRequest(request);
         }
 
@@ -246,13 +251,21 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
 
                     if (this.state.getContinuation() == null) {
                         final FeedRangeInternal feedRange = this.state.getFeedRange();
+
+                        CosmosDiagnostics mostRecentlyCreatedDiagnostics
+                            = this.diagnosticsClientContext.getMostRecentlyCreatedDiagnostics();
+                        CosmosDiagnosticsContext diagnosticsContext
+                            = mostRecentlyCreatedDiagnostics != null ?
+                            mostRecentlyCreatedDiagnostics.getDiagnosticsContext() : null;
+
                         final Mono<Range<String>> effectiveRangeMono = feedRange.getNormalizedEffectiveRange(
                             this.client.getPartitionKeyRangeCache(),
                             this.diagnosticsContext,
                             this.client.getCollectionCache().resolveByRidAsync(
                                 this.diagnosticsContext,
                                 this.state.getContainerRid(),
-                                this.requestOptionProperties)
+                                this.requestOptionProperties,
+                                diagnosticsContext)
                         );
 
                         return effectiveRangeMono

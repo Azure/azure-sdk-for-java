@@ -2,10 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
-import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
+import com.azure.cosmos.implementation.perPartitionAutomaticFailover.GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.Paginator;
 import com.azure.cosmos.implementation.spark.OperationContext;
@@ -152,8 +155,11 @@ class ChangeFeedQueryImpl<T> {
         if (request.requestContext != null) {
             request.requestContext.setExcludeRegions(options.getExcludedRegions());
             request.requestContext.setKeywordIdentifiers(options.getKeywordIdentifiers());
-            request.requestContext.setFeedOperationContext(
-                new FeedOperationContextForCircuitBreaker(new ConcurrentHashMap<>(), false, collectionLink));
+            request.requestContext.setCrossRegionAvailabilityContext(
+                new CrossRegionAvailabilityContextForRxDocumentServiceRequest(
+                    new FeedOperationContextForCircuitBreaker(new ConcurrentHashMap<>(), false, collectionLink),
+                    null,
+                    new AvailabilityStrategyContext(false, false)));
         }
 
         return request;
@@ -161,7 +167,7 @@ class ChangeFeedQueryImpl<T> {
 
     private Mono<FeedResponse<T>> executeRequestAsync(RxDocumentServiceRequest request) {
         if (this.operationContextAndListener == null) {
-            return handlePartitionLevelCircuitBreakingPrerequisites(request)
+            return handlePerPartitionFailoverPrerequisites(request)
                 .flatMap(client::readFeed)
                 .map(rsp -> feedResponseAccessor.createChangeFeedResponse(rsp, this.itemSerializer, klass, rsp.getCosmosDiagnostics()));
         } else {
@@ -172,7 +178,7 @@ class ChangeFeedQueryImpl<T> {
                 .put(HttpConstants.HttpHeaders.CORRELATED_ACTIVITY_ID, operationContext.getCorrelationActivityId());
             listener.requestListener(operationContext, request);
 
-            return handlePartitionLevelCircuitBreakingPrerequisites(request)
+            return handlePerPartitionFailoverPrerequisites(request)
                 .flatMap(client::readFeed)
                 .map(rsp -> {
                     listener.responseListener(operationContext, rsp);
@@ -200,14 +206,19 @@ class ChangeFeedQueryImpl<T> {
         }
     }
 
-    private Mono<RxDocumentServiceRequest> handlePartitionLevelCircuitBreakingPrerequisites(RxDocumentServiceRequest request) {
+    private Mono<RxDocumentServiceRequest> handlePerPartitionFailoverPrerequisites(RxDocumentServiceRequest request) {
 
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManagerForCircuitBreaker
-            = client.getGlobalPartitionEndpointManagerForCircuitBreaker();
+        GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker globalPartitionEndpointManagerForPerPartitionCircuitBreaker
+            = this.client.getGlobalPartitionEndpointManagerForCircuitBreaker();
 
-        checkNotNull(globalPartitionEndpointManagerForCircuitBreaker, "Argument 'globalPartitionEndpointManagerForCircuitBreaker' must not be null!");
+        GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover globalPartitionEndpointManagerForPerPartitionAutomaticFailover
+            = this.client.getGlobalPartitionEndpointManagerForPerPartitionAutomaticFailover();
 
-        if (globalPartitionEndpointManagerForCircuitBreaker.isPartitionLevelCircuitBreakingApplicable(request)) {
+        checkNotNull(globalPartitionEndpointManagerForPerPartitionCircuitBreaker, "Argument 'globalPartitionEndpointManagerForPerPartitionCircuitBreaker' must not be null!");
+
+        if (
+            globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(request)
+                || globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverApplicable(request)) {
             return Mono.just(request)
                 .flatMap(req -> client.populateHeadersAsync(req, RequestVerb.GET))
                 .flatMap(req -> client.getCollectionCache().resolveCollectionAsync(null, req)
@@ -216,7 +227,13 @@ class ChangeFeedQueryImpl<T> {
                         checkNotNull(documentCollectionValueHolder, "Argument 'documentCollectionValueHolder' cannot be null!");
                         checkNotNull(documentCollectionValueHolder.v, "Argument 'documentCollectionValueHolder.v' cannot be null!");
 
-                        return client.getPartitionKeyRangeCache().tryLookupAsync(null, documentCollectionValueHolder.v.getResourceId(), null, null)
+                        DiagnosticsClientContext diagnosticsClientContext = request.getDiagnosticsClientContext();
+                        CosmosDiagnostics cosmosDiagnostics = diagnosticsClientContext != null ?
+                            diagnosticsClientContext.getMostRecentlyCreatedDiagnostics() : null;
+                        CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics != null ?
+                            cosmosDiagnostics.getDiagnosticsContext() : null;
+
+                        return client.getPartitionKeyRangeCache().tryLookupAsync(null, documentCollectionValueHolder.v.getResourceId(), null, null, diagnosticsContext)
                             .flatMap(collectionRoutingMapValueHolder -> {
 
                                 checkNotNull(collectionRoutingMapValueHolder, "Argument 'collectionRoutingMapValueHolder' cannot be null!");
@@ -225,7 +242,19 @@ class ChangeFeedQueryImpl<T> {
                                 changeFeedRequestOptionsAccessor.setPartitionKeyDefinition(options, documentCollectionValueHolder.v.getPartitionKey());
                                 changeFeedRequestOptionsAccessor.setCollectionRid(options, documentCollectionValueHolder.v.getResourceId());
 
-                                client.addPartitionLevelUnavailableRegionsForChangeFeedRequest(req, options, collectionRoutingMapValueHolder.v);
+                                PartitionKeyRange preResolvedPartitionKeyRangeIfAny = this.client
+                                    .setPartitionKeyRangeForChangeFeedOperationRequestForPerPartitionAutomaticFailover(
+                                        req,
+                                        options,
+                                        collectionRoutingMapValueHolder.v,
+                                        null);
+
+                                this.client
+                                    .addPartitionLevelUnavailableRegionsForChangeFeedOperationRequestForPerPartitionCircuitBreaker(
+                                        req,
+                                        options,
+                                        collectionRoutingMapValueHolder.v,
+                                        preResolvedPartitionKeyRangeIfAny);
 
                                 if (req.requestContext.getClientRetryPolicySupplier() != null) {
                                     DocumentClientRetryPolicy documentClientRetryPolicy = req.requestContext.getClientRetryPolicySupplier().get();

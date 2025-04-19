@@ -32,6 +32,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
     private Integer maxItemCountForHybridSearch;
     private List<CosmosDiagnostics> cancelledRequestDiagnosticsTracker = new ArrayList<>();
     private String collectionRid;
+    private boolean enableRegionReorderingForAuxiliaryRequest = false;
 
     /**
      * Instantiates a new query request options.
@@ -72,6 +73,7 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
         this.maxItemCountForVectorSearch = options.maxItemCountForVectorSearch;
         this.maxItemCountForHybridSearch = options.maxItemCountForHybridSearch;
         this.collectionRid = options.collectionRid;
+        this.enableRegionReorderingForAuxiliaryRequest = options.enableRegionReorderingForAuxiliaryRequest;
     }
 
     /**
@@ -389,6 +391,39 @@ public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptio
 
     public PartitionKeyDefinition getPartitionKeyDefinition() {
         return this.partitionKeyDefinition;
+    }
+
+    /**
+     * Sets the option to enable region reordering for auxiliary requests when enclosing document request has exclude regions configured. Region reordering here basically places all non-excluded regions followed by excluded regions.
+     * Auxiliary requests are requests that are not the document request but are needed to fulfil the document request.
+     * <p>
+     * Auxiliary requests include the following:
+     * <li>
+     * QueryPlan request
+     * </li>
+     *
+     * <li>
+     * {@link PartitionKeyRange} request
+     * </li>
+     *
+     * <li>
+     * {@link DocumentCollection} request
+     * </li>
+     * </p>
+     *
+     * @param enableRegionReorderingForAuxiliaryRequests true to enable region reordering for auxiliary requests, false otherwise.
+     * */
+    public void setEnableRegionReorderingForAuxiliaryRequests(boolean enableRegionReorderingForAuxiliaryRequests) {
+        this.enableRegionReorderingForAuxiliaryRequest = enableRegionReorderingForAuxiliaryRequests;
+    }
+
+    /**
+     * Gets the option to enable region reordering for auxiliary requests when enclosing document request has exclude regions configured.
+     *
+     * @return true if region reordering is enabled for auxiliary requests, false otherwise.
+     * */
+    public boolean isEnableRegionReorderingForAuxiliaryRequest() {
+        return this.enableRegionReorderingForAuxiliaryRequest;
     }
 
     @Override

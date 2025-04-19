@@ -159,6 +159,10 @@ public class ImplementationBridgeHelpers {
             void setRegionScopedSessionCapturingEnabled(CosmosClientBuilder builder, boolean isRegionScopedSessionCapturingEnabled);
 
             boolean getRegionScopedSessionCapturingEnabled(CosmosClientBuilder builder);
+
+            void setPerPartitionAutomaticFailoverEnabled(CosmosClientBuilder builder, boolean isPerPartitionAutomaticFailoverEnabled);
+
+            boolean getPerPartitionAutomaticFailoverEnabled(CosmosClientBuilder builder);
         }
     }
 
@@ -304,6 +308,10 @@ public class ImplementationBridgeHelpers {
             void setCollectionRid(CosmosQueryRequestOptions options, String collectionRid);
 
             String getCollectionRid(CosmosQueryRequestOptions options);
+
+            void enableRegionReorderingForAuxiliaryRequests(CosmosQueryRequestOptions cosmosQueryRequestOptions, boolean enableRegionReorderingForAuxiliaryRequests);
+
+            boolean isRegionReorderingForAuxiliaryRequestsEnabled(CosmosQueryRequestOptions options);
         }
     }
 
