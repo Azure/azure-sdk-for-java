@@ -1095,6 +1095,10 @@ public class ImplementationBridgeHelpers {
                                                    CosmosItemSerializer itemSerializer,
                                                    Class<T> cls);
 
+            <T> FeedResponse<T> createNonServiceFeedResponse(List<T> items,
+                                                   boolean isChangeFeed,
+                                                   boolean isNoChanges);
+
             <T> FeedResponse<T> createChangeFeedResponse(RxDocumentServiceResponse response,
                                                    CosmosItemSerializer itemSerializer,
                                                    Class<T> cls);
