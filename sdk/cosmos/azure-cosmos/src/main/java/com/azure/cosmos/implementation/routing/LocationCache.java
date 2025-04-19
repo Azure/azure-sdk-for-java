@@ -445,12 +445,9 @@ public class LocationCache {
         List<RegionalRoutingContext> preferredRoutingContexts,
         RegionalRoutingContext hubRoutingContext,
         boolean isFallbackRoutingContextUsed) {
+
         // region set intersecting with preferred endpoints is already of size 0 or 1, return
         if (preferredRoutingContexts.size() <= 1) {
-            return applicableRegionalRoutingContexts;
-        }
-
-        if (applicableRegionalRoutingContexts.size() >= 2) {
             return applicableRegionalRoutingContexts;
         }
 
@@ -462,6 +459,29 @@ public class LocationCache {
             = request.requestContext.getCrossRegionAvailabilityContext();
 
         if (crossRegionAvailabilityContextForRequest == null) {
+            return applicableRegionalRoutingContexts;
+        }
+
+        if (crossRegionAvailabilityContextForRequest.isEnableApplicableRegionReorderingForMetadataRequests()) {
+            return this.reevaluateForMetadataRequests(request,
+                // populated when global endpoint == default endpoint && preferred regions not populated by user
+                effectivePreferredLocations,
+                applicableRegionalRoutingContexts,
+                regionNameByRegionalRoutingContexts,
+                regionalRoutingContextsByRegionName,
+                // exclude regions from request options or client
+                userConfiguredExcludeRegions,
+                // exclude URIs from per-partition circuit breaker
+                regionalRoutingContextsRemovedByInternalExcludeRegions,
+                // exclude regions from per-partition circuit breaker
+                internalExcludeRegions,
+                // original list of preferred endpoints (w/o exclusion)
+                preferredRoutingContexts,
+                hubRoutingContext,
+                isFallbackRoutingContextUsed);
+        }
+
+        if (applicableRegionalRoutingContexts.size() >= 2) {
             return applicableRegionalRoutingContexts;
         }
 
@@ -538,6 +558,32 @@ public class LocationCache {
         }
 
         return new UnmodifiableList<>(modifiedRegionalRoutingContexts);
+    }
+
+    private UnmodifiableList<RegionalRoutingContext> reevaluateForMetadataRequests(
+        RxDocumentServiceRequest request,
+        // populated when global endpoint == default endpoint && preferred regions not populated by user
+        List<String> effectivePreferredLocations,
+        UnmodifiableList<RegionalRoutingContext> applicableRegionalRoutingContexts,
+        UnmodifiableMap<RegionalRoutingContext, String> regionNameByRegionalRoutingContexts,
+        UnmodifiableMap<String, RegionalRoutingContext> regionalRoutingContextsByRegionName,
+        // exclude regions from request options or client
+        List<String> userConfiguredExcludeRegions,
+        // exclude URIs from per-partition circuit breaker
+        List<RegionalRoutingContext> regionalRoutingContextsRemovedByInternalExcludeRegions,
+        // exclude regions from per-partition circuit breaker
+        List<String> internalExcludeRegions,
+        // original list of preferred endpoints (w/o exclusion)
+        List<RegionalRoutingContext> preferredRoutingContexts,
+        RegionalRoutingContext hubRoutingContext,
+        boolean isFallbackRoutingContextUsed) {
+
+
+        if (isFallbackRoutingContextUsed) {
+
+        }
+
+        return null;
     }
 
     private boolean isExcludeRegionsConfigured(List<String> excludedRegionsOnRequest, List<String> excludedRegionsOnClient) {

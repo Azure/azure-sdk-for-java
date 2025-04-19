@@ -60,7 +60,8 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
     public Mono<Range<String>> getEffectiveRange(
         IRoutingMapProvider routingMapProvider,
         MetadataDiagnosticsContext metadataDiagnosticsCtx,
-        Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono) {
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono,
+        CosmosDiagnosticsContext diagnosticsContext) {
 
         checkNotNull(
             collectionResolutionMono,
@@ -173,8 +174,18 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
         MetadataDiagnosticsContext metadataDiagnosticsCtx =
             BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
 
+
+        DiagnosticsClientContext diagnosticsClientContext
+            = request.getDiagnosticsClientContext();
+
+        CosmosDiagnostics cosmosDiagnostics
+            = (diagnosticsClientContext != null) ? diagnosticsClientContext.getMostRecentlyCreatedDiagnostics() : null;
+
+        CosmosDiagnosticsContext diagnosticsContext
+            = (cosmosDiagnostics != null) ? cosmosDiagnostics.getDiagnosticsContext() : null;
+
         return this
-            .getNormalizedEffectiveRange(routingMapProvider, metadataDiagnosticsCtx, collectionResolutionMono)
+            .getNormalizedEffectiveRange(routingMapProvider, metadataDiagnosticsCtx, collectionResolutionMono, diagnosticsContext)
             .map(effectiveRange -> {
                 request.setEffectiveRange(effectiveRange);
                 request.setHasFeedRangeFilteringBeenApplied(true);

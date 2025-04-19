@@ -61,7 +61,7 @@ public class CrossRegionAvailabilityContextForRxDocumentServiceRequest {
         this.enableRegionReorderingForAuxiliaryRequests.set(enableRegionOrderingForAuxiliaryRequests);
     }
 
-    public boolean isEnableRegionReorderingForAuxiliaryRequests() {
+    public boolean isEnableApplicableRegionReorderingForMetadataRequests() {
         return this.enableRegionReorderingForAuxiliaryRequests.get();
     }
 }

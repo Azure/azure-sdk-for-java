@@ -107,15 +107,15 @@ public class RxClientCollectionCache extends RxCollectionCache {
                 path,
                 new HashMap<>());
 
-        List<String> excludeRegions = new ArrayList<>();
-
         if (diagnosticsContext != null) {
             OverridableRequestOptions requestOptions
                 = diagnosticsContextAccessor.getRequestOptions(diagnosticsContext);
+            request.requestContext.setExcludeRegions(requestOptions.getExcludedRegions());
 
-            excludeRegions.addAll(requestOptions.getExcludedRegions());
+            CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest
+                = request.requestContext.getCrossRegionAvailabilityContext();
 
-            request.requestContext.setExcludeRegions(excludeRegions);
+            crossRegionAvailabilityContextForRequest.setEnableRegionReorderingForAuxiliaryRequests(true);
         }
 
         request.getHeaders().put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());

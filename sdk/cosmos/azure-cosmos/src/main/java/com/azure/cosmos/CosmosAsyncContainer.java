@@ -2717,7 +2717,8 @@ public class CosmosAsyncContainer {
             .getNormalizedEffectiveRange(
                 clientWrapper.getPartitionKeyRangeCache(),
                 null,
-                getCollectionObservable);
+                getCollectionObservable,
+                null);
     }
 
     Mono<Boolean> checkFeedRangeOverlapping(FeedRange feedRange1, FeedRange feedRange2) {

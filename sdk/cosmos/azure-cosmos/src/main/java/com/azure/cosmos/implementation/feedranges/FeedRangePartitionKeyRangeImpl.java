@@ -4,7 +4,10 @@
 package com.azure.cosmos.implementation.feedranges;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.JsonSerializable;
@@ -62,7 +65,8 @@ public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
     public Mono<Range<String>> getEffectiveRange(
         IRoutingMapProvider routingMapProvider,
         MetadataDiagnosticsContext metadataDiagnosticsCtx,
-        Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono) {
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono,
+        CosmosDiagnosticsContext diagnosticsContext) {
 
         checkNotNull(
             routingMapProvider,
@@ -86,7 +90,7 @@ public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
                         this.partitionKeyRangeId,
                         false,
                         null,
-                        null)
+                        diagnosticsContext)
                     .flatMap((pkRangeHolder) -> {
                         if (pkRangeHolder.v == null) {
                             return routingMapProvider.tryGetPartitionKeyRangeByIdAsync(
@@ -95,7 +99,7 @@ public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
                                 partitionKeyRangeId,
                                 true,
                                 null,
-                                null);
+                                diagnosticsContext);
                         } else {
                             return Mono.just(pkRangeHolder);
                         }
@@ -146,8 +150,17 @@ public final class FeedRangePartitionKeyRangeImpl extends FeedRangeInternal {
         MetadataDiagnosticsContext metadataDiagnosticsCtx =
             BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
 
+        DiagnosticsClientContext diagnosticsClientContext
+            = request.getDiagnosticsClientContext();
+
+        CosmosDiagnostics cosmosDiagnostics
+            = (diagnosticsClientContext != null) ? diagnosticsClientContext.getMostRecentlyCreatedDiagnostics() : null;
+
+        CosmosDiagnosticsContext diagnosticsContext
+            = (cosmosDiagnostics != null) ? cosmosDiagnostics.getDiagnosticsContext() : null;
+
         return this
-            .getNormalizedEffectiveRange(routingMapProvider, metadataDiagnosticsCtx, collectionResolutionMono)
+            .getNormalizedEffectiveRange(routingMapProvider, metadataDiagnosticsCtx, collectionResolutionMono, diagnosticsContext)
             .map(effectiveRange -> {
                 request.setEffectiveRange(effectiveRange);
                 request.setHasFeedRangeFilteringBeenApplied(true);
