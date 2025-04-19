@@ -481,6 +481,7 @@ function Get-java-GithubIoDocIndex()
 }
 
 # function is used to filter packages to submit to API view tool
+# Function pointer name: FindArtifactForApiReviewFn
 function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName)
 {
   # skip spark packages
@@ -519,6 +520,45 @@ function Find-java-Artifacts-For-Apireview($artifactDir, $pkgName)
 
   return $packages
 }
+
+# function is used to filter packages to submit to API view tool
+# Function pointer name: FindArtifactForApiReviewFnV2
+function Find-java-Artifacts-For-ApireviewV2($artifactDir, $packageInfo)
+{
+  # skip spark packages
+  if ($packageInfo.ArtifactName.Contains("-spark")) {
+    return $null
+  }
+  # skip azure-cosmos-test package because it needs to be released
+  if ($packageInfo.ArtifactName.Contains("azure-cosmos-test")) {
+    return $null
+  }
+
+  $artifactPath = Join-Path $artifactDir $packageInfo.Group $packageInfo.ArtifactName
+  $files += @(Get-ChildItem "${artifactPath}" | Where-Object -FilterScript {$_.Name.EndsWith("sources.jar")})
+  if (!$files)
+  {
+    Write-Host "$($artifactPath) does not have any sources.jar files"
+    return $null
+  }
+  elseif($files.Count -ne 1)
+  {
+    Write-Host "$($artifactPath) should contain only one (1) published sources.jar package"
+    Write-Host "No of Packages $($files.Count)"
+    Write-Host "sources.jar files:"
+    foreach ($file in $files) {
+      Write-Host "  $($file.Name)"
+    }
+    return $null
+  }
+
+  $packages = @{
+    $files[0].Name = $files[0].FullName
+  }
+
+  return $packages
+}
+
 
 function SetPackageVersion ($PackageName, $Version, $ServiceDirectory, $ReleaseDate, $ReplaceLatestEntryTitle=$true, $BuildType = "client", $GroupId = "com.azure", $PackageProperties)
 {
@@ -640,6 +680,7 @@ function Update-java-GeneratedSdks([string]$PackageDirectoriesFile) {
   }
 }
 
+# Function pointer: IsApiviewStatusCheckRequiredFn
 function Get-java-ApiviewStatusCheckRequirement($packageInfo) {
   if ($packageInfo.IsNewSdk -and ($packageInfo.SdkType -eq "client" -or $packageInfo.SdkType -eq "spring")) {
     return $true
