@@ -9,6 +9,7 @@
 #### Bugs Fixed
 
 #### Other Changes
+* Added `authEndpointOverride` option for `ServicePrincipal` authentication type - See [PR 45016](https://github.com/Azure/azure-sdk-for-java/pull/45016)
 
 ### 2.2.0 (2025-02-20)
 
