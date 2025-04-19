@@ -14,7 +14,7 @@ import io.clientcore.core.annotations.ReturnType;
 import io.clientcore.core.annotations.ServiceClient;
 import io.clientcore.core.annotations.ServiceMethod;
 import io.clientcore.core.http.models.HttpResponseException;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
@@ -140,11 +140,11 @@ public final class KeyVaultSettingsClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Updates a given setting. Prints out the details of the response returned by the service and the updated
      * setting.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.updateSettingWithResponse#KeyVaultSetting-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.updateSettingWithResponse#KeyVaultSetting-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.updateSettingWithResponse#KeyVaultSetting-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.updateSettingWithResponse#KeyVaultSetting-RequestContext -->
      *
      * @param setting The setting to update.
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      *
      * @return A response object whose {@link Response#getValue() value} contains the updated setting.
      *
@@ -152,7 +152,7 @@ public final class KeyVaultSettingsClient {
      * @throws NullPointerException if {@code setting} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyVaultSetting> updateSettingWithResponse(KeyVaultSetting setting, RequestOptions requestOptions) {
+    public Response<KeyVaultSetting> updateSettingWithResponse(KeyVaultSetting setting, RequestContext requestContext) {
         try {
             Objects.requireNonNull(setting, String.format(KeyVaultAdministrationUtil.CANNOT_BE_NULL, "'setting'"));
 
@@ -163,7 +163,7 @@ public final class KeyVaultSettingsClient {
             }
 
             Response<Setting> response = clientImpl.updateSettingWithResponse(setting.getName(),
-                new UpdateSettingRequest(settingValue), requestOptions);
+                new UpdateSettingRequest(settingValue), requestContext);
 
             return new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                 transformToKeyVaultSetting(response.getValue()));
@@ -207,11 +207,11 @@ public final class KeyVaultSettingsClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Retrieves a specific setting. Prints out the details of the response returned by the service and the retrieved
      * setting.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.getSettingWithResponse#String-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.getSettingWithResponse#String-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.getSettingWithResponse#String-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.getSettingWithResponse#String-RequestContext -->
      *
      * @param name The name of setting to retrieve.
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      *
      * @return A response object whose {@link Response#getValue() value} contains the requested setting.
      *
@@ -219,14 +219,14 @@ public final class KeyVaultSettingsClient {
      * setting type is not supported by this client.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyVaultSetting> getSettingWithResponse(String name, RequestOptions requestOptions) {
+    public Response<KeyVaultSetting> getSettingWithResponse(String name, RequestContext requestContext) {
         try {
             if (isNullOrEmpty(name)) {
                 throw new IllegalArgumentException(
                     String.format(KeyVaultAdministrationUtil.CANNOT_BE_NULL_OR_EMPTY, "'name'"));
             }
 
-            Response<Setting> response = clientImpl.getSettingWithResponse(name, requestOptions);
+            Response<Setting> response = clientImpl.getSettingWithResponse(name, requestContext);
 
             return new Response<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
                 transformToKeyVaultSetting(response.getValue()));
@@ -275,9 +275,9 @@ public final class KeyVaultSettingsClient {
      * @throws IllegalArgumentException If a setting type in the list is not supported by this client.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyVaultGetSettingsResult> getSettingsWithResponse(RequestOptions requestOptions) {
+    public Response<KeyVaultGetSettingsResult> getSettingsWithResponse(RequestContext requestContext) {
         try {
-            Response<SettingsListResult> response = clientImpl.getSettingsWithResponse(requestOptions);
+            Response<SettingsListResult> response = clientImpl.getSettingsWithResponse(requestContext);
             List<KeyVaultSetting> keyVaultSettings = response.getValue()
                 .getSettings()
                 .stream()
