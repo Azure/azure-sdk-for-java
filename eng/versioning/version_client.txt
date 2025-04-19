@@ -490,10 +490,10 @@ com.azure.v2:azure-core;2.0.0-beta.1;2.0.0-beta.1
 com.azure.v2:azure-core-test;2.0.0-beta.1;2.0.0-beta.1
 com.azure.v2:azure-data-appconfiguration;2.0.0-beta.1;2.0.0-beta.1
 com.azure.v2:azure-identity;2.0.0-beta.1;2.0.0-beta.1
-com.azure.v2:azure-security-keyvault-administration;1.0.0-beta.1;1.0.0-beta.1
-com.azure.v2:azure-security-keyvault-certificates;1.0.0-beta.1;1.0.0-beta.1
-com.azure.v2:azure-security-keyvault-secrets;1.0.0-beta.1;1.0.0-beta.1
-com.azure.v2:azure-security-keyvault-keys;1.0.0-beta.1;1.0.0-beta.1
+com.azure.v2:azure-security-keyvault-administration;5.0.0-beta.1;5.0.0-beta.1
+com.azure.v2:azure-security-keyvault-certificates;5.0.0-beta.1;5.0.0-beta.1
+com.azure.v2:azure-security-keyvault-secrets;5.0.0-beta.1;5.0.0-beta.1
+com.azure.v2:azure-security-keyvault-keys;5.0.0-beta.1;5.0.0-beta.1
 io.clientcore:clientcore-parent;1.0.0-beta.3;1.0.0-beta.3
 io.clientcore:core;1.0.0-beta.9;1.0.0-beta.10
 io.clientcore:http-netty4;1.0.0-beta.1;1.0.0-beta.1

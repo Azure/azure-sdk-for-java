@@ -31,25 +31,25 @@ public final class KeyCurveName implements ExpandableEnum<String>, JsonSerializa
      * The NIST P-256 elliptic curve, AKA SECG curve SECP256R1.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public static final KeyCurveName P256 = fromValue("P-256");
+    public static final KeyCurveName P_256 = fromValue("P-256");
 
     /**
      * The NIST P-384 elliptic curve, AKA SECG curve SECP384R1.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public static final KeyCurveName P384 = fromValue("P-384");
+    public static final KeyCurveName P_384 = fromValue("P-384");
 
     /**
      * The NIST P-521 elliptic curve, AKA SECG curve SECP521R1.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public static final KeyCurveName P521 = fromValue("P-521");
+    public static final KeyCurveName P_521 = fromValue("P-521");
 
     /**
      * The SECG SECP256K1 elliptic curve.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public static final KeyCurveName P256_K = fromValue("P-256K");
+    public static final KeyCurveName P_256K = fromValue("P-256K");
 
     private final String value;
 

@@ -45,13 +45,12 @@ import io.clientcore.core.annotations.ReturnType;
 import io.clientcore.core.annotations.ServiceClient;
 import io.clientcore.core.annotations.ServiceMethod;
 import io.clientcore.core.http.models.HttpResponseException;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.http.paging.PagingOptions;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.utils.Context;
 
 import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
@@ -332,13 +331,13 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Gets a specific version of a certificate in the key vault. Prints out details of the response returned by the
      * service and the certificate.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.getCertificateWithResponse#String-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.getCertificateWithResponse#String-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.getCertificateWithResponse#String-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.getCertificateWithResponse#String-RequestContext -->
      *
      * @param name The name of the certificate to retrieve. It is required and cannot be {@code null} or empty.
      * @param version The version of the certificate to retrieve. If this is an empty string or {@code null}, the latest
      * version will be retrieved.
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      * @return A response object whose {@link Response#getValue()} contains the requested certificate.
      *
      * @throws HttpResponseException If a certificate with the given {@code name} doesn't exist in the key vault.
@@ -346,14 +345,14 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultCertificateWithPolicy> getCertificateWithResponse(String name, String version,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
 
         try {
             if (isNullOrEmpty(name)) {
                 throw new IllegalArgumentException("'name' cannot be null or empty.");
             }
 
-            return mapResponse(clientImpl.getCertificateWithResponse(name, version, requestOptions),
+            return mapResponse(clientImpl.getCertificateWithResponse(name, version, requestContext),
                 KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -419,11 +418,11 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Gets latest version of a certificate and updates its tags and enabled status in the key vault, then prints out
      * the updated certificate's details.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.updateCertificatePropertiesWithResponse#CertificateProperties-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.updateCertificatePropertiesWithResponse#CertificateProperties-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.updateCertificatePropertiesWithResponse#CertificateProperties-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.updateCertificatePropertiesWithResponse#CertificateProperties-RequestContext -->
      *
      * @param certificateProperties The certificate properties to update.
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      * @return A response object whose {@link Response#getValue()} contains the updated certificate.
      *
      * @throws HttpResponseException If a certificate with the given {@link CertificateProperties#getName() name} and
@@ -433,7 +432,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultCertificate> updateCertificatePropertiesWithResponse(
-        CertificateProperties certificateProperties, RequestOptions requestOptions) {
+        CertificateProperties certificateProperties, RequestContext requestContext) {
 
         try {
             Objects.requireNonNull(certificateProperties,"'certificateProperties' cannot be null.");
@@ -452,7 +451,7 @@ public final class CertificateClient {
                 .setTags(certificateProperties.getTags());
 
             return mapResponse(clientImpl.updateCertificateWithResponse(certificateProperties.getName(), certificateProperties.getVersion(),
-                    certificateUpdateParameters, requestOptions),
+                    certificateUpdateParameters, requestContext),
                 KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -555,24 +554,24 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Gets a deleted certificate from the key vault enabled for soft-delete. Prints details of the response returned
      * by the service and the deleted certificate.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.getDeletedCertificateWithResponse#String-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.getDeletedCertificateWithResponse#String-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.getDeletedCertificateWithResponse#String-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.getDeletedCertificateWithResponse#String-RequestContext -->
      *
      * @param name The name of the deleted certificate to retrieve. It is required and cannot be {@code null} or empty.
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      * @return A response object whose {@link Response#getValue()} contains the deleted certificate.
      *
      * @throws HttpResponseException If a certificate with the given {@code name} doesn't exist in the key vault.
      * @throws IllegalArgumentException If the provided {@code name} is {@code null} or an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DeletedCertificate> getDeletedCertificateWithResponse(String name, RequestOptions requestOptions) {
+    public Response<DeletedCertificate> getDeletedCertificateWithResponse(String name, RequestContext requestContext) {
         try {
             if (isNullOrEmpty(name)) {
                 throw new IllegalArgumentException("'name' cannot be null or empty.");
             }
 
-            return mapResponse(clientImpl.getDeletedCertificateWithResponse(name, requestOptions),
+            return mapResponse(clientImpl.getDeletedCertificateWithResponse(name, requestContext),
                 DeletedCertificateHelper::createDeletedCertificate);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -613,24 +612,24 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Purges a deleted certificate from a key vault enabled for soft-delete and prints out details of the response
      * returned by the service.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.purgeDeletedCertificateWithResponse#String-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.purgeDeletedCertificateWithResponse#String-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.purgeDeletedCertificateWithResponse#String-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.purgeDeletedCertificateWithResponse#String-RequestContext -->
      *
      * @param name The name of the deleted certificate to purge. It is required and cannot be {@code null} or empty.
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      * @return A response object containing the status code and HTTP headers related to the operation.
      *
      * @throws HttpResponseException If a certificate with the given {@code name} doesn't exist in the key vault.
      * @throws IllegalArgumentException If the provided {@code name} is {@code null} or an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> purgeDeletedCertificateWithResponse(String name, RequestOptions requestOptions) {
+    public Response<Void> purgeDeletedCertificateWithResponse(String name, RequestContext requestContext) {
         try {
             if (isNullOrEmpty(name)) {
                 throw new IllegalArgumentException("'name' cannot be null or empty.");
             }
 
-            return clientImpl.purgeDeletedCertificateWithResponse(name, requestOptions);
+            return clientImpl.purgeDeletedCertificateWithResponse(name, requestContext);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -730,24 +729,24 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Backs up a certificate from the key vault. Prints out details of the response returned by the service and the
      * length of the certificate's backup blob.
-     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.backupCertificateWithResponse#String-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.backupCertificateWithResponse#String-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.backupCertificateWithResponse#String-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.backupCertificateWithResponse#String-RequestContext -->
      *
      * @param name The name of the certificate to back up.
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      * @return A response object whose {@link Response#getValue()} contains the backed up certificate blob.
      *
      * @throws HttpResponseException If a certificate with the given {@code name} doesn't exist in the key vault.
      * @throws IllegalArgumentException If the provided {@code name} is {@code null} or an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<byte[]> backupCertificateWithResponse(String name, RequestOptions requestOptions) {
+    public Response<byte[]> backupCertificateWithResponse(String name, RequestContext requestContext) {
         try {
             if (isNullOrEmpty(name)) {
                 throw new IllegalArgumentException("'name' cannot be null or empty.");
             }
 
-            return mapResponse(clientImpl.backupCertificateWithResponse(name, requestOptions),
+            return mapResponse(clientImpl.backupCertificateWithResponse(name, requestContext),
                 BackupCertificateResult::getValue);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -784,22 +783,22 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Restores a certificate in the key vault from a backup. Prints our details of the response returned by the
      * service and the restored certificate.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.restoreCertificateWithResponse#byte-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.restoreCertificateWithResponse#byte-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.restoreCertificateWithResponse#byte-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.restoreCertificateWithResponse#byte-RequestContext -->
      *
      * @param backup The backup blob associated with the certificate.
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      * @return A response object whose {@link Response#getValue()} contains the restored certificate.
      *
      * @throws HttpResponseException If the {@code backup} blob is malformed.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultCertificateWithPolicy> restoreCertificateBackupWithResponse(byte[] backup,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
 
         try {
             return mapResponse(
-                clientImpl.restoreCertificateWithResponse(new CertificateRestoreParameters(backup), requestOptions),
+                clientImpl.restoreCertificateWithResponse(new CertificateRestoreParameters(backup), requestContext),
                 KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -829,7 +828,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateProperties> listPropertiesOfCertificates() {
-        return listPropertiesOfCertificates(false, RequestOptions.none());
+        return listPropertiesOfCertificates(false, RequestContext.none());
     }
 
     /**
@@ -840,35 +839,29 @@ public final class CertificateClient {
      * <p><strong>Iterate through certificates</strong></p>
      * <p>Lists the certificates in the key vault and gets each one's latest version and their policies by looping
      * though the properties objects and calling {@link CertificateClient#getCertificate(String)}.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfCertificates#boolean-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfCertificates#RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfCertificates#boolean-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfCertificates#RequestContext -->
      *
      * <p><strong>Iterate through certificates by page</strong></p>
      * <p>Iterates through the certificates in the key vault by page and gets each one's latest version and their
      * policies by looping though the properties objects and calling {@link CertificateClient#getCertificate(String)}.
      * </p>
-     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfCertificates.iterableByPage#boolean-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfCertificates.iterableByPage#boolean-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfCertificates.iterableByPage#boolean-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfCertificates.iterableByPage#boolean-RequestContext -->
      *
      * @param includePending Indicate if pending certificates should be included in the results.
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      * @return A {@link PagedIterable} of properties objects of all the certificates in the vault. A properties object
      * contains all information about the certificate, except its key material.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateProperties> listPropertiesOfCertificates(boolean includePending,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
 
         try {
-            RequestOptions requestOptionsForNextPage = new RequestOptions();
-
-            requestOptionsForNextPage.setContext(requestOptions != null && requestOptions.getContext() != null
-                ? requestOptions.getContext()
-                : Context.none());
-
             return mapPages(pagingOptions -> clientImpl.getCertificatesSinglePage(null, includePending),
                 (pagingOptions, nextLink) -> clientImpl.getCertificatesNextSinglePage(nextLink,
-                    requestOptionsForNextPage), CertificatePropertiesHelper::createCertificateProperties);
+                    requestContext.toBuilder().build()), CertificatePropertiesHelper::createCertificateProperties);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -894,7 +887,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedCertificate> listDeletedCertificates() {
-        return listDeletedCertificates(false, RequestOptions.none());
+        return listDeletedCertificates(false, RequestContext.none());
     }
 
     /**
@@ -904,33 +897,27 @@ public final class CertificateClient {
      * <p><strong>Iterate through deleted certificates</strong></p>
      * <p>Lists the deleted certificates in a key vault enabled for soft-delete and prints out each one's recovery id.
      * </p>
-     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listDeletedCertificates#RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listDeletedCertificates#RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listDeletedCertificates#RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listDeletedCertificates#RequestContext -->
      *
      * <p><strong>Iterate through deleted certificates by page</strong></p>
      * <p>Iterates through the deleted certificates by page in the key vault by page and prints out each one's recovery
      * id.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listDeletedCertificates.iterableByPage#RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listDeletedCertificates.iterableByPage#RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listDeletedCertificates.iterableByPage#RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listDeletedCertificates.iterableByPage#RequestContext -->
      *
      * @param includePending Indicate if pending certificates should be included in the results.
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      * @return A {@link PagedIterable} of the deleted certificates in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<DeletedCertificate> listDeletedCertificates(boolean includePending,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
 
         try {
-            RequestOptions requestOptionsForNextPage = new RequestOptions();
-
-            requestOptionsForNextPage.setContext(requestOptions != null && requestOptions.getContext() != null
-                ? requestOptions.getContext()
-                : Context.none());
-
             return mapPages(pagingOptions -> clientImpl.getDeletedCertificatesSinglePage(null, includePending),
                 (pagingOptions, nextLink) -> clientImpl.getDeletedCertificatesNextSinglePage(nextLink,
-                    requestOptionsForNextPage), DeletedCertificateHelper::createDeletedCertificate);
+                    requestContext.toBuilder().build()), DeletedCertificateHelper::createDeletedCertificate);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -963,7 +950,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateProperties> listPropertiesOfCertificateVersions(String name) {
-        return listPropertiesOfCertificateVersions(name, RequestOptions.none());
+        return listPropertiesOfCertificateVersions(name, RequestContext.none());
     }
 
     /**
@@ -974,18 +961,18 @@ public final class CertificateClient {
      * <p><strong>Iterate through certificates versions</strong></p>
      * <p>Lists the versions of a certificate in the key vault and gets each one's latest version and their policies by
      * looping though the properties objects and calling {@link CertificateClient#getCertificate(String)}.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfCertificateVersions#String-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfCertificateVersions#String-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfCertificateVersions#String-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfCertificateVersions#String-RequestContext -->
      *
      * <p><strong>Iterate through certificates versions by page</strong></p>
      * <p>Iterates through the versions of a certificate in the key vault by page and gets each one's latest version and
      * their policies by looping though the properties objects and calling
      * {@link CertificateClient#getCertificate(String)}.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfCertificateVersions.iterableByPage#String-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfCertificateVersions.iterableByPage#String-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfCertificateVersions.iterableByPage#String-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfCertificateVersions.iterableByPage#String-RequestContext -->
      *
      * @param name The name of the certificate. It is required and cannot be {@code null} or empty.
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      * @return A {@link PagedIterable} of properties objects of all the versions of the specified certificate. A
      * properties object contains all information about the certificate, except its key material. The
      * {@link PagedIterable} will be empty if no certificate with the given {@code name} exists in key vault.
@@ -994,18 +981,12 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateProperties> listPropertiesOfCertificateVersions(String name,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
 
         try {
-            RequestOptions requestOptionsForNextPage = new RequestOptions();
-
-            requestOptionsForNextPage.setContext(requestOptions != null && requestOptions.getContext() != null
-                ? requestOptions.getContext()
-                : Context.none());
-
             return mapPages(pagingOptions -> clientImpl.getCertificateVersionsSinglePage(name, null),
                 (pagingOptions, nextLink) -> clientImpl.getCertificateVersionsNextSinglePage(nextLink,
-                    requestOptionsForNextPage), CertificatePropertiesHelper::createCertificateProperties);
+                    requestContext.toBuilder().build()), CertificatePropertiesHelper::createCertificateProperties);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1054,7 +1035,7 @@ public final class CertificateClient {
      *
      * @param certificateName The name of the certificate whose policy is to be retrieved. It is required and cannot be
      * {@code null} or empty.
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      * @return A response object whose {@link Response#getValue()} contains the requested certificate policy.
      *
      * @throws HttpResponseException If a certificate with the given {@code certificateName} doesn't exist in the key
@@ -1064,14 +1045,14 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificatePolicy> getCertificatePolicyWithResponse(String certificateName,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
 
         try {
             if (isNullOrEmpty(certificateName)) {
                 throw new IllegalArgumentException("'certificateName' cannot be null or empty.");
             }
 
-            return mapResponse(clientImpl.getCertificatePolicyWithResponse(certificateName, requestOptions),
+            return mapResponse(clientImpl.getCertificatePolicyWithResponse(certificateName, requestContext),
                 CertificatePolicyHelper::createCertificatePolicy);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -1128,7 +1109,7 @@ public final class CertificateClient {
      * @param certificateName The name of the certificate whose policy is to be updated. It is required and cannot be
      * {@code null} or empty.
      * @param policy The certificate policy to be updated. It is required and cannot be {@code null}.
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      * @return A response object whose {@link Response#getValue()} contains the updated certificate policy.
      *
      * @throws HttpResponseException If a certificate with the given {@code certificateName} doesn't exist in the key
@@ -1139,7 +1120,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificatePolicy> updateCertificatePolicyWithResponse(String certificateName,
-        CertificatePolicy policy, RequestOptions requestOptions) {
+        CertificatePolicy policy, RequestContext requestContext) {
 
         try {
             if (isNullOrEmpty(certificateName)) {
@@ -1150,7 +1131,7 @@ public final class CertificateClient {
 
             return mapResponse(
                 clientImpl.updateCertificatePolicyWithResponse(certificateName, getImplCertificatePolicy(policy),
-                    requestOptions), CertificatePolicyHelper::createCertificatePolicy);
+                    requestContext), CertificatePolicyHelper::createCertificatePolicy);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1199,8 +1180,8 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Creates a new certificate issuer in the key vault. Prints out details of the response returned by the
      * service and the created issuer.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.createIssuerWithResponse#CertificateIssuer-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.createIssuerWithResponse#CertificateIssuer-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.createIssuerWithResponse#CertificateIssuer-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.createIssuerWithResponse#CertificateIssuer-RequestContext -->
      *
      * @param issuer The configuration of the certificate issuer to be created. It is required and cannot be
      * {@code null}.
@@ -1212,7 +1193,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateIssuer> createIssuerWithResponse(CertificateIssuer issuer,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
 
         try {
             Objects.requireNonNull(issuer, "'issuer' cannot be null.");
@@ -1226,7 +1207,7 @@ public final class CertificateClient {
 
             return mapResponse(
                 clientImpl.setCertificateIssuerWithResponse(issuer.getName(), certificateIssuerSetParameters,
-                    requestOptions), CertificateIssuerHelper::createCertificateIssuer);
+                    requestContext), CertificateIssuerHelper::createCertificateIssuer);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1268,11 +1249,11 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Gets a specific certificate issuer in the key vault. Prints out details of the response returned by the
      * service and the requested certificate issuer.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.getIssuerWithResponse#String-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.getIssuer#String-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.getIssuerWithResponse#String-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.getIssuer#String-RequestContext -->
      *
      * @param name The name of the certificate issuer to retrieve. It is required and cannot be {@code null} or empty.
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      * @return A response object whose {@link Response#getValue()} contains the requested certificate issuer.
      *
      * @throws HttpResponseException If a certificate issuer with the given {@code name} doesn't exist in the key
@@ -1280,13 +1261,13 @@ public final class CertificateClient {
      * @throws IllegalArgumentException If the provided {@code name} is {@code null} or an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateIssuer> getIssuerWithResponse(String name, RequestOptions requestOptions) {
+    public Response<CertificateIssuer> getIssuerWithResponse(String name, RequestContext requestContext) {
         try {
             if (isNullOrEmpty(name)) {
                 throw new IllegalArgumentException("'name' cannot be null or empty.");
             }
 
-            return mapResponse(clientImpl.getCertificateIssuerWithResponse(name, requestOptions),
+            return mapResponse(clientImpl.getCertificateIssuerWithResponse(name, requestContext),
                 CertificateIssuerHelper::createCertificateIssuer);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -1340,13 +1321,13 @@ public final class CertificateClient {
      * @throws IllegalArgumentException If the provided {@code name} is {@code null} or an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CertificateIssuer> deleteIssuerWithResponse(String name, RequestOptions requestOptions) {
+    public Response<CertificateIssuer> deleteIssuerWithResponse(String name, RequestContext requestContext) {
         try {
             if (isNullOrEmpty(name)) {
                 throw new IllegalArgumentException("'name' cannot be null or empty.");
             }
 
-            return mapResponse(clientImpl.deleteCertificateIssuerWithResponse(name, requestOptions),
+            return mapResponse(clientImpl.deleteCertificateIssuerWithResponse(name, requestContext),
                 CertificateIssuerHelper::createCertificateIssuer);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -1374,7 +1355,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IssuerProperties> listPropertiesOfIssuers() {
-        return listPropertiesOfIssuers(RequestOptions.none());
+        return listPropertiesOfIssuers(RequestContext.none());
     }
 
     /**
@@ -1385,26 +1366,26 @@ public final class CertificateClient {
      * <p>><strong>Iterate through certificate issuers</strong></p>
      * <p>Lists the certificate issuers in the key vault and gets their details by looping though the properties objects
      * and calling {@link CertificateClient#getIssuer(String)}.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfIssuers#RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfIssuers#RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfIssuers#RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfIssuers#RequestContext -->
      *
      * <p><strong>Iterate through certificate issuers by page</strong></p>
      * <p>Iterates through the certificate issuers in the key vault by page and gets their details by looping though the
      * properties objects and calling {@link CertificateClient#getIssuer(String)}.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfIssuers.iterableByPage#RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfIssuers.iterableByPage#RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfIssuers.iterableByPage#RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfIssuers.iterableByPage#RequestContext -->
      *
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      * @return A {@link PagedIterable} of properties objects of all the certificate issuers in the vault. A properties
      * object contains the issuer identifier and provider.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IssuerProperties> listPropertiesOfIssuers(RequestOptions requestOptions) {
+    public PagedIterable<IssuerProperties> listPropertiesOfIssuers(RequestContext requestContext) {
         try {
-            RequestOptions requestOptionsForNextPage = new RequestOptions();
+            RequestContext requestOptionsForNextPage = new RequestContext();
 
-            requestOptionsForNextPage.setContext(requestOptions != null && requestOptions.getContext() != null
-                ? requestOptions.getContext()
+            requestOptionsForNextPage.setContext(requestContext != null && requestContext.getContext() != null
+                ? requestContext.getContext()
                 : Context.none());
 
             return mapPages(pagingOptions -> clientImpl.getCertificateIssuersSinglePage(null),
@@ -1464,11 +1445,11 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Gets the latest version of a certificate issuer and updates it in the key vault. Prints out details of the
      * response returned by the service and the updated issuer.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.updateIssuer#CertificateIssuer-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.updateIssuer#CertificateIssuer-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.updateIssuer#CertificateIssuer-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.updateIssuer#CertificateIssuer-RequestContext -->
      *
      * @param issuer The issuer with updated properties.
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      * @return The updated issuer.
      *
      * @throws HttpResponseException If a certificate issuer with the given {@link CertificateIssuer#getName()} doesn't
@@ -1478,7 +1459,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateIssuer> updateIssuerWithResponse(CertificateIssuer issuer,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
 
         try {
             Objects.requireNonNull(issuer, "'issuer' cannot be null.");
@@ -1497,7 +1478,7 @@ public final class CertificateClient {
 
             return mapResponse(
                 clientImpl.updateCertificateIssuerWithResponse(issuer.getName(), certificateIssuerUpdateParameters,
-                    requestOptions), CertificateIssuerHelper::createCertificateIssuer);
+                    requestContext), CertificateIssuerHelper::createCertificateIssuer);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1522,7 +1503,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateContact> setContacts(List<CertificateContact> contacts) {
-        return setContacts(contacts, RequestOptions.none());
+        return setContacts(contacts, RequestContext.none());
     }
 
     /**
@@ -1534,23 +1515,23 @@ public final class CertificateClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Sets certificate contacts in the key vault and prints out each one's details.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.setContacts#List-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.setContacts#List-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.setContacts#List-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.setContacts#List-RequestContext -->
      *
      * @param contacts The list of contacts to set on the vault.
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      * @return A {@link PagedIterable} containing all the certificate contacts in the vault.
      *
      * @throws HttpResponseException If the provided contact information is malformed.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateContact> setContacts(List<CertificateContact> contacts,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
 
         try {
             return new PagedIterable<>((pagingOptions) -> mapContactsToPagedResponse(
                 clientImpl.setCertificateContactsWithResponse(new Contacts().setContactList(contacts),
-                    requestOptions)));
+                    requestContext)));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1569,7 +1550,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateContact> listContacts() {
-        return listContacts(RequestOptions.none());
+        return listContacts(RequestContext.none());
     }
 
     /**
@@ -1578,17 +1559,17 @@ public final class CertificateClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Lists the certificate contacts in the key vault and prints out each one's details.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listContacts#RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listContacts#RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listContacts#RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listContacts#RequestContext -->
      *
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      * @return A {@link PagedIterable} containing all the certificate contacts in the vault.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateContact> listContacts(RequestOptions requestOptions) {
+    public PagedIterable<CertificateContact> listContacts(RequestContext requestContext) {
         try {
             return new PagedIterable<>((pagingOptions) -> mapContactsToPagedResponse(
-                clientImpl.getCertificateContactsWithResponse(requestOptions)));
+                clientImpl.getCertificateContactsWithResponse(requestContext)));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1607,7 +1588,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<CertificateContact> deleteContacts() {
-        return deleteContacts(RequestOptions.none());
+        return deleteContacts(RequestContext.none());
     }
 
     /**
@@ -1616,16 +1597,16 @@ public final class CertificateClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Deletes the certificate contacts in the key vault and prints out each one's details.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.deleteContacts-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.deleteContacts-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.deleteContacts-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.deleteContacts-RequestContext -->
      *
      * @return A {@link PagedIterable} containing the freshly deleted certificate contacts.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CertificateContact> deleteContacts(RequestOptions requestOptions) {
+    public PagedIterable<CertificateContact> deleteContacts(RequestContext requestContext) {
         try {
             return new PagedIterable<>((pagingOptions) -> mapContactsToPagedResponse(
-                clientImpl.deleteCertificateContactsWithResponse(requestOptions)));
+                clientImpl.deleteCertificateContactsWithResponse(requestContext)));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1708,7 +1689,7 @@ public final class CertificateClient {
      *
      * @param certificateName The name of the certificate the operation pertains to. It is required and cannot be
      * {@code null} or empty.
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      * @return A response object whose {@link Response#getValue()} contains the deleted certificate operation.
      *
      * @throws HttpResponseException If a certificate operation for a certificate with {@code certificateName}
@@ -1717,14 +1698,14 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateOperation> deleteCertificateOperationWithResponse(String certificateName,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
 
         try {
             if (isNullOrEmpty(certificateName)) {
                 throw new IllegalArgumentException("'certificateName' cannot be null or empty.");
             }
 
-            return mapResponse(clientImpl.deleteCertificateOperationWithResponse(certificateName, requestOptions),
+            return mapResponse(clientImpl.deleteCertificateOperationWithResponse(certificateName, requestContext),
                 CertificateOperationHelper::createCertificateOperation);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -1770,8 +1751,8 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Triggers certificate creation and then cancels the creation operation in the key vault. Prints out the
      * cancelled certificate operation details.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.cancelCertificateOperation#String-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.cancelCertificateOperation#String-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.cancelCertificateOperation#String-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.cancelCertificateOperation#String-RequestContext -->
      *
      * @param certificateName The name of the certificate the operation pertains to. It is required and cannot be
      * {@code null} or empty.
@@ -1783,11 +1764,11 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateOperation> cancelCertificateOperationWithResponse(String certificateName,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
 
         try {
             return mapResponse(clientImpl.updateCertificateOperationWithResponse(certificateName,
-                    new CertificateOperationUpdateParameter(true), requestOptions),
+                    new CertificateOperationUpdateParameter(true), requestContext),
                 CertificateOperationHelper::createCertificateOperation);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -1842,8 +1823,8 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Merges a certificate with a kay pair available in the service. Prints out details of the response returned by
      * the service and the merged certificate.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.mergeCertificate#MergeCertificateOptions-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.mergeCertificate#MergeCertificateOptions-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.mergeCertificate#MergeCertificateOptions-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.mergeCertificate#MergeCertificateOptions-RequestContext -->
      *
      * @param mergeCertificateOptions The merge certificate configuration holding the x509 certificates to merge.
      * @return A response object whose {@link Response#getValue()} contains the merged certificate.
@@ -1854,7 +1835,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultCertificateWithPolicy> mergeCertificateWithResponse(
-        MergeCertificateOptions mergeCertificateOptions, RequestOptions requestOptions) {
+        MergeCertificateOptions mergeCertificateOptions, RequestContext requestContext) {
 
         try {
             Objects.requireNonNull(mergeCertificateOptions, "'mergeCertificateOptions' cannot be null.");
@@ -1871,7 +1852,7 @@ public final class CertificateClient {
 
             return mapResponse(
                 clientImpl.mergeCertificateWithResponse(mergeCertificateOptions.getName(), certificateMergeParameters,
-                    requestOptions), KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy);
+                    requestContext), KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1951,7 +1932,7 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultCertificateWithPolicy> importCertificateWithResponse(
-        ImportCertificateOptions importCertificateOptions, RequestOptions requestOptions) {
+        ImportCertificateOptions importCertificateOptions, RequestContext requestContext) {
 
         try {
             Objects.requireNonNull(importCertificateOptions, "'importCertificateOptions' cannot be null.");
@@ -1972,7 +1953,7 @@ public final class CertificateClient {
                         new CertificateAttributes().setEnabled(importCertificateOptions.isEnabled()));
 
             return mapResponse(clientImpl.importCertificateWithResponse(importCertificateOptions.getName(),
-                    certificateImportParameters, requestOptions),
+                    certificateImportParameters, requestContext),
                 KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);

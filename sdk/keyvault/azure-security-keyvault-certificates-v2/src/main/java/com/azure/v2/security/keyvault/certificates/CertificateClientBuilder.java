@@ -5,8 +5,8 @@ package com.azure.v2.security.keyvault.certificates;
 
 import com.azure.v2.core.credentials.TokenCredential;
 import com.azure.v2.core.traits.TokenCredentialTrait;
-import com.azure.v2.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy;
 import com.azure.v2.security.keyvault.certificates.implementation.CertificateClientImpl;
+import com.azure.v2.security.keyvault.certificates.implementation.KeyVaultCredentialPolicy;
 import com.azure.v2.security.keyvault.certificates.models.DeletedCertificate;
 import com.azure.v2.security.keyvault.certificates.models.KeyVaultCertificate;
 import com.azure.v2.security.keyvault.certificates.models.KeyVaultCertificateIdentifier;
@@ -21,6 +21,7 @@ import io.clientcore.core.http.pipeline.HttpRedirectOptions;
 import io.clientcore.core.http.pipeline.HttpRedirectPolicy;
 import io.clientcore.core.http.pipeline.HttpRetryOptions;
 import io.clientcore.core.http.pipeline.HttpRetryPolicy;
+import io.clientcore.core.http.pipeline.UserAgentOptions;
 import io.clientcore.core.http.pipeline.UserAgentPolicy;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.traits.ConfigurationTrait;
@@ -136,7 +137,7 @@ public final class CertificateClientBuilder
         CertificateServiceVersion version = this.version == null ? CertificateServiceVersion.getLatest() : this.version;
 
         if (pipeline != null) {
-            return new CertificateClientImpl(pipeline, endpoint, version);
+            return new CertificateClientImpl(pipeline, endpoint, version.getVersion());
         }
 
         if (credential == null) {
@@ -147,9 +148,13 @@ public final class CertificateClientBuilder
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        // TODO (vcolin7): Get applicationId from instrumentationOptions once
-        //  https://github.com/Azure/azure-sdk-for-java/pull/44764 is merged.
-        policies.add(new UserAgentPolicy(null, CLIENT_NAME, CLIENT_VERSION));
+        // TODO (vcolin7): Figure out where to get applicationId from.
+        UserAgentOptions userAgentOptions = new UserAgentOptions()
+            //.setApplicationId(null)
+            .setSdkName(CLIENT_NAME)
+            .setSdkVersion(CLIENT_VERSION);
+
+        policies.add(new UserAgentPolicy(userAgentOptions));
         policies.add(redirectOptions == null ? new HttpRedirectPolicy() : new HttpRedirectPolicy(redirectOptions));
         policies.add(retryOptions == null ? new HttpRetryPolicy() : new HttpRetryPolicy(retryOptions));
         policies.addAll(pipelinePolicies);
@@ -168,7 +173,7 @@ public final class CertificateClientBuilder
 
         HttpPipeline builtPipeline = httpPipelineBuilder.httpClient(httpClient).build();
 
-        return new CertificateClientImpl(builtPipeline, endpoint, version);
+        return new CertificateClientImpl(builtPipeline, endpoint, version.getVersion());
     }
 
     /**
@@ -315,7 +320,8 @@ public final class CertificateClientBuilder
      * @param pipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
      * @return The updated {@link CertificateClientBuilder} object.
      */
-    @Override
+    // TODO (vcolin7): Uncomment annotation if the method is added back to HttpTrait.
+    //@Override
     public CertificateClientBuilder httpPipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
 

@@ -18,6 +18,7 @@ import io.clientcore.core.http.pipeline.HttpRedirectOptions;
 import io.clientcore.core.http.pipeline.HttpRedirectPolicy;
 import io.clientcore.core.http.pipeline.HttpRetryOptions;
 import io.clientcore.core.http.pipeline.HttpRetryPolicy;
+import io.clientcore.core.http.pipeline.UserAgentOptions;
 import io.clientcore.core.http.pipeline.UserAgentPolicy;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.traits.ConfigurationTrait;
@@ -66,7 +67,7 @@ public final class KeyVaultSettingsClientBuilder implements ConfigurationTrait<K
     private static final String CLIENT_VERSION;
 
     static {
-        Map<String, String> properties = CoreUtils.getProperties("azure-security-keyvault-secrets.properties");
+        Map<String, String> properties = CoreUtils.getProperties("azure-security-keyvault-administration.properties");
         CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
         CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
     }
@@ -123,7 +124,8 @@ public final class KeyVaultSettingsClientBuilder implements ConfigurationTrait<K
         KeyVaultAdministrationServiceVersion version = this.version == null ? KeyVaultAdministrationServiceVersion.getLatest() : this.version;
 
         if (pipeline != null) {
-            return new KeyVaultSettingsClient(new KeyVaultAdministrationClientImpl(pipeline, endpoint, version));
+            return new KeyVaultSettingsClient(
+                new KeyVaultAdministrationClientImpl(pipeline, endpoint, version.getVersion()));
         }
 
         if (credential == null) {
@@ -135,9 +137,13 @@ public final class KeyVaultSettingsClientBuilder implements ConfigurationTrait<K
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
 
-        // TODO (vcolin7): Get applicationId from instrumentationOptions once
-        //  https://github.com/Azure/azure-sdk-for-java/pull/44764 is merged.
-        policies.add(new UserAgentPolicy(null, CLIENT_NAME, CLIENT_VERSION));
+        // TODO (vcolin7): Figure out where to get applicationId from.
+        UserAgentOptions userAgentOptions = new UserAgentOptions()
+            //.setApplicationId(null)
+            .setSdkName(CLIENT_NAME)
+            .setSdkVersion(CLIENT_VERSION);
+
+        policies.add(new UserAgentPolicy(userAgentOptions));
         policies.add(redirectOptions == null ? new HttpRedirectPolicy() : new HttpRedirectPolicy(redirectOptions));
         policies.add(retryOptions == null ? new HttpRetryPolicy() : new HttpRetryPolicy(retryOptions));
         policies.addAll(pipelinePolicies);
@@ -156,7 +162,8 @@ public final class KeyVaultSettingsClientBuilder implements ConfigurationTrait<K
 
         HttpPipeline builtPipeline = httpPipelineBuilder.httpClient(httpClient).build();
 
-        return new KeyVaultSettingsClient(new KeyVaultAdministrationClientImpl(builtPipeline, endpoint, version));
+        return new KeyVaultSettingsClient(
+            new KeyVaultAdministrationClientImpl(builtPipeline, endpoint, version.getVersion()));
     }
 
     /**
