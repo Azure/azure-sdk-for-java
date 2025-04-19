@@ -29,4 +29,27 @@
     <module>azure-core-tracing-opentelemetry-samples</module>
     <module>azure-core-version-tests</module>
   </modules>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.owasp</groupId>
+        <artifactId>dependency-check-maven</artifactId>
+        <version>11.1.1</version> <!-- {x-version-update;org.owasp:dependency-check-maven;external_dependency} -->
+        <configuration>
+          <skipProvidedScope>true</skipProvidedScope>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+              <goal>aggregate</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+
+    </plugins>
+  </build>
 </project>
+

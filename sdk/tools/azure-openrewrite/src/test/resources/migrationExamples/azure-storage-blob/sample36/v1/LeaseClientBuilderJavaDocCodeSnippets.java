@@ -1,13 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.blob.specialized;
-
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobContainerClientBuilder;
+import com.azure.storage.blob.specialized.BlobLeaseClient;
+import com.azure.storage.blob.specialized.BlobLeaseAsyncClient;
+import com.azure.storage.blob.specialized.BlobLeaseClientBuilder;
 
 public class LeaseClientBuilderJavaDocCodeSnippets {
     private BlobContainerAsyncClient blobContainerAsyncClient = new BlobContainerClientBuilder()
