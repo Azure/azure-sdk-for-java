@@ -149,6 +149,21 @@
           </execution>
         </executions>
       </plugin>
+      <plugin>
+            <groupId>com.azure.tools</groupId>
+            <artifactId>codesnippet-maven-plugin</artifactId>
+            <version>1.0.0-beta.10</version>
+            <configuration>
+                <maxLineLength>150</maxLineLength> <!-- Adjust this value as needed -->
+            </configuration>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>update-codesnippet</goal>
+                    </goals>
+                </execution>
+            </executions>
+        </plugin>
     </plugins>
   </build>
 </project>
