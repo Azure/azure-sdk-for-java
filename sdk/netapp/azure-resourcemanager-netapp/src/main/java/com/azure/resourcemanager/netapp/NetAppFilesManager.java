@@ -35,6 +35,7 @@ import com.azure.resourcemanager.netapp.implementation.BackupsUnderVolumesImpl;
 import com.azure.resourcemanager.netapp.implementation.NetAppManagementClientBuilder;
 import com.azure.resourcemanager.netapp.implementation.NetAppResourceQuotaLimitsImpl;
 import com.azure.resourcemanager.netapp.implementation.NetAppResourceRegionInfosImpl;
+import com.azure.resourcemanager.netapp.implementation.NetAppResourceUsagesImpl;
 import com.azure.resourcemanager.netapp.implementation.NetAppResourcesImpl;
 import com.azure.resourcemanager.netapp.implementation.OperationsImpl;
 import com.azure.resourcemanager.netapp.implementation.PoolsImpl;
@@ -53,6 +54,7 @@ import com.azure.resourcemanager.netapp.models.BackupsUnderBackupVaults;
 import com.azure.resourcemanager.netapp.models.BackupsUnderVolumes;
 import com.azure.resourcemanager.netapp.models.NetAppResourceQuotaLimits;
 import com.azure.resourcemanager.netapp.models.NetAppResourceRegionInfos;
+import com.azure.resourcemanager.netapp.models.NetAppResourceUsages;
 import com.azure.resourcemanager.netapp.models.NetAppResources;
 import com.azure.resourcemanager.netapp.models.Operations;
 import com.azure.resourcemanager.netapp.models.Pools;
@@ -78,6 +80,8 @@ public final class NetAppFilesManager {
     private Operations operations;
 
     private NetAppResources netAppResources;
+
+    private NetAppResourceUsages netAppResourceUsages;
 
     private NetAppResourceQuotaLimits netAppResourceQuotaLimits;
 
@@ -348,6 +352,18 @@ public final class NetAppFilesManager {
             this.netAppResources = new NetAppResourcesImpl(clientObject.getNetAppResources(), this);
         }
         return netAppResources;
+    }
+
+    /**
+     * Gets the resource collection API of NetAppResourceUsages.
+     * 
+     * @return Resource collection API of NetAppResourceUsages.
+     */
+    public NetAppResourceUsages netAppResourceUsages() {
+        if (this.netAppResourceUsages == null) {
+            this.netAppResourceUsages = new NetAppResourceUsagesImpl(clientObject.getNetAppResourceUsages(), this);
+        }
+        return netAppResourceUsages;
     }
 
     /**

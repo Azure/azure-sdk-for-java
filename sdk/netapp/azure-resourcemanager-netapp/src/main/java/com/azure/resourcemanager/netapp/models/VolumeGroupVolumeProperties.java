@@ -513,20 +513,6 @@ public final class VolumeGroupVolumeProperties extends ProxyResource {
     }
 
     /**
-     * Set the isRestoring property: Restoring.
-     * 
-     * @param isRestoring the isRestoring value to set.
-     * @return the VolumeGroupVolumeProperties object itself.
-     */
-    public VolumeGroupVolumeProperties withIsRestoring(Boolean isRestoring) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VolumeProperties();
-        }
-        this.innerProperties().withIsRestoring(isRestoring);
-        return this;
-    }
-
-    /**
      * Get the snapshotDirectoryVisible property: If enabled (true) the volume will contain a read-only snapshot
      * directory which provides access to each of the volume's snapshots (defaults to true).
      * 

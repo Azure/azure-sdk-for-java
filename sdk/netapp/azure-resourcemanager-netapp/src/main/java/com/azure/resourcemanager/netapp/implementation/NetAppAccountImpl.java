@@ -14,6 +14,7 @@ import com.azure.resourcemanager.netapp.models.ChangeKeyVault;
 import com.azure.resourcemanager.netapp.models.EncryptionTransitionRequest;
 import com.azure.resourcemanager.netapp.models.GetKeyVaultStatusResponse;
 import com.azure.resourcemanager.netapp.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.netapp.models.MultiAdStatus;
 import com.azure.resourcemanager.netapp.models.NetAppAccount;
 import com.azure.resourcemanager.netapp.models.NetAppAccountPatch;
 import java.util.Collections;
@@ -81,6 +82,14 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
 
     public Boolean disableShowmount() {
         return this.innerModel().disableShowmount();
+    }
+
+    public String nfsV4IdDomain() {
+        return this.innerModel().nfsV4IdDomain();
+    }
+
+    public MultiAdStatus multiAdStatus() {
+        return this.innerModel().multiAdStatus();
     }
 
     public Region region() {
@@ -254,6 +263,16 @@ public final class NetAppAccountImpl implements NetAppAccount, NetAppAccount.Def
             return this;
         } else {
             this.updateBody.withEncryption(encryption);
+            return this;
+        }
+    }
+
+    public NetAppAccountImpl withNfsV4IdDomain(String nfsV4IdDomain) {
+        if (isInCreateMode()) {
+            this.innerModel().withNfsV4IdDomain(nfsV4IdDomain);
+            return this;
+        } else {
+            this.updateBody.withNfsV4IdDomain(nfsV4IdDomain);
             return this;
         }
     }

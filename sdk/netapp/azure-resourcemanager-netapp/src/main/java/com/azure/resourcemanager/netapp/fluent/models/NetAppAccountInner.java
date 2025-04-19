@@ -13,6 +13,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.AccountEncryption;
 import com.azure.resourcemanager.netapp.models.ActiveDirectory;
 import com.azure.resourcemanager.netapp.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.netapp.models.MultiAdStatus;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -221,6 +222,40 @@ public final class NetAppAccountInner extends Resource {
      */
     public Boolean disableShowmount() {
         return this.innerProperties() == null ? null : this.innerProperties().disableShowmount();
+    }
+
+    /**
+     * Get the nfsV4IdDomain property: Domain for NFSv4 user ID mapping. This property will be set for all NetApp
+     * accounts in the subscription and region and only affect non ldap NFSv4 volumes.
+     * 
+     * @return the nfsV4IdDomain value.
+     */
+    public String nfsV4IdDomain() {
+        return this.innerProperties() == null ? null : this.innerProperties().nfsV4IdDomain();
+    }
+
+    /**
+     * Set the nfsV4IdDomain property: Domain for NFSv4 user ID mapping. This property will be set for all NetApp
+     * accounts in the subscription and region and only affect non ldap NFSv4 volumes.
+     * 
+     * @param nfsV4IdDomain the nfsV4IdDomain value to set.
+     * @return the NetAppAccountInner object itself.
+     */
+    public NetAppAccountInner withNfsV4IdDomain(String nfsV4IdDomain) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccountProperties();
+        }
+        this.innerProperties().withNfsV4IdDomain(nfsV4IdDomain);
+        return this;
+    }
+
+    /**
+     * Get the multiAdStatus property: MultiAD Status for the account.
+     * 
+     * @return the multiAdStatus value.
+     */
+    public MultiAdStatus multiAdStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().multiAdStatus();
     }
 
     /**

@@ -13,15 +13,14 @@ public final class SubscriptionQuotaItemListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SubscriptionQuotaItemList model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"current\":1916962672,\"default\":972559338},\"id\":\"kg\",\"name\":\"sauuimj\",\"type\":\"vxieduugidyj\"},{\"properties\":{\"current\":857489891,\"default\":786534004},\"id\":\"svexcsonpclhoco\",\"name\":\"slkevle\",\"type\":\"gz\"},{\"properties\":{\"current\":635098272,\"default\":1240175495},\"id\":\"faxkffeii\",\"name\":\"hl\",\"type\":\"m\"},{\"properties\":{\"current\":72720177,\"default\":1090911341},\"id\":\"mzsb\",\"name\":\"zoggigrxwburvjxx\",\"type\":\"nspydptkoenkoukn\"}]}")
+            "{\"value\":[{\"properties\":{\"current\":1747091504,\"default\":1085417867},\"id\":\"i\",\"name\":\"qrvkdv\",\"type\":\"sllr\"}]}")
             .toObject(SubscriptionQuotaItemList.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SubscriptionQuotaItemList model
-            = new SubscriptionQuotaItemList().withValue(Arrays.asList(new SubscriptionQuotaItemInner(),
-                new SubscriptionQuotaItemInner(), new SubscriptionQuotaItemInner(), new SubscriptionQuotaItemInner()));
+            = new SubscriptionQuotaItemList().withValue(Arrays.asList(new SubscriptionQuotaItemInner()));
         model = BinaryData.fromObject(model).toObject(SubscriptionQuotaItemList.class);
     }
 }

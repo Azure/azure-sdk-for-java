@@ -33,9 +33,9 @@ public final class BackupPoliciesCreateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         BackupPolicy response = manager.backupPolicies()
-            .define("vsg")
+            .define("jfrnxousxauzlwv")
             .withRegion("xmcuqud")
-            .withExistingNetAppAccount("fr", "xousxauzl")
+            .withExistingNetAppAccount("qcbfrmbodths", "qgvriibakcla")
             .withTags(mapOf("dkvgfabuiyjibuzp", "clxyn"))
             .withDailyBackupsToKeep(1994434352)
             .withWeeklyBackupsToKeep(468470130)

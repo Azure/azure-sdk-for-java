@@ -538,20 +538,6 @@ public final class VolumeInner extends Resource {
     }
 
     /**
-     * Set the isRestoring property: Restoring.
-     * 
-     * @param isRestoring the isRestoring value to set.
-     * @return the VolumeInner object itself.
-     */
-    public VolumeInner withIsRestoring(Boolean isRestoring) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new VolumeProperties();
-        }
-        this.innerProperties().withIsRestoring(isRestoring);
-        return this;
-    }
-
-    /**
      * Get the snapshotDirectoryVisible property: If enabled (true) the volume will contain a read-only snapshot
      * directory which provides access to each of the volume's snapshots (defaults to true).
      * 
