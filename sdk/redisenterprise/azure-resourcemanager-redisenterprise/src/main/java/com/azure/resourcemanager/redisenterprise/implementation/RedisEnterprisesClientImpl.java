@@ -14,6 +14,7 @@ import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Post;
 import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
@@ -34,6 +35,7 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.redisenterprise.fluent.RedisEnterprisesClient;
 import com.azure.resourcemanager.redisenterprise.fluent.models.ClusterInner;
+import com.azure.resourcemanager.redisenterprise.fluent.models.SkuDetailsListInner;
 import com.azure.resourcemanager.redisenterprise.models.ClusterList;
 import com.azure.resourcemanager.redisenterprise.models.ClusterUpdate;
 import java.nio.ByteBuffer;
@@ -127,6 +129,15 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
             @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/redisEnterprise/{clusterName}/listSkusForScaling")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<SkuDetailsListInner>> listSkusForScaling(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
@@ -146,7 +157,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Creates or updates an existing (overwrite/recreate, with potential downtime) cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param parameters Parameters supplied to the Create Redis Enterprise operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -188,7 +200,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Creates or updates an existing (overwrite/recreate, with potential downtime) cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param parameters Parameters supplied to the Create Redis Enterprise operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -230,7 +243,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Creates or updates an existing (overwrite/recreate, with potential downtime) cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param parameters Parameters supplied to the Create Redis Enterprise operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -249,7 +263,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Creates or updates an existing (overwrite/recreate, with potential downtime) cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param parameters Parameters supplied to the Create Redis Enterprise operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -271,7 +286,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Creates or updates an existing (overwrite/recreate, with potential downtime) cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param parameters Parameters supplied to the Create Redis Enterprise operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -288,7 +304,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Creates or updates an existing (overwrite/recreate, with potential downtime) cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param parameters Parameters supplied to the Create Redis Enterprise operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -306,7 +323,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Creates or updates an existing (overwrite/recreate, with potential downtime) cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param parameters Parameters supplied to the Create Redis Enterprise operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -323,7 +341,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Creates or updates an existing (overwrite/recreate, with potential downtime) cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param parameters Parameters supplied to the Create Redis Enterprise operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -342,7 +361,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Creates or updates an existing (overwrite/recreate, with potential downtime) cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param parameters Parameters supplied to the Create Redis Enterprise operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -358,7 +378,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Creates or updates an existing (overwrite/recreate, with potential downtime) cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param parameters Parameters supplied to the Create Redis Enterprise operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -375,7 +396,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Updates an existing Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param parameters Parameters supplied to the Update Redis Enterprise operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -417,7 +439,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Updates an existing Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param parameters Parameters supplied to the Update Redis Enterprise operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -459,7 +482,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Updates an existing Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param parameters Parameters supplied to the Update Redis Enterprise operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -478,7 +502,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Updates an existing Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param parameters Parameters supplied to the Update Redis Enterprise operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -500,7 +525,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Updates an existing Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param parameters Parameters supplied to the Update Redis Enterprise operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -517,7 +543,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Updates an existing Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param parameters Parameters supplied to the Update Redis Enterprise operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -535,7 +562,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Updates an existing Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param parameters Parameters supplied to the Update Redis Enterprise operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -552,7 +580,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Updates an existing Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param parameters Parameters supplied to the Update Redis Enterprise operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -571,7 +600,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Updates an existing Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param parameters Parameters supplied to the Update Redis Enterprise operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -587,7 +617,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Updates an existing Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param parameters Parameters supplied to the Update Redis Enterprise operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -605,7 +636,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Deletes a Redis Enterprise cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -639,7 +671,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Deletes a Redis Enterprise cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -674,7 +707,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Deletes a Redis Enterprise cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -691,7 +725,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Deletes a Redis Enterprise cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -711,7 +746,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Deletes a Redis Enterprise cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -726,7 +762,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Deletes a Redis Enterprise cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -743,7 +780,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Deletes a Redis Enterprise cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -758,7 +796,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Deletes a Redis Enterprise cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -775,7 +814,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Deletes a Redis Enterprise cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -789,7 +829,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Deletes a Redis Enterprise cache cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -804,7 +845,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Gets information about a Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -840,7 +882,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Gets information about a Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -876,7 +919,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Gets information about a Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -892,7 +936,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Gets information about a Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -909,7 +954,8 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
      * Gets information about a Redis Enterprise cluster.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
-     * @param clusterName The name of the Redis Enterprise cluster.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1155,6 +1201,131 @@ public final class RedisEnterprisesClientImpl implements RedisEnterprisesClient 
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ClusterInner> list(Context context) {
         return new PagedIterable<>(listAsync(context));
+    }
+
+    /**
+     * Lists the available SKUs for scaling the Redis Enterprise cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a listSkusForScaling operation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<SkuDetailsListInner>> listSkusForScalingWithResponseAsync(String resourceGroupName,
+        String clusterName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listSkusForScaling(this.client.getEndpoint(), resourceGroupName,
+                clusterName, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Lists the available SKUs for scaling the Redis Enterprise cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a listSkusForScaling operation along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<SkuDetailsListInner>> listSkusForScalingWithResponseAsync(String resourceGroupName,
+        String clusterName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (clusterName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter clusterName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listSkusForScaling(this.client.getEndpoint(), resourceGroupName, clusterName,
+            this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context);
+    }
+
+    /**
+     * Lists the available SKUs for scaling the Redis Enterprise cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a listSkusForScaling operation on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<SkuDetailsListInner> listSkusForScalingAsync(String resourceGroupName, String clusterName) {
+        return listSkusForScalingWithResponseAsync(resourceGroupName, clusterName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Lists the available SKUs for scaling the Redis Enterprise cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a listSkusForScaling operation along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<SkuDetailsListInner> listSkusForScalingWithResponse(String resourceGroupName, String clusterName,
+        Context context) {
+        return listSkusForScalingWithResponseAsync(resourceGroupName, clusterName, context).block();
+    }
+
+    /**
+     * Lists the available SKUs for scaling the Redis Enterprise cluster.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+     * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response of a listSkusForScaling operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SkuDetailsListInner listSkusForScaling(String resourceGroupName, String clusterName) {
+        return listSkusForScalingWithResponse(resourceGroupName, clusterName, Context.NONE).getValue();
     }
 
     /**

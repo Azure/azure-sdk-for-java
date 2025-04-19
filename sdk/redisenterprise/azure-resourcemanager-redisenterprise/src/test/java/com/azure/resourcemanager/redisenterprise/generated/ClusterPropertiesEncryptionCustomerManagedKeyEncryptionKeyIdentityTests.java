@@ -13,9 +13,9 @@ public final class ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIde
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity model = BinaryData
-            .fromString("{\"userAssignedIdentityResourceId\":\"mdvpjhulsu\",\"identityType\":\"userAssignedIdentity\"}")
+            .fromString("{\"userAssignedIdentityResourceId\":\"osygex\",\"identityType\":\"userAssignedIdentity\"}")
             .toObject(ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity.class);
-        Assertions.assertEquals("mdvpjhulsu", model.userAssignedIdentityResourceId());
+        Assertions.assertEquals("osygex", model.userAssignedIdentityResourceId());
         Assertions.assertEquals(CmkIdentityType.USER_ASSIGNED_IDENTITY, model.identityType());
     }
 
@@ -23,11 +23,11 @@ public final class ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIde
     public void testSerialize() throws Exception {
         ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity model
             = new ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity()
-                .withUserAssignedIdentityResourceId("mdvpjhulsu")
+                .withUserAssignedIdentityResourceId("osygex")
                 .withIdentityType(CmkIdentityType.USER_ASSIGNED_IDENTITY);
         model = BinaryData.fromObject(model)
             .toObject(ClusterPropertiesEncryptionCustomerManagedKeyEncryptionKeyIdentity.class);
-        Assertions.assertEquals("mdvpjhulsu", model.userAssignedIdentityResourceId());
+        Assertions.assertEquals("osygex", model.userAssignedIdentityResourceId());
         Assertions.assertEquals(CmkIdentityType.USER_ASSIGNED_IDENTITY, model.identityType());
     }
 }

@@ -73,8 +73,9 @@ public interface Database {
     ResourceState resourceState();
 
     /**
-     * Gets the clusteringPolicy property: Clustering policy - default is OSSCluster. This property must be chosen at
-     * create time, and cannot be changed without deleting the database.
+     * Gets the clusteringPolicy property: Clustering policy - default is OSSCluster. This property can be updated only
+     * if the current value is NoCluster. If the value is OSSCluster or EnterpriseCluster, it cannot be updated without
+     * deleting the database.
      * 
      * @return the clusteringPolicy value.
      */
@@ -171,7 +172,8 @@ public interface Database {
              * Specifies resourceGroupName, clusterName.
              * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
-             * @param clusterName The name of the Redis Enterprise cluster.
+             * @param clusterName The name of the Redis Enterprise cluster. Name must be 1-60 characters long. Allowed
+             * characters(A-Z, a-z, 0-9) and hyphen(-). There can be no leading nor trailing nor consecutive hyphens.
              * @return the next definition stage.
              */
             WithCreate withExistingRedisEnterprise(String resourceGroupName, String clusterName);
@@ -235,11 +237,13 @@ public interface Database {
          */
         interface WithClusteringPolicy {
             /**
-             * Specifies the clusteringPolicy property: Clustering policy - default is OSSCluster. This property must be
-             * chosen at create time, and cannot be changed without deleting the database..
+             * Specifies the clusteringPolicy property: Clustering policy - default is OSSCluster. This property can be
+             * updated only if the current value is NoCluster. If the value is OSSCluster or EnterpriseCluster, it
+             * cannot be updated without deleting the database..
              * 
-             * @param clusteringPolicy Clustering policy - default is OSSCluster. This property must be chosen at create
-             * time, and cannot be changed without deleting the database.
+             * @param clusteringPolicy Clustering policy - default is OSSCluster. This property can be updated only if
+             * the current value is NoCluster. If the value is OSSCluster or EnterpriseCluster, it cannot be updated
+             * without deleting the database.
              * @return the next definition stage.
              */
             WithCreate withClusteringPolicy(ClusteringPolicy clusteringPolicy);
@@ -341,7 +345,8 @@ public interface Database {
     /**
      * The template for Database update.
      */
-    interface Update extends UpdateStages.WithClientProtocol, UpdateStages.WithEvictionPolicy,
+    interface Update
+        extends UpdateStages.WithClientProtocol, UpdateStages.WithClusteringPolicy, UpdateStages.WithEvictionPolicy,
         UpdateStages.WithPersistence, UpdateStages.WithDeferUpgrade, UpdateStages.WithAccessKeysAuthentication {
         /**
          * Executes the update request.
@@ -376,6 +381,23 @@ public interface Database {
              * @return the next definition stage.
              */
             Update withClientProtocol(Protocol clientProtocol);
+        }
+
+        /**
+         * The stage of the Database update allowing to specify clusteringPolicy.
+         */
+        interface WithClusteringPolicy {
+            /**
+             * Specifies the clusteringPolicy property: Clustering policy - default is OSSCluster. This property can be
+             * updated only if the current value is NoCluster. If the value is OSSCluster or EnterpriseCluster, it
+             * cannot be updated without deleting the database..
+             * 
+             * @param clusteringPolicy Clustering policy - default is OSSCluster. This property can be updated only if
+             * the current value is NoCluster. If the value is OSSCluster or EnterpriseCluster, it cannot be updated
+             * without deleting the database.
+             * @return the next definition stage.
+             */
+            Update withClusteringPolicy(ClusteringPolicy clusteringPolicy);
         }
 
         /**
@@ -584,12 +606,10 @@ public interface Database {
     /**
      * Flushes all the keys in this database and also from its linked databases.
      * 
-     * @param parameters Information identifying the databases to be flushed.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void flush(FlushParameters parameters);
+    void flush();
 
     /**
      * Flushes all the keys in this database and also from its linked databases.
