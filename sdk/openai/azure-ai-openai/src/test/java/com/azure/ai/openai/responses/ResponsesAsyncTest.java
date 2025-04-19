@@ -7,9 +7,13 @@ import com.azure.ai.openai.responses.models.CreateResponsesRequest;
 import com.azure.ai.openai.responses.models.CreateResponsesRequestIncludable;
 import com.azure.ai.openai.responses.models.CreateResponsesRequestModel;
 import com.azure.ai.openai.responses.models.ListInputItemsRequestOrder;
+import com.azure.ai.openai.responses.models.ResponsesAssistantMessage;
+import com.azure.ai.openai.responses.models.ResponsesInputContentImage;
 import com.azure.ai.openai.responses.models.ResponsesInputContentText;
+import com.azure.ai.openai.responses.models.ResponsesOutputContentText;
 import com.azure.ai.openai.responses.models.ResponsesResponse;
 import com.azure.ai.openai.responses.models.ResponsesStreamEventCompleted;
+import com.azure.ai.openai.responses.models.ResponsesSystemMessage;
 import com.azure.ai.openai.responses.models.ResponsesUserMessage;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.RequestOptions;
@@ -17,6 +21,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 import static com.azure.ai.openai.responses.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
@@ -135,6 +140,56 @@ public class ResponsesAsyncTest extends AzureResponsesTestBase {
         // Now list input items
         StepVerifier.create(client.listInputItems(responseId, 10, ListInputItemsRequestOrder.ASC))
             .assertNext(AzureResponsesTestBase::assertResponseItem)
+            .verifyComplete();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.responses.TestUtils#getTestParametersResponses")
+    public void testResponsesInputContentImageBase64(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) throws IOException {
+        ResponsesAsyncClient client = getResponseAsyncClient(httpClient);
+
+        openImageFileBase64Runner((base64Image) -> {
+            CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.GPT_4O_MINI,
+                Arrays.asList(
+                    new ResponsesSystemMessage(
+                        Arrays.asList(new ResponsesInputContentText("You are a helpful assistant that describes images"))),
+                    new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Please describe this image"),
+                        new ResponsesInputContentImage().setImageUrl("data:image/jpeg;base64," + base64Image)))));
+
+            StepVerifier.create(client.createResponse(request))
+                .assertNext(response -> {
+                        ResponsesAssistantMessage assistantMessage = (ResponsesAssistantMessage) response.getOutput().get(0);
+                        ResponsesOutputContentText outputContent = (ResponsesOutputContentText) assistantMessage.getContent().get(0);
+                        assertAssistantMessage(assistantMessage);
+                        assertOutputContentText(outputContent);
+                    }
+                )
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.responses.TestUtils#getTestParametersResponses")
+    public void testResponsesInputContentImageUrl(HttpClient httpClient, AzureResponsesServiceVersion serviceVersion) {
+        ResponsesAsyncClient client = getResponseAsyncClient(httpClient);
+
+        CreateResponsesRequest request = new CreateResponsesRequest(CreateResponsesRequestModel.GPT_4O_MINI,
+            Arrays.asList(
+                new ResponsesSystemMessage(
+                    Arrays.asList(new ResponsesInputContentText("You are a helpful assistant that describes images"))),
+                new ResponsesUserMessage(Arrays.asList(new ResponsesInputContentText("Please describe this image"),
+                    new ResponsesInputContentImage().setImageUrl(
+                        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/512px-Microsoft_logo.svg.png")))));
+
+        // Now get the response
+        StepVerifier.create(client.createResponse(request))
+            .assertNext(response -> {
+                    ResponsesAssistantMessage assistantMessage = (ResponsesAssistantMessage) response.getOutput().get(0);
+                    ResponsesOutputContentText outputContent = (ResponsesOutputContentText) assistantMessage.getContent().get(0);
+                    assertAssistantMessage(assistantMessage);
+                    assertOutputContentText(outputContent);
+                }
+            )
             .verifyComplete();
     }
 
