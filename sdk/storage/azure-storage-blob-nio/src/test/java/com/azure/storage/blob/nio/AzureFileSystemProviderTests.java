@@ -3,6 +3,7 @@
 
 package com.azure.storage.blob.nio;
 
+import com.azure.core.credential.AzureSasCredential;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipelineCallContext;
@@ -21,6 +22,10 @@ import com.azure.storage.blob.models.BlockListType;
 import com.azure.storage.blob.specialized.AppendBlobClient;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.sas.AccountSasPermission;
+import com.azure.storage.common.sas.AccountSasResourceType;
+import com.azure.storage.common.sas.AccountSasService;
+import com.azure.storage.common.sas.AccountSasSignatureValues;
 import com.azure.storage.common.test.shared.extensions.LiveOnly;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -352,6 +357,27 @@ public class AzureFileSystemProviderTests extends BlobNioTestBase {
                 assertFalse(destChildClient.exists());
             }
         }
+    }
+
+    @Test
+    public void copySourceWithSas() throws IOException {
+        AzureSasCredential cred = new AzureSasCredential(primaryBlobServiceClient
+            .generateAccountSas(new AccountSasSignatureValues(testResourceNamer.now().plusDays(2),
+                AccountSasPermission.parse("rwcdl"), new AccountSasService().setBlobAccess(true),
+                new AccountSasResourceType().setContainer(true).setObject(true))));
+
+        config.put(AzureFileSystem.AZURE_STORAGE_SAS_TOKEN_CREDENTIAL, cred);
+        config.put(AzureFileSystem.AZURE_STORAGE_FILE_STORES, generateContainerName() + "," + generateContainerName());
+
+        AzureFileSystem fs
+            = new AzureFileSystem(new AzureFileSystemProvider(), ENV.getPrimaryAccount().getBlobEndpoint(), config);
+        basicSetupForCopyTest(fs);
+
+        fs.provider().createDirectory(sourcePath);
+        fs.provider().copy(sourcePath, destPath, StandardCopyOption.COPY_ATTRIBUTES);
+
+        assertTrue(destinationClient.exists());
+        checkBlobIsDir(destinationClient);
     }
 
     @ParameterizedTest
