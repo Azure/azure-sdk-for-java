@@ -21,13 +21,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
+import java.util.function.Consumer;
 
 public class ProxyTaskGroupTests {
     private static final ClientLogger LOGGER = new ClientLogger(ProxyTaskGroupTests.class);
 
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
-    public void testSampleTaskGroupSanity(boolean syncStack) {
+    public void testSimpleTaskGroupSanity(boolean syncStack) {
         // Prepare sample group
         //
         /**
@@ -1704,13 +1705,14 @@ public class ProxyTaskGroupTests {
          *                |                         |
          *                ------->group4-------------
          */
+        Consumer<String> vertexConsumer = vertex -> Assertions.assertTrue(verticesNames.remove(vertex));
 
-        TaskGroup group1 = new TaskGroup(vertex1, new StringTaskItem(vertex1, () -> verticesNames.remove(vertex1)));
-        TaskGroup group2 = new TaskGroup(vertex2, new StringTaskItem(vertex2, () -> verticesNames.remove(vertex2)));
-        TaskGroup group3 = new TaskGroup(vertex3, new StringTaskItem(vertex3, () -> verticesNames.remove(vertex3)));
-        TaskGroup group4 = new TaskGroup(vertex4, new StringTaskItem(vertex4, () -> verticesNames.remove(vertex4)));
-        TaskGroup group5 = new TaskGroup(vertex5, new StringTaskItem(vertex5, () -> verticesNames.remove(vertex5)));
-        TaskGroup group6 = new TaskGroup(vertex6, new StringTaskItem(vertex6, () -> verticesNames.remove(vertex6)));
+        TaskGroup group1 = new TaskGroup(vertex1, new StringTaskItem(vertex1, vertexConsumer));
+        TaskGroup group2 = new TaskGroup(vertex2, new StringTaskItem(vertex2, vertexConsumer));
+        TaskGroup group3 = new TaskGroup(vertex3, new StringTaskItem(vertex3, vertexConsumer));
+        TaskGroup group4 = new TaskGroup(vertex4, new StringTaskItem(vertex4, vertexConsumer));
+        TaskGroup group5 = new TaskGroup(vertex5, new StringTaskItem(vertex5, vertexConsumer));
+        TaskGroup group6 = new TaskGroup(vertex6, new StringTaskItem(vertex6, vertexConsumer));
 
         group2.addDependencyTaskGroup(group1);
         group3.addDependencyTaskGroup(group1);
@@ -1732,15 +1734,15 @@ public class ProxyTaskGroupTests {
     private static class StringTaskItem implements TaskItem {
         private final String name;
         private StringIndexable producedValue = null;
-        private Runnable syncPostRun = null;
+        private Consumer<String> syncPostRun = null;
 
         StringTaskItem(String name) {
             this.name = name;
         }
 
-        StringTaskItem(String name, Runnable postRun) {
+        StringTaskItem(String name, Consumer<String> syncPostRun) {
             this.name = name;
-            this.syncPostRun = postRun;
+            this.syncPostRun = syncPostRun;
         }
 
         @Override
@@ -1750,7 +1752,7 @@ public class ProxyTaskGroupTests {
 
         @Override
         public void beforeGroupInvoke() {
-            // NOP
+            // NO-OP
         }
 
         @Override
@@ -1773,14 +1775,16 @@ public class ProxyTaskGroupTests {
         public Indexable invoke(TaskGroup.InvocationContext context) {
             this.producedValue = new StringIndexable(this.name);
             if (syncPostRun != null) {
-                syncPostRun.run();
+                syncPostRun.accept(this.name);
             }
             return this.producedValue;
         }
 
         @Override
         public void invokeAfterPostRun(boolean isGroupFaulted) {
-            // NO-OP
+            if (syncPostRun != null) {
+                syncPostRun.accept(this.name);
+            }
         }
     }
 

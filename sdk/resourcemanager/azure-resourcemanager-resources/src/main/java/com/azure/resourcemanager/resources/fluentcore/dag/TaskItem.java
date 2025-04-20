@@ -64,6 +64,8 @@ public interface TaskItem {
      * @return result of type {@link Indexable}
      */
     default Indexable invoke(TaskGroup.InvocationContext context) {
+        //TODO(xiaofei) remove this default implementation
+        // once synchronous operation is supported across the board
         return invokeAsync(context).block();
     }
 
@@ -77,6 +79,8 @@ public interface TaskItem {
      *                       to are in faulted state.
      */
     default void invokeAfterPostRun(boolean isGroupFaulted) {
+        //TODO(xiaofei) remove this default implementation
+        // once synchronous operation is supported across the board
         invokeAfterPostRunAsync(isGroupFaulted).block();
     }
 }

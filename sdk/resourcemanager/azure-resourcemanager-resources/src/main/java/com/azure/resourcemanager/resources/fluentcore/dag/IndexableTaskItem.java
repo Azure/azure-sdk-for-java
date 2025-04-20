@@ -281,8 +281,18 @@ public abstract class IndexableTaskItem implements Indexable, TaskItem, TaskGrou
     }
 
     @Override
+    public Indexable invoke(TaskGroup.InvocationContext context) {
+        taskResult = this.invokeTask(context);
+        return taskResult;
+    }
+
+    @Override
     public Mono<Void> invokeAfterPostRunAsync(boolean isGroupFaulted) {
         return Mono.empty();
+    }
+
+    @Override
+    public void invokeAfterPostRun(boolean isGroupFaulted) {
     }
 
     /**
@@ -292,6 +302,18 @@ public abstract class IndexableTaskItem implements Indexable, TaskItem, TaskGrou
      * @return an Observable upon subscription emits {@link Indexable}.
      */
     protected abstract Mono<Indexable> invokeTaskAsync(TaskGroup.InvocationContext context);
+
+    /**
+     * Invokes a task synchronously.
+     *
+     * @param context Context of the invocation.
+     * @return an Observable upon subscription emits {@link Indexable}.
+     */
+    protected Indexable invokeTask(TaskGroup.InvocationContext context) {
+        //TODO(xiaofei) remove this default implementation
+        // once synchronous operation is supported across the board
+        return this.invokeTaskAsync(context).block();
+    }
 
     /**
      * Get an instance of VoidIndexable.

@@ -18,10 +18,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.Supplier;
 
 /**
  * Type representing a group of task entries with dependencies between them. Initially a task
@@ -398,8 +396,8 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
     /**
      * Invokes the task stored in the given entry.
      * <p>
-     * if the task cannot be invoked because the group marked as cancelled then a {@link RuntimeException}
-     * that wraps {@link TaskCancelledException} will be thrown.
+     * if the task cannot be invoked because the group marked as cancelled then a
+     * {@link TaskCancelledException} will be thrown.
      *
      * @param entry the entry holding task
      * @param context a group level shared context that is passed to {@link TaskItem#invoke(InvocationContext)}
@@ -413,9 +411,7 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
             // due to termination strategy TERMINATE_ON_IN_PROGRESS_TASKS_COMPLETION.
             //
             // We could make the ThreadPool configurable, instead of the default ForkJoinPool.commonPool().
-            return CompletableFuture.runAsync(() -> {
-                processFaultedTask(entry, taskCancelledException, context);
-            });
+            return CompletableFuture.runAsync(() -> processFaultedTask(entry, taskCancelledException, context));
         } else {
             // Any cached result will be ignored for root resource
             //
@@ -463,9 +459,21 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
     private void processFaultedTask(TaskGroupEntry<TaskItem> faultedEntry, Throwable throwable, InvocationContext context) {
         markGroupAsCancelledIfTerminationStrategyIsIPTC();
         reportError(faultedEntry, throwable);
-        // Since we don't have to return task results as async does,
-        // we don't need to invoke the ready tasks.
-        throw new RuntimeException(throwable);
+        if (isRootEntry(faultedEntry)) {
+            if (shouldPropagateException(throwable)) {
+                throw new RuntimeException(throwable);
+            }
+        } else if (shouldPropagateException(throwable)) {
+            CompletableFuture.allOf(() -> {
+                invokeReadyTasks(context);
+                return null;
+            }, () -> {
+                throw throwable;
+            })
+            return Flux.concatDelayError(invokeReadyTasksAsync(context), toErrorObservable(throwable));
+        } else {
+            invokeReadyTasks(context);
+        }
     }
 
     /**

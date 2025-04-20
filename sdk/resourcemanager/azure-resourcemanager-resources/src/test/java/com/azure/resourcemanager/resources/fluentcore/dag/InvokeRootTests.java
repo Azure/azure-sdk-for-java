@@ -7,21 +7,19 @@ import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
+import java.util.function.Function;
 
 public class InvokeRootTests {
-    @Test
-    public void testIgnoreCachedResultOnRootWithNoProxy() {
-        TestTaskItem taskItem1 = new TestTaskItem("A");
-        TestTaskItem taskItem2 = new TestTaskItem("B");
-
-        taskItem1.addDependency(taskItem2);
-
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    public void testIgnoreCachedResultOnRootWithNoProxy(boolean syncStack) {
         final HashMap<String, Integer> seen = new HashMap<>();
-
-        taskItem1.taskGroup().invokeAsync(taskItem1.taskGroup().newInvocationContext()).map(item -> {
+        Function<Indexable, Indexable> addItemToSeen = (item) -> {
             SupportCountingAndHasName c = (SupportCountingAndHasName) item;
             if (seen.containsKey(c.name())) {
                 Integer a = seen.get(c.name()) + 1;
@@ -30,7 +28,17 @@ public class InvokeRootTests {
                 seen.put(c.name(), 1);
             }
             return item;
-        }).blockLast();
+        };
+        TestTaskItem taskItem1 = new TestTaskItem("A", addItemToSeen);
+        TestTaskItem taskItem2 = new TestTaskItem("B", addItemToSeen);
+
+        taskItem1.addDependency(taskItem2);
+
+        if (syncStack) {
+            taskItem1.taskGroup().invoke(taskItem1.taskGroup().newInvocationContext());
+        } else {
+            taskItem1.taskGroup().invokeAsync(taskItem1.taskGroup().newInvocationContext()).map(addItemToSeen).blockLast();
+        }
 
         Assertions.assertEquals(2, seen.size());
         Assertions.assertTrue(seen.containsKey("A"));
@@ -43,19 +51,18 @@ public class InvokeRootTests {
 
         seen.clear();
 
-        taskItem1.taskGroup().invokeAsync(taskItem1.taskGroup().newInvocationContext()).map(item -> {
-            SupportCountingAndHasName c = (SupportCountingAndHasName) item;
-            if (seen.containsKey(c.name())) {
-                Integer a = seen.get(c.name()) + 1;
-                seen.put(c.name(), a);
-            } else {
-                seen.put(c.name(), 1);
-            }
-            return item;
-        }).blockLast();
+        if (syncStack) {
+            taskItem1.taskGroup().invoke(taskItem1.taskGroup().newInvocationContext());
+        } else {
+            taskItem1.taskGroup().invokeAsync(taskItem1.taskGroup().newInvocationContext()).map(addItemToSeen).blockLast();
+        }
 
-        Assertions.assertEquals(2, seen.size());
-        Assertions.assertTrue(seen.containsKey("A"));
+        if (syncStack) {
+            Assertions.assertEquals(1, seen.size());
+            Assertions.assertTrue(seen.containsKey("A"));
+        } else {
+            Assertions.assertEquals(2, seen.size());
+        }
         Assertions.assertTrue(seen.containsKey("B"));
         Assertions.assertEquals(1, (long) seen.get("A"));
         Assertions.assertEquals(1, (long) seen.get("B"));
@@ -64,16 +71,26 @@ public class InvokeRootTests {
         Assertions.assertEquals(1, taskItem2.getCallCount());
     }
 
-    @Test
-    public void testIgnoreCachedResultOnRootWithProxy() {
-        TestTaskItem taskItem1 = new TestTaskItem("X");
-        TestTaskItem taskItem2 = new TestTaskItem("Y");
-        TestTaskItem taskItem3 = new TestTaskItem("Z");
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    public void testIgnoreCachedResultOnRootWithProxy(boolean syncStack) {
+        final HashMap<String, Integer> seen = new HashMap<>();
+        Function<Indexable, Indexable> addItemToSeen = (item) -> {
+            SupportCountingAndHasName c = (SupportCountingAndHasName) item;
+            if (seen.containsKey(c.name())) {
+                Integer a = seen.get(c.name()) + 1;
+                seen.put(c.name(), a);
+            } else {
+                seen.put(c.name(), 1);
+            }
+            return item;
+        };
+        TestTaskItem taskItem1 = new TestTaskItem("X", addItemToSeen);
+        TestTaskItem taskItem2 = new TestTaskItem("Y", addItemToSeen);
+        TestTaskItem taskItem3 = new TestTaskItem("Z", addItemToSeen);
 
         taskItem1.addDependency(taskItem2);
         taskItem1.addPostRunDependent(taskItem3);
-
-        final HashMap<String, Integer> seen = new HashMap<>();
 
         taskItem1.taskGroup().invokeAsync(taskItem1.taskGroup().newInvocationContext()).map(item -> {
             SupportCountingAndHasName c = (SupportCountingAndHasName) item;
@@ -128,20 +145,30 @@ public class InvokeRootTests {
         Assertions.assertEquals(1, taskItem3.getCallCount());
     }
 
-    @Test
-    public void testIgnoreCachedResultOnRootWithProxyWithDescendantProxy() {
-        TestTaskItem taskItem1 = new TestTaskItem("1");
-        TestTaskItem taskItem2 = new TestTaskItem("2");
-        TestTaskItem taskItem3 = new TestTaskItem("3");
-        TestTaskItem taskItem4 = new TestTaskItem("4");
-        TestTaskItem taskItem5 = new TestTaskItem("5");
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    public void testIgnoreCachedResultOnRootWithProxyWithDescendantProxy(boolean syncStack) {
+        final HashMap<String, Integer> seen = new HashMap<>();
+        Function<Indexable, Indexable> addItemToSeen = (item) -> {
+            SupportCountingAndHasName c = (SupportCountingAndHasName) item;
+            if (seen.containsKey(c.name())) {
+                Integer a = seen.get(c.name()) + 1;
+                seen.put(c.name(), a);
+            } else {
+                seen.put(c.name(), 1);
+            }
+            return item;
+        };
+        TestTaskItem taskItem1 = new TestTaskItem("1", addItemToSeen);
+        TestTaskItem taskItem2 = new TestTaskItem("2", addItemToSeen);
+        TestTaskItem taskItem3 = new TestTaskItem("3", addItemToSeen);
+        TestTaskItem taskItem4 = new TestTaskItem("4", addItemToSeen);
+        TestTaskItem taskItem5 = new TestTaskItem("5", addItemToSeen);
 
         taskItem1.addDependency(taskItem2);
         taskItem1.addPostRunDependent(taskItem3);
         taskItem4.addDependency(taskItem1);
         taskItem4.addPostRunDependent(taskItem5);
-
-        final HashMap<String, Integer> seen = new HashMap<>();
 
         taskItem4.taskGroup().invokeAsync(taskItem1.taskGroup().newInvocationContext()).map(item -> {
             SupportCountingAndHasName c = (SupportCountingAndHasName) item;
@@ -211,10 +238,12 @@ public class InvokeRootTests {
     class TestTaskItem extends IndexableTaskItem implements SupportCountingAndHasName {
         private final String name;
         private int callCount = 0;
+        private Function<Indexable, Indexable> postTaskSyncInvocation;
 
-        TestTaskItem(String name) {
+        TestTaskItem(String name, Function<Indexable, Indexable> postTaskSyncInvocation) {
             super(name);
             this.name = name;
+            this.postTaskSyncInvocation = postTaskSyncInvocation;
         }
 
         @Override
@@ -233,6 +262,15 @@ public class InvokeRootTests {
                 callCount++;
                 return r;
             });
+        }
+
+        @Override
+        public Indexable invoke(TaskGroup.InvocationContext context) {
+            callCount++;
+            if (postTaskSyncInvocation != null) {
+                postTaskSyncInvocation.apply(this);
+            }
+            return this;
         }
     }
 
