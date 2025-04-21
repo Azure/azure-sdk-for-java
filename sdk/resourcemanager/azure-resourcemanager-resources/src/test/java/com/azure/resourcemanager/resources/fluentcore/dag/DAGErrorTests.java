@@ -7,6 +7,8 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -18,8 +20,9 @@ import java.util.TreeSet;
 public class DAGErrorTests {
     private static final ClientLogger LOGGER = new ClientLogger(DAGErrorTests.class);
 
-    @Test
-    public void testTerminateOnInProgressTaskCompletion() {
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    public void testTerminateOnInProgressTaskCompletion(boolean syncStack) {
         // Terminate on error strategy used in this task group is
         // TaskGroupTerminateOnErrorStrategy::TERMINATE_ON_IN_PROGRESS_TASKS_COMPLETION
 
@@ -108,16 +111,20 @@ public class DAGErrorTests {
         TaskGroup pancakeFtg = pancakeF.taskGroup();
         TaskGroup.InvocationContext context = pancakeFtg.newInvocationContext()
             .withTerminateOnErrorStrategy(TaskGroupTerminateOnErrorStrategy.TERMINATE_ON_IN_PROGRESS_TASKS_COMPLETION);
-        IPancake rootPancake = pancakeFtg.invokeAsync(context).map(indexable -> {
-            IPancake pancake = (IPancake) indexable;
-            LOGGER.log(LogLevel.VERBOSE, () -> "map.onNext: " + pancake.name());
-            seen.add(pancake.name());
-            return pancake;
-        }).onErrorResume(throwable -> {
-            LOGGER.log(LogLevel.VERBOSE, () -> "map.onErrorResumeNext: ", throwable);
-            exceptions.add(throwable);
-            return Mono.empty();
-        }).blockLast();
+        if (syncStack) {
+            pancakeFtg.invoke(context);
+        } else {
+            IPancake rootPancake = pancakeFtg.invokeAsync(context).map(indexable -> {
+                IPancake pancake = (IPancake) indexable;
+                LOGGER.log(LogLevel.VERBOSE, () -> "map.onNext: " + pancake.name());
+                seen.add(pancake.name());
+                return pancake;
+            }).onErrorResume(throwable -> {
+                LOGGER.log(LogLevel.VERBOSE, () -> "map.onErrorResumeNext: ", throwable);
+                exceptions.add(throwable);
+                return Mono.empty();
+            }).blockLast();
+        }
 
         expectedToSee.removeAll(seen);
         Assertions.assertTrue(expectedToSee.isEmpty());

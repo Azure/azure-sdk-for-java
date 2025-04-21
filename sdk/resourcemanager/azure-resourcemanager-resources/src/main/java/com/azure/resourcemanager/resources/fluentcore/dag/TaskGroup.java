@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -327,7 +328,7 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
         }
         // Runs the ready tasks concurrently
         //
-        this.invokeReadyTasks(context);
+        this.invokeReadyTasks(context).join();
     }
 
     /**
@@ -337,7 +338,7 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
      *                {@link TaskGroupEntry#invokeTask(boolean, InvocationContext)}
      *                method of each entry in the group when it is selected for execution
      */
-    private void invokeReadyTasks(InvocationContext context) {
+    private CompletableFuture<Void> invokeReadyTasks(InvocationContext context) {
         TaskGroupEntry<TaskItem> readyTaskEntry = super.getNext();
         final List<CompletableFuture<Void>> observables = new ArrayList<>();
         // Enumerate the ready tasks (those with dependencies resolved) and kickoff them concurrently
@@ -352,7 +353,7 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
             }
             readyTaskEntry = super.getNext();
         }
-        CompletableFuture.allOf(observables.toArray(CompletableFuture[]::new)).join();
+        return CompletableFuture.allOf(observables.toArray(CompletableFuture[]::new));
     }
 
     /**
@@ -375,22 +376,20 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
         final boolean isFaulted = entry.hasFaultedDescentDependencyTasks() || isGroupCancelled.get();
 
         // We could make the ThreadPool configurable, instead of the default ForkJoinPool.commonPool().
-        return CompletableFuture.runAsync(() -> {
-            try {
-                proxyTaskItem.invokeAfterPostRun(isFaulted);
+        //
+        return CompletableFuture.runAsync(() -> proxyTaskItem.invokeAfterPostRun(isFaulted))
+            .exceptionallyCompose(e -> processFaultedTask(entry, e, context))
+            .thenCompose(ignored -> {
                 if (isFaulted) {
                     if (entry.hasFaultedDescentDependencyTasks()) {
-                        processFaultedTask(entry, new ErroredDependencyTaskException(), context);
+                        return processFaultedTask(entry, new ErroredDependencyTaskException(), context);
                     } else {
-                        processFaultedTask(entry, taskCancelledException, context);
+                        return processFaultedTask(entry, taskCancelledException, context);
                     }
                 } else {
-                    processCompletedTask(entry, context);
+                    return processCompletedTask(entry, context);
                 }
-            } catch (Throwable e) {
-                processFaultedTask(entry, e, context);
-            }
-        });
+            });
     }
 
     /**
@@ -410,8 +409,7 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
             // have faulted tasks as transitive dependencies, we won't do it since group is cancelled
             // due to termination strategy TERMINATE_ON_IN_PROGRESS_TASKS_COMPLETION.
             //
-            // We could make the ThreadPool configurable, instead of the default ForkJoinPool.commonPool().
-            return CompletableFuture.runAsync(() -> processFaultedTask(entry, taskCancelledException, context));
+            return processFaultedTask(entry, taskCancelledException, context);
         } else {
             // Any cached result will be ignored for root resource
             //
@@ -419,18 +417,16 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
                 = isRootEntry(entry) || (entry.proxy() != null && isRootEntry(entry.proxy()));
 
             // We could make the ThreadPool configurable, instead of the default ForkJoinPool.commonPool().
-            return CompletableFuture.runAsync(() -> {
-                Object skipTasks = context.get(InvocationContext.KEY_SKIP_TASKS);
-                if (!(skipTasks instanceof Set && ((Set) skipTasks).contains(entry.key()))) {
-                    try {
-                        entry.invokeTask(ignoreCachedResult, context);
-                        processCompletedTask(entry, context);
-
-                    } catch (Exception e) {
-                        processFaultedTask(entry, e, context);
-                    }
-                }
-            });
+            //
+            Object skipTasks = context.get(InvocationContext.KEY_SKIP_TASKS);
+            CompletableFuture<Void> taskResultFuture;
+            if (skipTasks instanceof Set && ((Set) skipTasks).contains(entry.key())) {
+                taskResultFuture = CompletableFuture.completedFuture(null);
+            } else {
+                taskResultFuture = CompletableFuture.runAsync(() -> entry.invokeTask(ignoreCachedResult, context));
+            }
+            return taskResultFuture.exceptionallyCompose((e) -> processFaultedTask(entry, e, context))
+                .thenCompose((ignored) -> processCompletedTask(entry, context));
         }
     }
 
@@ -442,11 +438,12 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
      * @param completedEntry the entry holding completed task
      * @param context the context object shared across all the task entries in this group during execution
      */
-    private void processCompletedTask(TaskGroupEntry<TaskItem> completedEntry, InvocationContext context) {
+    private CompletableFuture<Void> processCompletedTask(TaskGroupEntry<TaskItem> completedEntry, InvocationContext context) {
         reportCompletion(completedEntry);
         if (!isRootEntry(completedEntry)) {
-            invokeReadyTasks(context);
+            return invokeReadyTasks(context);
         }
+        return CompletableFuture.completedFuture(null);
     }
 
     /**
@@ -456,23 +453,20 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
      * @param throwable the reason for fault
      * @param context the context object shared across all the task entries in this group during execution
      */
-    private void processFaultedTask(TaskGroupEntry<TaskItem> faultedEntry, Throwable throwable, InvocationContext context) {
+    private CompletableFuture<Void> processFaultedTask(TaskGroupEntry<TaskItem> faultedEntry, Throwable throwable, InvocationContext context) {
         markGroupAsCancelledIfTerminationStrategyIsIPTC();
         reportError(faultedEntry, throwable);
         if (isRootEntry(faultedEntry)) {
             if (shouldPropagateException(throwable)) {
-                throw new RuntimeException(throwable);
+                return CompletableFuture.failedFuture(throwable);
             }
+            return CompletableFuture.completedFuture(null);
         } else if (shouldPropagateException(throwable)) {
-            CompletableFuture.allOf(() -> {
-                invokeReadyTasks(context);
-                return null;
-            }, () -> {
-                throw throwable;
-            })
-            return Flux.concatDelayError(invokeReadyTasksAsync(context), toErrorObservable(throwable));
+            return CompletableFuture.allOf(
+                invokeReadyTasks(context),
+                CompletableFuture.failedFuture(throwable));
         } else {
-            invokeReadyTasks(context);
+            return invokeReadyTasks(context);
         }
     }
 

@@ -6,7 +6,6 @@ package com.azure.resourcemanager.resources.fluentcore.dag;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasName;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
@@ -18,6 +17,8 @@ public class InvokeRootTests {
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     public void testIgnoreCachedResultOnRootWithNoProxy(boolean syncStack) {
+        // Difference between sync/async is that, while async asserts on returned taskItems, sync asserts on invocations
+        // on actual taskItems.
         final HashMap<String, Integer> seen = new HashMap<>();
         Function<Indexable, Indexable> addItemToSeen = (item) -> {
             SupportCountingAndHasName c = (SupportCountingAndHasName) item;
@@ -53,19 +54,17 @@ public class InvokeRootTests {
 
         if (syncStack) {
             taskItem1.taskGroup().invoke(taskItem1.taskGroup().newInvocationContext());
+            Assertions.assertEquals(1, seen.size());
         } else {
             taskItem1.taskGroup().invokeAsync(taskItem1.taskGroup().newInvocationContext()).map(addItemToSeen).blockLast();
+            // In async flow, B will still be returned(cached result) even if taskItem2 is not invoked.
+            Assertions.assertEquals(2, seen.size());
+            Assertions.assertTrue(seen.containsKey("B"));
+            Assertions.assertEquals(1, (long) seen.get("B"));
         }
 
-        if (syncStack) {
-            Assertions.assertEquals(1, seen.size());
-            Assertions.assertTrue(seen.containsKey("A"));
-        } else {
-            Assertions.assertEquals(2, seen.size());
-        }
-        Assertions.assertTrue(seen.containsKey("B"));
+        Assertions.assertTrue(seen.containsKey("A"));
         Assertions.assertEquals(1, (long) seen.get("A"));
-        Assertions.assertEquals(1, (long) seen.get("B"));
 
         Assertions.assertEquals(2, taskItem1.getCallCount());
         Assertions.assertEquals(1, taskItem2.getCallCount());
@@ -74,6 +73,8 @@ public class InvokeRootTests {
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     public void testIgnoreCachedResultOnRootWithProxy(boolean syncStack) {
+        // Difference between sync/async is that, while async asserts on returned taskItems, sync asserts on invocations
+        // on actual taskItems.
         final HashMap<String, Integer> seen = new HashMap<>();
         Function<Indexable, Indexable> addItemToSeen = (item) -> {
             SupportCountingAndHasName c = (SupportCountingAndHasName) item;
@@ -92,23 +93,19 @@ public class InvokeRootTests {
         taskItem1.addDependency(taskItem2);
         taskItem1.addPostRunDependent(taskItem3);
 
-        taskItem1.taskGroup().invokeAsync(taskItem1.taskGroup().newInvocationContext()).map(item -> {
-            SupportCountingAndHasName c = (SupportCountingAndHasName) item;
-            if (seen.containsKey(c.name())) {
-                Integer a = seen.get(c.name()) + 1;
-                seen.put(c.name(), a);
-            } else {
-                seen.put(c.name(), 1);
-            }
-            return item;
-        }).blockLast();
+        if (syncStack) {
+            taskItem1.taskGroup().invoke(taskItem1.taskGroup().newInvocationContext());
+            Assertions.assertEquals(1, (long) seen.get("X"));
+        } else {
+            taskItem1.taskGroup().invokeAsync(taskItem1.taskGroup().newInvocationContext()).map(addItemToSeen).blockLast();
+            Assertions.assertEquals(2, (long) seen.get("X"));   // Due to proxy two Xs
+        }
 
         Assertions.assertEquals(3, seen.size()); // X, Y, Z
 
         Assertions.assertTrue(seen.containsKey("X"));
         Assertions.assertTrue(seen.containsKey("Y"));
         Assertions.assertTrue(seen.containsKey("Z"));
-        Assertions.assertEquals(2, (long) seen.get("X"));   // Due to proxy two Xs
         Assertions.assertEquals(1, (long) seen.get("Y"));
         Assertions.assertEquals(1, (long) seen.get("Z"));
 
@@ -118,25 +115,21 @@ public class InvokeRootTests {
 
         seen.clear();
 
-        taskItem1.taskGroup().invokeAsync(taskItem1.taskGroup().newInvocationContext()).map(item -> {
-            SupportCountingAndHasName c = (SupportCountingAndHasName) item;
-            if (seen.containsKey(c.name())) {
-                Integer a = seen.get(c.name()) + 1;
-                seen.put(c.name(), a);
-            } else {
-                seen.put(c.name(), 1);
-            }
-            return item;
-        }).blockLast();
-
-        Assertions.assertEquals(3, seen.size());
+        if (syncStack) {
+            taskItem1.taskGroup().invoke(taskItem1.taskGroup().newInvocationContext());
+            Assertions.assertEquals(1, seen.size());
+            Assertions.assertEquals(1, (long) seen.get("X")); // Due to proxy two Xs
+        } else {
+            taskItem1.taskGroup().invokeAsync(taskItem1.taskGroup().newInvocationContext()).map(addItemToSeen).blockLast();
+            Assertions.assertEquals(3, seen.size());
+            Assertions.assertTrue(seen.containsKey("Y"));
+            Assertions.assertTrue(seen.containsKey("Z"));
+            Assertions.assertEquals(1, (long) seen.get("Y"));
+            Assertions.assertEquals(1, (long) seen.get("Z"));
+            Assertions.assertEquals(2, (long) seen.get("X")); // Due to proxy two Xs
+        }
 
         Assertions.assertTrue(seen.containsKey("X"));
-        Assertions.assertTrue(seen.containsKey("Y"));
-        Assertions.assertTrue(seen.containsKey("Z"));
-        Assertions.assertEquals(2, (long) seen.get("X")); // Due to proxy two Xs
-        Assertions.assertEquals(1, (long) seen.get("Y"));
-        Assertions.assertEquals(1, (long) seen.get("Z"));
 
         // Though proxy is the root still actual must be called twice
         //
@@ -148,6 +141,8 @@ public class InvokeRootTests {
     @ParameterizedTest
     @ValueSource(booleans = {true, false})
     public void testIgnoreCachedResultOnRootWithProxyWithDescendantProxy(boolean syncStack) {
+        // Difference between sync/async is that, while async asserts on returned taskItems, sync asserts on invocations
+        // on actual taskItems.
         final HashMap<String, Integer> seen = new HashMap<>();
         Function<Indexable, Indexable> addItemToSeen = (item) -> {
             SupportCountingAndHasName c = (SupportCountingAndHasName) item;
@@ -170,16 +165,16 @@ public class InvokeRootTests {
         taskItem4.addDependency(taskItem1);
         taskItem4.addPostRunDependent(taskItem5);
 
-        taskItem4.taskGroup().invokeAsync(taskItem1.taskGroup().newInvocationContext()).map(item -> {
-            SupportCountingAndHasName c = (SupportCountingAndHasName) item;
-            if (seen.containsKey(c.name())) {
-                Integer a = seen.get(c.name()) + 1;
-                seen.put(c.name(), a);
-            } else {
-                seen.put(c.name(), 1);
-            }
-            return item;
-        }).blockLast();
+        if (syncStack) {
+            taskItem4.taskGroup().invoke(taskItem1.taskGroup().newInvocationContext());
+            // Regardless of proxy, the actual task will only be invoked once
+            Assertions.assertEquals(1, (long) seen.get("1"));
+            Assertions.assertEquals(1, (long) seen.get("4"));
+        } else {
+            taskItem4.taskGroup().invokeAsync(taskItem1.taskGroup().newInvocationContext()).map(addItemToSeen).blockLast();
+            Assertions.assertEquals(2, (long) seen.get("1")); // Due to proxy two 1s
+            Assertions.assertEquals(2, (long) seen.get("4")); // Due to proxy two 1s
+        }
 
         Assertions.assertEquals(5, seen.size());
 
@@ -189,10 +184,8 @@ public class InvokeRootTests {
         Assertions.assertTrue(seen.containsKey("4"));
         Assertions.assertTrue(seen.containsKey("5"));
 
-        Assertions.assertEquals(2, (long) seen.get("1")); // Due to proxy two 1s
         Assertions.assertEquals(1, (long) seen.get("2"));
         Assertions.assertEquals(1, (long) seen.get("3"));
-        Assertions.assertEquals(2, (long) seen.get("4")); // Due to proxy two 1s
         Assertions.assertEquals(1, (long) seen.get("5"));
 
         Assertions.assertEquals(1, taskItem1.getCallCount());
@@ -203,30 +196,26 @@ public class InvokeRootTests {
 
         seen.clear();
 
-        taskItem4.taskGroup().invokeAsync(taskItem1.taskGroup().newInvocationContext()).map(item -> {
-            SupportCountingAndHasName c = (SupportCountingAndHasName) item;
-            if (seen.containsKey(c.name())) {
-                Integer a = seen.get(c.name()) + 1;
-                seen.put(c.name(), a);
-            } else {
-                seen.put(c.name(), 1);
-            }
-            return item;
-        }).blockLast();
+        if (syncStack) {
+            taskItem4.taskGroup().invoke(taskItem1.taskGroup().newInvocationContext());
+            // Regardless of proxy, the actual task will only be invoked once
+            Assertions.assertEquals(1, seen.size());
+            Assertions.assertEquals(1, (long) seen.get("4"));
+        } else {
+            taskItem4.taskGroup().invokeAsync(taskItem1.taskGroup().newInvocationContext()).map(addItemToSeen).blockLast();
+            Assertions.assertEquals(5, seen.size());
+            Assertions.assertTrue(seen.containsKey("1"));
+            Assertions.assertTrue(seen.containsKey("2"));
+            Assertions.assertTrue(seen.containsKey("3"));
+            Assertions.assertTrue(seen.containsKey("5"));
+            Assertions.assertEquals(2, (long) seen.get("1")); // Due to proxy two 1s
+            Assertions.assertEquals(1, (long) seen.get("2"));
+            Assertions.assertEquals(1, (long) seen.get("3"));
+            Assertions.assertEquals(2, (long) seen.get("4")); // Due to proxy two 1s
+            Assertions.assertEquals(1, (long) seen.get("5"));
+        }
 
-        Assertions.assertEquals(5, seen.size());
-
-        Assertions.assertTrue(seen.containsKey("1"));
-        Assertions.assertTrue(seen.containsKey("2"));
-        Assertions.assertTrue(seen.containsKey("3"));
         Assertions.assertTrue(seen.containsKey("4"));
-        Assertions.assertTrue(seen.containsKey("5"));
-
-        Assertions.assertEquals(2, (long) seen.get("1")); // Due to proxy two 1s
-        Assertions.assertEquals(1, (long) seen.get("2"));
-        Assertions.assertEquals(1, (long) seen.get("3"));
-        Assertions.assertEquals(2, (long) seen.get("4")); // Due to proxy two 1s
-        Assertions.assertEquals(1, (long) seen.get("5"));
 
         Assertions.assertEquals(1, taskItem1.getCallCount());
         Assertions.assertEquals(1, taskItem2.getCallCount());
@@ -265,7 +254,7 @@ public class InvokeRootTests {
         }
 
         @Override
-        public Indexable invoke(TaskGroup.InvocationContext context) {
+        public Indexable invokeTask(TaskGroup.InvocationContext context) {
             callCount++;
             if (postTaskSyncInvocation != null) {
                 postTaskSyncInvocation.apply(this);

@@ -1782,9 +1782,6 @@ public class ProxyTaskGroupTests {
 
         @Override
         public void invokeAfterPostRun(boolean isGroupFaulted) {
-            if (syncPostRun != null) {
-                syncPostRun.accept(this.name);
-            }
         }
     }
 
