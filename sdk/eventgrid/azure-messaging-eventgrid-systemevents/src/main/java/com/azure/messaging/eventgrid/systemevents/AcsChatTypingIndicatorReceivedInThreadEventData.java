@@ -13,17 +13,25 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 
 /**
- * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageDeletedInThread event.
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatTypingIndicatorReceivedInThread
+ * event.
  */
 @Immutable
-public final class AcsChatMessageDeletedInThreadEventData extends AcsChatMessageEventInThreadBaseProperties {
+public final class AcsChatTypingIndicatorReceivedInThreadEventData extends AcsChatMessageEventInThreadBaseProperties {
     /*
-     * The time at which the message was deleted
+     * The body of the chat message
      */
     @Generated
-    private final OffsetDateTime deleteTime;
+    private final String messageBody;
+
+    /*
+     * The chat message metadata
+     */
+    @Generated
+    private Map<String, String> metadata;
 
     /*
      * The display name of the sender
@@ -38,7 +46,7 @@ public final class AcsChatMessageDeletedInThreadEventData extends AcsChatMessage
     private String transactionId;
 
     /**
-     * Creates an instance of AcsChatMessageDeletedInThreadEventData class.
+     * Creates an instance of AcsChatTypingIndicatorReceivedInThreadEventData class.
      * 
      * @param threadId the threadId value to set.
      * @param messageId the messageId value to set.
@@ -46,24 +54,34 @@ public final class AcsChatMessageDeletedInThreadEventData extends AcsChatMessage
      * @param composeTime the composeTime value to set.
      * @param type the type value to set.
      * @param version the version value to set.
-     * @param deleteTime the deleteTime value to set.
+     * @param messageBody the messageBody value to set.
      */
     @Generated
-    private AcsChatMessageDeletedInThreadEventData(String threadId, String messageId,
+    private AcsChatTypingIndicatorReceivedInThreadEventData(String threadId, String messageId,
         CommunicationIdentifierModel senderCommunicationIdentifier, OffsetDateTime composeTime, String type,
-        long version, OffsetDateTime deleteTime) {
+        long version, String messageBody) {
         super(threadId, messageId, senderCommunicationIdentifier, composeTime, type, version);
-        this.deleteTime = deleteTime;
+        this.messageBody = messageBody;
     }
 
     /**
-     * Get the deleteTime property: The time at which the message was deleted.
+     * Get the messageBody property: The body of the chat message.
      * 
-     * @return the deleteTime value.
+     * @return the messageBody value.
      */
     @Generated
-    public OffsetDateTime getDeleteTime() {
-        return this.deleteTime;
+    public String getMessageBody() {
+        return this.messageBody;
+    }
+
+    /**
+     * Get the metadata property: The chat message metadata.
+     * 
+     * @return the metadata value.
+     */
+    @Generated
+    public Map<String, String> getMetadata() {
+        return this.metadata;
     }
 
     /**
@@ -104,22 +122,22 @@ public final class AcsChatMessageDeletedInThreadEventData extends AcsChatMessage
         jsonWriter.writeLongField("version", getVersion());
         jsonWriter.writeStringField("transactionId", getTransactionId());
         jsonWriter.writeStringField("senderDisplayName", getSenderDisplayName());
-        jsonWriter.writeStringField("deleteTime",
-            this.deleteTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.deleteTime));
+        jsonWriter.writeStringField("messageBody", this.messageBody);
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
     /**
-     * Reads an instance of AcsChatMessageDeletedInThreadEventData from the JsonReader.
+     * Reads an instance of AcsChatTypingIndicatorReceivedInThreadEventData from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AcsChatMessageDeletedInThreadEventData if the JsonReader was pointing to an instance of
-     * it, or null if it was pointing to JSON null.
+     * @return An instance of AcsChatTypingIndicatorReceivedInThreadEventData if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AcsChatMessageDeletedInThreadEventData.
+     * @throws IOException If an error occurs while reading the AcsChatTypingIndicatorReceivedInThreadEventData.
      */
     @Generated
-    public static AcsChatMessageDeletedInThreadEventData fromJson(JsonReader jsonReader) throws IOException {
+    public static AcsChatTypingIndicatorReceivedInThreadEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String threadId = null;
             String messageId = null;
@@ -129,7 +147,8 @@ public final class AcsChatMessageDeletedInThreadEventData extends AcsChatMessage
             long version = 0L;
             String transactionId = null;
             String senderDisplayName = null;
-            OffsetDateTime deleteTime = null;
+            String messageBody = null;
+            Map<String, String> metadata = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -151,20 +170,22 @@ public final class AcsChatMessageDeletedInThreadEventData extends AcsChatMessage
                     transactionId = reader.getString();
                 } else if ("senderDisplayName".equals(fieldName)) {
                     senderDisplayName = reader.getString();
-                } else if ("deleteTime".equals(fieldName)) {
-                    deleteTime = reader
-                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("messageBody".equals(fieldName)) {
+                    messageBody = reader.getString();
+                } else if ("metadata".equals(fieldName)) {
+                    metadata = reader.readMap(reader1 -> reader1.getString());
                 } else {
                     reader.skipChildren();
                 }
             }
-            AcsChatMessageDeletedInThreadEventData deserializedAcsChatMessageDeletedInThreadEventData
-                = new AcsChatMessageDeletedInThreadEventData(threadId, messageId, senderCommunicationIdentifier,
-                    composeTime, type, version, deleteTime);
-            deserializedAcsChatMessageDeletedInThreadEventData.transactionId = transactionId;
-            deserializedAcsChatMessageDeletedInThreadEventData.senderDisplayName = senderDisplayName;
+            AcsChatTypingIndicatorReceivedInThreadEventData deserializedAcsChatTypingIndicatorReceivedInThreadEventData
+                = new AcsChatTypingIndicatorReceivedInThreadEventData(threadId, messageId,
+                    senderCommunicationIdentifier, composeTime, type, version, messageBody);
+            deserializedAcsChatTypingIndicatorReceivedInThreadEventData.transactionId = transactionId;
+            deserializedAcsChatTypingIndicatorReceivedInThreadEventData.senderDisplayName = senderDisplayName;
+            deserializedAcsChatTypingIndicatorReceivedInThreadEventData.metadata = metadata;
 
-            return deserializedAcsChatMessageDeletedInThreadEventData;
+            return deserializedAcsChatTypingIndicatorReceivedInThreadEventData;
         });
     }
 }
