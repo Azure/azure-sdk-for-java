@@ -98,24 +98,26 @@
         <dependency>
           <groupId>org.junit.jupiter</groupId>
           <artifactId>junit-jupiter-api</artifactId>
-          <version>5.12.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
+          <version>5.12.1</version> <!-- {x-version-update;azureopenrewrite_org.junit.jupiter:junit-jupiter-api;external_dependency} -->
           <scope>test</scope>
         </dependency>
         <dependency>
           <groupId>org.junit.jupiter</groupId>
           <artifactId>junit-jupiter-engine</artifactId>
-          <version>5.12.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
+          <version>5.12.1</version> <!-- {x-version-update;azureopenrewrite_org.junit.jupiter:junit-jupiter-engine;external_dependency} -->
           <scope>test</scope>
         </dependency>
         <dependency>
           <groupId>org.junit.platform</groupId>
           <artifactId>junit-platform-launcher</artifactId>
-          <version>1.12.1</version> <!-- {x-version-update;org.junit.platform:junit-platform-launcher;external_dependency} -->
+          <version>1.12.1</version> <!-- {x-version-update;azureopenrewrite_org.junit.platform:junit-platform-launcher;external_dependency} -->
+          <scope>test</scope>
         </dependency>
         <dependency>
           <groupId>org.junit.jupiter</groupId>
           <artifactId>junit-jupiter-params</artifactId>
-          <version>5.12.1</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+          <version>5.12.1</version> <!-- {x-version-update;azureopenrewrite_org.junit.jupiter:junit-jupiter-params;external_dependency} -->
+          <scope>test</scope>
         </dependency>
         <!-- Optional dependency on assertJ to provide fluent assertions. -->
         <dependency>
@@ -374,7 +376,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-checkstyle-plugin</artifactId>
-        <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
+        <version>3.6.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-checkstyle-plugin;external_dependency} -->
         <dependencies>
           <dependency>
             <groupId>com.azure</groupId>
@@ -419,7 +421,7 @@
           <dependency>
             <groupId>org.ow2.asm</groupId>
             <artifactId>asm</artifactId>
-            <version>9.7</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+            <version>9.7.1</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
           </dependency>
         </dependencies>
         <configuration>
@@ -436,7 +438,7 @@
       <plugin>
         <groupId>org.revapi</groupId>
         <artifactId>revapi-maven-plugin</artifactId>
-        <version>0.14.6</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+        <version>0.15.0</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
         <configuration>
           <skip>true</skip>
         </configuration>
@@ -449,12 +451,12 @@
           <dependency>
             <groupId>org.revapi</groupId>
             <artifactId>revapi-java</artifactId>
-            <version>0.26.1</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
+            <version>0.28.1</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
           </dependency>
           <dependency>
             <groupId>org.revapi</groupId>
             <artifactId>revapi-reporter-json</artifactId>
-            <version>0.4.5</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
+            <version>0.5.0</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
           </dependency>
         </dependencies>
       </plugin>
