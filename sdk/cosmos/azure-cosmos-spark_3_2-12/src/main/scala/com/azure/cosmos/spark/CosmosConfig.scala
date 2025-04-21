@@ -1178,7 +1178,7 @@ private case class CosmosWriteConfig(itemWriteStrategy: ItemWriteStrategy,
                                      maxMicroBatchSize: Option[Int] = None,
                                      minTargetMicroBatchSize: Option[Int] = None,
                                      flushCloseIntervalInSeconds: Int = 60,
-                                     maxNoProgressIntervalInSeconds: Int = 180,
+                                     maxInitialNoProgressIntervalInSeconds: Int = 180,
                                      maxRetryNoProgressIntervalInSeconds: Int = 45 * 60,
                                      retryCommitInterceptor: Option[WriteOnRetryCommitInterceptor] = None)
 
@@ -1324,14 +1324,14 @@ private object CosmosWriteConfig {
     parseFromStringFunction = intAsString => intAsString.toInt,
     helpMessage = s"Interval of checks whether any progress has been made when flushing write operations.")
 
-  private val maxNoProgressIntervalInSeconds = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteMaxNoProgressIntervalInSeconds,
-    defaultValue = Some(45 * 60),
+  private val maxInitialNoProgressIntervalInSeconds = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteMaxNoProgressIntervalInSeconds,
+    defaultValue = Some(3 * 60),
     mandatory = false,
     parseFromStringFunction = intAsString => intAsString.toInt,
     helpMessage = s"Interval after which a writer fails when no progress has been made when flushing operations.")
 
   private val maxRetryNoProgressIntervalInSeconds = CosmosConfigEntry[Int](key = CosmosConfigNames.WriteMaxRetryNoProgressIntervalInSeconds,
-    defaultValue = Some(3 * 60),
+    defaultValue = Some(45 * 60),
     mandatory = false,
     parseFromStringFunction = intAsString => intAsString.toInt,
     helpMessage = s"Interval after which a writer fails when no progress has been made when flushing operations in the second commit.")
@@ -1504,7 +1504,7 @@ private object CosmosWriteConfig {
       maxMicroBatchSize = maxBatchSizeOpt,
       minTargetMicroBatchSize = minTargetBatchSizeOpt,
       flushCloseIntervalInSeconds = CosmosConfigEntry.parse(cfg, flushCloseIntervalInSeconds).get,
-      maxNoProgressIntervalInSeconds = CosmosConfigEntry.parse(cfg, maxNoProgressIntervalInSeconds).get,
+      maxInitialNoProgressIntervalInSeconds = CosmosConfigEntry.parse(cfg, maxInitialNoProgressIntervalInSeconds).get,
       maxRetryNoProgressIntervalInSeconds = CosmosConfigEntry.parse(cfg, maxRetryNoProgressIntervalInSeconds).get,
       retryCommitInterceptor = writeRetryCommitInterceptor)
   }

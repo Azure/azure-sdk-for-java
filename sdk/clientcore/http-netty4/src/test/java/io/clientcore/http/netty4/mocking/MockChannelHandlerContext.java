@@ -231,7 +231,7 @@ public class MockChannelHandlerContext implements ChannelHandlerContext {
 
     @Override
     public ChannelPipeline pipeline() {
-        return null;
+        return (channel != null) ? channel.pipeline() : null;
     }
 
     @Override

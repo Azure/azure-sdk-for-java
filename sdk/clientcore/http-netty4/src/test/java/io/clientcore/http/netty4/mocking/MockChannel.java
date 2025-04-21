@@ -6,6 +6,8 @@ import io.netty.channel.AbstractChannel;
 import io.netty.channel.ChannelConfig;
 import io.netty.channel.ChannelMetadata;
 import io.netty.channel.ChannelOutboundBuffer;
+import io.netty.channel.ChannelPromise;
+import io.netty.channel.DefaultChannelConfig;
 import io.netty.channel.EventLoop;
 import io.netty.util.Attribute;
 import io.netty.util.AttributeKey;
@@ -13,40 +15,31 @@ import io.netty.util.AttributeKey;
 import java.net.SocketAddress;
 
 public class MockChannel extends AbstractChannel {
-    private final Attribute<String> attribute;
-    private final Unsafe unsafe;
+    private final ChannelConfig config;
+    private final ChannelMetadata metadata = new ChannelMetadata(false);
 
-    public MockChannel(Attribute<String> attribute) {
+    public MockChannel() {
         super(null);
-        this.attribute = attribute;
-        this.unsafe = null;
+        this.config = new DefaultChannelConfig(this).setAutoRead(false);
     }
 
-    public MockChannel(Unsafe unsafe) {
-        super(null);
-        this.unsafe = unsafe;
-        this.attribute = null;
-    }
-
-    @SuppressWarnings("unchecked")
     @Override
     public <T> Attribute<T> attr(AttributeKey<T> key) {
-        return (Attribute<T>) attribute;
-    }
-
-    @Override
-    public Unsafe unsafe() {
-        return unsafe;
-    }
-
-    @Override
-    protected AbstractUnsafe newUnsafe() {
         return null;
     }
 
     @Override
+    protected AbstractUnsafe newUnsafe() {
+        return new AbstractUnsafe() {
+            @Override
+            public void connect(SocketAddress remoteAddress, SocketAddress localAddress, ChannelPromise promise) {
+            }
+        };
+    }
+
+    @Override
     protected boolean isCompatible(EventLoop eventLoop) {
-        return false;
+        return true;
     }
 
     @Override
@@ -86,12 +79,12 @@ public class MockChannel extends AbstractChannel {
 
     @Override
     public ChannelConfig config() {
-        return null;
+        return config;
     }
 
     @Override
     public boolean isOpen() {
-        return false;
+        return true;
     }
 
     @Override
@@ -101,6 +94,6 @@ public class MockChannel extends AbstractChannel {
 
     @Override
     public ChannelMetadata metadata() {
-        return null;
+        return metadata;
     }
 }

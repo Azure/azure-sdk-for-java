@@ -12,14 +12,14 @@ public final class SnapshotCreationDataTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SnapshotCreationData model
-            = BinaryData.fromString("{\"sourceId\":\"zuhkfpbsjyof\"}").toObject(SnapshotCreationData.class);
-        Assertions.assertEquals("zuhkfpbsjyof", model.sourceId());
+            = BinaryData.fromString("{\"sourceId\":\"vjymjhxxjyngud\"}").toObject(SnapshotCreationData.class);
+        Assertions.assertEquals("vjymjhxxjyngud", model.sourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SnapshotCreationData model = new SnapshotCreationData().withSourceId("zuhkfpbsjyof");
+        SnapshotCreationData model = new SnapshotCreationData().withSourceId("vjymjhxxjyngud");
         model = BinaryData.fromObject(model).toObject(SnapshotCreationData.class);
-        Assertions.assertEquals("zuhkfpbsjyof", model.sourceId());
+        Assertions.assertEquals("vjymjhxxjyngud", model.sourceId());
     }
 }
