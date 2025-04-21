@@ -429,7 +429,8 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                 .getNormalizedEffectiveRange(
                     client.asyncClient().getContextClient().getPartitionKeyRangeCache(),
                     null,
-                    Mono.just(documentCollection))
+                    Mono.just(documentCollection),
+                    null)
                 .block();
 
             assertThat(effectiveRange).isNotNull();

@@ -25,6 +25,7 @@ import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
 import com.azure.cosmos.test.faultinjection.CosmosFaultInjectionHelper;
 import com.azure.cosmos.test.faultinjection.FaultInjectionConditionBuilder;
+import com.azure.cosmos.test.faultinjection.FaultInjectionConnectionType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionOperationType;
 import com.azure.cosmos.test.faultinjection.FaultInjectionResultBuilders;
 import com.azure.cosmos.test.faultinjection.FaultInjectionRule;
@@ -37,6 +38,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -50,6 +52,12 @@ public class ExcludeRegionTests extends TestSuiteBase {
     private CosmosAsyncClient clientWithPreferredRegions;
     private CosmosAsyncContainer cosmosAsyncContainer;
     private List<String> preferredRegionList;
+
+    private static final CosmosEndToEndOperationLatencyPolicyConfig INF_E2E_TIMEOUT
+        = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofDays(100)).build();
+
+    private static final CosmosEndToEndOperationLatencyPolicyConfig THREE_SECS_E2E_TIMEOUT
+        = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofDays(100)).build();
 
     @Factory(dataProvider = "clientBuildersWithSessionConsistency")
     public ExcludeRegionTests(CosmosClientBuilder clientBuilder) {
@@ -125,7 +133,7 @@ public class ExcludeRegionTests extends TestSuiteBase {
         Thread.sleep(1000);
 
         CosmosDiagnosticsContext cosmosDiagnosticsContextBeforeRegionExclusion
-            = this.performDocumentOperation(cosmosAsyncContainer, operationType, createdItem, null);
+            = this.performDocumentOperation(cosmosAsyncContainer, operationType, createdItem, null, INF_E2E_TIMEOUT);
 
         validateRegionsContacted(cosmosDiagnosticsContextBeforeRegionExclusion, this.preferredRegionList.subList(0, 1));
 
@@ -135,7 +143,8 @@ public class ExcludeRegionTests extends TestSuiteBase {
                 cosmosAsyncContainer,
                 operationType,
                 createdItem,
-                Arrays.asList(this.preferredRegionList.get(0)));
+                Arrays.asList(this.preferredRegionList.get(0)),
+                INF_E2E_TIMEOUT);
 
         validateRegionsContacted(cosmosDiagnosticsContextPostRegionExclusion, this.preferredRegionList.subList(1, 2));
     }
@@ -171,7 +180,7 @@ public class ExcludeRegionTests extends TestSuiteBase {
         try {
             CosmosFaultInjectionHelper.configureFaultInjectionRules(this.cosmosAsyncContainer, Arrays.asList(serverErrorRule)).block();
             try {
-                CosmosDiagnosticsContext cosmosDiagnosticsContextBeforeRegionExclusion = this.performDocumentOperation(cosmosAsyncContainer, operationType, createdItem, null);
+                CosmosDiagnosticsContext cosmosDiagnosticsContextBeforeRegionExclusion = this.performDocumentOperation(cosmosAsyncContainer, operationType, createdItem, null, INF_E2E_TIMEOUT);
                 validateRegionsContacted(cosmosDiagnosticsContextBeforeRegionExclusion, this.preferredRegionList.subList(0, 2));
             } catch (CosmosException e) {
                 fail("Request should succeeded in other regions");
@@ -183,7 +192,8 @@ public class ExcludeRegionTests extends TestSuiteBase {
                     cosmosAsyncContainer,
                     operationType,
                     createdItem,
-                    this.preferredRegionList.subList(1, this.preferredRegionList.size()));
+                    this.preferredRegionList.subList(1, this.preferredRegionList.size()),
+                    INF_E2E_TIMEOUT);
 
                 fail("Request should have failed");
             } catch (CosmosException exception) {
@@ -198,6 +208,55 @@ public class ExcludeRegionTests extends TestSuiteBase {
             }
         } finally {
             serverErrorRule.disable();
+        }
+    }
+
+    // Use different client to test the regional outage
+    // Inject the fault in the first preferred region - CONNECTION_DELAY all operations
+    @Test(groups = {"multi-master"}, dataProvider = "faultInjectionArgProvider", timeOut = TIMEOUT)
+    public void excludeRegionTest_regionalOutage(OperationType operationType) {
+
+        if (this.clientWithPreferredRegions.getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
+            throw new SkipException("Fault injection can only be applied for direct model.");
+        }
+
+        if (this.preferredRegionList.size() <= 1) {
+            throw new SkipException("excludeRegionTest_SkipFirstPreferredRegion can only be tested for multi-master with multi-regions");
+        }
+
+        TestItem createdItem = TestItem.createNewItem();
+        this.cosmosAsyncContainer.createItem(createdItem).block();
+
+        FaultInjectionRule serverErrorRule = new FaultInjectionRuleBuilder("excludeRegionTest-" + operationType)
+            .condition(
+                new FaultInjectionConditionBuilder()
+                    .region(this.preferredRegionList.get(0))
+                    .build())
+            .result(
+                FaultInjectionResultBuilders
+                    .getResultBuilder(FaultInjectionServerErrorType.CONNECTION_DELAY)
+                    .build()
+            ).build();
+
+        // Create a new client to force cache misses in (RxCollectionCache and RxPartitionKeyRangeCache)
+        // These cache misses will force the SDK to issue I/O calls to the Gateway but to the second preferred region
+        try (CosmosAsyncClient asyncClient = getClientBuilder().preferredRegions(this.preferredRegionList).buildAsyncClient()) {
+
+            String databaseId = this.cosmosAsyncContainer.getDatabase().getId();
+            String containerId = this.cosmosAsyncContainer.getId();
+
+            CosmosAsyncDatabase databaseBackedByDifferentClient = asyncClient.getDatabase(databaseId);
+            CosmosAsyncContainer containerBackedByDifferentClient = databaseBackedByDifferentClient.getContainer(containerId);
+
+            CosmosFaultInjectionHelper.configureFaultInjectionRules(containerBackedByDifferentClient, Arrays.asList(serverErrorRule)).block();
+
+            this.performDocumentOperation(
+                containerBackedByDifferentClient,
+                operationType,
+                createdItem,
+                this.preferredRegionList.subList(0, 1),
+                THREE_SECS_E2E_TIMEOUT
+            );
         }
     }
 
@@ -225,7 +284,9 @@ public class ExcludeRegionTests extends TestSuiteBase {
         CosmosAsyncContainer cosmosAsyncContainer,
         OperationType operationType,
         TestItem createdItem,
-        List<String> excludeRegions) {
+        List<String> excludeRegions,
+        CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig) {
+
         if (operationType == OperationType.Query) {
             CosmosQueryRequestOptions queryRequestOptions = new CosmosQueryRequestOptions();
             String query = String.format("SELECT * from c where c.id = '%s'", createdItem.getId());

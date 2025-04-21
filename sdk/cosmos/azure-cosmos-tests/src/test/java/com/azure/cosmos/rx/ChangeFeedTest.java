@@ -447,7 +447,8 @@ public class ChangeFeedTest extends TestSuiteBase {
                     .getNormalizedEffectiveRange(
                         client.getPartitionKeyRangeCache(),
                         null,
-                        Mono.just(new Utils.ValueHolder<>(this.createdCollection)))
+                        Mono.just(new Utils.ValueHolder<>(this.createdCollection)),
+                        null)
                     .block();
 
             assertThat(effectiveRange).isNotNull();

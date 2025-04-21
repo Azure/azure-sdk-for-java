@@ -349,7 +349,8 @@ public class FeedRangeTest {
                 FeedRangeEpk.getNormalizedEffectiveRange(
                     routingMapProviderMock,
                     null,
-                    Mono.just(Utils.ValueHolder.initialize(collection))))
+                    Mono.just(Utils.ValueHolder.initialize(collection)),
+                    null))
             .recordWith(ArrayList::new)
             .expectNextCount(1)
             .consumeRecordedWith(r -> {
@@ -513,7 +514,8 @@ public class FeedRangeTest {
                 feedRangePartitionKeyRange.getNormalizedEffectiveRange(
                     routingMapProviderMock,
                     BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
-                    Mono.just(Utils.ValueHolder.initialize(collection))))
+                    Mono.just(Utils.ValueHolder.initialize(collection)),
+                    null))
             .recordWith(ArrayList::new)
             .expectNextCount(1)
             .consumeRecordedWith(r -> {
@@ -569,7 +571,8 @@ public class FeedRangeTest {
                 feedRangePartitionKeyRange.getNormalizedEffectiveRange(
                     routingMapProviderMock,
                     BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
-                    Mono.just(Utils.ValueHolder.initialize(collection))))
+                    Mono.just(Utils.ValueHolder.initialize(collection)),
+                    null))
             .recordWith(ArrayList::new)
             .expectErrorSatisfies((e) -> {
                 assertThat(e).isInstanceOf(PartitionKeyRangeGoneException.class);
@@ -611,7 +614,8 @@ public class FeedRangeTest {
                 feedRangePartitionKeyRange.getNormalizedEffectiveRange(
                     routingMapProviderMock,
                     BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
-                    Mono.just(Utils.ValueHolder.initialize(collection))))
+                    Mono.just(Utils.ValueHolder.initialize(collection)),
+                    null))
             .recordWith(ArrayList::new)
             .expectNextCount(1)
             .consumeRecordedWith(r -> {
@@ -738,7 +742,8 @@ public class FeedRangeTest {
                 feedRangePartitionKey.getNormalizedEffectiveRange(
                     routingMapProviderMock,
                     null,
-                    Mono.just(new Utils.ValueHolder<>(collection))))
+                    Mono.just(new Utils.ValueHolder<>(collection)),
+                    null))
             .recordWith(ArrayList::new)
             .expectNextCount(1)
             .consumeRecordedWith(r -> {
