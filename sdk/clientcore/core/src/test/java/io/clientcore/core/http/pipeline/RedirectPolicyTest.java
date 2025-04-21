@@ -14,7 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
-import java.io.IOException;
 import java.net.URI;
 import java.util.EnumSet;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -28,7 +27,7 @@ public class RedirectPolicyTest {
         = new HttpRedirectOptions(3, HttpHeaderName.LOCATION, EnumSet.of(HttpMethod.GET, HttpMethod.HEAD));
 
     @Test
-    public void noRedirectPolicyTest() throws Exception {
+    public void noRedirectPolicyTest() {
         final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(request -> {
             if (request.getUri().toString().equals("http://localhost/")) {
                 HttpHeaders httpHeader
@@ -46,7 +45,7 @@ public class RedirectPolicyTest {
 
     @ParameterizedTest
     @ValueSource(ints = { 308, 307, 301, 302 })
-    public void defaultRedirectExpectedStatusCodes(int statusCode) throws Exception {
+    public void defaultRedirectExpectedStatusCodes(int statusCode) {
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
             if (request.getUri().toString().equals("http://localhost/")) {
                 HttpHeaders httpHeader = new HttpHeaders().set(HttpHeaderName.LOCATION, "http://redirecthost/")
@@ -69,7 +68,7 @@ public class RedirectPolicyTest {
     }
 
     @Test
-    public void redirectForNAttempts() throws Exception {
+    public void redirectForNAttempts() {
         final int[] requestCount = { 1 };
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
             HttpHeaders httpHeader
@@ -92,7 +91,7 @@ public class RedirectPolicyTest {
     }
 
     @Test
-    public void redirectNonAllowedMethodTest() throws Exception {
+    public void redirectNonAllowedMethodTest() {
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
             if (request.getUri().toString().equals("http://localhost/")) {
                 HttpHeaders httpHeader = new HttpHeaders().set(HttpHeaderName.LOCATION, "http://redirecthost/");
@@ -116,7 +115,7 @@ public class RedirectPolicyTest {
     }
 
     @Test
-    public void redirectAllowedStatusCodesTest() throws Exception {
+    public void redirectAllowedStatusCodesTest() {
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
             if (request.getUri().toString().equals("http://localhost/")) {
                 HttpHeaders httpHeader = new HttpHeaders().set(HttpHeaderName.LOCATION, "http://redirecthost/");
@@ -138,7 +137,7 @@ public class RedirectPolicyTest {
     }
 
     @Test
-    public void alreadyAttemptedUrisTest() throws Exception {
+    public void alreadyAttemptedUrisTest() {
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
             if (request.getUri().toString().equals("http://localhost/")) {
                 HttpHeaders httpHeader = new HttpHeaders().set(HttpHeaderName.LOCATION, "http://redirecthost/");
@@ -164,7 +163,7 @@ public class RedirectPolicyTest {
     }
 
     @Test
-    public void redirectForProvidedHeader() throws Exception {
+    public void redirectForProvidedHeader() {
         final int[] requestCount = { 1 };
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
             HttpHeaders httpHeader = new HttpHeaders().set(HttpHeaderName.fromString("Location1"),
@@ -186,7 +185,7 @@ public class RedirectPolicyTest {
     }
 
     @Test
-    public void redirectForProvidedMethods() throws Exception {
+    public void redirectForProvidedMethods() {
         EnumSet<HttpMethod> allowedMethods = EnumSet.of(HttpMethod.GET, HttpMethod.POST, HttpMethod.PUT);
         final int[] requestCount = { 1 };
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
@@ -224,7 +223,7 @@ public class RedirectPolicyTest {
     }
 
     @Test
-    public void nullRedirectUriTest() throws Exception {
+    public void nullRedirectUriTest() {
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
             if (request.getUri().toString().equals("http://localhost/")) {
                 return new Response<>(request, 308, new HttpHeaders(), BinaryData.empty());
@@ -244,7 +243,7 @@ public class RedirectPolicyTest {
     }
 
     @Test
-    public void redirectForMultipleRequests() throws Exception {
+    public void redirectForMultipleRequests() {
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
             if (request.getUri().toString().equals("http://localhost/")) {
                 HttpHeaders httpHeader = new HttpHeaders().set(HttpHeaderName.LOCATION, "http://redirecthost/");
@@ -286,7 +285,7 @@ public class RedirectPolicyTest {
     }
 
     @Test
-    public void defaultRedirectAuthorizationHeaderCleared() throws Exception {
+    public void defaultRedirectAuthorizationHeaderCleared() {
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
             if (request.getUri().toString().equals("http://localhost/")) {
                 HttpHeaders httpHeader = new HttpHeaders().set(HttpHeaderName.LOCATION, "http://redirecthost/")
@@ -309,7 +308,7 @@ public class RedirectPolicyTest {
     }
 
     @Test
-    public void redirectOptionsCanConfigureStatusCodeRedirectLogic() throws IOException {
+    public void redirectOptionsCanConfigureStatusCodeRedirectLogic() {
         // Only redirects on 429 responses
         HttpRedirectOptions httpRedirectOptions
             = new HttpRedirectOptions(1, HttpHeaderName.LOCATION, EnumSet.of(HttpMethod.GET))

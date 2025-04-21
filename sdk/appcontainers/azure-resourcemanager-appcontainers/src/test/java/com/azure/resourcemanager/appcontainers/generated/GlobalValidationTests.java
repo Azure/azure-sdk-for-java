@@ -14,22 +14,22 @@ public final class GlobalValidationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GlobalValidation model = BinaryData.fromString(
-            "{\"unauthenticatedClientAction\":\"Return401\",\"redirectToProvider\":\"s\",\"excludedPaths\":[\"bquxigjy\",\"gzjaoyfhrtxilne\"]}")
+            "{\"unauthenticatedClientAction\":\"Return401\",\"redirectToProvider\":\"mglzufcy\",\"excludedPaths\":[\"hdbihan\",\"fhfcb\",\"y\"]}")
             .toObject(GlobalValidation.class);
         Assertions.assertEquals(UnauthenticatedClientActionV2.RETURN401, model.unauthenticatedClientAction());
-        Assertions.assertEquals("s", model.redirectToProvider());
-        Assertions.assertEquals("bquxigjy", model.excludedPaths().get(0));
+        Assertions.assertEquals("mglzufcy", model.redirectToProvider());
+        Assertions.assertEquals("hdbihan", model.excludedPaths().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GlobalValidation model
             = new GlobalValidation().withUnauthenticatedClientAction(UnauthenticatedClientActionV2.RETURN401)
-                .withRedirectToProvider("s")
-                .withExcludedPaths(Arrays.asList("bquxigjy", "gzjaoyfhrtxilne"));
+                .withRedirectToProvider("mglzufcy")
+                .withExcludedPaths(Arrays.asList("hdbihan", "fhfcb", "y"));
         model = BinaryData.fromObject(model).toObject(GlobalValidation.class);
         Assertions.assertEquals(UnauthenticatedClientActionV2.RETURN401, model.unauthenticatedClientAction());
-        Assertions.assertEquals("s", model.redirectToProvider());
-        Assertions.assertEquals("bquxigjy", model.excludedPaths().get(0));
+        Assertions.assertEquals("mglzufcy", model.redirectToProvider());
+        Assertions.assertEquals("hdbihan", model.excludedPaths().get(0));
     }
 }

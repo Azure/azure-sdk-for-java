@@ -6,7 +6,8 @@
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE" />
     <Or>
       <Class name="io.clientcore.http.netty4.NettyHttpClient" />
-      <Class name="io.clientcore.http.netty4.implementation.NettyChannelBinaryData" />
+      <Class name="io.clientcore.http.netty4.implementation.Netty4ChannelBinaryData" />
+      <Class name="io.clientcore.http.netty4.implementation.Netty4HttpProxyHandler" />
     </Or>
   </Match>
   <Match>
@@ -16,6 +17,14 @@
   <Match>
     <Bug pattern="MS_MUTABLE_ARRAY" />
     <Class name="io.clientcore.http.netty4.implementation.NettyHttpClientLocalTestServer" />
+  </Match>
+  <Match>
+    <Bug pattern="NP_NULL_PARAM_DEREF_ALL_TARGETS_DANGEROUS" />
+    <Class name="io.clientcore.http.netty4.implementation.WrappedHttpHeadersTests" />
+  </Match>
+  <Match>
+    <Bug pattern="NP_NULL_PARAM_DEREF_NONVIRTUAL" />
+    <Class name="io.clientcore.http.netty4.implementation.WrappedHttpHeadersTests" />
   </Match>
   <Match>
     <Bug pattern="OBL_UNSATISFIED_OBLIGATION_EXCEPTION_EDGE" />
@@ -33,7 +42,7 @@
     <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON" />
     <Or>
       <Class name="io.clientcore.http.netty4.NettyHttpClientTests" />
-      <Class name="io.clientcore.http.netty4.implementation.CoreProgressAndTimeoutHandlerTests" />
+      <Class name="io.clientcore.http.netty4.implementation.Netty4ProgressAndTimeoutHandlerTests" />
     </Or>
   </Match>
   <Match>
@@ -42,6 +51,6 @@
   </Match>
   <Match>
     <Bug pattern="VO_VOLATILE_REFERENCE_TO_ARRAY" />
-    <Class name="io.clientcore.http.netty4.implementation.NettyChannelBinaryData" />
+    <Class name="io.clientcore.http.netty4.implementation.Netty4ChannelBinaryData" />
   </Match>
 </FindBugsFilter>

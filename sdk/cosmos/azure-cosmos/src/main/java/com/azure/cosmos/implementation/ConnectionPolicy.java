@@ -14,6 +14,7 @@ import com.azure.cosmos.ThrottlingRetryOptions;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
 
 /**
@@ -669,7 +670,7 @@ public final class ConnectionPolicy {
             ", minConnectionPoolSizePerEndpoint=" + minConnectionPoolSizePerEndpoint +
             ", openConnectionsConcurrency=" + openConnectionsConcurrency +
             ", aggressiveWarmupConcurrency=" + aggressiveWarmupConcurrency +
-            ", pendingAcquireMaxCount=" + this.pendingAcquireMaxCount != null ? String.valueOf(this.pendingAcquireMaxCount) : "DEFAULT" +
+            ", pendingAcquireMaxCount=" + Objects.toString(this.pendingAcquireMaxCount,"DEFAULT") +
             '}';
     }
 }

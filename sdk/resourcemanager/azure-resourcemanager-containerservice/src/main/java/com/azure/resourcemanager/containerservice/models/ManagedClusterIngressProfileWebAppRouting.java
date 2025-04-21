@@ -31,6 +31,12 @@ public final class ManagedClusterIngressProfileWebAppRouting
     private List<String> dnsZoneResourceIds;
 
     /*
+     * Configuration for the default NginxIngressController. See more at
+     * https://learn.microsoft.com/en-us/azure/aks/app-routing-nginx-configuration#the-default-nginx-ingress-controller.
+     */
+    private ManagedClusterIngressProfileNginx nginx;
+
+    /*
      * Managed identity of the Application Routing add-on. This is the identity that should be granted permissions, for
      * example, to manage the associated Azure DNS resource and get certificates from Azure Key Vault. See [this
      * overview of the add-on](https://learn.microsoft.com/en-us/azure/aks/web-app-routing?tabs=with-osm) for more
@@ -91,6 +97,28 @@ public final class ManagedClusterIngressProfileWebAppRouting
     }
 
     /**
+     * Get the nginx property: Configuration for the default NginxIngressController. See more at
+     * https://learn.microsoft.com/en-us/azure/aks/app-routing-nginx-configuration#the-default-nginx-ingress-controller.
+     * 
+     * @return the nginx value.
+     */
+    public ManagedClusterIngressProfileNginx nginx() {
+        return this.nginx;
+    }
+
+    /**
+     * Set the nginx property: Configuration for the default NginxIngressController. See more at
+     * https://learn.microsoft.com/en-us/azure/aks/app-routing-nginx-configuration#the-default-nginx-ingress-controller.
+     * 
+     * @param nginx the nginx value to set.
+     * @return the ManagedClusterIngressProfileWebAppRouting object itself.
+     */
+    public ManagedClusterIngressProfileWebAppRouting withNginx(ManagedClusterIngressProfileNginx nginx) {
+        this.nginx = nginx;
+        return this;
+    }
+
+    /**
      * Get the identity property: Managed identity of the Application Routing add-on. This is the identity that should
      * be granted permissions, for example, to manage the associated Azure DNS resource and get certificates from Azure
      * Key Vault. See [this overview of the
@@ -108,6 +136,9 @@ public final class ManagedClusterIngressProfileWebAppRouting
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (nginx() != null) {
+            nginx().validate();
+        }
         if (identity() != null) {
             identity().validate();
         }
@@ -122,6 +153,7 @@ public final class ManagedClusterIngressProfileWebAppRouting
         jsonWriter.writeBooleanField("enabled", this.enabled);
         jsonWriter.writeArrayField("dnsZoneResourceIds", this.dnsZoneResourceIds,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeJsonField("nginx", this.nginx);
         return jsonWriter.writeEndObject();
     }
 
@@ -147,6 +179,9 @@ public final class ManagedClusterIngressProfileWebAppRouting
                 } else if ("dnsZoneResourceIds".equals(fieldName)) {
                     List<String> dnsZoneResourceIds = reader.readArray(reader1 -> reader1.getString());
                     deserializedManagedClusterIngressProfileWebAppRouting.dnsZoneResourceIds = dnsZoneResourceIds;
+                } else if ("nginx".equals(fieldName)) {
+                    deserializedManagedClusterIngressProfileWebAppRouting.nginx
+                        = ManagedClusterIngressProfileNginx.fromJson(reader);
                 } else if ("identity".equals(fieldName)) {
                     deserializedManagedClusterIngressProfileWebAppRouting.identity
                         = UserAssignedIdentity.fromJson(reader);

@@ -21,7 +21,6 @@ import io.clientcore.core.utils.AuthUtils;
 import io.clientcore.core.utils.AuthenticateChallenge;
 import io.clientcore.core.utils.CoreUtils;
 
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 import java.util.List;
@@ -137,11 +136,7 @@ public class BearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
         if (httpResponse.getStatusCode() == 401 && authHeader != null) {
             if (authorizeRequestOnChallenge(httpRequest, httpResponse)) {
                 // body needs to be closed or read to the end to release the connection
-                try {
-                    httpResponse.close();
-                } catch (IOException e) {
-                    throw LOGGER.logThrowableAsError(new RuntimeException(e));
-                }
+                httpResponse.close();
                 return nextPolicy.process();
             } else {
                 return httpResponse;
