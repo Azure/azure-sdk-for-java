@@ -10,6 +10,7 @@ import io.clientcore.core.utils.configuration.Configuration;
 import io.clientcore.http.netty4.NettyHttpClientBuilder;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
+import io.netty.handler.proxy.HttpProxyHandler;
 import io.netty.handler.proxy.ProxyHandler;
 import io.netty.handler.proxy.Socks4ProxyHandler;
 import io.netty.handler.proxy.Socks5ProxyHandler;
@@ -83,8 +84,10 @@ public final class ChannelInitializationProxyHandler implements Predicate<Socket
         } else if (proxyOptions.getType() == ProxyOptions.Type.SOCKS5) {
             return new Socks5ProxyHandler(proxyOptions.getAddress(), proxyOptions.getUsername(),
                 proxyOptions.getPassword());
-        } else {
+        } else if (proxyOptions.getUsername() != null && proxyOptions.getPassword() != null) {
             return new Netty4HttpProxyHandler(proxyOptions, proxyChallenges);
+        } else {
+            return new HttpProxyHandler(proxyOptions.getAddress());
         }
     }
 }

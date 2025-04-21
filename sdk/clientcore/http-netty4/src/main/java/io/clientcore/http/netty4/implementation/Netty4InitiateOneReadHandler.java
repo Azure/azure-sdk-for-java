@@ -5,6 +5,7 @@ package io.clientcore.http.netty4.implementation;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufHolder;
 import io.netty.channel.ChannelHandlerContext;
+import io.netty.channel.ChannelInboundHandler;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.handler.codec.http.LastHttpContent;
 
@@ -12,29 +13,34 @@ import java.util.concurrent.CountDownLatch;
 import java.util.function.Consumer;
 
 /**
- * {@link ChannelInboundHandlerAdapter} that eagerly consumes the network response body using a {@link ByteBuf}
- * {@link Consumer}.
+ * {@link ChannelInboundHandler} that initiates one read request any time data is needed. Even though it is a single
+ * read request it may result in multiple {@link #channelRead(ChannelHandlerContext, Object)} invocations. Consumers of
+ * this handler need to support multiple channelRead, if this isn't done data may be lost.
  */
-public final class Netty4EagerConsumeNetworkResponseHandler extends ChannelInboundHandlerAdapter {
+public final class Netty4InitiateOneReadHandler extends ChannelInboundHandlerAdapter {
     private final CountDownLatch latch;
     private final Consumer<ByteBuf> byteBufConsumer;
 
     private boolean lastRead;
 
     /**
-     * Creates a new instance of {@link Netty4EagerConsumeNetworkResponseHandler}.
+     * Creates a new instance of {@link Netty4InitiateOneReadHandler}.
+     * <p>
+     * The passed {@link CountDownLatch} will count down when {@link #channelReadComplete(ChannelHandlerContext)} fires.
+     * This indicates that the single read operation completed, it doesn't necessarily mean that the channel was fully
+     * read.
      *
-     * @param latch The latch to count down when the response is fully read, or an exception occurs.
+     * @param latch The latch to count down when the channel read completes.
      * @param byteBufConsumer The consumer to process the {@link ByteBuf ByteBufs} as they are read.
      */
-    public Netty4EagerConsumeNetworkResponseHandler(CountDownLatch latch, Consumer<ByteBuf> byteBufConsumer) {
+    public Netty4InitiateOneReadHandler(CountDownLatch latch, Consumer<ByteBuf> byteBufConsumer) {
         this.latch = latch;
         this.byteBufConsumer = byteBufConsumer;
     }
 
     @Override
-    public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
-        ctx.channel().config().setAutoRead(true);
+    public boolean isSharable() {
+        return false;
     }
 
     @Override
@@ -51,22 +57,26 @@ public final class Netty4EagerConsumeNetworkResponseHandler extends ChannelInbou
         }
 
         lastRead = msg instanceof LastHttpContent;
-        ctx.fireChannelRead(msg);
     }
 
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) {
-        ctx.fireChannelReadComplete();
+        latch.countDown();
         if (lastRead) {
-            latch.countDown();
             ctx.close();
         }
+        ctx.pipeline().remove(this);
+    }
+
+    boolean isChannelConsumed() {
+        return lastRead;
     }
 
     @Override
     public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
         latch.countDown();
         ctx.fireExceptionCaught(cause);
+        ctx.pipeline().remove(this);
     }
 
     // TODO (alzimmer): Are the latch countdowns needed for unregistering and inactivity?
@@ -74,11 +84,13 @@ public final class Netty4EagerConsumeNetworkResponseHandler extends ChannelInbou
     public void channelUnregistered(ChannelHandlerContext ctx) {
         latch.countDown();
         ctx.fireChannelUnregistered();
+        ctx.pipeline().remove(this);
     }
 
     @Override
     public void channelInactive(ChannelHandlerContext ctx) {
         latch.countDown();
         ctx.fireChannelInactive();
+        ctx.pipeline().remove(this);
     }
 }
