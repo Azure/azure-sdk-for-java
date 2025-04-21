@@ -228,11 +228,11 @@ public class AzureResponsesTest extends AzureResponsesTestBase {
 
         String summarizationPrompt = getSummarizationPrompt();
         CreateResponsesRequest request = createSummarizationRequest(summarizationPrompt);
-        
+
         ResponsesResponse response = client.createResponse(request);
-        ResponsesAssistantMessage assistantMessage = (ResponsesAssistantMessage) response.getOutput().getFirst();
-        ResponsesOutputContentText outputContent = (ResponsesOutputContentText) assistantMessage.getContent().getFirst();
-        
+        ResponsesAssistantMessage assistantMessage = (ResponsesAssistantMessage) response.getOutput().get(0);
+        ResponsesOutputContentText outputContent = (ResponsesOutputContentText) assistantMessage.getContent().get(0);
+
         assertNotNull(assistantMessage);
         assertNotNull(outputContent);
         assertNotNull(outputContent.getText());
@@ -245,9 +245,9 @@ public class AzureResponsesTest extends AzureResponsesTestBase {
 
         CreateResponsesRequest request = createSummarizationRequest(null);
 
-        HttpResponseException exception = assertThrows(HttpResponseException.class, 
-                () -> client.createResponse(request));
-        
+        HttpResponseException exception
+            = assertThrows(HttpResponseException.class, () -> client.createResponse(request));
+
         assertEquals(400, exception.getResponse().getStatusCode());
         assertTrue(exception.getMessage().contains("Missing required parameter"));
     }
@@ -261,8 +261,8 @@ public class AzureResponsesTest extends AzureResponsesTestBase {
         CreateResponsesRequest request = createJokesRequest(prompt);
 
         ResponsesResponse response = client.createResponse(request);
-        ResponsesAssistantMessage assistantMessage = (ResponsesAssistantMessage) response.getOutput().getFirst();
-        ResponsesOutputContentText outputContent = (ResponsesOutputContentText) assistantMessage.getContent().getFirst();
+        ResponsesAssistantMessage assistantMessage = (ResponsesAssistantMessage) response.getOutput().get(0);
+        ResponsesOutputContentText outputContent = (ResponsesOutputContentText) assistantMessage.getContent().get(0);
 
         assertNotNull(assistantMessage);
         assertNotNull(outputContent);
@@ -276,8 +276,8 @@ public class AzureResponsesTest extends AzureResponsesTestBase {
 
         CreateResponsesRequest request = createJokesRequest(null);
 
-        HttpResponseException exception = assertThrows(HttpResponseException.class,
-                () -> client.createResponse(request));
+        HttpResponseException exception
+            = assertThrows(HttpResponseException.class, () -> client.createResponse(request));
 
         assertEquals(400, exception.getResponse().getStatusCode());
         assertTrue(exception.getMessage().contains("Missing required parameter"));

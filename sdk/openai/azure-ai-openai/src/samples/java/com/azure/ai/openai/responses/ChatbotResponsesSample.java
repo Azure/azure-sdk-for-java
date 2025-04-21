@@ -1,11 +1,17 @@
 package com.azure.ai.openai.responses;
 
-import com.azure.ai.openai.responses.models.*;
+import com.azure.ai.openai.responses.models.CreateResponsesRequest;
+import com.azure.ai.openai.responses.models.CreateResponsesRequestModel;
+import com.azure.ai.openai.responses.models.ResponsesAssistantMessage;
+import com.azure.ai.openai.responses.models.ResponsesInputContentText;
+import com.azure.ai.openai.responses.models.ResponsesOutputContentText;
+import com.azure.ai.openai.responses.models.ResponsesResponse;
+import com.azure.ai.openai.responses.models.ResponsesSystemMessage;
+import com.azure.ai.openai.responses.models.ResponsesUserMessage;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.Configuration;
 
 import java.util.Arrays;
-import java.util.List;
 
 public class ChatbotResponsesSample {
     public static void main(String[] args) throws InterruptedException {
@@ -23,8 +29,8 @@ public class ChatbotResponsesSample {
 
         // Send the request and get the response
         ResponsesResponse response = client.createResponse(request);
-        ResponsesAssistantMessage responseMessage = (ResponsesAssistantMessage) response.getOutput().getFirst();
-        ResponsesOutputContentText outputContent = (ResponsesOutputContentText) responseMessage.getContent().getFirst();
+        ResponsesAssistantMessage responseMessage = (ResponsesAssistantMessage) response.getOutput().get(0);
+        ResponsesOutputContentText outputContent = (ResponsesOutputContentText) responseMessage.getContent().get(0);
 
         // Print the response
         System.out.println("Response: " + response);
@@ -35,7 +41,7 @@ public class ChatbotResponsesSample {
         return new CreateResponsesRequest(
                 CreateResponsesRequestModel.GPT_4O,
                 Arrays.asList(
-                        new ResponsesSystemMessage(List.of(
+                        new ResponsesSystemMessage(Arrays.asList(
                                 new ResponsesInputContentText("You are a humorous assistant who tells jokes")
                         )),
                         new ResponsesUserMessage(Arrays.asList(
