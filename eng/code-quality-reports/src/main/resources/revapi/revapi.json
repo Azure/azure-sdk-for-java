@@ -749,6 +749,12 @@
           "code" : "java.method.removed",
           "old" : "method com.azure.resourcemanager.containerservice.models.ManagedClusterNatGatewayProfile com.azure.resourcemanager.containerservice.models.ManagedClusterNatGatewayProfile::withEffectiveOutboundIPs(java.util.List<com.azure.resourcemanager.containerservice.models.ResourceReference>)",
           "justification": "The effectiveOutboundIPs was never a client-side modifiable property."
+        },
+        {
+          "code": "java.method.visibilityReduced",
+          "old" : "method void com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusMessagingAutoConfiguration.ServiceBusTemplateConfiguration::<init>()",
+          "new" : "method void com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusMessagingAutoConfiguration.ServiceBusTemplateConfiguration::<init>(org.springframework.context.ApplicationContext)",
+          "justification": "visibility reduced"
         }
       ]
     }

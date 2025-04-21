@@ -55,6 +55,10 @@ public class ServiceBusProducerProperties extends ProducerProperties implements 
         this.sendTimeout = sendTimeout;
     }
 
+    /**
+     * Get the maxSizeInMegabytes property: The maximum size of the queue in megabytes, which is the size of memory allocated for the queue.
+     * @return the maxSizeInMegabytes value.
+     */
     public Long getMaxSizeInMegabytes() {
         return maxSizeInMegabytes;
     }
@@ -67,6 +71,12 @@ public class ServiceBusProducerProperties extends ProducerProperties implements 
         this.maxSizeInMegabytes = maxSizeInMegabytes;
     }
 
+    /**
+     * Get the defaultMessageTimeToLive property: ISO 8601 default message timespan to live value.
+     * This is the duration after which the message expires, starting from when the message is sent to Service Bus.
+     * This is the default value used when TimeToLive is not set on a message itself.
+     * @return the defaultMessageTimeToLive value.
+     */
     public Duration getDefaultMessageTimeToLive() {
         return defaultMessageTimeToLive;
     }
