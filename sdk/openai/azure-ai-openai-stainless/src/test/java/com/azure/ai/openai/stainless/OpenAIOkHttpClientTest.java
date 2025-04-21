@@ -40,6 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@LiveOnly
 public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     private OpenAIClient client;
 
@@ -70,7 +71,6 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         return clientBuilder.build();
     }
 
-    @LiveOnly
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#openAiOnlyClient")
     public void testNonAzureApiKey(String apiType, String apiVersion, String testModel) {
@@ -80,7 +80,6 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertChatCompletion(chatCompletion, 1);
     }
 
-    @LiveOnly
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
     public void testAzureApiKey(String apiType, String apiVersion, String testModel) {
@@ -91,7 +90,6 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertChatCompletion(chatCompletion, 1);
     }
 
-    @LiveOnly
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureAdTokenOnly")
     public void testAzureEntraIdToken(String apiType, String apiVersion, String testModel) {
@@ -112,7 +110,6 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertChatCompletion(chatCompletion, 1);
     }
 
-    @LiveOnly
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#allApiTypeClient")
     public void testChatCompletionMaxTokens(String apiType, String apiVersion, String testModel) {
@@ -126,7 +123,6 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertEquals(usage.totalTokens(), usage.completionTokens() + usage.promptTokens());
     }
 
-    @LiveOnly
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#allApiTypeClient")
     public void testChatCompletionTemperature(String apiType, String apiVersion, String testModel) {
@@ -137,7 +133,6 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertChatCompletion(chatCompletion, 1);
     }
 
-    @LiveOnly
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#allApiTypeClient")
     public void testChatCompletionTopP(String apiType, String apiVersion, String testModel) {
@@ -148,7 +143,6 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertChatCompletion(chatCompletion, 1);
     }
 
-    @LiveOnly
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#allApiTypeClient")
     public void testChatCompletionN(String apiType, String apiVersion, String testModel) {
@@ -159,7 +153,6 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertChatCompletion(chatCompletion, 2);
     }
 
-    @LiveOnly
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#allApiTypeClient")
     public void testChatCompletionStop(String apiType, String apiVersion, String testModel) {
@@ -170,7 +163,6 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertChatCompletion(chatCompletion, 1);
     }
 
-    @LiveOnly
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#allApiTypeClient")
     public void testChatCompletionTokenPenalty(String apiType, String apiVersion, String testModel) {
@@ -182,7 +174,6 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertChatCompletion(chatCompletion, 1);
     }
 
-    @LiveOnly
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#allApiTypeClient")
     public void testChatCompletionUser(String apiType, String apiVersion, String testModel) {
@@ -193,7 +184,6 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertChatCompletion(chatCompletion, 1);
     }
 
-    @LiveOnly
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#allApiTypeClient")
     public void testChatCompletionLogitBias(String apiType, String apiVersion, String testModel) {
@@ -210,7 +200,6 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertChatCompletion(chatCompletion, 1);
     }
 
-    @LiveOnly
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#allApiTypeClient")
     public void testChatCompletionLogprobs(String apiType, String apiVersion, String testModel) {
@@ -221,7 +210,6 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertChatCompletion(chatCompletion, 1);
     }
 
-    @LiveOnly
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#allApiTypeClient")
     public void testChatCompletionSeed(String apiType, String apiVersion, String testModel) {
@@ -232,7 +220,6 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertNotNull(chatCompletion.systemFingerprint()); // Assuming getSystemFingerprint() method exists
     }
 
-    @LiveOnly
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#allApiTypeClient")
     public void testChatCompletionJsonResponse(String apiType, String apiVersion, String testModel)
@@ -254,7 +241,6 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertNotNull(JsonMapper.builder().build().readValue(choice.message().content().get(), Map.class));
     }
 
-    @LiveOnly
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
     public void testChatCompletionWithSensitiveContent(String apiType, String apiVersion, String testModel) {
@@ -266,7 +252,6 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertRaiContentFilter(thrownException);
     }
 
-    @LiveOnly
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
     public void testChatCompletionWithoutSensitiveContent(String apiType, String apiVersion, String testModel) {
@@ -278,7 +263,7 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     }
 
     @Disabled
-    @LiveOnly
+    
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
     public void testChatCompletionByod(String apiType, String apiVersion, String testModel) {
@@ -292,7 +277,6 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertChatCompletionByod(completion);
     }
 
-    @LiveOnly
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#allApiTypeClient")
     public void testChatCompletionTools(String apiType, String apiVersion, String testModel) {
@@ -316,7 +300,6 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertToolCompletion(toolCompletion);
     }
 
-    @LiveOnly
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#allApiTypeClient")
     public void testChatCompletionToolsParallelFunc(String apiType, String apiVersion, String testModel) {
@@ -338,7 +321,6 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertToolCompletion(toolCompletion);
     }
 
-    @LiveOnly
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
     public void testChatCompletionFunctions(String apiType, String apiVersion, String testModel) {
@@ -365,7 +347,7 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     }
 
     @Disabled("Deprecated feature not working.")
-    @LiveOnly
+    
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#allApiTypeClient")
     public void testChatCompletionGivenFunction(String apiType, String apiVersion, String testModel) {
@@ -393,7 +375,6 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertFunctionCompletion(functionCompletion);
     }
 
-    @LiveOnly
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
     public void testChatCompletionFunctionsRai(String apiType, String apiVersion, String testModel) {
@@ -408,7 +389,6 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertRaiContentFilter(thrownException);
     }
 
-    @LiveOnly
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#visionOnlyClient")
     public void testChatCompletionVision(String apiType, String apiVersion, String testModel) {
@@ -419,7 +399,6 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertChatCompletion(chatCompletion);
     }
 
-    @LiveOnly
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
     public void chatCompletionSecurityContext(String apiType, String apiVersion, String testModel) {
@@ -440,7 +419,6 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertChatCompletion(chatCompletion);
     }
 
-    @LiveOnly
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#allApiTypeClient")
     public void chatCompletionStream(String apiType, String apiVersion, String testModel) {
@@ -462,7 +440,6 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
         assertTrue(roughWordCount > 50 && roughWordCount <= 200, "Response length: " + roughWordCount);
     }
 
-    @LiveOnly
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
     public void chatCompletionsStreamRaiTrigger(String apiType, String apiVersion, String testModel) {
