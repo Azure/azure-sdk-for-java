@@ -128,7 +128,6 @@ public final class AzureJedisClientConfig implements JedisClientConfig {
         return hostAndPortMapper;
     }
 
-    @SuppressWarnings("checkstyle:MethodName")
     public static Builder builder() {
         return new Builder();
     }
