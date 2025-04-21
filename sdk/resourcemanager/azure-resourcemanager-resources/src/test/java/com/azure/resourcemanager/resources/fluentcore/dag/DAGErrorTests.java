@@ -26,7 +26,7 @@ public class DAGErrorTests {
     private static final ClientLogger LOGGER = new ClientLogger(DAGErrorTests.class);
 
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = { true, false })
     public void testTerminateOnInProgressTaskCompletion(boolean syncStack) {
         // Terminate on error strategy used in this task group is
         // TaskGroupTerminateOnErrorStrategy::TERMINATE_ON_IN_PROGRESS_TASKS_COMPLETION
@@ -134,9 +134,8 @@ public class DAGErrorTests {
                 consumeError.accept(e);
             }
         } else {
-            IPancake rootPancake = pancakeFtg.invokeAsync(context).map(consumeCake)
-                    .onErrorResume(throwable -> {
-                        consumeError.accept(throwable);
+            IPancake rootPancake = pancakeFtg.invokeAsync(context).map(consumeCake).onErrorResume(throwable -> {
+                consumeError.accept(throwable);
                 return Mono.empty();
             }).blockLast();
         }
@@ -157,7 +156,7 @@ public class DAGErrorTests {
     }
 
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = { true, false })
     public void testTerminateOnHittingLcaTask(boolean syncStack) {
         // Terminate on error strategy used in this task group is
         // TaskGroupTerminateOnErrorStrategy::TERMINATE_ON_HITTING_LCA_TASK
@@ -297,7 +296,7 @@ public class DAGErrorTests {
     }
 
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = { true, false })
     public void testCompositeError(boolean syncStack) {
         // Terminate on error strategy used in this task group is
         // TaskGroupTerminateOnErrorStrategy::TERMINATE_ON_IN_PROGRESS_TASKS_COMPLETION
@@ -407,11 +406,10 @@ public class DAGErrorTests {
                 consumeError.accept(e);
             }
         } else {
-            IPancake rootPancake = pancakeFtg.invokeAsync(context).map(consumeCake)
-                    .onErrorResume(throwable -> {
-                        consumeError.accept(throwable);
-                        return Mono.empty();
-                    }).blockLast();
+            IPancake rootPancake = pancakeFtg.invokeAsync(context).map(consumeCake).onErrorResume(throwable -> {
+                consumeError.accept(throwable);
+                return Mono.empty();
+            }).blockLast();
         }
 
         expectedToSee.removeAll(seen);
@@ -439,7 +437,7 @@ public class DAGErrorTests {
     }
 
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = { true, false })
     public void testErrorOnRoot(boolean syncStack) {
         // Terminate on error strategy used in this task group is
         // TaskGroupTerminateOnErrorStrategy::TERMINATE_ON_IN_PROGRESS_TASKS_COMPLETION
@@ -550,11 +548,10 @@ public class DAGErrorTests {
                 consumeError.accept(e);
             }
         } else {
-            IPancake rootPancake = pancakeFtg.invokeAsync(context).map(consumeCake)
-                    .onErrorResume(throwable -> {
-                        consumeError.accept(throwable);
-                        return Mono.empty();
-                    }).blockLast();
+            IPancake rootPancake = pancakeFtg.invokeAsync(context).map(consumeCake).onErrorResume(throwable -> {
+                consumeError.accept(throwable);
+                return Mono.empty();
+            }).blockLast();
         }
 
         expectedToSee.removeAll(seen);
@@ -577,12 +574,14 @@ public class DAGErrorTests {
      */
     private static class PancakeImplWrapper extends PancakeImpl {
         private Function<Indexable, IPancake> postSyncInvoke;
+
         PancakeImplWrapper(String name, long eventDelayInMilliseconds, Function<Indexable, IPancake> postSyncInvoke) {
             super(name, eventDelayInMilliseconds);
             this.postSyncInvoke = postSyncInvoke;
         }
 
-        PancakeImplWrapper(String name, long eventDelayInMilliseconds, boolean fault, Function<Indexable, IPancake> postSyncInvoke) {
+        PancakeImplWrapper(String name, long eventDelayInMilliseconds, boolean fault,
+            Function<Indexable, IPancake> postSyncInvoke) {
             super(name, eventDelayInMilliseconds, fault);
             this.postSyncInvoke = postSyncInvoke;
         }
@@ -602,12 +601,14 @@ public class DAGErrorTests {
      */
     private static class PastaImplWrapper extends PastaImpl {
         private Function<Indexable, IPasta> postSyncInvoke;
+
         PastaImplWrapper(String name, long eventDelayInMilliseconds, Function<Indexable, IPasta> postSyncInvoke) {
             super(name, eventDelayInMilliseconds);
             this.postSyncInvoke = postSyncInvoke;
         }
 
-        PastaImplWrapper(String name, long eventDelayInMilliseconds, boolean fault, Function<Indexable, IPasta> postSyncInvoke) {
+        PastaImplWrapper(String name, long eventDelayInMilliseconds, boolean fault,
+            Function<Indexable, IPasta> postSyncInvoke) {
             super(name, eventDelayInMilliseconds, fault);
             this.postSyncInvoke = postSyncInvoke;
         }

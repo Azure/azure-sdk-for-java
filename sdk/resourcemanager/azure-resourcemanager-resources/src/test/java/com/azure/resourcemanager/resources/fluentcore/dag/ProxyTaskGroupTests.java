@@ -27,7 +27,7 @@ public class ProxyTaskGroupTests {
     private static final ClientLogger LOGGER = new ClientLogger(ProxyTaskGroupTests.class);
 
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = { true, false })
     public void testSimpleTaskGroupSanity(boolean syncStack) {
         // Prepare sample group
         //
@@ -106,7 +106,7 @@ public class ProxyTaskGroupTests {
     }
 
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = { true, false })
     public void testTaskGroupInvocationShouldNotInvokeDependentTaskGroup(boolean syncStack) {
         // Prepare group-1
         //
@@ -231,7 +231,7 @@ public class ProxyTaskGroupTests {
     }
 
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = { true, false })
     public void testTaskGroupInvocationShouldInvokeDependencyTaskGroup(boolean syncStack) {
         // Prepare group-1
         //
@@ -296,7 +296,6 @@ public class ProxyTaskGroupTests {
          *                        ------->D------------
          */
         group2.addDependencyTaskGroup(group1);
-
 
         // Invocation of group-2 should invoke group-2 and group-1
         //
@@ -379,7 +378,7 @@ public class ProxyTaskGroupTests {
     }
 
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = { true, false })
     public void testTaskGroupInvocationShouldInvokePostRunDependentTaskGroup(boolean syncStack) {
         // Prepare group-1
         //
@@ -537,7 +536,7 @@ public class ProxyTaskGroupTests {
     }
 
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = { true, false })
     public void testPostRunTaskGroupInvocationShouldInvokeDependencyTaskGroup(boolean syncStack) {
         // Prepare group-1
         //
@@ -1473,8 +1472,9 @@ public class ProxyTaskGroupTests {
     }
 
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
-    public void canHandleDependenciesAndPostRunDependentsInBeforeGroupInvoke(boolean syncStack) throws InterruptedException {
+    @ValueSource(booleans = { true, false })
+    public void canHandleDependenciesAndPostRunDependentsInBeforeGroupInvoke(boolean syncStack)
+        throws InterruptedException {
         final ArrayList<String> seen = new ArrayList<>();
         CountDownLatch down = new CountDownLatch(1);
         final IndexableTaskItem itiA = new IndexableTaskItem("A") {
@@ -1562,8 +1562,9 @@ public class ProxyTaskGroupTests {
             itiC.taskGroup().invoke(itiC.taskGroup().newInvocationContext());
         } else {
             itiC.taskGroup()
-                    .invokeAsync(itiC.taskGroup().newInvocationContext())
-                    .subscribe(indexable -> seen.add(indexable.key()), throwable -> down.countDown(), () -> down.countDown());
+                .invokeAsync(itiC.taskGroup().newInvocationContext())
+                .subscribe(indexable -> seen.add(indexable.key()), throwable -> down.countDown(),
+                    () -> down.countDown());
         }
 
         down.await();
@@ -1668,9 +1669,9 @@ public class ProxyTaskGroupTests {
             itiF.taskGroup().invoke(itiC.taskGroup().newInvocationContext());
         } else {
             itiF.taskGroup()
-                    .invokeAsync(itiC.taskGroup().newInvocationContext())
-                    .subscribe(indexable -> seen.add(indexable.key()), throwable -> monitor.countDown(),
-                            () -> monitor.countDown());
+                .invokeAsync(itiC.taskGroup().newInvocationContext())
+                .subscribe(indexable -> seen.add(indexable.key()), throwable -> monitor.countDown(),
+                    () -> monitor.countDown());
         }
 
         monitor.await();
