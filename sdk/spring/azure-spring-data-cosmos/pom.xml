@@ -214,62 +214,6 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.13.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
-        <configuration>
-          <compilerArgs>
-            <arg>-Xlint:none</arg>
-          </compilerArgs>
-        </configuration>
-        <executions>
-          <execution>
-            <id>compile-8</id>
-            <goals>
-              <goal>compile</goal>
-            </goals>
-            <configuration>
-              <release>8</release>
-              <compileSourceRoots>
-                <compileSourceRoot>${project.basedir}/src/main/java</compileSourceRoot>
-              </compileSourceRoots>
-              <compilerArgs>
-                <arg>-parameters</arg> <!-- https://github.com/spring-projects/spring-framework/wiki/Upgrading-to-Spring-Framework-6.x#parameter-name-retention -->
-              </compilerArgs>
-            </configuration>
-          </execution>
-          <execution>
-            <id>testCompile-8</id>
-            <goals>
-              <goal>testCompile</goal>
-            </goals>
-            <configuration>
-              <release>8</release>
-              <compileSourceRoots>
-                <compileSourceRoot>${project.basedir}/src/main/java</compileSourceRoot>
-              </compileSourceRoots>
-              <compilerArgs>
-                <arg>-parameters</arg> <!-- https://github.com/spring-projects/spring-framework/wiki/Upgrading-to-Spring-Framework-6.x#parameter-name-retention -->
-              </compilerArgs>
-            </configuration>
-          </execution>
-          <execution>
-            <id>compile-module-info</id>
-            <phase>compile</phase>
-            <goals>
-              <goal>compile</goal>
-            </goals>
-            <configuration>
-              <release>9</release>
-              <compileSourceRoots>
-                <compileSourceRoot>${project.basedir}/src/main/java9</compileSourceRoot>
-              </compileSourceRoots>
-              <multiReleaseOutput>true</multiReleaseOutput>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <version>3.3.0</version> <!-- {x-version-update;spring_org.apache.maven.plugins:maven-jar-plugin;external_dependency} -->
         <configuration>

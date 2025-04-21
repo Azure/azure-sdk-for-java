@@ -108,32 +108,6 @@
             <arg>-Xlint:-options</arg>
           </compilerArgs>
         </configuration>
-        <executions>
-          <execution>
-            <id>compile-8</id>
-            <goals>
-              <goal>compile</goal>
-            </goals>
-            <configuration>
-              <release>8</release>
-              <compilerArgs>
-                <arg>-parameters</arg> <!-- https://github.com/spring-projects/spring-framework/wiki/Upgrading-to-Spring-Framework-6.x#parameter-name-retention -->
-              </compilerArgs>
-            </configuration>
-          </execution>
-          <execution>
-            <id>testCompile-8</id>
-            <goals>
-              <goal>testCompile</goal>
-            </goals>
-            <configuration>
-              <release>8</release>
-              <compilerArgs>
-                <arg>-parameters</arg> <!-- https://github.com/spring-projects/spring-framework/wiki/Upgrading-to-Spring-Framework-6.x#parameter-name-retention -->
-              </compilerArgs>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
