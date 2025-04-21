@@ -4,38 +4,40 @@ package com.azure.ai.projects.usage.agent;
 
 import com.azure.ai.projects.AIProjectClientBuilder;
 import com.azure.ai.projects.AgentsClient;
-import com.azure.ai.projects.implementation.models.CreateAgentRequest;
 import com.azure.ai.projects.models.Agent;
 import com.azure.ai.projects.models.AgentThread;
-import com.azure.ai.projects.models.AzureFunctionBinding;
-import com.azure.ai.projects.models.AzureFunctionDefinition;
-import com.azure.ai.projects.models.AzureFunctionStorageQueue;
-import com.azure.ai.projects.models.AzureFunctionToolDefinition;
+import com.azure.ai.projects.models.CreateAgentOptions;
 import com.azure.ai.projects.models.CreateRunOptions;
-import com.azure.ai.projects.models.FunctionDefinition;
 import com.azure.ai.projects.models.MessageContent;
 import com.azure.ai.projects.models.MessageImageFileContent;
 import com.azure.ai.projects.models.MessageRole;
 import com.azure.ai.projects.models.MessageTextContent;
 import com.azure.ai.projects.models.OpenAIPageableListOfThreadMessage;
+import com.azure.ai.projects.models.OpenApiAnonymousAuthDetails;
+import com.azure.ai.projects.models.OpenApiFunctionDefinition;
+import com.azure.ai.projects.models.OpenApiToolDefinition;
 import com.azure.ai.projects.models.RunStatus;
 import com.azure.ai.projects.models.ThreadMessage;
 import com.azure.ai.projects.models.ThreadRun;
-import com.azure.core.http.HttpHeaderName;
-import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
 import org.junit.jupiter.api.Test;
-
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
-public class SampleAgentAzureFunction {
+public class AgentOpenApiSample {
 
     @Test
-    void azureFunctionExample() {
+    void openApiExample() throws IOException, URISyntaxException {
         AgentsClient agentsClient
             = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .subscriptionId(Configuration.getGlobalConfiguration().get("SUBSCRIPTIONID", "subscriptionid"))
@@ -44,46 +46,28 @@ public class SampleAgentAzureFunction {
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAgentsClient();
 
-        String storageQueueUri = Configuration.getGlobalConfiguration().get("STORAGE_QUEUE_URI", "");
-        String azureFunctionName = Configuration.getGlobalConfiguration().get("AZURE_FUNCTION_NAME", "");
+        Path filePath = getFile("weather_openapi.json");
+        JsonReader reader = JsonProviders.createReader(Files.readAllBytes(filePath));
 
-        FunctionDefinition fnDef = new FunctionDefinition(
-            azureFunctionName,
-            BinaryData.fromObject(
-                mapOf(
-                    "type", "object",
-                    "properties", mapOf(
-                        "location",
-                        mapOf("type", "string", "description", "The location to look up")
-                    ),
-                    "required", new String[]{"location"}
-                )
-            )
-        );
-        AzureFunctionDefinition azureFnDef = new AzureFunctionDefinition(
-            fnDef,
-            new AzureFunctionBinding(new AzureFunctionStorageQueue(storageQueueUri, "agent-input")),
-            new AzureFunctionBinding(new AzureFunctionStorageQueue(storageQueueUri, "agent-output"))
-        );
-        AzureFunctionToolDefinition azureFnTool = new AzureFunctionToolDefinition(azureFnDef);
+        OpenApiAnonymousAuthDetails oaiAuth = new OpenApiAnonymousAuthDetails();
+        OpenApiToolDefinition openApiTool = new OpenApiToolDefinition(new OpenApiFunctionDefinition(
+            "openapitool",
+            reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())),
+            oaiAuth
+        ));
 
-        String agentName = "azure_function_example";
-        RequestOptions requestOptions = new RequestOptions()
-            .setHeader(HttpHeaderName.fromString("x-ms-enable-preview"), "true");
-        CreateAgentRequest createAgentRequestObj = new CreateAgentRequest("gpt-4o-mini")
+        String agentName = "openAPI_example";
+        CreateAgentOptions createAgentOptions = new CreateAgentOptions("gpt-4o-mini")
             .setName(agentName)
-            .setInstructions("You are a helpful agent. Use the provided function any time "
-                + "you are asked with the weather of any location")
-            .setTools(Arrays.asList(azureFnTool));
-        BinaryData createAgentRequest = BinaryData.fromObject(createAgentRequestObj);
-        Agent agent = agentsClient.createAgentWithResponse(createAgentRequest, requestOptions)
-            .getValue().toObject(Agent.class);
+            .setInstructions("You are a helpful agent")
+            .setTools(Arrays.asList(openApiTool));
+        Agent agent = agentsClient.createAgent(createAgentOptions);
 
         AgentThread thread = agentsClient.createThread();
         ThreadMessage createdMessage = agentsClient.createMessage(
             thread.getId(),
             MessageRole.USER,
-            "What is the weather in Seattle, WA?");
+            "What's the weather in seattle?");
 
         //run agent
         CreateRunOptions createRunOptions = new CreateRunOptions(thread.getId(), agent.getId())
@@ -126,15 +110,12 @@ public class SampleAgentAzureFunction {
         }
     }
 
-    // Use "Map.of" if available
-    @SuppressWarnings("unchecked")
-    private static <T> Map<String, T> mapOf(Object... inputs) {
-        Map<String, T> map = new HashMap<>();
-        for (int i = 0; i < inputs.length; i += 2) {
-            String key = (String) inputs[i];
-            T value = (T) inputs[i + 1];
-            map.put(key, value);
+    private Path getFile(String fileName) throws FileNotFoundException, URISyntaxException {
+        URL resource = getClass().getClassLoader().getResource(fileName);
+        if (resource == null) {
+            throw new FileNotFoundException("File not found");
         }
-        return map;
+        File file = new File(resource.toURI());
+        return file.toPath();
     }
 }

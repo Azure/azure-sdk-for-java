@@ -11,6 +11,7 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * The input definition information for an openapi function.
@@ -122,6 +123,8 @@ public final class OpenApiFunctionDefinition implements JsonSerializable<OpenApi
         this.spec.writeTo(jsonWriter);
         jsonWriter.writeJsonField("auth", this.auth);
         jsonWriter.writeStringField("description", this.description);
+        jsonWriter.writeArrayField("default_params", this.defaultParams,
+            (writer, element) -> writer.writeString(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -141,6 +144,7 @@ public final class OpenApiFunctionDefinition implements JsonSerializable<OpenApi
             BinaryData spec = null;
             OpenApiAuthDetails auth = null;
             String description = null;
+            List<String> defaultParams = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -152,6 +156,8 @@ public final class OpenApiFunctionDefinition implements JsonSerializable<OpenApi
                     auth = OpenApiAuthDetails.fromJson(reader);
                 } else if ("description".equals(fieldName)) {
                     description = reader.getString();
+                } else if ("default_params".equals(fieldName)) {
+                    defaultParams = reader.readArray(reader1 -> reader1.getString());
                 } else {
                     reader.skipChildren();
                 }
@@ -159,7 +165,36 @@ public final class OpenApiFunctionDefinition implements JsonSerializable<OpenApi
             OpenApiFunctionDefinition deserializedOpenApiFunctionDefinition
                 = new OpenApiFunctionDefinition(name, spec, auth);
             deserializedOpenApiFunctionDefinition.description = description;
+            deserializedOpenApiFunctionDefinition.defaultParams = defaultParams;
             return deserializedOpenApiFunctionDefinition;
         });
+    }
+
+    /*
+     * List of OpenAPI spec parameters that will use user-provided defaults
+     */
+    @Generated
+    private List<String> defaultParams;
+
+    /**
+     * Get the defaultParams property: List of OpenAPI spec parameters that will use user-provided defaults.
+     *
+     * @return the defaultParams value.
+     */
+    @Generated
+    public List<String> getDefaultParams() {
+        return this.defaultParams;
+    }
+
+    /**
+     * Set the defaultParams property: List of OpenAPI spec parameters that will use user-provided defaults.
+     *
+     * @param defaultParams the defaultParams value to set.
+     * @return the OpenApiFunctionDefinition object itself.
+     */
+    @Generated
+    public OpenApiFunctionDefinition setDefaultParams(List<String> defaultParams) {
+        this.defaultParams = defaultParams;
+        return this;
     }
 }

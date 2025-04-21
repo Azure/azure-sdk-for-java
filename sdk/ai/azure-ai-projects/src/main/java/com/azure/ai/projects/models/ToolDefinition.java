@@ -93,6 +93,10 @@ public class ToolDefinition implements JsonSerializable<ToolDefinition> {
                     return AzureAISearchToolDefinition.fromJson(readerToUse.reset());
                 } else if ("openapi".equals(discriminatorValue)) {
                     return OpenApiToolDefinition.fromJson(readerToUse.reset());
+                } else if ("bing_custom_search".equals(discriminatorValue)) {
+                    return BingCustomSearchToolDefinition.fromJson(readerToUse.reset());
+                } else if ("connected_agent".equals(discriminatorValue)) {
+                    return ConnectedAgentToolDefinition.fromJson(readerToUse.reset());
                 } else if ("azure_function".equals(discriminatorValue)) {
                     return AzureFunctionToolDefinition.fromJson(readerToUse.reset());
                 } else {

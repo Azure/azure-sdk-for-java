@@ -36,25 +36,25 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
-public class SampleAgentFunctions {
+public class AgentFunctionsSample {
 
     @Test
     void functionsExample() {
         AgentsClient agentsClient
-                = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
-                .subscriptionId(Configuration.getGlobalConfiguration().get("SUBSCRIPTIONID", "subscriptionid"))
-                .resourceGroupName(Configuration.getGlobalConfiguration().get("RESOURCEGROUPNAME", "resourcegroupname"))
-                .projectName(Configuration.getGlobalConfiguration().get("PROJECTNAME", "projectname"))
-                .credential(new DefaultAzureCredentialBuilder().build())
-                .buildAgentsClient();
+            = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+            .subscriptionId(Configuration.getGlobalConfiguration().get("SUBSCRIPTIONID", "subscriptionid"))
+            .resourceGroupName(Configuration.getGlobalConfiguration().get("RESOURCEGROUPNAME", "resourcegroupname"))
+            .projectName(Configuration.getGlobalConfiguration().get("PROJECTNAME", "projectname"))
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildAgentsClient();
 
         Supplier<String> getUserFavoriteCity = () -> "Seattle, WA";
         FunctionToolDefinition getUserFavoriteCityTool = new FunctionToolDefinition(
-                new FunctionDefinition(
-                        "getUserFavoriteCity",
-                        BinaryData.fromObject(
-                                new Object()
-                        ))
+            new FunctionDefinition(
+                "getUserFavoriteCity",
+                BinaryData.fromObject(
+                    new Object()
+                ))
         );
 
         Function<String, String> getCityNickname = location -> {
@@ -62,19 +62,19 @@ public class SampleAgentFunctions {
         };
 
         FunctionToolDefinition getCityNicknameTool = new FunctionToolDefinition(
-                new FunctionDefinition(
-                        "getCityNickname",
-                        BinaryData.fromObject(
-                                mapOf(
-                                        "type", "object",
-                                        "properties", mapOf(
-                                                "location",
-                                                mapOf(
-                                                        "type", "string",
-                                                        "description", "The city and state, e.g. San Francisco, CA")
-                                        ),
-                                        "required", new String[]{"location"}))
-                ).setDescription("Get the nickname of a city")
+            new FunctionDefinition(
+                "getCityNickname",
+                BinaryData.fromObject(
+                    mapOf(
+                        "type", "object",
+                        "properties", mapOf(
+                            "location",
+                            mapOf(
+                                "type", "string",
+                                "description", "The city and state, e.g. San Francisco, CA")
+                        ),
+                        "required", new String[]{"location"}))
+            ).setDescription("Get the nickname of a city")
         );
 
         Function<RequiredToolCall, ToolOutput> getResolvedToolOutput = toolCall -> {
@@ -83,14 +83,14 @@ public class SampleAgentFunctions {
                 String functionName = functionToolCall.getFunction().getName();
                 if (functionName.equals("getUserFavoriteCity")) {
                     return new ToolOutput().setToolCallId(functionToolCall.getId())
-                            .setOutput(getUserFavoriteCity.get());
+                        .setOutput(getUserFavoriteCity.get());
                 } else if (functionName.equals("getCityNickname")) {
                     String args = functionToolCall.getFunction().getArguments();
                     try {
                         JsonNode root = new JsonMapper().readTree(args);
                         String location = String.valueOf(root.get("location").asText());
                         return new ToolOutput().setToolCallId(functionToolCall.getId())
-                                .setOutput(getCityNickname.apply(location));
+                            .setOutput(getCityNickname.apply(location));
                     } catch (JsonProcessingException e) {
                         throw new RuntimeException(e);
                     }
@@ -101,22 +101,22 @@ public class SampleAgentFunctions {
 
         String agentName = "functions_example";
         CreateAgentOptions createAgentOptions = new CreateAgentOptions("gpt-4o-mini")
-                .setName(agentName)
-                .setInstructions("You are a weather bot. Use the provided functions to help answer questions. "
-                        + "Customize your responses to the user's preferences as much as possible and use friendly "
-                        + "nicknames for cities whenever possible.")
-                .setTools(Arrays.asList(getUserFavoriteCityTool, getCityNicknameTool));
+            .setName(agentName)
+            .setInstructions("You are a weather bot. Use the provided functions to help answer questions. "
+                + "Customize your responses to the user's preferences as much as possible and use friendly "
+                + "nicknames for cities whenever possible.")
+            .setTools(Arrays.asList(getUserFavoriteCityTool, getCityNicknameTool));
         Agent agent = agentsClient.createAgent(createAgentOptions);
 
         AgentThread thread = agentsClient.createThread();
         ThreadMessage createdMessage = agentsClient.createMessage(
-                thread.getId(),
-                MessageRole.USER,
-                "What's the nickname of my favorite city?");
+            thread.getId(),
+            MessageRole.USER,
+            "What's the nickname of my favorite city?");
 
         //run agent
         CreateRunOptions createRunOptions = new CreateRunOptions(thread.getId(), agent.getId())
-                .setAdditionalInstructions("");
+            .setAdditionalInstructions("");
         ThreadRun threadRun = agentsClient.createRun(createRunOptions);
 
         try {
@@ -124,7 +124,7 @@ public class SampleAgentFunctions {
                 Thread.sleep(500);
                 threadRun = agentsClient.getRun(thread.getId(), threadRun.getId());
                 if (threadRun.getStatus() == RunStatus.REQUIRES_ACTION
-                        && threadRun.getRequiredAction() instanceof SubmitToolOutputsAction) {
+                    && threadRun.getRequiredAction() instanceof SubmitToolOutputsAction) {
                     SubmitToolOutputsAction submitToolsOutputAction = (SubmitToolOutputsAction) (threadRun.getRequiredAction());
                     ArrayList<ToolOutput> toolOutputs = new ArrayList<ToolOutput>();
                     for (RequiredToolCall toolCall : submitToolsOutputAction.getSubmitToolOutputs().getToolCalls()) {
@@ -134,9 +134,9 @@ public class SampleAgentFunctions {
                 }
             }
             while (
-                    threadRun.getStatus() == RunStatus.QUEUED
-                            || threadRun.getStatus() == RunStatus.IN_PROGRESS
-                            || threadRun.getStatus() == RunStatus.REQUIRES_ACTION);
+                threadRun.getStatus() == RunStatus.QUEUED
+                    || threadRun.getStatus() == RunStatus.IN_PROGRESS
+                    || threadRun.getStatus() == RunStatus.REQUIRES_ACTION);
 
             if (threadRun.getStatus() == RunStatus.FAILED) {
                 System.out.println(threadRun.getLastError().getMessage());

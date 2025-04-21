@@ -84,4 +84,16 @@ public final class AgentsNamedToolChoiceType extends ExpandableStringEnum<Agents
     public static Collection<AgentsNamedToolChoiceType> values() {
         return values(AgentsNamedToolChoiceType.class);
     }
+
+    /**
+     * Tool type `bing_custom_search`.
+     */
+    @Generated
+    public static final AgentsNamedToolChoiceType BING_CUSTOM_SEARCH = fromString("bing_custom_search");
+
+    /**
+     * Tool type `connected_agent`.
+     */
+    @Generated
+    public static final AgentsNamedToolChoiceType CONNECTED_AGENT = fromString("connected_agent");
 }

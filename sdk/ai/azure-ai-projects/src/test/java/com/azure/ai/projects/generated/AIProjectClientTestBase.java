@@ -47,10 +47,11 @@ public class AIProjectClientTestBase extends TestProxyTestBase {
         } else if (getTestMode() == TestMode.LIVE) {
             agentsClientbuilder.credential(new DefaultAzureCredentialBuilder().build());
         }
+
         agentsClient = agentsClientbuilder.buildAgentsClient();
 
         AIProjectClientBuilder connectionsClientbuilder
-            = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+            = new AIProjectClientBuilder().endpoint("https://management.azure.com")
                 .subscriptionId(Configuration.getGlobalConfiguration().get("SUBSCRIPTIONID", "subscriptionid"))
                 .resourceGroupName(Configuration.getGlobalConfiguration().get("RESOURCEGROUPNAME", "resourcegroupname"))
                 .projectName(Configuration.getGlobalConfiguration().get("PROJECTNAME", "projectname"))

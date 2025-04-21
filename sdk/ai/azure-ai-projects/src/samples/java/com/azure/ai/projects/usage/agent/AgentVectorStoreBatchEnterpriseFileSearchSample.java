@@ -8,37 +8,30 @@ import com.azure.ai.projects.models.Agent;
 import com.azure.ai.projects.models.AgentThread;
 import com.azure.ai.projects.models.CreateAgentOptions;
 import com.azure.ai.projects.models.CreateRunOptions;
+import com.azure.ai.projects.models.FileSearchToolDefinition;
+import com.azure.ai.projects.models.FileSearchToolResource;
 import com.azure.ai.projects.models.MessageContent;
 import com.azure.ai.projects.models.MessageImageFileContent;
 import com.azure.ai.projects.models.MessageRole;
 import com.azure.ai.projects.models.MessageTextContent;
 import com.azure.ai.projects.models.OpenAIPageableListOfThreadMessage;
-import com.azure.ai.projects.models.OpenApiAnonymousAuthDetails;
-import com.azure.ai.projects.models.OpenApiFunctionDefinition;
-import com.azure.ai.projects.models.OpenApiToolDefinition;
 import com.azure.ai.projects.models.RunStatus;
 import com.azure.ai.projects.models.ThreadMessage;
 import com.azure.ai.projects.models.ThreadRun;
-import com.azure.core.util.BinaryData;
+import com.azure.ai.projects.models.ToolResources;
+import com.azure.ai.projects.models.VectorStore;
+import com.azure.ai.projects.models.VectorStoreConfiguration;
+import com.azure.ai.projects.models.VectorStoreDataSource;
+import com.azure.ai.projects.models.VectorStoreDataSourceAssetType;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.json.JsonProviders;
-import com.azure.json.JsonReader;
 import org.junit.jupiter.api.Test;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Arrays;
 
-public class SampleAgentOpenApi {
+public class AgentVectorStoreBatchEnterpriseFileSearchSample {
 
     @Test
-    void openApiExample() throws IOException, URISyntaxException {
+    void vectorStoreBatchEnterpriseFileSearchExample() {
         AgentsClient agentsClient
             = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .subscriptionId(Configuration.getGlobalConfiguration().get("SUBSCRIPTIONID", "subscriptionid"))
@@ -47,28 +40,35 @@ public class SampleAgentOpenApi {
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAgentsClient();
 
-        Path filePath = getFile("weather_openapi.json");
-        JsonReader reader = JsonProviders.createReader(Files.readAllBytes(filePath));
+        String dataUri = Configuration.getGlobalConfiguration().get("DATA_URI", "");
+        VectorStoreDataSource vectorStoreDataSource = new VectorStoreDataSource(
+            dataUri, VectorStoreDataSourceAssetType.URI_ASSET);
 
-        OpenApiAnonymousAuthDetails oaiAuth = new OpenApiAnonymousAuthDetails();
-        OpenApiToolDefinition openApiTool = new OpenApiToolDefinition(new OpenApiFunctionDefinition(
-            "openapitool",
-            reader.getNullable(nonNullReader -> BinaryData.fromObject(nonNullReader.readUntyped())),
-            oaiAuth
-        ));
+        VectorStore vs = agentsClient.createVectorStore(
+            null, "sample_vector_store",
+            new VectorStoreConfiguration(Arrays.asList(vectorStoreDataSource)),
+            null, null, null
+        );
 
-        String agentName = "openAPI_example";
+        agentsClient.createVectorStoreFileBatch(vs.getId(),
+            null, Arrays.asList(vectorStoreDataSource), null);
+
+        FileSearchToolResource fileSearchToolResource = new FileSearchToolResource()
+            .setVectorStoreIds(Arrays.asList(vs.getId()));
+
+        String agentName = "vector_store_batch_enterprise_file_search_example";
         CreateAgentOptions createAgentOptions = new CreateAgentOptions("gpt-4o-mini")
             .setName(agentName)
             .setInstructions("You are a helpful agent")
-            .setTools(Arrays.asList(openApiTool));
+            .setTools(Arrays.asList(new FileSearchToolDefinition()))
+            .setToolResources(new ToolResources().setFileSearch(fileSearchToolResource));
         Agent agent = agentsClient.createAgent(createAgentOptions);
 
         AgentThread thread = agentsClient.createThread();
         ThreadMessage createdMessage = agentsClient.createMessage(
             thread.getId(),
             MessageRole.USER,
-            "What's the weather in seattle?");
+            "What feature does Smart Eyewear offer?");
 
         //run agent
         CreateRunOptions createRunOptions = new CreateRunOptions(thread.getId(), agent.getId())
@@ -109,14 +109,5 @@ public class SampleAgentOpenApi {
             agentsClient.deleteThread(thread.getId());
             agentsClient.deleteAgent(agent.getId());
         }
-    }
-
-    private Path getFile(String fileName) throws FileNotFoundException, URISyntaxException {
-        URL resource = getClass().getClassLoader().getResource(fileName);
-        if (resource == null) {
-            throw new FileNotFoundException("File not found");
-        }
-        File file = new File(resource.toURI());
-        return file.toPath();
     }
 }

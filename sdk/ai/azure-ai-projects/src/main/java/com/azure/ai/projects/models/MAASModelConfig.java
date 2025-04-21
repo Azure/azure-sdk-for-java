@@ -26,7 +26,7 @@ public final class MAASModelConfig extends TargetModelConfig {
     private String type = "MAAS";
 
     /*
-     * Endpoint URL for MAAS model.
+     * Endpoint targetURI for MAAS model.
      */
     @Generated
     private String azureEndpoint;
@@ -62,7 +62,7 @@ public final class MAASModelConfig extends TargetModelConfig {
     }
 
     /**
-     * Get the azureEndpoint property: Endpoint URL for MAAS model.
+     * Get the azureEndpoint property: Endpoint targetURI for MAAS model.
      *
      * @return the azureEndpoint value.
      */
@@ -72,7 +72,7 @@ public final class MAASModelConfig extends TargetModelConfig {
     }
 
     /**
-     * Set the azureEndpoint property: Endpoint URL for MAAS model.
+     * Set the azureEndpoint property: Endpoint targetURI for MAAS model.
      * <p>Required when create the resource.</p>
      *
      * @param azureEndpoint the azureEndpoint value to set.

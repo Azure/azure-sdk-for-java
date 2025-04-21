@@ -2,33 +2,43 @@
 // Licensed under the MIT License.
 package com.azure.ai.projects.usage.agent;
 
-
 import com.azure.ai.projects.AIProjectClientBuilder;
 import com.azure.ai.projects.AgentsClient;
 import com.azure.ai.projects.models.Agent;
 import com.azure.ai.projects.models.AgentThread;
-import com.azure.ai.projects.models.CodeInterpreterToolDefinition;
 import com.azure.ai.projects.models.CreateAgentOptions;
 import com.azure.ai.projects.models.CreateRunOptions;
+import com.azure.ai.projects.models.FileDetails;
+import com.azure.ai.projects.models.FilePurpose;
+import com.azure.ai.projects.models.FileSearchToolDefinition;
+import com.azure.ai.projects.models.FileSearchToolResource;
 import com.azure.ai.projects.models.MessageContent;
 import com.azure.ai.projects.models.MessageImageFileContent;
 import com.azure.ai.projects.models.MessageRole;
 import com.azure.ai.projects.models.MessageTextContent;
+import com.azure.ai.projects.models.OpenAIFile;
 import com.azure.ai.projects.models.OpenAIPageableListOfThreadMessage;
 import com.azure.ai.projects.models.RunStatus;
 import com.azure.ai.projects.models.ThreadMessage;
-import com.azure.ai.projects.models.ThreadMessageOptions;
 import com.azure.ai.projects.models.ThreadRun;
+import com.azure.ai.projects.models.ToolResources;
+import com.azure.ai.projects.models.UploadFileRequest;
+import com.azure.ai.projects.models.VectorStore;
+import com.azure.ai.projects.models.VectorStoreFileBatch;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
-
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Path;
 import java.util.Arrays;
 
-public final class SampleAgentAdditionalMessage {
-
+public class AgentVectorStoreBatchFileSearchSample {
     @Test
-    void additionalMessageExample() {
+    void vectorStoreBatchFileSearchExample() throws FileNotFoundException, URISyntaxException {
         AgentsClient agentsClient
             = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .subscriptionId(Configuration.getGlobalConfiguration().get("SUBSCRIPTIONID", "subscriptionid"))
@@ -37,26 +47,41 @@ public final class SampleAgentAdditionalMessage {
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAgentsClient();
 
-        String agentName = "additional_message_example";
+        Path productFile = getFile("product_info_1.md");
+
+        VectorStore vectorStore = agentsClient.createVectorStore(
+            null, "my_vector_store",
+            null, null, null, null);
+
+        OpenAIFile uploadedAgentFile = agentsClient.uploadFile(new UploadFileRequest(
+            new FileDetails(
+                BinaryData.fromFile(productFile))
+                .setFilename("sample_product_info.md"),
+            FilePurpose.AGENTS));
+
+        VectorStoreFileBatch vectorStoreFileBatch = agentsClient.createVectorStoreFileBatch(
+            vectorStore.getId(), Arrays.asList(uploadedAgentFile.getId()), null, null);
+
+        FileSearchToolResource fileSearchToolResource = new FileSearchToolResource()
+            .setVectorStoreIds(Arrays.asList(vectorStore.getId()));
+
+        String agentName = "vector_store_batch_file_search_example";
         CreateAgentOptions createAgentOptions = new CreateAgentOptions("gpt-4o-mini")
             .setName(agentName)
-            .setInstructions("You are a personal electronics tutor. Write and run code to answer questions.")
-            .setTools(Arrays.asList(new CodeInterpreterToolDefinition()));
+            .setInstructions("You are a helpful agent")
+            .setTools(Arrays.asList(new FileSearchToolDefinition()))
+            .setToolResources(new ToolResources().setFileSearch(fileSearchToolResource));
         Agent agent = agentsClient.createAgent(createAgentOptions);
 
         AgentThread thread = agentsClient.createThread();
         ThreadMessage createdMessage = agentsClient.createMessage(
             thread.getId(),
             MessageRole.USER,
-            "What is the impedance formula?");
+            "What feature does Smart Eyewear offer?");
 
         //run agent
         CreateRunOptions createRunOptions = new CreateRunOptions(thread.getId(), agent.getId())
-            .setAdditionalMessages(Arrays.asList(new ThreadMessageOptions(
-                MessageRole.AGENT, "E=mc^2"
-            ), new ThreadMessageOptions(
-                MessageRole.USER, "What is the impedance formula?"
-            )));
+            .setAdditionalInstructions("");
         ThreadRun threadRun = agentsClient.createRun(createRunOptions);
 
         try {
@@ -93,5 +118,14 @@ public final class SampleAgentAdditionalMessage {
             agentsClient.deleteThread(thread.getId());
             agentsClient.deleteAgent(agent.getId());
         }
+    }
+
+    private Path getFile(String fileName) throws FileNotFoundException, URISyntaxException {
+        URL resource = getClass().getClassLoader().getResource(fileName);
+        if (resource == null) {
+            throw new FileNotFoundException("File not found");
+        }
+        File file = new File(resource.toURI());
+        return file.toPath();
     }
 }

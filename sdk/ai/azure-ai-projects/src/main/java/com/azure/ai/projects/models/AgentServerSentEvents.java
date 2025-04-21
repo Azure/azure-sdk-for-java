@@ -5,10 +5,10 @@ package com.azure.ai.projects.models;
 import com.azure.ai.projects.models.streaming.StreamTypeFactory;
 import com.azure.ai.projects.models.streaming.StreamUpdate;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.publisher.Flux;
 import reactor.core.scheduler.Schedulers;
-
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -72,20 +72,22 @@ public final class AgentServerSentEvents {
     private Flux<StreamUpdate> mapEventStream() {
         return source.publishOn(Schedulers.boundedElastic()).concatMap(byteBuffer -> {
             List<StreamUpdate> values = new ArrayList<>();
-            byte[] byteArray = byteBuffer.array();
-            // We check whether we ended the last byteBuffer with a line feed or not, in case we need to close this
-            // chunk soon after
+            byte[] byteArray = FluxUtil.byteBufferToArray(byteBuffer);
+
             byte[] outByteArray = outStream.toByteArray();
             int lineBreakCharsEncountered
                 = outByteArray.length > 0 && isByteLineFeed(outByteArray[outByteArray.length - 1]) ? 1 : 0;
 
-            for (byte currentByte : byteArray) {
-                outStream.write(currentByte);
+            int startIndex = 0;
+            for (int i = 0; i < byteArray.length; i++) {
+                byte currentByte = byteArray[i];
                 if (isByteLineFeed(currentByte)) {
                     lineBreakCharsEncountered++;
 
-                    // We are looking for 2 line breaks to signify the end of a server sent event.
+                    // 2 line breaks signify the end of a server sent event.
                     if (lineBreakCharsEncountered == SSE_CHUNK_LINE_BREAK_COUNT_MARKER) {
+                        outStream.write(byteArray, startIndex, i - startIndex + 1);
+
                         String currentLine;
                         try {
                             currentLine = outStream.toString(StandardCharsets.UTF_8.name());
@@ -94,6 +96,7 @@ public final class AgentServerSentEvents {
                             return Flux.error(e);
                         }
                         outStream = new ByteArrayOutputStream();
+                        startIndex = i + 1;
                     }
                 } else {
                     // In some cases line breaks can contain both the line feed and carriage return characters.
@@ -104,6 +107,10 @@ public final class AgentServerSentEvents {
                         lineBreakCharsEncountered = 0;
                     }
                 }
+            }
+
+            if (startIndex < byteArray.length) {
+                outStream.write(byteArray, startIndex, byteArray.length - startIndex);
             }
 
             try {
@@ -170,8 +177,18 @@ public final class AgentServerSentEvents {
             return;
         }
 
-        String eventName = lines[0].substring(6).trim(); // removing "event:" prefix
-        String eventJson = lines[1].substring(5).trim(); // removing "data:" prefix
+        String[] eventParts = lines[0].split(":", 2);
+        String[] dataParts = lines[1].split(":", 2);
+
+        if (eventParts.length != 2 || !eventParts[0].trim().equals("event")) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid event format: missing event name"));
+        }
+        String eventName = eventParts[1].trim();
+
+        if (dataParts.length != 2 || !dataParts[0].trim().equals("data")) {
+            throw logger.logExceptionAsError(new IllegalArgumentException("Invalid event format: missing event data"));
+        }
+        String eventJson = dataParts[1].trim();
 
         if (DONE.equals(AgentStreamEvent.fromString(eventName))) {
             return;

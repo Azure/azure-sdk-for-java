@@ -26,13 +26,12 @@ import com.azure.ai.projects.models.VectorStoreDataSourceAssetType;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
-
 import java.util.Arrays;
 
-public class SampleAgentVectorStoreBatchEnterpriseFileSearch {
+public class AgentEnterpriseFileSearchSample {
 
     @Test
-    void vectorStoreBatchEnterpriseFileSearchExample() {
+    void enterpriseFileSearchExample() {
         AgentsClient agentsClient
             = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .subscriptionId(Configuration.getGlobalConfiguration().get("SUBSCRIPTIONID", "subscriptionid"))
@@ -51,13 +50,10 @@ public class SampleAgentVectorStoreBatchEnterpriseFileSearch {
             null, null, null
         );
 
-        agentsClient.createVectorStoreFileBatch(vs.getId(),
-            null, Arrays.asList(vectorStoreDataSource), null);
-
         FileSearchToolResource fileSearchToolResource = new FileSearchToolResource()
             .setVectorStoreIds(Arrays.asList(vs.getId()));
 
-        String agentName = "vector_store_batch_enterprise_file_search_example";
+        String agentName = "enterprise_file_search_example";
         CreateAgentOptions createAgentOptions = new CreateAgentOptions("gpt-4o-mini")
             .setName(agentName)
             .setInstructions("You are a helpful agent")
@@ -69,7 +65,7 @@ public class SampleAgentVectorStoreBatchEnterpriseFileSearch {
         ThreadMessage createdMessage = agentsClient.createMessage(
             thread.getId(),
             MessageRole.USER,
-            "What feature does Smart Eyewear offer?");
+            "What is data about?");
 
         //run agent
         CreateRunOptions createRunOptions = new CreateRunOptions(thread.getId(), agent.getId())

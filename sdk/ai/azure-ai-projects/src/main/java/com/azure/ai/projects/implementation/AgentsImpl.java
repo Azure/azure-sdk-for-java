@@ -299,6 +299,30 @@ public final class AgentsImpl {
             @QueryParam("api-version") String apiVersion, @PathParam("threadId") String threadId,
             @HeaderParam("Accept") String accept, RequestOptions requestOptions, Context context);
 
+        @Get("/threads")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Mono<Response<BinaryData>> listThreads(@HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName, @HostParam("projectName") String projectName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
+        @Get("/threads")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
+        @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
+        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        Response<BinaryData> listThreadsSync(@HostParam("endpoint") String endpoint,
+            @HostParam("subscriptionId") String subscriptionId,
+            @HostParam("resourceGroupName") String resourceGroupName, @HostParam("projectName") String projectName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            RequestOptions requestOptions, Context context);
+
         @Post("/threads/{threadId}/messages")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(value = ClientAuthenticationException.class, code = { 401 })
@@ -2164,7 +2188,7 @@ public final class AgentsImpl {
      *     messages (Optional): [
      *          (Optional){
      *             role: String(user/assistant) (Required)
-     *             content: String (Required)
+     *             content: BinaryData (Required)
      *             attachments (Optional): [
      *                  (Optional){
      *                     file_id: String (Optional)
@@ -2309,7 +2333,7 @@ public final class AgentsImpl {
      *     messages (Optional): [
      *          (Optional){
      *             role: String(user/assistant) (Required)
-     *             content: String (Required)
+     *             content: BinaryData (Required)
      *             attachments (Optional): [
      *                  (Optional){
      *                     file_id: String (Optional)
@@ -2905,6 +2929,199 @@ public final class AgentsImpl {
     }
 
     /**
+     * Gets a list of threads that were previously created.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             id: String (Required)
+     *             object: String (Required)
+     *             created_at: long (Required)
+     *             tool_resources (Required): {
+     *                 code_interpreter (Optional): {
+     *                     file_ids (Optional): [
+     *                         String (Optional)
+     *                     ]
+     *                     data_sources (Optional): [
+     *                          (Optional){
+     *                             uri: String (Required)
+     *                             type: String(uri_asset/id_asset) (Required)
+     *                         }
+     *                     ]
+     *                 }
+     *                 file_search (Optional): {
+     *                     vector_store_ids (Optional): [
+     *                         String (Optional)
+     *                     ]
+     *                     vector_stores (Optional): [
+     *                          (Optional){
+     *                             name: String (Required)
+     *                             configuration (Required): {
+     *                                 data_sources (Required): [
+     *                                     (recursive schema, see above)
+     *                                 ]
+     *                             }
+     *                         }
+     *                     ]
+     *                 }
+     *                 azure_ai_search (Optional): {
+     *                     indexes (Optional): [
+     *                          (Optional){
+     *                             index_connection_id: String (Required)
+     *                             index_name: String (Required)
+     *                             query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
+     *                             top_k: Integer (Optional)
+     *                             filter: String (Optional)
+     *                         }
+     *                     ]
+     *                 }
+     *             }
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
+     *         }
+     *     ]
+     *     first_id: String (Required)
+     *     last_id: String (Required)
+     *     has_more: boolean (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of threads that were previously created along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<BinaryData>> listThreadsWithResponseAsync(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.listThreads(this.client.getEndpoint(),
+            this.client.getSubscriptionId(), this.client.getResourceGroupName(), this.client.getProjectName(),
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, context));
+    }
+
+    /**
+     * Gets a list of threads that were previously created.
+     * <p><strong>Query Parameters</strong></p>
+     * <table border="1">
+     * <caption>Query Parameters</caption>
+     * <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     * <tr><td>limit</td><td>Integer</td><td>No</td><td>A limit on the number of objects to be returned. Limit can range
+     * between 1 and 100, and the default is 20.</td></tr>
+     * <tr><td>order</td><td>String</td><td>No</td><td>Sort order by the created_at timestamp of the objects. asc for
+     * ascending order and desc for descending order. Allowed values: "asc", "desc".</td></tr>
+     * <tr><td>after</td><td>String</td><td>No</td><td>A cursor for use in pagination. after is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include after=obj_foo in order to fetch the next page of the list.</td></tr>
+     * <tr><td>before</td><td>String</td><td>No</td><td>A cursor for use in pagination. before is an object ID that
+     * defines your place in the list. For instance, if you make a list request and receive 100 objects, ending with
+     * obj_foo, your subsequent call can include before=obj_foo in order to fetch the previous page of the
+     * list.</td></tr>
+     * </table>
+     * You can add these to a request with {@link RequestOptions#addQueryParam}
+     * <p><strong>Response Body Schema</strong></p>
+     * 
+     * <pre>
+     * {@code
+     * {
+     *     object: String (Required)
+     *     data (Required): [
+     *          (Required){
+     *             id: String (Required)
+     *             object: String (Required)
+     *             created_at: long (Required)
+     *             tool_resources (Required): {
+     *                 code_interpreter (Optional): {
+     *                     file_ids (Optional): [
+     *                         String (Optional)
+     *                     ]
+     *                     data_sources (Optional): [
+     *                          (Optional){
+     *                             uri: String (Required)
+     *                             type: String(uri_asset/id_asset) (Required)
+     *                         }
+     *                     ]
+     *                 }
+     *                 file_search (Optional): {
+     *                     vector_store_ids (Optional): [
+     *                         String (Optional)
+     *                     ]
+     *                     vector_stores (Optional): [
+     *                          (Optional){
+     *                             name: String (Required)
+     *                             configuration (Required): {
+     *                                 data_sources (Required): [
+     *                                     (recursive schema, see above)
+     *                                 ]
+     *                             }
+     *                         }
+     *                     ]
+     *                 }
+     *                 azure_ai_search (Optional): {
+     *                     indexes (Optional): [
+     *                          (Optional){
+     *                             index_connection_id: String (Required)
+     *                             index_name: String (Required)
+     *                             query_type: String(simple/semantic/vector/vector_simple_hybrid/vector_semantic_hybrid) (Optional)
+     *                             top_k: Integer (Optional)
+     *                             filter: String (Optional)
+     *                         }
+     *                     ]
+     *                 }
+     *             }
+     *             metadata (Required): {
+     *                 String: String (Required)
+     *             }
+     *         }
+     *     ]
+     *     first_id: String (Required)
+     *     last_id: String (Required)
+     *     has_more: boolean (Required)
+     * }
+     * }
+     * </pre>
+     * 
+     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @return a list of threads that were previously created along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BinaryData> listThreadsWithResponse(RequestOptions requestOptions) {
+        final String accept = "application/json";
+        return service.listThreadsSync(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            this.client.getResourceGroupName(), this.client.getProjectName(),
+            this.client.getServiceVersion().getVersion(), accept, requestOptions, Context.NONE);
+    }
+
+    /**
      * Creates a new message on a specified thread.
      * <p><strong>Request Body Schema</strong></p>
      * 
@@ -2912,7 +3129,7 @@ public final class AgentsImpl {
      * {@code
      * {
      *     role: String(user/assistant) (Required)
-     *     content: String (Required)
+     *     content: BinaryData (Required)
      *     attachments (Optional): [
      *          (Optional){
      *             file_id: String (Optional)
@@ -3003,7 +3220,7 @@ public final class AgentsImpl {
      * {@code
      * {
      *     role: String(user/assistant) (Required)
-     *     content: String (Required)
+     *     content: BinaryData (Required)
      *     attachments (Optional): [
      *          (Optional){
      *             file_id: String (Optional)
@@ -3562,7 +3779,7 @@ public final class AgentsImpl {
      *     additional_messages (Optional): [
      *          (Optional){
      *             role: String(user/assistant) (Required)
-     *             content: String (Required)
+     *             content: BinaryData (Required)
      *             attachments (Optional): [
      *                  (Optional){
      *                     file_id: String (Optional)
@@ -3728,7 +3945,7 @@ public final class AgentsImpl {
      *     additional_messages (Optional): [
      *          (Optional){
      *             role: String(user/assistant) (Required)
-     *             content: String (Required)
+     *             content: BinaryData (Required)
      *             attachments (Optional): [
      *                  (Optional){
      *                     file_id: String (Optional)
@@ -4990,7 +5207,7 @@ public final class AgentsImpl {
      *         messages (Optional): [
      *              (Optional){
      *                 role: String(user/assistant) (Required)
-     *                 content: String (Required)
+     *                 content: BinaryData (Required)
      *                 attachments (Optional): [
      *                      (Optional){
      *                         file_id: String (Optional)
@@ -5198,7 +5415,7 @@ public final class AgentsImpl {
      *         messages (Optional): [
      *              (Optional){
      *                 role: String(user/assistant) (Required)
-     *                 content: String (Required)
+     *                 content: BinaryData (Required)
      *                 attachments (Optional): [
      *                      (Optional){
      *                         file_id: String (Optional)

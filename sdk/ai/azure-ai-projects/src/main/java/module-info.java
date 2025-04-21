@@ -7,13 +7,7 @@ module com.azure.ai.projects {
 
     exports com.azure.ai.projects;
     exports com.azure.ai.projects.models;
-    exports azure.ai.projects;
-    exports azure.ai.projects.agents.models;
-    exports azure.ai.projects.models;
 
     opens com.azure.ai.projects.models to com.azure.core;
     opens com.azure.ai.projects.implementation.models to com.azure.core;
-    opens azure.ai.projects.agents.models to com.azure.core;
-    opens azure.ai.projects.implementation.models to com.azure.core;
-    opens azure.ai.projects.models to com.azure.core;
 }

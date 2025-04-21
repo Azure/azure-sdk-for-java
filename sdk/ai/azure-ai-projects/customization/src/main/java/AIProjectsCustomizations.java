@@ -13,40 +13,5 @@ public class AIProjectsCustomizations extends Customization {
     public void customize(LibraryCustomization customization, Logger logger) {
         // remove unused class (no reference to them, after partial-update)
 
-        ClassCustomization connectionsImpl = customization.getClass(
-            "com.azure.ai.projects.implementation",
-            "ConnectionsImpl");
-
-        List<Range> toReplace = connectionsImpl.getEditor().searchText(
-            connectionsImpl.getFileName(),
-            "{endpoint}/agents/v1.0");
-
-        for (Range r : toReplace) {
-            logger.info("customizing");
-            connectionsImpl.getEditor().replace(
-                connectionsImpl.getFileName(),
-                r.getStart(),
-                r.getEnd(),
-                "{endpoint}"
-            );
-        }
-
-        ClassCustomization telemetriesImpl = customization.getClass(
-            "com.azure.ai.projects.implementation",
-            "TelemetriesImpl");
-
-        toReplace = telemetriesImpl.getEditor().searchText(
-            telemetriesImpl.getFileName(),
-            "{endpoint}/agents/v1.0");
-
-        for (Range r : toReplace) {
-            logger.info("customizing");
-            telemetriesImpl.getEditor().replace(
-                telemetriesImpl.getFileName(),
-                r.getStart(),
-                r.getEnd(),
-                "{endpoint}"
-            );
-        }
     }
 }

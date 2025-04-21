@@ -4,9 +4,11 @@ package com.azure.ai.projects.usage.agent;
 
 import com.azure.ai.projects.AIProjectClientBuilder;
 import com.azure.ai.projects.AgentsClient;
+import com.azure.ai.projects.models.AISearchIndexResource;
 import com.azure.ai.projects.models.Agent;
 import com.azure.ai.projects.models.AgentThread;
-import com.azure.ai.projects.models.BingGroundingToolDefinition;
+import com.azure.ai.projects.models.AzureAISearchResource;
+import com.azure.ai.projects.models.AzureAISearchToolDefinition;
 import com.azure.ai.projects.models.CreateAgentOptions;
 import com.azure.ai.projects.models.CreateRunOptions;
 import com.azure.ai.projects.models.MessageContent;
@@ -17,18 +19,16 @@ import com.azure.ai.projects.models.OpenAIPageableListOfThreadMessage;
 import com.azure.ai.projects.models.RunStatus;
 import com.azure.ai.projects.models.ThreadMessage;
 import com.azure.ai.projects.models.ThreadRun;
-import com.azure.ai.projects.models.ToolConnection;
-import com.azure.ai.projects.models.ToolConnectionList;
+import com.azure.ai.projects.models.ToolResources;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
-
 import java.util.Arrays;
 
-public class SampleAgentBingGrounding {
+public class AgentAzureAISearchSample {
 
     @Test
-    void bingGroundingExample() {
+    void aiSearchExample() {
         AgentsClient agentsClient
             = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .subscriptionId(Configuration.getGlobalConfiguration().get("SUBSCRIPTIONID", "subscriptionid"))
@@ -37,23 +37,25 @@ public class SampleAgentBingGrounding {
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAgentsClient();
 
-        String bingConnectionId = Configuration.getGlobalConfiguration().get("BING_CONNECTION_ID", "");
-        ToolConnectionList toolConnectionList = new ToolConnectionList()
-            .setConnectionList(Arrays.asList(new ToolConnection(bingConnectionId)));
-        BingGroundingToolDefinition bingGroundingTool = new BingGroundingToolDefinition(toolConnectionList);
+        String aiSearchConnectionId = Configuration.getGlobalConfiguration().get("AI_SEARCH_CONNECTION_ID", "");
 
-        String agentName = "bing_grounding_example";
-        CreateAgentOptions createAgentOptions = new CreateAgentOptions("gpt-35-turbo")
+        ToolResources toolResources = new ToolResources()
+            .setAzureAISearch(new AzureAISearchResource()
+                .setIndexList(Arrays.asList(new AISearchIndexResource(aiSearchConnectionId, "sample_index"))));
+
+        String agentName = "ai_search_example";
+        CreateAgentOptions createAgentOptions = new CreateAgentOptions("gpt-4o-mini")
             .setName(agentName)
             .setInstructions("You are a helpful agent")
-            .setTools(Arrays.asList(bingGroundingTool));
+            .setTools(Arrays.asList(new AzureAISearchToolDefinition()))
+            .setToolResources(toolResources);
         Agent agent = agentsClient.createAgent(createAgentOptions);
 
         AgentThread thread = agentsClient.createThread();
         ThreadMessage createdMessage = agentsClient.createMessage(
             thread.getId(),
             MessageRole.USER,
-            "How does wikipedia explain Euler's Identity?");
+            "Hello, send an email with the datetime and weather information in New York?");
 
         //run agent
         CreateRunOptions createRunOptions = new CreateRunOptions(thread.getId(), agent.getId())

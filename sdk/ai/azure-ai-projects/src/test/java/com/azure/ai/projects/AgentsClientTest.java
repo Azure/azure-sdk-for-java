@@ -290,7 +290,7 @@ class AgentsClientTest extends AIProjectClientTestBase {
 
         OpenAIFile uploadedAgentFile = agentsClient.uploadFile(new UploadFileRequest(new FileDetails(BinaryData
             .fromString("The word `apple` uses the code 442345, while the word `banana` uses the code 673457."))
-            .setFilename("sample_file_for_upload.txt"),
+                .setFilename("sample_file_for_upload.txt"),
             FilePurpose.AGENTS));
         assertNotNull(uploadedAgentFile);
         assertNotNull(uploadedAgentFile.getId());
@@ -314,9 +314,9 @@ class AgentsClientTest extends AIProjectClientTestBase {
         assertFalse(files.isEmpty());
         files
             = agentsClient
-            .listVectorStoreFiles(vectorStoreWithId.getId(), VectorStoreFileStatusFilter.COMPLETED, 1,
-                ListSortOrder.ASCENDING, null, null)
-            .getData();
+                .listVectorStoreFiles(vectorStoreWithId.getId(), VectorStoreFileStatusFilter.COMPLETED, 1,
+                    ListSortOrder.ASCENDING, null, null)
+                .getData();
         assertFalse(files.isEmpty());
 
         // List vector stores
@@ -398,7 +398,7 @@ class AgentsClientTest extends AIProjectClientTestBase {
             "getCityNickname",
             BinaryData.fromObject(mapOf("type", "object", "properties",
                 mapOf("location", mapOf("type", "string", "description", "The city and state, e.g. San Francisco, CA")),
-                "required", new String[]{"location"}))).setDescription("Gets the nickname of a city."));
+                "required", new String[] { "location" }))).setDescription("Gets the nickname of a city."));
 
         String agentName = "functions_test_agent_" + UUID.randomUUID();
         CreateAgentOptions createAgentOptions = new CreateAgentOptions("gpt-4o-mini").setName(agentName)
@@ -591,9 +591,9 @@ class AgentsClientTest extends AIProjectClientTestBase {
             = agentsClient.createMessage(thread.getId(), MessageRole.USER, "What is the value of Pi?");
 
         // Run agent with additional messages
-        CreateRunOptions createRunOptions = new CreateRunOptions(thread.getId(), agent.getId())
-            .setAdditionalMessages(Arrays.asList(new ThreadMessageOptions(MessageRole.AGENT, "Pi is exactly 3."),
-                new ThreadMessageOptions(MessageRole.USER, "Are you sure about Pi?")));
+        CreateRunOptions createRunOptions = new CreateRunOptions(thread.getId(), agent.getId()).setAdditionalMessages(
+            Arrays.asList(new ThreadMessageOptions(MessageRole.AGENT, BinaryData.fromString("Pi is exactly 3.")),
+                new ThreadMessageOptions(MessageRole.USER, BinaryData.fromString("Are you sure about Pi?"))));
 
         ThreadRun threadRun = agentsClient.createRun(createRunOptions);
 
@@ -654,7 +654,7 @@ class AgentsClientTest extends AIProjectClientTestBase {
         // Upload file
         OpenAIFile uploadedFile = agentsClient.uploadFile(new UploadFileRequest(new FileDetails(BinaryData
             .fromString("<html><body><h1>Test Content</h1><p>This is sample data for testing.</p></body></html>"))
-            .setFilename("sample_test.html"),
+                .setFilename("sample_test.html"),
             FilePurpose.AGENTS));
         assertNotNull(uploadedFile);
 
@@ -872,16 +872,17 @@ class AgentsClientTest extends AIProjectClientTestBase {
             "getCityNickname",
             BinaryData.fromObject(mapOf("type", "object", "properties",
                 mapOf("location", mapOf("type", "string", "description", "The city and state, e.g. San Francisco, CA")),
-                "required", new String[]{"location"}))).setDescription("Gets the nickname of a city."));
+                "required", new String[] { "location" }))).setDescription("Gets the nickname of a city."));
 
-        FunctionToolDefinition getCurrentWeatherTool = new FunctionToolDefinition(
-            new FunctionDefinition("getCurrentWeatherAtLocation",
-                BinaryData.fromObject(mapOf("type", "object", "properties", mapOf("location",
+        FunctionToolDefinition getCurrentWeatherTool
+            = new FunctionToolDefinition(
+                new FunctionDefinition("getCurrentWeatherAtLocation",
+                    BinaryData.fromObject(mapOf("type", "object", "properties", mapOf("location",
                         mapOf("type", "string", "description", "The city and state, e.g. San Francisco, CA"), "unit",
                         mapOf("type", "string", "description", "temperature unit as c or f", "enum",
-                            new String[]{"c", "f"})),
-                    "required", new String[]{"location", "unit"})))
-                .setDescription("Gets the current weather at a provided location."));
+                            new String[] { "c", "f" })),
+                        "required", new String[] { "location", "unit" })))
+                            .setDescription("Gets the current weather at a provided location."));
 
         // Function implementations
         Supplier<String> getUserFavoriteCity = () -> "Seattle, WA";
@@ -1049,7 +1050,7 @@ class AgentsClientTest extends AIProjectClientTestBase {
             FunctionDefinition functionDefinition = new FunctionDefinition(azureFunctionName,
                 BinaryData.fromObject(mapOf("type", "object", "properties",
                     mapOf("location", mapOf("type", "string", "description", "The location to look up")), "required",
-                    new String[]{"location"})));
+                    new String[] { "location" })));
 
             AzureFunctionDefinition azureFunctionDefinition = new AzureFunctionDefinition(functionDefinition,
                 new AzureFunctionBinding(new AzureFunctionStorageQueue(storageQueueUri, "agent-input")),
@@ -1197,7 +1198,7 @@ class AgentsClientTest extends AIProjectClientTestBase {
 
         runSteps
             = agentsClient.listRunSteps(run1.getThreadId(), run1.getId(), null, 1, ListSortOrder.ASCENDING, null, null)
-            .getData();
+                .getData();
         assertTrue(runSteps.size() > 0);
         agentsClient.updateRun(thread.getId(), run1.getId());
 
@@ -1373,7 +1374,7 @@ class AgentsClientTest extends AIProjectClientTestBase {
         FunctionToolDefinition getWeatherTool = new FunctionToolDefinition(new FunctionDefinition("getWeather",
             BinaryData.fromObject(mapOf("type", "object", "properties",
                 mapOf("location", mapOf("type", "string", "description", "The city name")), "required",
-                new String[]{"location"}))).setDescription("Get weather for a location"));
+                new String[] { "location" }))).setDescription("Get weather for a location"));
 
         Agent functionAgent = agentsClient
             .createAgent(new CreateAgentOptions("gpt-4o-mini").setName("streaming_tool_test_" + UUID.randomUUID())

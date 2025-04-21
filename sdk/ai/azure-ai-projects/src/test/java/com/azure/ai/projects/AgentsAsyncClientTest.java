@@ -389,9 +389,10 @@ public class AgentsAsyncClientTest extends AIProjectClientTestBase {
             return agentsAsyncClient.createMessage(thread.getId(), MessageRole.USER, "What is the value of Pi?");
         }).flatMap(message -> {
             // Create run with additional messages to influence response
-            CreateRunOptions runOptions = new CreateRunOptions(threadIdRef.get(), agentIdRef.get())
-                .setAdditionalMessages(Arrays.asList(new ThreadMessageOptions(MessageRole.AGENT, "Pi is exactly 3."),
-                    new ThreadMessageOptions(MessageRole.USER, "Are you sure about Pi?")));
+            CreateRunOptions runOptions
+                = new CreateRunOptions(threadIdRef.get(), agentIdRef.get()).setAdditionalMessages(Arrays.asList(
+                    new ThreadMessageOptions(MessageRole.AGENT, BinaryData.fromString("Pi is exactly 3.")),
+                    new ThreadMessageOptions(MessageRole.USER, BinaryData.fromString("Are you sure about Pi?"))));
 
             return agentsAsyncClient.createRun(runOptions);
         })).expectNextCount(1).verifyComplete();
@@ -749,20 +750,26 @@ public class AgentsAsyncClientTest extends AIProjectClientTestBase {
             if (run.getStatus() == RunStatus.COMPLETED
                 || run.getStatus() == RunStatus.FAILED
                 || run.getStatus() == RunStatus.CANCELLED) {
+                threadIdRef.set(run.getThreadId());
+                runIdRef.set(run.getId());
                 return Mono.empty();
             }
             return Mono.delay(Duration.ofMillis(500)).then(agentsAsyncClient.getRun(run.getThreadId(), run.getId()));
         }).last();
 
         // Get specific run step
-        StepVerifier.create(agentsAsyncClient.listRunSteps(threadIdRef.get(), runIdRef.get()).flatMap(runStepsList -> {
-            String stepId = runStepsList.getData().get(0).getId();
-            // Get individual run step
-            return agentsAsyncClient.getRunStep(threadIdRef.get(), runIdRef.get(), stepId);
-        })).assertNext(runStep -> {
-            assertNotNull(runStep);
-            assertNotNull(runStep.getId());
-        }).verifyComplete();
+        StepVerifier
+            .create(pollForCompletion.flatMap(run -> agentsAsyncClient.listRunSteps(threadIdRef.get(), runIdRef.get()))
+                .flatMap(runStepsList -> {
+                    String stepId = runStepsList.getData().get(0).getId();
+                    // Get individual run step
+                    return agentsAsyncClient.getRunStep(threadIdRef.get(), runIdRef.get(), stepId);
+                }))
+            .assertNext(runStep -> {
+                assertNotNull(runStep);
+                assertNotNull(runStep.getId());
+            })
+            .verifyComplete();
 
         // List run steps with pagination and sorting
         StepVerifier

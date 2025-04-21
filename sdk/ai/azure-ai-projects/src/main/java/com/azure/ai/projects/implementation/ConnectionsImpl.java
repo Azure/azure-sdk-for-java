@@ -68,7 +68,7 @@ public final class ConnectionsImpl {
      * The interface defining all the services for AIProjectClientConnections to be used by the proxy service to perform
      * REST calls.
      */
-    @Host("{endpoint}/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{projectName}")
+    @Host("{endpoint}/agents/v1.0/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.MachineLearningServices/workspaces/{projectName}")
     @ServiceInterface(name = "AIProjectClientConne")
     public interface ConnectionsService {
         @Get("/")

@@ -4,12 +4,15 @@ package com.azure.ai.projects.usage.agent;
 
 import com.azure.ai.projects.AIProjectClientBuilder;
 import com.azure.ai.projects.AgentsClient;
+import com.azure.ai.projects.implementation.models.CreateAgentRequest;
 import com.azure.ai.projects.models.Agent;
 import com.azure.ai.projects.models.AgentThread;
-import com.azure.ai.projects.models.CodeInterpreterToolDefinition;
-import com.azure.ai.projects.models.CreateAgentOptions;
+import com.azure.ai.projects.models.AzureFunctionBinding;
+import com.azure.ai.projects.models.AzureFunctionDefinition;
+import com.azure.ai.projects.models.AzureFunctionStorageQueue;
+import com.azure.ai.projects.models.AzureFunctionToolDefinition;
 import com.azure.ai.projects.models.CreateRunOptions;
-import com.azure.ai.projects.models.MessageAttachment;
+import com.azure.ai.projects.models.FunctionDefinition;
 import com.azure.ai.projects.models.MessageContent;
 import com.azure.ai.projects.models.MessageImageFileContent;
 import com.azure.ai.projects.models.MessageRole;
@@ -18,19 +21,22 @@ import com.azure.ai.projects.models.OpenAIPageableListOfThreadMessage;
 import com.azure.ai.projects.models.RunStatus;
 import com.azure.ai.projects.models.ThreadMessage;
 import com.azure.ai.projects.models.ThreadRun;
-import com.azure.ai.projects.models.VectorStoreDataSource;
-import com.azure.ai.projects.models.VectorStoreDataSourceAssetType;
+import com.azure.core.http.HttpHeaderName;
+import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
-public class SampleAgentCodeInterpreterEnterpriseFileSearch {
+public class AgentAzureFunctionSample {
 
     @Test
-    void codeInterpreterEnterpriseFileSearchExample() {
+    @Disabled
+    void azureFunctionExample() {
         AgentsClient agentsClient
             = new AIProjectClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
             .subscriptionId(Configuration.getGlobalConfiguration().get("SUBSCRIPTIONID", "subscriptionid"))
@@ -39,31 +45,46 @@ public class SampleAgentCodeInterpreterEnterpriseFileSearch {
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAgentsClient();
 
-        String agentName = "code_interpreter_enterprise_file_search_example";
-        CodeInterpreterToolDefinition ciTool = new CodeInterpreterToolDefinition();
-        CreateAgentOptions createAgentOptions = new CreateAgentOptions("gpt-4o-mini")
+        String storageQueueUri = Configuration.getGlobalConfiguration().get("STORAGE_QUEUE_URI", "");
+        String azureFunctionName = Configuration.getGlobalConfiguration().get("AZURE_FUNCTION_NAME", "");
+
+        FunctionDefinition fnDef = new FunctionDefinition(
+            azureFunctionName,
+            BinaryData.fromObject(
+                mapOf(
+                    "type", "object",
+                    "properties", mapOf(
+                        "location",
+                        mapOf("type", "string", "description", "The location to look up")
+                    ),
+                    "required", new String[]{"location"}
+                )
+            )
+        );
+        AzureFunctionDefinition azureFnDef = new AzureFunctionDefinition(
+            fnDef,
+            new AzureFunctionBinding(new AzureFunctionStorageQueue(storageQueueUri, "agent-input")),
+            new AzureFunctionBinding(new AzureFunctionStorageQueue(storageQueueUri, "agent-output"))
+        );
+        AzureFunctionToolDefinition azureFnTool = new AzureFunctionToolDefinition(azureFnDef);
+
+        String agentName = "azure_function_example";
+        RequestOptions requestOptions = new RequestOptions()
+            .setHeader(HttpHeaderName.fromString("x-ms-enable-preview"), "true");
+        CreateAgentRequest createAgentRequestObj = new CreateAgentRequest("gpt-4o-mini")
             .setName(agentName)
-            .setInstructions("You are a helpful agent")
-            .setTools(Arrays.asList(ciTool));
-        Agent agent = agentsClient.createAgent(createAgentOptions);
-
-        String dataUri = Configuration.getGlobalConfiguration().get("DATA_URI", "");
-        VectorStoreDataSource vectorStoreDataSource = new VectorStoreDataSource(
-            dataUri, VectorStoreDataSourceAssetType.URI_ASSET);
-
-        MessageAttachment messageAttachment = new MessageAttachment(
-            Arrays.asList(BinaryData.fromObject(ciTool))
-        ).setDataSource(vectorStoreDataSource);
+            .setInstructions("You are a helpful agent. Use the provided function any time "
+                + "you are asked with the weather of any location")
+            .setTools(Arrays.asList(azureFnTool));
+        BinaryData createAgentRequest = BinaryData.fromObject(createAgentRequestObj);
+        Agent agent = agentsClient.createAgentWithResponse(createAgentRequest, requestOptions)
+            .getValue().toObject(Agent.class);
 
         AgentThread thread = agentsClient.createThread();
-
         ThreadMessage createdMessage = agentsClient.createMessage(
             thread.getId(),
             MessageRole.USER,
-            "What does the attachment say?",
-            Arrays.asList(messageAttachment),
-            null
-        );
+            "What is the weather in Seattle, WA?");
 
         //run agent
         CreateRunOptions createRunOptions = new CreateRunOptions(thread.getId(), agent.getId())
@@ -104,5 +125,17 @@ public class SampleAgentCodeInterpreterEnterpriseFileSearch {
             agentsClient.deleteThread(thread.getId());
             agentsClient.deleteAgent(agent.getId());
         }
+    }
+
+    // Use "Map.of" if available
+    @SuppressWarnings("unchecked")
+    private static <T> Map<String, T> mapOf(Object... inputs) {
+        Map<String, T> map = new HashMap<>();
+        for (int i = 0; i < inputs.length; i += 2) {
+            String key = (String) inputs[i];
+            T value = (T) inputs[i + 1];
+            map.put(key, value);
+        }
+        return map;
     }
 }
