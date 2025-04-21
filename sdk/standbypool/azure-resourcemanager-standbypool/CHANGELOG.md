@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.0 (2025-04-17)
+## 1.1.0 (2025-04-21)
 
 - Azure Resource Manager Standby Pool client library for Java. This package contains Microsoft Azure SDK for Standby Pool Management SDK. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
