@@ -203,25 +203,6 @@ public final class ConfidentialLedgerClientBuilder
     @Generated
     private String endpoint;
 
-    /*
-     * The service endpoint
-     */
-    @Generated
-    private String ledgerEndpoint;
-
-    /**
-     * Sets The Confidential Ledger URL, for example https://contoso.confidentialledger.azure.com.
-     * @deprecated The ledgerEndpoint method is now deprecated and will be removed in future releases Use {@link ConfidentialLedgerClientBuilder#endpoint(endpoint)} instead.
-     *
-     * @param ledgerEndpoint the ledgerEndpoint value.
-     * @return the ConfidentialLedgerClientBuilder.
-     */
-    @Deprecated
-    public ConfidentialLedgerClientBuilder ledgerEndpoint(String ledgerEndpoint) {
-        this.ledgerEndpoint = ledgerEndpoint;
-        return this;
-    }
-
     /**
      * Sets The Confidential Ledger URL, for example https://contoso.confidentialledger.azure.com.
      * 
@@ -229,6 +210,7 @@ public final class ConfidentialLedgerClientBuilder
      * @return the ConfidentialLedgerClientBuilder.
      * {@inheritDoc}.
      */
+    @Generated
     @Override
     public ConfidentialLedgerClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
