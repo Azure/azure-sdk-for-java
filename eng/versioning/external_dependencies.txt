@@ -11,16 +11,15 @@ ch.qos.logback:logback-classic;1.3.14
 com.azure:azure-servicebus-jms;2.0.0
 com.azure.tools:azure-autorest-customization;1.0.0-beta.9
 com.fasterxml:aalto-xml;1.3.3
-com.fasterxml.jackson.core:jackson-annotations;2.17.2
-com.fasterxml.jackson.core:jackson-core;2.17.2
-com.fasterxml.jackson.core:jackson-databind;2.17.2
-com.fasterxml.jackson.dataformat:jackson-dataformat-avro;2.17.2
-com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.17.2
-com.fasterxml.jackson.dataformat:jackson-dataformat-smile;2.17.2
-com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.17.2
-com.fasterxml.jackson.module:jackson-module-afterburner;2.17.2
-com.fasterxml.jackson.module:jackson-module-blackbird;2.17.2
-com.fasterxml.jackson.module:jackson-module-scala_2.12;2.17.2
+com.fasterxml.jackson.core:jackson-annotations;2.18.3
+com.fasterxml.jackson.core:jackson-core;2.18.3
+com.fasterxml.jackson.core:jackson-databind;2.18.3
+com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.18.3
+com.fasterxml.jackson.dataformat:jackson-dataformat-smile;2.18.3
+com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.18.3
+com.fasterxml.jackson.module:jackson-module-afterburner;2.18.3
+com.fasterxml.jackson.module:jackson-module-blackbird;2.18.3
+com.fasterxml.jackson.module:jackson-module-scala_2.12;2.18.3
 com.github.spotbugs:spotbugs;4.8.3
 com.github.spotbugs:spotbugs-annotations;4.8.3
 com.github.spotbugs:spotbugs-maven-plugin;4.8.3.1
@@ -295,10 +294,6 @@ cosmos_org.sourcelab:kafka-connect-client;4.0.4
 cosmos_io.confluent:kafka-avro-serializer;7.6.0
 cosmos_org.apache.avro:avro;1.11.3
 # Maven Tools for Cosmos Kafka connector only
-
-# sdk\core\azure-core-serializer-avro-jackson\pom.xml
-# This dependency is needed since Jackson Avro uses an older dependency on Apache Avro which is another library.
-jacksonavro_org.apache.avro:avro-maven-plugin;1.8.2
 
 # sdk\mediaservices\microsoft-azure-media\pom.xml which hasn't been released for 2 years
 # all of these unique references below are listed here because they're old, some are over 10 years old
