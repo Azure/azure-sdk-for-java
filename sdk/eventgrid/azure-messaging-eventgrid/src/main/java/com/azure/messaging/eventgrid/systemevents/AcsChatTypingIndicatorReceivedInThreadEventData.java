@@ -15,10 +15,11 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 /**
- * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageReceivedInThread event.
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatTypingIndicatorReceivedInThread
+ * event.
  */
 @Fluent
-public final class AcsChatMessageReceivedInThreadEventData extends AcsChatMessageEventInThreadBaseProperties {
+public final class AcsChatTypingIndicatorReceivedInThreadEventData extends AcsChatMessageEventInThreadBaseProperties {
     /*
      * The body of the chat message
      */
@@ -30,9 +31,9 @@ public final class AcsChatMessageReceivedInThreadEventData extends AcsChatMessag
     private Map<String, String> metadata;
 
     /**
-     * Creates an instance of AcsChatMessageReceivedInThreadEventData class.
+     * Creates an instance of AcsChatTypingIndicatorReceivedInThreadEventData class.
      */
-    public AcsChatMessageReceivedInThreadEventData() {
+    public AcsChatTypingIndicatorReceivedInThreadEventData() {
     }
 
     /**
@@ -48,9 +49,9 @@ public final class AcsChatMessageReceivedInThreadEventData extends AcsChatMessag
      * Set the messageBody property: The body of the chat message.
      * 
      * @param messageBody the messageBody value to set.
-     * @return the AcsChatMessageReceivedInThreadEventData object itself.
+     * @return the AcsChatTypingIndicatorReceivedInThreadEventData object itself.
      */
-    public AcsChatMessageReceivedInThreadEventData setMessageBody(String messageBody) {
+    public AcsChatTypingIndicatorReceivedInThreadEventData setMessageBody(String messageBody) {
         this.messageBody = messageBody;
         return this;
     }
@@ -68,9 +69,9 @@ public final class AcsChatMessageReceivedInThreadEventData extends AcsChatMessag
      * Set the metadata property: The chat message metadata.
      * 
      * @param metadata the metadata value to set.
-     * @return the AcsChatMessageReceivedInThreadEventData object itself.
+     * @return the AcsChatTypingIndicatorReceivedInThreadEventData object itself.
      */
-    public AcsChatMessageReceivedInThreadEventData setMetadata(Map<String, String> metadata) {
+    public AcsChatTypingIndicatorReceivedInThreadEventData setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
         return this;
     }
@@ -79,7 +80,7 @@ public final class AcsChatMessageReceivedInThreadEventData extends AcsChatMessag
      * {@inheritDoc}
      */
     @Override
-    public AcsChatMessageReceivedInThreadEventData setMessageId(String messageId) {
+    public AcsChatTypingIndicatorReceivedInThreadEventData setMessageId(String messageId) {
         super.setMessageId(messageId);
         return this;
     }
@@ -88,7 +89,7 @@ public final class AcsChatMessageReceivedInThreadEventData extends AcsChatMessag
      * {@inheritDoc}
      */
     @Override
-    public AcsChatMessageReceivedInThreadEventData
+    public AcsChatTypingIndicatorReceivedInThreadEventData
         setSenderCommunicationIdentifier(CommunicationIdentifierModel senderCommunicationIdentifier) {
         super.setSenderCommunicationIdentifier(senderCommunicationIdentifier);
         return this;
@@ -98,7 +99,7 @@ public final class AcsChatMessageReceivedInThreadEventData extends AcsChatMessag
      * {@inheritDoc}
      */
     @Override
-    public AcsChatMessageReceivedInThreadEventData setSenderDisplayName(String senderDisplayName) {
+    public AcsChatTypingIndicatorReceivedInThreadEventData setSenderDisplayName(String senderDisplayName) {
         super.setSenderDisplayName(senderDisplayName);
         return this;
     }
@@ -107,7 +108,7 @@ public final class AcsChatMessageReceivedInThreadEventData extends AcsChatMessag
      * {@inheritDoc}
      */
     @Override
-    public AcsChatMessageReceivedInThreadEventData setComposeTime(OffsetDateTime composeTime) {
+    public AcsChatTypingIndicatorReceivedInThreadEventData setComposeTime(OffsetDateTime composeTime) {
         super.setComposeTime(composeTime);
         return this;
     }
@@ -116,7 +117,7 @@ public final class AcsChatMessageReceivedInThreadEventData extends AcsChatMessag
      * {@inheritDoc}
      */
     @Override
-    public AcsChatMessageReceivedInThreadEventData setType(String type) {
+    public AcsChatTypingIndicatorReceivedInThreadEventData setType(String type) {
         super.setType(type);
         return this;
     }
@@ -125,7 +126,7 @@ public final class AcsChatMessageReceivedInThreadEventData extends AcsChatMessag
      * {@inheritDoc}
      */
     @Override
-    public AcsChatMessageReceivedInThreadEventData setVersion(Long version) {
+    public AcsChatTypingIndicatorReceivedInThreadEventData setVersion(Long version) {
         super.setVersion(version);
         return this;
     }
@@ -134,7 +135,7 @@ public final class AcsChatMessageReceivedInThreadEventData extends AcsChatMessag
      * {@inheritDoc}
      */
     @Override
-    public AcsChatMessageReceivedInThreadEventData setTransactionId(String transactionId) {
+    public AcsChatTypingIndicatorReceivedInThreadEventData setTransactionId(String transactionId) {
         super.setTransactionId(transactionId);
         return this;
     }
@@ -143,7 +144,7 @@ public final class AcsChatMessageReceivedInThreadEventData extends AcsChatMessag
      * {@inheritDoc}
      */
     @Override
-    public AcsChatMessageReceivedInThreadEventData setThreadId(String threadId) {
+    public AcsChatTypingIndicatorReceivedInThreadEventData setThreadId(String threadId) {
         super.setThreadId(threadId);
         return this;
     }
@@ -169,52 +170,53 @@ public final class AcsChatMessageReceivedInThreadEventData extends AcsChatMessag
     }
 
     /**
-     * Reads an instance of AcsChatMessageReceivedInThreadEventData from the JsonReader.
+     * Reads an instance of AcsChatTypingIndicatorReceivedInThreadEventData from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of AcsChatMessageReceivedInThreadEventData if the JsonReader was pointing to an instance of
-     * it, or null if it was pointing to JSON null.
+     * @return An instance of AcsChatTypingIndicatorReceivedInThreadEventData if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AcsChatMessageReceivedInThreadEventData.
+     * @throws IOException If an error occurs while reading the AcsChatTypingIndicatorReceivedInThreadEventData.
      */
-    public static AcsChatMessageReceivedInThreadEventData fromJson(JsonReader jsonReader) throws IOException {
+    public static AcsChatTypingIndicatorReceivedInThreadEventData fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            AcsChatMessageReceivedInThreadEventData deserializedAcsChatMessageReceivedInThreadEventData
-                = new AcsChatMessageReceivedInThreadEventData();
+            AcsChatTypingIndicatorReceivedInThreadEventData deserializedAcsChatTypingIndicatorReceivedInThreadEventData
+                = new AcsChatTypingIndicatorReceivedInThreadEventData();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("transactionId".equals(fieldName)) {
-                    deserializedAcsChatMessageReceivedInThreadEventData.setTransactionId(reader.getString());
+                    deserializedAcsChatTypingIndicatorReceivedInThreadEventData.setTransactionId(reader.getString());
                 } else if ("threadId".equals(fieldName)) {
-                    deserializedAcsChatMessageReceivedInThreadEventData.setThreadId(reader.getString());
+                    deserializedAcsChatTypingIndicatorReceivedInThreadEventData.setThreadId(reader.getString());
                 } else if ("messageId".equals(fieldName)) {
-                    deserializedAcsChatMessageReceivedInThreadEventData.setMessageId(reader.getString());
+                    deserializedAcsChatTypingIndicatorReceivedInThreadEventData.setMessageId(reader.getString());
                 } else if ("senderCommunicationIdentifier".equals(fieldName)) {
-                    deserializedAcsChatMessageReceivedInThreadEventData
+                    deserializedAcsChatTypingIndicatorReceivedInThreadEventData
                         .setSenderCommunicationIdentifier(CommunicationIdentifierModel.fromJson(reader));
                 } else if ("type".equals(fieldName)) {
-                    deserializedAcsChatMessageReceivedInThreadEventData.setType(reader.getString());
+                    deserializedAcsChatTypingIndicatorReceivedInThreadEventData.setType(reader.getString());
                 } else if ("senderDisplayName".equals(fieldName)) {
-                    deserializedAcsChatMessageReceivedInThreadEventData.setSenderDisplayName(reader.getString());
+                    deserializedAcsChatTypingIndicatorReceivedInThreadEventData
+                        .setSenderDisplayName(reader.getString());
                 } else if ("composeTime".equals(fieldName)) {
-                    deserializedAcsChatMessageReceivedInThreadEventData.setComposeTime(reader
+                    deserializedAcsChatTypingIndicatorReceivedInThreadEventData.setComposeTime(reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString())));
                 } else if ("version".equals(fieldName)) {
-                    deserializedAcsChatMessageReceivedInThreadEventData
+                    deserializedAcsChatTypingIndicatorReceivedInThreadEventData
                         .setVersion(reader.getNullable(JsonReader::getLong));
                 } else if ("messageBody".equals(fieldName)) {
-                    deserializedAcsChatMessageReceivedInThreadEventData.messageBody = reader.getString();
+                    deserializedAcsChatTypingIndicatorReceivedInThreadEventData.messageBody = reader.getString();
                 } else if ("metadata".equals(fieldName)) {
                     Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
-                    deserializedAcsChatMessageReceivedInThreadEventData.metadata = metadata;
+                    deserializedAcsChatTypingIndicatorReceivedInThreadEventData.metadata = metadata;
                 } else {
                     reader.skipChildren();
                 }
             }
 
-            return deserializedAcsChatMessageReceivedInThreadEventData;
+            return deserializedAcsChatTypingIndicatorReceivedInThreadEventData;
         });
     }
 }
