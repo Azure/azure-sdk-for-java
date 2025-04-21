@@ -2,9 +2,9 @@
 
 ## 2.50.0-beta.1 (Unreleased)
 
-### Other Changes
+### Breaking Changes
 
-- Add `Accepted` to `ProvisioningState`.
+- Added `Accepted` to `ProvisioningState` enum.
 
 ## 2.49.0 (2025-03-28)
 
