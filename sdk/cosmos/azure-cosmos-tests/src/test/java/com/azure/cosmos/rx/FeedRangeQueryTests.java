@@ -112,7 +112,8 @@ public class FeedRangeQueryTests extends TestSuiteBase {
                 Mono.just(new Utils.ValueHolder<>(ModelBridgeInternal
                                                       .getV2Collection(new CosmosContainerProperties(createdContainer
                                                                                                          .getId(),
-                                                                                                     "/mypk")))))
+                                                                                                     "/mypk")))),
+                    null)
                 .block();
         assertThat(effectiveRange).isNotNull();
         FeedRange feedRange = new FeedRangeEpkImpl(effectiveRange);
