@@ -455,6 +455,10 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
      */
     private CompletableFuture<Void> processFaultedTask(TaskGroupEntry<TaskItem> faultedEntry, Throwable throwable, InvocationContext context) {
         markGroupAsCancelledIfTerminationStrategyIsIPTC();
+        // CompletableFuture will wrap execution exception into CompletionException, with the actual exception as its cause.
+        if (throwable instanceof CompletionException && throwable.getCause() != null) {
+            throwable = throwable.getCause();
+        }
         reportError(faultedEntry, throwable);
         if (isRootEntry(faultedEntry)) {
             if (shouldPropagateException(throwable)) {

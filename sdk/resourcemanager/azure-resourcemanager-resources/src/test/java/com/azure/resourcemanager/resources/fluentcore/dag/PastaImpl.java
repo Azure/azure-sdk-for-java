@@ -94,6 +94,36 @@ class PastaImpl extends CreatableUpdatableImpl<IPasta, PastaInner, PastaImpl> im
     }
 
     @Override
+    public IPasta createResource() {
+        if (this.errorToThrow == null) {
+            LOGGER.log(LogLevel.VERBOSE, () -> "Pasta(" + this.name() + ")::createResourceAsync() 'onNext()'");
+            try {
+                Thread.sleep(Duration.ofMillis(this.eventDelayInMilliseconds));
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        } else {
+            LOGGER.log(LogLevel.VERBOSE, () -> "Pasta(" + this.name() + ")::createResourceAsync() 'onError()'");
+            try {
+                Thread.sleep(Duration.ofMillis(this.eventDelayInMilliseconds));
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            throw (RuntimeException) errorToThrow;
+        }
+        return this;
+    }
+
+    @Override
+    public IPasta updateResource() {
+        return this.createResource();
+    }
+
+    @Override
+    public void afterPostRun(boolean isGroupFaulted) {
+    }
+
+    @Override
     public boolean isInCreateMode() {
         return true;
     }
