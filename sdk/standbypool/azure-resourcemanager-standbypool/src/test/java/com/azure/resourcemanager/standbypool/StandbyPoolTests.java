@@ -87,7 +87,7 @@ public class StandbyPoolTests extends TestProxyTestBase {
         // live test subscription is having issue creating VMSS resource. Only check API availability here.
         standbyPoolManager.standbyVirtualMachinePools().list().stream().count();
         // need to register preview feature in live test subscription
-//        standbyPoolManager.standbyContainerGroupPools().list().stream().count();
+        // standbyPoolManager.standbyContainerGroupPools().list().stream().count();
     }
 
     @Test
