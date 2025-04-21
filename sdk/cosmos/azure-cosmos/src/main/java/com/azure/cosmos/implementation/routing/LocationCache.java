@@ -578,12 +578,7 @@ public class LocationCache {
         RegionalRoutingContext hubRoutingContext,
         boolean isFallbackRoutingContextUsed) {
 
-
-        if (isFallbackRoutingContextUsed) {
-
-        }
-
-        return null;
+        return applicableRegionalRoutingContexts;
     }
 
     private boolean isExcludeRegionsConfigured(List<String> excludedRegionsOnRequest, List<String> excludedRegionsOnClient) {

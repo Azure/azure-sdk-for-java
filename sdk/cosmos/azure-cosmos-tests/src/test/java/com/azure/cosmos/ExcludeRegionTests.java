@@ -214,11 +214,7 @@ public class ExcludeRegionTests extends TestSuiteBase {
     // Use different client to test the regional outage
     // Inject the fault in the first preferred region - CONNECTION_DELAY all operations
     @Test(groups = {"multi-master"}, dataProvider = "faultInjectionArgProvider", timeOut = TIMEOUT)
-    public void excludeRegionTest_regionalOutage(OperationType operationType) {
-
-        if (this.clientWithPreferredRegions.getConnectionPolicy().getConnectionMode() != ConnectionMode.DIRECT) {
-            throw new SkipException("Fault injection can only be applied for direct model.");
-        }
+    public void excludeRegionTest_regionalOutage(OperationType operationType, FaultInjectionOperationType faultInjectionOperationType) {
 
         if (this.preferredRegionList.size() <= 1) {
             throw new SkipException("excludeRegionTest_SkipFirstPreferredRegion can only be tested for multi-master with multi-regions");
@@ -234,7 +230,7 @@ public class ExcludeRegionTests extends TestSuiteBase {
                     .build())
             .result(
                 FaultInjectionResultBuilders
-                    .getResultBuilder(FaultInjectionServerErrorType.CONNECTION_DELAY)
+                    .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
                     .delay(Duration.ofSeconds(70))
                     .build()
             ).build();

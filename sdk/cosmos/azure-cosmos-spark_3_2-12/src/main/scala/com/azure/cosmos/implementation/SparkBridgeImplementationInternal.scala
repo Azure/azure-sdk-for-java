@@ -268,7 +268,7 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
 
     val feedRanges: List[String] = List()
     container.getFeedRanges().block.map(feedRange => {
-      val effectiveRangeFromPk = feedRange.asInstanceOf[FeedRangeEpkImpl].getEffectiveRange(null, null, null).block
+      val effectiveRangeFromPk = feedRange.asInstanceOf[FeedRangeEpkImpl].getEffectiveRange(null, null, null, null).block
       val normalizedRange = rangeToNormalizedRange(effectiveRangeFromPk)
       s"${normalizedRange.min}-${normalizedRange.max}" :: feedRanges
     })
