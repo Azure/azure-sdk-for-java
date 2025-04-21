@@ -114,12 +114,11 @@ public final class LoadTestRunClient {
      * or hyphen characters.
      * @param body Load test run model.
      * @param testRunRequestOptions The options to configure the file upload HTTP request before HTTP client sends it.
-     * @throws ResourceNotFoundException when a test with {@code testRunId} doesn't exist.
      * @return A {@link SyncPoller} to poll on and retrieve the test run
      * status(ACCEPTED/NOTSTARTED/PROVISIONING/PROVISIONED/CONFIGURING/CONFIGURED/EXECUTING/EXECUTED/DEPROVISIONING/DEPROVISIONED/DONE/CANCELLING/CANCELLED/FAILED/VALIDATION_SUCCESS/VALIDATION_FAILURE).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginTestRun(String testRunId, BinaryData body,
+    public SyncPoller<BinaryData, BinaryData> beginTestRunWithResponse(String testRunId, BinaryData body,
         RequestOptions testRunRequestOptions) {
         RequestOptions defaultRequestOptions = new RequestOptions();
         if (testRunRequestOptions != null) {
@@ -132,6 +131,25 @@ public final class LoadTestRunClient {
                 .getTestRunStatus(getTestRunWithResponse(testRunId, defaultRequestOptions).getValue()),
             (activationResponse, context) -> stopTestRunWithResponse(testRunId, defaultRequestOptions).getValue(),
             (context) -> getTestRunWithResponse(testRunId, defaultRequestOptions).getValue());
+    }
+
+    /**
+     * Starts a test run and polls the status of the test run.
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     * or hyphen characters.
+     * @param body Load test run model.
+     * @param oldTestRunId Existing test run identifier that should be rerun, if this is provided, the test will run with the JMX file, configuration and app components from the existing test run. You can override the configuration values for new test run in the request body.
+     * @throws ResourceNotFoundException when a test with {@code oldTestRunId} doesn't exist.
+     * @return A {@link SyncPoller} to poll on and retrieve the test run
+     * status(ACCEPTED/NOTSTARTED/PROVISIONING/PROVISIONED/CONFIGURING/CONFIGURED/EXECUTING/EXECUTED/DEPROVISIONING/DEPROVISIONED/DONE/CANCELLING/CANCELLED/FAILED/VALIDATION_SUCCESS/VALIDATION_FAILURE).
+     */
+    public SyncPoller<LoadTestRun, LoadTestRun> beginTestRun(String testRunId, LoadTestRun testRun,
+        String oldTestRunId) {
+        return SyncPoller.createPoller(Duration.ofSeconds(5),
+            (context) -> PollingUtils.getTestRunStatus(createOrUpdateTestRun(testRunId, testRun, oldTestRunId)),
+            (context) -> PollingUtils.getTestRunStatus(getTestRun(testRunId)),
+            (activationResponse, context) -> stopTestRun(testRunId), (context) -> getTestRun(testRunId));
     }
 
     /**
@@ -1731,7 +1749,7 @@ public final class LoadTestRunClient {
      * status(ACCEPTED/NOTSTARTED/EXECUTING/DONE/CANCELLING/CANCELLED/FAILED).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginTestProfileRun(String testProfileRunId, BinaryData body,
+    public SyncPoller<BinaryData, BinaryData> beginTestProfileRunWithResponse(String testProfileRunId, BinaryData body,
         RequestOptions testProfileRunRequestOptions) {
         RequestOptions defaultRequestOptions = new RequestOptions();
         if (testProfileRunRequestOptions != null) {
@@ -1744,6 +1762,27 @@ public final class LoadTestRunClient {
             (activationResponse, context) -> stopTestProfileRunWithResponse(testProfileRunId, defaultRequestOptions)
                 .getValue(),
             (context) -> getTestProfileRunWithResponse(testProfileRunId, defaultRequestOptions).getValue());
+    }
+
+    /**
+     * Starts a test run and polls the status of the test run.
+     *
+     * @param testProfileRunId Unique name for the test profile run, must contain only lower-case alphabetic, numeric,
+     * underscore
+     * or hyphen characters.
+     * @param testProfileRun Test Profile Run Model.
+     * @return A {@link SyncPoller} to poll on and retrieve the test run
+     * status(ACCEPTED/NOTSTARTED/EXECUTING/DONE/CANCELLING/CANCELLED/FAILED).
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<TestProfileRun, TestProfileRun> beginTestProfileRun(String testProfileRunId,
+        TestProfileRun testProfileRun) {
+        return SyncPoller.createPoller(Duration.ofSeconds(5),
+            (context) -> PollingUtils
+                .getTestProfileRunStatus(createOrUpdateTestProfileRun(testProfileRunId, testProfileRun)),
+            (context) -> PollingUtils.getTestProfileRunStatus(getTestProfileRun(testProfileRunId)),
+            (activationResponse, context) -> stopTestProfileRun(testProfileRunId),
+            (context) -> getTestProfileRun(testProfileRunId));
     }
 
     /**

@@ -30,7 +30,7 @@ public class CreateUpdateAndStartALoadTestRun {
                 .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.developer.loadtesting.generated.createorupdatetestrun.createupdateandstartaloadtestrun
-        LoadTestRun response = loadTestRunClient.createOrUpdateTestRun("12316678-1234-1234-1234-122451189012",
+        LoadTestRun response = loadTestRunClient.beginTestRun("12316678-1234-1234-1234-122451189012",
             new LoadTestRun()
                 .setPassFailCriteria(new PassFailCriteria()
                     .setPassFailMetrics(mapOf(

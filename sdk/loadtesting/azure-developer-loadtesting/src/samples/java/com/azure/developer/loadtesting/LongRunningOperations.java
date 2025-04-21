@@ -47,7 +47,7 @@ public final class LongRunningOperations {
         RequestOptions reqOpts = new RequestOptions()
             .addQueryParam("fileType", "JMX_FILE");
 
-        SyncPoller<BinaryData, BinaryData> poller = client.beginUploadTestFile(inputTestId, inputFileName, fileData, reqOpts);
+        SyncPoller<BinaryData, BinaryData> poller = client.beginUploadTestFileWithResponse(inputTestId, inputFileName, fileData, reqOpts);
         poller = poller.setPollInterval(pollInterval);
 
         PollResponse<BinaryData> pollResponse = poller.poll();
@@ -110,7 +110,7 @@ public final class LongRunningOperations {
 
         BinaryData inputTestRunBinary = BinaryData.fromObject(testRunMap);
 
-        SyncPoller<BinaryData, BinaryData> poller = client.beginTestRun(inputTestRunId, inputTestRunBinary, null);
+        SyncPoller<BinaryData, BinaryData> poller = client.beginTestRunWithResponse(inputTestRunId, inputTestRunBinary, null);
         poller = poller.setPollInterval(pollInterval);
 
         PollResponse<BinaryData> pollResponse = poller.poll();

@@ -130,8 +130,8 @@ public final class LoadTestAdministrationAsyncClient {
      * @return A {@link PollerFlux} to poll on and retrieve the file info with validation status.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginUploadTestFile(String testId, String fileName, BinaryData body,
-        RequestOptions fileUploadRequestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginUploadTestFileWithResponse(String testId, String fileName,
+        BinaryData body, RequestOptions fileUploadRequestOptions) {
         RequestOptions defaultRequestOptions = new RequestOptions();
         if (fileUploadRequestOptions != null) {
             defaultRequestOptions.setContext(fileUploadRequestOptions.getContext());
@@ -148,6 +148,25 @@ public final class LoadTestAdministrationAsyncClient {
             (activationResponse, context) -> Mono
                 .error(LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"))),
             (context) -> getTestFileWithResponse(testId, fileName, defaultRequestOptions).flatMap(FluxUtil::toMono));
+    }
+
+    /**
+     * Uploads file and polls the validation status of the uploaded file.
+     *
+     * @param testId Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$.
+     * @param fileName Unique name for test file with file extension like : App.jmx.
+     * @param body The file content as application/octet-stream.
+     * @throws ResourceNotFoundException when a test with {@code testId} doesn't exist.
+     * @return A {@link PollerFlux} to poll on and retrieve the file info with validation status.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<TestFileInfo, TestFileInfo> beginUploadTestFile(String testId, String fileName, BinaryData body) {
+        return new PollerFlux<>(Duration.ofSeconds(2), (context) -> uploadTestFile(testId, fileName, body),
+            (context) -> getTestFile(testId, fileName).flatMap(
+                fileResp -> PollingUtils.getPollResponseMono(() -> PollingUtils.getValidationStatus(fileResp))),
+            (activationResponse, context) -> Mono
+                .error(LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"))),
+            (context) -> getTestFile(testId, fileName));
     }
 
     /**

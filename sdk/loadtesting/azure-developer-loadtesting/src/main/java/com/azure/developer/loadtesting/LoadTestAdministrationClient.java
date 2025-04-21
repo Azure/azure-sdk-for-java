@@ -119,8 +119,8 @@ public final class LoadTestAdministrationClient {
      * @return A {@link SyncPoller} to poll on and retrieve the file info with validation status.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginUploadTestFile(String testId, String fileName, BinaryData body,
-        RequestOptions fileUploadRequestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginUploadTestFileWithResponse(String testId, String fileName,
+        BinaryData body, RequestOptions fileUploadRequestOptions) {
         RequestOptions defaultRequestOptions = new RequestOptions();
         if (fileUploadRequestOptions != null) {
             defaultRequestOptions.setContext(fileUploadRequestOptions.getContext());
@@ -133,6 +133,25 @@ public final class LoadTestAdministrationClient {
             (activationResponse, context) -> {
                 throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
             }, (context) -> getTestFileWithResponse(testId, fileName, defaultRequestOptions).getValue());
+    }
+
+    /**
+     * Uploads file and polls the validation status of the uploaded file.
+     *
+     * @param testId Unique name for load test, must be a valid URL character ^[a-z0-9_-]*$.
+     * @param fileName Unique name for test file with file extension like : App.jmx.
+     * @param body The file content as application/octet-stream.
+     * @throws ResourceNotFoundException when a test with {@code testId} doesn't exist.
+     * @return A {@link SyncPoller} to poll on and retrieve the file info with validation status.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<TestFileInfo, TestFileInfo> beginUploadTestFile(String testId, String fileName, BinaryData body) {
+        return SyncPoller.createPoller(Duration.ofSeconds(2),
+            (context) -> PollingUtils.getValidationStatus(uploadTestFile(testId, fileName, body)),
+            (context) -> PollingUtils.getValidationStatus(getTestFile(testId, fileName)),
+            (activationResponse, context) -> {
+                throw LOGGER.logExceptionAsError(new RuntimeException("Cancellation is not supported"));
+            }, (context) -> getTestFile(testId, fileName));
     }
 
     /**

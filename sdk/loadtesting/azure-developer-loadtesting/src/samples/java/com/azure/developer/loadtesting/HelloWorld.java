@@ -10,6 +10,7 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
+import com.azure.developer.loadtesting.models.TestFileInfo;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
@@ -112,7 +113,7 @@ public final class HelloWorld {
 
         // receive response with BinaryData content
         // NOTE: file name should be passed as input argument `testFileName`. File name in local path is ignored
-        PollResponse<BinaryData> fileUrlOut = adminClient.beginUploadTestFile(testId, testFileName, fileData, null)
+        PollResponse<TestFileInfo> fileUrlOut = adminClient.beginUploadTestFile(testId, testFileName, fileData)
             .waitForCompletion(Duration.ofMinutes(2));
 
         System.out.println(fileUrlOut.getValue().toString());
@@ -132,7 +133,7 @@ public final class HelloWorld {
         BinaryData testRun = BinaryData.fromObject(testRunMap);
 
         // receive response with BinaryData content
-        SyncPoller<BinaryData, BinaryData> testRunPoller = testRunClient.beginTestRun(testRunId, testRun, null);
+        SyncPoller<BinaryData, BinaryData> testRunPoller = testRunClient.beginTestRunWithResponse(testRunId, testRun, null);
 
         System.out.println(testRunPoller.poll().getValue().toString());
         /*

@@ -131,7 +131,7 @@ public final class LoadTestRunAsyncClient {
      * status(ACCEPTED/NOTSTARTED/PROVISIONING/PROVISIONED/CONFIGURING/CONFIGURED/EXECUTING/EXECUTED/DEPROVISIONING/DEPROVISIONED/DONE/CANCELLING/CANCELLED/FAILED/VALIDATION_SUCCESS/VALIDATION_FAILURE).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginTestRun(String testRunId, BinaryData body,
+    public PollerFlux<BinaryData, BinaryData> beginTestRunWithResponse(String testRunId, BinaryData body,
         RequestOptions testRunRequestOptions) {
         RequestOptions defaultRequestOptions = new RequestOptions();
         if (testRunRequestOptions != null) {
@@ -146,6 +146,25 @@ public final class LoadTestRunAsyncClient {
             (activationResponse, context) -> stopTestRunWithResponse(testRunId, defaultRequestOptions)
                 .flatMap(FluxUtil::toMono),
             (context) -> getTestRunWithResponse(testRunId, defaultRequestOptions).flatMap(FluxUtil::toMono));
+    }
+
+    /**
+     * Starts a test run and polls the status of the test run.
+     *
+     * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
+     * or hyphen characters.
+     * @param body Load test run model.
+     * @param testRunRequestOptions The options to configure the file upload HTTP request before HTTP client sends it.
+     * @throws ResourceNotFoundException when a test with {@code testRunId} doesn't exist.
+     * @return A {@link PollerFlux} to poll on and retrieve the test run
+     * status(ACCEPTED/NOTSTARTED/PROVISIONING/PROVISIONED/CONFIGURING/CONFIGURED/EXECUTING/EXECUTED/DEPROVISIONING/DEPROVISIONED/DONE/CANCELLING/CANCELLED/FAILED/VALIDATION_SUCCESS/VALIDATION_FAILURE).
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public PollerFlux<LoadTestRun, LoadTestRun> beginTestRun(String testRunId, LoadTestRun body) {
+        return new PollerFlux<>(Duration.ofSeconds(5), (context) -> createOrUpdateTestRun(testRunId, body),
+            (context) -> getTestRun(testRunId).flatMap(
+                testRunBinary -> PollingUtils.getPollResponseMono(() -> PollingUtils.getTestRunStatus(testRunBinary))),
+            (activationResponse, context) -> stopTestRun(testRunId), (context) -> getTestRun(testRunId));
     }
 
     /**
