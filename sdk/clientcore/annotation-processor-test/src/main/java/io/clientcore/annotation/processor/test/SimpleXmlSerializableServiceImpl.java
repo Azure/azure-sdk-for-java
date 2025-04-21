@@ -130,10 +130,11 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
 
     @SuppressWarnings({ "unchecked", "cast" })
     @Override
-    public SimpleXmlSerializable getInvalidXml() {
+    public SimpleXmlSerializable getInvalidXml(String contentType) {
         String url = "http://localhost/getInvalidXml";
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url);
+        httpRequest.getHeaders().add(HttpHeaderName.CONTENT_TYPE, contentType);
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
