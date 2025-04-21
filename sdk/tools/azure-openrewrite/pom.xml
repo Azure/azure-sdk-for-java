@@ -496,7 +496,7 @@
         <artifactId>azure-openrewrite-compiler-maven-plugin</artifactId>
         <version>1.0.0-beta.1</version>
         <configuration>
-          <targetProfiles>v1</targetProfiles>
+          <targetProfiles>v1,v2</targetProfiles>
         </configuration>
         <executions>
           <execution>

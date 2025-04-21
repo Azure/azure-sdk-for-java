@@ -217,7 +217,7 @@ public class HttpRequestCustomRecipe extends Recipe {
 
                 /*
                 Before: com.azure.core.http.HttpRequest copy()
-                After: io.clientcore.core.http.models.HttpRequest setHttpMethod(io.clientcore.core.http.models.HttpMethod).setUri(java.net.URL.toURI()).setHeaders(io.clientcore.core.http.models.HttpHeaders).setBody(io.clientcore.core.models.binarydata.BinaryData)
+                After: io.clientcore.core.http.models.HttpRequest setMethod(io.clientcore.core.http.models.HttpMethod).setUri(java.net.URL.toURI()).setHeaders(io.clientcore.core.http.models.HttpHeaders).setBody(io.clientcore.core.models.binarydata.BinaryData)
                  */
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest copy()");
                 if (methodMatcher.matches((J.MethodInvocation) n, false)) {
@@ -226,7 +226,7 @@ public class HttpRequestCustomRecipe extends Recipe {
 
                         variableIdentifier = ((J.MethodInvocation) variableIdentifier).getSelect();
                     }
-                    replacementTemplate = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder(String.format("new HttpRequest()\n.setHttpMethod(%1$s.getHttpMethod())\n.setUri(%1$s.getUri())\n.setHeaders(new HttpHeaders(%1$s.getHeaders()))\n.setBody(%1$s.getBody())", variableIdentifier))
+                    replacementTemplate = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder(String.format("new HttpRequest()\n.setMethod(%1$s.getHttpMethod())\n.setUri(%1$s.getUri())\n.setHeaders(new HttpHeaders(%1$s.getHeaders()))\n.setBody(%1$s.getBody())", variableIdentifier))
                         .imports("io.clientcore.core.http.models.HttpMethod", "io.clientcore.core.http.models.HttpHeaders")
                         .build();
                     n = replacementTemplate.apply(updateCursor(n), ((J.MethodInvocation) n).getCoordinates().replace());

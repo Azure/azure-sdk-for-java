@@ -1,5 +1,4 @@
 import io.clientcore.core.models.binarydata.BinaryData;
-import io.clientcore.core.serialization.json.JsonWriter;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -34,18 +33,10 @@ public class BinaryDataApis {
         WritableByteChannel writableByteChannel = null; // Assume this is initialized
         binaryData.writeTo(writableByteChannel);
 
-        JsonWriter jsonWriter = null; // Assume this is initialized
-        binaryData.writeTo(jsonWriter);
 
         Long length = binaryData.getLength();
         boolean isReplayable = binaryData.isReplayable();
 
         BinaryData replayableBinaryData = binaryData.toReplayableBinaryData();
-
-
-
-
-
-
     }
 }

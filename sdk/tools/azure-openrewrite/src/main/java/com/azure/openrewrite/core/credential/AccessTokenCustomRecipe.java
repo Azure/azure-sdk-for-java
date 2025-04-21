@@ -8,6 +8,7 @@ import org.openrewrite.java.JavaParser;
 import org.openrewrite.java.JavaTemplate;
 import org.openrewrite.java.MethodMatcher;
 import org.openrewrite.java.tree.J;
+import org.openrewrite.java.tree.Space;
 
 public class AccessTokenCustomRecipe extends Recipe {
 
@@ -23,9 +24,7 @@ public class AccessTokenCustomRecipe extends Recipe {
 
     @Override
     public JavaIsoVisitor<ExecutionContext> getVisitor() {
-        ConfiguredParserJavaTemplateBuilder javaTemplateBuilder = new ConfiguredParserJavaTemplateBuilder(
-            JavaParser.fromJavaVersion().classpath("azure-core", "core")
-        );
+        ConfiguredParserJavaTemplateBuilder javaTemplateBuilder = ConfiguredParserJavaTemplateBuilder.defaultBuilder();
 
         return new JavaIsoVisitor<ExecutionContext>() {
             @Override
@@ -41,10 +40,10 @@ public class AccessTokenCustomRecipe extends Recipe {
                 methodMatcher = new MethodMatcher("com.azure.core.credential.AccessToken <constructor>(java.lang.String, java.time.OffsetDateTime, java.time.OffsetDateTime, java.lang.String)");
                 if (methodMatcher.matches(n)) {
                     replacementTemplate = javaTemplateBuilder.getJavaTemplateBuilder("new AccessToken(#{any(java.lang.String)}, #{any(java.time.OffsetDateTime)}, #{any(java.time.OffsetDateTime)}, AccessTokenType.fromString(#{any(java.lang.String)}))")
-                        .imports("com.azure.core.credential.AccessTokenType")
+                        .imports("io.clientcore.core.credentials.oauth.AccessTokenType")
                         .build();
                     n = replacementTemplate.apply(updateCursor(n), n.getCoordinates().replace(), n.getArguments().toArray());
-                    maybeAddImport("com.azure.core.credential.AccessTokenType");
+                    maybeAddImport("io.clientcore.core.credentials.oauth.AccessTokenType");
                     return n;
                 }
 
@@ -63,10 +62,24 @@ public class AccessTokenCustomRecipe extends Recipe {
                  */
                 methodMatcher = new MethodMatcher("com.azure.core.credential.AccessToken getTokenType()");
                 if (methodMatcher.matches(m)) {
-                    replacementTemplate = javaTemplateBuilder.getJavaTemplateBuilder("value()")
+                    replacementTemplate = javaTemplateBuilder.getJavaTemplateBuilder("getValue()")
                         .contextSensitive()
                         .build();
-                    m.getSideEffects().add(replacementTemplate.apply(updateCursor(m), m.getCoordinates().replaceMethod()));
+                    m = replacementTemplate.apply(updateCursor(m), m.getCoordinates().replaceMethod());
+                    return m.withSelect(method).withPrefix(Space.EMPTY);
+                }
+
+                /*
+                Before: com.azure.core.credential.AccessToken getDurationUntilExpiration()
+                After: io.clientcore.core.credentials.oauth.AccessTokenType Duration.between(OffsetDateTime.now(), accessToken1.getExpiresAt())
+                 */
+                methodMatcher = new MethodMatcher("com.azure.core.credential.AccessToken getDurationUntilExpiration()");
+                if (methodMatcher.matches(m)) {
+                    replacementTemplate = javaTemplateBuilder.getJavaTemplateBuilder(String.format("Duration.between(OffsetDateTime.now(), %s.getExpiresAt())", m.getSelect()))
+                        .imports("java.time.Duration")
+                        .build();
+                    m = replacementTemplate.apply(updateCursor(m), m.getCoordinates().replace());
+                    maybeAddImport("java.time.Duration");
                     return m;
                 }
 

@@ -103,7 +103,9 @@ recipeList:
   # SimpleResponse
   # --------------------------------------------------------------------
 
-  # TODO: API Removed. Triage replacement
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.rest.SimpleResponse
+      newFullyQualifiedTypeName: io.clientcore.core.http.models.Response
 
   # --------------------------------------------------------------------
   # StreamResponse

@@ -16,7 +16,7 @@ public class AccessTokenApis {
         Boolean isExpired = accessToken1.isExpired();
         OffsetDateTime refreshAt = accessToken2.getRefreshAt();
         String tokenType = accessToken3.getTokenType().getValue();
-        Duration duration = Duration.between(OffsetDateTime.now(), accessToken1.getExpiresAt());
+        Duration duration = Duration.between(OffsetDateTime.now(), accessToken3.getExpiresAt());
 
     }
 }

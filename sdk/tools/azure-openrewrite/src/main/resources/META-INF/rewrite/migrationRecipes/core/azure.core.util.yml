@@ -127,9 +127,15 @@ recipeList:
   # Context
   # --------------------------------------------------------------------
 
+  - org.openrewrite.java.ChangeStaticFieldToMethod:
+      oldClassName: com.azure.core.util.Context
+      oldFieldName: NONE
+      newClassName: io.clientcore.core.http.models.RequestContext
+      newMethodName: none
+
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.azure.core.util.Context
-      newFullyQualifiedTypeName: io.clientcore.core.utils.Context
+      newFullyQualifiedTypeName: io.clientcore.core.http.models.RequestContext
 
       # TODO: Migrate Methods and Fields
 

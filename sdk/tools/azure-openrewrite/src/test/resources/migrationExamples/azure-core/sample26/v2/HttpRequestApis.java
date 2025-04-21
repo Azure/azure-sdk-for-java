@@ -43,7 +43,7 @@ public class HttpRequestApis {
         request4 = request4.setBody(BinaryData.fromBytes(new byte[4]));
         request1 = request1.setBody(BinaryData.fromString("test"));
         HttpRequest request5 = new HttpRequest()
-            .setHttpMethod(request1.getHttpMethod())
+            .setMethod(request1.getHttpMethod())
             .setUri(request1.getUri())
             .setHeaders(new HttpHeaders(request1.getHeaders()))
             .setBody(request1.getBody());
