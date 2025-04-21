@@ -265,8 +265,8 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                                 this.diagnosticsContext,
                                 this.state.getContainerRid(),
                                 this.requestOptionProperties,
-                                diagnosticsContext)
-                        );
+                                diagnosticsContext),
+                            diagnosticsContext);
 
                         return effectiveRangeMono
                             .map(effectiveRange -> this.state.setContinuation(

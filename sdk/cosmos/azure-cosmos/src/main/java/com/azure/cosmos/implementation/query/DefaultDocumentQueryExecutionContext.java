@@ -143,11 +143,12 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
     public Mono<Range<String>> getTargetRange(String collectionRid, FeedRangeInternal feedRangeInternal) {
         return feedRangeInternal.getNormalizedEffectiveRange(client.getPartitionKeyRangeCache(),
             /*metadataDiagnosticsCtx*/null,
-                                                   this.client.getCollectionCache().resolveByRidAsync(
-                                                       /*metadataDiagnosticsCtx*/ null,
-                                                                                  collectionRid,
-                                                       /*properties*/null,
-                                                       null));
+            this.client.getCollectionCache().resolveByRidAsync(
+                /*metadataDiagnosticsCtx*/ null,
+                collectionRid,
+                /*properties*/null,
+                null),
+            null);
     }
 
     public Mono<List<PartitionKeyRange>> getTargetPartitionKeyRangesById(String resourceId, String partitionKeyRangeIdInternal, CosmosDiagnosticsContext diagnosticsContext) {
