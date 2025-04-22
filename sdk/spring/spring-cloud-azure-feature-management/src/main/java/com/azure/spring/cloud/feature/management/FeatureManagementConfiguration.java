@@ -41,7 +41,7 @@ class FeatureManagementConfiguration implements ApplicationContextAware {
      */
     @Bean
     FeatureManager featureManager(FeatureManagementProperties featureManagementConfigurations,
-        FeatureManagementConfigProperties properties,
+        FeatureManagementConfigProperties properties, TelemetryPublisher telemetryPublisher,
         ObjectProvider<TargetingContextAccessor> contextAccessorProvider,
         ObjectProvider<TargetingEvaluationOptions> evaluationOptionsProvider) {
 
@@ -50,7 +50,7 @@ class FeatureManagementConfiguration implements ApplicationContextAware {
             .getIfAvailable(() -> new TargetingEvaluationOptions());
 
         return new FeatureManager(appContext, featureManagementConfigurations, properties, contextAccessor,
-            evaluationOptions);
+            evaluationOptions, telemetryPublisher);
     }
 
     @Override
@@ -76,5 +76,11 @@ class FeatureManagementConfiguration implements ApplicationContextAware {
     @ConditionalOnBean(TargetingContextAccessor.class)
     public TargetingFilter targettingFilter(TargetingContextAccessor context) {
         return new TargetingFilter(context, new TargetingEvaluationOptions().setIgnoreCase(true));
+    }
+    
+    @Bean
+    @ConditionalOnMissingBean(TelemetryPublisher.class)
+    public TelemetryPublisher telemetryPublisher() {
+        return new LoggerTelemetryPublisher();
     }
 }

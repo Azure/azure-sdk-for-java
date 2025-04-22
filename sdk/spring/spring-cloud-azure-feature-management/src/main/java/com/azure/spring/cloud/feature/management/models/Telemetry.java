@@ -2,6 +2,9 @@ package com.azure.spring.cloud.feature.management.models;
 
 import java.util.Map;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Telemetry {
 
     private Boolean enabled;
