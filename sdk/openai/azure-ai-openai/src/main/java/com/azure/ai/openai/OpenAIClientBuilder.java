@@ -234,6 +234,12 @@ public final class OpenAIClientBuilder implements HttpTrait<OpenAIClientBuilder>
         return this;
     }
 
+    private boolean nonAzureClient;
+    public OpenAIClientBuilder nonAzureClient(boolean nonAzureClient) {
+        this.nonAzureClient = nonAzureClient;
+        return this;
+    }
+
     /*
      * Service version
      */
@@ -366,7 +372,7 @@ public final class OpenAIClientBuilder implements HttpTrait<OpenAIClientBuilder>
      * "https://api.openai.com/"
      */
     private boolean useNonAzureOpenAIService() {
-        return endpoint == null || endpoint.startsWith(OPEN_AI_ENDPOINT);
+        return nonAzureClient || endpoint == null || endpoint.startsWith(OPEN_AI_ENDPOINT);
     }
 
     private void validateClient() {
