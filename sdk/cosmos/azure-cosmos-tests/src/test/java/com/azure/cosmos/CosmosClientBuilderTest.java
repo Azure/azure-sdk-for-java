@@ -229,6 +229,7 @@ public class CosmosClientBuilderTest {
             List<ObjectNode> items = customSyncContainer
                 .queryItems(querySpec, null, ObjectNode.class)
                 .stream().collect(Collectors.toList());
+            fail("Not yet cached - the query above should always throw");
         } catch (CosmosException cosmosException) {
             // Container does not exist - when not cached should fail
             assertThat(cosmosException.getStatusCode()).isEqualTo(404);
