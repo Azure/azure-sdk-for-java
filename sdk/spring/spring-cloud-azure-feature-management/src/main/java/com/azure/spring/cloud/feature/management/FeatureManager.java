@@ -208,7 +208,7 @@ public class FeatureManager {
         Mono<EvaluationEvent> result = this.checkFeatureFilters(event, featureContext);
 
         result = assignAllocation(result);
-        result.doOnSuccess(resultEvent -> {
+        result = result.doOnSuccess(resultEvent -> {
             if (telemetryPublisher != null && featureFlag.getTelemetry().getEnabled()) {
                 telemetryPublisher.publishTelemetry(resultEvent);
             } 
