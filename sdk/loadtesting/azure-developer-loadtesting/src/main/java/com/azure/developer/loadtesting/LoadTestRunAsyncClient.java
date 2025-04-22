@@ -154,7 +154,6 @@ public final class LoadTestRunAsyncClient {
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
      * @param body Load test run model.
-     * @param testRunRequestOptions The options to configure the file upload HTTP request before HTTP client sends it.
      * @throws ResourceNotFoundException when a test with {@code testRunId} doesn't exist.
      * @return A {@link PollerFlux} to poll on and retrieve the test run
      * status(ACCEPTED/NOTSTARTED/PROVISIONING/PROVISIONED/CONFIGURING/CONFIGURED/EXECUTING/EXECUTED/DEPROVISIONING/DEPROVISIONED/DONE/CANCELLING/CANCELLED/FAILED/VALIDATION_SUCCESS/VALIDATION_FAILURE).

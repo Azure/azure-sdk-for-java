@@ -138,7 +138,7 @@ public final class LoadTestRunClient {
      *
      * @param testRunId Unique name for the load test run, must contain only lower-case alphabetic, numeric, underscore
      * or hyphen characters.
-     * @param body Load test run model.
+     * @param testRun Load test run model.
      * @param oldTestRunId Existing test run identifier that should be rerun, if this is provided, the test will run with the JMX file, configuration and app components from the existing test run. You can override the configuration values for new test run in the request body.
      * @throws ResourceNotFoundException when a test with {@code oldTestRunId} doesn't exist.
      * @return A {@link SyncPoller} to poll on and retrieve the test run
