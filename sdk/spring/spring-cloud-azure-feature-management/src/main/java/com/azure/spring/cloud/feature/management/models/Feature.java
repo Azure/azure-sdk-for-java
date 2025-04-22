@@ -29,9 +29,12 @@ public class Feature {
 
     @JsonProperty("allocation")
     private Allocation allocation;
-    
+
     @JsonProperty("variants")
     private List<VariantReference> variants;
+
+    @JsonProperty("telemetry")
+    private Telemetry telemetry;
 
     /**
      * @return the id
@@ -96,7 +99,7 @@ public class Feature {
         this.conditions = conditions;
         return this;
     }
-  
+
     /**
      * @return the allocation
      */
@@ -128,4 +131,19 @@ public class Feature {
         this.variants = variants;
         return this;
     }
+
+    /**
+     * @return the telemetry
+     */
+    public Telemetry getTelemetry() {
+        return telemetry;
+    }
+
+    /**
+     * @param telemetry the telemetry to set
+     */
+    public void setTelemetry(Telemetry telemetry) {
+        this.telemetry = telemetry;
+    }
+
 }

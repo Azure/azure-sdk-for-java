@@ -63,6 +63,8 @@ public class FeatureManager {
     private final TargetingContextAccessor contextAccessor;
 
     private final TargetingEvaluationOptions evaluationOptions;
+    
+    private final TelemetryPublisher telemetryPublisher;
 
     /**
      * Used to evaluate the enabled state of a feature and/or get the assigned variant of a feature, if any.
@@ -75,12 +77,13 @@ public class FeatureManager {
      */
     FeatureManager(ApplicationContext context, FeatureManagementProperties featureManagementConfigurations,
         FeatureManagementConfigProperties properties, TargetingContextAccessor contextAccessor,
-        TargetingEvaluationOptions evaluationOptions) {
+        TargetingEvaluationOptions evaluationOptions, TelemetryPublisher telemetryPublisher) {
         this.context = context;
         this.featureManagementConfigurations = featureManagementConfigurations;
         this.properties = properties;
         this.contextAccessor = contextAccessor;
         this.evaluationOptions = evaluationOptions;
+        this.telemetryPublisher = telemetryPublisher;
     }
 
     /**
@@ -193,14 +196,23 @@ public class FeatureManager {
 
         if (!featureFlag.isEnabled()) {
             this.assignDefaultDisabledReason(event);
+            event.setEnabled(false);
+            if (telemetryPublisher != null && featureFlag.getTelemetry().getEnabled()) {
+                telemetryPublisher.publishTelemetry(event);
+            }
 
             // If a feature flag is disabled and override can't enable it
-            return Mono.just(event.setEnabled(false));
+            return Mono.just(event);
         }
 
         Mono<EvaluationEvent> result = this.checkFeatureFilters(event, featureContext);
 
         result = assignAllocation(result);
+        result.doOnSuccess(resultEvent -> {
+            if (telemetryPublisher != null && featureFlag.getTelemetry().getEnabled()) {
+                telemetryPublisher.publishTelemetry(resultEvent);
+            } 
+        });
         return result;
     }
 
