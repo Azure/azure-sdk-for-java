@@ -10,7 +10,8 @@ package com.azure.resourcemanager.networkcloud.generated;
 public final class AgentPoolsGetSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2024-07-01/examples/AgentPools_Get.json
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-10-01-preview/examples/
+     * AgentPools_Get.json
      */
     /**
      * Sample code: Get Kubernetes cluster agent pool.
