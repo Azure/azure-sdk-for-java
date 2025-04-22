@@ -19,6 +19,7 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Function;
 
@@ -273,9 +274,12 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
 
     /**
      * Invokes tasks in the group.
+     * By Default, tasks will be executed concurrently on {@link ForkJoinPool#commonPool()}.
      *
      * @param context group level shared context that need be passed to invokeAsync(cxt)
      *                method of each task item in the group when it is selected for invocation.
+     *
+     * @return the root result of task group.
      */
     public Indexable invoke(final InvocationContext context) {
         if (proxyTaskGroupWrapper.isActive()) {
@@ -297,6 +301,7 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
 
     /**
      * Invokes tasks in the group.
+     * By Default, tasks will be executed concurrently on {@link ForkJoinPool#commonPool()}.
      *
      * @return the root result of task group.
      */
