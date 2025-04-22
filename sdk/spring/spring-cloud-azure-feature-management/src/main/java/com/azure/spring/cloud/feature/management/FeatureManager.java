@@ -46,7 +46,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Holds information on Feature Management properties and can check if a given feature is enabled.
+ * Used to evaluate the enabled state of a feature and/or get the assigned variant of a feature, if any.
  */
 public class FeatureManager {
 
@@ -65,11 +65,13 @@ public class FeatureManager {
     private final TargetingEvaluationOptions evaluationOptions;
 
     /**
-     * Can be called to check if a feature is enabled or disabled.
+     * Used to evaluate the enabled state of a feature and/or get the assigned variant of a feature, if any.
      *
      * @param context ApplicationContext
      * @param featureManagementConfigurations Configuration Properties for Feature Flags
      * @param properties FeatureManagementConfigProperties
+     * @param contextAccessor TargetingContextAccessor
+     * @param evaluationOptions TargetingE
      */
     FeatureManager(ApplicationContext context, FeatureManagementProperties featureManagementConfigurations,
         FeatureManagementConfigProperties properties, TargetingContextAccessor contextAccessor,
@@ -319,6 +321,7 @@ public class FeatureManager {
 
         if (variantName == null) {
             this.assignDefaultEnabledVariant(event);
+            return;
         }
 
         event.setVariant(variantNameToVariant(featureFlag, variantName));

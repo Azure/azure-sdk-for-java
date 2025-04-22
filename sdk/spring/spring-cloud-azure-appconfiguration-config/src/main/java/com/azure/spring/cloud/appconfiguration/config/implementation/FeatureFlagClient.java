@@ -29,10 +29,12 @@ import org.springframework.util.StringUtils;
 import com.azure.core.util.Context;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
+import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.data.appconfiguration.models.SettingSelector;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.FeatureFlags;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.Feature;
 import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.FeatureTelemetry;
+import com.azure.spring.cloud.appconfiguration.config.implementation.http.policy.FeatureFlagTracing;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.MapperFeature;
@@ -51,6 +53,8 @@ class FeatureFlagClient {
 
     private static final ObjectMapper CASE_INSENSITIVE_MAPPER = JsonMapper.builder()
         .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
+    
+    private FeatureFlagTracing tracing = new FeatureFlagTracing();
 
     /**
      * <p>
@@ -79,6 +83,7 @@ class FeatureFlagClient {
 
         for (String label : labels) {
             SettingSelector settingSelector = new SettingSelector().setKeyFilter(keyFilter).setLabelFilter(label);
+            context.addData("FeatureFlagTracing", tracing);
 
             FeatureFlags features = replicaClient.listFeatureFlags(settingSelector, context);
             loadedFeatureFlags.addAll(proccessFeatureFlags(features, keyFilter));
@@ -95,6 +100,7 @@ class FeatureFlagClient {
             if (setting instanceof FeatureFlagConfigurationSetting
                 && FEATURE_FLAG_CONTENT_TYPE.equals(setting.getContentType())) {
                 FeatureFlagConfigurationSetting featureFlag = (FeatureFlagConfigurationSetting) setting;
+                updateTelemetry(featureFlag);
                 properties.put(featureFlag.getKey(), createFeature(featureFlag, endpoint));
             }
         }
@@ -169,6 +175,22 @@ class FeatureFlagClient {
      */
     public List<Feature> getFeatureFlags() {
         return properties.values().stream().toList();
+    }
+    
+    public void resetTelemetry() {
+        tracing.resetFeatureFilterTelemetry();
+    }
+    
+    /**
+     * Looks at each filter used in a Feature Flag to check what types it is using.
+     * 
+     * @param featureFlag FeatureFlagConfigurationSetting
+     * @param tracing The TracingInfo for this store.
+     */
+    private void updateTelemetry(FeatureFlagConfigurationSetting featureFlag) {
+        for (FeatureFlagFilter filter : featureFlag.getClientFilters()) {
+            tracing.updateFeatureFilterTelemetry(filter.getName());
+        }
     }
 
 }

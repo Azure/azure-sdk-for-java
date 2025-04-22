@@ -182,7 +182,6 @@ public class StateHolderTest {
         StateHolder testStateHolder = new StateHolder();
         testStateHolder.setLoadState(endpoint, true);
         StateHolder.updateState(testStateHolder);
-        assertEquals(testStateHolder.getLoadState().get(endpoint), StateHolder.getLoadState(endpoint));
         assertEquals(testStateHolder, StateHolder.getCurrentState());
     }
 

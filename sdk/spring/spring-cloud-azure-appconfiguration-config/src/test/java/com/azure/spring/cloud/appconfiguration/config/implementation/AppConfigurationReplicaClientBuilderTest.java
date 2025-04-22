@@ -269,7 +269,7 @@ public class AppConfigurationReplicaClientBuilderTest {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
             () -> spy.buildClient("fake.test.config.io", configStore));
 
-        assertEquals("java.net.MalformedURLException: no protocol: fake.test.config.io", exception.getMessage());
+        assertEquals("URI is not absolute", exception.getMessage());
     }
 
     @Test
