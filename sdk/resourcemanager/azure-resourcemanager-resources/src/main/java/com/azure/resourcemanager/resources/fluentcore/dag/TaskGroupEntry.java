@@ -108,6 +108,20 @@ public final class TaskGroupEntry<TaskT extends TaskItem> extends DAGNode<TaskT,
         }
     }
 
+    /**
+     * Invokes the task this entry holds.
+     * if the task cannot be invoked due to faulted dependencies then {@link ErroredDependencyTaskException}
+     * will be thrown.
+     *
+     * @param ignoreCachedResult if the task is already invoked and has result cached then a value false for this
+     *                           parameter indicates the cached result can be returned without invoking task again,
+     *                           if true then cached result will be ignored and task will be invoked
+     * @param context the context object shared across all the entries in the group that this entry belongs to,
+     *                           this will be passed to {@link TaskItem#invokeAsync(TaskGroup.InvocationContext)}
+     *                           method of the task item
+     * @return a result of type {@link Indexable}.
+     * @throws ErroredDependencyTaskException
+     */
     public Indexable invokeTask(boolean ignoreCachedResult, final TaskGroup.InvocationContext context) {
         if (hasFaultedDescentDependencyTasks) {
             throw new ErroredDependencyTaskException();

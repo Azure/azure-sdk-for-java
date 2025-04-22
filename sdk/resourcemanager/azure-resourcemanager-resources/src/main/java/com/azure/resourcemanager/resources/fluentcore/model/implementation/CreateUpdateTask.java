@@ -160,8 +160,8 @@ public class CreateUpdateTask<ResourceT extends Indexable> implements TaskItem {
 
         /**
          * Perform any action followed by the processing of work scheduled to be invoked
-         * (i.e. "post run") after {@link this#createResource()} ()} or
-         * {@link this#updateResource()} ()}.
+         * (i.e. "post run") after {@link this#createResource()} or
+         * {@link this#updateResource()}.
          *
          * @param isGroupFaulted true if one or more tasks in the group this creatorUpdater
          *                       belongs to are in faulted state.

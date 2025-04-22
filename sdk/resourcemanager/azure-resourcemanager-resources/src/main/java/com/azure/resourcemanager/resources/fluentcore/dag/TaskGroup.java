@@ -19,9 +19,8 @@ import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.CompletionException;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.function.IntFunction;
+import java.util.function.Function;
 
 /**
  * Type representing a group of task entries with dependencies between them. Initially a task
@@ -379,9 +378,15 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
 
         // We could make the ThreadPool configurable, instead of the default ForkJoinPool.commonPool().
         //
-        return CompletableFuture.runAsync(() -> proxyTaskItem.invokeAfterPostRun(isFaulted))
-            .exceptionallyCompose(e -> processFaultedTask(entry, e, context))
-            .thenCompose(ignored -> {
+        return CompletableFuture.supplyAsync(() -> {
+                proxyTaskItem.invokeAfterPostRun(isFaulted);
+                return null;
+            })
+            .exceptionally(Function.identity())
+            .thenCompose(result -> {
+                if (result instanceof Throwable) {
+                    return processFaultedTask(entry, (Throwable) result, context);
+                }
                 if (isFaulted) {
                     if (entry.hasFaultedDescentDependencyTasks()) {
                         return processFaultedTask(entry, new ErroredDependencyTaskException(), context);
@@ -465,11 +470,11 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
         reportError(faultedEntry, throwable);
         if (isRootEntry(faultedEntry)) {
             if (shouldPropagateException(throwable)) {
-                return CompletableFuture.failedFuture(throwable);
+                return failedFuture(throwable);
             }
             return CompletableFuture.completedFuture(null);
         } else if (shouldPropagateException(throwable)) {
-            return CompletableFuture.allOf(invokeReadyTasks(context), CompletableFuture.failedFuture(throwable));
+            return CompletableFuture.allOf(invokeReadyTasks(context), failedFuture(throwable));
         } else {
             return invokeReadyTasks(context);
         }
@@ -794,6 +799,20 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
     public InvocationContext newInvocationContext() {
         return new InvocationContext(this);
     }
+
+    /**
+     * Constructs a {@link CompletableFuture} that completes by throwing specified {@link Throwable}.
+     *
+     * @param throwable the error to throw
+     * @return a {@link CompletableFuture} that completes by throwing specified {@link Throwable}
+     * @param <T> result type, can be ignored
+     */
+    public static <T> CompletableFuture<T> failedFuture(Throwable throwable) {
+        CompletableFuture<T> future = new CompletableFuture<>();
+        future.completeExceptionally(throwable);
+        return future;
+    }
+
 
     /**
      * An interface representing a type composes a TaskGroup.
