@@ -43,12 +43,3 @@ service-version:
 - 2022-05-13
 - 2024-12-09-preview
 ```
-
-### endpoint
-``` yaml
-directive:
-- from: swagger-document
-  where: endpoint
-  transform: >
-    endpoint = ledgerEndpoint;
-```
