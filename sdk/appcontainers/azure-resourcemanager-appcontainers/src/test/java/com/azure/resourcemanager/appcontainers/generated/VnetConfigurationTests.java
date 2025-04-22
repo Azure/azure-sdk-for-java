@@ -12,27 +12,27 @@ public final class VnetConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VnetConfiguration model = BinaryData.fromString(
-            "{\"internal\":true,\"infrastructureSubnetId\":\"pubntnbatz\",\"dockerBridgeCidr\":\"qs\",\"platformReservedCidr\":\"saaelca\",\"platformReservedDnsIP\":\"cjuhplrvkm\"}")
+            "{\"internal\":true,\"infrastructureSubnetId\":\"zkgimsid\",\"dockerBridgeCidr\":\"sicddyvv\",\"platformReservedCidr\":\"kgfmocwahpq\",\"platformReservedDnsIP\":\"tjeaahhvjhh\"}")
             .toObject(VnetConfiguration.class);
         Assertions.assertEquals(true, model.internal());
-        Assertions.assertEquals("pubntnbatz", model.infrastructureSubnetId());
-        Assertions.assertEquals("qs", model.dockerBridgeCidr());
-        Assertions.assertEquals("saaelca", model.platformReservedCidr());
-        Assertions.assertEquals("cjuhplrvkm", model.platformReservedDnsIp());
+        Assertions.assertEquals("zkgimsid", model.infrastructureSubnetId());
+        Assertions.assertEquals("sicddyvv", model.dockerBridgeCidr());
+        Assertions.assertEquals("kgfmocwahpq", model.platformReservedCidr());
+        Assertions.assertEquals("tjeaahhvjhh", model.platformReservedDnsIp());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VnetConfiguration model = new VnetConfiguration().withInternal(true)
-            .withInfrastructureSubnetId("pubntnbatz")
-            .withDockerBridgeCidr("qs")
-            .withPlatformReservedCidr("saaelca")
-            .withPlatformReservedDnsIp("cjuhplrvkm");
+            .withInfrastructureSubnetId("zkgimsid")
+            .withDockerBridgeCidr("sicddyvv")
+            .withPlatformReservedCidr("kgfmocwahpq")
+            .withPlatformReservedDnsIp("tjeaahhvjhh");
         model = BinaryData.fromObject(model).toObject(VnetConfiguration.class);
         Assertions.assertEquals(true, model.internal());
-        Assertions.assertEquals("pubntnbatz", model.infrastructureSubnetId());
-        Assertions.assertEquals("qs", model.dockerBridgeCidr());
-        Assertions.assertEquals("saaelca", model.platformReservedCidr());
-        Assertions.assertEquals("cjuhplrvkm", model.platformReservedDnsIp());
+        Assertions.assertEquals("zkgimsid", model.infrastructureSubnetId());
+        Assertions.assertEquals("sicddyvv", model.dockerBridgeCidr());
+        Assertions.assertEquals("kgfmocwahpq", model.platformReservedCidr());
+        Assertions.assertEquals("tjeaahhvjhh", model.platformReservedDnsIp());
     }
 }

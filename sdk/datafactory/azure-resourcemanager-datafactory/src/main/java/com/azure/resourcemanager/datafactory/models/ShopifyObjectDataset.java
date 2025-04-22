@@ -51,7 +51,7 @@ public final class ShopifyObjectDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private GenericDatasetTypeProperties innerTypeProperties() {
+    GenericDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

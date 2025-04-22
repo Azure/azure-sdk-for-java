@@ -677,17 +677,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
     }
 
     /**
-     * Set the isRestoring property: Restoring.
-     * 
-     * @param isRestoring the isRestoring value to set.
-     * @return the VolumeProperties object itself.
-     */
-    public VolumeProperties withIsRestoring(Boolean isRestoring) {
-        this.isRestoring = isRestoring;
-        return this;
-    }
-
-    /**
      * Get the snapshotDirectoryVisible property: If enabled (true) the volume will contain a read-only snapshot
      * directory which provides access to each of the volume's snapshots (defaults to true).
      * 
@@ -1412,7 +1401,6 @@ public final class VolumeProperties implements JsonSerializable<VolumeProperties
             this.networkFeatures == null ? null : this.networkFeatures.toString());
         jsonWriter.writeStringField("volumeType", this.volumeType);
         jsonWriter.writeJsonField("dataProtection", this.dataProtection);
-        jsonWriter.writeBooleanField("isRestoring", this.isRestoring);
         jsonWriter.writeBooleanField("snapshotDirectoryVisible", this.snapshotDirectoryVisible);
         jsonWriter.writeBooleanField("kerberosEnabled", this.kerberosEnabled);
         jsonWriter.writeStringField("securityStyle", this.securityStyle == null ? null : this.securityStyle.toString());

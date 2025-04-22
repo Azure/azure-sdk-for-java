@@ -48,7 +48,7 @@ public final class EnvironmentVariableSetup extends CustomSetupBase {
      * 
      * @return the innerTypeProperties value.
      */
-    private EnvironmentVariableSetupTypeProperties innerTypeProperties() {
+    EnvironmentVariableSetupTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

@@ -51,7 +51,7 @@ public final class SapHanaLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private SapHanaLinkedServiceProperties innerTypeProperties() {
+    SapHanaLinkedServiceProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

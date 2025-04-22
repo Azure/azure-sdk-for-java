@@ -17,30 +17,30 @@ public final class AzureFileShareProtectionPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureFileShareProtectionPolicy model = BinaryData.fromString(
-            "{\"backupManagementType\":\"AzureStorage\",\"workLoadType\":\"Client\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"vaultRetentionPolicy\":{\"vaultRetention\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"snapshotRetentionInDays\":211422779},\"timeZone\":\"tiewdj\",\"protectedItemsCount\":231543850,\"resourceGuardOperationRequests\":[\"wr\",\"ehwagoh\",\"uffkmrqemvvh\"]}")
+            "{\"backupManagementType\":\"AzureStorage\",\"workLoadType\":\"FileFolder\",\"schedulePolicy\":{\"schedulePolicyType\":\"SchedulePolicy\"},\"retentionPolicy\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"vaultRetentionPolicy\":{\"vaultRetention\":{\"retentionPolicyType\":\"RetentionPolicy\"},\"snapshotRetentionInDays\":724220741},\"timeZone\":\"ookk\",\"protectedItemsCount\":870237510,\"resourceGuardOperationRequests\":[\"vleo\",\"fmluiqtqzfavyvn\",\"qybaryeua\",\"jkqa\"]}")
             .toObject(AzureFileShareProtectionPolicy.class);
-        Assertions.assertEquals(231543850, model.protectedItemsCount());
-        Assertions.assertEquals("wr", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(WorkloadType.CLIENT, model.workLoadType());
-        Assertions.assertEquals(211422779, model.vaultRetentionPolicy().snapshotRetentionInDays());
-        Assertions.assertEquals("tiewdj", model.timeZone());
+        Assertions.assertEquals(870237510, model.protectedItemsCount());
+        Assertions.assertEquals("vleo", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(WorkloadType.FILE_FOLDER, model.workLoadType());
+        Assertions.assertEquals(724220741, model.vaultRetentionPolicy().snapshotRetentionInDays());
+        Assertions.assertEquals("ookk", model.timeZone());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureFileShareProtectionPolicy model = new AzureFileShareProtectionPolicy().withProtectedItemsCount(231543850)
-            .withResourceGuardOperationRequests(Arrays.asList("wr", "ehwagoh", "uffkmrqemvvh"))
-            .withWorkLoadType(WorkloadType.CLIENT)
+        AzureFileShareProtectionPolicy model = new AzureFileShareProtectionPolicy().withProtectedItemsCount(870237510)
+            .withResourceGuardOperationRequests(Arrays.asList("vleo", "fmluiqtqzfavyvn", "qybaryeua", "jkqa"))
+            .withWorkLoadType(WorkloadType.FILE_FOLDER)
             .withSchedulePolicy(new SchedulePolicy())
             .withRetentionPolicy(new RetentionPolicy())
             .withVaultRetentionPolicy(new VaultRetentionPolicy().withVaultRetention(new RetentionPolicy())
-                .withSnapshotRetentionInDays(211422779))
-            .withTimeZone("tiewdj");
+                .withSnapshotRetentionInDays(724220741))
+            .withTimeZone("ookk");
         model = BinaryData.fromObject(model).toObject(AzureFileShareProtectionPolicy.class);
-        Assertions.assertEquals(231543850, model.protectedItemsCount());
-        Assertions.assertEquals("wr", model.resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals(WorkloadType.CLIENT, model.workLoadType());
-        Assertions.assertEquals(211422779, model.vaultRetentionPolicy().snapshotRetentionInDays());
-        Assertions.assertEquals("tiewdj", model.timeZone());
+        Assertions.assertEquals(870237510, model.protectedItemsCount());
+        Assertions.assertEquals("vleo", model.resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals(WorkloadType.FILE_FOLDER, model.workLoadType());
+        Assertions.assertEquals(724220741, model.vaultRetentionPolicy().snapshotRetentionInDays());
+        Assertions.assertEquals("ookk", model.timeZone());
     }
 }

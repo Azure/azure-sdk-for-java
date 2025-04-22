@@ -38,7 +38,7 @@
 # AzureSdkOwners:                                    @alzimmermsft @samvaity
 
 # PRLabel: %Azure.Core.V2
-/sdk/corev2/                                         @alzimmermsft @samvaity @srnagar @anuchandy @lmolkova @vcolin7 @mssfang @jonathangiles @billwert
+/sdk/core-v2/                                         @alzimmermsft @samvaity @srnagar @anuchandy @lmolkova @vcolin7 @mssfang @jonathangiles @billwert
 
 # ServiceLabel: %Azure.Core.V2
 # AzureSdkOwners:                                    @alzimmermsft @samvaity
@@ -533,7 +533,7 @@
 # ServiceOwners:                                     @minamnmik
 
 # ServiceLabel: %Maps
-/sdk/maps/                                           @dubiety
+/sdk/maps/                                           @dubiety @andykao1213
 
 # ServiceLabel: %Managed Identity
 # ServiceOwners:                                     @varunkch
@@ -658,6 +658,9 @@
 
 # PRLabel: %OpenAI
 /sdk/openai/azure-ai-openai-realtime/              @brandom-msft @jpalvarezl @mssfang
+
+# PRLabel: %OpenAI
+/sdk/openai/azure-ai-openai-stainless/             @brandom-msft @jpalvarezl @mssfang
 
 # ServiceLabel: %Operational Insights
 # ServiceOwners:                                     @AzmonLogA

@@ -31,6 +31,16 @@ public final class BackupProperties implements JsonSerializable<BackupProperties
     private OffsetDateTime creationDate;
 
     /*
+     * The snapshot creation date of the backup
+     */
+    private OffsetDateTime snapshotCreationDate;
+
+    /*
+     * The completion date of the backup
+     */
+    private OffsetDateTime completionDate;
+
+    /*
      * Azure lifecycle management
      */
     private String provisioningState;
@@ -76,6 +86,11 @@ public final class BackupProperties implements JsonSerializable<BackupProperties
      */
     private String backupPolicyResourceId;
 
+    /*
+     * Specifies if the backup is for a large volume.
+     */
+    private Boolean isLargeVolume;
+
     /**
      * Creates an instance of BackupProperties class.
      */
@@ -98,6 +113,24 @@ public final class BackupProperties implements JsonSerializable<BackupProperties
      */
     public OffsetDateTime creationDate() {
         return this.creationDate;
+    }
+
+    /**
+     * Get the snapshotCreationDate property: The snapshot creation date of the backup.
+     * 
+     * @return the snapshotCreationDate value.
+     */
+    public OffsetDateTime snapshotCreationDate() {
+        return this.snapshotCreationDate;
+    }
+
+    /**
+     * Get the completionDate property: The completion date of the backup.
+     * 
+     * @return the completionDate value.
+     */
+    public OffsetDateTime completionDate() {
+        return this.completionDate;
     }
 
     /**
@@ -228,6 +261,15 @@ public final class BackupProperties implements JsonSerializable<BackupProperties
     }
 
     /**
+     * Get the isLargeVolume property: Specifies if the backup is for a large volume.
+     * 
+     * @return the isLargeVolume value.
+     */
+    public Boolean isLargeVolume() {
+        return this.isLargeVolume;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -278,6 +320,12 @@ public final class BackupProperties implements JsonSerializable<BackupProperties
                 } else if ("creationDate".equals(fieldName)) {
                     deserializedBackupProperties.creationDate = reader
                         .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("snapshotCreationDate".equals(fieldName)) {
+                    deserializedBackupProperties.snapshotCreationDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
+                } else if ("completionDate".equals(fieldName)) {
+                    deserializedBackupProperties.completionDate = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedBackupProperties.provisioningState = reader.getString();
                 } else if ("size".equals(fieldName)) {
@@ -294,6 +342,8 @@ public final class BackupProperties implements JsonSerializable<BackupProperties
                     deserializedBackupProperties.snapshotName = reader.getString();
                 } else if ("backupPolicyResourceId".equals(fieldName)) {
                     deserializedBackupProperties.backupPolicyResourceId = reader.getString();
+                } else if ("isLargeVolume".equals(fieldName)) {
+                    deserializedBackupProperties.isLargeVolume = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

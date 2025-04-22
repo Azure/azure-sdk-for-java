@@ -48,7 +48,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * These tests are isolated from other {@link Response} tests as they require running the garbage collector to force
  * the JVM to destroy buffers that no longer have pointers to them.
  */
-@Timeout(value = 1, unit = TimeUnit.MINUTES)
+@Timeout(value = 3, unit = TimeUnit.MINUTES)
 @Isolated
 @Execution(ExecutionMode.SAME_THREAD)
 public class HttpResponseDrainsBufferTests {
@@ -83,13 +83,7 @@ public class HttpResponseDrainsBufferTests {
 
     @Test
     public void closeHttpResponseWithoutConsumingBody() throws ExecutionException, InterruptedException {
-        runScenario(response -> {
-            try {
-                response.close();
-            } catch (IOException ex) {
-                throw new UncheckedIOException(ex);
-            }
-        });
+        runScenario(Response::close);
     }
 
     @Test
@@ -107,11 +101,7 @@ public class HttpResponseDrainsBufferTests {
     @Test
     public void closeHttpResponseWithConsumingPartialWrite() throws ExecutionException, InterruptedException {
         runScenario(response -> {
-            try {
-                response.getValue().writeTo(new ThrowingWritableByteChannel());
-            } catch (IOException ex) {
-                throw new UncheckedIOException(ex);
-            }
+            response.getValue().writeTo(new ThrowingWritableByteChannel());
         });
     }
 
@@ -136,7 +126,7 @@ public class HttpResponseDrainsBufferTests {
         }
 
         @Override
-        public void close() throws IOException {
+        public void close() {
             open = false;
         }
     }
@@ -144,12 +134,8 @@ public class HttpResponseDrainsBufferTests {
     @Test
     public void closeHttpResponseWithConsumingFullBody() throws ExecutionException, InterruptedException {
         runScenario(response -> {
-            try {
-                response.getValue().toBytes();
-                response.close();
-            } catch (IOException ex) {
-                throw new UncheckedIOException(ex);
-            }
+            response.getValue().toBytes();
+            response.close();
         });
     }
 
@@ -157,14 +143,12 @@ public class HttpResponseDrainsBufferTests {
         throws InterruptedException, ExecutionException {
         HttpClient httpClient = new NettyHttpClientProvider().getSharedInstance();
 
-        Semaphore limiter = new Semaphore(Runtime.getRuntime().availableProcessors());
+        Semaphore limiter = new Semaphore(Runtime.getRuntime().availableProcessors() - 1);
         List<Future<Void>> futures = SharedExecutorService.getInstance()
             .invokeAll(IntStream.range(0, 100).mapToObj(ignored -> (Callable<Void>) () -> {
                 try {
                     limiter.acquire();
                     responseConsumer.accept(httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(URL)));
-                } catch (IOException ex) {
-                    throw new UncheckedIOException(ex);
                 } finally {
                     limiter.release();
                 }
@@ -191,7 +175,7 @@ public class HttpResponseDrainsBufferTests {
     }
 
     @Test
-    public void closingHttpResponseIsIdempotent() throws IOException, InterruptedException {
+    public void closingHttpResponseIsIdempotent() throws InterruptedException {
         HttpClient httpClient = new NettyHttpClientProvider().getSharedInstance();
 
         Response<BinaryData> response = httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(URL));

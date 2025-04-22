@@ -11,23 +11,23 @@ public final class AzureBlobFSReadSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBlobFSReadSettings model = BinaryData.fromString(
-            "{\"type\":\"AzureBlobFSReadSettings\",\"recursive\":\"dataejkvcimq\",\"wildcardFolderPath\":\"datad\",\"wildcardFileName\":\"datahhwtgcgefayc\",\"fileListPath\":\"datagotbjnxozi\",\"enablePartitionDiscovery\":\"dataxnpov\",\"partitionRootPath\":\"dataxl\",\"deleteFilesAfterCompletion\":\"datamsgdisupnxth\",\"modifiedDatetimeStart\":\"datazdvokxuyhhrdi\",\"modifiedDatetimeEnd\":\"databqeahgsibldxyaq\",\"maxConcurrentConnections\":\"dataaznz\",\"disableMetricsCollection\":\"datazfhh\",\"\":{\"ihn\":\"dataxkgnryalkfdxa\",\"dwyehqnxuffgjyn\":\"datardh\"}}")
+            "{\"type\":\"AzureBlobFSReadSettings\",\"recursive\":\"datag\",\"wildcardFolderPath\":\"dataqmkakgw\",\"wildcardFileName\":\"dataznob\",\"fileListPath\":\"datagyheyayktutflhe\",\"enablePartitionDiscovery\":\"dataxefs\",\"partitionRootPath\":\"datamdcoeexwgzsz\",\"deleteFilesAfterCompletion\":\"datazmqjhghihkhjldw\",\"modifiedDatetimeStart\":\"dataqt\",\"modifiedDatetimeEnd\":\"datatgn\",\"maxConcurrentConnections\":\"databjvmdkgvu\",\"disableMetricsCollection\":\"datamlsuuhwuox\",\"\":{\"gzjrkslqbafdb\":\"dataaizzjotm\"}}")
             .toObject(AzureBlobFSReadSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureBlobFSReadSettings model = new AzureBlobFSReadSettings().withMaxConcurrentConnections("dataaznz")
-            .withDisableMetricsCollection("datazfhh")
-            .withRecursive("dataejkvcimq")
-            .withWildcardFolderPath("datad")
-            .withWildcardFileName("datahhwtgcgefayc")
-            .withFileListPath("datagotbjnxozi")
-            .withEnablePartitionDiscovery("dataxnpov")
-            .withPartitionRootPath("dataxl")
-            .withDeleteFilesAfterCompletion("datamsgdisupnxth")
-            .withModifiedDatetimeStart("datazdvokxuyhhrdi")
-            .withModifiedDatetimeEnd("databqeahgsibldxyaq");
+        AzureBlobFSReadSettings model = new AzureBlobFSReadSettings().withMaxConcurrentConnections("databjvmdkgvu")
+            .withDisableMetricsCollection("datamlsuuhwuox")
+            .withRecursive("datag")
+            .withWildcardFolderPath("dataqmkakgw")
+            .withWildcardFileName("dataznob")
+            .withFileListPath("datagyheyayktutflhe")
+            .withEnablePartitionDiscovery("dataxefs")
+            .withPartitionRootPath("datamdcoeexwgzsz")
+            .withDeleteFilesAfterCompletion("datazmqjhghihkhjldw")
+            .withModifiedDatetimeStart("dataqt")
+            .withModifiedDatetimeEnd("datatgn");
         model = BinaryData.fromObject(model).toObject(AzureBlobFSReadSettings.class);
     }
 }

@@ -56,7 +56,7 @@
     <module>sdk/containerservicefleet</module>
     <module>sdk/contentsafety</module>
     <module>sdk/core</module>
-    <module>sdk/corev2</module>
+    <module>sdk/core-v2</module>
     <module>sdk/cosmos</module>
     <module>sdk/cosmosdbforpostgresql</module>
     <module>sdk/costmanagement</module>
@@ -74,6 +74,7 @@
     <module>sdk/dataprotection</module>
     <module>sdk/defendereasm</module>
     <module>sdk/delegatednetwork</module>
+    <module>sdk/dependencymap</module>
     <module>sdk/deploymentmanager</module>
     <module>sdk/desktopvirtualization</module>
     <module>sdk/devcenter</module>

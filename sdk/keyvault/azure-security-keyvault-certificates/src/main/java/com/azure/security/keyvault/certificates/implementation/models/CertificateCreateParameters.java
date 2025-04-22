@@ -36,6 +36,13 @@ public final class CertificateCreateParameters implements JsonSerializable<Certi
     @Generated
     private Map<String, String> tags;
 
+    /*
+     * Specifies whether the certificate chain preserves its original order. The default value is false, which sets the
+     * leaf certificate at index 0.
+     */
+    @Generated
+    private Boolean preserveCertOrder;
+
     /**
      * Creates an instance of CertificateCreateParameters class.
      */
@@ -110,6 +117,30 @@ public final class CertificateCreateParameters implements JsonSerializable<Certi
     }
 
     /**
+     * Get the preserveCertOrder property: Specifies whether the certificate chain preserves its original order. The
+     * default value is false, which sets the leaf certificate at index 0.
+     *
+     * @return the preserveCertOrder value.
+     */
+    @Generated
+    public Boolean isPreserveCertOrder() {
+        return this.preserveCertOrder;
+    }
+
+    /**
+     * Set the preserveCertOrder property: Specifies whether the certificate chain preserves its original order. The
+     * default value is false, which sets the leaf certificate at index 0.
+     *
+     * @param preserveCertOrder the preserveCertOrder value to set.
+     * @return the CertificateCreateParameters object itself.
+     */
+    @Generated
+    public CertificateCreateParameters setPreserveCertOrder(Boolean preserveCertOrder) {
+        this.preserveCertOrder = preserveCertOrder;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -119,6 +150,7 @@ public final class CertificateCreateParameters implements JsonSerializable<Certi
         jsonWriter.writeJsonField("policy", this.certificatePolicy);
         jsonWriter.writeJsonField("attributes", this.certificateAttributes);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("preserveCertOrder", this.preserveCertOrder);
         return jsonWriter.writeEndObject();
     }
 
@@ -145,6 +177,9 @@ public final class CertificateCreateParameters implements JsonSerializable<Certi
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedCertificateCreateParameters.tags = tags;
+                } else if ("preserveCertOrder".equals(fieldName)) {
+                    deserializedCertificateCreateParameters.preserveCertOrder
+                        = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

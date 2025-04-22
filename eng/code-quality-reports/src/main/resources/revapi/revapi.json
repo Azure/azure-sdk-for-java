@@ -749,6 +749,20 @@
           "code" : "java.method.removed",
           "old" : "method com.azure.resourcemanager.containerservice.models.ManagedClusterNatGatewayProfile com.azure.resourcemanager.containerservice.models.ManagedClusterNatGatewayProfile::withEffectiveOutboundIPs(java.util.List<com.azure.resourcemanager.containerservice.models.ResourceReference>)",
           "justification": "The effectiveOutboundIPs was never a client-side modifiable property."
+        },
+        {
+          "ignore": true,
+          "code" : "java.method.numberOfParametersChanged",
+          "old" : "method void com.azure.search.documents.indexes.models.SearchResourceEncryptionKey::<init>(java.lang.String, java.lang.String, java.lang.String)",
+          "new" : "method void com.azure.search.documents.indexes.models.SearchResourceEncryptionKey::<init>(java.lang.String, java.lang.String)",
+          "justification": "Breaking change in Search 03-01-2025 preview."
+        },
+        {
+          "regex": true,
+          "code" : "java.field.enumConstantOrderChanged",
+          "old" : "field com\\.azure\\.resourcemanager\\.storage\\.models\\.ProvisioningState\\.(CANCELED|DELETING|FAILED)",
+          "new" : "field com\\.azure\\.resourcemanager\\.storage\\.models\\.ProvisioningState\\.(CANCELED|DELETING|FAILED)",
+          "justification": "Add Accepted to ProvisioningState."
         }
       ]
     }

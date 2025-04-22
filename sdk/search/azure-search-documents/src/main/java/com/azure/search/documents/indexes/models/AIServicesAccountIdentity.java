@@ -11,8 +11,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The multi-region account of an Azure AI service resource that's attached to a skillset.
@@ -29,7 +27,7 @@ public final class AIServicesAccountIdentity extends CognitiveServicesAccount {
      * managed identity is used. On updates to the skillset, if the identity is unspecified, the value remains
      * unchanged. If set to "none", the value of this property is cleared.
      */
-    private final SearchIndexerDataIdentity identity;
+    private SearchIndexerDataIdentity identity;
 
     /*
      * The subdomain url for the corresponding AI Service.
@@ -39,11 +37,9 @@ public final class AIServicesAccountIdentity extends CognitiveServicesAccount {
     /**
      * Creates an instance of AIServicesAccountIdentity class.
      * 
-     * @param identity the identity value to set.
      * @param subdomainUrl the subdomainUrl value to set.
      */
-    public AIServicesAccountIdentity(SearchIndexerDataIdentity identity, String subdomainUrl) {
-        this.identity = identity;
+    public AIServicesAccountIdentity(String subdomainUrl) {
         this.subdomainUrl = subdomainUrl;
     }
 
@@ -67,6 +63,19 @@ public final class AIServicesAccountIdentity extends CognitiveServicesAccount {
      */
     public SearchIndexerDataIdentity getIdentity() {
         return this.identity;
+    }
+
+    /**
+     * Set the identity property: The user-assigned managed identity used for connections to AI Service. If not
+     * specified, the system-assigned managed identity is used. On updates to the skillset, if the identity is
+     * unspecified, the value remains unchanged. If set to "none", the value of this property is cleared.
+     * 
+     * @param identity the identity value to set.
+     * @return the AIServicesAccountIdentity object itself.
+     */
+    public AIServicesAccountIdentity setIdentity(SearchIndexerDataIdentity identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -94,9 +103,9 @@ public final class AIServicesAccountIdentity extends CognitiveServicesAccount {
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("description", getDescription());
-        jsonWriter.writeJsonField("identity", this.identity);
         jsonWriter.writeStringField("subdomainUrl", this.subdomainUrl);
         jsonWriter.writeStringField("@odata.type", this.odataType);
+        jsonWriter.writeJsonField("identity", this.identity);
         return jsonWriter.writeEndObject();
     }
 
@@ -112,47 +121,37 @@ public final class AIServicesAccountIdentity extends CognitiveServicesAccount {
     public static AIServicesAccountIdentity fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String description = null;
-            boolean identityFound = false;
-            SearchIndexerDataIdentity identity = null;
             boolean subdomainUrlFound = false;
             String subdomainUrl = null;
             String odataType = "#Microsoft.Azure.Search.AIServicesByIdentity";
+            SearchIndexerDataIdentity identity = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
                 if ("description".equals(fieldName)) {
                     description = reader.getString();
-                } else if ("identity".equals(fieldName)) {
-                    identity = SearchIndexerDataIdentity.fromJson(reader);
-                    identityFound = true;
                 } else if ("subdomainUrl".equals(fieldName)) {
                     subdomainUrl = reader.getString();
                     subdomainUrlFound = true;
                 } else if ("@odata.type".equals(fieldName)) {
                     odataType = reader.getString();
+                } else if ("identity".equals(fieldName)) {
+                    identity = SearchIndexerDataIdentity.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
-            if (identityFound && subdomainUrlFound) {
+            if (subdomainUrlFound) {
                 AIServicesAccountIdentity deserializedAIServicesAccountIdentity
-                    = new AIServicesAccountIdentity(identity, subdomainUrl);
+                    = new AIServicesAccountIdentity(subdomainUrl);
                 deserializedAIServicesAccountIdentity.setDescription(description);
                 deserializedAIServicesAccountIdentity.odataType = odataType;
+                deserializedAIServicesAccountIdentity.identity = identity;
 
                 return deserializedAIServicesAccountIdentity;
             }
-            List<String> missingProperties = new ArrayList<>();
-            if (!identityFound) {
-                missingProperties.add("identity");
-            }
-            if (!subdomainUrlFound) {
-                missingProperties.add("subdomainUrl");
-            }
-
-            throw new IllegalStateException(
-                "Missing required property/properties: " + String.join(", ", missingProperties));
+            throw new IllegalStateException("Missing required property: subdomainUrl");
         });
     }
 }

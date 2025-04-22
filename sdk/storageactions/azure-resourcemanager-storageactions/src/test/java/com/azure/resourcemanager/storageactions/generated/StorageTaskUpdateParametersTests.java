@@ -26,11 +26,11 @@ public final class StorageTaskUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageTaskUpdateParameters model = BinaryData.fromString(
-            "{\"identity\":{\"principalId\":\"838c709e-d905-4afd-955d-758ab957c691\",\"tenantId\":\"55a2cb0d-d988-4293-bb87-09311695d8e2\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"erhhbcsglumm\":{\"principalId\":\"45fb4590-b03c-423d-ac10-69640fedb353\",\"clientId\":\"294f6de9-60c4-4e07-a9da-b4de45485384\"},\"j\":{\"principalId\":\"b50a1a9e-01cb-4184-85d2-1ee058774378\",\"clientId\":\"bbce8433-aa26-4cb2-9468-9869e19e63eb\"}}},\"tags\":{\"jionpimexgstxgc\":\"xobnbdxkqpxok\"},\"properties\":{\"taskVersion\":8018866075965400544,\"enabled\":false,\"description\":\"ajrmvdjwzrlovmc\",\"action\":{\"if\":{\"condition\":\"whijcoejctbza\",\"operations\":[{\"name\":\"SetBlobTags\",\"parameters\":{\"kdkexxp\":\"cbkbfkg\"},\"onSuccess\":\"continue\",\"onFailure\":\"break\"}]},\"else\":{\"operations\":[{\"name\":\"SetBlobExpiry\",\"parameters\":{\"dtocj\":\"pg\"},\"onSuccess\":\"continue\",\"onFailure\":\"break\"}]}},\"provisioningState\":\"Deleting\",\"creationTimeInUtc\":\"2021-01-21T14:33:44Z\"}}")
+            "{\"identity\":{\"principalId\":\"71bd8883-c5e5-4d1a-b1e8-f1d378419d28\",\"tenantId\":\"f6d7d70f-98dc-4f6c-9f1a-b551aac1b489\",\"type\":\"SystemAssigned\",\"userAssignedIdentities\":{\"erhhbcsglumm\":{\"principalId\":\"e885cb74-89ff-47ac-9db4-0dc1f5e066ec\",\"clientId\":\"2d98c596-1911-4b0a-8b4f-948932f90090\"},\"j\":{\"principalId\":\"3e274b02-07de-4cc3-9a2c-73b907b813ae\",\"clientId\":\"acebea2e-0abf-4893-b271-ffb21be37fff\"}}},\"tags\":{\"jionpimexgstxgc\":\"xobnbdxkqpxok\"},\"properties\":{\"taskVersion\":8018866075965400544,\"enabled\":false,\"description\":\"ajrmvdjwzrlovmc\",\"action\":{\"if\":{\"condition\":\"whijcoejctbza\",\"operations\":[{\"name\":\"SetBlobTags\",\"parameters\":{\"kdkexxp\":\"cbkbfkg\"},\"onSuccess\":\"continue\",\"onFailure\":\"break\"}]},\"else\":{\"operations\":[{\"name\":\"SetBlobExpiry\",\"parameters\":{\"dtocj\":\"pg\"},\"onSuccess\":\"continue\",\"onFailure\":\"break\"}]}},\"provisioningState\":\"ValidateSubscriptionQuotaBegin\",\"creationTimeInUtc\":\"2021-01-21T14:33:44Z\"}}")
             .toObject(StorageTaskUpdateParameters.class);
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
         Assertions.assertEquals("xobnbdxkqpxok", model.tags().get("jionpimexgstxgc"));
-        Assertions.assertEquals(false, model.properties().enabled());
+        Assertions.assertFalse(model.properties().enabled());
         Assertions.assertEquals("ajrmvdjwzrlovmc", model.properties().description());
         Assertions.assertEquals("whijcoejctbza", model.properties().action().ifProperty().condition());
         Assertions.assertEquals(StorageTaskOperationName.SET_BLOB_TAGS,
@@ -76,7 +76,7 @@ public final class StorageTaskUpdateParametersTests {
         model = BinaryData.fromObject(model).toObject(StorageTaskUpdateParameters.class);
         Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED, model.identity().type());
         Assertions.assertEquals("xobnbdxkqpxok", model.tags().get("jionpimexgstxgc"));
-        Assertions.assertEquals(false, model.properties().enabled());
+        Assertions.assertFalse(model.properties().enabled());
         Assertions.assertEquals("ajrmvdjwzrlovmc", model.properties().description());
         Assertions.assertEquals("whijcoejctbza", model.properties().action().ifProperty().condition());
         Assertions.assertEquals(StorageTaskOperationName.SET_BLOB_TAGS,

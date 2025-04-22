@@ -1,5 +1,10 @@
 # Azure OpenAI client library for Java
 
+> [!IMPORTANT]
+> This client library won't receive updates in its current form.
+> To use newer OpenAI features, please use the official [OpenAI Java library][openai_java]
+> For Azure specific functionality, we are providing migration guides in azure-ai-openai-stainless.
+
 Azure OpenAI is a managed service that allows developers to deploy, tune, and generate content from OpenAI models on 
 Azure resources.
 
@@ -590,6 +595,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [microsoft_docs_whisper_model]: https://learn.microsoft.com/azure/ai-services/openai/whisper-quickstart?tabs=command-line
 [microsoft_docs_text_to_speech]: https://learn.microsoft.com/azure/ai-services/openai/text-to-speech-quickstart?tabs=command-line
 [non_azure_openai_authentication]: https://platform.openai.com/docs/api-reference/authentication
+[openai_java]: https://github.com/openai/openai-java
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [product_documentation]: https://azure.microsoft.com/services/
 [quickstart]: https://learn.microsoft.com/azure/cognitive-services/openai/quickstart

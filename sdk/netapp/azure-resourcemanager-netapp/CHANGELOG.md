@@ -1,6 +1,6 @@
 # Release History
 
-## 1.7.0-beta.1 (Unreleased)
+## 1.8.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,78 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.7.0 (2025-04-17)
+
+- Azure Resource Manager NetAppFiles client library for Java. This package contains Microsoft Azure SDK for NetAppFiles Management SDK. Microsoft NetApp Files Azure Resource Provider specification. Package tag package-2025-01-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.Volume$Definition` was modified
+
+* `withIsRestoring(java.lang.Boolean)` was removed
+
+#### `models.VolumeGroupVolumeProperties` was modified
+
+* `withIsRestoring(java.lang.Boolean)` was removed
+
+### Features Added
+
+* `models.UsageName` was added
+
+* `models.NetAppResourceUsages` was added
+
+* `models.UsagesListResult` was added
+
+* `models.MultiAdStatus` was added
+
+* `models.DestinationReplication` was added
+
+* `models.UsageResult` was added
+
+* `models.ReplicationType` was added
+
+#### `models.NetAppAccount$Definition` was modified
+
+* `withNfsV4IdDomain(java.lang.String)` was added
+
+#### `NetAppFilesManager` was modified
+
+* `netAppResourceUsages()` was added
+
+#### `models.Backup` was modified
+
+* `isLargeVolume()` was added
+* `snapshotCreationDate()` was added
+* `completionDate()` was added
+
+#### `models.EncryptionIdentity` was modified
+
+* `federatedClientId()` was added
+* `withFederatedClientId(java.lang.String)` was added
+
+#### `models.OperationListResult` was modified
+
+* `nextLink()` was added
+
+#### `models.ReplicationObject` was modified
+
+* `destinationReplications()` was added
+
+#### `models.NetAppAccountPatch` was modified
+
+* `multiAdStatus()` was added
+* `nfsV4IdDomain()` was added
+* `withNfsV4IdDomain(java.lang.String)` was added
+
+#### `models.NetAppAccount$Update` was modified
+
+* `withNfsV4IdDomain(java.lang.String)` was added
+
+#### `models.NetAppAccount` was modified
+
+* `nfsV4IdDomain()` was added
+* `multiAdStatus()` was added
 
 ## 1.6.0 (2025-02-21)
 

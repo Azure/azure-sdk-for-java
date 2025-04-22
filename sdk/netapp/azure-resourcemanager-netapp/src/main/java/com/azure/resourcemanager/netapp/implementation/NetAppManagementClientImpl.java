@@ -33,6 +33,7 @@ import com.azure.resourcemanager.netapp.fluent.BackupsUnderVolumesClient;
 import com.azure.resourcemanager.netapp.fluent.NetAppManagementClient;
 import com.azure.resourcemanager.netapp.fluent.NetAppResourceQuotaLimitsClient;
 import com.azure.resourcemanager.netapp.fluent.NetAppResourceRegionInfosClient;
+import com.azure.resourcemanager.netapp.fluent.NetAppResourceUsagesClient;
 import com.azure.resourcemanager.netapp.fluent.NetAppResourcesClient;
 import com.azure.resourcemanager.netapp.fluent.OperationsClient;
 import com.azure.resourcemanager.netapp.fluent.PoolsClient;
@@ -166,6 +167,20 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
      */
     public NetAppResourcesClient getNetAppResources() {
         return this.netAppResources;
+    }
+
+    /**
+     * The NetAppResourceUsagesClient object to access its operations.
+     */
+    private final NetAppResourceUsagesClient netAppResourceUsages;
+
+    /**
+     * Gets the NetAppResourceUsagesClient object to access its operations.
+     * 
+     * @return the NetAppResourceUsagesClient object.
+     */
+    public NetAppResourceUsagesClient getNetAppResourceUsages() {
+        return this.netAppResourceUsages;
     }
 
     /**
@@ -409,9 +424,10 @@ public final class NetAppManagementClientImpl implements NetAppManagementClient 
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2024-09-01";
+        this.apiVersion = "2025-01-01";
         this.operations = new OperationsClientImpl(this);
         this.netAppResources = new NetAppResourcesClientImpl(this);
+        this.netAppResourceUsages = new NetAppResourceUsagesClientImpl(this);
         this.netAppResourceQuotaLimits = new NetAppResourceQuotaLimitsClientImpl(this);
         this.netAppResourceRegionInfos = new NetAppResourceRegionInfosClientImpl(this);
         this.accounts = new AccountsClientImpl(this);
