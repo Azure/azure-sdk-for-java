@@ -20,7 +20,7 @@
       <dependency>
         <groupId>org.openrewrite.recipe</groupId>
         <artifactId>rewrite-recipe-bom</artifactId>
-        <version>3.6.1</version> <!-- {x-version-update;org.openrewrite.recipe:rewrite-recipe-bom;external_dependency} -->
+        <version>3.6.1</version> <!-- {x-version-update;org.openrewrite.recipe:rewrite-recipe-bom;current} -->
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -161,7 +161,7 @@
         <dependency>
           <groupId>io.clientcore</groupId>
           <artifactId>core</artifactId>
-          <version>1.0.0-beta.9</version>
+          <version>1.0.0-beta.9</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
         </dependency>
 
         <dependency>
