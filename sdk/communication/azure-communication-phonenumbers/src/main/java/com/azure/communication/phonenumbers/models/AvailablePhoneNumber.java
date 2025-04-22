@@ -49,7 +49,7 @@ public final class AvailablePhoneNumber implements JsonSerializable<AvailablePho
     /*
      * The incurred cost for this phone number.
      */
-    private AvailablePhoneNumberCost cost;
+    private PhoneNumberCost cost;
 
     /*
      * Represents the status of the phone number. Possible values include: 'available', 'reserved', 'expired', 'error', 'purchased'.
@@ -175,7 +175,7 @@ public final class AvailablePhoneNumber implements JsonSerializable<AvailablePho
      * 
      * @return the cost value.
      */
-    public AvailablePhoneNumberCost getCost() {
+    public PhoneNumberCost getCost() {
         return this.cost;
     }
 
@@ -254,7 +254,7 @@ public final class AvailablePhoneNumber implements JsonSerializable<AvailablePho
                 } else if ("phoneNumber".equals(fieldName)) {
                     deserializedAvailablePhoneNumber.phoneNumber = reader.getString();
                 } else if ("cost".equals(fieldName)) {
-                    deserializedAvailablePhoneNumber.cost = AvailablePhoneNumberCost.fromJson(reader);
+                    deserializedAvailablePhoneNumber.cost = PhoneNumberCost.fromJson(reader);
                 } else if ("status".equals(fieldName)) {
                     deserializedAvailablePhoneNumber.status = AvailablePhoneNumberStatus.fromString(reader.getString());
                 } else if ("isAgreementToNotResellRequired".equals(fieldName)) {
