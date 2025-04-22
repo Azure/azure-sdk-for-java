@@ -25,7 +25,6 @@ public class AppConfigCustomizations extends Customization {
         PackageCustomization appConfigPackages = customization.getPackage("com.azure.v2.data.appconfiguration");
         hideClient(appConfigPackages);
         hideModels(models);
-        renameClientBuilder(appConfigPackages);
         renameServiceVersionClassName(appConfigPackages);
 
 //        customizeKeyValueFilter(models.getClass("ConfigurationSettingsFilter"));
@@ -37,10 +36,10 @@ public class AppConfigCustomizations extends Customization {
         // TODO: move both 'Key' and 'KeyValue' class to implementation package
         models
             .getClass("Key")
-            .setModifier(java.lang.reflect.Modifier.PRIVATE);
+            .setModifier(0);
         models
             .getClass("KeyValue")
-            .setModifier(java.lang.reflect.Modifier.PRIVATE);
+            .setModifier(0);
     }
 
     private void hideClient(PackageCustomization appConfigPackages) {
@@ -48,13 +47,11 @@ public class AppConfigCustomizations extends Customization {
         appConfigPackages
             .getClass("AzureAppConfigurationClient")
             .setModifier(0);
-    }
-
-    private void renameClientBuilder(PackageCustomization appConfigPackages) {
         appConfigPackages
             .getClass("AzureAppConfigurationClientBuilder")
             .setModifier(0);
     }
+
     private void renameServiceVersionClassName(PackageCustomization appConfigPackages) {
         appConfigPackages
             .getClass("AzureAppConfigurationServiceVersion")
