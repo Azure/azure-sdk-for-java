@@ -14,7 +14,8 @@ import java.util.Map;
 public final class VolumesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2024-07-01/examples/Volumes_Create.json
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-10-01-preview/examples/
+     * Volumes_Create.json
      */
     /**
      * Sample code: Create or update volume.
