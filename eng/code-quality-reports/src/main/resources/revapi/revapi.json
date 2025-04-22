@@ -756,6 +756,13 @@
           "old" : "method void com.azure.search.documents.indexes.models.SearchResourceEncryptionKey::<init>(java.lang.String, java.lang.String, java.lang.String)",
           "new" : "method void com.azure.search.documents.indexes.models.SearchResourceEncryptionKey::<init>(java.lang.String, java.lang.String)",
           "justification": "Breaking change in Search 03-01-2025 preview."
+        },
+        {
+          "regex": true,
+          "code" : "java.field.enumConstantOrderChanged",
+          "old" : "field com\\.azure\\.resourcemanager\\.storage\\.models\\.ProvisioningState\\.(CANCELED|DELETING|FAILED)",
+          "new" : "field com\\.azure\\.resourcemanager\\.storage\\.models\\.ProvisioningState\\.(CANCELED|DELETING|FAILED)",
+          "justification": "Add Accepted to ProvisioningState."
         }
       ]
     }
