@@ -438,7 +438,7 @@
       <plugin>
         <groupId>org.revapi</groupId>
         <artifactId>revapi-maven-plugin</artifactId>
-        <version>0.15.0</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+        <version>0.15.1</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
         <configuration>
           <skip>true</skip>
         </configuration>
@@ -451,12 +451,12 @@
           <dependency>
             <groupId>org.revapi</groupId>
             <artifactId>revapi-java</artifactId>
-            <version>0.28.1</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
+            <version>0.28.3</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
           </dependency>
           <dependency>
             <groupId>org.revapi</groupId>
             <artifactId>revapi-reporter-json</artifactId>
-            <version>0.5.0</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
+            <version>0.5.1</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
           </dependency>
         </dependencies>
       </plugin>
