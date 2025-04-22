@@ -98,14 +98,14 @@ class PastaImpl extends CreatableUpdatableImpl<IPasta, PastaInner, PastaImpl> im
         if (this.errorToThrow == null) {
             LOGGER.log(LogLevel.VERBOSE, () -> "Pasta(" + this.name() + ")::createResourceAsync() 'onNext()'");
             try {
-                Thread.sleep(Duration.ofMillis(this.eventDelayInMilliseconds));
+                Thread.sleep(this.eventDelayInMilliseconds);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
         } else {
             LOGGER.log(LogLevel.VERBOSE, () -> "Pasta(" + this.name() + ")::createResourceAsync() 'onError()'");
             try {
-                Thread.sleep(Duration.ofMillis(this.eventDelayInMilliseconds));
+                Thread.sleep(this.eventDelayInMilliseconds);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }

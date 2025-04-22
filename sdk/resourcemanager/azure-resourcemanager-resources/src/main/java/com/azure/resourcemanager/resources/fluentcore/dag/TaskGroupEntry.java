@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.resources.fluentcore.dag;
 
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import reactor.core.publisher.Mono;
 
@@ -15,6 +16,7 @@ import reactor.core.publisher.Mono;
  * @param <TaskT> the task type that can return a value
  */
 public final class TaskGroupEntry<TaskT extends TaskItem> extends DAGNode<TaskT, TaskGroupEntry<TaskT>> {
+    private final ClientLogger logger = new ClientLogger(TaskGroupEntry.class);
     /**
      * The proxy entry for this entry if exists.
      */
@@ -120,11 +122,11 @@ public final class TaskGroupEntry<TaskT extends TaskItem> extends DAGNode<TaskT,
      *                           this will be passed to {@link TaskItem#invokeAsync(TaskGroup.InvocationContext)}
      *                           method of the task item
      * @return a result of type {@link Indexable}.
-     * @throws ErroredDependencyTaskException
+     * @throws ErroredDependencyTaskException when the task has faulted descent dependency tasks
      */
     public Indexable invokeTask(boolean ignoreCachedResult, final TaskGroup.InvocationContext context) {
         if (hasFaultedDescentDependencyTasks) {
-            throw new ErroredDependencyTaskException();
+            throw logger.logExceptionAsWarning(new ErroredDependencyTaskException());
         }
         final TaskT taskItem = this.taskItem();
         if (!ignoreCachedResult && hasCachedResult()) {

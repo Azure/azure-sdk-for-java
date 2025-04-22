@@ -277,9 +277,10 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
      * @param context group level shared context that need be passed to invokeAsync(cxt)
      *                method of each task item in the group when it is selected for invocation.
      */
-    public void invoke(final InvocationContext context) {
+    public Indexable invoke(final InvocationContext context) {
         if (proxyTaskGroupWrapper.isActive()) {
             proxyTaskGroupWrapper.taskGroup().invokeIntern(context, true, null);
+            return proxyTaskGroupWrapper.taskGroup().root().taskResult();
         } else {
             Set<String> processedKeys = runBeforeGroupInvoke(null);
             if (proxyTaskGroupWrapper.isActive()) {
@@ -290,6 +291,7 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
             } else {
                 invokeIntern(context, false, null);
             }
+            return root().taskResult();
         }
     }
 
@@ -299,11 +301,7 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
      * @return the root result of task group.
      */
     public Indexable invoke() {
-        invoke(this.newInvocationContext());
-        if (proxyTaskGroupWrapper.isActive()) {
-            return proxyTaskGroupWrapper.taskGroup().root().taskResult();
-        }
-        return root().taskResult();
+        return invoke(this.newInvocationContext());
     }
 
     /**
@@ -319,7 +317,8 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
     private void invokeIntern(InvocationContext context, boolean shouldRunBeforeGroupInvoke,
         Set<String> skipBeforeGroupInvoke) {
         if (!isPreparer()) {
-            throw new IllegalStateException("invokeIntern(cxt) can be called only from root TaskGroup");
+            throw logger.logExceptionAsError(
+                new IllegalStateException("invokeIntern(cxt) can be called only from root TaskGroup"));
         }
         this.taskGroupTerminateOnErrorStrategy = context.terminateOnErrorStrategy();
         if (shouldRunBeforeGroupInvoke) {
@@ -333,7 +332,7 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
     }
 
     /**
-     * Invokes the ready tasks.
+     * Invokes the ready tasks currently.
      *
      * @param context group level shared context that need be passed to
      *                {@link TaskGroupEntry#invokeTask(boolean, InvocationContext)}
@@ -376,27 +375,26 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
         }
         final boolean isFaulted = entry.hasFaultedDescentDependencyTasks() || isGroupCancelled.get();
 
-        // We could make the ThreadPool configurable, instead of the default ForkJoinPool.commonPool().
+        // We could make the ThreadPool configurable in InvocationContext/ResourceManagerUtils.InternalRuntimeContext,
+        // instead of the default ForkJoinPool.commonPool().
         //
         return CompletableFuture.supplyAsync(() -> {
-                proxyTaskItem.invokeAfterPostRun(isFaulted);
-                return null;
-            })
-            .exceptionally(Function.identity())
-            .thenCompose(result -> {
-                if (result instanceof Throwable) {
-                    return processFaultedTask(entry, (Throwable) result, context);
-                }
-                if (isFaulted) {
-                    if (entry.hasFaultedDescentDependencyTasks()) {
-                        return processFaultedTask(entry, new ErroredDependencyTaskException(), context);
-                    } else {
-                        return processFaultedTask(entry, taskCancelledException, context);
-                    }
+            proxyTaskItem.invokeAfterPostRun(isFaulted);
+            return null;
+        }).exceptionally(Function.identity()).thenCompose(result -> {
+            if (result instanceof Throwable) {
+                return processFaultedTask(entry, (Throwable) result, context);
+            }
+            if (isFaulted) {
+                if (entry.hasFaultedDescentDependencyTasks()) {
+                    return processFaultedTask(entry, new ErroredDependencyTaskException(), context);
                 } else {
-                    return processCompletedTask(entry, context);
+                    return processFaultedTask(entry, taskCancelledException, context);
                 }
-            });
+            } else {
+                return processCompletedTask(entry, context);
+            }
+        });
     }
 
     /**
@@ -422,17 +420,25 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
             //
             boolean ignoreCachedResult = isRootEntry(entry) || (entry.proxy() != null && isRootEntry(entry.proxy()));
 
-            // We could make the ThreadPool configurable, instead of the default ForkJoinPool.commonPool().
+            // We could make the ThreadPool configurable in InvocationContext/ResourceManagerUtils.InternalRuntimeContext,
+            // instead of the default ForkJoinPool.commonPool().
             //
             Object skipTasks = context.get(InvocationContext.KEY_SKIP_TASKS);
-            CompletableFuture<Void> taskResultFuture;
+            CompletableFuture<Object> completableFuture;
             if (skipTasks instanceof Set && ((Set) skipTasks).contains(entry.key())) {
-                taskResultFuture = CompletableFuture.completedFuture(null);
+                completableFuture = CompletableFuture.completedFuture(null);
             } else {
-                taskResultFuture = CompletableFuture.runAsync(() -> entry.invokeTask(ignoreCachedResult, context));
+                completableFuture = CompletableFuture.supplyAsync(() -> {
+                    entry.invokeTask(ignoreCachedResult, context);
+                    return null;
+                });
             }
-            return taskResultFuture.exceptionallyCompose((e) -> processFaultedTask(entry, e, context))
-                .thenCompose((ignored) -> processCompletedTask(entry, context));
+            return completableFuture.exceptionally(Function.identity()).thenCompose(result -> {
+                if (result instanceof Throwable) {
+                    return processFaultedTask(entry, (Throwable) result, context);
+                }
+                return processCompletedTask(entry, context);
+            });
         }
     }
 
@@ -812,7 +818,6 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
         future.completeExceptionally(throwable);
         return future;
     }
-
 
     /**
      * An interface representing a type composes a TaskGroup.
