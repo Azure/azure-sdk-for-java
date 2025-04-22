@@ -5,6 +5,7 @@ package com.azure.core.http.netty;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.netty.implementation.AzureNettyHttpClientContext;
@@ -155,6 +156,11 @@ class NettyAsyncHttpClient implements HttpClient {
         if (responseTimeout != null || progressReporter != null) {
             nettyRequest = nettyRequest.contextWrite(ctx -> ctx.put(AzureNettyHttpClientContext.KEY,
                 new AzureNettyHttpClientContext(responseTimeout, progressReporter)));
+        }
+
+        if (request.getHeaders().get(HttpHeaderName.CONTENT_LENGTH) == null) {
+            nettyRequest
+                = nettyRequest.contextWrite(ctx -> ctx.put(NettyUtility.DID_NOT_SET_CONTENT_LENGTH_CONTEXT_KEY, true));
         }
 
         return nettyRequest.single().flatMap(responseAndHeaders -> {

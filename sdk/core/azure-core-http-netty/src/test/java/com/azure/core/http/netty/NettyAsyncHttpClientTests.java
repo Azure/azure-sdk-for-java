@@ -79,6 +79,7 @@ import java.util.stream.Stream;
 import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer.ERROR_BODY_PATH;
 import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer.EXPECTED_HEADER;
 import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer.HTTP_HEADERS_PATH;
+import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer.INVALID_CONTENT_LENGTH_ZERO;
 import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer.IO_EXCEPTION_PATH;
 import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer.LONG_BODY;
 import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer.LONG_BODY_PATH;
@@ -92,6 +93,7 @@ import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestS
 import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer.SHORT_POST_BODY_WITH_VALIDATION_PATH;
 import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer.TEST_HEADER;
 import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer.TIMEOUT;
+import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer.VALID_CONTENT_LENGTH_ZERO;
 import static com.azure.core.validation.http.HttpValidatonUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -631,6 +633,48 @@ public class NettyAsyncHttpClientTests {
         // Then verify not setting a timeout through Context does not time out the request.
         try (HttpResponse response = client.sendSync(request, Context.NONE)) {
             assertArraysEqual(SHORT_BODY, response.getBodyAsBinaryData().toBytes());
+            assertEquals(200, response.getStatusCode());
+        }
+    }
+
+    @Test
+    public void sdkCanSendContentLengthZeroAsync() {
+        HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(VALID_CONTENT_LENGTH_ZERO))
+            .setHeader(HttpHeaderName.CONTENT_LENGTH, "0");
+
+        StepVerifier.create(client.send(request))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void sdkCanSendContentLengthZeroSync() {
+        HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(VALID_CONTENT_LENGTH_ZERO))
+            .setHeader(HttpHeaderName.CONTENT_LENGTH, "0");
+
+        try (HttpResponse response = client.sendSync(request, Context.NONE)) {
+            assertEquals(200, response.getStatusCode());
+        }
+    }
+
+    @Test
+    public void reactorNettySettingContentLengthZeroIsInvalidAsync() {
+        HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(INVALID_CONTENT_LENGTH_ZERO));
+
+        StepVerifier.create(client.send(request))
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
+    }
+
+    @Test
+    public void reactorNettySettingContentLengthZeroIsInvalidSync() {
+        HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url(INVALID_CONTENT_LENGTH_ZERO));
+
+        try (HttpResponse response = client.sendSync(request, Context.NONE)) {
             assertEquals(200, response.getStatusCode());
         }
     }
