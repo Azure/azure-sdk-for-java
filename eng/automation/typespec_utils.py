@@ -31,7 +31,7 @@ def validate_tspconfig(tsp_dir: str) -> bool:
         logging.error(
             "[VALIDATE][tspconfig.yaml] "
             "options.@azure-tools/typespec-java.namespace is REQUIRED for Java SDK. "
-            'E.g. "com.azure.ai.openai".'
+            'E.g. "com.azure.ai.contentsafety" for data-plane SDK, "com.azure.resourcemanager.fabric" for management-plane SDK.'
         )
         return False
     namespace: str = yaml_json["options"]["@azure-tools/typespec-java"]["namespace"]
@@ -52,7 +52,7 @@ def validate_tspconfig(tsp_dir: str) -> bool:
         logging.error(
             "[VALIDATE][tspconfig.yaml] "
             'options.@azure-tools/typespec-java.package-dir SHOULD start with "azure-". '
-            'E.g. "azure-ai-openai". '
+            'E.g. "azure-ai-contentsafety" for data-plane SDK, "azure-resourcemanager-fabric" for management-plane SDK. '
             f"Current value: {package_dir}"
         )
 
@@ -62,7 +62,7 @@ def validate_tspconfig(tsp_dir: str) -> bool:
         logging.error(
             "[VALIDATE][tspconfig.yaml] "
             'options.@azure-tools/typespec-java.namespace SHOULD start with "com.azure.". '
-            'E.g. "com.azure.ai.openai". '
+            'E.g. "com.azure.ai.contentsafety" for data-plane SDK, "com.azure.resourcemanager.fabric" for management-plane SDK. '
             f"Current value: {namespace}"
         )
 
