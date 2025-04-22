@@ -380,7 +380,8 @@ page at http://checkstyle.sourceforge.net/config.html -->
     1) Package, class and method names should be concatenated by dot '.'. Ex. packageName.className.methodName
     2) Methods arguments should be concatenated by dash '-'. Ex. string-string  for methodName(String s, String s2)
     3) Use '#' to concatenate 1) and 2), ex packageName.className.methodName#string-string -->
-    <module name="com.azure.tools.checkstyle.checks.JavadocCodeSnippetCheck"/>
+    <!-- Disabled as {@codesnippet} is no longer used.
+    <!-- <module name="com.azure.tools.checkstyle.checks.JavadocCodeSnippetCheck"/> -->
 
     <!--CUSTOM CHECKS-->
     <!-- Good Logging Practice

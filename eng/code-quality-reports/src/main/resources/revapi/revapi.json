@@ -767,7 +767,7 @@
         {
           "regex": true,
           "code": "java\\.method\\.varargOverloadsOnlyDifferInVarargParameter",
-          "old": "method com\\.azure\\.communication\\.email\\.models\\.EmailMessage com\\.azure\\.communication\\.email\\.models\\.EmailMessage::set(Cc|Bcc|To)Recipients?"
+          "old": "method com\\.azure\\.communication\\.email\\.models\\.EmailMessage com\\.azure\\.communication\\.email\\.models\\.EmailMessage::set(Cc|Bcc|To)Recipients.*"
         }
       ]
     }
