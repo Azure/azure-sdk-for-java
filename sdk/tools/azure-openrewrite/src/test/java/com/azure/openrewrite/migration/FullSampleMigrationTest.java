@@ -121,7 +121,7 @@ public class FullSampleMigrationTest implements RewriteTest {
     @Execution(ExecutionMode.CONCURRENT)
     @MethodSource("sampleDirectories")
     public void testGoldenImage(String sampleDirString) throws Exception {
-        System.out.printf("Sample: %s\nActive Recipe: %s", sampleDirString, RECIPE_NAME);
+        System.out.printf("Sample: %s;\n Active Recipe: %s\n", sampleDirString, RECIPE_NAME);
 
         Path sampleDir = Paths.get(sampleDirString);
 
