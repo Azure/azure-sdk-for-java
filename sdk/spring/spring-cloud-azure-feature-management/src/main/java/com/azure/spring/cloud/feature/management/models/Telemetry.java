@@ -7,22 +7,23 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Telemetry {
 
-    private Boolean enabled;
+    private boolean enabled;
 
     private Map<String, String> metadata;
 
     /**
      * @return the enabled
      */
-    public Boolean getEnabled() {
+    public boolean isEnabled() {
         return enabled;
     }
 
     /**
      * @param enabled the enabled to set
      */
-    public void setEnabled(Boolean enabled) {
+    public Telemetry setEnabled(boolean enabled) {
         this.enabled = enabled;
+        return this;
     }
 
     /**
@@ -35,8 +36,9 @@ public class Telemetry {
     /**
      * @param metadata the metadata to set
      */
-    public void setMetadata(Map<String, String> metadata) {
+    public Telemetry setMetadata(Map<String, String> metadata) {
         this.metadata = metadata;
+        return this;
     }
 
 }

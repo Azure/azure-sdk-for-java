@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.feature.management.models;
 
 import java.util.List;
+
 import org.springframework.lang.NonNull;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -34,7 +35,7 @@ public class Feature {
     private List<VariantReference> variants;
 
     @JsonProperty("telemetry")
-    private Telemetry telemetry;
+    private Telemetry telemetry = new Telemetry();
 
     /**
      * @return the id
@@ -142,8 +143,9 @@ public class Feature {
     /**
      * @param telemetry the telemetry to set
      */
-    public void setTelemetry(Telemetry telemetry) {
+    public Feature setTelemetry(Telemetry telemetry) {
         this.telemetry = telemetry;
+        return this;
     }
 
 }
