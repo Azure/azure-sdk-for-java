@@ -24,7 +24,7 @@ class ConfidentialLedgerClientTestBase extends TestProxyTestBase {
     @Override
     protected void beforeTest() {
         ConfidentialLedgerClientBuilder confidentialLedgerClientbuilder = new ConfidentialLedgerClientBuilder()
-            .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+            .ledgerEndpoint(Configuration.getGlobalConfiguration().get("LEDGERENDPOINT", "ledgerendpoint"))
             .httpClient(getHttpClientOrUsePlayback(getHttpClients().findFirst().orElse(null)))
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {

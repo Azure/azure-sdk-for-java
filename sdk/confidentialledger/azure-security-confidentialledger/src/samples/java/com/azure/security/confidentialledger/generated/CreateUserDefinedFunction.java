@@ -16,7 +16,7 @@ public class CreateUserDefinedFunction {
     public static void main(String[] args) {
         ConfidentialLedgerClient confidentialLedgerClient
             = new ConfidentialLedgerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
-                .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
+                .ledgerEndpoint(Configuration.getGlobalConfiguration().get("LEDGERENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.security.confidentialledger.generated.createuserdefinedfunction.createuserdefinedfunction
         BinaryData userDefinedFunction = BinaryData.fromString("{\"code\":\"export function main() { return true }\"}");

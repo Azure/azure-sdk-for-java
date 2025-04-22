@@ -16,7 +16,7 @@ public class GetReceipt {
     public static void main(String[] args) {
         ConfidentialLedgerClient confidentialLedgerClient
             = new ConfidentialLedgerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
-                .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
+                .ledgerEndpoint(Configuration.getGlobalConfiguration().get("LEDGERENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.security.confidentialledger.generated.getreceipt.getreceipt
         RequestOptions requestOptions = new RequestOptions();

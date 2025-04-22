@@ -48,7 +48,7 @@ public class ConfidentialLedgerClientSample {
                 new ConfidentialLedgerClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
                         .httpClient(httpClient)
-                        .endpoint("https://my-ledger.confidential-ledger.azure.com")
+                        .ledgerEndpoint("https://my-ledger.confidential-ledger.azure.com")
                         .buildClient();
             // END:readme-sample-createClient
         } catch (Exception ex) {

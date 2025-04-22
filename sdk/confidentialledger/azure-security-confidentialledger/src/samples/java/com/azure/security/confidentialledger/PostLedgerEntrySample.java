@@ -15,7 +15,7 @@ public class PostLedgerEntrySample {
     public static void main(String[] args) {
         ConfidentialLedgerClient confidentialLedgerClient = new ConfidentialLedgerClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
-            .endpoint("https://my-ledger.confidential-ledger.azure.com")
+            .ledgerEndpoint("https://my-ledger.confidential-ledger.azure.com")
             .buildClient();
         BinaryData entry = BinaryData.fromString("{\"contents\":\"New ledger entry contents.\"}");
 

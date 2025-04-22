@@ -13,7 +13,7 @@ public class GetLedgerEntriesSample {
         ConfidentialLedgerClient confidentialLedgerClient =
                 new ConfidentialLedgerClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("https://my-ledger.confidential-ledger.azure.com")
+                        .ledgerEndpoint("https://my-ledger.confidential-ledger.azure.com")
                         .buildClient();
 
         // If you can't find a transaction, make sure you are adding a query parameter for the collection the transaction

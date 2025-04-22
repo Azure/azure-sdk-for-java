@@ -13,7 +13,7 @@ public class GetCurrentLedgerEntrySample {
         ConfidentialLedgerClient confidentialLedgerClient =
                 new ConfidentialLedgerClientBuilder()
                         .credential(new DefaultAzureCredentialBuilder().build())
-                        .endpoint("https://my-ledger.confidential-ledger.azure.com")
+                        .ledgerEndpoint("https://my-ledger.confidential-ledger.azure.com")
                         .buildClient();
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response = confidentialLedgerClient.getCurrentLedgerEntryWithResponse(requestOptions);

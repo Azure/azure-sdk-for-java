@@ -16,14 +16,14 @@ public class UpdateRuntimeOptions {
     public static void main(String[] args) {
         ConfidentialLedgerClient confidentialLedgerClient
             = new ConfidentialLedgerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
-                .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
+                .ledgerEndpoint(Configuration.getGlobalConfiguration().get("LEDGERENDPOINT"))
                 .buildClient();
         // BEGIN:com.azure.security.confidentialledger.generated.updateruntimeoptions.updateruntimeoptions
-        BinaryData jSRuntimeOptions
-            = BinaryData.fromString("logExceptionDetails");
+        BinaryData JSRuntimeOptions
+            = BinaryData.fromString("{\"log_exception_details\":false,\"max_execution_time_ms\":1200}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response
-            = confidentialLedgerClient.updateRuntimeOptionsWithResponse(jSRuntimeOptions, requestOptions);
+            = confidentialLedgerClient.updateRuntimeOptionsWithResponse(JSRuntimeOptions, requestOptions);
         // END:com.azure.security.confidentialledger.generated.updateruntimeoptions.updateruntimeoptions
     }
 }
