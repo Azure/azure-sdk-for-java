@@ -113,7 +113,9 @@ public class JavadocThrowsChecks extends AbstractCheck {
     @Override
     public void destroy() {
         super.destroy();
-        throwsFinder.destroy();
+        if (throwsFinder != null) {
+            throwsFinder.destroy();
+        }
     }
 
     /*
