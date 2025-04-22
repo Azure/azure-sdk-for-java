@@ -17,6 +17,7 @@ import com.azure.communication.phonenumbers.implementation.models.PhoneNumberCap
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersUpdateCapabilitiesResponse;
 import com.azure.communication.phonenumbers.implementation.models.OperatorInformationRequest;
 import com.azure.communication.phonenumbers.models.OperatorInformationResult;
+import com.azure.communication.phonenumbers.models.AvailablePhoneNumber;
 import com.azure.communication.phonenumbers.models.OperatorInformationOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
@@ -60,7 +61,9 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.BiFunction;
@@ -192,11 +195,7 @@ public final class PhoneNumbersAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PhoneNumbersReservation> getReservation(UUID reservationId) {
         Objects.requireNonNull(reservationId, "'reservationId' cannot be null.");
-        return client.getReservationAsync(reservationId).map(internalReservation -> {
-            // Map PhoneNumbersReservationInternal to PhoneNumbersReservation
-            PhoneNumbersReservation reservation = mapToPhoneNumbersReservation(internalReservation);
-            return reservation;
-        });
+        return client.getReservationAsync(reservationId);
     }
 
     /**
@@ -897,7 +896,7 @@ public final class PhoneNumbersAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PhoneNumbersReservation> listReservations() {
-        return mapToPhoneNumbersReservationFromPage(client.listReservationsAsync(100));
+        return client.listReservationsAsync(100);
     }
 
     /**
@@ -913,7 +912,7 @@ public final class PhoneNumbersAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<PhoneNumbersReservation> listReservations(Integer maxPageSize) {
-        return mapToPhoneNumbersReservationFromPage(client.listReservationsAsync(maxPageSize));
+        return client.listReservationsAsync(maxPageSize);
     }
 
     /**
@@ -952,7 +951,32 @@ public final class PhoneNumbersAsyncClient {
     }
 
     /**
-     * Creates or updates a reservation by its ID.
+     * Creates a reservation by its ID, if it's not provided it will generate a random one.
+     * 
+     * Creates a reservation with given or random ID and adds phone numbers to it. The response will be the created 
+     * reservation. Phone numbers can be reserved by including them in the payload. If a reservation with the same ID already exists, 
+     * it will be updated, otherwise a new one is created. Only reservations with 'active' status can be updated. 
+     * Updating a reservation will extend the expiration time of the reservation to 15 minutes after the last change, up to a maximum of 2 hours from creation
+     * time. Partial success is possible, in which case the response will have a 207 status code.
+     * 
+     * @param reservationId The id of the reservation that's going to be created.
+     * @param phoneNumbers The phone numbers to be reserved.
+     * @return represents a reservation for phone numbers on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PhoneNumbersReservation> createReservation(UUID reservationId,
+        List<AvailablePhoneNumber> phoneNumbers) {
+
+        if (reservationId == null) {
+            reservationId = UUID.randomUUID();
+        }
+        Map<String, AvailablePhoneNumber> phoneNumbersMap = createPhoneNumbersMap(new HashMap<>(), phoneNumbers);
+        PhoneNumbersReservation reservation = new PhoneNumbersReservation().setPhoneNumbers(phoneNumbersMap);
+        return client.createOrUpdateReservationAsync(reservationId, reservation);
+    }
+
+    /**
+     * Updates a reservation by its ID.
      * 
      * Adds and removes phone numbers from the reservation with the given ID. The response will be the updated state of
      * the reservation. Phone numbers can be reserved by including them in the payload. If a number is already in the
@@ -962,16 +986,17 @@ public final class PhoneNumbersAsyncClient {
      * expiration time of the reservation to 15 minutes after the last change, up to a maximum of 2 hours from creation
      * time. Partial success is possible, in which case the response will have a 207 status code.
      * 
-     * @param reservation A representation of the desired state of the reservation.}
+     * @param reservationId The id of the reservation that's going to be updated.
+     * @param add The phone numbers to be added to the reservation.
+     * @param remove The phone numbers to be removed from the reservation.
      * @return represents a reservation for phone numbers on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersReservation> createOrUpdateReservation(PhoneNumbersReservation reservation) {
-        PhoneNumbersReservationInternal internalReservation
-            = new PhoneNumbersReservationInternal().setPhoneNumbers(reservation.getPhoneNumbers());
-
-        return client.createOrUpdateReservationAsync(reservation.getId(), internalReservation)
-            .map(value -> mapToPhoneNumbersReservation(value));
+    public Mono<PhoneNumbersReservation> updateReservation(UUID reservationId, List<AvailablePhoneNumber> add,
+        List<AvailablePhoneNumber> remove) {
+        Map<String, AvailablePhoneNumber> phoneNumbersMap = updatePhoneNumbersMap(new HashMap<>(), add, remove);
+        PhoneNumbersReservation reservation = new PhoneNumbersReservation().setPhoneNumbers(phoneNumbersMap);
+        return client.createOrUpdateReservationAsync(reservationId, reservation);
     }
 
     /**
@@ -1010,31 +1035,20 @@ public final class PhoneNumbersAsyncClient {
         return new PhoneNumberErrorResponseException(exception.getMessage(), exception.getResponse(), error);
     }
 
-    private static PhoneNumbersReservation mapToPhoneNumbersReservation(PhoneNumbersReservationInternal reservation) {
-        return new PhoneNumbersReservation(reservation.getId(), reservation.getExpiresAt(),
-            reservation.getPhoneNumbers(), reservation.getStatus());
+    private Map<String, AvailablePhoneNumber> createPhoneNumbersMap(Map<String, AvailablePhoneNumber> phoneNumbersMap,
+        List<AvailablePhoneNumber> phoneNumbers) {
+        for (AvailablePhoneNumber phoneNumber : phoneNumbers) {
+            phoneNumbersMap.put(phoneNumber.getPhoneNumber(), phoneNumber);
+        }
+        return phoneNumbersMap;
     }
 
-    // PagedResponse<PhoneNumbersReservationInternal> to
-    // PagedResponse<PhoneNumbersReservation> mapper
-    private static final Function<PagedResponse<PhoneNumbersReservationInternal>, PagedResponse<PhoneNumbersReservation>> RESPONSE_MAPPER
-        = response -> new PagedResponseBase<Void, PhoneNumbersReservation>(response.getRequest(),
-            response.getStatusCode(), response.getHeaders(),
-            response.getValue().stream().map(value -> mapToPhoneNumbersReservation(value)).collect(Collectors.toList()),
-            response.getContinuationToken(), null);
-
-    private static PagedFlux<PhoneNumbersReservation>
-        mapToPhoneNumbersReservationFromPage(PagedFlux<PhoneNumbersReservationInternal> internalPagedFlux) {
-
-        final Supplier<PageRetriever<String, PagedResponse<PhoneNumbersReservation>>> provider
-            = () -> (continuationToken, pageSize) -> {
-                Flux<PagedResponse<PhoneNumbersReservationInternal>> flux = (continuationToken == null)
-                    ? internalPagedFlux.byPage(25)
-                    : internalPagedFlux.byPage(continuationToken, 25);
-                return flux.map(RESPONSE_MAPPER);
-            };
-        PagedFlux<PhoneNumbersReservation> phoneNumberReservationPagedFlux = PagedFlux.create(provider);
-
-        return phoneNumberReservationPagedFlux;
+    private Map<String, AvailablePhoneNumber> updatePhoneNumbersMap(Map<String, AvailablePhoneNumber> phoneNumbersMap,
+        List<AvailablePhoneNumber> AddphoneNumbers, List<AvailablePhoneNumber> removePhoneNumbers) {
+        phoneNumbersMap = createPhoneNumbersMap(phoneNumbersMap, AddphoneNumbers);
+        for (AvailablePhoneNumber phoneNumber : removePhoneNumbers) {
+            phoneNumbersMap.put(phoneNumber.getPhoneNumber(), null);
+        }
+        return phoneNumbersMap;
     }
 }

@@ -2,7 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.communication.phonenumbers;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.function.Function;
@@ -14,6 +16,7 @@ import com.azure.communication.phonenumbers.implementation.PhoneNumbersImpl;
 import com.azure.communication.phonenumbers.implementation.models.OperatorInformationRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersReservationInternal;
 import com.azure.communication.phonenumbers.models.OperatorInformationResult;
+import com.azure.communication.phonenumbers.models.AvailablePhoneNumber;
 import com.azure.communication.phonenumbers.models.OperatorInformationOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
@@ -165,7 +168,7 @@ public final class PhoneNumbersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PhoneNumbersReservation getReservation(UUID reservationId) {
         Objects.requireNonNull(reservationId, "'reservationId' cannot be null.");
-        return mapToPhoneNumbersReservation(client.getReservation(reservationId));
+        return client.getReservation(reservationId);
     }
 
     /**
@@ -181,9 +184,7 @@ public final class PhoneNumbersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PhoneNumbersReservation> getReservationWithResponse(UUID reservationId, Context context) {
         Objects.requireNonNull(reservationId, "'reservationId' cannot be null.");
-        Response<PhoneNumbersReservationInternal> internalResponse
-            = client.getReservationWithResponse(reservationId, context);
-        return mapToPhoneNumbersReservationResponse(internalResponse);
+        return client.getReservationWithResponse(reservationId, context);
     }
 
     /**
@@ -956,7 +957,7 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PhoneNumbersReservation> listReservations() {
-        return mapToPhoneNumbersReservationFromPage(client.listReservations(100));
+        return client.listReservations(100);
     }
 
     /**
@@ -972,7 +973,7 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PhoneNumbersReservation> listReservations(Integer maxPageSize) {
-        return mapToPhoneNumbersReservationFromPage(client.listReservations(maxPageSize));
+        return client.listReservations(maxPageSize);
     }
 
     /**
@@ -989,7 +990,7 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<PhoneNumbersReservation> listReservations(Integer maxPageSize, Context context) {
-        return mapToPhoneNumbersReservationFromPage(client.listReservations(maxPageSize, context));
+        return client.listReservations(maxPageSize, context);
     }
 
     /**
@@ -1028,7 +1029,57 @@ public final class PhoneNumbersClient {
     }
 
     /**
-     * Creates or updates a reservation by its ID.
+     * Creates a reservation by its ID, if it's not provided it will generate a random one.
+     * 
+     * Creates a reservation with given or random ID and adds phone numbers to it. The response will be the created 
+     * reservation. Phone numbers can be reserved by including them in the payload. If a reservation with the same ID already exists, 
+     * it will be updated, otherwise a new one is created. Only reservations with 'active' status can be updated. 
+     * Updating a reservation will extend the expiration time of the reservation to 15 minutes after the last change, up to a maximum of 2 hours from creation
+     * time. Partial success is possible, in which case the response will have a 207 status code.
+     * 
+     * @param reservationId The id of the reservation that's going to be created.
+     * @param phoneNumbers The phone numbers to be reserved.
+     * @return represents a reservation for phone numbers {@link PhoneNumbersReservation}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PhoneNumbersReservation createReservation(UUID reservationId, List<AvailablePhoneNumber> phoneNumbers) {
+
+        if (reservationId == null) {
+            reservationId = UUID.randomUUID();
+        }
+        Map<String, AvailablePhoneNumber> phoneNumbersMap = createPhoneNumbersMap(new HashMap<>(), phoneNumbers);
+        PhoneNumbersReservation reservation = new PhoneNumbersReservation().setPhoneNumbers(phoneNumbersMap);
+        return client.createOrUpdateReservation(reservationId, reservation);
+    }
+
+    /**
+     * Creates a reservation by its ID, if it's not provided it will generate a random one.
+     * 
+     * Creates a reservation with given or random ID and adds phone numbers to it. The response will be the created 
+     * reservation. Phone numbers can be reserved by including them in the payload. If a reservation with the same ID already exists, 
+     * it will be updated, otherwise a new one is created. Only reservations with 'active' status can be updated. 
+     * Updating a reservation will extend the expiration time of the reservation to 15 minutes after the last change, up to a maximum of 2 hours from creation
+     * time. Partial success is possible, in which case the response will have a 207 status code.
+     * 
+     * @param reservationId The id of the reservation that's going to be created.
+     * @param phoneNumbers The phone numbers to be reserved.
+     * @param context The context to associate with this operation.
+     * @return represents a reservation for phone numbers along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PhoneNumbersReservation> createReservation(UUID reservationId,
+        List<AvailablePhoneNumber> phoneNumbers, Context context) {
+        if (reservationId == null) {
+            reservationId = UUID.randomUUID();
+        }
+        Map<String, AvailablePhoneNumber> phoneNumbersMap = createPhoneNumbersMap(new HashMap<>(), phoneNumbers);
+
+        PhoneNumbersReservation reservation = new PhoneNumbersReservation().setPhoneNumbers(phoneNumbersMap);
+        return client.createOrUpdateReservationWithResponse(reservationId, reservation, context);
+    }
+
+    /**
+     * Updates a reservation by its ID.
      * 
      * Adds and removes phone numbers from the reservation with the given ID. The response will be the updated state of
      * the reservation. Phone numbers can be reserved by including them in the payload. If a number is already in the
@@ -1038,16 +1089,17 @@ public final class PhoneNumbersClient {
      * expiration time of the reservation to 15 minutes after the last change, up to a maximum of 2 hours from creation
      * time. Partial success is possible, in which case the response will have a 207 status code.
      * 
-     * @param reservation A representation of the desired state of the reservation.}
+     * @param reservationId The id of the reservation that's going to be updated.
+     * @param add The phone numbers to be added to the reservation.
+     * @param remove The phone numbers to be removed from the reservation.
      * @return represents a reservation for phone numbers {@link PhoneNumbersReservation}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PhoneNumbersReservation createOrUpdateReservation(PhoneNumbersReservation reservation) {
-        PhoneNumbersReservationInternal internalReservation
-            = new PhoneNumbersReservationInternal().setPhoneNumbers(reservation.getPhoneNumbers());
-        PhoneNumbersReservationInternal response
-            = client.createOrUpdateReservation(reservation.getId(), internalReservation);
-        return mapToPhoneNumbersReservation(response);
+    public PhoneNumbersReservation updateReservation(UUID reservationId, List<AvailablePhoneNumber> add,
+        List<AvailablePhoneNumber> remove) {
+        Map<String, AvailablePhoneNumber> phoneNumbersMap = updatePhoneNumbersMap(new HashMap<>(), add, remove);
+        PhoneNumbersReservation reservation = new PhoneNumbersReservation().setPhoneNumbers(phoneNumbersMap);
+        return client.createOrUpdateReservation(reservationId, reservation);
     }
 
     /**
@@ -1061,17 +1113,17 @@ public final class PhoneNumbersClient {
      * expiration time of the reservation to 15 minutes after the last change, up to a maximum of 2 hours from creation
      * time. Partial success is possible, in which case the response will have a 207 status code.
      * 
-     * @param reservation A representation of the desired state of the reservation.
-     * @param context The context to associate with this operation.
+     * @param reservationId The id of the reservation that's going to be updated.
+     * @param add The phone numbers to be added to the reservation.
+     * @param remove The phone numbers to be removed from the reservation.
      * @return represents a reservation for phone numbers along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PhoneNumbersReservation> createOrUpdateReservationWithResponse(PhoneNumbersReservation reservation,
-        Context context) {
-        PhoneNumbersReservationInternal internalReservation
-            = new PhoneNumbersReservationInternal().setPhoneNumbers(reservation.getPhoneNumbers());
-        return mapToPhoneNumbersReservationResponse(
-            client.createOrUpdateReservationWithResponse(reservation.getId(), internalReservation, context));
+    public Response<PhoneNumbersReservation> updateReservation(UUID reservationId, List<AvailablePhoneNumber> add,
+        List<AvailablePhoneNumber> remove, Context context) {
+        Map<String, AvailablePhoneNumber> phoneNumbersMap = updatePhoneNumbersMap(new HashMap<>(), add, remove);
+        PhoneNumbersReservation reservation = new PhoneNumbersReservation().setPhoneNumbers(phoneNumbersMap);
+        return client.createOrUpdateReservationWithResponse(reservationId, reservation, context);
     }
 
     /**
@@ -1102,60 +1154,21 @@ public final class PhoneNumbersClient {
         return client.deleteReservationWithResponse(reservationId, context);
     }
 
-    private static PhoneNumbersReservation
-        mapToPhoneNumbersReservation(PhoneNumbersReservationInternal internalReservation) {
-        PhoneNumbersReservation reservation = new PhoneNumbersReservation(internalReservation.getId(),
-            internalReservation.getExpiresAt(), internalReservation.getPhoneNumbers(), internalReservation.getStatus());
-        return reservation;
+    private static Map<String, AvailablePhoneNumber> createPhoneNumbersMap(
+        Map<String, AvailablePhoneNumber> phoneNumbersMap, List<AvailablePhoneNumber> phoneNumbers) {
+        for (AvailablePhoneNumber phoneNumber : phoneNumbers) {
+            phoneNumbersMap.put(phoneNumber.getPhoneNumber(), phoneNumber);
+        }
+        return phoneNumbersMap;
     }
 
-    private Response<PhoneNumbersReservation>
-        mapToPhoneNumbersReservationResponse(Response<PhoneNumbersReservationInternal> internalResponse) {
-        PhoneNumbersReservation reservation = mapToPhoneNumbersReservation(internalResponse.getValue());
-        return new Response<PhoneNumbersReservation>() {
-            @Override
-            public int getStatusCode() {
-                return internalResponse.getStatusCode();
-            }
-
-            @Override
-            public HttpHeaders getHeaders() {
-                return internalResponse.getHeaders();
-            }
-
-            @Override
-            public PhoneNumbersReservation getValue() {
-                return reservation;
-            }
-
-            @Override
-            public HttpRequest getRequest() {
-                return internalResponse.getRequest();
-            }
-        };
-    }
-
-    private static PagedIterable<PhoneNumbersReservation>
-        mapToPhoneNumbersReservationFromPage(PagedIterable<PhoneNumbersReservationInternal> internalPagedIterable) {
-
-        final Function<PagedResponse<PhoneNumbersReservationInternal>, PagedResponse<PhoneNumbersReservation>> responseMapper
-            = response -> new PagedResponseBase<Void, PhoneNumbersReservation>(response.getRequest(),
-                response.getStatusCode(), response.getHeaders(),
-                response.getValue()
-                    .stream()
-                    .map(value -> mapToPhoneNumbersReservation(value))
-                    .collect(Collectors.toList()),
-                response.getContinuationToken(), null);
-
-        final Supplier<PageRetriever<String, PagedResponse<PhoneNumbersReservation>>> provider
-            = () -> (continuationToken, pageSize) -> {
-                Flux<PagedResponse<PhoneNumbersReservationInternal>> flux = (continuationToken == null)
-                    ? Flux.fromIterable(internalPagedIterable.iterableByPage(25))
-                    : Flux.fromIterable(internalPagedIterable.iterableByPage(continuationToken, 25));
-                return flux.map(responseMapper);
-            };
-        PagedFlux<PhoneNumbersReservation> phoneNumberReservationPagedFlux = PagedFlux.create(provider);
-
-        return new PagedIterable<PhoneNumbersReservation>(phoneNumberReservationPagedFlux);
+    private static Map<String, AvailablePhoneNumber> updatePhoneNumbersMap(
+        Map<String, AvailablePhoneNumber> phoneNumbersMap, List<AvailablePhoneNumber> AddphoneNumbers,
+        List<AvailablePhoneNumber> removePhoneNumbers) {
+        phoneNumbersMap = createPhoneNumbersMap(phoneNumbersMap, AddphoneNumbers);
+        for (AvailablePhoneNumber phoneNumber : removePhoneNumbers) {
+            phoneNumbersMap.put(phoneNumber.getPhoneNumber(), null);
+        }
+        return phoneNumbersMap;
     }
 }

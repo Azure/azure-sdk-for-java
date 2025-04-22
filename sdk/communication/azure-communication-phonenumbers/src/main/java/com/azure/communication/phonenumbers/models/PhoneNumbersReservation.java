@@ -9,44 +9,35 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
-
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.UUID;
 
 /**
- * Represents a reservation for phone numbers. A reservation is a temporary hold
- * on phone numbers that can later be
- * purchased. The reservation has a limited lifetime after which the phone
- * numbers are released if not purchased.
+ * Represents a reservation for phone numbers. A reservation is a temporary hold on phone numbers that can later be
+ * purchased. The reservation has a limited lifetime after which the phone numbers are released if not purchased.
  * Reservations older than 1 month are automatically deleted.
  */
 @Fluent
 public final class PhoneNumbersReservation implements JsonSerializable<PhoneNumbersReservation> {
-
     /*
      * The id of the reservation.
      */
     private UUID id;
 
     /*
-     * The time at which the reservation will expire. If a reservation is not
-     * purchased before this time, all of the reserved phone numbers will be
-     * released and made available for others to purchase.
+     * The time at which the reservation will expire. If a reservation is not purchased before this time, all of the reserved phone numbers will be released and made available for others to purchase.
      */
     private OffsetDateTime expiresAt;
 
     /*
-     * A dictionary containing the reservation phone numbers. The key is the ID of
-     * the phone number (digits only) and values are AvailablePhoneNumber objects.
-     * Not populated when retrieving PhoneNumbersReservation collections.
+     * A dictionary containing the reservation phone numbers. The key is the ID of the phone number (digits only) and values are AvailablePhoneNumber objects. Not populated when retrieving PhoneNumbersReservation collections.
      */
     private Map<String, AvailablePhoneNumber> phoneNumbers;
 
     /*
-     * Represents the status of the reservation. Possible values include: 'active',
-     * 'submitted', 'completed', 'expired'.
+     * Represents the status of the reservation. Possible values include: 'active', 'submitted', 'completed', 'expired'.
      */
     private PhoneNumbersReservationStatus status;
 
@@ -54,56 +45,6 @@ public final class PhoneNumbersReservation implements JsonSerializable<PhoneNumb
      * Creates an instance of PhoneNumbersReservation class.
      */
     public PhoneNumbersReservation() {
-        this.id = UUID.randomUUID();
-        phoneNumbers = new java.util.HashMap<>();
-    }
-
-    /**
-     * Creates an instance of PhoneNumbersReservation class with given
-     * reservationId.
-     * 
-     * @param reservationId the reservationId that will be assigned to the
-     *                      reservation.
-     */
-    public PhoneNumbersReservation(UUID reservationId) {
-        this.id = reservationId;
-        this.setPhoneNumbers(new java.util.HashMap<>());
-    }
-
-    /**
-     * Creates an instance of PhoneNumbersReservation class with given reservationId
-     * and expiration time.
-     * 
-     * @param reservationId the reservationId that will be assigned to the reservation.
-     * @param expiresAt the expiration time of the reservation.
-     * @param phoneNumbers the phone numbers that are reserved.
-     * @param status the status of the reservation.
-     */
-    public PhoneNumbersReservation(UUID reservationId, OffsetDateTime expiresAt,
-        Map<String, AvailablePhoneNumber> phoneNumbers, PhoneNumbersReservationStatus status) {
-        this.id = reservationId;
-        this.expiresAt = expiresAt;
-        this.phoneNumbers = phoneNumbers;
-        this.status = status;
-    }
-
-    /**
-     * Adds a phone number to the reservation.
-     * 
-     * @param phoneNumber the phoneNumbers to be added.
-     */
-    public void addPhoneNumber(AvailablePhoneNumber phoneNumber) {
-        this.phoneNumbers.put(phoneNumber.getId(), phoneNumber);
-    }
-
-    /**
-     * Removes a phone number from the reservation.
-     * 
-     * @param phoneNumberId the phoneNumber to be removed.
-     */
-    public void removePhoneNumber(String phoneNumberId) {
-        this.phoneNumbers.replace(phoneNumberId, null);
-        this.setPhoneNumbers(phoneNumbers);
     }
 
     /**
@@ -116,10 +57,8 @@ public final class PhoneNumbersReservation implements JsonSerializable<PhoneNumb
     }
 
     /**
-     * Get the expiresAt property: The time at which the reservation will expire. If
-     * a reservation is not purchased
-     * before this time, all of the reserved phone numbers will be released and made
-     * available for others to purchase.
+     * Get the expiresAt property: The time at which the reservation will expire. If a reservation is not purchased
+     * before this time, all of the reserved phone numbers will be released and made available for others to purchase.
      * 
      * @return the expiresAt value.
      */
@@ -128,10 +67,8 @@ public final class PhoneNumbersReservation implements JsonSerializable<PhoneNumb
     }
 
     /**
-     * Get the phoneNumbers property: A dictionary containing the reservation phone
-     * numbers. The key is the ID of the
-     * phone number (digits only) and values are AvailablePhoneNumber objects. Not
-     * populated when retrieving
+     * Get the phoneNumbers property: A dictionary containing the reservation phone numbers. The key is the ID of the
+     * phone number (digits only) and values are AvailablePhoneNumber objects. Not populated when retrieving
      * PhoneNumbersReservation collections.
      * 
      * @return the phoneNumbers value.
@@ -141,10 +78,8 @@ public final class PhoneNumbersReservation implements JsonSerializable<PhoneNumb
     }
 
     /**
-     * Set the phoneNumbers property: A dictionary containing the reservation phone
-     * numbers. The key is the ID of the
-     * phone number (digits only) and values are AvailablePhoneNumber objects. Not
-     * populated when retrieving
+     * Set the phoneNumbers property: A dictionary containing the reservation phone numbers. The key is the ID of the
+     * phone number (digits only) and values are AvailablePhoneNumber objects. Not populated when retrieving
      * PhoneNumbersReservation collections.
      * 
      * @param phoneNumbers the phoneNumbers value to set.
@@ -156,8 +91,7 @@ public final class PhoneNumbersReservation implements JsonSerializable<PhoneNumb
     }
 
     /**
-     * Get the status property: Represents the status of the reservation. Possible
-     * values include: 'active',
+     * Get the status property: Represents the status of the reservation. Possible values include: 'active',
      * 'submitted', 'completed', 'expired'.
      * 
      * @return the status value.
@@ -180,11 +114,9 @@ public final class PhoneNumbersReservation implements JsonSerializable<PhoneNumb
      * Reads an instance of PhoneNumbersReservation from the JsonReader.
      * 
      * @param jsonReader The JsonReader being read.
-     * @return An instance of PhoneNumbersReservation if the JsonReader was pointing
-     *         to an instance of it, or
-     *         null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the
-     *                     PhoneNumbersReservation.
+     * @return An instance of PhoneNumbersReservation if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PhoneNumbersReservation.
      */
     public static PhoneNumbersReservation fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {

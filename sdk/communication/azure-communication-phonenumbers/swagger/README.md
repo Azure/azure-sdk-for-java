@@ -238,14 +238,6 @@ directive:
     $["name"] = "PhoneNumbersReservationStatus";
 ```
 
-### Rename PhoneNumbersReservation to PhoneNumbersReservationInternal
-``` yaml
-directive:
-    - rename-model:
-        from: PhoneNumbersReservation
-        to: PhoneNumbersReservationInternal
-```
-
 ``` yaml
 directive:
   from: swagger-document

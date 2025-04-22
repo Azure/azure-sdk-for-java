@@ -4,6 +4,7 @@
 
 package com.azure.communication.phonenumbers.implementation.models;
 
+import com.azure.communication.phonenumbers.models.PhoneNumbersReservation;
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -20,7 +21,7 @@ public final class PhoneNumbersReservations implements JsonSerializable<PhoneNum
     /*
      * Represents a list of phone numbers reservations. Note that the phone numbers from each reservation are not included.
      */
-    private List<PhoneNumbersReservationInternal> reservations;
+    private List<PhoneNumbersReservation> reservations;
 
     /*
      * Represents the URL link to the next page of phone number results.
@@ -39,7 +40,7 @@ public final class PhoneNumbersReservations implements JsonSerializable<PhoneNum
      * 
      * @return the reservations value.
      */
-    public List<PhoneNumbersReservationInternal> getReservations() {
+    public List<PhoneNumbersReservation> getReservations() {
         return this.reservations;
     }
 
@@ -50,7 +51,7 @@ public final class PhoneNumbersReservations implements JsonSerializable<PhoneNum
      * @param reservations the reservations value to set.
      * @return the PhoneNumbersReservations object itself.
      */
-    public PhoneNumbersReservations setReservations(List<PhoneNumbersReservationInternal> reservations) {
+    public PhoneNumbersReservations setReservations(List<PhoneNumbersReservation> reservations) {
         this.reservations = reservations;
         return this;
     }
@@ -103,8 +104,8 @@ public final class PhoneNumbersReservations implements JsonSerializable<PhoneNum
                 reader.nextToken();
 
                 if ("reservations".equals(fieldName)) {
-                    List<PhoneNumbersReservationInternal> reservations
-                        = reader.readArray(reader1 -> PhoneNumbersReservationInternal.fromJson(reader1));
+                    List<PhoneNumbersReservation> reservations
+                        = reader.readArray(reader1 -> PhoneNumbersReservation.fromJson(reader1));
                     deserializedPhoneNumbersReservations.reservations = reservations;
                 } else if ("nextLink".equals(fieldName)) {
                     deserializedPhoneNumbersReservations.nextLink = reader.getString();
