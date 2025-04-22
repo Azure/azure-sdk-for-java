@@ -822,7 +822,7 @@ public class CosmosAsyncDatabase {
 
         if (asyncContainer == null) {
             throw new IllegalStateException(
-                "The implementation of teh custom container creation interceptor must not return null.");
+                "The implementation of the custom container creation interceptor must not return null.");
         }
         return asyncContainer;
     }
