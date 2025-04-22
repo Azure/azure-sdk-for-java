@@ -70,5 +70,5 @@ public interface SimpleXmlSerializableService {
      * @return The retrieved invalid XML payload.
      */
     @HttpRequestInformation(method = HttpMethod.GET, path = "getInvalidXml", expectedStatusCodes = { 200 })
-    SimpleXmlSerializable getInvalidXml();
+    SimpleXmlSerializable getInvalidXml(@HeaderParam("Content-Type") String contentType);
 }
