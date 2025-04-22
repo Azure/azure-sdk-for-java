@@ -3,19 +3,19 @@
 
 package com.azure.tools.checkstyle.checks;
 
-import com.puppycrawl.tools.checkstyle.DetailNodeTreeStringPrinter;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.DetailNode;
 import com.puppycrawl.tools.checkstyle.api.JavadocTokenTypes;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
-import com.puppycrawl.tools.checkstyle.utils.BlockCommentPosition;
+import com.puppycrawl.tools.checkstyle.checks.javadoc.AbstractJavadocCheck;
 import com.puppycrawl.tools.checkstyle.utils.JavadocUtil;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
 
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Verifies that all throws in the public API have JavaDocs explaining why and when they are thrown.
@@ -37,8 +37,9 @@ public class JavadocThrowsChecks extends AbstractCheck {
     private static final String THIS_TOKEN = "this";
     private static final String CLASS_TOKEN = "class";
 
-    private Map<String, HashSet<String>> javadocThrowsMapping;
-    private Map<String, HashSet<String>> exceptionMapping;
+    private Map<String, Set<String>> javadocThrowsMapping;
+    private Map<String, Set<String>> exceptionMapping;
+    private ThrowsFinder throwsFinder;
     private String currentScopeIdentifier;
     private boolean currentScopeNeedsChecking;
 
@@ -66,6 +67,7 @@ public class JavadocThrowsChecks extends AbstractCheck {
     public void beginTree(DetailAST rootToken) {
         javadocThrowsMapping = new HashMap<>();
         exceptionMapping = new HashMap<>();
+        throwsFinder = new ThrowsFinder(javadocThrowsMapping);
         currentScopeNeedsChecking = false;
         currentScopeIdentifier = "";
     }
@@ -79,7 +81,9 @@ public class JavadocThrowsChecks extends AbstractCheck {
                 break;
 
             case TokenTypes.BLOCK_COMMENT_BEGIN:
-                findJavadocThrows(token);
+                if (currentScopeNeedsChecking) {
+                    findJavadocThrows(token);
+                }
                 break;
 
             case TokenTypes.LITERAL_THROWS:
@@ -106,6 +110,12 @@ public class JavadocThrowsChecks extends AbstractCheck {
         }
     }
 
+    @Override
+    public void destroy() {
+        super.destroy();
+        throwsFinder.destroy();
+    }
+
     /*
      * Gets the current method identifier and determines if it needs to be checked.
      * @param scopeDefToken Method definition token.
@@ -114,6 +124,7 @@ public class JavadocThrowsChecks extends AbstractCheck {
         currentScopeIdentifier = scopeDefToken.findFirstToken(TokenTypes.IDENT).getText() + scopeDefToken.getLineNo();
         currentScopeNeedsChecking =
             visibilityIsPublicOrProtectedAndNotAbstractOrOverride(scopeDefToken.findFirstToken(TokenTypes.MODIFIERS));
+        throwsFinder.currentScopeIdentifier = currentScopeIdentifier;
     }
 
     /*
@@ -159,42 +170,7 @@ public class JavadocThrowsChecks extends AbstractCheck {
      * @param blockCommentToken Block comment token.
      */
     private void findJavadocThrows(DetailAST blockCommentToken) {
-        if (!BlockCommentPosition.isOnMethod(blockCommentToken)
-            && !BlockCommentPosition.isOnConstructor(blockCommentToken)) {
-            return;
-        }
-
-        // Turn the DetailAST into a Javadoc DetailNode.
-        DetailNode javadocNode = null;
-        try {
-            javadocNode = DetailNodeTreeStringPrinter.parseJavadocAsDetailNode(blockCommentToken);
-        } catch (IllegalArgumentException ex) {
-            // Exceptions are thrown if the JavaDoc has invalid formatting.
-        }
-
-        if (javadocNode == null) {
-            return;
-        }
-
-        // Append the line number to differentiate overloads.
-        HashSet<String> javadocThrows = javadocThrowsMapping.getOrDefault(currentScopeIdentifier, new HashSet<>());
-
-        // Iterate through all the top level nodes in the Javadoc, looking for the @throws statements.
-        for (DetailNode node : javadocNode.getChildren()) {
-            if (node.getType() != JavadocTokenTypes.JAVADOC_TAG
-                || JavadocUtil.findFirstToken(node, JavadocTokenTypes.THROWS_LITERAL) == null) {
-                continue;
-            }
-
-            // Add the class being thrown to the set of documented throws.
-            javadocThrows.add(JavadocUtil.findFirstToken(node, JavadocTokenTypes.CLASS_NAME).getText());
-
-            if (JavadocUtil.findFirstToken(node, JavadocTokenTypes.DESCRIPTION) == null) {
-                log(node.getLineNumber(), MISSING_DESCRIPTION_MESSAGE);
-            }
-        }
-
-        javadocThrowsMapping.put(currentScopeIdentifier, javadocThrows);
+        throwsFinder.visitToken(blockCommentToken);
     }
 
     /*
@@ -218,7 +194,7 @@ public class JavadocThrowsChecks extends AbstractCheck {
             }
         }
         String identifier = scope + definitionToken.findFirstToken(TokenTypes.IDENT).getText();
-        HashSet<String> types = exceptionMapping.getOrDefault(identifier, new HashSet<>());
+        Set<String> types = exceptionMapping.getOrDefault(identifier, new HashSet<>());
 
         if (typeToken.getType() == TokenTypes.BOR) {
             TokenUtil.forEachChild(typeToken, TokenTypes.IDENT, (identityToken) -> tryToAddType(identityToken, types));
@@ -229,7 +205,7 @@ public class JavadocThrowsChecks extends AbstractCheck {
         exceptionMapping.put(identifier, types);
     }
 
-    private void tryToAddType(DetailAST typeToken, HashSet<String> types) {
+    private void tryToAddType(DetailAST typeToken, Set<String> types) {
         String type = typeToken.getText();
         if (type.endsWith("Exception") || type.endsWith("Error")) {
             types.add(type);
@@ -241,7 +217,7 @@ public class JavadocThrowsChecks extends AbstractCheck {
      * @param throwsToken Throws token.
      */
     private void verifyCheckedThrowJavadoc(DetailAST throwsToken) {
-        HashSet<String> methodJavadocThrows = javadocThrowsMapping.get(currentScopeIdentifier);
+        Set<String> methodJavadocThrows = javadocThrowsMapping.get(currentScopeIdentifier);
         if (methodJavadocThrows == null) {
             log(throwsToken, MISSING_THROWS_TAG_MESSAGE);
             return;
@@ -260,7 +236,7 @@ public class JavadocThrowsChecks extends AbstractCheck {
      */
     private void verifyUncheckedThrowJavadoc(DetailAST throwToken) {
         // Early out check for method that don't have Javadocs, they cannot have @throws documented.
-        HashSet<String> methodJavadocThrows = javadocThrowsMapping.get(currentScopeIdentifier);
+        Set<String> methodJavadocThrows = javadocThrowsMapping.get(currentScopeIdentifier);
         if (methodJavadocThrows == null) {
             log(throwToken, MISSING_THROWS_TAG_MESSAGE);
             return;
@@ -308,7 +284,7 @@ public class JavadocThrowsChecks extends AbstractCheck {
             }
 
             String throwIdentName = lastIdentifier.getText();
-            HashSet<String> types = findMatchingExceptionType(currentScopeIdentifier, throwIdentName);
+            Set<String> types = findMatchingExceptionType(currentScopeIdentifier, throwIdentName);
 
             if (types == null) {
                 return;
@@ -322,9 +298,9 @@ public class JavadocThrowsChecks extends AbstractCheck {
         }
     }
 
-    private HashSet<String> findMatchingExceptionType(String scope, String throwIdent) {
+    private Set<String> findMatchingExceptionType(String scope, String throwIdent) {
         // check current scope
-        HashSet<String> types = exceptionMapping.get(scope + throwIdent);
+        Set<String> types = exceptionMapping.get(scope + throwIdent);
         if (types == null) {
             // if a matching type is not found in current method scope, search object scope
             types = exceptionMapping.get(THIS_TOKEN + throwIdent);
@@ -334,5 +310,42 @@ public class JavadocThrowsChecks extends AbstractCheck {
             types = exceptionMapping.get(CLASS_TOKEN + throwIdent);
         }
         return types;
+    }
+
+    private final class ThrowsFinder extends AbstractJavadocCheck {
+        private final Map<String, Set<String>> javadocThrowsMapping;
+        private String currentScopeIdentifier = "";
+
+        private ThrowsFinder(Map<String, Set<String>> javadocThrowsMapping) {
+            this.javadocThrowsMapping = javadocThrowsMapping;
+            init();
+        }
+
+        @Override
+        public int[] getDefaultJavadocTokens() {
+            return new int[] { JavadocTokenTypes.THROWS_LITERAL };
+        }
+
+        @Override
+        public void beginJavadocTree(DetailNode rootAst) {
+            javadocThrowsMapping.computeIfAbsent(currentScopeIdentifier, ignored -> new HashSet<>());
+        }
+
+        @Override
+        public void visitJavadocToken(DetailNode ast) {
+            // Append the line number to differentiate overloads.
+            Set<String> javadocThrows = javadocThrowsMapping.get(currentScopeIdentifier);
+
+            // Since we're looking at the '@throws' token, we'll need to use the parent to find the class name and the
+            // description as '@throws' isn't the parent of it.
+            DetailNode parent = ast.getParent();
+
+            // Add the class being thrown to the set of documented throws.
+            javadocThrows.add(JavadocUtil.findFirstToken(parent, JavadocTokenTypes.CLASS_NAME).getText());
+
+            if (JavadocUtil.findFirstToken(parent, JavadocTokenTypes.DESCRIPTION) == null) {
+                JavadocThrowsChecks.this.log(parent.getLineNumber(), MISSING_DESCRIPTION_MESSAGE);
+            }
+        }
     }
 }

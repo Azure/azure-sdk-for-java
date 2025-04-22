@@ -3,14 +3,13 @@
 
 package com.azure.tools.checkstyle.checks;
 
-import com.puppycrawl.tools.checkstyle.DetailNodeTreeStringPrinter;
 import com.puppycrawl.tools.checkstyle.api.AbstractCheck;
 import com.puppycrawl.tools.checkstyle.api.DetailAST;
 import com.puppycrawl.tools.checkstyle.api.DetailNode;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.JavadocTokenTypes;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
-import com.puppycrawl.tools.checkstyle.utils.BlockCommentPosition;
+import com.puppycrawl.tools.checkstyle.checks.javadoc.AbstractJavadocCheck;
 import com.puppycrawl.tools.checkstyle.utils.JavadocUtil;
 
 import java.util.ArrayDeque;
@@ -36,11 +35,9 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
         + " does not refer to any sample.";
 
     private static final int[] TOKENS = new int[] {
-        TokenTypes.PACKAGE_DEF,
-        TokenTypes.BLOCK_COMMENT_BEGIN,
-        TokenTypes.CLASS_DEF,
-        TokenTypes.METHOD_DEF
-    };
+        TokenTypes.PACKAGE_DEF, TokenTypes.BLOCK_COMMENT_BEGIN, TokenTypes.CLASS_DEF, TokenTypes.METHOD_DEF };
+
+    private final CodesnippetChecker codesnippetChecker = new CodesnippetChecker();
 
     private String packageName;
     // A LIFO queue contains all class name visited, remove the class name when leave the same token
@@ -96,6 +93,12 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
         }
     }
 
+    @Override
+    public void destroy() {
+        super.destroy();
+        codesnippetChecker.destroy();
+    }
+
     /**
      * Check if the given block comment is on method. If not, skip the check.
      * Otherwise, check if the codesnippet has matching the naming pattern
@@ -103,60 +106,7 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
      * @param blockCommentToken BLOCK_COMMENT_BEGIN token
      */
     private void checkNamingPattern(DetailAST blockCommentToken) {
-        if (!BlockCommentPosition.isOnMethod(blockCommentToken)) {
-            return;
-        }
-
-        // Turn the DetailAST into a Javadoc DetailNode.
-        DetailNode javadocNode = null;
-        try {
-            javadocNode = DetailNodeTreeStringPrinter.parseJavadocAsDetailNode(blockCommentToken);
-        } catch (IllegalArgumentException ex) {
-            // Exceptions are thrown if the JavaDoc has invalid formatting.
-        }
-
-        if (javadocNode == null) {
-            return;
-        }
-
-        // Iterate through all the top level nodes in the Javadoc, looking for the @codesnippet tag.
-        for (DetailNode node : javadocNode.getChildren()) {
-            if (node.getType() != JavadocTokenTypes.JAVADOC_INLINE_TAG) {
-                continue;
-            }
-            // Skip if not codesnippet
-            DetailNode customNameNode = JavadocUtil.findFirstToken(node, JavadocTokenTypes.CUSTOM_NAME);
-            if (customNameNode == null || !CODE_SNIPPET_ANNOTATION.equals(customNameNode.getText())) {
-                return;
-            }
-            // Missing Description
-            DetailNode descriptionNode = JavadocUtil.findFirstToken(node, JavadocTokenTypes.DESCRIPTION);
-            if (descriptionNode == null) {
-                log(node.getLineNumber(), MISSING_CODESNIPPET_TAG_MESSAGE);
-                return;
-            }
-
-            // There will always have TEXT token if there is DESCRIPTION token exists.
-            String customDescription = JavadocUtil.findFirstToken(descriptionNode, JavadocTokenTypes.TEXT).getText();
-
-            // Find method name
-            final String methodName = methodDefToken.findFirstToken(TokenTypes.IDENT).getText();
-            final String className = classNameStack.isEmpty() ? "" : classNameStack.peek();
-            final String parameters = constructParametersString(methodDefToken);
-            String fullPath = packageName + "." + className + "." + methodName;
-            final String fullPathWithoutParameters = fullPath;
-            if (parameters != null) {
-                fullPath = fullPath + "#" + parameters;
-            }
-
-            // Check for CodeSnippet naming pattern matching
-            if (customDescription == null || customDescription.isEmpty()
-                || !isNamingMatched(customDescription.toLowerCase(Locale.ROOT),
-                fullPathWithoutParameters.toLowerCase(Locale.ROOT), parameters)) {
-                log(node.getLineNumber(), String.format("Naming pattern mismatch. The @codesnippet description "
-                    + "''%s'' does not match ''%s''. Case Insensitive.", customDescription, fullPath));
-            }
-        }
+        codesnippetChecker.visitToken(blockCommentToken);
     }
 
     /**
@@ -244,5 +194,54 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
             return false;
         }
         return true;
+    }
+
+    private final class CodesnippetChecker extends AbstractJavadocCheck {
+
+        private CodesnippetChecker() {
+            init();
+        }
+
+        @Override
+        public int[] getDefaultJavadocTokens() {
+            return new int[] { JavadocTokenTypes.JAVADOC_INLINE_TAG };
+        }
+
+        @Override
+        public void visitJavadocToken(DetailNode ast) {
+            // Skip if not codesnippet
+            DetailNode customNameNode = JavadocUtil.findFirstToken(ast, JavadocTokenTypes.CUSTOM_NAME);
+            if (customNameNode == null || !CODE_SNIPPET_ANNOTATION.equals(customNameNode.getText())) {
+                return;
+            }
+            // Missing Description
+            DetailNode descriptionNode = JavadocUtil.findFirstToken(ast, JavadocTokenTypes.DESCRIPTION);
+            if (descriptionNode == null) {
+                JavadocCodeSnippetCheck.this.log(ast.getLineNumber(), MISSING_CODESNIPPET_TAG_MESSAGE);
+                return;
+            }
+
+            // There will always have TEXT token if there is DESCRIPTION token exists.
+            String customDescription = JavadocUtil.findFirstToken(descriptionNode, JavadocTokenTypes.TEXT).getText();
+
+            // Find method name
+            final String methodName = methodDefToken.findFirstToken(TokenTypes.IDENT).getText();
+            final String className = classNameStack.isEmpty() ? "" : classNameStack.peek();
+            final String parameters = constructParametersString(methodDefToken);
+            String fullPath = packageName + "." + className + "." + methodName;
+            final String fullPathWithoutParameters = fullPath;
+            if (parameters != null) {
+                fullPath = fullPath + "#" + parameters;
+            }
+
+            // Check for CodeSnippet naming pattern matching
+            if (customDescription == null || customDescription.isEmpty() || !isNamingMatched(
+                customDescription.toLowerCase(Locale.ROOT), fullPathWithoutParameters.toLowerCase(Locale.ROOT),
+                parameters)) {
+                JavadocCodeSnippetCheck.this.log(ast.getLineNumber(), "Naming pattern mismatch. The @codesnippet "
+                    + "description ''" + customDescription + "'' does not match ''" + fullPath
+                    + "''. Case Insensitive.");
+            }
+        }
     }
 }
