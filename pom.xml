@@ -163,6 +163,7 @@
     <module>sdk/nginx</module>
     <module>sdk/notificationhubs</module>
     <module>sdk/oep</module>
+    <module>sdk/onlineexperimentation</module>
     <module>sdk/openai</module>
     <module>sdk/operationsmanagement</module>
     <module>sdk/oracledatabase</module>
