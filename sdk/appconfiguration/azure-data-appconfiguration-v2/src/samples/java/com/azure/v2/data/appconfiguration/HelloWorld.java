@@ -1,11 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.appconfiguration;
+package com.azure.v2.data.appconfiguration;
 
-
-import com.azure.v2.data.appconfiguration.ConfigurationClient;
-import com.azure.v2.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.v2.data.appconfiguration.models.ConfigurationSetting;
 import io.clientcore.core.utils.configuration.Configuration;
 
@@ -40,7 +37,7 @@ public class HelloWorld {
         System.out.printf("[GetConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue());
 
         setting = client.deleteConfigurationSetting(key, null);
-        System.out.printf("[DeleteConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue());
+        System.out.printf("[DeleteConfigurationSetting] Key: %s, Value: %s%n", setting.getKey(), setting.getValue());
 
         System.out.println("End of synchronous sample.");
     }

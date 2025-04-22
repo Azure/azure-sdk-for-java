@@ -38,6 +38,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
+
 /**
  * This class provides a fluent builder API to help aid the configuration and instantiation of
  * {@link ConfigurationClient ConfigurationClients}, call {@link #buildClient() buildClient} to construct an
@@ -297,12 +299,15 @@ public final class ConfigurationClientBuilder implements HttpTrait<Configuration
      */
     private AzureAppConfigurationClientImpl buildInnerClient() {
         // Manual changes start
-        if (connectionString.isEmpty()) {
+        if (isNullOrEmpty(connectionString) && isNullOrEmpty(endpoint)) {
             throw LOGGER
-                .logThrowableAsError(new IllegalArgumentException("'connectionString' cannot be an empty string."));
+                .logThrowableAsError(new IllegalArgumentException("'connectionString' or 'endpoint' cannot be null."));
         }
-        ConfigurationClientCredentials credentialsLocal = new ConfigurationClientCredentials(connectionString);
-        this.endpoint = credentialsLocal.getBaseUri();
+
+        if (!isNullOrEmpty(connectionString) && isNullOrEmpty(endpoint)) {
+            ConfigurationClientCredentials credentialsLocal = new ConfigurationClientCredentials(connectionString);
+            this.endpoint = credentialsLocal.getBaseUri();
+        }
         // Manual changes end
 
         this.validateClient();

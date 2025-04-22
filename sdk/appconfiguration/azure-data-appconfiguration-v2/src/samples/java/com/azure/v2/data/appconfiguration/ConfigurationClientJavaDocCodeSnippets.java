@@ -1,12 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.appconfiguration;
+package com.azure.v2.data.appconfiguration;
 
-import com.azure.v2.data.appconfiguration.ConfigurationClient;
-import com.azure.v2.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.v2.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.v2.data.appconfiguration.models.SettingLabelSelector;
+import com.azure.v2.data.appconfiguration.models.SettingSelector;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
@@ -307,33 +306,33 @@ public final class ConfigurationClientJavaDocCodeSnippets {
         // END: com.azure.data.applicationconfig.configurationclient.setReadOnlyWithResponse#ConfigurationSetting-boolean-Context-ClearReadOnly
     }
 
-//    /**
-//     * Generates code sample for using {@link ConfigurationClient#listConfigurationSettings(SettingSelector)}
-//     */
-//    public void listConfigurationSettings() {
-//        ConfigurationClient configurationClient = createSyncConfigurationClient();
-//        // BEGIN: com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector
-//        SettingSelector settingSelector = new SettingSelector().setKeyFilter("prodDBConnection");
-//        configurationClient.listConfigurationSettings(settingSelector).forEach(setting -> {
-//            System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
-//        });
-//        // END: com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector
-//    }
-//
-//    /**
-//     * Generates code sample for using {@link ConfigurationClient#listConfigurationSettings(SettingSelector, Context)}
-//     */
-//    public void listConfigurationSettingsContext() {
-//        ConfigurationClient configurationClient = createSyncConfigurationClient();
-//        // BEGIN: com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector-context
-//        SettingSelector settingSelector = new SettingSelector().setKeyFilter("prodDBConnection");
-//        Context ctx = new Context(key2, value2);
-//        configurationClient.listConfigurationSettings(settingSelector, ctx).forEach(setting -> {
-//            System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
-//        });
-//        // END: com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector-context
-//    }
-//
+    /**
+     * Generates code sample for using {@link ConfigurationClient#listConfigurationSettings(SettingSelector)}
+     */
+    public void listConfigurationSettings() {
+        ConfigurationClient configurationClient = createSyncConfigurationClient();
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector
+        SettingSelector settingSelector = new SettingSelector().setKeyFilter("prodDBConnection");
+        configurationClient.listConfigurationSettings(settingSelector).forEach(setting -> {
+            System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
+        });
+        // END: com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector
+    }
+
+    /**
+     * Generates code sample for using {@link ConfigurationClient#listConfigurationSettings(SettingSelector, RequestContext)}
+     */
+    public void listConfigurationSettingsContext() {
+        ConfigurationClient configurationClient = createSyncConfigurationClient();
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector-context
+        SettingSelector settingSelector = new SettingSelector().setKeyFilter("prodDBConnection");
+        RequestContext ctx = RequestContext.builder().putMetadata(key2, value2).build();
+        configurationClient.listConfigurationSettings(settingSelector, ctx).forEach(setting -> {
+            System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
+        });
+        // END: com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector-context
+    }
+
 //    /**
 //     * Generates code sample for using {@link ConfigurationClient#listConfigurationSettingsForSnapshot(String)}
 //     */
@@ -360,37 +359,37 @@ public final class ConfigurationClientJavaDocCodeSnippets {
 //            .forEach(setting -> System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue()));
 //        // END: com.azure.data.applicationconfig.configurationclient.listConfigurationSettingsForSnapshotMaxOverload
 //    }
-//
-//    /**
-//     * Generates code sample for using {@link ConfigurationClient#listRevisions(SettingSelector)}
-//     */
-//    public void listRevisions() {
-//        ConfigurationClient configurationClient = createSyncConfigurationClient();
-//        // BEGIN: com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector
-//        SettingSelector settingSelector = new SettingSelector().setKeyFilter("prodDBConnection");
-//        configurationClient.listRevisions(settingSelector).streamByPage().forEach(resp -> {
-//            System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
-//                resp.getRequest().getUrl(), resp.getStatusCode());
-//            resp.getItems().forEach(value -> {
-//                System.out.printf("Response value is %d %n", value);
-//            });
-//        });
-//        // END: com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector
-//    }
-//
-//    /**
-//     * Generates code sample for using {@link ConfigurationClient#listRevisions(SettingSelector, Context)}
-//     */
-//    public void listRevisionsContext() {
-//        ConfigurationClient configurationClient = createSyncConfigurationClient();
-//        // BEGIN: com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector-context
-//        SettingSelector settingSelector = new SettingSelector().setKeyFilter("prodDBConnection");
-//        Context ctx = new Context(key2, value2);
-//        configurationClient.listRevisions(settingSelector, ctx).forEach(setting -> {
-//            System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
-//        });
-//        // END: com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector-context
-//    }
+
+    /**
+     * Generates code sample for using {@link ConfigurationClient#listRevisions(SettingSelector)}
+     */
+    public void listRevisions() {
+        ConfigurationClient configurationClient = createSyncConfigurationClient();
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector
+        SettingSelector settingSelector = new SettingSelector().setKeyFilter("prodDBConnection");
+        configurationClient.listRevisions(settingSelector).streamByPage().forEach(resp -> {
+            System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
+                resp.getRequest().getUri(), resp.getStatusCode());
+            resp.getValue().forEach(value -> {
+                System.out.printf("Response value is %d %n", value);
+            });
+        });
+        // END: com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector
+    }
+
+    /**
+     * Generates code sample for using {@link ConfigurationClient#listRevisions(SettingSelector, RequestContext)}
+     */
+    public void listRevisionsContext() {
+        ConfigurationClient configurationClient = createSyncConfigurationClient();
+        // BEGIN: com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector-context
+        SettingSelector settingSelector = new SettingSelector().setKeyFilter("prodDBConnection");
+        RequestContext ctx = RequestContext.builder().putMetadata(key2, value2).build();
+        configurationClient.listRevisions(settingSelector, ctx).forEach(setting -> {
+            System.out.printf("Key: %s, Value: %s", setting.getKey(), setting.getValue());
+        });
+        // END: com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector-context
+    }
 //
 //    /**
 //     * Code snippets for {@link ConfigurationClient#beginCreateSnapshot(String, ConfigurationSnapshot, Context)}}

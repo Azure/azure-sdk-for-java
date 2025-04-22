@@ -23,6 +23,7 @@ import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedIterable;
+import io.clientcore.core.http.paging.PagedResponse;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
 import java.time.OffsetDateTime;
@@ -924,89 +925,90 @@ public final class ConfigurationClient {
                 serviceClient.deleteLockWithResponse(key, null, label, null, null, null, context));
     }
 
-    //    /**
-    //     * Fetches the configuration settings that match the {@code selector}. If {@code selector} is {@code null}, then all
-    //     * the {@link ConfigurationSetting configuration settings} are fetched with their current values.
-    //     *
-    //     * <p><strong>Code Samples</strong></p>
-    //     *
-    //     * <p>Retrieve all settings that use the key "prodDBConnection".</p>
-    //     *
-    //     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector -->
-    //     * <pre>
-    //     * SettingSelector settingSelector = new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;;
-    //     * configurationClient.listConfigurationSettings&#40;settingSelector&#41;.forEach&#40;setting -&gt; &#123;
-    //     *     System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
-    //     * &#125;&#41;;
-    //     * </pre>
-    //     * <!-- end com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector -->
-    //     *
-    //     * @param selector Optional. Selector to filter configuration setting results from the service.
-    //     * @return A {@link PagedIterable} of ConfigurationSettings that matches the {@code selector}. If no options were
-    //     * provided, the List contains all of the current settings in the service.
-    //     * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
-    //     */
-    //    @ServiceMethod(returns = ReturnType.COLLECTION)
-    //    public PagedIterable<ConfigurationSetting> listConfigurationSettings(SettingSelector selector) {
-    //        return listConfigurationSettings(selector, Context.none());
-    //    }
-    //
-    //    /**
-    //     * Fetches the configuration settings that match the {@code selector}. If {@code selector} is {@code null}, then all
-    //     * the {@link ConfigurationSetting configuration settings} are fetched with their current values.
-    //     *
-    //     * <p><strong>Code Samples</strong></p>
-    //     *
-    //     * <p>Retrieve all settings that use the key "prodDBConnection".</p>
-    //     *
-    //     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector-context -->
-    //     * <pre>
-    //     * SettingSelector settingSelector = new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;;
-    //     * Context ctx = new Context&#40;key2, value2&#41;;
-    //     * configurationClient.listConfigurationSettings&#40;settingSelector, ctx&#41;.forEach&#40;setting -&gt; &#123;
-    //     *     System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
-    //     * &#125;&#41;;
-    //     * </pre>
-    //     * <!-- end com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector-context -->
-    //     *
-    //     * @param selector Optional. Selector to filter configuration setting results from the service.
-    //     * @param context Additional context that is passed through the Http pipeline during the service call.
-    //     * @return A {@link PagedIterable} of ConfigurationSettings that matches the {@code selector}. If no options were
-    //     * provided, the {@link PagedIterable} contains all the current settings in the service.
-    //     * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
-    //     */
-    //    @ServiceMethod(returns = ReturnType.COLLECTION)
-    //    public PagedIterable<ConfigurationSetting> listConfigurationSettings(SettingSelector selector, Context context) {
-    //        final String keyFilter = selector == null ? null : selector.getKeyFilter();
-    //        final String labelFilter = selector == null ? null : selector.getLabelFilter();
-    //        final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
-    //        final List<SettingFields> settingFields = selector == null ? null : toSettingFieldsList(selector.getFields());
-    //        final List<MatchConditions> matchConditionsList = selector == null ? null : selector.getMatchConditions();
-    //        final List<String> tagsFilter = selector == null ? null : selector.getTagsFilter();
-    //
-    //        AtomicInteger pageETagIndex = new AtomicInteger(0);
-    //        return new PagedIterable<>(() -> {
-    //            PagedResponse<KeyValue> pagedResponse;
-    //            try {
-    //                pagedResponse = serviceClient.getKeyValuesSinglePage(null, keyFilter, labelFilter, null, null, acceptDateTime,
-    //                    settingFields, null, null, getPageETag(matchConditionsList, pageETagIndex), tagsFilter,
-    //                    new requestContext().setContext(context));
-    //            } catch (HttpResponseException ex) {
-    //                return handleNotModifiedErrorToValidResponse(ex, LOGGER);
-    //            }
-    //            return toConfigurationSettingWithPagedResponse(pagedResponse);
-    //        }, nextLink -> {
-    //            PagedResponse<KeyValue> pagedResponse;
-    //            try {
-    //                pagedResponse = serviceClient.getKeyValuesNextSinglePage(nextLink.getContinuationToken(), null, null, acceptDateTime, null,
-    //                    getPageETag(matchConditionsList, pageETagIndex), new requestContext().setContext(context));
-    //            } catch (HttpResponseException ex) {
-    //                return handleNotModifiedErrorToValidResponse(ex, LOGGER);
-    //            }
-    //            return toConfigurationSettingWithPagedResponse(pagedResponse);
-    //        });
-    //    }
-    //
+    /**
+     * Fetches the configuration settings that match the {@code selector}. If {@code selector} is {@code null}, then all
+     * the {@link ConfigurationSetting configuration settings} are fetched with their current values.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Retrieve all settings that use the key "prodDBConnection".</p>
+     *
+     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector -->
+     * <pre>
+     * SettingSelector settingSelector = new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;;
+     * configurationClient.listConfigurationSettings&#40;settingSelector&#41;.forEach&#40;setting -&gt; &#123;
+     *     System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector -->
+     *
+     * @param selector Optional. Selector to filter configuration setting results from the service.
+     * @return A {@link PagedIterable} of ConfigurationSettings that matches the {@code selector}. If no options were
+     * provided, the List contains all of the current settings in the service.
+     * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ConfigurationSetting> listConfigurationSettings(SettingSelector selector) {
+        return listConfigurationSettings(selector, RequestContext.none());
+    }
+
+    /**
+     * Fetches the configuration settings that match the {@code selector}. If {@code selector} is {@code null}, then all
+     * the {@link ConfigurationSetting configuration settings} are fetched with their current values.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Retrieve all settings that use the key "prodDBConnection".</p>
+     *
+     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector-context -->
+     * <pre>
+     * SettingSelector settingSelector = new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;;
+     * RequestContext ctx = RequestContext.builder&#40;&#41;.putMetadata&#40;key2, value2&#41;.build&#40;&#41;;
+     * configurationClient.listConfigurationSettings&#40;settingSelector, ctx&#41;.forEach&#40;setting -&gt; &#123;
+     *     System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.applicationconfig.configurationclient.listConfigurationSettings#settingSelector-context -->
+     *
+     * @param selector Optional. Selector to filter configuration setting results from the service.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return A {@link PagedIterable} of ConfigurationSettings that matches the {@code selector}. If no options were
+     * provided, the {@link PagedIterable} contains all the current settings in the service.
+     * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ConfigurationSetting> listConfigurationSettings(SettingSelector selector,
+        RequestContext context) {
+        final String keyFilter = selector == null ? null : selector.getKeyFilter();
+        final String labelFilter = selector == null ? null : selector.getLabelFilter();
+        final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
+        final List<SettingFields> settingFields = selector == null ? null : toSettingFieldsList(selector.getFields());
+        final List<MatchConditions> matchConditionsList = selector == null ? null : selector.getMatchConditions();
+        final List<String> tagsFilter = selector == null ? null : selector.getTagsFilter();
+
+        AtomicInteger pageETagIndex = new AtomicInteger(0);
+        return new PagedIterable<>(ignored -> {
+            PagedResponse<KeyValue> pagedResponse;
+            try {
+                pagedResponse = serviceClient.getKeyValuesSinglePage(null, keyFilter, labelFilter, null, null,
+                    acceptDateTime, settingFields, null, null, getPageETag(matchConditionsList, pageETagIndex),
+                    tagsFilter, context);
+            } catch (HttpResponseException ex) {
+                return handleNotModifiedErrorToValidResponse(ex, LOGGER);
+            }
+            return toConfigurationSettingWithPagedResponse(pagedResponse);
+        }, (nextLink, ignored) -> {
+            PagedResponse<KeyValue> pagedResponse;
+            try {
+                pagedResponse = serviceClient.getKeyValuesNextSinglePage(nextLink.getContinuationToken(), null, null,
+                    acceptDateTime, null, getPageETag(matchConditionsList, pageETagIndex), context);
+            } catch (HttpResponseException ex) {
+                return handleNotModifiedErrorToValidResponse(ex, LOGGER);
+            }
+            return toConfigurationSettingWithPagedResponse(pagedResponse);
+        });
+    }
+
     //    /**
     //     * Fetches the configuration settings in a snapshot that matches the {@code snapshotName}. If {@code snapshotName}
     //     * is {@code null}, then all the {@link ConfigurationSetting configuration settings} are fetched with their current
@@ -1076,90 +1078,84 @@ public final class ConfigurationClient {
     //        });
     //    }
 
-    //    /**
-    //     * Lists chronological/historical representation of {@link ConfigurationSetting} resource(s). Revisions are provided
-    //     * in descending order from their {@link ConfigurationSetting#getLastModified() lastModified} date.
-    //     * Revisions expire after a period of time, see <a href="https://azure.microsoft.com/pricing/details/app-configuration/">Pricing</a>
-    //     * for more information.
-    //     * <p>
-    //     * If {@code selector} is {@code null}, then all the {@link ConfigurationSetting ConfigurationSettings} are fetched
-    //     * in their current state. Otherwise, the results returned match the parameters given in {@code selector}.
-    //     *
-    //     * <p><strong>Code Samples</strong></p>
-    //     *
-    //     * <p>Retrieve all revisions of the setting that has the key "prodDBConnection".</p>
-    //     *
-    //     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector -->
-    //     * <pre>
-    //     * SettingSelector settingSelector = new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;;
-    //     * configurationClient.listRevisions&#40;settingSelector&#41;.streamByPage&#40;&#41;.forEach&#40;resp -&gt; &#123;
-    //     *     System.out.printf&#40;&quot;Response headers are %s. Url %s  and status code %d %n&quot;, resp.getHeaders&#40;&#41;,
-    //     *         resp.getRequest&#40;&#41;.getUrl&#40;&#41;, resp.getStatusCode&#40;&#41;&#41;;
-    //     *     resp.getItems&#40;&#41;.forEach&#40;value -&gt; &#123;
-    //     *         System.out.printf&#40;&quot;Response value is %d %n&quot;, value&#41;;
-    //     *     &#125;&#41;;
-    //     * &#125;&#41;;
-    //     * </pre>
-    //     * <!-- end com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector -->
-    //     *
-    //     * @param selector Optional. Used to filter configuration setting revisions from the service.
-    //     * @return {@link PagedIterable} of {@link ConfigurationSetting} revisions.
-    //     * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
-    //     */
-    //    @ServiceMethod(returns = ReturnType.COLLECTION)
-    //    public PagedIterable<ConfigurationSetting> listRevisions(SettingSelector selector) {
-    //        return listRevisions(selector, Context.none());
-    //    }
+    /**
+     * Lists chronological/historical representation of {@link ConfigurationSetting} resource(s). Revisions are provided
+     * in descending order from their {@link ConfigurationSetting#getLastModified() lastModified} date.
+     * Revisions expire after a period of time, see <a href="https://azure.microsoft.com/pricing/details/app-configuration/">Pricing</a>
+     * for more information.
+     * <p>
+     * If {@code selector} is {@code null}, then all the {@link ConfigurationSetting ConfigurationSettings} are fetched
+     * in their current state. Otherwise, the results returned match the parameters given in {@code selector}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Retrieve all revisions of the setting that has the key "prodDBConnection".</p>
+     *
+     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector -->
+     * <pre>
+     * SettingSelector settingSelector = new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;;
+     * configurationClient.listRevisions&#40;settingSelector&#41;.streamByPage&#40;&#41;.forEach&#40;resp -&gt; &#123;
+     *     System.out.printf&#40;&quot;Response headers are %s. Url %s  and status code %d %n&quot;, resp.getHeaders&#40;&#41;,
+     *         resp.getRequest&#40;&#41;.getUri&#40;&#41;, resp.getStatusCode&#40;&#41;&#41;;
+     *     resp.getValue&#40;&#41;.forEach&#40;value -&gt; &#123;
+     *         System.out.printf&#40;&quot;Response value is %d %n&quot;, value&#41;;
+     *     &#125;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector -->
+     *
+     * @param selector Optional. Used to filter configuration setting revisions from the service.
+     * @return {@link PagedIterable} of {@link ConfigurationSetting} revisions.
+     * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ConfigurationSetting> listRevisions(SettingSelector selector) {
+        return listRevisions(selector, RequestContext.none());
+    }
 
-    //    /**
-    //     * Lists chronological/historical representation of {@link ConfigurationSetting} resource(s). Revisions are provided
-    //     * in descending order from their {@link ConfigurationSetting#getLastModified() lastModified} date.
-    //     * Revisions expire after a period of time, see <a href="https://azure.microsoft.com/pricing/details/app-configuration/">Pricing</a>
-    //     * for more information.
-    //     * <p>
-    //     * If {@code selector} is {@code null}, then all the {@link ConfigurationSetting ConfigurationSettings} are fetched
-    //     * in their current state. Otherwise, the results returned match the parameters given in {@code selector}.
-    //     *
-    //     * <p><strong>Code Samples</strong></p>
-    //     *
-    //     * <p>Retrieve all revisions of the setting that has the key "prodDBConnection".</p>
-    //     *
-    //     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector-context -->
-    //     * <pre>
-    //     * SettingSelector settingSelector = new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;;
-    //     * Context ctx = new Context&#40;key2, value2&#41;;
-    //     * configurationClient.listRevisions&#40;settingSelector, ctx&#41;.forEach&#40;setting -&gt; &#123;
-    //     *     System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
-    //     * &#125;&#41;;
-    //     * </pre>
-    //     * <!-- end com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector-context -->
-    //     *
-    //     * @param selector Optional. Used to filter configuration setting revisions from the service.
-    //     * @param context Additional context that is passed through the Http pipeline during the service call.
-    //     * @return {@link PagedIterable} of {@link ConfigurationSetting} revisions.
-    //     * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
-    //     */
-    //    @ServiceMethod(returns = ReturnType.COLLECTION)
-    //    public PagedIterable<ConfigurationSetting> listRevisions(SettingSelector selector, Context context) {
-    //        final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
-    //        return new PagedIterable<>(() -> {
-    //            final PagedResponse<KeyValue> pagedResponse = serviceClient.getRevisionsSinglePage(null,
-    //                selector == null ? null : selector.getKeyFilter(),
-    //                selector == null ? null : selector.getLabelFilter(),
-    //                null,
-    //                null,
-    //                acceptDateTime,
-    //                selector == null ? null : toSettingFieldsList(selector.getFields()),
-    //                selector == null ? null : selector.getTagsFilter(),
-    //                new requestContext().setContext(context));
-    //            return toConfigurationSettingWithPagedResponse(pagedResponse);
-    //        }, nextLink -> {
-    //            final PagedResponse<KeyValue> pagedResponse = serviceClient.getRevisionsNextSinglePage(
-    //                nextLink.getContinuationToken(), null, null,
-    //                acceptDateTime, new requestContext().setContext(context));
-    //            return toConfigurationSettingWithPagedResponse(pagedResponse);
-    //        });
-    //    }
+    /**
+     * Lists chronological/historical representation of {@link ConfigurationSetting} resource(s). Revisions are provided
+     * in descending order from their {@link ConfigurationSetting#getLastModified() lastModified} date.
+     * Revisions expire after a period of time, see <a href="https://azure.microsoft.com/pricing/details/app-configuration/">Pricing</a>
+     * for more information.
+     * <p>
+     * If {@code selector} is {@code null}, then all the {@link ConfigurationSetting ConfigurationSettings} are fetched
+     * in their current state. Otherwise, the results returned match the parameters given in {@code selector}.
+     *
+     * <p><strong>Code Samples</strong></p>
+     *
+     * <p>Retrieve all revisions of the setting that has the key "prodDBConnection".</p>
+     *
+     * <!-- src_embed com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector-context -->
+     * <pre>
+     * SettingSelector settingSelector = new SettingSelector&#40;&#41;.setKeyFilter&#40;&quot;prodDBConnection&quot;&#41;;
+     * RequestContext ctx = RequestContext.builder&#40;&#41;.putMetadata&#40;key2, value2&#41;.build&#40;&#41;;
+     * configurationClient.listRevisions&#40;settingSelector, ctx&#41;.forEach&#40;setting -&gt; &#123;
+     *     System.out.printf&#40;&quot;Key: %s, Value: %s&quot;, setting.getKey&#40;&#41;, setting.getValue&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.data.applicationconfig.configurationclient.listRevisions#settingSelector-context -->
+     *
+     * @param selector Optional. Used to filter configuration setting revisions from the service.
+     * @param context Additional context that is passed through the Http pipeline during the service call.
+     * @return {@link PagedIterable} of {@link ConfigurationSetting} revisions.
+     * @throws HttpResponseException If a client or service error occurs, such as a 404, 409, 429 or 500.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ConfigurationSetting> listRevisions(SettingSelector selector, RequestContext context) {
+        final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
+        return new PagedIterable<>(ignored -> {
+            final PagedResponse<KeyValue> pagedResponse = serviceClient.getRevisionsSinglePage(null,
+                selector == null ? null : selector.getKeyFilter(), selector == null ? null : selector.getLabelFilter(),
+                null, null, acceptDateTime, selector == null ? null : toSettingFieldsList(selector.getFields()),
+                selector == null ? null : selector.getTagsFilter(), context);
+            return toConfigurationSettingWithPagedResponse(pagedResponse);
+        }, (nextLink, ignored) -> {
+            final PagedResponse<KeyValue> pagedResponse = serviceClient
+                .getRevisionsNextSinglePage(nextLink.getContinuationToken(), null, null, acceptDateTime, context);
+            return toConfigurationSettingWithPagedResponse(pagedResponse);
+        });
+    }
 
     //    /**
     //     * Create a {@link ConfigurationSnapshot} by providing a snapshot name and a
