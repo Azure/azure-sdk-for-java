@@ -6,8 +6,6 @@ package com.azure.v2.data.appconfiguration;
 import com.azure.v2.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.v2.identity.AzureCliCredential;
 import com.azure.v2.identity.AzureCliCredentialBuilder;
-import com.azure.v2.identity.DefaultAzureCredential;
-import com.azure.v2.identity.DefaultAzureCredentialBuilder;
 import io.clientcore.core.utils.configuration.Configuration;
 
 /**

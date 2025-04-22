@@ -54,6 +54,7 @@ public final class ConfigurationAudience implements ExpandableEnum<String>, Json
      *
      * @param name a name to look for.
      * @return the corresponding ConfigurationAudience.
+     * @throws IllegalArgumentException If the name is null.
      */
     public static ConfigurationAudience fromString(String name) {
         if (name == null) {

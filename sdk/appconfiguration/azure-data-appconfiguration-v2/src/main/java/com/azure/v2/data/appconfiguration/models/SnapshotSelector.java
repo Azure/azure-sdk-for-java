@@ -7,7 +7,6 @@ import io.clientcore.core.utils.CoreUtils;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Snapshot selector, the optional bag

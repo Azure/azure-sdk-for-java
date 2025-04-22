@@ -7,6 +7,7 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import io.clientcore.core.http.models.HttpMatchConditions;
 import io.clientcore.core.utils.CoreUtils;
 
 /**
@@ -35,7 +36,7 @@ public class SettingSelector {
     private SettingFields[] fields;
     private String acceptDatetime;
 
-    private List<MatchConditions> matchConditions;
+    private List<HttpMatchConditions> matchConditions;
 
     /**
      * Creates a setting selector that will populate responses with all of the {@link ConfigurationSetting
@@ -179,7 +180,7 @@ public class SettingSelector {
      *
      * @return The match conditions
      */
-    public List<MatchConditions> getMatchConditions() {
+    public List<HttpMatchConditions> getMatchConditions() {
         return matchConditions;
     }
 
@@ -189,7 +190,7 @@ public class SettingSelector {
      * @param matchConditions The match conditions
      * @return The updated SettingSelector object.
      */
-    public SettingSelector setMatchConditions(List<MatchConditions> matchConditions) {
+    public SettingSelector setMatchConditions(List<HttpMatchConditions> matchConditions) {
         this.matchConditions = matchConditions;
         return this;
     }

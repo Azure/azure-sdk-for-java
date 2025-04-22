@@ -5,6 +5,7 @@ package com.azure.v2.data.appconfiguration;
 
 import com.azure.v2.core.credentials.TokenCredential;
 import com.azure.v2.core.http.pipeline.BearerTokenAuthenticationPolicy;
+import com.azure.v2.core.traits.ConnectionStringTrait;
 import com.azure.v2.core.traits.TokenCredentialTrait;
 import com.azure.v2.data.appconfiguration.implementation.AzureAppConfigurationClientImpl;
 import com.azure.v2.data.appconfiguration.implementation.ConfigurationClientCredentials;
@@ -80,8 +81,9 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  * @see ConfigurationClient
  */
 @ServiceClientBuilder(serviceClients = { ConfigurationClient.class })
-public final class ConfigurationClientBuilder implements HttpTrait<ConfigurationClientBuilder>,
-    ProxyTrait<ConfigurationClientBuilder>, ConfigurationTrait<ConfigurationClientBuilder>,
+public final class ConfigurationClientBuilder
+    implements HttpTrait<ConfigurationClientBuilder>, ProxyTrait<ConfigurationClientBuilder>,
+    ConfigurationTrait<ConfigurationClientBuilder>, ConnectionStringTrait<ConfigurationClientBuilder>,
     TokenCredentialTrait<ConfigurationClientBuilder>, EndpointTrait<ConfigurationClientBuilder> {
 
     private static final String SDK_NAME = "name";
@@ -340,14 +342,10 @@ public final class ConfigurationClientBuilder implements HttpTrait<Configuration
         this.pipelinePolicies.stream().forEach(p -> policies.add(p));
         if (tokenCredential != null) {
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, getDefaultScope(endpoint)));
-        }
-
-        // Manual changes start
-        else if (connectionStringCredentials != null) {
-            // Use credentialS based policy
+            // Manual changes start
+        } else if (connectionStringCredentials != null) {
             policies.add(new ConfigurationCredentialsPolicy(connectionStringCredentials));
         } else {
-            // Throw exception that credentials and tokenCredential cannot be null
             throw LOGGER.logThrowableAsError(
                 new IllegalArgumentException("Missing credential information while building a client."));
         }

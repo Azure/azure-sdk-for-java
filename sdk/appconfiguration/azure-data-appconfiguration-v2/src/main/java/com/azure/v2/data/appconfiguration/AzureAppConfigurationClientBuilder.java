@@ -26,7 +26,6 @@ import io.clientcore.core.http.pipeline.HttpRetryPolicy;
 import io.clientcore.core.http.pipeline.KeyCredentialPolicy;
 import io.clientcore.core.http.pipeline.UserAgentOptions;
 import io.clientcore.core.http.pipeline.UserAgentPolicy;
-import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.traits.ConfigurationTrait;
 import io.clientcore.core.traits.EndpointTrait;
 import io.clientcore.core.traits.HttpTrait;
@@ -67,7 +66,7 @@ class AzureAppConfigurationClientBuilder
      * Create an instance of the AzureAppConfigurationClientBuilder.
      */
     @Metadata(properties = { MetadataProperties.GENERATED })
-    public AzureAppConfigurationClientBuilder() {
+    AzureAppConfigurationClientBuilder() {
         this.pipelinePolicies = new ArrayList<>();
     }
 

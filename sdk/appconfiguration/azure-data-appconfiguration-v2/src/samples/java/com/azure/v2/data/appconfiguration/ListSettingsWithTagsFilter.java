@@ -8,7 +8,6 @@ import com.azure.v2.data.appconfiguration.models.SettingSelector;
 import io.clientcore.core.http.paging.PagedIterable;
 import io.clientcore.core.utils.configuration.Configuration;
 
-import javax.net.ssl.SSLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

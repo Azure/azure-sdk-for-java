@@ -5,10 +5,9 @@ package com.azure.v2.data.appconfiguration.implementation;
 
 import com.azure.v2.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.v2.data.appconfiguration.implementation.models.KeyValue;
-import com.azure.v2.data.appconfiguration.models.MatchConditions;
 import com.azure.v2.data.appconfiguration.models.SettingFields;
 import io.clientcore.core.http.models.HttpHeaderName;
-import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.models.HttpMatchConditions;
 import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.paging.PagedResponse;
@@ -136,7 +135,7 @@ public class Utility {
     }
 
     // Get the ETag from a list
-    public static String getPageETag(List<MatchConditions> matchConditionsList, AtomicInteger pageETagIndex) {
+    public static String getPageETag(List<HttpMatchConditions> matchConditionsList, AtomicInteger pageETagIndex) {
         if (CoreUtils.isNullOrEmpty(matchConditionsList)) {
             return null;
         }

@@ -9,7 +9,6 @@ import com.azure.v2.data.appconfiguration.implementation.SyncTokenPolicy;
 import com.azure.v2.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.v2.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.v2.data.appconfiguration.implementation.models.KeyValue;
-import com.azure.v2.data.appconfiguration.models.MatchConditions;
 import com.azure.v2.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.v2.data.appconfiguration.models.SettingFields;
 import com.azure.v2.data.appconfiguration.models.SettingLabel;
@@ -19,6 +18,7 @@ import com.azure.v2.data.appconfiguration.models.SettingSelector;
 import io.clientcore.core.annotations.ReturnType;
 import io.clientcore.core.annotations.ServiceClient;
 import io.clientcore.core.annotations.ServiceMethod;
+import io.clientcore.core.http.models.HttpMatchConditions;
 import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
@@ -983,7 +983,7 @@ public final class ConfigurationClient {
         final String labelFilter = selector == null ? null : selector.getLabelFilter();
         final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
         final List<SettingFields> settingFields = selector == null ? null : toSettingFieldsList(selector.getFields());
-        final List<MatchConditions> matchConditionsList = selector == null ? null : selector.getMatchConditions();
+        final List<HttpMatchConditions> matchConditionsList = selector == null ? null : selector.getMatchConditions();
         final List<String> tagsFilter = selector == null ? null : selector.getTagsFilter();
 
         AtomicInteger pageETagIndex = new AtomicInteger(0);
