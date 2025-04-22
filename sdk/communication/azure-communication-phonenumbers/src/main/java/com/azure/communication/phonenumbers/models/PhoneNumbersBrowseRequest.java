@@ -37,6 +37,11 @@ public final class PhoneNumbersBrowseRequest implements JsonSerializable<PhoneNu
      */
     private List<String> phoneNumberPrefixes;
 
+    /*
+     * The ISO 3166-2 country code, e.g. US.
+     */
+    private String countryCode;
+
     /**
      * Creates an instance of PhoneNumbersBrowseRequest class.
      */
@@ -126,6 +131,26 @@ public final class PhoneNumbersBrowseRequest implements JsonSerializable<PhoneNu
     }
 
     /**
+     * Get the countryCode property: The ISO 3166-2 country code, e.g. US.
+     * 
+     * @return the countryCode value.
+     */
+    public String getCountryCode() {
+        return this.countryCode;
+    }
+
+    /**
+     * Set the countryCode property: The ISO 3166-2 country code, e.g. US.
+     * 
+     * @param countryCode the countryCode value to set.
+     * @return the PhoneNumbersBrowseRequest object itself.
+     */
+    public PhoneNumbersBrowseRequest setCountryCode(String countryCode) {
+        this.countryCode = countryCode;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -138,6 +163,7 @@ public final class PhoneNumbersBrowseRequest implements JsonSerializable<PhoneNu
             this.assignmentType == null ? null : this.assignmentType.toString());
         jsonWriter.writeArrayField("phoneNumberPrefixes", this.phoneNumberPrefixes,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("countryCode", this.countryCode);
         return jsonWriter.writeEndObject();
     }
 
@@ -169,6 +195,8 @@ public final class PhoneNumbersBrowseRequest implements JsonSerializable<PhoneNu
                 } else if ("phoneNumberPrefixes".equals(fieldName)) {
                     List<String> phoneNumberPrefixes = reader.readArray(reader1 -> reader1.getString());
                     deserializedPhoneNumbersBrowseRequest.phoneNumberPrefixes = phoneNumberPrefixes;
+                } else if ("countryCode".equals(fieldName)) {
+                    deserializedPhoneNumbersBrowseRequest.countryCode = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

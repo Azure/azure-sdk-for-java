@@ -247,14 +247,13 @@ public final class PhoneNumbersClient {
      * available to purchase matching the browsing criteria. This operation is not paginated. Since the results are
      * randomized, repeating the same request will not guarantee the same results.
      * 
-     * @param countryCode The ISO 3166-2 country code, e.g. US.
      * @param phoneNumbersBrowseRequest An object defining the criteria to browse for available phone numbers.
      * @return the result of a phone number browse operation {@link PhoneNumbersBrowseResult}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PhoneNumbersBrowseResult browseAvailableNumbers(String countryCode,
-        PhoneNumbersBrowseRequest phoneNumbersBrowseRequest) {
-        return client.browseAvailableNumbers(countryCode, phoneNumbersBrowseRequest);
+    public PhoneNumbersBrowseResult browseAvailableNumbers(PhoneNumbersBrowseRequest phoneNumbersBrowseRequest) {
+        Objects.requireNonNull(phoneNumbersBrowseRequest.getCountryCode(), "'countryCode' cannot be null.");
+        return client.browseAvailableNumbers(phoneNumbersBrowseRequest.getCountryCode(), phoneNumbersBrowseRequest);
     }
 
     /**
@@ -264,15 +263,16 @@ public final class PhoneNumbersClient {
      * available to purchase matching the browsing criteria. This operation is not paginated. Since the results are
      * randomized, repeating the same request will not guarantee the same results.
      * 
-     * @param countryCode The ISO 3166-2 country code, e.g. US.
      * @param phoneNumbersBrowseRequest An object defining the criteria to browse for available phone numbers.
      * @param context The context to associate with this operation.
      * @return the result of a phone number browse operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PhoneNumbersBrowseResult> browseAvailableNumbersWithResponse(String countryCode,
-        PhoneNumbersBrowseRequest phoneNumbersBrowseRequest, Context context) {
-        return client.browseAvailableNumbersWithResponse(countryCode, phoneNumbersBrowseRequest, context);
+    public Response<PhoneNumbersBrowseResult>
+        browseAvailableNumbersWithResponse(PhoneNumbersBrowseRequest phoneNumbersBrowseRequest, Context context) {
+        Objects.requireNonNull(phoneNumbersBrowseRequest.getCountryCode(), "'countryCode' cannot be null.");
+        return client.browseAvailableNumbersWithResponse(phoneNumbersBrowseRequest.getCountryCode(),
+            phoneNumbersBrowseRequest, context);
     }
 
     /**

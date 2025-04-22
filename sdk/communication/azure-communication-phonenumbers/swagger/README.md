@@ -261,3 +261,16 @@ directive:
   transform: >
     $["format"] = "";
 ```
+
+## Directives to add the countryCode to the PhoneNumbersBrowseRequest
+``` yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.PhoneNumbersBrowseRequest.properties
+    transform: >
+      $.countryCode = {
+        "type": "string",
+        "description": "The ISO 3166-2 country code, e.g. US.",
+        "x-ms-mutability": ["read", "create", "update"]
+      }
+```

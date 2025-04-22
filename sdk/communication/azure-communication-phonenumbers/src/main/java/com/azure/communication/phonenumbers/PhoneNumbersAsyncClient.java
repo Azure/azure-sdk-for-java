@@ -237,14 +237,14 @@ public final class PhoneNumbersAsyncClient {
      * available to purchase matching the browsing criteria. This operation is not paginated. Since the results are
      * randomized, repeating the same request will not guarantee the same results.
      * 
-     * @param countryCode The ISO 3166-2 country code, e.g. US.
      * @param phoneNumbersBrowseRequest An object defining the criteria to browse for available phone numbers.
      * @return the result of a phone number browse operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersBrowseResult> browseAvailableNumbers(String countryCode,
-        PhoneNumbersBrowseRequest phoneNumbersBrowseRequest) {
-        return client.browseAvailableNumbersAsync(countryCode, phoneNumbersBrowseRequest);
+    public Mono<PhoneNumbersBrowseResult> browseAvailableNumbers(PhoneNumbersBrowseRequest phoneNumbersBrowseRequest) {
+        Objects.requireNonNull(phoneNumbersBrowseRequest.getCountryCode(), "'countryCode' cannot be null.");
+        return client.browseAvailableNumbersAsync(phoneNumbersBrowseRequest.getCountryCode(),
+            phoneNumbersBrowseRequest);
     }
 
     /**

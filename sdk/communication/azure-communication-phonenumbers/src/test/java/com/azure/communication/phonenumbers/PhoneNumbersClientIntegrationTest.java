@@ -56,8 +56,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTestBase {
 
-    private static UUID reservationId = UUID.randomUUID();
-    private static PhoneNumbersReservation reservation = new PhoneNumbersReservation(reservationId);
+    private UUID reservationId = getReservationId();
+    private PhoneNumbersReservation reservation = new PhoneNumbersReservation(reservationId);
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
@@ -485,15 +485,15 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void browseAvailablePhoneNumberSucceeds(HttpClient httpClient) {
-        PhoneNumbersBrowseRequest browseRequest
-            = new PhoneNumbersBrowseRequest().setPhoneNumberType(PhoneNumberType.TOLL_FREE)
-                .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
-                .setCapabilities(
-                    new PhoneNumberBrowseCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
-                        .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
+        PhoneNumbersBrowseRequest browseRequest = new PhoneNumbersBrowseRequest().setCountryCode("US")
+            .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
+            .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
+            .setCapabilities(
+                new PhoneNumberBrowseCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
+                    .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
         PhoneNumbersBrowseResult result = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
-            .browseAvailableNumbers("US", browseRequest);
+            .browseAvailableNumbers(browseRequest);
         assertEquals(PhoneNumberType.TOLL_FREE, result.getPhoneNumbers().get(0).getPhoneNumberType());
         assertEquals(PhoneNumberAssignmentType.APPLICATION, result.getPhoneNumbers().get(0).getAssignmentType());
     }
@@ -501,32 +501,32 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void browseAvailablePhoneNumberWrongCountryCode(HttpClient httpClient) {
-        PhoneNumbersBrowseRequest browseRequest
-            = new PhoneNumbersBrowseRequest().setPhoneNumberType(PhoneNumberType.TOLL_FREE)
-                .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
-                .setCapabilities(
-                    new PhoneNumberBrowseCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
-                        .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
+        PhoneNumbersBrowseRequest browseRequest = new PhoneNumbersBrowseRequest().setCountryCode("INVALID")
+            .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
+            .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
+            .setCapabilities(
+                new PhoneNumberBrowseCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
+                    .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
         PhoneNumbersClient client = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers");
 
         assertThrows(RuntimeException.class,
-            () -> client.browseAvailableNumbers("INVALID", browseRequest).getPhoneNumbers().iterator().next(),
+            () -> client.browseAvailableNumbers(browseRequest).getPhoneNumbers().iterator().next(),
             "Unable to parse CountryCode");
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void browseAvailablePhoneNumberSucceedsWithAAD(HttpClient httpClient) {
-        PhoneNumbersBrowseRequest browseRequest
-            = new PhoneNumbersBrowseRequest().setPhoneNumberType(PhoneNumberType.TOLL_FREE)
-                .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
-                .setCapabilities(
-                    new PhoneNumberBrowseCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
-                        .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
+        PhoneNumbersBrowseRequest browseRequest = new PhoneNumbersBrowseRequest().setCountryCode("US")
+            .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
+            .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
+            .setCapabilities(
+                new PhoneNumberBrowseCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
+                    .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
         PhoneNumbersBrowseResult result = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers")
-            .browseAvailableNumbers("US", browseRequest);
+            .browseAvailableNumbers(browseRequest);
         assertEquals(PhoneNumberType.TOLL_FREE, result.getPhoneNumbers().get(0).getPhoneNumberType());
         assertEquals(PhoneNumberAssignmentType.APPLICATION, result.getPhoneNumbers().get(0).getAssignmentType());
     }
@@ -534,32 +534,32 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void browseAvailablePhoneNumberWrongCountryCodeWithAAD(HttpClient httpClient) {
-        PhoneNumbersBrowseRequest browseRequest
-            = new PhoneNumbersBrowseRequest().setPhoneNumberType(PhoneNumberType.TOLL_FREE)
-                .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
-                .setCapabilities(
-                    new PhoneNumberBrowseCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
-                        .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
+        PhoneNumbersBrowseRequest browseRequest = new PhoneNumbersBrowseRequest().setCountryCode("US")
+            .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
+            .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
+            .setCapabilities(
+                new PhoneNumberBrowseCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
+                    .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
         PhoneNumbersClient client = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers");
 
         assertThrows(RuntimeException.class,
-            () -> client.browseAvailableNumbers("INVALID", browseRequest).getPhoneNumbers().iterator().next(),
+            () -> client.browseAvailableNumbers(browseRequest).getPhoneNumbers().iterator().next(),
             "Unable to parse CountryCode");
     }
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void updatePhoneNumbersReservation(HttpClient httpClient) {
-        PhoneNumbersBrowseRequest browseRequest
-            = new PhoneNumbersBrowseRequest().setPhoneNumberType(PhoneNumberType.TOLL_FREE)
-                .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
-                .setCapabilities(
-                    new PhoneNumberBrowseCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
-                        .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
+        PhoneNumbersBrowseRequest browseRequest = new PhoneNumbersBrowseRequest().setCountryCode("US")
+            .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
+            .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
+            .setCapabilities(
+                new PhoneNumberBrowseCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
+                    .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
         PhoneNumbersBrowseResult result = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
-            .browseAvailableNumbers("US", browseRequest);
+            .browseAvailableNumbers(browseRequest);
 
         reservation.addPhoneNumber(result.getPhoneNumbers().get(0));
 
@@ -599,15 +599,15 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void updatePhoneNumbersReservationWithAAD(HttpClient httpClient) {
-        PhoneNumbersBrowseRequest browseRequest
-            = new PhoneNumbersBrowseRequest().setPhoneNumberType(PhoneNumberType.TOLL_FREE)
-                .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
-                .setCapabilities(
-                    new PhoneNumberBrowseCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
-                        .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
+        PhoneNumbersBrowseRequest browseRequest = new PhoneNumbersBrowseRequest().setCountryCode("US")
+            .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
+            .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
+            .setCapabilities(
+                new PhoneNumberBrowseCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
+                    .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
         PhoneNumbersBrowseResult result = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers")
-            .browseAvailableNumbers("US", browseRequest);
+            .browseAvailableNumbers(browseRequest);
 
         reservation.addPhoneNumber(result.getPhoneNumbers().get(0));
 
@@ -647,14 +647,14 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void purchaseWithoutAgreementToNotResellFails(HttpClient httpClient) {
-        PhoneNumbersBrowseRequest browseRequest
-            = new PhoneNumbersBrowseRequest().setPhoneNumberType(PhoneNumberType.TOLL_FREE)
-                .setAssignmentType(PhoneNumberAssignmentType.APPLICATION);
+        PhoneNumbersBrowseRequest browseRequest = new PhoneNumbersBrowseRequest().setCountryCode("FR")
+            .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
+            .setAssignmentType(PhoneNumberAssignmentType.APPLICATION);
 
         PhoneNumbersClient client = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers");
 
         PhoneNumbersBrowseResult result = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
-            .browseAvailableNumbers("FR", browseRequest);
+            .browseAvailableNumbers(browseRequest);
 
         reservation.addPhoneNumber(result.getPhoneNumbers().get(0));
 
@@ -665,14 +665,14 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void purchaseWithoutAgreementToNotResellFailsWithAAD(HttpClient httpClient) {
-        PhoneNumbersBrowseRequest browseRequest
-            = new PhoneNumbersBrowseRequest().setPhoneNumberType(PhoneNumberType.TOLL_FREE)
-                .setAssignmentType(PhoneNumberAssignmentType.APPLICATION);
+        PhoneNumbersBrowseRequest browseRequest = new PhoneNumbersBrowseRequest().setCountryCode("FR")
+            .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
+            .setAssignmentType(PhoneNumberAssignmentType.APPLICATION);
 
         PhoneNumbersClient client = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers");
 
         PhoneNumbersBrowseResult result = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers")
-            .browseAvailableNumbers("FR", browseRequest);
+            .browseAvailableNumbers(browseRequest);
 
         reservation.addPhoneNumber(result.getPhoneNumbers().get(0));
 
