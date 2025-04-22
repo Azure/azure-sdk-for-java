@@ -16,10 +16,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.http.rest.PagedFlux;
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
@@ -27,8 +23,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.carbonoptimization.fluent.CarbonServicesClient;
 import com.azure.resourcemanager.carbonoptimization.fluent.models.CarbonEmissionDataAvailableDateRangeInner;
-import com.azure.resourcemanager.carbonoptimization.fluent.models.CarbonEmissionDataInner;
-import com.azure.resourcemanager.carbonoptimization.implementation.models.CarbonEmissionDataListResult;
+import com.azure.resourcemanager.carbonoptimization.fluent.models.CarbonEmissionDataListResultInner;
 import com.azure.resourcemanager.carbonoptimization.models.QueryFilter;
 import reactor.core.publisher.Mono;
 
@@ -64,12 +59,12 @@ public final class CarbonServicesClientImpl implements CarbonServicesClient {
     @Host("{endpoint}")
     @ServiceInterface(name = "CarbonOptimizationMa")
     public interface CarbonServicesService {
-        @Headers({ "Content-Type: application/json" })
         @Post("/providers/Microsoft.Carbon/carbonEmissionReports")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CarbonEmissionDataListResult>> queryCarbonEmissionReports(@HostParam("endpoint") String endpoint,
-            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+        Mono<Response<CarbonEmissionDataListResultInner>> queryCarbonEmissionReports(
+            @HostParam("endpoint") String endpoint, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
             @BodyParam("application/json") QueryFilter queryParameters, Context context);
 
         @Headers({ "Content-Type: application/json" })
@@ -88,12 +83,11 @@ public final class CarbonServicesClientImpl implements CarbonServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of carbon emission results along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return list of carbon emission results along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CarbonEmissionDataInner>>
-        queryCarbonEmissionReportsSinglePageAsync(QueryFilter queryParameters) {
+    private Mono<Response<CarbonEmissionDataListResultInner>>
+        queryCarbonEmissionReportsWithResponseAsync(QueryFilter queryParameters) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -104,12 +98,11 @@ public final class CarbonServicesClientImpl implements CarbonServicesClient {
         } else {
             queryParameters.validate();
         }
+        final String contentType = "application/json";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.queryCarbonEmissionReports(this.client.getEndpoint(),
-                this.client.getApiVersion(), accept, queryParameters, context))
-            .<PagedResponse<CarbonEmissionDataInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+                this.client.getApiVersion(), contentType, accept, queryParameters, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -121,12 +114,11 @@ public final class CarbonServicesClientImpl implements CarbonServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of carbon emission results along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return list of carbon emission results along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<CarbonEmissionDataInner>>
-        queryCarbonEmissionReportsSinglePageAsync(QueryFilter queryParameters, Context context) {
+    private Mono<Response<CarbonEmissionDataListResultInner>>
+        queryCarbonEmissionReportsWithResponseAsync(QueryFilter queryParameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -137,13 +129,11 @@ public final class CarbonServicesClientImpl implements CarbonServicesClient {
         } else {
             queryParameters.validate();
         }
+        final String contentType = "application/json";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .queryCarbonEmissionReports(this.client.getEndpoint(), this.client.getApiVersion(), accept, queryParameters,
-                context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), null, null));
+        return service.queryCarbonEmissionReports(this.client.getEndpoint(), this.client.getApiVersion(), contentType,
+            accept, queryParameters, context);
     }
 
     /**
@@ -153,41 +143,12 @@ public final class CarbonServicesClientImpl implements CarbonServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of carbon emission results as paginated response with {@link PagedFlux}.
+     * @return list of carbon emission results on successful completion of {@link Mono}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CarbonEmissionDataInner> queryCarbonEmissionReportsAsync(QueryFilter queryParameters) {
-        return new PagedFlux<>(() -> queryCarbonEmissionReportsSinglePageAsync(queryParameters));
-    }
-
-    /**
-     * API for Carbon Emissions Reports.
-     * 
-     * @param queryParameters Query parameters.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of carbon emission results as paginated response with {@link PagedFlux}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<CarbonEmissionDataInner> queryCarbonEmissionReportsAsync(QueryFilter queryParameters,
-        Context context) {
-        return new PagedFlux<>(() -> queryCarbonEmissionReportsSinglePageAsync(queryParameters, context));
-    }
-
-    /**
-     * API for Carbon Emissions Reports.
-     * 
-     * @param queryParameters Query parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of carbon emission results as paginated response with {@link PagedIterable}.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CarbonEmissionDataInner> queryCarbonEmissionReports(QueryFilter queryParameters) {
-        return new PagedIterable<>(queryCarbonEmissionReportsAsync(queryParameters));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<CarbonEmissionDataListResultInner> queryCarbonEmissionReportsAsync(QueryFilter queryParameters) {
+        return queryCarbonEmissionReportsWithResponseAsync(queryParameters)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -198,12 +159,26 @@ public final class CarbonServicesClientImpl implements CarbonServicesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of carbon emission results as paginated response with {@link PagedIterable}.
+     * @return list of carbon emission results along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<CarbonEmissionDataInner> queryCarbonEmissionReports(QueryFilter queryParameters,
-        Context context) {
-        return new PagedIterable<>(queryCarbonEmissionReportsAsync(queryParameters, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CarbonEmissionDataListResultInner>
+        queryCarbonEmissionReportsWithResponse(QueryFilter queryParameters, Context context) {
+        return queryCarbonEmissionReportsWithResponseAsync(queryParameters, context).block();
+    }
+
+    /**
+     * API for Carbon Emissions Reports.
+     * 
+     * @param queryParameters Query parameters.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of carbon emission results.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CarbonEmissionDataListResultInner queryCarbonEmissionReports(QueryFilter queryParameters) {
+        return queryCarbonEmissionReportsWithResponse(queryParameters, Context.NONE).getValue();
     }
 
     /**

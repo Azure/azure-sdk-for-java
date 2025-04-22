@@ -20,7 +20,7 @@ import reactor.core.publisher.Mono;
 public final class CarbonServicesQueryCarbonEmissionDataAvailableDateRangeWithResponseMockTests {
     @Test
     public void testQueryCarbonEmissionDataAvailableDateRangeWithResponse() throws Exception {
-        String responseStr = "{\"startDate\":\"kdkexxp\",\"endDate\":\"ofmx\"}";
+        String responseStr = "{\"startDate\":\"vpmouexhdzxib\",\"endDate\":\"eojnxqbzvddn\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,7 +33,7 @@ public final class CarbonServicesQueryCarbonEmissionDataAvailableDateRangeWithRe
             .queryCarbonEmissionDataAvailableDateRangeWithResponse(com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("kdkexxp", response.startDate());
-        Assertions.assertEquals("ofmx", response.endDate());
+        Assertions.assertEquals("vpmouexhdzxib", response.startDate());
+        Assertions.assertEquals("eojnxqbzvddn", response.endDate());
     }
 }

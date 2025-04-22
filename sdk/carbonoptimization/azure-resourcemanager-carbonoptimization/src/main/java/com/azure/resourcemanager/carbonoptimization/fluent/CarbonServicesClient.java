@@ -6,11 +6,10 @@ package com.azure.resourcemanager.carbonoptimization.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.carbonoptimization.fluent.models.CarbonEmissionDataAvailableDateRangeInner;
-import com.azure.resourcemanager.carbonoptimization.fluent.models.CarbonEmissionDataInner;
+import com.azure.resourcemanager.carbonoptimization.fluent.models.CarbonEmissionDataListResultInner;
 import com.azure.resourcemanager.carbonoptimization.models.QueryFilter;
 
 /**
@@ -21,26 +20,27 @@ public interface CarbonServicesClient {
      * API for Carbon Emissions Reports.
      * 
      * @param queryParameters Query parameters.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of carbon emission results as paginated response with {@link PagedIterable}.
+     * @return list of carbon emission results along with {@link Response}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CarbonEmissionDataInner> queryCarbonEmissionReports(QueryFilter queryParameters);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Response<CarbonEmissionDataListResultInner> queryCarbonEmissionReportsWithResponse(QueryFilter queryParameters,
+        Context context);
 
     /**
      * API for Carbon Emissions Reports.
      * 
      * @param queryParameters Query parameters.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of carbon emission results as paginated response with {@link PagedIterable}.
+     * @return list of carbon emission results.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<CarbonEmissionDataInner> queryCarbonEmissionReports(QueryFilter queryParameters, Context context);
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    CarbonEmissionDataListResultInner queryCarbonEmissionReports(QueryFilter queryParameters);
 
     /**
      * API for query carbon emission data available date range.
