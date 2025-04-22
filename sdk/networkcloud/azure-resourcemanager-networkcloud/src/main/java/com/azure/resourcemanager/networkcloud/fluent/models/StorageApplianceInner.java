@@ -175,7 +175,7 @@ public final class StorageApplianceInner extends Resource {
     }
 
     /**
-     * Get the capacity property: The total capacity of the storage appliance.
+     * Get the capacity property: The total capacity of the storage appliance. Measured in GiB.
      * 
      * @return the capacity value.
      */
@@ -193,7 +193,8 @@ public final class StorageApplianceInner extends Resource {
     }
 
     /**
-     * Get the clusterId property: The resource ID of the cluster this storage appliance is associated with.
+     * Get the clusterId property: The resource ID of the cluster this storage appliance is associated with. Measured in
+     * GiB.
      * 
      * @return the clusterId value.
      */

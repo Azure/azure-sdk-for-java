@@ -13,18 +13,18 @@ public final class AzureDataLakeStoreWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureDataLakeStoreWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"AzureDataLakeStoreWriteSettings\",\"expiryDateTime\":\"databyul\",\"maxConcurrentConnections\":\"dataepssoqdibyg\",\"disableMetricsCollection\":\"datacidiwkxi\",\"copyBehavior\":\"dataiqxlxoksyypftrdi\",\"metadata\":[{\"name\":\"databqgatkl\",\"value\":\"datapgwp\"}],\"\":{\"nsdp\":\"dataccetyyvxkwobb\",\"lzk\":\"datairt\"}}")
+            "{\"type\":\"AzureDataLakeStoreWriteSettings\",\"expiryDateTime\":\"datahvsfgywkinkhv\",\"maxConcurrentConnections\":\"datangmebvninj\",\"disableMetricsCollection\":\"datak\",\"copyBehavior\":\"dataqjj\",\"metadata\":[{\"name\":\"dataxkcttp\",\"value\":\"datatvcjd\"}],\"\":{\"qzbmyftzbxfg\":\"datankkhvcr\"}}")
             .toObject(AzureDataLakeStoreWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AzureDataLakeStoreWriteSettings model
-            = new AzureDataLakeStoreWriteSettings().withMaxConcurrentConnections("dataepssoqdibyg")
-                .withDisableMetricsCollection("datacidiwkxi")
-                .withCopyBehavior("dataiqxlxoksyypftrdi")
-                .withMetadata(Arrays.asList(new MetadataItem().withName("databqgatkl").withValue("datapgwp")))
-                .withExpiryDateTime("databyul");
+            = new AzureDataLakeStoreWriteSettings().withMaxConcurrentConnections("datangmebvninj")
+                .withDisableMetricsCollection("datak")
+                .withCopyBehavior("dataqjj")
+                .withMetadata(Arrays.asList(new MetadataItem().withName("dataxkcttp").withValue("datatvcjd")))
+                .withExpiryDateTime("datahvsfgywkinkhv");
         model = BinaryData.fromObject(model).toObject(AzureDataLakeStoreWriteSettings.class);
     }
 }

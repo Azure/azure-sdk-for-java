@@ -19,12 +19,13 @@
       }
     },
     "VersionOverride": [
-        "jackson_2.10",
-        "jackson_2.12",
-        "jackson_2.15",
-        "jackson_2.18",
-        "reactor_2020",
-        "reactor_2024"
+      "jackson_2.10",
+      "jackson_2.12",
+      "jackson_2.15",
+      "jackson_2.18",
+      "reactor_2020",
+      "reactor_2024",
+      "reactor_2025"
     ]
   }
 }

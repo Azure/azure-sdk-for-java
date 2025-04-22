@@ -13,7 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 /**
- * A copy activity for Microsoft Fabric LakeHouse Table sink.
+ * A copy activity for Microsoft Fabric Lakehouse Table sink.
  */
 @Fluent
 public final class LakeHouseTableSink extends CopySink {
@@ -23,7 +23,7 @@ public final class LakeHouseTableSink extends CopySink {
     private String type = "LakeHouseTableSink";
 
     /*
-     * The type of table action for LakeHouse Table sink. Possible values include: "None", "Append", "Overwrite".
+     * The type of table action for Lakehouse Table sink. Possible values include: "None", "Append", "Overwrite".
      */
     private Object tableActionOption;
 
@@ -56,7 +56,7 @@ public final class LakeHouseTableSink extends CopySink {
     }
 
     /**
-     * Get the tableActionOption property: The type of table action for LakeHouse Table sink. Possible values include:
+     * Get the tableActionOption property: The type of table action for Lakehouse Table sink. Possible values include:
      * "None", "Append", "Overwrite".
      * 
      * @return the tableActionOption value.
@@ -66,7 +66,7 @@ public final class LakeHouseTableSink extends CopySink {
     }
 
     /**
-     * Set the tableActionOption property: The type of table action for LakeHouse Table sink. Possible values include:
+     * Set the tableActionOption property: The type of table action for Lakehouse Table sink. Possible values include:
      * "None", "Append", "Overwrite".
      * 
      * @param tableActionOption the tableActionOption value to set.

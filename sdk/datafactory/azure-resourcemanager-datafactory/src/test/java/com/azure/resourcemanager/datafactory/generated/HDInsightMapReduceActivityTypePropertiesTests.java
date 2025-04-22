@@ -17,36 +17,32 @@ public final class HDInsightMapReduceActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HDInsightMapReduceActivityTypeProperties model = BinaryData.fromString(
-            "{\"storageLinkedServices\":[{\"referenceName\":\"heqvzwummwuaxxcb\",\"parameters\":{\"qrbtrmi\":\"datacdujhzaiw\"}},{\"referenceName\":\"l\",\"parameters\":{\"ubyfspliw\":\"datadukamtfkufvabci\",\"ajpyuwrggfgll\":\"datakozlpsf\"}},{\"referenceName\":\"su\",\"parameters\":{\"qhugjeaetgmmf\":\"datavytbqqmxkuyyrcqs\",\"upkpyzaenarfy\":\"datafdqoepwyy\"}}],\"arguments\":[\"datai\",\"datakhoygfgchlc\"],\"getDebugInfo\":\"Always\",\"className\":\"datacsskgug\",\"jarFilePath\":\"datakl\",\"jarLinkedService\":{\"referenceName\":\"mymkccclefawfeea\",\"parameters\":{\"gowfqrykikhf\":\"datamm\"}},\"jarLibs\":[\"datacllz\",\"dataazi\",\"dataohtsmkfyox\"],\"defines\":{\"fbiboyex\":\"datafsehbxbqionnqsz\",\"cqjgwtiasfbp\":\"datacrwwdteyvpv\",\"xxhbrysnszsehoe\":\"datamv\"}}")
+            "{\"storageLinkedServices\":[{\"referenceName\":\"fjrdcawa\",\"parameters\":{\"xyczzwhwsidnqia\":\"datadakbijcxctni\",\"xoe\":\"dataoyhnollnuhocbbe\",\"fcurn\":\"dataprtz\"}}],\"arguments\":[\"datacun\",\"datauassto\"],\"getDebugInfo\":\"Failure\",\"className\":\"datamyayblmcenjc\",\"jarFilePath\":\"datacxam\",\"jarLinkedService\":{\"referenceName\":\"lxksph\",\"parameters\":{\"t\":\"datab\",\"w\":\"datalfmaj\"}},\"jarLibs\":[\"datas\"],\"defines\":{\"ufnhejualug\":\"datakqzulosl\"}}")
             .toObject(HDInsightMapReduceActivityTypeProperties.class);
-        Assertions.assertEquals("heqvzwummwuaxxcb", model.storageLinkedServices().get(0).referenceName());
-        Assertions.assertEquals(HDInsightActivityDebugInfoOption.ALWAYS, model.getDebugInfo());
-        Assertions.assertEquals("mymkccclefawfeea", model.jarLinkedService().referenceName());
+        Assertions.assertEquals("fjrdcawa", model.storageLinkedServices().get(0).referenceName());
+        Assertions.assertEquals(HDInsightActivityDebugInfoOption.FAILURE, model.getDebugInfo());
+        Assertions.assertEquals("lxksph", model.jarLinkedService().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HDInsightMapReduceActivityTypeProperties model = new HDInsightMapReduceActivityTypeProperties()
-            .withStorageLinkedServices(Arrays.asList(
-                new LinkedServiceReference().withReferenceName("heqvzwummwuaxxcb")
-                    .withParameters(mapOf("qrbtrmi", "datacdujhzaiw")),
-                new LinkedServiceReference().withReferenceName("l")
-                    .withParameters(mapOf("ubyfspliw", "datadukamtfkufvabci", "ajpyuwrggfgll", "datakozlpsf")),
-                new LinkedServiceReference().withReferenceName("su")
-                    .withParameters(mapOf("qhugjeaetgmmf", "datavytbqqmxkuyyrcqs", "upkpyzaenarfy", "datafdqoepwyy"))))
-            .withArguments(Arrays.asList("datai", "datakhoygfgchlc"))
-            .withGetDebugInfo(HDInsightActivityDebugInfoOption.ALWAYS)
-            .withClassName("datacsskgug")
-            .withJarFilePath("datakl")
-            .withJarLinkedService(new LinkedServiceReference().withReferenceName("mymkccclefawfeea")
-                .withParameters(mapOf("gowfqrykikhf", "datamm")))
-            .withJarLibs(Arrays.asList("datacllz", "dataazi", "dataohtsmkfyox"))
-            .withDefines(mapOf("fbiboyex", "datafsehbxbqionnqsz", "cqjgwtiasfbp", "datacrwwdteyvpv", "xxhbrysnszsehoe",
-                "datamv"));
+        HDInsightMapReduceActivityTypeProperties model
+            = new HDInsightMapReduceActivityTypeProperties()
+                .withStorageLinkedServices(Arrays.asList(new LinkedServiceReference().withReferenceName("fjrdcawa")
+                    .withParameters(mapOf("xyczzwhwsidnqia", "datadakbijcxctni", "xoe", "dataoyhnollnuhocbbe", "fcurn",
+                        "dataprtz"))))
+                .withArguments(Arrays.asList("datacun", "datauassto"))
+                .withGetDebugInfo(HDInsightActivityDebugInfoOption.FAILURE)
+                .withClassName("datamyayblmcenjc")
+                .withJarFilePath("datacxam")
+                .withJarLinkedService(new LinkedServiceReference().withReferenceName("lxksph")
+                    .withParameters(mapOf("t", "datab", "w", "datalfmaj")))
+                .withJarLibs(Arrays.asList("datas"))
+                .withDefines(mapOf("ufnhejualug", "datakqzulosl"));
         model = BinaryData.fromObject(model).toObject(HDInsightMapReduceActivityTypeProperties.class);
-        Assertions.assertEquals("heqvzwummwuaxxcb", model.storageLinkedServices().get(0).referenceName());
-        Assertions.assertEquals(HDInsightActivityDebugInfoOption.ALWAYS, model.getDebugInfo());
-        Assertions.assertEquals("mymkccclefawfeea", model.jarLinkedService().referenceName());
+        Assertions.assertEquals("fjrdcawa", model.storageLinkedServices().get(0).referenceName());
+        Assertions.assertEquals(HDInsightActivityDebugInfoOption.FAILURE, model.getDebugInfo());
+        Assertions.assertEquals("lxksph", model.jarLinkedService().referenceName());
     }
 
     // Use "Map.of" if available

@@ -13,21 +13,22 @@ import org.junit.jupiter.api.Assertions;
 public final class BareMetalMachinePatchParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BareMetalMachinePatchParameters model = BinaryData.fromString(
-            "{\"properties\":{\"machineDetails\":\"cil\"},\"tags\":{\"t\":\"aykggnoxu\",\"cpfnznthjtwkja\":\"ksxwpnd\",\"tcqiosmg\":\"srxuzvoam\"}}")
+        BareMetalMachinePatchParameters model = BinaryData
+            .fromString(
+                "{\"properties\":{\"machineDetails\":\"hqf\"},\"tags\":{\"mk\":\"vux\",\"wpztekovmribia\":\"svth\"}}")
             .toObject(BareMetalMachinePatchParameters.class);
-        Assertions.assertEquals("aykggnoxu", model.tags().get("t"));
-        Assertions.assertEquals("cil", model.machineDetails());
+        Assertions.assertEquals("vux", model.tags().get("mk"));
+        Assertions.assertEquals("hqf", model.machineDetails());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BareMetalMachinePatchParameters model = new BareMetalMachinePatchParameters()
-            .withTags(mapOf("t", "aykggnoxu", "cpfnznthjtwkja", "ksxwpnd", "tcqiosmg", "srxuzvoam"))
-            .withMachineDetails("cil");
+        BareMetalMachinePatchParameters model
+            = new BareMetalMachinePatchParameters().withTags(mapOf("mk", "vux", "wpztekovmribia", "svth"))
+                .withMachineDetails("hqf");
         model = BinaryData.fromObject(model).toObject(BareMetalMachinePatchParameters.class);
-        Assertions.assertEquals("aykggnoxu", model.tags().get("t"));
-        Assertions.assertEquals("cil", model.machineDetails());
+        Assertions.assertEquals("vux", model.tags().get("mk"));
+        Assertions.assertEquals("hqf", model.machineDetails());
     }
 
     // Use "Map.of" if available

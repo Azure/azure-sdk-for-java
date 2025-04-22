@@ -47,6 +47,18 @@ public final class CertificateIssuerItem implements JsonSerializable<Certificate
     }
 
     /**
+     * Set the id property: Certificate Identifier.
+     *
+     * @param id the id value to set.
+     * @return the CertificateIssuerItem object itself.
+     */
+    @Generated
+    public CertificateIssuerItem setId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    /**
      * Get the provider property: The issuer provider.
      *
      * @return the provider value.
@@ -54,6 +66,18 @@ public final class CertificateIssuerItem implements JsonSerializable<Certificate
     @Generated
     public String getProvider() {
         return this.provider;
+    }
+
+    /**
+     * Set the provider property: The issuer provider.
+     *
+     * @param provider the provider value to set.
+     * @return the CertificateIssuerItem object itself.
+     */
+    @Generated
+    public CertificateIssuerItem setProvider(String provider) {
+        this.provider = provider;
+        return this;
     }
 
     /**
@@ -93,29 +117,5 @@ public final class CertificateIssuerItem implements JsonSerializable<Certificate
             }
             return deserializedCertificateIssuerItem;
         });
-    }
-
-    /**
-     * Set the id property: Certificate Identifier.
-     *
-     * @param id the id value to set.
-     * @return the CertificateIssuerItem object itself.
-     */
-    @Generated
-    public CertificateIssuerItem setId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
-     * Set the provider property: The issuer provider.
-     *
-     * @param provider the provider value to set.
-     * @return the CertificateIssuerItem object itself.
-     */
-    @Generated
-    public CertificateIssuerItem setProvider(String provider) {
-        this.provider = provider;
-        return this;
     }
 }

@@ -51,7 +51,7 @@ public final class AzureSqlDWTableDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzureSqlDWTableDatasetTypeProperties innerTypeProperties() {
+    AzureSqlDWTableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

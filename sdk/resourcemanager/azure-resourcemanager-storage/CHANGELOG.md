@@ -1,14 +1,18 @@
 # Release History
 
-## 2.49.0-beta.1 (Unreleased)
-
-### Features Added
+## 2.50.0-beta.1 (Unreleased)
 
 ### Breaking Changes
 
-### Bugs Fixed
+- Added `Accepted` to `ProvisioningState` enum.
+
+## 2.49.0 (2025-03-28)
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.48.0 (2025-02-28)
 

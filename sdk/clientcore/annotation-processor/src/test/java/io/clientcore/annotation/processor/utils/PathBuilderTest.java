@@ -89,14 +89,6 @@ public class PathBuilderTest {
     }
 
     @Test
-    public void buildsPathWithMultipleSameQueryParameters() {
-        HttpRequestContext context = new HttpRequestContext();
-        context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        context.addQueryParam("key", "value1", false);
-        assertThrows(IllegalArgumentException.class, () -> context.addQueryParam("key", "value2", false));
-    }
-
-    @Test
     public void buildsPathWithClashingSubstitutionNames() {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
@@ -116,7 +108,7 @@ public class PathBuilderTest {
     public void buildsPathWithMissingQueryParameter() {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        context.addQueryParam("key1", "value1", false);
+        context.addQueryParam("key1", "value1", false, false);
         assertThrows(MissingSubstitutionException.class,
             () -> PathBuilder.buildPath("https://{endpoint}/keys?key2={value2}", context));
     }
@@ -391,7 +383,7 @@ public class PathBuilderTest {
     public void buildsPathWithNullQueryParameterValue() {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        context.addQueryParam("key1", null, false);
+        context.addQueryParam("key1", null, false, false);
         String result = PathBuilder.buildPath("https://{endpoint}/keys", context);
         assertEquals("\"https://\" + myEndpoint + \"/keys\"", result);
     }

@@ -12,7 +12,6 @@ import io.clientcore.core.utils.configuration.Configuration;
 import java.nio.file.InvalidPathException;
 import java.util.Collections;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * This is a fluent logger helper class that wraps an SLF4J Logger (if available) or a default implementation of the
@@ -110,9 +109,7 @@ public class ClientLogger {
      * @throws NullPointerException If {@code throwable} is {@code null}.
      */
     public <T extends Throwable> T logThrowableAsWarning(T throwable) {
-        Objects.requireNonNull(throwable, "'throwable' cannot be null.");
-        LoggingEvent.create(logger, LogLevel.WARNING, globalContext).log(throwable.getMessage(), throwable);
-
+        LoggingEvent.create(logger, LogLevel.WARNING, globalContext).setThrowable(throwable).log();
         return throwable;
     }
 
@@ -127,8 +124,7 @@ public class ClientLogger {
      * @throws NullPointerException If {@code throwable} is {@code null}.
      */
     public <T extends Throwable> T logThrowableAsError(T throwable) {
-        Objects.requireNonNull(throwable, "'throwable' cannot be null.");
-        LoggingEvent.create(logger, LogLevel.ERROR, globalContext).log(throwable.getMessage(), throwable);
+        LoggingEvent.create(logger, LogLevel.ERROR, globalContext).setThrowable(throwable).log();
         return throwable;
     }
 
@@ -174,7 +170,8 @@ public class ClientLogger {
      * <pre>
      * logger.atWarning&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
-     *     .log&#40;&quot;A structured log message with exception.&quot;, exception&#41;;
+     *     .setThrowable&#40;exception&#41;
+     *     .log&#40;&quot;A structured log message with exception.&quot;&#41;;
      * </pre>
      * <!-- end io.clientcore.core.util.logging.clientlogger.atWarning -->
      *

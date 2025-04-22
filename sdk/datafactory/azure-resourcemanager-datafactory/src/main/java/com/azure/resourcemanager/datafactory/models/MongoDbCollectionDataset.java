@@ -51,7 +51,7 @@ public final class MongoDbCollectionDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private MongoDbCollectionDatasetTypeProperties innerTypeProperties() {
+    MongoDbCollectionDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

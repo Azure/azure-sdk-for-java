@@ -52,7 +52,7 @@ public final class CommonDataServiceForAppsLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private CommonDataServiceForAppsLinkedServiceTypeProperties innerTypeProperties() {
+    CommonDataServiceForAppsLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

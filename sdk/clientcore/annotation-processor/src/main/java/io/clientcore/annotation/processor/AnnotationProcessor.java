@@ -148,9 +148,10 @@ public class AnnotationProcessor extends AbstractProcessor {
         method.setPath(httpRequestInfo.path());
         method.setHttpMethod(httpRequestInfo.method());
         method.setExpectedStatusCodes(httpRequestInfo.expectedStatusCodes());
-
+        method.addStaticHeaders(httpRequestInfo.headers());
+        method.addStaticQueryParams(httpRequestInfo.queryParams());
         method.setMethodReturnType(requestMethod.getReturnType());
-        boolean isEncoded = false;
+
         // Process parameters
         for (VariableElement param : requestMethod.getParameters()) {
             // Cache annotations for each parameter
@@ -163,25 +164,30 @@ public class AnnotationProcessor extends AbstractProcessor {
             // Switch based on annotations
             if (hostParam != null) {
                 method.addSubstitution(
-                    new Substitution(hostParam.value(), param.getSimpleName().toString(), hostParam.encoded()));
+                    new Substitution(hostParam.value(), param.getSimpleName().toString(), !hostParam.encoded()));
             } else if (pathParam != null) {
-                if (pathParam.encoded()) {
-                    isEncoded = true;
-                }
                 if (pathParam.value() == null) {
                     throw new IllegalArgumentException(
                         "Path parameter '" + param.getSimpleName().toString() + "' must not be null.");
                 }
                 method.addSubstitution(
-                    new Substitution(pathParam.value(), param.getSimpleName().toString(), pathParam.encoded()));
+                    new Substitution(pathParam.value(), param.getSimpleName().toString(), !pathParam.encoded()));
             } else if (headerParam != null) {
-                method.addHeader(headerParam.value(), param.getSimpleName().toString());
+                // Only add header param if the key is not already present (e.g., set by static header params)
+                String key = headerParam.value();
+                if (method.getHeaders() == null || !method.getHeaders().containsKey(key)) {
+                    method.addHeader(headerParam.value(), param.getSimpleName().toString());
+                }
             } else if (queryParam != null) {
-                method.addQueryParam(queryParam.value(), param.getSimpleName().toString(),
-                    queryParam.multipleQueryParams());
+                // Only add query param if the key is not already present (e.g., set by static query params)
+                String key = queryParam.value();
+                if (method.getQueryParams() == null || !method.getQueryParams().containsKey(key)) {
+                    method.addQueryParam(key, param.getSimpleName().toString(), queryParam.multipleQueryParams(),
+                        !queryParam.encoded());
+                }
             } else if (bodyParam != null) {
-                method.setBody(new HttpRequestContext.Body(bodyParam.value(), param.asType().toString(),
-                    param.getSimpleName().toString()));
+                method.setBody(
+                    new HttpRequestContext.Body(bodyParam.value(), param.asType(), param.getSimpleName().toString()));
             }
 
             // Add parameter details to method context
@@ -191,24 +197,27 @@ public class AnnotationProcessor extends AbstractProcessor {
         }
 
         // Pre-compute host substitutions
-        method.setHost(getHost(templateInput, method, isEncoded));
+        method.setHost(getHost(method));
 
         return method;
     }
 
-    private static String getHost(TemplateInput templateInput, HttpRequestContext method, boolean isEncoded) {
-        String rawHost;
-        if (isEncoded) {
-            rawHost = method.getPath();
-        } else {
-            String host = templateInput.getHost();
-            String path = method.getPath();
-            if (!host.endsWith("/") && !path.startsWith("/")) {
-                rawHost = host + "/" + path;
+    private static String getHost(HttpRequestContext method) {
+        String path = method.getPath();
+        // Set the path after host, concatenating the path segment in the host.
+        if (path != null && !path.isEmpty() && !"/".equals(path)) {
+            String hostPath = method.getHost();
+            if (hostPath == null || hostPath.isEmpty() || "/".equals(hostPath) || path.contains("://")) {
+                method.setPath(path);
             } else {
-                rawHost = host + path;
+                if (path.startsWith("/")) {
+                    method.setPath(hostPath + path);
+                } else {
+                    method.setPath(hostPath + "/" + path);
+                }
             }
         }
-        return PathBuilder.buildPath(rawHost, method);
+
+        return PathBuilder.buildPath(method.getPath(), method);
     }
 }

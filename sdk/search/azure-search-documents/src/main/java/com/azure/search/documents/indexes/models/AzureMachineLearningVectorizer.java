@@ -13,8 +13,8 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 
 /**
- * Specifies an Azure Machine Learning endpoint deployed via the Azure AI Studio Model Catalog for generating the vector
- * embedding of a query string.
+ * Specifies an Azure Machine Learning endpoint deployed via the Azure AI Foundry Model Catalog for generating the
+ * vector embedding of a query string.
  */
 @Fluent
 public final class AzureMachineLearningVectorizer extends VectorSearchVectorizer {

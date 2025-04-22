@@ -23,9 +23,15 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.neonpostgres.fluent.BranchesClient;
+import com.azure.resourcemanager.neonpostgres.fluent.ComputesClient;
+import com.azure.resourcemanager.neonpostgres.fluent.EndpointsClient;
+import com.azure.resourcemanager.neonpostgres.fluent.NeonDatabasesClient;
 import com.azure.resourcemanager.neonpostgres.fluent.NeonPostgresManagementClient;
+import com.azure.resourcemanager.neonpostgres.fluent.NeonRolesClient;
 import com.azure.resourcemanager.neonpostgres.fluent.OperationsClient;
 import com.azure.resourcemanager.neonpostgres.fluent.OrganizationsClient;
+import com.azure.resourcemanager.neonpostgres.fluent.ProjectsClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -153,6 +159,90 @@ public final class NeonPostgresManagementClientImpl implements NeonPostgresManag
     }
 
     /**
+     * The ProjectsClient object to access its operations.
+     */
+    private final ProjectsClient projects;
+
+    /**
+     * Gets the ProjectsClient object to access its operations.
+     * 
+     * @return the ProjectsClient object.
+     */
+    public ProjectsClient getProjects() {
+        return this.projects;
+    }
+
+    /**
+     * The BranchesClient object to access its operations.
+     */
+    private final BranchesClient branches;
+
+    /**
+     * Gets the BranchesClient object to access its operations.
+     * 
+     * @return the BranchesClient object.
+     */
+    public BranchesClient getBranches() {
+        return this.branches;
+    }
+
+    /**
+     * The ComputesClient object to access its operations.
+     */
+    private final ComputesClient computes;
+
+    /**
+     * Gets the ComputesClient object to access its operations.
+     * 
+     * @return the ComputesClient object.
+     */
+    public ComputesClient getComputes() {
+        return this.computes;
+    }
+
+    /**
+     * The NeonDatabasesClient object to access its operations.
+     */
+    private final NeonDatabasesClient neonDatabases;
+
+    /**
+     * Gets the NeonDatabasesClient object to access its operations.
+     * 
+     * @return the NeonDatabasesClient object.
+     */
+    public NeonDatabasesClient getNeonDatabases() {
+        return this.neonDatabases;
+    }
+
+    /**
+     * The NeonRolesClient object to access its operations.
+     */
+    private final NeonRolesClient neonRoles;
+
+    /**
+     * Gets the NeonRolesClient object to access its operations.
+     * 
+     * @return the NeonRolesClient object.
+     */
+    public NeonRolesClient getNeonRoles() {
+        return this.neonRoles;
+    }
+
+    /**
+     * The EndpointsClient object to access its operations.
+     */
+    private final EndpointsClient endpoints;
+
+    /**
+     * Gets the EndpointsClient object to access its operations.
+     * 
+     * @return the EndpointsClient object.
+     */
+    public EndpointsClient getEndpoints() {
+        return this.endpoints;
+    }
+
+    /**
      * Initializes an instance of NeonPostgresManagementClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
@@ -169,9 +259,15 @@ public final class NeonPostgresManagementClientImpl implements NeonPostgresManag
         this.defaultPollInterval = defaultPollInterval;
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
-        this.apiVersion = "2024-08-01-preview";
+        this.apiVersion = "2025-03-01";
         this.operations = new OperationsClientImpl(this);
         this.organizations = new OrganizationsClientImpl(this);
+        this.projects = new ProjectsClientImpl(this);
+        this.branches = new BranchesClientImpl(this);
+        this.computes = new ComputesClientImpl(this);
+        this.neonDatabases = new NeonDatabasesClientImpl(this);
+        this.neonRoles = new NeonRolesClientImpl(this);
+        this.endpoints = new EndpointsClientImpl(this);
     }
 
     /**
