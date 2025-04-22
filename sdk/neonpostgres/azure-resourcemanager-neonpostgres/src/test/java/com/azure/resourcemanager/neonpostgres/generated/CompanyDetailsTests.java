@@ -12,30 +12,30 @@ public final class CompanyDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CompanyDetails model = BinaryData.fromString(
-            "{\"companyName\":\"qktapspwgcuert\",\"country\":\"kdosvqw\",\"officeAddress\":\"mdgbbjfdd\",\"businessPhone\":\"bmbexppbhtqqro\",\"domain\":\"p\",\"numberOfEmployees\":295546602874213209}")
+            "{\"companyName\":\"cffgdkzzewk\",\"country\":\"hqcrailvpnpp\",\"officeAddress\":\"flrwd\",\"businessPhone\":\"dlxyjrxs\",\"domain\":\"afcnih\",\"numberOfEmployees\":3130876298104392093}")
             .toObject(CompanyDetails.class);
-        Assertions.assertEquals("qktapspwgcuert", model.companyName());
-        Assertions.assertEquals("kdosvqw", model.country());
-        Assertions.assertEquals("mdgbbjfdd", model.officeAddress());
-        Assertions.assertEquals("bmbexppbhtqqro", model.businessPhone());
-        Assertions.assertEquals("p", model.domain());
-        Assertions.assertEquals(295546602874213209L, model.numberOfEmployees());
+        Assertions.assertEquals("cffgdkzzewk", model.companyName());
+        Assertions.assertEquals("hqcrailvpnpp", model.country());
+        Assertions.assertEquals("flrwd", model.officeAddress());
+        Assertions.assertEquals("dlxyjrxs", model.businessPhone());
+        Assertions.assertEquals("afcnih", model.domain());
+        Assertions.assertEquals(3130876298104392093L, model.numberOfEmployees());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CompanyDetails model = new CompanyDetails().withCompanyName("qktapspwgcuert")
-            .withCountry("kdosvqw")
-            .withOfficeAddress("mdgbbjfdd")
-            .withBusinessPhone("bmbexppbhtqqro")
-            .withDomain("p")
-            .withNumberOfEmployees(295546602874213209L);
+        CompanyDetails model = new CompanyDetails().withCompanyName("cffgdkzzewk")
+            .withCountry("hqcrailvpnpp")
+            .withOfficeAddress("flrwd")
+            .withBusinessPhone("dlxyjrxs")
+            .withDomain("afcnih")
+            .withNumberOfEmployees(3130876298104392093L);
         model = BinaryData.fromObject(model).toObject(CompanyDetails.class);
-        Assertions.assertEquals("qktapspwgcuert", model.companyName());
-        Assertions.assertEquals("kdosvqw", model.country());
-        Assertions.assertEquals("mdgbbjfdd", model.officeAddress());
-        Assertions.assertEquals("bmbexppbhtqqro", model.businessPhone());
-        Assertions.assertEquals("p", model.domain());
-        Assertions.assertEquals(295546602874213209L, model.numberOfEmployees());
+        Assertions.assertEquals("cffgdkzzewk", model.companyName());
+        Assertions.assertEquals("hqcrailvpnpp", model.country());
+        Assertions.assertEquals("flrwd", model.officeAddress());
+        Assertions.assertEquals("dlxyjrxs", model.businessPhone());
+        Assertions.assertEquals("afcnih", model.domain());
+        Assertions.assertEquals(3130876298104392093L, model.numberOfEmployees());
     }
 }
