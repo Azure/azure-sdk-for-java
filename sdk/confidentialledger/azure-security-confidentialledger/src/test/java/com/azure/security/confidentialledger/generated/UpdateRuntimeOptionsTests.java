@@ -15,11 +15,11 @@ public final class UpdateRuntimeOptionsTests extends ConfidentialLedgerClientTes
     @Test
     @Disabled
     public void testUpdateRuntimeOptionsTests() {
-        BinaryData JSRuntimeOptions
+        BinaryData jSRuntimeOptions
             = BinaryData.fromString("{\"log_exception_details\":false,\"max_execution_time_ms\":1200}");
         RequestOptions requestOptions = new RequestOptions();
         Response<BinaryData> response
-            = confidentialLedgerClient.updateRuntimeOptionsWithResponse(JSRuntimeOptions, requestOptions);
+            = confidentialLedgerClient.updateRuntimeOptionsWithResponse(jSRuntimeOptions, requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertEquals(BinaryData.fromString(
             "{\"log_exception_details\":false,\"max_cached_interpreters\":1024,\"max_execution_time_ms\":1200,\"max_heap_bytes\":1024,\"max_stack_bytes\":1024,\"return_exception_details\":false}")
