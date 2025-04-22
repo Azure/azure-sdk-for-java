@@ -143,4 +143,73 @@ public class LoggerTelemetryPublisherTest {
         assertEquals("75.0", mdcMap.get("VariantAssignmentPercentage"));
         assertEquals("defaultVariant", mdcMap.get("DefaultWhenEnabled"));
     }
+
+    @Test
+    void nullEvaluationEventTest() {
+        LoggerTelemetryPublisher publisher = new LoggerTelemetryPublisher();
+        publisher.publishTelemetry(null);
+
+        // Ensure no logs are generated
+        assertEquals(0, listAppender.list.size());
+    }
+
+    @Test
+    void nullFeatureInEvaluationEventTest() {
+        EvaluationEvent evaluationEvent = new EvaluationEvent(null);
+
+        LoggerTelemetryPublisher publisher = new LoggerTelemetryPublisher();
+        publisher.publishTelemetry(evaluationEvent);
+
+        // Ensure no logs are generated
+        assertEquals(0, listAppender.list.size());
+    }
+
+    @Test
+    void nullVariantInEvaluationEventTest() {
+        EvaluationEvent evaluationEvent = new EvaluationEvent(featureMock);
+        evaluationEvent.setVariant(null);
+        evaluationEvent.setReason(VariantAssignmentReason.DEFAULT_WHEN_ENABLED);
+
+        LoggerTelemetryPublisher publisher = new LoggerTelemetryPublisher();
+        publisher.publishTelemetry(evaluationEvent);
+
+        logEvent = listAppender.list.get(0);
+        Map<String, String> mdcMap = logEvent.getMDCPropertyMap();
+
+        assertEquals("FeatureEvaluation", logEvent.getMessage());
+        assertEquals(Level.INFO, logEvent.getLevel());
+        assertEquals("DefaultWhenEnabled", mdcMap.get("VariantAssignmentReason"));
+        assertEquals("fake-id", mdcMap.get("FeatureName"));
+        assertEquals("false", mdcMap.get("Enabled"));
+        assertEquals("1.1.0", mdcMap.get("Version"));
+        assertEquals("FeatureEvaluation", mdcMap.get("microsoft.custom_event.name"));
+        assertEquals(null, mdcMap.get("Variant"));
+        assertEquals("100", mdcMap.get("VariantAssignmentPercentage"));
+    }
+
+    @Test
+    void emptyPercentileAllocationTest() {
+        EvaluationEvent evaluationEvent = new EvaluationEvent(featureMock);
+        evaluationEvent.setVariant(variantMock);
+        evaluationEvent.setReason(VariantAssignmentReason.PERCENTILE);
+
+        when(featureMock.getAllocation()).thenReturn(new Allocation().setPercentile(List.of()));
+        when(variantMock.getName()).thenReturn("fake-variant");
+
+        LoggerTelemetryPublisher publisher = new LoggerTelemetryPublisher();
+        publisher.publishTelemetry(evaluationEvent);
+
+        logEvent = listAppender.list.get(0);
+        Map<String, String> mdcMap = logEvent.getMDCPropertyMap();
+
+        assertEquals("FeatureEvaluation", logEvent.getMessage());
+        assertEquals(Level.INFO, logEvent.getLevel());
+        assertEquals("Percentile", mdcMap.get("VariantAssignmentReason"));
+        assertEquals("fake-id", mdcMap.get("FeatureName"));
+        assertEquals("false", mdcMap.get("Enabled"));
+        assertEquals("1.1.0", mdcMap.get("Version"));
+        assertEquals("FeatureEvaluation", mdcMap.get("microsoft.custom_event.name"));
+        assertEquals("fake-variant", mdcMap.get("Variant"));
+        assertEquals(null, mdcMap.get("VariantAssignmentPercentage"));
+    }
 }

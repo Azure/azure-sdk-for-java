@@ -74,9 +74,13 @@ public class LoggerTelemetryPublisher implements TelemetryPublisher {
         } else if (evaluationEvent.getReason() == VariantAssignmentReason.PERCENTILE) {
             Double allocationPercentage = evaluationEvent.getFeature().getAllocation().getPercentile().stream()
                     .filter(percentile -> percentile.getVariant().equals(variant != null ? variant.getName() : ""))
-                    .map(allocation -> allocation.getTo() - allocation.getFrom()).reduce((a, b) -> a + b).get();
+                    .map(allocation -> allocation.getTo() - allocation.getFrom())
+                    .reduce((a, b) -> a + b)
+                    .orElse(null);
 
-            eventProperties.put(VARIANT_ASSIGNMENT_PERCENTAGE, String.valueOf(allocationPercentage));
+            if (allocationPercentage != null) {
+                eventProperties.put(VARIANT_ASSIGNMENT_PERCENTAGE, String.valueOf(allocationPercentage));
+            }
         }
 
         if (evaluationEvent.getFeature().getAllocation() != null
