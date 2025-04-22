@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Optional;
 
@@ -55,8 +57,8 @@ public class BaseAppConfigurationPolicyTest {
     }
 
     @Test
-    public void startupThenWatchUpdateTest() throws MalformedURLException {
-        URL url = new URL("https://www.test.url/kv");
+    public void startupThenWatchUpdateTest() throws MalformedURLException, URISyntaxException {
+        URL url = new URI("https://www.test.url/kv").toURL();
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
         request.setHeader(HttpHeaderName.USER_AGENT, "PreExistingUserAgent");
         BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy(
@@ -104,11 +106,11 @@ public class BaseAppConfigurationPolicyTest {
     }
 
     @Test
-    public void keyVaultIsConfigured() throws MalformedURLException {
+    public void keyVaultIsConfigured() throws MalformedURLException, URISyntaxException {
         BaseAppConfigurationPolicy policy = new BaseAppConfigurationPolicy(
             new TracingInfo(true, 0, Configuration.getGlobalConfiguration()));
 
-        URL url = new URL("https://www.test.url/kv");
+        URL url = new URI("https://www.test.url/kv").toURL();
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
         request.setHeader(HttpHeaderName.USER_AGENT, "PreExistingUserAgent");
         when(contextMock.getHttpRequest()).thenReturn(request);
