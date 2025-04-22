@@ -80,7 +80,7 @@ public final class LoadTestAdministrationAsyncTests extends LoadTestingClientTes
         BinaryData file = getFileBodyFromResource(uploadCsvFileName);
         RequestOptions requestOptions = new RequestOptions().addQueryParam("fileType", "ADDITIONAL_ARTIFACTS");
         PollerFlux<BinaryData, BinaryData> poller = getLoadTestAdministrationAsyncClient()
-            .beginUploadTestFile(newTestIdAsync, uploadCsvFileName, file, requestOptions);
+            .beginUploadTestFileWithResponse(newTestIdAsync, uploadCsvFileName, file, requestOptions);
         poller = setPlaybackPollerFluxPollInterval(poller);
 
         StepVerifier.create(poller.last())
@@ -95,7 +95,7 @@ public final class LoadTestAdministrationAsyncTests extends LoadTestingClientTes
         BinaryData file = getFileBodyFromResource(uploadJmxFileName);
         RequestOptions fileUploadRequestOptions = new RequestOptions().addQueryParam("fileType", "JMX_FILE");
         PollerFlux<BinaryData, BinaryData> poller = getLoadTestAdministrationAsyncClient()
-            .beginUploadTestFile(newTestIdAsync, uploadJmxFileName, file, fileUploadRequestOptions);
+            .beginUploadTestFileWithResponse(newTestIdAsync, uploadJmxFileName, file, fileUploadRequestOptions);
         poller = setPlaybackPollerFluxPollInterval(poller);
 
         StepVerifier.create(poller.takeUntil(pollResponse -> pollResponse.getStatus().isComplete())

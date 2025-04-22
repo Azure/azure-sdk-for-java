@@ -50,7 +50,7 @@ public final class LoadTestRunAsyncTests extends LoadTestingClientTestBase {
     public void beginTestRun() {
         BinaryData body = BinaryData.fromObject(getTestRunBodyFromDict(existingTestId));
         PollerFlux<BinaryData, BinaryData> poller
-            = getLoadTestRunAsyncClient().beginTestRun(newTestRunIdAsync, body, null);
+            = getLoadTestRunAsyncClient().beginTestRunWithResponse(newTestRunIdAsync, body, null);
         poller = setPlaybackPollerFluxPollInterval(poller);
         StepVerifier.create(poller.takeUntil(pollResponse -> pollResponse.getStatus().isComplete())
             .last()

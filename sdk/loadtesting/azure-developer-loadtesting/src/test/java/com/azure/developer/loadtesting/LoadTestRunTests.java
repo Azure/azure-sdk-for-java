@@ -50,7 +50,8 @@ public final class LoadTestRunTests extends LoadTestingClientTestBase {
     @Order(1)
     public void beginTestRun() {
         BinaryData body = BinaryData.fromObject(getTestRunBodyFromDict(existingTestId));
-        SyncPoller<BinaryData, BinaryData> poller = getLoadTestRunClient().beginTestRun(newTestRunId, body, null);
+        SyncPoller<BinaryData, BinaryData> poller
+            = getLoadTestRunClient().beginTestRunWithResponse(newTestRunId, body, null);
         poller = setPlaybackSyncPollerPollInterval(poller);
         PollResponse<BinaryData> response = poller.waitForCompletion();
         BinaryData testRunBinary = poller.getFinalResult();
