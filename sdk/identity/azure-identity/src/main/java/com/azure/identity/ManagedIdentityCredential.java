@@ -87,11 +87,8 @@ public final class ManagedIdentityCredential implements TokenCredential {
     final ManagedIdentityServiceCredential managedIdentityServiceCredential;
     private final IdentityClientOptions identityClientOptions;
     private final String managedIdentityId;
-    static final String PROPERTY_IMDS_ENDPOINT = "IMDS_ENDPOINT";
     static final String PROPERTY_IDENTITY_SERVER_THUMBPRINT = "IDENTITY_SERVER_THUMBPRINT";
     static final String AZURE_FEDERATED_TOKEN_FILE = "AZURE_FEDERATED_TOKEN_FILE";
-
-    static final String USE_AZURE_IDENTITY_CLIENT_LIBRARY_LEGACY_MI = "USE_AZURE_IDENTITY_CLIENT_LIBRARY_LEGACY_MI";
 
     /**
      * Creates an instance of the ManagedIdentityCredential with the client ID of a
