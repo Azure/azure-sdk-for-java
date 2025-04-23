@@ -4,7 +4,6 @@
 package com.azure.cosmos.util;
 
 import com.azure.core.util.IterableStream;
-import com.azure.core.util.paging.ContinuablePage;
 import com.azure.core.util.paging.ContinuablePagedFlux;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.models.FeedResponse;
