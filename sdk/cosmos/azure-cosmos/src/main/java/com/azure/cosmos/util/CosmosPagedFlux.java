@@ -4,6 +4,7 @@
 package com.azure.cosmos.util;
 
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.paging.ContinuablePage;
 import com.azure.core.util.paging.ContinuablePagedFlux;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.models.FeedResponse;
@@ -31,26 +32,64 @@ public class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, FeedResp
     // Ensure there can only be package-internal implementations
     CosmosPagedFlux() {}
 
+    /**
+     * Gets a {@link Flux} of {@link FeedResponse} starting at the first page.
+     *
+     * @return A {@link Flux} of {@link FeedResponse}.
+     */
     @Override
     public Flux<FeedResponse<T>> byPage() {
         throw new UnsupportedOperationException("Has to be overridden in child classes.");
     }
 
+    /**
+     * Gets a {@link Flux} of {@link FeedResponse} beginning at the page identified by the given continuation token.
+     *
+     * @param continuationToken A continuation token identifying the page to select.
+     * @return A {@link Flux} of {@link FeedResponse}.
+     */
     @Override
-    public Flux<FeedResponse<T>> byPage(String s) {
+    public Flux<FeedResponse<T>> byPage(String continuationToken) {
         throw new UnsupportedOperationException("Has to be overridden in child classes.");
     }
 
+    /**
+     * Gets a {@link Flux} of {@link FeedResponse} starting at the first page requesting each page to contain a
+     * number of elements equal to the preferred page size.
+     * <p>
+     * The service may or may not honor the preferred page size therefore the client <em>MUST</em> be prepared to handle
+     * pages with different page sizes.
+     *
+     * @param preferredPageSize The preferred page size.
+     * @return A {@link Flux} of {@link FeedResponse}.
+     */
     @Override
-    public Flux<FeedResponse<T>> byPage(int i) {
+    public Flux<FeedResponse<T>> byPage(int preferredPageSize) {
         throw new UnsupportedOperationException("Has to be overridden in child classes.");
     }
 
+    /**
+     * Gets a {@link Flux} of {@link FeedResponse} beginning at the page identified by the given continuation token
+     * requesting each page to contain the number of elements equal to the preferred page size.
+     * <p>
+     * The service may or may not honor the preferred page size therefore the client <em>MUST</em> be prepared to handle
+     * pages with different page sizes.
+     *
+     * @param continuationToken A continuation token identifying the page to select.
+     * @param preferredPageSize The preferred page size.
+     * @return A {@link Flux} of {@link FeedResponse}.
+     */
     @Override
-    public Flux<FeedResponse<T>> byPage(String s, int i) {
+    public Flux<FeedResponse<T>> byPage(String continuationToken, int preferredPageSize) {
         throw new UnsupportedOperationException("Has to be overridden in child classes.");
     }
 
+    /**
+     * Handle for invoking "side-effects" on each FeedResponse returned by CosmosPagedFlux
+     *
+     * @param newFeedResponseConsumer handler
+     * @return CosmosPagedFlux instance with attached handler
+     */
     public CosmosPagedFlux<T> handle(Consumer<FeedResponse<T>> newFeedResponseConsumer) {
         throw new UnsupportedOperationException("Has to be overridden in child classes.");
     }
