@@ -6,7 +6,9 @@ package com.azure.identity.implementation;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.SharedExecutorService;
@@ -33,6 +35,7 @@ import com.microsoft.aad.msal4j.InteractiveRequestParameters;
 import com.microsoft.aad.msal4j.ManagedIdentityApplication;
 import com.microsoft.aad.msal4j.ManagedIdentitySourceType;
 import com.microsoft.aad.msal4j.MsalInteractionRequiredException;
+import com.microsoft.aad.msal4j.MsalJsonParsingException;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.RefreshTokenParameters;
 import com.microsoft.aad.msal4j.SilentParameters;
@@ -43,7 +46,6 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.Proxy;
 import java.net.Proxy.Type;
@@ -553,7 +555,12 @@ public class IdentityClient extends IdentityClientBase {
                     throw new RuntimeException(e);
                 }
             }))
-            .onErrorMap(t -> new CredentialUnavailableException("Managed Identity authentication is not available.", t))
+            .onErrorMap(t -> {
+                if (options.isChained() && t instanceof MsalJsonParsingException) {
+                    return new CredentialUnavailableException("Managed Identity authentication is not available.", t);
+                }
+                return new ClientAuthenticationException("Managed Identity authentication is not available.", null, t);
+            })
             .map(MsalToken::new);
     }
 
@@ -913,27 +920,18 @@ public class IdentityClient extends IdentityClientBase {
     }
 
     private Mono<Boolean> checkIMDSAvailable(String endpoint) {
-        return Mono.fromCallable(() -> {
-            HttpURLConnection connection = null;
-            URL url = getUrl(endpoint + "?api-version=2018-02-01");
+        URL url = null;
+        try {
+            url = getUrl(endpoint + "?api-version=2018-02-01");
+        } catch (MalformedURLException e) {
+            return Mono.error(e);
+        }
+        HttpRequest request = new HttpRequest(HttpMethod.GET, url);
 
-            try {
-                connection = (HttpURLConnection) url.openConnection();
-                connection.setRequestMethod("GET");
-                connection.setConnectTimeout(1000);
-                connection.connect();
-            } catch (Exception e) {
-                throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
-                    new CredentialUnavailableException("ManagedIdentityCredential authentication unavailable. "
-                        + "Connection to IMDS endpoint cannot be established, " + e.getMessage() + ".", e));
-            } finally {
-                if (connection != null) {
-                    connection.disconnect();
-                }
-            }
-
-            return true;
-        });
+        return getPipeline().send(request)
+                .onErrorMap(t -> new CredentialUnavailableException("ManagedIdentityCredential authentication unavailable. "
+                        + "Connection to IMDS endpoint cannot be established, " + t.getMessage() + ".", t))
+                .flatMap(response -> Mono.just(true));
     }
 
     private static Proxy proxyOptionsToJavaNetProxy(ProxyOptions options) {

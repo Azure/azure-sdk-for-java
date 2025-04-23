@@ -5,21 +5,29 @@ package com.azure.identity;
 
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.http.HttpClient;
+import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.test.utils.TestConfigurationSource;
 import com.azure.core.util.Configuration;
 import com.azure.identity.implementation.IdentityClient;
+import com.azure.identity.implementation.IdentityClientOptions;
 import com.azure.identity.util.TestUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.MockedConstruction;
 import reactor.test.StepVerifier;
 
+import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.util.UUID;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.IsInstanceOf.instanceOf;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mockConstruction;
 import static org.mockito.Mockito.when;
 
@@ -31,7 +39,40 @@ public class ManagedIdentityCredentialTest {
     @Test
     public void testVirtualMachineMSICredentialConfigurations() {
         ManagedIdentityCredential credential = new ManagedIdentityCredentialBuilder().clientId("foo").build();
-        Assertions.assertEquals("foo", credential.getClientId());
+        assertEquals("foo", credential.getClientId());
+    }
+
+    @ParameterizedTest
+    @ValueSource(booleans = {true, false})
+    public void testInvalidJsonResponse(boolean isChained) {
+        HttpClient client = TestUtils.getMockHttpClient(
+                getMockResponse(400, "{\"error\":\"invalid_request\",\"error_description\":\"Required metadata header not specified\"}"),
+                getMockResponse( 200, "invalid json")
+        );
+
+        String endpoint = "http://localhost";
+        String secret = "secret";
+
+        Configuration configuration
+                = TestUtils.createTestConfiguration(new TestConfigurationSource().put("MSI_ENDPOINT", endpoint) // This must stay to signal we are in an app service context
+                .put("MSI_SECRET", secret)
+                .put("IDENTITY_ENDPOINT", endpoint)
+                .put("IDENTITY_HEADER", secret));
+
+        IdentityClientOptions options = new IdentityClientOptions()
+                .setChained(isChained)
+                .setHttpClient(client)
+                .setConfiguration(configuration);
+        ManagedIdentityCredential cred = new ManagedIdentityCredential("clientId", null, null, options);
+        StepVerifier.create(cred.getToken(new TokenRequestContext().addScopes("https://management.azure.com")))
+                .expectErrorMatches(t -> {
+                    if (isChained) {
+                        return t instanceof CredentialUnavailableException;
+                    } else {
+                        return t instanceof ClientAuthenticationException;
+                    }
+                }).verify();
+
     }
 
     @Test
@@ -129,19 +170,19 @@ public class ManagedIdentityCredentialTest {
         String objectId = "2323-sd2323s-32323-32334-34343";
 
         // test
-        Assertions.assertThrows(IllegalStateException.class,
+        assertThrows(IllegalStateException.class,
             () -> new ManagedIdentityCredentialBuilder().clientId(CLIENT_ID).resourceId(resourceId).build());
 
-        Assertions.assertThrows(IllegalStateException.class,
+        assertThrows(IllegalStateException.class,
             () -> new ManagedIdentityCredentialBuilder().clientId(CLIENT_ID)
                 .resourceId(resourceId)
                 .objectId(objectId)
                 .build());
 
-        Assertions.assertThrows(IllegalStateException.class,
+        assertThrows(IllegalStateException.class,
             () -> new ManagedIdentityCredentialBuilder().clientId(CLIENT_ID).objectId(objectId).build());
 
-        Assertions.assertThrows(IllegalStateException.class,
+        assertThrows(IllegalStateException.class,
             () -> new ManagedIdentityCredentialBuilder().resourceId(resourceId).objectId(objectId).build());
     }
 
@@ -155,5 +196,9 @@ public class ManagedIdentityCredentialTest {
         ManagedIdentityCredential cred = new ManagedIdentityCredentialBuilder().configuration(configuration).build();
         assertThat("Received class " + cred.managedIdentityServiceCredential.getClass().toString(),
             cred.managedIdentityServiceCredential, instanceOf(AksExchangeTokenCredential.class));
+    }
+
+    private MockHttpResponse getMockResponse(int code, String body) {
+        return new MockHttpResponse(null, code, body.getBytes(StandardCharsets.UTF_8));
     }
 }
