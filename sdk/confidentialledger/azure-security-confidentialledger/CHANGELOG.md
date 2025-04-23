@@ -5,12 +5,6 @@
 ### Features Added
 - User Defined Funtions (UDFs) support in Ledger API.
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 1.0.28 (2025-03-24)
 
 ### Other Changes
