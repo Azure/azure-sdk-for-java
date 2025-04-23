@@ -18,7 +18,7 @@ npm install -g autorest
 ### Generation
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4 --use=@autorest/java@4.0.2
+autorest README.md --momodelerfour.remove-empty-child-schemas --java --v4 --use=@autorest/java@4.0.2
 ```
 
 ### Code generation settings
@@ -39,6 +39,11 @@ service-interface-as-public: true
 sync-methods: all
 context-client-method-parameter: true
 stream-style-serialization: true
+```
+### Set remove-empty-child-schemas
+```yaml
+modelerfour:
+    remove-empty-child-schemas: true
 ```
 
 ### Add readonly attribute to PurchasedPhoneNumber properties
