@@ -17,147 +17,138 @@ public final class RepresentationContractTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RepresentationContract model = BinaryData.fromString(
-            "{\"contentType\":\"mysu\",\"schemaId\":\"wq\",\"typeName\":\"tvlwijpsttexoq\",\"formParameters\":[{\"name\":\"cyyufmh\",\"description\":\"nc\",\"type\":\"wmqs\",\"defaultValue\":\"cdqzhlctddu\",\"required\":false,\"values\":[\"fpch\"],\"schemaId\":\"bnjj\",\"typeName\":\"gegydcwboxjum\",\"examples\":{\"yjdfqwmky\":{\"summary\":\"lihrraiouaubr\",\"description\":\"loqxfuojrngif\",\"value\":\"dataz\",\"externalValue\":\"sccbiuimzd\"}}},{\"name\":\"qufdvruzslzojh\",\"description\":\"tfnmdx\",\"type\":\"tngfdgugeyzihgr\",\"defaultValue\":\"ui\",\"required\":false,\"values\":[\"mfp\",\"hojeevy\"],\"schemaId\":\"hsgz\",\"typeName\":\"zbgomfgbeg\",\"examples\":{\"q\":{\"summary\":\"eohibet\",\"description\":\"uankrrfxeeeb\",\"value\":\"dataj\",\"externalValue\":\"cvbmqzb\"},\"linmfgv\":{\"summary\":\"aj\",\"description\":\"wxacevehj\",\"value\":\"datayxoaf\",\"externalValue\":\"oqltfae\"}}},{\"name\":\"irpghriypoqeyh\",\"description\":\"h\",\"type\":\"kprlpyznuc\",\"defaultValue\":\"dsmexiitdfux\",\"required\":true,\"values\":[\"ibmi\",\"bnn\"],\"schemaId\":\"tgnljhnmgixhcmav\",\"typeName\":\"foudor\",\"examples\":{\"rb\":{\"summary\":\"yprotwyp\",\"description\":\"d\",\"value\":\"dataxhugcm\",\"externalValue\":\"avlg\"},\"bdb\":{\"summary\":\"tp\",\"description\":\"tzfjltf\",\"value\":\"datazcyjtot\",\"externalValue\":\"opv\"},\"hohsd\":{\"summary\":\"gqqihedsvqwt\",\"description\":\"ky\",\"value\":\"datacysihs\",\"externalValue\":\"cw\"}}},{\"name\":\"mcdzsufcohdxbz\",\"description\":\"cmuapcvhd\",\"type\":\"evwqqxeyskonq\",\"defaultValue\":\"nkfkbgbzb\",\"required\":false,\"values\":[\"o\"],\"schemaId\":\"jmygvk\",\"typeName\":\"kjjeokbz\",\"examples\":{\"mqpnoda\":{\"summary\":\"rx\",\"description\":\"zurtleipqxbkwvz\",\"value\":\"datazvd\",\"externalValue\":\"zdix\"},\"wyyu\":{\"summary\":\"pqhe\",\"description\":\"ptmcgsbostzelnd\",\"value\":\"datatutmzl\",\"externalValue\":\"ojlvfhrbbpneqvc\"},\"cpilj\":{\"summary\":\"ochpprpr\",\"description\":\"mo\",\"value\":\"datayzejnhlbk\",\"externalValue\":\"z\"},\"apjwogqqnobpudcd\":{\"summary\":\"hzvechndbnwieho\",\"description\":\"wjwiuub\",\"value\":\"datafqsfa\",\"externalValue\":\"qtferrqwexjkmf\"}}}],\"examples\":{\"um\":{\"summary\":\"wpwyawbz\",\"description\":\"qbucljgkyexaoguy\",\"value\":\"datap\",\"externalValue\":\"sdaultxij\"},\"fzsvtuikzh\":{\"summary\":\"waz\",\"description\":\"qnmcjngzqdqx\",\"value\":\"datajw\",\"externalValue\":\"yfu\"}}}")
+            "{\"contentType\":\"pqxbkwvzgnzvdf\",\"schemaId\":\"d\",\"typeName\":\"zmqpnodawopqhewj\",\"formParameters\":[{\"name\":\"cgsbost\",\"description\":\"lnd\",\"type\":\"atutmzlbiojlvfhr\",\"defaultValue\":\"pn\",\"required\":true,\"values\":[\"wyyu\",\"mochpprprsnmok\",\"yzejnhlbk\"],\"schemaId\":\"z\",\"typeName\":\"piljhahzvech\",\"examples\":{\"pud\":{\"summary\":\"wieholewjwiu\",\"description\":\"wefqsfapaqtferr\",\"value\":\"dataex\",\"externalValue\":\"mfxapjwogqqno\"},\"um\":{\"summary\":\"abtqwpwyawbzasqb\",\"description\":\"ljgkyex\",\"value\":\"dataguyaip\",\"externalValue\":\"sdaultxij\"},\"fzsvtuikzh\":{\"summary\":\"waz\",\"description\":\"qnmcjngzqdqx\",\"value\":\"datajw\",\"externalValue\":\"yfu\"}}},{\"name\":\"jqg\",\"description\":\"fh\",\"type\":\"l\",\"defaultValue\":\"ryxynqnzrd\",\"required\":false,\"values\":[\"xznptgoeiyb\",\"abpfhvfs\",\"kvntjlrigjkskyri\"],\"schemaId\":\"vzidsxwaab\",\"typeName\":\"ifrygzn\",\"examples\":{\"xecwcro\":{\"summary\":\"ri\",\"description\":\"zob\",\"value\":\"datapxl\",\"externalValue\":\"lnelxieixynl\"}}},{\"name\":\"phslhcawjutifdw\",\"description\":\"vigorqjbttzhragl\",\"type\":\"afhonqj\",\"defaultValue\":\"eickpz\",\"required\":false,\"values\":[\"mxelnwcltyjed\",\"xxmlfmkqscazua\",\"xtzx\",\"uamwabzxrvxc\"],\"schemaId\":\"hsphaivmxyas\",\"typeName\":\"vgsgzwywakoihkn\",\"examples\":{\"jlzqnhc\":{\"summary\":\"lmljhlnymzotq\",\"description\":\"yuzcbmqqvxmvw\",\"value\":\"datatayx\",\"externalValue\":\"supe\"},\"o\":{\"summary\":\"ql\",\"description\":\"zoibgsxg\",\"value\":\"datafyq\",\"externalValue\":\"mpqoxw\"},\"vqvxk\":{\"summary\":\"bxiqxeiiqbimht\",\"description\":\"winhehfqpo\",\"value\":\"datawbcb\",\"externalValue\":\"mbnkb\"}}},{\"name\":\"ivqiheb\",\"description\":\"swbzuwfmdurage\",\"type\":\"izvcjfe\",\"defaultValue\":\"sdjubggbqigkxkbs\",\"required\":false,\"values\":[\"gacyrcmjdmspo\"],\"schemaId\":\"pv\",\"typeName\":\"rylniofrzg\",\"examples\":{\"v\":{\"summary\":\"dmstk\",\"description\":\"l\",\"value\":\"databcuiiz\",\"externalValue\":\"twfans\"}}}],\"examples\":{\"cez\":{\"summary\":\"mik\",\"description\":\"tbzbkiwbuqnyophz\",\"value\":\"datal\",\"externalValue\":\"crpfbcunez\"},\"fewz\":{\"summary\":\"fwyfwlwxjwet\",\"description\":\"sihclafzvaylp\",\"value\":\"datasqqw\",\"externalValue\":\"cmwqkchcxwa\"},\"ptfujgicgaaoept\":{\"summary\":\"jexfdeqvhp\",\"description\":\"lkkshkbffmbmx\",\"value\":\"datargywwp\",\"externalValue\":\"xs\"}}}")
             .toObject(RepresentationContract.class);
-        Assertions.assertEquals("mysu", model.contentType());
-        Assertions.assertEquals("wq", model.schemaId());
-        Assertions.assertEquals("tvlwijpsttexoq", model.typeName());
-        Assertions.assertEquals("cyyufmh", model.formParameters().get(0).name());
-        Assertions.assertEquals("nc", model.formParameters().get(0).description());
-        Assertions.assertEquals("wmqs", model.formParameters().get(0).type());
-        Assertions.assertEquals("cdqzhlctddu", model.formParameters().get(0).defaultValue());
-        Assertions.assertEquals(false, model.formParameters().get(0).required());
-        Assertions.assertEquals("fpch", model.formParameters().get(0).values().get(0));
-        Assertions.assertEquals("bnjj", model.formParameters().get(0).schemaId());
-        Assertions.assertEquals("gegydcwboxjum", model.formParameters().get(0).typeName());
-        Assertions.assertEquals("lihrraiouaubr", model.formParameters().get(0).examples().get("yjdfqwmky").summary());
-        Assertions.assertEquals("loqxfuojrngif",
-            model.formParameters().get(0).examples().get("yjdfqwmky").description());
-        Assertions.assertEquals("sccbiuimzd",
-            model.formParameters().get(0).examples().get("yjdfqwmky").externalValue());
-        Assertions.assertEquals("wpwyawbz", model.examples().get("um").summary());
-        Assertions.assertEquals("qbucljgkyexaoguy", model.examples().get("um").description());
-        Assertions.assertEquals("sdaultxij", model.examples().get("um").externalValue());
+        Assertions.assertEquals("pqxbkwvzgnzvdf", model.contentType());
+        Assertions.assertEquals("d", model.schemaId());
+        Assertions.assertEquals("zmqpnodawopqhewj", model.typeName());
+        Assertions.assertEquals("cgsbost", model.formParameters().get(0).name());
+        Assertions.assertEquals("lnd", model.formParameters().get(0).description());
+        Assertions.assertEquals("atutmzlbiojlvfhr", model.formParameters().get(0).type());
+        Assertions.assertEquals("pn", model.formParameters().get(0).defaultValue());
+        Assertions.assertTrue(model.formParameters().get(0).required());
+        Assertions.assertEquals("wyyu", model.formParameters().get(0).values().get(0));
+        Assertions.assertEquals("z", model.formParameters().get(0).schemaId());
+        Assertions.assertEquals("piljhahzvech", model.formParameters().get(0).typeName());
+        Assertions.assertEquals("wieholewjwiu", model.formParameters().get(0).examples().get("pud").summary());
+        Assertions.assertEquals("wefqsfapaqtferr", model.formParameters().get(0).examples().get("pud").description());
+        Assertions.assertEquals("mfxapjwogqqno", model.formParameters().get(0).examples().get("pud").externalValue());
+        Assertions.assertEquals("mik", model.examples().get("cez").summary());
+        Assertions.assertEquals("tbzbkiwbuqnyophz", model.examples().get("cez").description());
+        Assertions.assertEquals("crpfbcunez", model.examples().get("cez").externalValue());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RepresentationContract model = new RepresentationContract().withContentType("mysu")
-            .withSchemaId("wq")
-            .withTypeName("tvlwijpsttexoq")
+        RepresentationContract model = new RepresentationContract().withContentType("pqxbkwvzgnzvdf")
+            .withSchemaId("d")
+            .withTypeName("zmqpnodawopqhewj")
             .withFormParameters(Arrays.asList(
-                new ParameterContract().withName("cyyufmh")
-                    .withDescription("nc")
-                    .withType("wmqs")
-                    .withDefaultValue("cdqzhlctddu")
-                    .withRequired(false)
-                    .withValues(Arrays.asList("fpch"))
-                    .withSchemaId("bnjj")
-                    .withTypeName("gegydcwboxjum")
-                    .withExamples(mapOf("yjdfqwmky",
-                        new ParameterExampleContract().withSummary("lihrraiouaubr")
-                            .withDescription("loqxfuojrngif")
-                            .withValue("dataz")
-                            .withExternalValue("sccbiuimzd"))),
-                new ParameterContract().withName("qufdvruzslzojh")
-                    .withDescription("tfnmdx")
-                    .withType("tngfdgugeyzihgr")
-                    .withDefaultValue("ui")
-                    .withRequired(false)
-                    .withValues(Arrays.asList("mfp", "hojeevy"))
-                    .withSchemaId("hsgz")
-                    .withTypeName("zbgomfgbeg")
-                    .withExamples(mapOf("q",
-                        new ParameterExampleContract().withSummary("eohibet")
-                            .withDescription("uankrrfxeeeb")
-                            .withValue("dataj")
-                            .withExternalValue("cvbmqzb"),
-                        "linmfgv",
-                        new ParameterExampleContract().withSummary("aj")
-                            .withDescription("wxacevehj")
-                            .withValue("datayxoaf")
-                            .withExternalValue("oqltfae"))),
-                new ParameterContract().withName("irpghriypoqeyh")
-                    .withDescription("h")
-                    .withType("kprlpyznuc")
-                    .withDefaultValue("dsmexiitdfux")
+                new ParameterContract().withName("cgsbost")
+                    .withDescription("lnd")
+                    .withType("atutmzlbiojlvfhr")
+                    .withDefaultValue("pn")
                     .withRequired(true)
-                    .withValues(Arrays.asList("ibmi", "bnn"))
-                    .withSchemaId("tgnljhnmgixhcmav")
-                    .withTypeName("foudor")
-                    .withExamples(mapOf("rb",
-                        new ParameterExampleContract().withSummary("yprotwyp")
-                            .withDescription("d")
-                            .withValue("dataxhugcm")
-                            .withExternalValue("avlg"),
-                        "bdb",
-                        new ParameterExampleContract().withSummary("tp")
-                            .withDescription("tzfjltf")
-                            .withValue("datazcyjtot")
-                            .withExternalValue("opv"),
-                        "hohsd",
-                        new ParameterExampleContract().withSummary("gqqihedsvqwt")
-                            .withDescription("ky")
-                            .withValue("datacysihs")
-                            .withExternalValue("cw"))),
-                new ParameterContract().withName("mcdzsufcohdxbz")
-                    .withDescription("cmuapcvhd")
-                    .withType("evwqqxeyskonq")
-                    .withDefaultValue("nkfkbgbzb")
+                    .withValues(Arrays.asList("wyyu", "mochpprprsnmok", "yzejnhlbk"))
+                    .withSchemaId("z")
+                    .withTypeName("piljhahzvech")
+                    .withExamples(mapOf("pud",
+                        new ParameterExampleContract().withSummary("wieholewjwiu")
+                            .withDescription("wefqsfapaqtferr")
+                            .withValue("dataex")
+                            .withExternalValue("mfxapjwogqqno"),
+                        "um",
+                        new ParameterExampleContract().withSummary("abtqwpwyawbzasqb")
+                            .withDescription("ljgkyex")
+                            .withValue("dataguyaip")
+                            .withExternalValue("sdaultxij"),
+                        "fzsvtuikzh",
+                        new ParameterExampleContract().withSummary("waz")
+                            .withDescription("qnmcjngzqdqx")
+                            .withValue("datajw")
+                            .withExternalValue("yfu"))),
+                new ParameterContract().withName("jqg")
+                    .withDescription("fh")
+                    .withType("l")
+                    .withDefaultValue("ryxynqnzrd")
                     .withRequired(false)
-                    .withValues(Arrays.asList("o"))
-                    .withSchemaId("jmygvk")
-                    .withTypeName("kjjeokbz")
-                    .withExamples(mapOf("mqpnoda",
-                        new ParameterExampleContract().withSummary("rx")
-                            .withDescription("zurtleipqxbkwvz")
-                            .withValue("datazvd")
-                            .withExternalValue("zdix"),
-                        "wyyu",
-                        new ParameterExampleContract().withSummary("pqhe")
-                            .withDescription("ptmcgsbostzelnd")
-                            .withValue("datatutmzl")
-                            .withExternalValue("ojlvfhrbbpneqvc"),
-                        "cpilj",
-                        new ParameterExampleContract().withSummary("ochpprpr")
-                            .withDescription("mo")
-                            .withValue("datayzejnhlbk")
-                            .withExternalValue("z"),
-                        "apjwogqqnobpudcd",
-                        new ParameterExampleContract().withSummary("hzvechndbnwieho")
-                            .withDescription("wjwiuub")
-                            .withValue("datafqsfa")
-                            .withExternalValue("qtferrqwexjkmf")))))
-            .withExamples(mapOf("um",
-                new ParameterExampleContract().withSummary("wpwyawbz")
-                    .withDescription("qbucljgkyexaoguy")
-                    .withValue("datap")
-                    .withExternalValue("sdaultxij"),
-                "fzsvtuikzh",
-                new ParameterExampleContract().withSummary("waz")
-                    .withDescription("qnmcjngzqdqx")
-                    .withValue("datajw")
-                    .withExternalValue("yfu")));
+                    .withValues(Arrays.asList("xznptgoeiyb", "abpfhvfs", "kvntjlrigjkskyri"))
+                    .withSchemaId("vzidsxwaab")
+                    .withTypeName("ifrygzn")
+                    .withExamples(mapOf("xecwcro",
+                        new ParameterExampleContract().withSummary("ri")
+                            .withDescription("zob")
+                            .withValue("datapxl")
+                            .withExternalValue("lnelxieixynl"))),
+                new ParameterContract().withName("phslhcawjutifdw")
+                    .withDescription("vigorqjbttzhragl")
+                    .withType("afhonqj")
+                    .withDefaultValue("eickpz")
+                    .withRequired(false)
+                    .withValues(Arrays.asList("mxelnwcltyjed", "xxmlfmkqscazua", "xtzx", "uamwabzxrvxc"))
+                    .withSchemaId("hsphaivmxyas")
+                    .withTypeName("vgsgzwywakoihkn")
+                    .withExamples(mapOf("jlzqnhc",
+                        new ParameterExampleContract().withSummary("lmljhlnymzotq")
+                            .withDescription("yuzcbmqqvxmvw")
+                            .withValue("datatayx")
+                            .withExternalValue("supe"),
+                        "o",
+                        new ParameterExampleContract().withSummary("ql")
+                            .withDescription("zoibgsxg")
+                            .withValue("datafyq")
+                            .withExternalValue("mpqoxw"),
+                        "vqvxk",
+                        new ParameterExampleContract().withSummary("bxiqxeiiqbimht")
+                            .withDescription("winhehfqpo")
+                            .withValue("datawbcb")
+                            .withExternalValue("mbnkb"))),
+                new ParameterContract().withName("ivqiheb")
+                    .withDescription("swbzuwfmdurage")
+                    .withType("izvcjfe")
+                    .withDefaultValue("sdjubggbqigkxkbs")
+                    .withRequired(false)
+                    .withValues(Arrays.asList("gacyrcmjdmspo"))
+                    .withSchemaId("pv")
+                    .withTypeName("rylniofrzg")
+                    .withExamples(mapOf("v",
+                        new ParameterExampleContract().withSummary("dmstk")
+                            .withDescription("l")
+                            .withValue("databcuiiz")
+                            .withExternalValue("twfans")))))
+            .withExamples(mapOf("cez",
+                new ParameterExampleContract().withSummary("mik")
+                    .withDescription("tbzbkiwbuqnyophz")
+                    .withValue("datal")
+                    .withExternalValue("crpfbcunez"),
+                "fewz",
+                new ParameterExampleContract().withSummary("fwyfwlwxjwet")
+                    .withDescription("sihclafzvaylp")
+                    .withValue("datasqqw")
+                    .withExternalValue("cmwqkchcxwa"),
+                "ptfujgicgaaoept",
+                new ParameterExampleContract().withSummary("jexfdeqvhp")
+                    .withDescription("lkkshkbffmbmx")
+                    .withValue("datargywwp")
+                    .withExternalValue("xs")));
         model = BinaryData.fromObject(model).toObject(RepresentationContract.class);
-        Assertions.assertEquals("mysu", model.contentType());
-        Assertions.assertEquals("wq", model.schemaId());
-        Assertions.assertEquals("tvlwijpsttexoq", model.typeName());
-        Assertions.assertEquals("cyyufmh", model.formParameters().get(0).name());
-        Assertions.assertEquals("nc", model.formParameters().get(0).description());
-        Assertions.assertEquals("wmqs", model.formParameters().get(0).type());
-        Assertions.assertEquals("cdqzhlctddu", model.formParameters().get(0).defaultValue());
-        Assertions.assertEquals(false, model.formParameters().get(0).required());
-        Assertions.assertEquals("fpch", model.formParameters().get(0).values().get(0));
-        Assertions.assertEquals("bnjj", model.formParameters().get(0).schemaId());
-        Assertions.assertEquals("gegydcwboxjum", model.formParameters().get(0).typeName());
-        Assertions.assertEquals("lihrraiouaubr", model.formParameters().get(0).examples().get("yjdfqwmky").summary());
-        Assertions.assertEquals("loqxfuojrngif",
-            model.formParameters().get(0).examples().get("yjdfqwmky").description());
-        Assertions.assertEquals("sccbiuimzd",
-            model.formParameters().get(0).examples().get("yjdfqwmky").externalValue());
-        Assertions.assertEquals("wpwyawbz", model.examples().get("um").summary());
-        Assertions.assertEquals("qbucljgkyexaoguy", model.examples().get("um").description());
-        Assertions.assertEquals("sdaultxij", model.examples().get("um").externalValue());
+        Assertions.assertEquals("pqxbkwvzgnzvdf", model.contentType());
+        Assertions.assertEquals("d", model.schemaId());
+        Assertions.assertEquals("zmqpnodawopqhewj", model.typeName());
+        Assertions.assertEquals("cgsbost", model.formParameters().get(0).name());
+        Assertions.assertEquals("lnd", model.formParameters().get(0).description());
+        Assertions.assertEquals("atutmzlbiojlvfhr", model.formParameters().get(0).type());
+        Assertions.assertEquals("pn", model.formParameters().get(0).defaultValue());
+        Assertions.assertTrue(model.formParameters().get(0).required());
+        Assertions.assertEquals("wyyu", model.formParameters().get(0).values().get(0));
+        Assertions.assertEquals("z", model.formParameters().get(0).schemaId());
+        Assertions.assertEquals("piljhahzvech", model.formParameters().get(0).typeName());
+        Assertions.assertEquals("wieholewjwiu", model.formParameters().get(0).examples().get("pud").summary());
+        Assertions.assertEquals("wefqsfapaqtferr", model.formParameters().get(0).examples().get("pud").description());
+        Assertions.assertEquals("mfxapjwogqqno", model.formParameters().get(0).examples().get("pud").externalValue());
+        Assertions.assertEquals("mik", model.examples().get("cez").summary());
+        Assertions.assertEquals("tbzbkiwbuqnyophz", model.examples().get("cez").description());
+        Assertions.assertEquals("crpfbcunez", model.examples().get("cez").externalValue());
     }
 
     // Use "Map.of" if available

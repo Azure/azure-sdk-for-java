@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.NotificationContract;
@@ -22,23 +22,23 @@ public final class NotificationsCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"title\":\"ylrxsiyzsyiu\",\"description\":\"itlqycfver\",\"recipients\":{\"emails\":[\"pkayqivbig\",\"rqgzetbo\",\"ztgnmuxppw\",\"cfm\"],\"users\":[\"tgwhzbbdwrjenc\",\"f\",\"ii\"]}},\"id\":\"wibdtpljo\",\"name\":\"majokbxxcdkhxjwt\",\"type\":\"ftg\"}";
+            = "{\"properties\":{\"title\":\"irbusnaqsvruu\",\"description\":\"ncppmmwhjerlurg\",\"recipients\":{\"emails\":[\"bxlepsmckgpxdx\",\"cqmguvdk\"],\"users\":[\"hrfcowlasewif\",\"wxjjylaqhxevfd\",\"rvjhwgkynxlwrj\"]}},\"id\":\"otdtmcktkal\",\"name\":\"piybfnkylzri\",\"type\":\"nqlwogq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NotificationContract response = manager.notifications()
-            .createOrUpdateWithResponse("rqvvketydgaqok", "ssgvq", NotificationName.BCC, "rxrmhrraqgbbjlv",
+            .createOrUpdateWithResponse("f", "haenpftkgmbmv", NotificationName.ACCOUNT_CLOSED_PUBLISHER, "iubzghpsotba",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("ylrxsiyzsyiu", response.title());
-        Assertions.assertEquals("itlqycfver", response.description());
-        Assertions.assertEquals("pkayqivbig", response.recipients().emails().get(0));
-        Assertions.assertEquals("tgwhzbbdwrjenc", response.recipients().users().get(0));
+        Assertions.assertEquals("irbusnaqsvruu", response.title());
+        Assertions.assertEquals("ncppmmwhjerlurg", response.description());
+        Assertions.assertEquals("bxlepsmckgpxdx", response.recipients().emails().get(0));
+        Assertions.assertEquals("hrfcowlasewif", response.recipients().users().get(0));
     }
 }

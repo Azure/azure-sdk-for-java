@@ -11,17 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class GatewayKeysContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GatewayKeysContractInner model = BinaryData.fromString("{\"primary\":\"owl\",\"secondary\":\"ouwhldxwhie\"}")
-            .toObject(GatewayKeysContractInner.class);
-        Assertions.assertEquals("owl", model.primary());
-        Assertions.assertEquals("ouwhldxwhie", model.secondary());
+        GatewayKeysContractInner model
+            = BinaryData.fromString("{\"primary\":\"seuugcig\",\"secondary\":\"ogsmgbvmtd\"}")
+                .toObject(GatewayKeysContractInner.class);
+        Assertions.assertEquals("seuugcig", model.primary());
+        Assertions.assertEquals("ogsmgbvmtd", model.secondary());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GatewayKeysContractInner model = new GatewayKeysContractInner().withPrimary("owl").withSecondary("ouwhldxwhie");
+        GatewayKeysContractInner model
+            = new GatewayKeysContractInner().withPrimary("seuugcig").withSecondary("ogsmgbvmtd");
         model = BinaryData.fromObject(model).toObject(GatewayKeysContractInner.class);
-        Assertions.assertEquals("owl", model.primary());
-        Assertions.assertEquals("ouwhldxwhie", model.secondary());
+        Assertions.assertEquals("seuugcig", model.primary());
+        Assertions.assertEquals("ogsmgbvmtd", model.secondary());
     }
 }

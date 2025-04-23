@@ -62,7 +62,8 @@ public final class ApiCreateOrUpdateParameter implements JsonSerializable<ApiCre
     }
 
     /**
-     * Get the format property: Format of the Content in which the API is getting imported.
+     * Get the format property: Format of the Content in which the API is getting imported. New formats can be added in
+     * the future.
      * 
      * @return the format value.
      */
@@ -71,7 +72,8 @@ public final class ApiCreateOrUpdateParameter implements JsonSerializable<ApiCre
     }
 
     /**
-     * Set the format property: Format of the Content in which the API is getting imported.
+     * Set the format property: Format of the Content in which the API is getting imported. New formats can be added in
+     * the future.
      * 
      * @param format the format value to set.
      * @return the ApiCreateOrUpdateParameter object itself.
@@ -113,6 +115,7 @@ public final class ApiCreateOrUpdateParameter implements JsonSerializable<ApiCre
      * * `soap` creates a SOAP pass-through API
      * * `websocket` creates websocket API
      * * `graphql` creates GraphQL API.
+     * New types can be added in the future.
      * 
      * @return the soapApiType value.
      */
@@ -126,6 +129,7 @@ public final class ApiCreateOrUpdateParameter implements JsonSerializable<ApiCre
      * * `soap` creates a SOAP pass-through API
      * * `websocket` creates websocket API
      * * `graphql` creates GraphQL API.
+     * New types can be added in the future.
      * 
      * @param soapApiType the soapApiType value to set.
      * @return the ApiCreateOrUpdateParameter object itself.
@@ -306,6 +310,15 @@ public final class ApiCreateOrUpdateParameter implements JsonSerializable<ApiCre
         }
         this.innerProperties().withApiVersionSet(apiVersionSet);
         return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**

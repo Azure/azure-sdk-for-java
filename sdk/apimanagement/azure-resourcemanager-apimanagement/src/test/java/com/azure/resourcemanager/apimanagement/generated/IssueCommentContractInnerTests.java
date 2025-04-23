@@ -13,21 +13,21 @@ public final class IssueCommentContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IssueCommentContractInner model = BinaryData.fromString(
-            "{\"properties\":{\"text\":\"kuwxeoiojfizfavk\",\"createdDate\":\"2020-12-30T15:26:53Z\",\"userId\":\"fbcyaykmm\"},\"id\":\"zs\",\"name\":\"fwxrzxmdew\",\"type\":\"rsxkr\"}")
+            "{\"properties\":{\"text\":\"wmyymvqdbpbhf\",\"createdDate\":\"2021-01-11T09:36:06Z\",\"userId\":\"vezcrcssbzhdd\"},\"id\":\"b\",\"name\":\"nqfblhkalehpava\",\"type\":\"ugiqjtiogqg\"}")
             .toObject(IssueCommentContractInner.class);
-        Assertions.assertEquals("kuwxeoiojfizfavk", model.text());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-30T15:26:53Z"), model.createdDate());
-        Assertions.assertEquals("fbcyaykmm", model.userId());
+        Assertions.assertEquals("wmyymvqdbpbhf", model.text());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-11T09:36:06Z"), model.createdDate());
+        Assertions.assertEquals("vezcrcssbzhdd", model.userId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IssueCommentContractInner model = new IssueCommentContractInner().withText("kuwxeoiojfizfavk")
-            .withCreatedDate(OffsetDateTime.parse("2020-12-30T15:26:53Z"))
-            .withUserId("fbcyaykmm");
+        IssueCommentContractInner model = new IssueCommentContractInner().withText("wmyymvqdbpbhf")
+            .withCreatedDate(OffsetDateTime.parse("2021-01-11T09:36:06Z"))
+            .withUserId("vezcrcssbzhdd");
         model = BinaryData.fromObject(model).toObject(IssueCommentContractInner.class);
-        Assertions.assertEquals("kuwxeoiojfizfavk", model.text());
-        Assertions.assertEquals(OffsetDateTime.parse("2020-12-30T15:26:53Z"), model.createdDate());
-        Assertions.assertEquals("fbcyaykmm", model.userId());
+        Assertions.assertEquals("wmyymvqdbpbhf", model.text());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-11T09:36:06Z"), model.createdDate());
+        Assertions.assertEquals("vezcrcssbzhdd", model.userId());
     }
 }
