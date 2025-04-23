@@ -25,241 +25,283 @@ public final class JobCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         JobCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"activityId\":\"jeuut\",\"scenarioName\":\"xezw\",\"friendlyName\":\"okvbwnhhtqlgehg\",\"state\":\"ipifhpfeoajvg\",\"stateDescription\":\"txjcsheafidlt\",\"tasks\":[{\"taskId\":\"esmkssjhoiftxfkf\",\"name\":\"gpr\",\"startTime\":\"2021-06-29T04:06:59Z\",\"endTime\":\"2021-04-05T10:55:26Z\",\"allowedActions\":[\"cbiqtgdqoh\"],\"friendlyName\":\"wsldrizetpwbr\",\"state\":\"llibphbqzmizak\",\"stateDescription\":\"ankjpdnjzh\",\"taskType\":\"oylhjlmuoyxprimr\",\"customDetails\":{\"instanceType\":\"TaskTypeDetails\"},\"groupTaskCustomDetails\":{\"instanceType\":\"GroupTaskDetails\"},\"errors\":[{},{}]}],\"errors\":[{\"serviceErrorDetails\":{},\"providerErrorDetails\":{},\"errorLevel\":\"islstv\",\"creationTime\":\"2021-10-17T18:13:46Z\",\"taskId\":\"wxdzaumweoohgu\"},{\"serviceErrorDetails\":{},\"providerErrorDetails\":{},\"errorLevel\":\"boyjathwt\",\"creationTime\":\"2021-03-19T17:17:36Z\",\"taskId\":\"a\"},{\"serviceErrorDetails\":{},\"providerErrorDetails\":{},\"errorLevel\":\"dxmeb\",\"creationTime\":\"2021-01-03T03:25:45Z\",\"taskId\":\"jpahlxvea\"},{\"serviceErrorDetails\":{},\"providerErrorDetails\":{},\"errorLevel\":\"nmwmqtibx\",\"creationTime\":\"2021-03-01T23:53:32Z\",\"taskId\":\"dt\"}],\"startTime\":\"2021-11-15T06:45:30Z\",\"endTime\":\"2021-02-14T10:50:47Z\",\"allowedActions\":[\"ijaeukm\"],\"targetObjectId\":\"ieekpndzaa\",\"targetObjectName\":\"udqmeqwigpibudq\",\"targetInstanceType\":\"xebeybpmz\",\"customDetails\":{\"instanceType\":\"JobDetails\",\"affectedObjectDetails\":{\"aqi\":\"ff\",\"ioqaqhvs\":\"mhh\"}}},\"location\":\"fuqyrxpdlcgqlsi\",\"id\":\"mjqfrddgamquhio\",\"name\":\"rsjuivfcdisyir\",\"type\":\"xzhczexrxz\"},{\"properties\":{\"activityId\":\"rtrhqvwrevkhgnl\",\"scenarioName\":\"onzlr\",\"friendlyName\":\"qywncvjtsz\",\"state\":\"fizehtdhgbjk\",\"stateDescription\":\"eljeamurvzmlovua\",\"tasks\":[{\"taskId\":\"cxlpmjerb\",\"name\":\"elvidizozsdbccx\",\"startTime\":\"2021-04-03T14:05:40Z\",\"endTime\":\"2021-06-04T20:01:35Z\",\"allowedActions\":[\"nwncypuuw\",\"ltv\",\"qjctzenkeif\",\"zhmkdasvflyh\"],\"friendlyName\":\"cu\",\"state\":\"hxgsrboldfor\",\"stateDescription\":\"wjlvizbfhfov\",\"taskType\":\"cqpbtuo\",\"customDetails\":{\"instanceType\":\"TaskTypeDetails\"},\"groupTaskCustomDetails\":{\"instanceType\":\"GroupTaskDetails\"},\"errors\":[{}]},{\"taskId\":\"bbelawumuaslzk\",\"name\":\"rwoycqucwyh\",\"startTime\":\"2021-12-05T11:23:21Z\",\"endTime\":\"2021-01-03T22:26:02Z\",\"allowedActions\":[\"kywuhpsvfuu\",\"utlwexxwla\",\"niexzsrzpgepq\"],\"friendlyName\":\"bb\",\"state\":\"pgdakchzyvli\",\"stateDescription\":\"nrkcxkj\",\"taskType\":\"nxm\",\"customDetails\":{\"instanceType\":\"TaskTypeDetails\"},\"groupTaskCustomDetails\":{\"instanceType\":\"GroupTaskDetails\"},\"errors\":[{},{},{}]},{\"taskId\":\"qrntv\",\"name\":\"ijpstte\",\"startTime\":\"2021-11-08T06:52:34Z\",\"endTime\":\"2021-02-04T20:26:02Z\",\"allowedActions\":[\"yyufmhruncuw\",\"qspkcdqzhlctd\"],\"friendlyName\":\"nqndyfpchrqbn\",\"state\":\"rcgegydcwboxjum\",\"stateDescription\":\"qoli\",\"taskType\":\"raiouaubrjtl\",\"customDetails\":{\"instanceType\":\"TaskTypeDetails\"},\"groupTaskCustomDetails\":{\"instanceType\":\"GroupTaskDetails\"},\"errors\":[{},{},{}]},{\"taskId\":\"jrngif\",\"name\":\"z\",\"startTime\":\"2021-09-29T00:55:24Z\",\"endTime\":\"2021-10-27T11:43:24Z\",\"allowedActions\":[\"uimzdlyjd\"],\"friendlyName\":\"wmkyoqufdvruzsl\",\"state\":\"j\",\"stateDescription\":\"ctfnmdxotng\",\"taskType\":\"gugey\",\"customDetails\":{\"instanceType\":\"TaskTypeDetails\"},\"groupTaskCustomDetails\":{\"instanceType\":\"GroupTaskDetails\"},\"errors\":[{},{}]}],\"errors\":[{\"serviceErrorDetails\":{},\"providerErrorDetails\":{},\"errorLevel\":\"absnmfpp\",\"creationTime\":\"2021-09-09T02:17:02Z\",\"taskId\":\"evy\"}],\"startTime\":\"2021-01-30T15:37:24Z\",\"endTime\":\"2021-07-27T14:52:36Z\",\"allowedActions\":[\"czbgomfgbeg\",\"qgleohibetnluank\"],\"targetObjectId\":\"fxeeebtijvacvbm\",\"targetObjectName\":\"bqqxlaj\",\"targetInstanceType\":\"wxacevehj\",\"customDetails\":{\"instanceType\":\"JobDetails\",\"affectedObjectDetails\":{\"faey\":\"oafgaoql\",\"hriypoqeyhlqhy\":\"inmfgvxirp\",\"nuciqdsmexiit\":\"prlpy\",\"stgnl\":\"fuxtyasiibmiybnn\"}}},\"location\":\"nmgixh\",\"id\":\"mavmq\",\"name\":\"oudorhcgyyp\",\"type\":\"otwypundmb\"},{\"properties\":{\"activityId\":\"gcmjkavl\",\"scenarioName\":\"rb\",\"friendlyName\":\"tp\",\"state\":\"tzfjltf\",\"stateDescription\":\"zcyjtot\",\"tasks\":[{\"taskId\":\"vpbdbzqgq\",\"name\":\"hedsvqwthmkyib\",\"startTime\":\"2021-03-21T07:03:22Z\",\"endTime\":\"2021-11-13T09:58:30Z\",\"allowedActions\":[\"qcwdhoh\",\"dtmcd\",\"sufco\",\"dxbzlmcmuap\"],\"friendlyName\":\"hdbevwqqxeyskon\",\"state\":\"inkfkbgbz\",\"stateDescription\":\"wxeqocljmygvkzqk\",\"taskType\":\"eokbze\",\"customDetails\":{\"instanceType\":\"TaskTypeDetails\"},\"groupTaskCustomDetails\":{\"instanceType\":\"GroupTaskDetails\"},\"errors\":[{},{}]}],\"errors\":[{\"serviceErrorDetails\":{},\"providerErrorDetails\":{},\"errorLevel\":\"tleipqxbkw\",\"creationTime\":\"2021-04-24T16:12:29Z\",\"taskId\":\"zvd\"},{\"serviceErrorDetails\":{},\"providerErrorDetails\":{},\"errorLevel\":\"ixz\",\"creationTime\":\"2021-05-22T10:48:30Z\",\"taskId\":\"odawopqhewjptmcg\"}],\"startTime\":\"2021-04-24T18:57:19Z\",\"endTime\":\"2021-03-17T12:43:28Z\",\"allowedActions\":[\"lnd\"],\"targetObjectId\":\"tutmzl\",\"targetObjectName\":\"ojlvfhrbbpneqvc\",\"targetInstanceType\":\"yyurmochpprprsnm\",\"customDetails\":{\"instanceType\":\"JobDetails\",\"affectedObjectDetails\":{\"kpbz\":\"zejnhl\",\"a\":\"cpilj\",\"chndbnwie\":\"zv\"}}},\"location\":\"lewjwiuubwef\",\"id\":\"sfapaqtferrq\",\"name\":\"ex\",\"type\":\"kmfx\"}],\"nextLink\":\"jwogqqnobpudc\"}")
+            "{\"value\":[{\"properties\":{\"activityId\":\"svqwthmkyibc\",\"scenarioName\":\"ihsgq\",\"friendlyName\":\"dhohsdtmcdzsuf\",\"state\":\"hdxbzlm\",\"stateDescription\":\"uapcvhdbevwqqxe\",\"tasks\":[{\"taskId\":\"nqzi\",\"name\":\"fkbg\",\"startTime\":\"2021-05-14T20:37:59Z\",\"endTime\":\"2021-06-13T05:29:48Z\",\"allowedActions\":[\"qocl\",\"mygvkzqkj\",\"eokbze\"],\"friendlyName\":\"zrxcczurt\",\"state\":\"ipqxbkwvzgnzv\",\"stateDescription\":\"bzdixzmq\",\"taskType\":\"odawopqhewjptmcg\",\"customDetails\":{\"instanceType\":\"TaskTypeDetails\"},\"groupTaskCustomDetails\":{\"instanceType\":\"GroupTaskDetails\"},\"errors\":[{}]}],\"errors\":[{\"serviceErrorDetails\":{},\"providerErrorDetails\":{},\"errorLevel\":\"la\",\"creationTime\":\"2021-11-08T13:33:16Z\",\"taskId\":\"zlbiojlvfhrbbpn\"}],\"startTime\":\"2021-01-05T16:49:28Z\",\"endTime\":\"2021-09-18T08:32:48Z\",\"allowedActions\":[\"yurmochpprprs\",\"mo\",\"ayzejnhlbkpbz\",\"cpilj\"],\"targetObjectId\":\"hzvechndbnwieho\",\"targetObjectName\":\"wjwiuub\",\"targetInstanceType\":\"fqsfa\",\"customDetails\":{\"instanceType\":\"JobDetails\",\"affectedObjectDetails\":{\"wexjkmfxapjwogq\":\"ferr\"}}},\"location\":\"o\",\"id\":\"pud\",\"name\":\"dabtqwp\",\"type\":\"yawbzasqbu\"},{\"properties\":{\"activityId\":\"gkyexaoguy\",\"scenarioName\":\"p\",\"friendlyName\":\"sdaultxij\",\"state\":\"mfqwa\",\"stateDescription\":\"nqnm\",\"tasks\":[{\"taskId\":\"zqdqxt\",\"name\":\"wgnyfusfzsvtui\",\"startTime\":\"2021-03-01T07:50:01Z\",\"endTime\":\"2021-03-02T02:07:50Z\",\"allowedActions\":[\"lcfhmlrqryxy\",\"qnzrd\",\"sovwxznptgoeiyb\",\"abpfhvfs\"],\"friendlyName\":\"vntjlrigjk\",\"state\":\"yrio\",\"stateDescription\":\"zid\",\"taskType\":\"waabzmifrygzn\",\"customDetails\":{\"instanceType\":\"TaskTypeDetails\"},\"groupTaskCustomDetails\":{\"instanceType\":\"GroupTaskDetails\"},\"errors\":[{}]}],\"errors\":[{\"serviceErrorDetails\":{},\"providerErrorDetails\":{},\"errorLevel\":\"bgopxlhslnel\",\"creationTime\":\"2021-05-24T14:46:14Z\",\"taskId\":\"xynl\"},{\"serviceErrorDetails\":{},\"providerErrorDetails\":{},\"errorLevel\":\"wcrojphslhcaw\",\"creationTime\":\"2021-07-06T17:22:34Z\",\"taskId\":\"fdwfmvigorqj\"},{\"serviceErrorDetails\":{},\"providerErrorDetails\":{},\"errorLevel\":\"h\",\"creationTime\":\"2021-01-05T10:30:14Z\",\"taskId\":\"kafhonqj\"},{\"serviceErrorDetails\":{},\"providerErrorDetails\":{},\"errorLevel\":\"ckpzvcpopmxeln\",\"creationTime\":\"2021-11-06T15:55:48Z\",\"taskId\":\"yjede\"}],\"startTime\":\"2021-05-24T09:24:11Z\",\"endTime\":\"2021-04-24T06:30:07Z\",\"allowedActions\":[\"qscazuawxtz\",\"puamwabzxr\",\"xcushs\",\"haivm\"],\"targetObjectId\":\"asflvg\",\"targetObjectName\":\"zwywako\",\"targetInstanceType\":\"knsmjblmljhlnymz\",\"customDetails\":{\"instanceType\":\"JobDetails\",\"affectedObjectDetails\":{\"mv\":\"ryuzcbmqqv\",\"ujlzqnhcvsqltn\":\"fgtayxonsup\"}}},\"location\":\"ibg\",\"id\":\"xgnxfyqonmpqoxwd\",\"name\":\"fdbxiqxeiiqbim\",\"type\":\"tmwwi\"},{\"properties\":{\"activityId\":\"hfqpofv\",\"scenarioName\":\"cblembnkbwv\",\"friendlyName\":\"xk\",\"state\":\"vqihebwtswbzuwf\",\"stateDescription\":\"urageg\",\"tasks\":[{\"taskId\":\"jfelisdjubggbqig\",\"name\":\"kbsazgak\",\"startTime\":\"2021-01-31T02:25:12Z\",\"endTime\":\"2021-03-26T20:47:06Z\",\"allowedActions\":[\"jdmspofapvuhryln\"],\"friendlyName\":\"frzgbzjed\",\"state\":\"tkvnlvxbcuiiznkt\",\"stateDescription\":\"ansnvp\",\"taskType\":\"bmikost\",\"customDetails\":{\"instanceType\":\"TaskTypeDetails\"},\"groupTaskCustomDetails\":{\"instanceType\":\"GroupTaskDetails\"},\"errors\":[{},{}]},{\"taskId\":\"buqny\",\"name\":\"hzfylsgcrpfbc\",\"startTime\":\"2021-03-23T04:41:37Z\",\"endTime\":\"2021-07-31T19:50:05Z\",\"allowedActions\":[\"zelfwyfwl\"],\"friendlyName\":\"jwetnpsihcla\",\"state\":\"va\",\"stateDescription\":\"pt\",\"taskType\":\"qqwzt\",\"customDetails\":{\"instanceType\":\"TaskTypeDetails\"},\"groupTaskCustomDetails\":{\"instanceType\":\"GroupTaskDetails\"},\"errors\":[{},{}]},{\"taskId\":\"hcxwaxfewzjk\",\"name\":\"xfdeqvhpsyl\",\"startTime\":\"2021-04-17T08:49:18Z\",\"endTime\":\"2021-03-18T21:28:39Z\",\"allowedActions\":[\"f\",\"bmxzjrgywwpg\",\"xs\"],\"friendlyName\":\"tf\",\"state\":\"gicgaaoepttaq\",\"stateDescription\":\"dewemxswv\",\"taskType\":\"unzzjgehk\",\"customDetails\":{\"instanceType\":\"TaskTypeDetails\"},\"groupTaskCustomDetails\":{\"instanceType\":\"GroupTaskDetails\"},\"errors\":[{},{}]},{\"taskId\":\"ixokffqyin\",\"name\":\"qepqwhixmon\",\"startTime\":\"2021-01-17T19:00:27Z\",\"endTime\":\"2021-09-25T05:57:05Z\",\"allowedActions\":[\"gvelfc\",\"du\",\"cb\",\"rds\"],\"friendlyName\":\"wcobie\",\"state\":\"tmninw\",\"stateDescription\":\"zcilnghg\",\"taskType\":\"ejjtbxqmul\",\"customDetails\":{\"instanceType\":\"TaskTypeDetails\"},\"groupTaskCustomDetails\":{\"instanceType\":\"GroupTaskDetails\"},\"errors\":[{},{},{},{}]}],\"errors\":[{\"serviceErrorDetails\":{},\"providerErrorDetails\":{},\"errorLevel\":\"sbycucrwnamikz\",\"creationTime\":\"2021-05-25T11:34:45Z\",\"taskId\":\"bsmswziqgf\"},{\"serviceErrorDetails\":{},\"providerErrorDetails\":{},\"errorLevel\":\"zruswh\",\"creationTime\":\"2021-08-09T18:56:19Z\",\"taskId\":\"znvfbycjsxjww\"},{\"serviceErrorDetails\":{},\"providerErrorDetails\":{},\"errorLevel\":\"umwmxqhnd\",\"creationTime\":\"2021-01-21T17:32:59Z\",\"taskId\":\"mldsehaohdj\"}],\"startTime\":\"2021-09-08T22:46:23Z\",\"endTime\":\"2021-06-11T02:03:13Z\",\"allowedActions\":[\"xcoxpelnjet\",\"gltsxoat\",\"tgzpnpb\"],\"targetObjectId\":\"vefloccsrmozihmi\",\"targetObjectName\":\"awtxxpk\",\"targetInstanceType\":\"cxcjxgry\",\"customDetails\":{\"instanceType\":\"JobDetails\",\"affectedObjectDetails\":{\"ilrmcaykggnox\":\"cy\",\"pfnznthjtwkj\":\"ztrksxwpndf\",\"ktcqio\":\"osrxuzvoa\",\"laprlt\":\"mgbzahgxqdlyrtl\"}}},\"location\":\"atbhjmznn\",\"id\":\"s\",\"name\":\"qeqala\",\"type\":\"vlagun\"},{\"properties\":{\"activityId\":\"febwlnbmhyreeudz\",\"scenarioName\":\"vbpdqmjxlyyzglgo\",\"friendlyName\":\"tlmj\",\"state\":\"uojqt\",\"stateDescription\":\"axkjeytunlbfjk\",\"tasks\":[{\"taskId\":\"nkqbhsyrq\",\"name\":\"jqhden\",\"startTime\":\"2021-08-07T05:25:40Z\",\"endTime\":\"2021-05-29T00:38:23Z\",\"allowedActions\":[\"kdk\",\"fmjnnawtqa\",\"pxuckpggq\",\"wey\"],\"friendlyName\":\"dhlisngwflqqmpi\",\"state\":\"uwnpqxpxiwfcng\",\"stateDescription\":\"aas\",\"taskType\":\"xtmkzjvkviir\",\"customDetails\":{\"instanceType\":\"TaskTypeDetails\"},\"groupTaskCustomDetails\":{\"instanceType\":\"GroupTaskDetails\"},\"errors\":[{},{}]}],\"errors\":[{\"serviceErrorDetails\":{},\"providerErrorDetails\":{},\"errorLevel\":\"ra\",\"creationTime\":\"2021-03-02T16:22:17Z\",\"taskId\":\"bglbyvict\"}],\"startTime\":\"2021-03-31T05:55:27Z\",\"endTime\":\"2021-10-06T10:18:17Z\",\"allowedActions\":[\"zwrgxffmshkwfbk\"],\"targetObjectId\":\"zxwopdbydpizq\",\"targetObjectName\":\"lnapxbiygn\",\"targetInstanceType\":\"j\",\"customDetails\":{\"instanceType\":\"JobDetails\",\"affectedObjectDetails\":{\"uyilflqoiquvrehm\":\"mfcttux\",\"ytqj\":\"njhvsujztc\",\"auunfprnjletlx\":\"w\",\"ddoui\":\"mr\"}}},\"location\":\"mowaziynknlqwzdv\",\"id\":\"iwhxqszdtmaajq\",\"name\":\"huxy\",\"type\":\"rjvmtygjbmzyosp\"}],\"nextLink\":\"shck\"}")
             .toObject(JobCollection.class);
-        Assertions.assertEquals("jeuut", model.value().get(0).properties().activityId());
-        Assertions.assertEquals("xezw", model.value().get(0).properties().scenarioName());
-        Assertions.assertEquals("okvbwnhhtqlgehg", model.value().get(0).properties().friendlyName());
-        Assertions.assertEquals("ipifhpfeoajvg", model.value().get(0).properties().state());
-        Assertions.assertEquals("txjcsheafidlt", model.value().get(0).properties().stateDescription());
-        Assertions.assertEquals("esmkssjhoiftxfkf", model.value().get(0).properties().tasks().get(0).taskId());
-        Assertions.assertEquals("gpr", model.value().get(0).properties().tasks().get(0).name());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-29T04:06:59Z"),
+        Assertions.assertEquals("svqwthmkyibc", model.value().get(0).properties().activityId());
+        Assertions.assertEquals("ihsgq", model.value().get(0).properties().scenarioName());
+        Assertions.assertEquals("dhohsdtmcdzsuf", model.value().get(0).properties().friendlyName());
+        Assertions.assertEquals("hdxbzlm", model.value().get(0).properties().state());
+        Assertions.assertEquals("uapcvhdbevwqqxe", model.value().get(0).properties().stateDescription());
+        Assertions.assertEquals("nqzi", model.value().get(0).properties().tasks().get(0).taskId());
+        Assertions.assertEquals("fkbg", model.value().get(0).properties().tasks().get(0).name());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-14T20:37:59Z"),
             model.value().get(0).properties().tasks().get(0).startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-05T10:55:26Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-13T05:29:48Z"),
             model.value().get(0).properties().tasks().get(0).endTime());
-        Assertions.assertEquals("cbiqtgdqoh", model.value().get(0).properties().tasks().get(0).allowedActions().get(0));
-        Assertions.assertEquals("wsldrizetpwbr", model.value().get(0).properties().tasks().get(0).friendlyName());
-        Assertions.assertEquals("llibphbqzmizak", model.value().get(0).properties().tasks().get(0).state());
-        Assertions.assertEquals("ankjpdnjzh", model.value().get(0).properties().tasks().get(0).stateDescription());
-        Assertions.assertEquals("oylhjlmuoyxprimr", model.value().get(0).properties().tasks().get(0).taskType());
-        Assertions.assertEquals("islstv", model.value().get(0).properties().errors().get(0).errorLevel());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-17T18:13:46Z"),
+        Assertions.assertEquals("qocl", model.value().get(0).properties().tasks().get(0).allowedActions().get(0));
+        Assertions.assertEquals("zrxcczurt", model.value().get(0).properties().tasks().get(0).friendlyName());
+        Assertions.assertEquals("ipqxbkwvzgnzv", model.value().get(0).properties().tasks().get(0).state());
+        Assertions.assertEquals("bzdixzmq", model.value().get(0).properties().tasks().get(0).stateDescription());
+        Assertions.assertEquals("odawopqhewjptmcg", model.value().get(0).properties().tasks().get(0).taskType());
+        Assertions.assertEquals("la", model.value().get(0).properties().errors().get(0).errorLevel());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-08T13:33:16Z"),
             model.value().get(0).properties().errors().get(0).creationTime());
-        Assertions.assertEquals("wxdzaumweoohgu", model.value().get(0).properties().errors().get(0).taskId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-15T06:45:30Z"),
+        Assertions.assertEquals("zlbiojlvfhrbbpn", model.value().get(0).properties().errors().get(0).taskId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-05T16:49:28Z"),
             model.value().get(0).properties().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-14T10:50:47Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-18T08:32:48Z"),
             model.value().get(0).properties().endTime());
-        Assertions.assertEquals("ijaeukm", model.value().get(0).properties().allowedActions().get(0));
-        Assertions.assertEquals("ieekpndzaa", model.value().get(0).properties().targetObjectId());
-        Assertions.assertEquals("udqmeqwigpibudq", model.value().get(0).properties().targetObjectName());
-        Assertions.assertEquals("xebeybpmz", model.value().get(0).properties().targetInstanceType());
-        Assertions.assertEquals("ff",
-            model.value().get(0).properties().customDetails().affectedObjectDetails().get("aqi"));
-        Assertions.assertEquals("fuqyrxpdlcgqlsi", model.value().get(0).location());
-        Assertions.assertEquals("jwogqqnobpudc", model.nextLink());
+        Assertions.assertEquals("yurmochpprprs", model.value().get(0).properties().allowedActions().get(0));
+        Assertions.assertEquals("hzvechndbnwieho", model.value().get(0).properties().targetObjectId());
+        Assertions.assertEquals("wjwiuub", model.value().get(0).properties().targetObjectName());
+        Assertions.assertEquals("fqsfa", model.value().get(0).properties().targetInstanceType());
+        Assertions.assertEquals("ferr",
+            model.value().get(0).properties().customDetails().affectedObjectDetails().get("wexjkmfxapjwogq"));
+        Assertions.assertEquals("o", model.value().get(0).location());
+        Assertions.assertEquals("shck", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         JobCollection model
             = new JobCollection()
-                .withValue(Arrays.asList(new JobInner()
-                    .withProperties(
-                        new JobProperties().withActivityId("jeuut")
-                            .withScenarioName("xezw")
-                            .withFriendlyName("okvbwnhhtqlgehg")
-                            .withState("ipifhpfeoajvg")
-                            .withStateDescription("txjcsheafidlt")
-                            .withTasks(Arrays.asList(new AsrTask().withTaskId("esmkssjhoiftxfkf")
-                                .withName("gpr")
-                                .withStartTime(OffsetDateTime.parse("2021-06-29T04:06:59Z"))
-                                .withEndTime(OffsetDateTime.parse("2021-04-05T10:55:26Z"))
-                                .withAllowedActions(Arrays.asList("cbiqtgdqoh"))
-                                .withFriendlyName("wsldrizetpwbr")
-                                .withState("llibphbqzmizak")
-                                .withStateDescription("ankjpdnjzh")
-                                .withTaskType("oylhjlmuoyxprimr")
+                .withValue(
+                    Arrays.asList(
+                        new JobInner().withProperties(new JobProperties().withActivityId("svqwthmkyibc")
+                            .withScenarioName("ihsgq")
+                            .withFriendlyName("dhohsdtmcdzsuf")
+                            .withState("hdxbzlm")
+                            .withStateDescription("uapcvhdbevwqqxe")
+                            .withTasks(Arrays.asList(new AsrTask().withTaskId("nqzi")
+                                .withName("fkbg")
+                                .withStartTime(OffsetDateTime.parse("2021-05-14T20:37:59Z"))
+                                .withEndTime(OffsetDateTime.parse("2021-06-13T05:29:48Z"))
+                                .withAllowedActions(Arrays.asList("qocl", "mygvkzqkj", "eokbze"))
+                                .withFriendlyName("zrxcczurt")
+                                .withState("ipqxbkwvzgnzv")
+                                .withStateDescription("bzdixzmq")
+                                .withTaskType("odawopqhewjptmcg")
                                 .withCustomDetails(new TaskTypeDetails())
                                 .withGroupTaskCustomDetails(new GroupTaskDetails())
-                                .withErrors(Arrays.asList(new JobErrorDetails(), new JobErrorDetails()))))
-                            .withErrors(
-                                Arrays.asList(
+                                .withErrors(Arrays.asList(new JobErrorDetails()))))
+                            .withErrors(Arrays.asList(new JobErrorDetails().withServiceErrorDetails(new ServiceError())
+                                .withProviderErrorDetails(new ProviderError())
+                                .withErrorLevel("la")
+                                .withCreationTime(OffsetDateTime.parse("2021-11-08T13:33:16Z"))
+                                .withTaskId("zlbiojlvfhrbbpn")))
+                            .withStartTime(OffsetDateTime.parse("2021-01-05T16:49:28Z"))
+                            .withEndTime(OffsetDateTime.parse("2021-09-18T08:32:48Z"))
+                            .withAllowedActions(Arrays.asList("yurmochpprprs", "mo", "ayzejnhlbkpbz", "cpilj"))
+                            .withTargetObjectId("hzvechndbnwieho")
+                            .withTargetObjectName("wjwiuub")
+                            .withTargetInstanceType("fqsfa")
+                            .withCustomDetails(new JobDetails().withAffectedObjectDetails(
+                                mapOf("wexjkmfxapjwogq", "ferr"))))
+                            .withLocation("o"),
+                        new JobInner()
+                            .withProperties(
+                                new JobProperties().withActivityId("gkyexaoguy")
+                                    .withScenarioName("p")
+                                    .withFriendlyName("sdaultxij")
+                                    .withState("mfqwa")
+                                    .withStateDescription("nqnm")
+                                    .withTasks(
+                                        Arrays
+                                            .asList(new AsrTask().withTaskId("zqdqxt")
+                                                .withName("wgnyfusfzsvtui")
+                                                .withStartTime(OffsetDateTime.parse("2021-03-01T07:50:01Z"))
+                                                .withEndTime(OffsetDateTime.parse("2021-03-02T02:07:50Z"))
+                                                .withAllowedActions(Arrays.asList("lcfhmlrqryxy", "qnzrd",
+                                                    "sovwxznptgoeiyb", "abpfhvfs"))
+                                                .withFriendlyName("vntjlrigjk")
+                                                .withState("yrio")
+                                                .withStateDescription("zid")
+                                                .withTaskType("waabzmifrygzn")
+                                                .withCustomDetails(new TaskTypeDetails())
+                                                .withGroupTaskCustomDetails(new GroupTaskDetails())
+                                                .withErrors(Arrays.asList(new JobErrorDetails()))))
+                                    .withErrors(Arrays.asList(
+                                        new JobErrorDetails().withServiceErrorDetails(new ServiceError())
+                                            .withProviderErrorDetails(new ProviderError())
+                                            .withErrorLevel("bgopxlhslnel")
+                                            .withCreationTime(OffsetDateTime.parse("2021-05-24T14:46:14Z"))
+                                            .withTaskId("xynl"),
+                                        new JobErrorDetails().withServiceErrorDetails(new ServiceError())
+                                            .withProviderErrorDetails(new ProviderError())
+                                            .withErrorLevel("wcrojphslhcaw")
+                                            .withCreationTime(OffsetDateTime.parse("2021-07-06T17:22:34Z"))
+                                            .withTaskId("fdwfmvigorqj"),
+                                        new JobErrorDetails().withServiceErrorDetails(new ServiceError())
+                                            .withProviderErrorDetails(new ProviderError())
+                                            .withErrorLevel("h")
+                                            .withCreationTime(OffsetDateTime.parse("2021-01-05T10:30:14Z"))
+                                            .withTaskId("kafhonqj"),
+                                        new JobErrorDetails().withServiceErrorDetails(new ServiceError())
+                                            .withProviderErrorDetails(new ProviderError())
+                                            .withErrorLevel("ckpzvcpopmxeln")
+                                            .withCreationTime(OffsetDateTime.parse("2021-11-06T15:55:48Z"))
+                                            .withTaskId("yjede")))
+                                    .withStartTime(OffsetDateTime.parse("2021-05-24T09:24:11Z"))
+                                    .withEndTime(OffsetDateTime.parse("2021-04-24T06:30:07Z"))
+                                    .withAllowedActions(Arrays.asList("qscazuawxtz", "puamwabzxr", "xcushs", "haivm"))
+                                    .withTargetObjectId("asflvg")
+                                    .withTargetObjectName("zwywako")
+                                    .withTargetInstanceType("knsmjblmljhlnymz")
+                                    .withCustomDetails(
+                                        new JobDetails()
+                                            .withAffectedObjectDetails(mapOf("mv", "ryuzcbmqqv", "ujlzqnhcvsqltn",
+                                                "fgtayxonsup"))))
+                            .withLocation("ibg"),
+                        new JobInner()
+                            .withProperties(new JobProperties().withActivityId("hfqpofv")
+                                .withScenarioName("cblembnkbwv")
+                                .withFriendlyName("xk")
+                                .withState("vqihebwtswbzuwf")
+                                .withStateDescription("urageg")
+                                .withTasks(Arrays.asList(
+                                    new AsrTask().withTaskId("jfelisdjubggbqig")
+                                        .withName("kbsazgak")
+                                        .withStartTime(OffsetDateTime.parse("2021-01-31T02:25:12Z"))
+                                        .withEndTime(OffsetDateTime.parse("2021-03-26T20:47:06Z"))
+                                        .withAllowedActions(Arrays.asList("jdmspofapvuhryln"))
+                                        .withFriendlyName("frzgbzjed")
+                                        .withState("tkvnlvxbcuiiznkt")
+                                        .withStateDescription("ansnvp")
+                                        .withTaskType("bmikost")
+                                        .withCustomDetails(new TaskTypeDetails())
+                                        .withGroupTaskCustomDetails(new GroupTaskDetails())
+                                        .withErrors(Arrays.asList(new JobErrorDetails(), new JobErrorDetails())),
+                                    new AsrTask().withTaskId("buqny")
+                                        .withName("hzfylsgcrpfbc")
+                                        .withStartTime(OffsetDateTime.parse("2021-03-23T04:41:37Z"))
+                                        .withEndTime(OffsetDateTime.parse("2021-07-31T19:50:05Z"))
+                                        .withAllowedActions(Arrays.asList("zelfwyfwl"))
+                                        .withFriendlyName("jwetnpsihcla")
+                                        .withState("va")
+                                        .withStateDescription("pt")
+                                        .withTaskType("qqwzt")
+                                        .withCustomDetails(new TaskTypeDetails())
+                                        .withGroupTaskCustomDetails(new GroupTaskDetails())
+                                        .withErrors(Arrays.asList(new JobErrorDetails(), new JobErrorDetails())),
+                                    new AsrTask().withTaskId("hcxwaxfewzjk")
+                                        .withName("xfdeqvhpsyl")
+                                        .withStartTime(OffsetDateTime.parse("2021-04-17T08:49:18Z"))
+                                        .withEndTime(OffsetDateTime.parse("2021-03-18T21:28:39Z"))
+                                        .withAllowedActions(Arrays.asList("f", "bmxzjrgywwpg", "xs"))
+                                        .withFriendlyName("tf")
+                                        .withState("gicgaaoepttaq")
+                                        .withStateDescription("dewemxswv")
+                                        .withTaskType("unzzjgehk")
+                                        .withCustomDetails(new TaskTypeDetails())
+                                        .withGroupTaskCustomDetails(new GroupTaskDetails())
+                                        .withErrors(Arrays.asList(new JobErrorDetails(), new JobErrorDetails())),
+                                    new AsrTask().withTaskId("ixokffqyin")
+                                        .withName("qepqwhixmon")
+                                        .withStartTime(OffsetDateTime.parse("2021-01-17T19:00:27Z"))
+                                        .withEndTime(OffsetDateTime.parse("2021-09-25T05:57:05Z"))
+                                        .withAllowedActions(Arrays.asList("gvelfc", "du", "cb", "rds"))
+                                        .withFriendlyName("wcobie")
+                                        .withState("tmninw")
+                                        .withStateDescription("zcilnghg")
+                                        .withTaskType("ejjtbxqmul")
+                                        .withCustomDetails(new TaskTypeDetails())
+                                        .withGroupTaskCustomDetails(new GroupTaskDetails())
+                                        .withErrors(Arrays.asList(new JobErrorDetails(), new JobErrorDetails(),
+                                            new JobErrorDetails(), new JobErrorDetails()))))
+                                .withErrors(Arrays.asList(
                                     new JobErrorDetails().withServiceErrorDetails(new ServiceError())
                                         .withProviderErrorDetails(new ProviderError())
-                                        .withErrorLevel("islstv")
-                                        .withCreationTime(OffsetDateTime.parse("2021-10-17T18:13:46Z"))
-                                        .withTaskId("wxdzaumweoohgu"),
+                                        .withErrorLevel("sbycucrwnamikz")
+                                        .withCreationTime(OffsetDateTime.parse("2021-05-25T11:34:45Z"))
+                                        .withTaskId("bsmswziqgf"),
                                     new JobErrorDetails().withServiceErrorDetails(new ServiceError())
                                         .withProviderErrorDetails(new ProviderError())
-                                        .withErrorLevel("boyjathwt")
-                                        .withCreationTime(OffsetDateTime.parse("2021-03-19T17:17:36Z"))
-                                        .withTaskId("a"),
+                                        .withErrorLevel("zruswh")
+                                        .withCreationTime(OffsetDateTime.parse("2021-08-09T18:56:19Z"))
+                                        .withTaskId("znvfbycjsxjww"),
                                     new JobErrorDetails().withServiceErrorDetails(new ServiceError())
                                         .withProviderErrorDetails(new ProviderError())
-                                        .withErrorLevel("dxmeb")
-                                        .withCreationTime(OffsetDateTime.parse("2021-01-03T03:25:45Z"))
-                                        .withTaskId("jpahlxvea"),
-                                    new JobErrorDetails().withServiceErrorDetails(new ServiceError())
-                                        .withProviderErrorDetails(new ProviderError())
-                                        .withErrorLevel("nmwmqtibx")
-                                        .withCreationTime(OffsetDateTime.parse("2021-03-01T23:53:32Z"))
-                                        .withTaskId("dt")))
-                            .withStartTime(OffsetDateTime.parse("2021-11-15T06:45:30Z"))
-                            .withEndTime(OffsetDateTime.parse("2021-02-14T10:50:47Z"))
-                            .withAllowedActions(Arrays.asList("ijaeukm"))
-                            .withTargetObjectId("ieekpndzaa")
-                            .withTargetObjectName("udqmeqwigpibudq")
-                            .withTargetInstanceType("xebeybpmz")
-                            .withCustomDetails(
-                                new JobDetails().withAffectedObjectDetails(mapOf("aqi", "ff", "ioqaqhvs", "mhh"))))
-                    .withLocation("fuqyrxpdlcgqlsi"),
-                    new JobInner()
-                        .withProperties(new JobProperties().withActivityId("rtrhqvwrevkhgnl")
-                            .withScenarioName("onzlr")
-                            .withFriendlyName("qywncvjtsz")
-                            .withState("fizehtdhgbjk")
-                            .withStateDescription("eljeamurvzmlovua")
-                            .withTasks(Arrays.asList(
-                                new AsrTask().withTaskId("cxlpmjerb")
-                                    .withName("elvidizozsdbccx")
-                                    .withStartTime(OffsetDateTime.parse("2021-04-03T14:05:40Z"))
-                                    .withEndTime(OffsetDateTime.parse("2021-06-04T20:01:35Z"))
-                                    .withAllowedActions(
-                                        Arrays.asList("nwncypuuw", "ltv", "qjctzenkeif", "zhmkdasvflyh"))
-                                    .withFriendlyName("cu")
-                                    .withState("hxgsrboldfor")
-                                    .withStateDescription("wjlvizbfhfov")
-                                    .withTaskType("cqpbtuo")
-                                    .withCustomDetails(new TaskTypeDetails())
-                                    .withGroupTaskCustomDetails(new GroupTaskDetails())
-                                    .withErrors(Arrays.asList(new JobErrorDetails())),
-                                new AsrTask().withTaskId("bbelawumuaslzk")
-                                    .withName("rwoycqucwyh")
-                                    .withStartTime(OffsetDateTime.parse("2021-12-05T11:23:21Z"))
-                                    .withEndTime(OffsetDateTime.parse("2021-01-03T22:26:02Z"))
-                                    .withAllowedActions(Arrays.asList("kywuhpsvfuu", "utlwexxwla", "niexzsrzpgepq"))
-                                    .withFriendlyName("bb")
-                                    .withState("pgdakchzyvli")
-                                    .withStateDescription("nrkcxkj")
-                                    .withTaskType("nxm")
-                                    .withCustomDetails(new TaskTypeDetails())
-                                    .withGroupTaskCustomDetails(new GroupTaskDetails())
-                                    .withErrors(Arrays.asList(new JobErrorDetails(), new JobErrorDetails(),
-                                        new JobErrorDetails())),
-                                new AsrTask().withTaskId("qrntv")
-                                    .withName("ijpstte")
-                                    .withStartTime(OffsetDateTime.parse("2021-11-08T06:52:34Z"))
-                                    .withEndTime(OffsetDateTime.parse("2021-02-04T20:26:02Z"))
-                                    .withAllowedActions(Arrays.asList("yyufmhruncuw", "qspkcdqzhlctd"))
-                                    .withFriendlyName("nqndyfpchrqbn")
-                                    .withState("rcgegydcwboxjum")
-                                    .withStateDescription("qoli")
-                                    .withTaskType("raiouaubrjtl")
-                                    .withCustomDetails(new TaskTypeDetails())
-                                    .withGroupTaskCustomDetails(new GroupTaskDetails())
-                                    .withErrors(Arrays.asList(new JobErrorDetails(), new JobErrorDetails(),
-                                        new JobErrorDetails())),
-                                new AsrTask().withTaskId("jrngif")
-                                    .withName("z")
-                                    .withStartTime(OffsetDateTime.parse("2021-09-29T00:55:24Z"))
-                                    .withEndTime(OffsetDateTime.parse("2021-10-27T11:43:24Z"))
-                                    .withAllowedActions(Arrays.asList("uimzdlyjd"))
-                                    .withFriendlyName("wmkyoqufdvruzsl")
-                                    .withState("j")
-                                    .withStateDescription("ctfnmdxotng")
-                                    .withTaskType("gugey")
+                                        .withErrorLevel("umwmxqhnd")
+                                        .withCreationTime(OffsetDateTime.parse("2021-01-21T17:32:59Z"))
+                                        .withTaskId("mldsehaohdj")))
+                                .withStartTime(OffsetDateTime.parse("2021-09-08T22:46:23Z"))
+                                .withEndTime(OffsetDateTime.parse("2021-06-11T02:03:13Z"))
+                                .withAllowedActions(Arrays.asList("xcoxpelnjet", "gltsxoat", "tgzpnpb"))
+                                .withTargetObjectId("vefloccsrmozihmi")
+                                .withTargetObjectName("awtxxpk")
+                                .withTargetInstanceType("cxcjxgry")
+                                .withCustomDetails(
+                                    new JobDetails()
+                                        .withAffectedObjectDetails(mapOf("ilrmcaykggnox", "cy", "pfnznthjtwkj",
+                                            "ztrksxwpndf", "ktcqio", "osrxuzvoa", "laprlt", "mgbzahgxqdlyrtl"))))
+                            .withLocation("atbhjmznn"),
+                        new JobInner()
+                            .withProperties(new JobProperties().withActivityId("febwlnbmhyreeudz")
+                                .withScenarioName("vbpdqmjxlyyzglgo")
+                                .withFriendlyName("tlmj")
+                                .withState("uojqt")
+                                .withStateDescription("axkjeytunlbfjk")
+                                .withTasks(Arrays.asList(new AsrTask().withTaskId("nkqbhsyrq")
+                                    .withName("jqhden")
+                                    .withStartTime(OffsetDateTime.parse("2021-08-07T05:25:40Z"))
+                                    .withEndTime(OffsetDateTime.parse("2021-05-29T00:38:23Z"))
+                                    .withAllowedActions(Arrays.asList("kdk", "fmjnnawtqa", "pxuckpggq", "wey"))
+                                    .withFriendlyName("dhlisngwflqqmpi")
+                                    .withState("uwnpqxpxiwfcng")
+                                    .withStateDescription("aas")
+                                    .withTaskType("xtmkzjvkviir")
                                     .withCustomDetails(new TaskTypeDetails())
                                     .withGroupTaskCustomDetails(new GroupTaskDetails())
                                     .withErrors(Arrays.asList(new JobErrorDetails(), new JobErrorDetails()))))
-                            .withErrors(Arrays.asList(new JobErrorDetails().withServiceErrorDetails(new ServiceError())
-                                .withProviderErrorDetails(new ProviderError())
-                                .withErrorLevel("absnmfpp")
-                                .withCreationTime(OffsetDateTime.parse("2021-09-09T02:17:02Z"))
-                                .withTaskId("evy")))
-                            .withStartTime(OffsetDateTime.parse("2021-01-30T15:37:24Z"))
-                            .withEndTime(OffsetDateTime.parse("2021-07-27T14:52:36Z"))
-                            .withAllowedActions(Arrays.asList("czbgomfgbeg", "qgleohibetnluank"))
-                            .withTargetObjectId("fxeeebtijvacvbm")
-                            .withTargetObjectName("bqqxlaj")
-                            .withTargetInstanceType("wxacevehj")
-                            .withCustomDetails(
-                                new JobDetails().withAffectedObjectDetails(mapOf("faey", "oafgaoql", "hriypoqeyhlqhy",
-                                    "inmfgvxirp", "nuciqdsmexiit", "prlpy", "stgnl", "fuxtyasiibmiybnn"))))
-                        .withLocation("nmgixh"),
-                    new JobInner()
-                        .withProperties(new JobProperties().withActivityId("gcmjkavl")
-                            .withScenarioName("rb")
-                            .withFriendlyName("tp")
-                            .withState("tzfjltf")
-                            .withStateDescription("zcyjtot")
-                            .withTasks(Arrays.asList(new AsrTask().withTaskId("vpbdbzqgq")
-                                .withName("hedsvqwthmkyib")
-                                .withStartTime(OffsetDateTime.parse("2021-03-21T07:03:22Z"))
-                                .withEndTime(OffsetDateTime.parse("2021-11-13T09:58:30Z"))
-                                .withAllowedActions(Arrays.asList("qcwdhoh", "dtmcd", "sufco", "dxbzlmcmuap"))
-                                .withFriendlyName("hdbevwqqxeyskon")
-                                .withState("inkfkbgbz")
-                                .withStateDescription("wxeqocljmygvkzqk")
-                                .withTaskType("eokbze")
-                                .withCustomDetails(new TaskTypeDetails())
-                                .withGroupTaskCustomDetails(new GroupTaskDetails())
-                                .withErrors(Arrays.asList(new JobErrorDetails(), new JobErrorDetails()))))
-                            .withErrors(Arrays.asList(
-                                new JobErrorDetails().withServiceErrorDetails(new ServiceError())
-                                    .withProviderErrorDetails(new ProviderError())
-                                    .withErrorLevel("tleipqxbkw")
-                                    .withCreationTime(OffsetDateTime.parse("2021-04-24T16:12:29Z"))
-                                    .withTaskId("zvd"),
-                                new JobErrorDetails().withServiceErrorDetails(new ServiceError())
-                                    .withProviderErrorDetails(new ProviderError())
-                                    .withErrorLevel("ixz")
-                                    .withCreationTime(OffsetDateTime.parse("2021-05-22T10:48:30Z"))
-                                    .withTaskId("odawopqhewjptmcg")))
-                            .withStartTime(OffsetDateTime.parse("2021-04-24T18:57:19Z"))
-                            .withEndTime(OffsetDateTime.parse("2021-03-17T12:43:28Z"))
-                            .withAllowedActions(Arrays.asList("lnd"))
-                            .withTargetObjectId("tutmzl")
-                            .withTargetObjectName("ojlvfhrbbpneqvc")
-                            .withTargetInstanceType("yyurmochpprprsnm")
-                            .withCustomDetails(new JobDetails()
-                                .withAffectedObjectDetails(mapOf("kpbz", "zejnhl", "a", "cpilj", "chndbnwie", "zv"))))
-                        .withLocation("lewjwiuubwef")))
-                .withNextLink("jwogqqnobpudc");
+                                .withErrors(
+                                    Arrays.asList(new JobErrorDetails().withServiceErrorDetails(new ServiceError())
+                                        .withProviderErrorDetails(new ProviderError())
+                                        .withErrorLevel("ra")
+                                        .withCreationTime(OffsetDateTime.parse("2021-03-02T16:22:17Z"))
+                                        .withTaskId("bglbyvict")))
+                                .withStartTime(OffsetDateTime.parse("2021-03-31T05:55:27Z"))
+                                .withEndTime(OffsetDateTime.parse("2021-10-06T10:18:17Z"))
+                                .withAllowedActions(Arrays.asList("zwrgxffmshkwfbk"))
+                                .withTargetObjectId("zxwopdbydpizq")
+                                .withTargetObjectName("lnapxbiygn")
+                                .withTargetInstanceType("j")
+                                .withCustomDetails(new JobDetails().withAffectedObjectDetails(mapOf("uyilflqoiquvrehm",
+                                    "mfcttux", "ytqj", "njhvsujztc", "auunfprnjletlx", "w", "ddoui", "mr"))))
+                            .withLocation("mowaziynknlqwzdv")))
+                .withNextLink("shck");
         model = BinaryData.fromObject(model).toObject(JobCollection.class);
-        Assertions.assertEquals("jeuut", model.value().get(0).properties().activityId());
-        Assertions.assertEquals("xezw", model.value().get(0).properties().scenarioName());
-        Assertions.assertEquals("okvbwnhhtqlgehg", model.value().get(0).properties().friendlyName());
-        Assertions.assertEquals("ipifhpfeoajvg", model.value().get(0).properties().state());
-        Assertions.assertEquals("txjcsheafidlt", model.value().get(0).properties().stateDescription());
-        Assertions.assertEquals("esmkssjhoiftxfkf", model.value().get(0).properties().tasks().get(0).taskId());
-        Assertions.assertEquals("gpr", model.value().get(0).properties().tasks().get(0).name());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-29T04:06:59Z"),
+        Assertions.assertEquals("svqwthmkyibc", model.value().get(0).properties().activityId());
+        Assertions.assertEquals("ihsgq", model.value().get(0).properties().scenarioName());
+        Assertions.assertEquals("dhohsdtmcdzsuf", model.value().get(0).properties().friendlyName());
+        Assertions.assertEquals("hdxbzlm", model.value().get(0).properties().state());
+        Assertions.assertEquals("uapcvhdbevwqqxe", model.value().get(0).properties().stateDescription());
+        Assertions.assertEquals("nqzi", model.value().get(0).properties().tasks().get(0).taskId());
+        Assertions.assertEquals("fkbg", model.value().get(0).properties().tasks().get(0).name());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-14T20:37:59Z"),
             model.value().get(0).properties().tasks().get(0).startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-05T10:55:26Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-13T05:29:48Z"),
             model.value().get(0).properties().tasks().get(0).endTime());
-        Assertions.assertEquals("cbiqtgdqoh", model.value().get(0).properties().tasks().get(0).allowedActions().get(0));
-        Assertions.assertEquals("wsldrizetpwbr", model.value().get(0).properties().tasks().get(0).friendlyName());
-        Assertions.assertEquals("llibphbqzmizak", model.value().get(0).properties().tasks().get(0).state());
-        Assertions.assertEquals("ankjpdnjzh", model.value().get(0).properties().tasks().get(0).stateDescription());
-        Assertions.assertEquals("oylhjlmuoyxprimr", model.value().get(0).properties().tasks().get(0).taskType());
-        Assertions.assertEquals("islstv", model.value().get(0).properties().errors().get(0).errorLevel());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-10-17T18:13:46Z"),
+        Assertions.assertEquals("qocl", model.value().get(0).properties().tasks().get(0).allowedActions().get(0));
+        Assertions.assertEquals("zrxcczurt", model.value().get(0).properties().tasks().get(0).friendlyName());
+        Assertions.assertEquals("ipqxbkwvzgnzv", model.value().get(0).properties().tasks().get(0).state());
+        Assertions.assertEquals("bzdixzmq", model.value().get(0).properties().tasks().get(0).stateDescription());
+        Assertions.assertEquals("odawopqhewjptmcg", model.value().get(0).properties().tasks().get(0).taskType());
+        Assertions.assertEquals("la", model.value().get(0).properties().errors().get(0).errorLevel());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-08T13:33:16Z"),
             model.value().get(0).properties().errors().get(0).creationTime());
-        Assertions.assertEquals("wxdzaumweoohgu", model.value().get(0).properties().errors().get(0).taskId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-11-15T06:45:30Z"),
+        Assertions.assertEquals("zlbiojlvfhrbbpn", model.value().get(0).properties().errors().get(0).taskId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-01-05T16:49:28Z"),
             model.value().get(0).properties().startTime());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-02-14T10:50:47Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-18T08:32:48Z"),
             model.value().get(0).properties().endTime());
-        Assertions.assertEquals("ijaeukm", model.value().get(0).properties().allowedActions().get(0));
-        Assertions.assertEquals("ieekpndzaa", model.value().get(0).properties().targetObjectId());
-        Assertions.assertEquals("udqmeqwigpibudq", model.value().get(0).properties().targetObjectName());
-        Assertions.assertEquals("xebeybpmz", model.value().get(0).properties().targetInstanceType());
-        Assertions.assertEquals("ff",
-            model.value().get(0).properties().customDetails().affectedObjectDetails().get("aqi"));
-        Assertions.assertEquals("fuqyrxpdlcgqlsi", model.value().get(0).location());
-        Assertions.assertEquals("jwogqqnobpudc", model.nextLink());
+        Assertions.assertEquals("yurmochpprprs", model.value().get(0).properties().allowedActions().get(0));
+        Assertions.assertEquals("hzvechndbnwieho", model.value().get(0).properties().targetObjectId());
+        Assertions.assertEquals("wjwiuub", model.value().get(0).properties().targetObjectName());
+        Assertions.assertEquals("fqsfa", model.value().get(0).properties().targetInstanceType());
+        Assertions.assertEquals("ferr",
+            model.value().get(0).properties().customDetails().affectedObjectDetails().get("wexjkmfxapjwogq"));
+        Assertions.assertEquals("o", model.value().get(0).location());
+        Assertions.assertEquals("shck", model.nextLink());
     }
 
     // Use "Map.of" if available

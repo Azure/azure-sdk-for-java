@@ -11,7 +11,7 @@ public final class InMageRcmEventDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageRcmEventDetails model = BinaryData.fromString(
-            "{\"instanceType\":\"InMageRcm\",\"protectedItemName\":\"wcnxtpzdlyseid\",\"vmName\":\"akatprytg\",\"latestAgentVersion\":\"zbqfdpfawrptvcsh\",\"jobId\":\"utzcttbqgdirda\",\"fabricName\":\"tzjgcfjfxtbwj\",\"applianceName\":\"rmuydgfttmdofg\",\"serverType\":\"agfuoftnxod\",\"componentDisplayName\":\"m\"}")
+            "{\"instanceType\":\"InMageRcm\",\"protectedItemName\":\"cgniuarlc\",\"vmName\":\"wgsx\",\"latestAgentVersion\":\"iocwdgujj\",\"jobId\":\"fgrzx\",\"fabricName\":\"rcb\",\"applianceName\":\"efzq\",\"serverType\":\"mjw\",\"componentDisplayName\":\"jcytesmfucrtfo\"}")
             .toObject(InMageRcmEventDetails.class);
     }
 

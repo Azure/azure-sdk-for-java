@@ -17,8 +17,8 @@ import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.data.SchemaAndValue;
 import org.apache.kafka.connect.source.SourceRecord;
@@ -41,7 +41,7 @@ public class CosmosSourceTask extends SourceTask {
     private CosmosSourceTaskConfig taskConfig;
     private CosmosAsyncClient cosmosClient;
     private CosmosAsyncClient throughputControlCosmosClient;
-    private Queue<ITaskUnit> taskUnitsQueue = new LinkedList<>();
+    private final Queue<ITaskUnit> taskUnitsQueue = new LinkedList<>();
 
     @Override
     public String version() {
@@ -135,13 +135,19 @@ public class CosmosSourceTask extends SourceTask {
         List<SourceRecord> sourceRecords = new ArrayList<>();
 
         // add the containers metadata record - it tracks the databaseName -> List[containerRid] mapping
-        Pair<ContainersMetadataTopicPartition, ContainersMetadataTopicOffset> containersMetadata = taskUnit.getContainersMetadata();
+        Pair<ContainersMetadataTopicPartition, ContainersMetadataTopicOffset> containersMetadata =
+            taskUnit.getContainersMetadata();
 
         // Convert JSON to Kafka Connect struct and JSON schema
-        SchemaAndValue containersMetadataSchemaAndValue = JsonToStruct.recordToSchemaAndValue(
-            Utils.getSimpleObjectMapper().convertValue(
-                ContainersMetadataTopicOffset.toMap(containersMetadata.getRight()),
-                ObjectNode.class));
+        SchemaAndValue containersMetadataSchemaAndValue = null;
+        try {
+            containersMetadataSchemaAndValue = JsonToStruct.recordToUnifiedSchema(
+                MetadataEntityTypes.CONTAINERS_METADATA_V1,
+                Utils.getSimpleObjectMapper().writeValueAsString(
+                    ContainersMetadataTopicOffset.toMap(containersMetadata.getRight())));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
 
         sourceRecords.add(
             new SourceRecord(
@@ -155,10 +161,15 @@ public class CosmosSourceTask extends SourceTask {
 
         // add the container feedRanges metadata record - it tracks the containerRid -> List[FeedRange] mapping
         for (Pair<FeedRangesMetadataTopicPartition, FeedRangesMetadataTopicOffset> feedRangesMetadata : taskUnit.getFeedRangesMetadataList()) {
-            SchemaAndValue feedRangeMetadataSchemaAndValue = JsonToStruct.recordToSchemaAndValue(
-                Utils.getSimpleObjectMapper().convertValue(
-                    FeedRangesMetadataTopicOffset.toMap(feedRangesMetadata.getRight()),
-                    ObjectNode.class));
+            SchemaAndValue feedRangeMetadataSchemaAndValue = null;
+            try {
+                feedRangeMetadataSchemaAndValue = JsonToStruct.recordToUnifiedSchema(
+                    MetadataEntityTypes.FEED_RANGES_METADATA_V1,
+                    Utils.getSimpleObjectMapper().writeValueAsString(
+                        FeedRangesMetadataTopicOffset.toMap(feedRangesMetadata.getRight())));
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
+            }
 
             sourceRecords.add(
                 new SourceRecord(

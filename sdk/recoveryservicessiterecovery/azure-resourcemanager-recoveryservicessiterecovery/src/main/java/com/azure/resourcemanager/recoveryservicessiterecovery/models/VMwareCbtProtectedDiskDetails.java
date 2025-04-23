@@ -91,6 +91,11 @@ public final class VMwareCbtProtectedDiskDetails implements JsonSerializable<VMw
      */
     private GatewayOperationDetails gatewayOperationDetails;
 
+    /*
+     * The logical sector size (in bytes), 512 by default.
+     */
+    private Integer sectorSizeInBytes;
+
     /**
      * Creates an instance of VMwareCbtProtectedDiskDetails class.
      */
@@ -255,6 +260,26 @@ public final class VMwareCbtProtectedDiskDetails implements JsonSerializable<VMw
     }
 
     /**
+     * Get the sectorSizeInBytes property: The logical sector size (in bytes), 512 by default.
+     * 
+     * @return the sectorSizeInBytes value.
+     */
+    public Integer sectorSizeInBytes() {
+        return this.sectorSizeInBytes;
+    }
+
+    /**
+     * Set the sectorSizeInBytes property: The logical sector size (in bytes), 512 by default.
+     * 
+     * @param sectorSizeInBytes the sectorSizeInBytes value to set.
+     * @return the VMwareCbtProtectedDiskDetails object itself.
+     */
+    public VMwareCbtProtectedDiskDetails withSectorSizeInBytes(Integer sectorSizeInBytes) {
+        this.sectorSizeInBytes = sectorSizeInBytes;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -273,6 +298,7 @@ public final class VMwareCbtProtectedDiskDetails implements JsonSerializable<VMw
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("diskType", this.diskType == null ? null : this.diskType.toString());
         jsonWriter.writeStringField("targetDiskName", this.targetDiskName);
+        jsonWriter.writeNumberField("sectorSizeInBytes", this.sectorSizeInBytes);
         return jsonWriter.writeEndObject();
     }
 
@@ -323,6 +349,9 @@ public final class VMwareCbtProtectedDiskDetails implements JsonSerializable<VMw
                 } else if ("gatewayOperationDetails".equals(fieldName)) {
                     deserializedVMwareCbtProtectedDiskDetails.gatewayOperationDetails
                         = GatewayOperationDetails.fromJson(reader);
+                } else if ("sectorSizeInBytes".equals(fieldName)) {
+                    deserializedVMwareCbtProtectedDiskDetails.sectorSizeInBytes
+                        = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }
