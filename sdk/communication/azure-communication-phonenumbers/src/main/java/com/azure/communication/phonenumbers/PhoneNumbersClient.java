@@ -1058,6 +1058,7 @@ public final class PhoneNumbersClient {
      * @param reservationId The id of the reservation that's going to be updated.
      * @param add The phone numbers to be added to the reservation.
      * @param remove The phone numbers to be removed from the reservation.
+     * @param context A {@link Context} representing the request context.
      * @return represents a reservation for phone numbers along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
