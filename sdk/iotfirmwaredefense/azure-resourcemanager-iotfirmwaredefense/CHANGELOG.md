@@ -1,14 +1,448 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.1 (2025-04-23)
 
-### Features Added
+- Azure Resource Manager IoT Firmware Defense client library for Java. This package contains Microsoft Azure SDK for IoT Firmware Defense Management SDK. Firmware & IoT Security REST API. Package api-version 2025-04-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Breaking Changes
 
-### Bugs Fixed
+#### `models.SbomComponentListResult` was removed
 
-### Other Changes
+#### `models.WorkspaceList` was removed
+
+#### `models.BinaryHardeningListResult` was removed
+
+#### `models.CryptoKeyListResult` was removed
+
+#### `models.SummaryListResult` was removed
+
+#### `models.CveListResult` was removed
+
+#### `models.CveComponent` was removed
+
+#### `models.CryptoCertificateListResult` was removed
+
+#### `models.FirmwareList` was removed
+
+#### `models.SummaryName` was removed
+
+#### `models.OperationListResult` was removed
+
+#### `models.WorkspaceUpdateDefinition` was removed
+
+#### `models.PasswordHashListResult` was removed
+
+#### `models.PairedKey` was modified
+
+* `id()` was removed
+* `withId(java.lang.String)` was removed
+* `withType(java.lang.String)` was removed
+
+#### `models.SbomComponentResource` was modified
+
+* `license()` was removed
+* `componentId()` was removed
+* `version()` was removed
+* `filePaths()` was removed
+* `componentName()` was removed
+
+#### `models.CveResource` was modified
+
+* `cvssV3Score()` was removed
+* `component()` was removed
+* `severity()` was removed
+* `cveId()` was removed
+* `cvssV2Score()` was removed
+* `namePropertiesName()` was removed
+* `description()` was removed
+* `cvssVersion()` was removed
+* `cvssScore()` was removed
+* `links()` was removed
+
+#### `models.Firmware$Definition` was modified
+
+* `withFileSize(java.lang.Long)` was removed
+* `withVersion(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
+* `withModel(java.lang.String)` was removed
+* `withStatusMessages(java.util.List)` was removed
+* `withStatus(models.Status)` was removed
+* `withFileName(java.lang.String)` was removed
+* `withVendor(java.lang.String)` was removed
+
+#### `IoTFirmwareDefenseManager` was modified
+
+* `fluent.IoTFirmwareDefense serviceClient()` -> `fluent.IoTFirmwareDefenseMgmtClient serviceClient()`
+
+#### `models.Workspace` was modified
+
+* `provisioningState()` was removed
+
+#### `models.CryptoCertificateSummaryResource` was modified
+
+* `withShortKeySize(java.lang.Long)` was removed
+* `withSelfSigned(java.lang.Long)` was removed
+* `shortKeySize()` was removed
+* `pairedKeys()` was removed
+* `withExpired(java.lang.Long)` was removed
+* `withTotalCertificates(java.lang.Long)` was removed
+* `selfSigned()` was removed
+* `weakSignature()` was removed
+* `totalCertificates()` was removed
+* `expired()` was removed
+* `expiringSoon()` was removed
+* `withWeakSignature(java.lang.Long)` was removed
+* `withPairedKeys(java.lang.Long)` was removed
+* `withExpiringSoon(java.lang.Long)` was removed
+
+#### `models.BinaryHardeningSummaryResource` was modified
+
+* `withNx(java.lang.Integer)` was removed
+* `withStripped(java.lang.Integer)` was removed
+* `withTotalFiles(java.lang.Long)` was removed
+* `withRelro(java.lang.Integer)` was removed
+* `nx()` was removed
+* `canary()` was removed
+* `withPie(java.lang.Integer)` was removed
+* `stripped()` was removed
+* `relro()` was removed
+* `withCanary(java.lang.Integer)` was removed
+* `pie()` was removed
+
+#### `models.CryptoCertificateEntity` was modified
+
+* `withOrganizationalUnit(java.lang.String)` was removed
+* `withState(java.lang.String)` was removed
+* `withCountry(java.lang.String)` was removed
+* `withCommonName(java.lang.String)` was removed
+* `withOrganization(java.lang.String)` was removed
+
+#### `models.CveLink` was modified
+
+* `withLabel(java.lang.String)` was removed
+* `withHref(java.lang.String)` was removed
+
+#### `models.Summaries` was modified
+
+* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,models.SummaryName,com.azure.core.util.Context)` was removed
+* `get(java.lang.String,java.lang.String,java.lang.String,models.SummaryName)` was removed
+
+#### `models.FirmwareSummary` was modified
+
+* `withComponentCount(java.lang.Long)` was removed
+* `withRootFileSystems(java.lang.Long)` was removed
+* `withBinaryCount(java.lang.Long)` was removed
+* `withExtractedFileCount(java.lang.Long)` was removed
+* `withAnalysisTimeSeconds(java.lang.Long)` was removed
+* `withFileSize(java.lang.Long)` was removed
+* `withExtractedSize(java.lang.Long)` was removed
+
+#### `models.Firmwares` was modified
+
+* `generateDownloadUrl(java.lang.String,java.lang.String,java.lang.String)` was removed
+* `generateDownloadUrlWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `generateFilesystemDownloadUrlWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was removed
+* `generateFilesystemDownloadUrl(java.lang.String,java.lang.String,java.lang.String)` was removed
+
+#### `models.CveSummary` was modified
+
+* `withLow(java.lang.Long)` was removed
+* `high()` was removed
+* `withHigh(java.lang.Long)` was removed
+* `critical()` was removed
+* `withCritical(java.lang.Long)` was removed
+* `medium()` was removed
+* `withUnknown(java.lang.Long)` was removed
+* `withMedium(java.lang.Long)` was removed
+* `low()` was removed
+* `unknown()` was removed
+
+#### `models.CryptoKeyResource` was modified
+
+* `keyType()` was removed
+* `filePaths()` was removed
+* `cryptoKeyId()` was removed
+* `isShortKeySize()` was removed
+* `pairedKey()` was removed
+* `usage()` was removed
+* `keyAlgorithm()` was removed
+* `keySize()` was removed
+
+#### `models.Firmware$Update` was modified
+
+* `withStatus(models.Status)` was removed
+* `withVersion(java.lang.String)` was removed
+* `withFileSize(java.lang.Long)` was removed
+* `withVendor(java.lang.String)` was removed
+* `withFileName(java.lang.String)` was removed
+* `withDescription(java.lang.String)` was removed
+* `withStatusMessages(java.util.List)` was removed
+* `withModel(java.lang.String)` was removed
+
+#### `models.FirmwareUpdateDefinition` was modified
+
+* `fileName()` was removed
+* `description()` was removed
+* `withModel(java.lang.String)` was removed
+* `withStatus(models.Status)` was removed
+* `withDescription(java.lang.String)` was removed
+* `fileSize()` was removed
+* `withFileName(java.lang.String)` was removed
+* `model()` was removed
+* `withVersion(java.lang.String)` was removed
+* `withStatusMessages(java.util.List)` was removed
+* `withVendor(java.lang.String)` was removed
+* `provisioningState()` was removed
+* `version()` was removed
+* `withFileSize(java.lang.Long)` was removed
+* `status()` was removed
+* `vendor()` was removed
+* `statusMessages()` was removed
+
+#### `models.CryptoCertificateResource` was modified
+
+* `expirationDate()` was removed
+* `serialNumber()` was removed
+* `usage()` was removed
+* `issuedDate()` was removed
+* `filePaths()` was removed
+* `isWeakSignature()` was removed
+* `isSelfSigned()` was removed
+* `cryptoCertId()` was removed
+* `isShortKeySize()` was removed
+* `role()` was removed
+* `subject()` was removed
+* `isExpired()` was removed
+* `keySize()` was removed
+* `namePropertiesName()` was removed
+* `fingerprint()` was removed
+* `issuer()` was removed
+* `keyAlgorithm()` was removed
+* `pairedKey()` was removed
+* `signatureAlgorithm()` was removed
+* `encoding()` was removed
+
+#### `models.CryptoKeySummaryResource` was modified
+
+* `withPairedKeys(java.lang.Long)` was removed
+* `publicKeys()` was removed
+* `shortKeySize()` was removed
+* `withPrivateKeys(java.lang.Long)` was removed
+* `withShortKeySize(java.lang.Long)` was removed
+* `withTotalKeys(java.lang.Long)` was removed
+* `privateKeys()` was removed
+* `pairedKeys()` was removed
+* `totalKeys()` was removed
+* `withPublicKeys(java.lang.Long)` was removed
+
+#### `models.Firmware` was modified
+
+* `generateDownloadUrl()` was removed
+* `fileSize()` was removed
+* `status()` was removed
+* `description()` was removed
+* `version()` was removed
+* `generateFilesystemDownloadUrl()` was removed
+* `vendor()` was removed
+* `generateDownloadUrlWithResponse(com.azure.core.util.Context)` was removed
+* `generateFilesystemDownloadUrlWithResponse(com.azure.core.util.Context)` was removed
+* `model()` was removed
+* `provisioningState()` was removed
+* `fileName()` was removed
+* `statusMessages()` was removed
+
+#### `models.PasswordHashResource` was modified
+
+* `passwordHashId()` was removed
+* `salt()` was removed
+* `context()` was removed
+* `hash()` was removed
+* `algorithm()` was removed
+* `filePath()` was removed
+* `username()` was removed
+
+#### `models.BinaryHardeningResource` was modified
+
+* `nx()` was removed
+* `canary()` was removed
+* `pie()` was removed
+* `relro()` was removed
+* `architecture()` was removed
+* `filePath()` was removed
+* `runpath()` was removed
+* `binaryHardeningId()` was removed
+* `rpath()` was removed
+* `classProperty()` was removed
+* `stripped()` was removed
+
+### Features Added
+
+* `models.UsageMetric` was added
+
+* `implementation.models.FirmwareListResult` was added
+
+* `models.WorkspaceUpdate` was added
+
+* `models.SkuTier` was added
+
+* `models.CryptoKey` was added
+
+* `implementation.models.CveResourceListResult` was added
+
+* `implementation.models.SbomComponentResourceListResult` was added
+
+* `implementation.models.PasswordHashResourceListResult` was added
+
+* `models.Sku` was added
+
+* `implementation.models.CryptoKeyResourceListResult` was added
+
+* `models.CveResult` was added
+
+* `models.BinaryHardeningResult` was added
+
+* `models.UsageMetrics` was added
+
+* `implementation.models.OperationListResult` was added
+
+* `implementation.models.BinaryHardeningResourceListResult` was added
+
+* `models.CvssScore` was added
+
+* `implementation.models.WorkspaceListResult` was added
+
+* `models.FirmwareProperties` was added
+
+* `models.CertificateUsage` was added
+
+* `models.SbomComponent` was added
+
+* `implementation.models.SummaryResourceListResult` was added
+
+* `models.ExecutableClass` was added
+
+* `models.PasswordHash` was added
+
+* `models.CryptoCertificate` was added
+
+* `models.BinaryHardeningFeatures` was added
+
+* `models.UsageMetricProperties` was added
+
+* `models.CryptoKeyType` was added
+
+* `implementation.models.UsageMetricListResult` was added
+
+* `implementation.models.CryptoCertificateResourceListResult` was added
+
+* `models.WorkspaceProperties` was added
+
+#### `models.PairedKey` was modified
+
+* `pairedKeyId()` was added
+
+#### `models.SbomComponentResource` was modified
+
+* `properties()` was added
+
+#### `models.CveResource` was modified
+
+* `properties()` was added
+
+#### `models.Firmware$Definition` was modified
+
+* `withProperties(models.FirmwareProperties)` was added
+
+#### `IoTFirmwareDefenseManager` was modified
+
+* `usageMetrics()` was added
+
+#### `models.Workspace` was modified
+
+* `sku()` was added
+* `properties()` was added
+
+#### `models.CryptoCertificateSummaryResource` was modified
+
+* `expiredCertificateCount()` was added
+* `selfSignedCertificateCount()` was added
+* `weakSignatureCount()` was added
+* `totalCertificateCount()` was added
+* `shortKeySizeCount()` was added
+* `pairedKeyCount()` was added
+* `expiringSoonCertificateCount()` was added
+
+#### `models.BinaryHardeningSummaryResource` was modified
+
+* `strippedBinaryCount()` was added
+* `relocationReadOnlyCount()` was added
+* `notExecutableStackCount()` was added
+* `positionIndependentExecutableCount()` was added
+* `stackCanaryCount()` was added
+
+#### `models.Summaries` was modified
+
+* `get(java.lang.String,java.lang.String,java.lang.String,models.SummaryType)` was added
+* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,models.SummaryType,com.azure.core.util.Context)` was added
+
+#### `models.Workspace$Update` was modified
+
+* `withSku(models.Sku)` was added
+* `withTags(java.util.Map)` was added
+
+#### `models.Workspace$Definition` was modified
+
+* `withProperties(models.WorkspaceProperties)` was added
+* `withSku(models.Sku)` was added
+
+#### `models.CveSummary` was modified
+
+* `unknownCveCount()` was added
+* `criticalCveCount()` was added
+* `lowCveCount()` was added
+* `mediumCveCount()` was added
+* `highCveCount()` was added
+
+#### `models.SummaryResourceProperties` was modified
+
+* `provisioningState()` was added
+
+#### `models.CryptoKeyResource` was modified
+
+* `properties()` was added
+
+#### `models.Firmware$Update` was modified
+
+* `withProperties(models.FirmwareProperties)` was added
+
+#### `models.FirmwareUpdateDefinition` was modified
+
+* `withProperties(models.FirmwareProperties)` was added
+* `properties()` was added
+
+#### `models.CryptoCertificateResource` was modified
+
+* `properties()` was added
+
+#### `models.CryptoKeySummaryResource` was modified
+
+* `publicKeyCount()` was added
+* `totalKeyCount()` was added
+* `shortKeySizeCount()` was added
+* `pairedKeyCount()` was added
+* `privateKeyCount()` was added
+
+#### `models.Firmware` was modified
+
+* `properties()` was added
+
+#### `models.PasswordHashResource` was modified
+
+* `properties()` was added
+
+#### `models.BinaryHardeningResource` was modified
+
+* `properties()` was added
 
 ## 1.1.0 (2024-12-19)
 
