@@ -1,8 +1,9 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0-beta.2 (Unreleased)
 
 ### Features Added
+- User Defined Funtions (UDFs) support in Ledger API.
 
 ### Breaking Changes
 
