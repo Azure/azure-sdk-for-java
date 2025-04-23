@@ -26,8 +26,8 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.resourcemanager.netapp.fluent.NetAppResourceQuotaLimitsClient;
-import com.azure.resourcemanager.netapp.fluent.models.SubscriptionQuotaItemInner;
-import com.azure.resourcemanager.netapp.models.SubscriptionQuotaItemList;
+import com.azure.resourcemanager.netapp.fluent.models.QuotaItemInner;
+import com.azure.resourcemanager.netapp.models.QuotaItemList;
 import reactor.core.publisher.Mono;
 
 /**
@@ -66,7 +66,7 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/quotaLimits")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SubscriptionQuotaItemList>> list(@HostParam("$host") String endpoint,
+        Mono<Response<QuotaItemList>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
@@ -74,7 +74,7 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.NetApp/locations/{location}/quotaLimits/{quotaLimitName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SubscriptionQuotaItemInner>> get(@HostParam("$host") String endpoint,
+        Mono<Response<QuotaItemInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId, @PathParam("location") String location,
             @PathParam("quotaLimitName") String quotaLimitName, @QueryParam("api-version") String apiVersion,
             @HeaderParam("Accept") String accept, Context context);
@@ -93,7 +93,7 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SubscriptionQuotaItemInner>> listSinglePageAsync(String location) {
+    private Mono<PagedResponse<QuotaItemInner>> listSinglePageAsync(String location) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -109,8 +109,8 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
         return FluxUtil
             .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(), location,
                 this.client.getApiVersion(), accept, context))
-            .<PagedResponse<SubscriptionQuotaItemInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
-                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .<PagedResponse<QuotaItemInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -128,7 +128,7 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SubscriptionQuotaItemInner>> listSinglePageAsync(String location, Context context) {
+    private Mono<PagedResponse<QuotaItemInner>> listSinglePageAsync(String location, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -161,7 +161,7 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
      * @return the default and current limits for quotas as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SubscriptionQuotaItemInner> listAsync(String location) {
+    private PagedFlux<QuotaItemInner> listAsync(String location) {
         return new PagedFlux<>(() -> listSinglePageAsync(location));
     }
 
@@ -178,7 +178,7 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
      * @return the default and current limits for quotas as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SubscriptionQuotaItemInner> listAsync(String location, Context context) {
+    private PagedFlux<QuotaItemInner> listAsync(String location, Context context) {
         return new PagedFlux<>(() -> listSinglePageAsync(location, context));
     }
 
@@ -194,7 +194,7 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
      * @return the default and current limits for quotas as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SubscriptionQuotaItemInner> list(String location) {
+    public PagedIterable<QuotaItemInner> list(String location) {
         return new PagedIterable<>(listAsync(location));
     }
 
@@ -211,7 +211,7 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
      * @return the default and current limits for quotas as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SubscriptionQuotaItemInner> list(String location, Context context) {
+    public PagedIterable<QuotaItemInner> list(String location, Context context) {
         return new PagedIterable<>(listAsync(location, context));
     }
 
@@ -229,7 +229,7 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SubscriptionQuotaItemInner>> getWithResponseAsync(String location, String quotaLimitName) {
+    private Mono<Response<QuotaItemInner>> getWithResponseAsync(String location, String quotaLimitName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -266,7 +266,7 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SubscriptionQuotaItemInner>> getWithResponseAsync(String location, String quotaLimitName,
+    private Mono<Response<QuotaItemInner>> getWithResponseAsync(String location, String quotaLimitName,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
@@ -301,7 +301,7 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
      * @return the default and current subscription quota limit on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SubscriptionQuotaItemInner> getAsync(String location, String quotaLimitName) {
+    private Mono<QuotaItemInner> getAsync(String location, String quotaLimitName) {
         return getWithResponseAsync(location, quotaLimitName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -319,8 +319,7 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
      * @return the default and current subscription quota limit along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SubscriptionQuotaItemInner> getWithResponse(String location, String quotaLimitName,
-        Context context) {
+    public Response<QuotaItemInner> getWithResponse(String location, String quotaLimitName, Context context) {
         return getWithResponseAsync(location, quotaLimitName, context).block();
     }
 
@@ -337,7 +336,7 @@ public final class NetAppResourceQuotaLimitsClientImpl implements NetAppResource
      * @return the default and current subscription quota limit.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SubscriptionQuotaItemInner get(String location, String quotaLimitName) {
+    public QuotaItemInner get(String location, String quotaLimitName) {
         return getWithResponse(location, quotaLimitName, Context.NONE).getValue();
     }
 }

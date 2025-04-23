@@ -173,6 +173,31 @@ public final class CapacityPoolPatch extends Resource {
     }
 
     /**
+     * Get the customThroughputMibps property: Maximum throughput in MiB/s that can be achieved by this pool and this
+     * will be accepted as input only for manual qosType pool with Flexible service level.
+     * 
+     * @return the customThroughputMibps value.
+     */
+    public Float customThroughputMibps() {
+        return this.innerProperties() == null ? null : this.innerProperties().customThroughputMibps();
+    }
+
+    /**
+     * Set the customThroughputMibps property: Maximum throughput in MiB/s that can be achieved by this pool and this
+     * will be accepted as input only for manual qosType pool with Flexible service level.
+     * 
+     * @param customThroughputMibps the customThroughputMibps value to set.
+     * @return the CapacityPoolPatch object itself.
+     */
+    public CapacityPoolPatch withCustomThroughputMibps(Float customThroughputMibps) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PoolPatchProperties();
+        }
+        this.innerProperties().withCustomThroughputMibps(customThroughputMibps);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
