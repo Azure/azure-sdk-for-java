@@ -417,6 +417,15 @@ jobs:
           RunLinting: true
           SDKType: ${{ parameters.SDKType }}
 
+      - task: PowerShell@2
+        displayName: Generate CG Manifest for projects
+        inputs:
+          pwsh: true
+          filePath: $(Build.SourcesDirectory)/eng/scripts/Create-CgManifest.ps1
+          arguments: >
+            -Projects $(ProjectList)
+            -MavenCacheFolder $(MAVEN_CACHE_FOLDER)
+
       - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
 
       - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml

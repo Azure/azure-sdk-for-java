@@ -19,7 +19,7 @@ The Maven cache folder to use. If not specified, the environment configuration w
 
 param(
     [Parameter(Mandatory = $true)]
-    [string]$Projects = "com.azure:azure-core,com.azure:azure-core-test",
+    [string]$Projects,
     [Parameter(Mandatory = $false)]
     [string]$OutputDirectory,
     [Parameter(Mandatory = $false)]
@@ -71,7 +71,7 @@ function Build-CgManifestData {
         }
         $line = $Matches[1]
 
-        $mavenDependency
+        $mavenDependency = $null
         $parts = $line -split ":"
         if ($parts.Count -eq 5) {
             $mavenDependency = [MavenDependency]::new($parts[0], $parts[1], $parts[3], $parts[4] -eq "test" -or $IsPlugins)
