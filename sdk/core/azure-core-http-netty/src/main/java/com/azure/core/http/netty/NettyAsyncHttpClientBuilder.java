@@ -257,6 +257,12 @@ public class NettyAsyncHttpClientBuilder {
                                     handler, proxyChallengeHolder));
                     }
                 });
+
+                AddressResolverGroup<?> resolver = nettyHttpClient.configuration().resolver();
+                if (resolver == null || addressResolverWasSetByBuilder) {
+                    // This mimics behaviors seen when Reactor Netty proxying is used.
+                    nettyHttpClient = nettyHttpClient.resolver(NoopAddressResolverGroup.INSTANCE);
+                }
             } else {
                 nettyHttpClient
                     = nettyHttpClient.proxy(proxy -> proxy.type(toReactorNettyProxyType(buildProxyOptions.getType()))
@@ -264,12 +270,6 @@ public class NettyAsyncHttpClientBuilder {
                         .username(buildProxyOptions.getUsername())
                         .password(ignored -> buildProxyOptions.getPassword())
                         .nonProxyHosts(buildProxyOptions.getNonProxyHosts()));
-            }
-
-            AddressResolverGroup<?> resolver = nettyHttpClient.configuration().resolver();
-            if (resolver == null || addressResolverWasSetByBuilder) {
-                // This mimics behaviors seen when Reactor Netty proxying is used.
-                nettyHttpClient = nettyHttpClient.resolver(NoopAddressResolverGroup.INSTANCE);
             }
         }
 
