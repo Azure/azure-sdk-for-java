@@ -182,32 +182,36 @@ foreach ($pomFile in $pomFilesToProcess) {
     $pluginOutputFileName = Join-Path $processingLocation "plugins.txt"
 
     # Create the command to get the Maven project dependencies.
-    $command = "mvn dependency:resolve -DexcludeTransitive=true -DoutputType=text -DoutputFile=$dependencyOutputFileName"
+    $command = "mvn dependency:resolve -DexcludeTransitive=true -DoutputType=text `"-DoutputFile=$dependencyOutputFileName`""
     if ($MavenCacheFolder) {
-        $command += " -Dmaven.repo.local=$MavenCacheFolder"
+        $command += " `"-Dmaven.repo.local=$MavenCacheFolder`""
     }
     $command += " -f $pomFile"
 
     # Execute the command.
     $output = Invoke-Expression $command
     if ($LASTEXITCODE -ne 0) {
-        Write-Error "Failed to execute command: $command. Error: $output"
+        Write-Error "Failed to execute command: $command.
+$([String]::Join("`n", $output))
+        "
         return
     }
 
     Build-CgManifestData $dependencyOutputFileName $cgManifestData $pomFile $false
 
     # Create the command to get the Maven plugin dependencies.
-    $command = "mvn dependency:resolve-plugins -DexcludeTransitive=true -DoutputFile=$pluginOutputFileName"
+    $command = "mvn dependency:resolve-plugins -DexcludeTransitive=true `"-DoutputFile=$pluginOutputFileName`""
     if ($MavenCacheFolder) {
-        $command += " -Dmaven.repo.local=$MavenCacheFolder"
+        $command += " `"-Dmaven.repo.local=$MavenCacheFolder`""
     }
     $command += " -f $pomFile"
 
     # Execute the command.
     $output = Invoke-Expression $command
     if ($LASTEXITCODE -ne 0) {
-        Write-Error "Failed to execute command: $command. Error: $output"
+        Write-Error "Failed to execute command: $command.
+$([String]::Join("`n", $output))
+        "
         return
     }
 
