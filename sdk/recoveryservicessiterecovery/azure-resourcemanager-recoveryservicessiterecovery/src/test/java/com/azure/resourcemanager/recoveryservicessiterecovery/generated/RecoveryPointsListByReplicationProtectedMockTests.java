@@ -7,8 +7,8 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryPoint;
@@ -22,22 +22,22 @@ public final class RecoveryPointsListByReplicationProtectedMockTests {
     @Test
     public void testListByReplicationProtectedItems() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"recoveryPointTime\":\"2021-08-10T18:08:27Z\",\"recoveryPointType\":\"utyjukkedputocr\",\"providerSpecificDetails\":{\"instanceType\":\"ProviderSpecificRecoveryPointDetails\"}},\"location\":\"qicmdrgcuzjmvk\",\"id\":\"wrjcqhgcmljzk\",\"name\":\"qimybqjvfio\",\"type\":\"hcaqpv\"}]}";
+            = "{\"value\":[{\"properties\":{\"recoveryPointTime\":\"2021-03-04T16:34:08Z\",\"recoveryPointType\":\"okrqd\",\"providerSpecificDetails\":{\"instanceType\":\"ProviderSpecificRecoveryPointDetails\"}},\"location\":\"kqyjkotypcj\",\"id\":\"hyzzlocjhzpp\",\"name\":\"brbm\",\"type\":\"xbofpr\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         SiteRecoveryManager manager = SiteRecoveryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<RecoveryPoint> response = manager.recoveryPoints()
-            .listByReplicationProtectedItems("ehdhjofywwna", "oxlorxgsl", "c", "u", "hvpaglyyhrgma",
+            .listByReplicationProtectedItems("t", "ltckiwxggfagi", "xmdboefnhx", "ah", "qeinv",
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(OffsetDateTime.parse("2021-08-10T18:08:27Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-03-04T16:34:08Z"),
             response.iterator().next().properties().recoveryPointTime());
-        Assertions.assertEquals("utyjukkedputocr", response.iterator().next().properties().recoveryPointType());
-        Assertions.assertEquals("qicmdrgcuzjmvk", response.iterator().next().location());
+        Assertions.assertEquals("okrqd", response.iterator().next().properties().recoveryPointType());
+        Assertions.assertEquals("kqyjkotypcj", response.iterator().next().location());
     }
 }

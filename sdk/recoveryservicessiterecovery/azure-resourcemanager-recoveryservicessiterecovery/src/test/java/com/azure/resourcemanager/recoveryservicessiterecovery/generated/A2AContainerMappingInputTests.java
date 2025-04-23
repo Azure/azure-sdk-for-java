@@ -14,24 +14,24 @@ public final class A2AContainerMappingInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         A2AContainerMappingInput model = BinaryData.fromString(
-            "{\"instanceType\":\"A2A\",\"agentAutoUpdateStatus\":\"Enabled\",\"automationAccountArmId\":\"goaqylkjztj\",\"automationAccountAuthenticationType\":\"SystemAssignedIdentity\"}")
+            "{\"instanceType\":\"A2A\",\"agentAutoUpdateStatus\":\"Disabled\",\"automationAccountArmId\":\"qfblhkalehpa\",\"automationAccountAuthenticationType\":\"RunAsAccount\"}")
             .toObject(A2AContainerMappingInput.class);
-        Assertions.assertEquals(AgentAutoUpdateStatus.ENABLED, model.agentAutoUpdateStatus());
-        Assertions.assertEquals("goaqylkjztj", model.automationAccountArmId());
-        Assertions.assertEquals(AutomationAccountAuthenticationType.SYSTEM_ASSIGNED_IDENTITY,
+        Assertions.assertEquals(AgentAutoUpdateStatus.DISABLED, model.agentAutoUpdateStatus());
+        Assertions.assertEquals("qfblhkalehpa", model.automationAccountArmId());
+        Assertions.assertEquals(AutomationAccountAuthenticationType.RUN_AS_ACCOUNT,
             model.automationAccountAuthenticationType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         A2AContainerMappingInput model
-            = new A2AContainerMappingInput().withAgentAutoUpdateStatus(AgentAutoUpdateStatus.ENABLED)
-                .withAutomationAccountArmId("goaqylkjztj")
-                .withAutomationAccountAuthenticationType(AutomationAccountAuthenticationType.SYSTEM_ASSIGNED_IDENTITY);
+            = new A2AContainerMappingInput().withAgentAutoUpdateStatus(AgentAutoUpdateStatus.DISABLED)
+                .withAutomationAccountArmId("qfblhkalehpa")
+                .withAutomationAccountAuthenticationType(AutomationAccountAuthenticationType.RUN_AS_ACCOUNT);
         model = BinaryData.fromObject(model).toObject(A2AContainerMappingInput.class);
-        Assertions.assertEquals(AgentAutoUpdateStatus.ENABLED, model.agentAutoUpdateStatus());
-        Assertions.assertEquals("goaqylkjztj", model.automationAccountArmId());
-        Assertions.assertEquals(AutomationAccountAuthenticationType.SYSTEM_ASSIGNED_IDENTITY,
+        Assertions.assertEquals(AgentAutoUpdateStatus.DISABLED, model.agentAutoUpdateStatus());
+        Assertions.assertEquals("qfblhkalehpa", model.automationAccountArmId());
+        Assertions.assertEquals(AutomationAccountAuthenticationType.RUN_AS_ACCOUNT,
             model.automationAccountAuthenticationType());
     }
 }

@@ -13,37 +13,37 @@ public final class VirtualMachineTaskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualMachineTaskDetails model = BinaryData.fromString(
-            "{\"instanceType\":\"VirtualMachineTaskDetails\",\"skippedReason\":\"doaqipmnxclfrsb\",\"skippedReasonString\":\"nm\",\"jobTask\":{\"jobId\":\"vp\",\"jobFriendlyName\":\"fddtbfmekjcng\",\"targetObjectId\":\"xdvmaoyqxf\",\"targetObjectName\":\"yxzmx\",\"targetInstanceType\":\"ofxlttxo\",\"jobScenarioName\":\"tdnzujsjirkrpskc\"}}")
+            "{\"instanceType\":\"VirtualMachineTaskDetails\",\"skippedReason\":\"izt\",\"skippedReasonString\":\"stahhhsaaxxsritr\",\"jobTask\":{\"jobId\":\"aaesyyefmxwoqot\",\"jobFriendlyName\":\"qb\",\"targetObjectId\":\"asrvrmtist\",\"targetObjectName\":\"kjhorlxkpy\",\"targetInstanceType\":\"ennycntr\",\"jobScenarioName\":\"xwtdmbqjtsuhqh\"}}")
             .toObject(VirtualMachineTaskDetails.class);
-        Assertions.assertEquals("vp", model.jobTask().jobId());
-        Assertions.assertEquals("fddtbfmekjcng", model.jobTask().jobFriendlyName());
-        Assertions.assertEquals("xdvmaoyqxf", model.jobTask().targetObjectId());
-        Assertions.assertEquals("yxzmx", model.jobTask().targetObjectName());
-        Assertions.assertEquals("ofxlttxo", model.jobTask().targetInstanceType());
-        Assertions.assertEquals("tdnzujsjirkrpskc", model.jobTask().jobScenarioName());
-        Assertions.assertEquals("doaqipmnxclfrsb", model.skippedReason());
-        Assertions.assertEquals("nm", model.skippedReasonString());
+        Assertions.assertEquals("aaesyyefmxwoqot", model.jobTask().jobId());
+        Assertions.assertEquals("qb", model.jobTask().jobFriendlyName());
+        Assertions.assertEquals("asrvrmtist", model.jobTask().targetObjectId());
+        Assertions.assertEquals("kjhorlxkpy", model.jobTask().targetObjectName());
+        Assertions.assertEquals("ennycntr", model.jobTask().targetInstanceType());
+        Assertions.assertEquals("xwtdmbqjtsuhqh", model.jobTask().jobScenarioName());
+        Assertions.assertEquals("izt", model.skippedReason());
+        Assertions.assertEquals("stahhhsaaxxsritr", model.skippedReasonString());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualMachineTaskDetails model = new VirtualMachineTaskDetails()
-            .withJobTask(new JobEntity().withJobId("vp")
-                .withJobFriendlyName("fddtbfmekjcng")
-                .withTargetObjectId("xdvmaoyqxf")
-                .withTargetObjectName("yxzmx")
-                .withTargetInstanceType("ofxlttxo")
-                .withJobScenarioName("tdnzujsjirkrpskc"))
-            .withSkippedReason("doaqipmnxclfrsb")
-            .withSkippedReasonString("nm");
+            .withJobTask(new JobEntity().withJobId("aaesyyefmxwoqot")
+                .withJobFriendlyName("qb")
+                .withTargetObjectId("asrvrmtist")
+                .withTargetObjectName("kjhorlxkpy")
+                .withTargetInstanceType("ennycntr")
+                .withJobScenarioName("xwtdmbqjtsuhqh"))
+            .withSkippedReason("izt")
+            .withSkippedReasonString("stahhhsaaxxsritr");
         model = BinaryData.fromObject(model).toObject(VirtualMachineTaskDetails.class);
-        Assertions.assertEquals("vp", model.jobTask().jobId());
-        Assertions.assertEquals("fddtbfmekjcng", model.jobTask().jobFriendlyName());
-        Assertions.assertEquals("xdvmaoyqxf", model.jobTask().targetObjectId());
-        Assertions.assertEquals("yxzmx", model.jobTask().targetObjectName());
-        Assertions.assertEquals("ofxlttxo", model.jobTask().targetInstanceType());
-        Assertions.assertEquals("tdnzujsjirkrpskc", model.jobTask().jobScenarioName());
-        Assertions.assertEquals("doaqipmnxclfrsb", model.skippedReason());
-        Assertions.assertEquals("nm", model.skippedReasonString());
+        Assertions.assertEquals("aaesyyefmxwoqot", model.jobTask().jobId());
+        Assertions.assertEquals("qb", model.jobTask().jobFriendlyName());
+        Assertions.assertEquals("asrvrmtist", model.jobTask().targetObjectId());
+        Assertions.assertEquals("kjhorlxkpy", model.jobTask().targetObjectName());
+        Assertions.assertEquals("ennycntr", model.jobTask().targetInstanceType());
+        Assertions.assertEquals("xwtdmbqjtsuhqh", model.jobTask().jobScenarioName());
+        Assertions.assertEquals("izt", model.skippedReason());
+        Assertions.assertEquals("stahhhsaaxxsritr", model.skippedReasonString());
     }
 }
