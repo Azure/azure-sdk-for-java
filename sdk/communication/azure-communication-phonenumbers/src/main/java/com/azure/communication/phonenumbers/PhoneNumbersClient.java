@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClientImpl;
 import com.azure.communication.phonenumbers.implementation.PhoneNumbersImpl;
 import com.azure.communication.phonenumbers.implementation.models.OperatorInformationRequest;
-import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersReservationInternal;
 import com.azure.communication.phonenumbers.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.models.AvailablePhoneNumber;
 import com.azure.communication.phonenumbers.models.OperatorInformationOptions;
@@ -1029,56 +1028,6 @@ public final class PhoneNumbersClient {
     }
 
     /**
-     * Creates a reservation by its ID, if it's not provided it will generate a random one.
-     * 
-     * Creates a reservation with given or random ID and adds phone numbers to it. The response will be the created 
-     * reservation. Phone numbers can be reserved by including them in the payload. If a reservation with the same ID already exists, 
-     * it will be updated, otherwise a new one is created. Only reservations with 'active' status can be updated. 
-     * Updating a reservation will extend the expiration time of the reservation to 15 minutes after the last change, up to a maximum of 2 hours from creation
-     * time. Partial success is possible, in which case the response will have a 207 status code.
-     * 
-     * @param reservationId The id of the reservation that's going to be created.
-     * @param phoneNumbers The phone numbers to be reserved.
-     * @return represents a reservation for phone numbers {@link PhoneNumbersReservation}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PhoneNumbersReservation createReservation(UUID reservationId, List<AvailablePhoneNumber> phoneNumbers) {
-
-        if (reservationId == null) {
-            reservationId = UUID.randomUUID();
-        }
-        Map<String, AvailablePhoneNumber> phoneNumbersMap = createPhoneNumbersMap(new HashMap<>(), phoneNumbers);
-        PhoneNumbersReservation reservation = new PhoneNumbersReservation().setPhoneNumbers(phoneNumbersMap);
-        return client.createOrUpdateReservation(reservationId, reservation);
-    }
-
-    /**
-     * Creates a reservation by its ID, if it's not provided it will generate a random one.
-     * 
-     * Creates a reservation with given or random ID and adds phone numbers to it. The response will be the created 
-     * reservation. Phone numbers can be reserved by including them in the payload. If a reservation with the same ID already exists, 
-     * it will be updated, otherwise a new one is created. Only reservations with 'active' status can be updated. 
-     * Updating a reservation will extend the expiration time of the reservation to 15 minutes after the last change, up to a maximum of 2 hours from creation
-     * time. Partial success is possible, in which case the response will have a 207 status code.
-     * 
-     * @param reservationId The id of the reservation that's going to be created.
-     * @param phoneNumbers The phone numbers to be reserved.
-     * @param context The context to associate with this operation.
-     * @return represents a reservation for phone numbers along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PhoneNumbersReservation> createReservation(UUID reservationId,
-        List<AvailablePhoneNumber> phoneNumbers, Context context) {
-        if (reservationId == null) {
-            reservationId = UUID.randomUUID();
-        }
-        Map<String, AvailablePhoneNumber> phoneNumbersMap = createPhoneNumbersMap(new HashMap<>(), phoneNumbers);
-
-        PhoneNumbersReservation reservation = new PhoneNumbersReservation().setPhoneNumbers(phoneNumbersMap);
-        return client.createOrUpdateReservationWithResponse(reservationId, reservation, context);
-    }
-
-    /**
      * Updates a reservation by its ID.
      * 
      * Adds and removes phone numbers from the reservation with the given ID. The response will be the updated state of
@@ -1095,8 +1044,12 @@ public final class PhoneNumbersClient {
      * @return represents a reservation for phone numbers {@link PhoneNumbersReservation}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PhoneNumbersReservation updateReservation(UUID reservationId, List<AvailablePhoneNumber> add,
+    public PhoneNumbersReservation createOrUpdateReservation(UUID reservationId, List<AvailablePhoneNumber> add,
         List<AvailablePhoneNumber> remove) {
+        if (reservationId == null) {
+            reservationId = UUID.randomUUID();
+        }
+
         Map<String, AvailablePhoneNumber> phoneNumbersMap = updatePhoneNumbersMap(new HashMap<>(), add, remove);
         PhoneNumbersReservation reservation = new PhoneNumbersReservation().setPhoneNumbers(phoneNumbersMap);
         return client.createOrUpdateReservation(reservationId, reservation);
@@ -1119,8 +1072,11 @@ public final class PhoneNumbersClient {
      * @return represents a reservation for phone numbers along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PhoneNumbersReservation> updateReservation(UUID reservationId, List<AvailablePhoneNumber> add,
-        List<AvailablePhoneNumber> remove, Context context) {
+    public Response<PhoneNumbersReservation> createOrUpdateReservation(UUID reservationId,
+        List<AvailablePhoneNumber> add, List<AvailablePhoneNumber> remove, Context context) {
+        if (reservationId == null) {
+            reservationId = UUID.randomUUID();
+        }
         Map<String, AvailablePhoneNumber> phoneNumbersMap = updatePhoneNumbersMap(new HashMap<>(), add, remove);
         PhoneNumbersReservation reservation = new PhoneNumbersReservation().setPhoneNumbers(phoneNumbersMap);
         return client.createOrUpdateReservationWithResponse(reservationId, reservation, context);
