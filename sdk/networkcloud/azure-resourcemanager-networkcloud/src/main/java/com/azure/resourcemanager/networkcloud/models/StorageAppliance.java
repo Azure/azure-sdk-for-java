@@ -73,7 +73,7 @@ public interface StorageAppliance {
     AdministrativeCredentials administratorCredentials();
 
     /**
-     * Gets the capacity property: The total capacity of the storage appliance.
+     * Gets the capacity property: The total capacity of the storage appliance. Measured in GiB.
      * 
      * @return the capacity value.
      */
@@ -87,7 +87,8 @@ public interface StorageAppliance {
     Long capacityUsed();
 
     /**
-     * Gets the clusterId property: The resource ID of the cluster this storage appliance is associated with.
+     * Gets the clusterId property: The resource ID of the cluster this storage appliance is associated with. Measured
+     * in GiB.
      * 
      * @return the clusterId value.
      */

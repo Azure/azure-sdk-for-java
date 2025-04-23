@@ -94,7 +94,7 @@ public final class ManagementPolicyInner extends ProxyResource {
 
     /**
      * Get the policy property: The Storage Account ManagementPolicy, in JSON format. See more details in:
-     * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
+     * https://learn.microsoft.com/azure/storage/blobs/lifecycle-management-overview.
      * 
      * @return the policy value.
      */
@@ -104,7 +104,7 @@ public final class ManagementPolicyInner extends ProxyResource {
 
     /**
      * Set the policy property: The Storage Account ManagementPolicy, in JSON format. See more details in:
-     * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
+     * https://learn.microsoft.com/azure/storage/blobs/lifecycle-management-overview.
      * 
      * @param policy the policy value to set.
      * @return the ManagementPolicyInner object itself.

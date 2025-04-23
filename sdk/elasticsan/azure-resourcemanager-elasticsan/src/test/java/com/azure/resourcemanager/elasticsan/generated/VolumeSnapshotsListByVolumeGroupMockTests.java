@@ -7,8 +7,8 @@ package com.azure.resourcemanager.elasticsan.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.elasticsan.ElasticSanManager;
 import com.azure.resourcemanager.elasticsan.models.Snapshot;
@@ -22,19 +22,18 @@ public final class VolumeSnapshotsListByVolumeGroupMockTests {
     @Test
     public void testListByVolumeGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"creationData\":{\"sourceId\":\"pvuzlmv\"},\"provisioningState\":\"Updating\",\"sourceVolumeSizeGiB\":7439617895559455713,\"volumeName\":\"plcrpwjxeznoig\"},\"id\":\"njwmwkpnbsazejj\",\"name\":\"qkagfhsxt\",\"type\":\"augzxnfaazpxdtn\"}]}";
+            = "{\"value\":[{\"properties\":{\"creationData\":{\"sourceId\":\"ou\"},\"provisioningState\":\"Deleted\",\"sourceVolumeSizeGiB\":6997260883563446565,\"volumeName\":\"aays\"},\"id\":\"ixqtn\",\"name\":\"ttezlw\",\"type\":\"ffiakp\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ElasticSanManager manager = ElasticSanManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<Snapshot> response = manager.volumeSnapshots()
-            .listByVolumeGroup("yhgfipnsx", "mcwaekrrjr", "afxtsgum", "jglikkxwslolb",
-                com.azure.core.util.Context.NONE);
+            .listByVolumeGroup("oqkag", "hsxttaugzxnf", "azpxdtnkdmkqjjl", "uenvrkp", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("pvuzlmv", response.iterator().next().creationData().sourceId());
+        Assertions.assertEquals("ou", response.iterator().next().creationData().sourceId());
     }
 }

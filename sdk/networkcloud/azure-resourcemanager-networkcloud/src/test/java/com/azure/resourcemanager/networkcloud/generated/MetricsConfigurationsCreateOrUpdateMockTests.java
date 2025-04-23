@@ -35,13 +35,13 @@ public final class MetricsConfigurationsCreateOrUpdateMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ClusterMetricsConfiguration response = manager.metricsConfigurations()
-            .define("tvdxxhe")
+            .define("ghjhjvmabzzbwa")
             .withRegion("mlnfyz")
-            .withExistingCluster("polzkgysdgzyy", "zoxlvoc")
-            .withExtendedLocation(new ExtendedLocation().withName("gmlilwzghjhjvmab").withType("zbwaybfmdafbgym"))
-            .withCollectionInterval(1745929206373036946L)
+            .withExistingCluster("oxlvocptvdxxheig", "lilw")
+            .withExtendedLocation(new ExtendedLocation().withName("b").withType("mdafbgymqt"))
+            .withCollectionInterval(2432471336572186313L)
             .withTags(mapOf("dbkp", "rbypi", "njhx", "jtaqhsmqazpdg"))
-            .withEnabledMetrics(Arrays.asList("sgnwdxzedpq", "rfbo"))
+            .withEnabledMetrics(Arrays.asList("w", "xz", "dpq", "rfbo"))
             .create();
 
         Assertions.assertEquals("nbg", response.location());

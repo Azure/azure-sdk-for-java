@@ -12,15 +12,15 @@ public final class AzureFabricCreationInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureFabricCreationInput model
-            = BinaryData.fromString("{\"instanceType\":\"Azure\",\"location\":\"nefxexlfciatx\"}")
+            = BinaryData.fromString("{\"instanceType\":\"Azure\",\"location\":\"nxdmnitmujdtv\"}")
                 .toObject(AzureFabricCreationInput.class);
-        Assertions.assertEquals("nefxexlfciatx", model.location());
+        Assertions.assertEquals("nxdmnitmujdtv", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureFabricCreationInput model = new AzureFabricCreationInput().withLocation("nefxexlfciatx");
+        AzureFabricCreationInput model = new AzureFabricCreationInput().withLocation("nxdmnitmujdtv");
         model = BinaryData.fromObject(model).toObject(AzureFabricCreationInput.class);
-        Assertions.assertEquals("nefxexlfciatx", model.location());
+        Assertions.assertEquals("nxdmnitmujdtv", model.location());
     }
 }

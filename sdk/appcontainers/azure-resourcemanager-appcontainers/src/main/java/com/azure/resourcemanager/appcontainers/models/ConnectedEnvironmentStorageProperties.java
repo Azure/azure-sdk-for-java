@@ -22,11 +22,6 @@ public final class ConnectedEnvironmentStorageProperties
      */
     private AzureFileProperties azureFile;
 
-    /*
-     * SMB storage properties
-     */
-    private SmbStorage smb;
-
     /**
      * Creates an instance of ConnectedEnvironmentStorageProperties class.
      */
@@ -54,26 +49,6 @@ public final class ConnectedEnvironmentStorageProperties
     }
 
     /**
-     * Get the smb property: SMB storage properties.
-     * 
-     * @return the smb value.
-     */
-    public SmbStorage smb() {
-        return this.smb;
-    }
-
-    /**
-     * Set the smb property: SMB storage properties.
-     * 
-     * @param smb the smb value to set.
-     * @return the ConnectedEnvironmentStorageProperties object itself.
-     */
-    public ConnectedEnvironmentStorageProperties withSmb(SmbStorage smb) {
-        this.smb = smb;
-        return this;
-    }
-
-    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -81,9 +56,6 @@ public final class ConnectedEnvironmentStorageProperties
     public void validate() {
         if (azureFile() != null) {
             azureFile().validate();
-        }
-        if (smb() != null) {
-            smb().validate();
         }
     }
 
@@ -94,7 +66,6 @@ public final class ConnectedEnvironmentStorageProperties
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeJsonField("azureFile", this.azureFile);
-        jsonWriter.writeJsonField("smb", this.smb);
         return jsonWriter.writeEndObject();
     }
 
@@ -116,8 +87,6 @@ public final class ConnectedEnvironmentStorageProperties
 
                 if ("azureFile".equals(fieldName)) {
                     deserializedConnectedEnvironmentStorageProperties.azureFile = AzureFileProperties.fromJson(reader);
-                } else if ("smb".equals(fieldName)) {
-                    deserializedConnectedEnvironmentStorageProperties.smb = SmbStorage.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

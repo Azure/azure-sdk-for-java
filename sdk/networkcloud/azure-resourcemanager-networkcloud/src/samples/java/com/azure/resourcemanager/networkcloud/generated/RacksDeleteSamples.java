@@ -10,7 +10,8 @@ package com.azure.resourcemanager.networkcloud.generated;
 public final class RacksDeleteSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2024-07-01/examples/Racks_Delete.json
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-10-01-preview/examples/
+     * Racks_Delete.json
      */
     /**
      * Sample code: Delete rack.
