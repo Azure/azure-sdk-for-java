@@ -24,23 +24,23 @@ public interface ReplicationPoliciesClient {
      * 
      * Lists the replication policies for a vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return protection Profile Collection details as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicyInner> list(String resourceName, String resourceGroupName);
+    PagedIterable<PolicyInner> list(String resourceGroupName, String resourceName);
 
     /**
      * Gets the list of replication policies.
      * 
      * Lists the replication policies for a vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -48,15 +48,15 @@ public interface ReplicationPoliciesClient {
      * @return protection Profile Collection details as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicyInner> list(String resourceName, String resourceGroupName, Context context);
+    PagedIterable<PolicyInner> list(String resourceGroupName, String resourceName, Context context);
 
     /**
      * Gets the requested policy.
      * 
      * Gets the details of a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -65,7 +65,7 @@ public interface ReplicationPoliciesClient {
      * @return the details of a replication policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicyInner> getWithResponse(String resourceName, String resourceGroupName, String policyName,
+    Response<PolicyInner> getWithResponse(String resourceGroupName, String resourceName, String policyName,
         Context context);
 
     /**
@@ -73,8 +73,8 @@ public interface ReplicationPoliciesClient {
      * 
      * Gets the details of a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -82,15 +82,15 @@ public interface ReplicationPoliciesClient {
      * @return the details of a replication policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyInner get(String resourceName, String resourceGroupName, String policyName);
+    PolicyInner get(String resourceGroupName, String resourceName, String policyName);
 
     /**
      * Creates the policy.
      * 
      * The operation to create a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @param input Create policy input.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -99,7 +99,7 @@ public interface ReplicationPoliciesClient {
      * @return the {@link SyncPoller} for polling of protection profile details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PolicyInner>, PolicyInner> beginCreate(String resourceName, String resourceGroupName,
+    SyncPoller<PollResult<PolicyInner>, PolicyInner> beginCreate(String resourceGroupName, String resourceName,
         String policyName, CreatePolicyInput input);
 
     /**
@@ -107,8 +107,8 @@ public interface ReplicationPoliciesClient {
      * 
      * The operation to create a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @param input Create policy input.
      * @param context The context to associate with this operation.
@@ -118,7 +118,7 @@ public interface ReplicationPoliciesClient {
      * @return the {@link SyncPoller} for polling of protection profile details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PolicyInner>, PolicyInner> beginCreate(String resourceName, String resourceGroupName,
+    SyncPoller<PollResult<PolicyInner>, PolicyInner> beginCreate(String resourceGroupName, String resourceName,
         String policyName, CreatePolicyInput input, Context context);
 
     /**
@@ -126,8 +126,8 @@ public interface ReplicationPoliciesClient {
      * 
      * The operation to create a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @param input Create policy input.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -136,15 +136,15 @@ public interface ReplicationPoliciesClient {
      * @return protection profile details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyInner create(String resourceName, String resourceGroupName, String policyName, CreatePolicyInput input);
+    PolicyInner create(String resourceGroupName, String resourceName, String policyName, CreatePolicyInput input);
 
     /**
      * Creates the policy.
      * 
      * The operation to create a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @param input Create policy input.
      * @param context The context to associate with this operation.
@@ -154,7 +154,7 @@ public interface ReplicationPoliciesClient {
      * @return protection profile details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyInner create(String resourceName, String resourceGroupName, String policyName, CreatePolicyInput input,
+    PolicyInner create(String resourceGroupName, String resourceName, String policyName, CreatePolicyInput input,
         Context context);
 
     /**
@@ -162,8 +162,8 @@ public interface ReplicationPoliciesClient {
      * 
      * The operation to delete a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -171,15 +171,15 @@ public interface ReplicationPoliciesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName, String policyName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, String policyName);
 
     /**
      * Delete the policy.
      * 
      * The operation to delete a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -188,7 +188,7 @@ public interface ReplicationPoliciesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName, String policyName,
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, String policyName,
         Context context);
 
     /**
@@ -196,23 +196,23 @@ public interface ReplicationPoliciesClient {
      * 
      * The operation to delete a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceName, String resourceGroupName, String policyName);
+    void delete(String resourceGroupName, String resourceName, String policyName);
 
     /**
      * Delete the policy.
      * 
      * The operation to delete a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Replication policy name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -220,15 +220,15 @@ public interface ReplicationPoliciesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceName, String resourceGroupName, String policyName, Context context);
+    void delete(String resourceGroupName, String resourceName, String policyName, Context context);
 
     /**
      * Updates the policy.
      * 
      * The operation to update a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Policy Id.
      * @param input Update Policy Input.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -237,7 +237,7 @@ public interface ReplicationPoliciesClient {
      * @return the {@link SyncPoller} for polling of protection profile details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PolicyInner>, PolicyInner> beginUpdate(String resourceName, String resourceGroupName,
+    SyncPoller<PollResult<PolicyInner>, PolicyInner> beginUpdate(String resourceGroupName, String resourceName,
         String policyName, UpdatePolicyInput input);
 
     /**
@@ -245,8 +245,8 @@ public interface ReplicationPoliciesClient {
      * 
      * The operation to update a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Policy Id.
      * @param input Update Policy Input.
      * @param context The context to associate with this operation.
@@ -256,7 +256,7 @@ public interface ReplicationPoliciesClient {
      * @return the {@link SyncPoller} for polling of protection profile details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PolicyInner>, PolicyInner> beginUpdate(String resourceName, String resourceGroupName,
+    SyncPoller<PollResult<PolicyInner>, PolicyInner> beginUpdate(String resourceGroupName, String resourceName,
         String policyName, UpdatePolicyInput input, Context context);
 
     /**
@@ -264,8 +264,8 @@ public interface ReplicationPoliciesClient {
      * 
      * The operation to update a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Policy Id.
      * @param input Update Policy Input.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -274,15 +274,15 @@ public interface ReplicationPoliciesClient {
      * @return protection profile details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyInner update(String resourceName, String resourceGroupName, String policyName, UpdatePolicyInput input);
+    PolicyInner update(String resourceGroupName, String resourceName, String policyName, UpdatePolicyInput input);
 
     /**
      * Updates the policy.
      * 
      * The operation to update a replication policy.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param policyName Policy Id.
      * @param input Update Policy Input.
      * @param context The context to associate with this operation.
@@ -292,6 +292,6 @@ public interface ReplicationPoliciesClient {
      * @return protection profile details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PolicyInner update(String resourceName, String resourceGroupName, String policyName, UpdatePolicyInput input,
+    PolicyInner update(String resourceGroupName, String resourceName, String policyName, UpdatePolicyInput input,
         Context context);
 }
