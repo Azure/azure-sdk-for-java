@@ -966,8 +966,8 @@ public final class PhoneNumbersAsyncClient {
      * @return represents a reservation for phone numbers on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersReservation> CreateOrUpdateReservation(UUID reservationId, List<AvailablePhoneNumber> add,
-        List<AvailablePhoneNumber> remove) {
+    public Mono<PhoneNumbersReservation> createOrUpdateReservation(UUID reservationId, List<AvailablePhoneNumber> add,
+        List<String> remove) {
         if (reservationId == null) {
             reservationId = UUID.randomUUID();
         }
@@ -1022,10 +1022,10 @@ public final class PhoneNumbersAsyncClient {
     }
 
     private Map<String, AvailablePhoneNumber> updatePhoneNumbersMap(Map<String, AvailablePhoneNumber> phoneNumbersMap,
-        List<AvailablePhoneNumber> AddphoneNumbers, List<AvailablePhoneNumber> removePhoneNumbers) {
+        List<AvailablePhoneNumber> AddphoneNumbers, List<String> removePhoneNumbers) {
         phoneNumbersMap = createPhoneNumbersMap(phoneNumbersMap, AddphoneNumbers);
-        for (AvailablePhoneNumber phoneNumber : removePhoneNumbers) {
-            phoneNumbersMap.put(phoneNumber.getPhoneNumber(), null);
+        for (String phoneNumber : removePhoneNumbers) {
+            phoneNumbersMap.put(phoneNumber, null);
         }
         return phoneNumbersMap;
     }

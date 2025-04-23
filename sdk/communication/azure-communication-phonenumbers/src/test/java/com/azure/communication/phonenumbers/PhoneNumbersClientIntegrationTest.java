@@ -5,6 +5,7 @@ package com.azure.communication.phonenumbers;
 import com.azure.communication.phonenumbers.implementation.converters.PhoneNumberErrorConverter;
 import com.azure.communication.phonenumbers.implementation.models.CommunicationError;
 import com.azure.communication.phonenumbers.implementation.models.CommunicationErrorResponseException;
+import com.azure.communication.phonenumbers.models.AvailablePhoneNumber;
 import com.azure.communication.phonenumbers.models.PhoneNumberBrowseCapabilitiesRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberAdministrativeDivision;
 import com.azure.communication.phonenumbers.models.OperatorInformationResult;
@@ -57,7 +58,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTestBase {
 
     private UUID reservationId = getReservationId();
-    private PhoneNumbersReservation reservation = new PhoneNumbersReservation(reservationId);
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
@@ -561,11 +561,13 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PhoneNumbersBrowseResult result = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
             .browseAvailableNumbers(browseRequest);
 
-        reservation.addPhoneNumber(result.getPhoneNumbers().get(0));
+        List<AvailablePhoneNumber> numbersToAdd = new ArrayList<>();
+
+        numbersToAdd.add(result.getPhoneNumbers().get(0));
 
         PhoneNumbersReservation reservationResponse
             = this.getClientWithConnectionString(httpClient, "updatePhoneNumberReservation")
-                .createOrUpdateReservation(reservation);
+                .createOrUpdateReservation(reservationId, numbersToAdd, null);
         assertEquals(reservationId, reservationResponse.getId());
         assertNotNull(reservationResponse.getPhoneNumbers());
         assertTrue(reservationResponse.getPhoneNumbers().containsKey(result.getPhoneNumbers().get(0).getId()));
@@ -582,10 +584,11 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
             = reservationsList.stream().anyMatch(reservation -> reservation.getId().equals(reservationId));
         assertTrue(containsReservation, "The reservations list does not contain the expected reservation.");
 
-        reservation.removePhoneNumber(result.getPhoneNumbers().get(0).getId());
+        List<String> numbersToRemove = new ArrayList<>();
+        numbersToRemove.add(result.getPhoneNumbers().get(0).getId());
 
         reservationResponse = this.getClientWithConnectionString(httpClient, "updatePhoneNumberReservation")
-            .createOrUpdateReservation(reservation);
+            .createOrUpdateReservation(reservationId, null, numbersToRemove);
         assertEquals(reservationId, reservationResponse.getId());
         assertFalse(reservationResponse.getPhoneNumbers().containsKey(result.getPhoneNumbers().get(0).getId()));
 
@@ -609,11 +612,13 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PhoneNumbersBrowseResult result = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers")
             .browseAvailableNumbers(browseRequest);
 
-        reservation.addPhoneNumber(result.getPhoneNumbers().get(0));
+        List<AvailablePhoneNumber> numbersToAdd = new ArrayList<>();
+        numbersToAdd.add(result.getPhoneNumbers().get(0));
 
         PhoneNumbersReservation reservationResponse
-            = this.getClientWithManagedIdentity(httpClient, "updatePhoneNumberReservation")
-                .createOrUpdateReservation(reservation);
+            = this.getClientWithConnectionString(httpClient, "updatePhoneNumberReservation")
+                .createOrUpdateReservation(reservationId, numbersToAdd, null);
+
         assertEquals(reservationId, reservationResponse.getId());
         assertNotNull(reservationResponse.getPhoneNumbers());
         assertTrue(reservationResponse.getPhoneNumbers().containsKey(result.getPhoneNumbers().get(0).getId()));
@@ -630,10 +635,11 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
             = reservationsList.stream().anyMatch(reservation -> reservation.getId().equals(reservationId));
         assertTrue(containsReservation, "The reservations list does not contain the expected reservation.");
 
-        reservation.removePhoneNumber(result.getPhoneNumbers().get(0).getId());
+        List<String> numbersToRemove = new ArrayList<>();
+        numbersToRemove.add(result.getPhoneNumbers().get(0).getId());
 
         reservationResponse = this.getClientWithManagedIdentity(httpClient, "updatePhoneNumberReservation")
-            .createOrUpdateReservation(reservation);
+            .createOrUpdateReservation(reservationId, null, numbersToRemove);
         assertEquals(reservationId, reservationResponse.getId());
         assertFalse(reservationResponse.getPhoneNumbers().containsKey(result.getPhoneNumbers().get(0).getId()));
 
@@ -656,9 +662,13 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PhoneNumbersBrowseResult result = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
             .browseAvailableNumbers(browseRequest);
 
-        reservation.addPhoneNumber(result.getPhoneNumbers().get(0));
+        List<AvailablePhoneNumber> numbersToAdd = new ArrayList<>();
+        numbersToAdd.add(result.getPhoneNumbers().get(0));
 
-        assertThrows(RuntimeException.class, () -> client.beginReservationPurchase(reservationId),
+        PhoneNumbersReservation reservationResponse
+            = this.getClientWithManagedIdentity(httpClient, "updatePhoneNumberReservation")
+                .createOrUpdateReservation(reservationId, numbersToAdd, null);
+        assertThrows(RuntimeException.class, () -> client.beginReservationPurchase(reservationResponse.getId()),
             "Missing agreement to not resell.");
     }
 
@@ -674,9 +684,14 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PhoneNumbersBrowseResult result = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers")
             .browseAvailableNumbers(browseRequest);
 
-        reservation.addPhoneNumber(result.getPhoneNumbers().get(0));
+        List<AvailablePhoneNumber> numbersToAdd = new ArrayList<>();
+        numbersToAdd.add(result.getPhoneNumbers().get(0));
 
-        assertThrows(RuntimeException.class, () -> client.beginReservationPurchase(reservationId),
+        PhoneNumbersReservation reservationResponse
+            = this.getClientWithManagedIdentity(httpClient, "updatePhoneNumberReservation")
+                .createOrUpdateReservation(reservationId, numbersToAdd, null);
+
+        assertThrows(RuntimeException.class, () -> client.beginReservationPurchase(reservationResponse.getId()),
             "Missing agreement to not resell.");
     }
 

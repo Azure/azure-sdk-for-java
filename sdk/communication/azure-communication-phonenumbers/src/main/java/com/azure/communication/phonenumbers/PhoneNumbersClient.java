@@ -1045,7 +1045,7 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PhoneNumbersReservation createOrUpdateReservation(UUID reservationId, List<AvailablePhoneNumber> add,
-        List<AvailablePhoneNumber> remove) {
+        List<String> remove) {
         if (reservationId == null) {
             reservationId = UUID.randomUUID();
         }
@@ -1073,7 +1073,7 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PhoneNumbersReservation> createOrUpdateReservation(UUID reservationId,
-        List<AvailablePhoneNumber> add, List<AvailablePhoneNumber> remove, Context context) {
+        List<AvailablePhoneNumber> add, List<String> remove, Context context) {
         if (reservationId == null) {
             reservationId = UUID.randomUUID();
         }
@@ -1120,10 +1120,10 @@ public final class PhoneNumbersClient {
 
     private static Map<String, AvailablePhoneNumber> updatePhoneNumbersMap(
         Map<String, AvailablePhoneNumber> phoneNumbersMap, List<AvailablePhoneNumber> AddphoneNumbers,
-        List<AvailablePhoneNumber> removePhoneNumbers) {
+        List<String> removePhoneNumbers) {
         phoneNumbersMap = createPhoneNumbersMap(phoneNumbersMap, AddphoneNumbers);
-        for (AvailablePhoneNumber phoneNumber : removePhoneNumbers) {
-            phoneNumbersMap.put(phoneNumber.getPhoneNumber(), null);
+        for (String phoneNumber : removePhoneNumbers) {
+            phoneNumbersMap.put(phoneNumber, null);
         }
         return phoneNumbersMap;
     }
