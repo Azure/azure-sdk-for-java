@@ -6,16 +6,12 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.AppC
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEFAULT_REQUIREMENT_TYPE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.E_TAG;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_ID;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_PREFIX;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_REFERENCE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.REQUIREMENT_TYPE_SERVICE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.SELECT_ALL_FEATURE_FLAGS;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.TELEMETRY;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -40,7 +36,6 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.json.JsonMapper;
-import com.nimbusds.jose.util.Base64URL;
 
 /**
  * Loads sets of feature flags, and de-duplicates the results with previously loaded feature flags. Newer Feature Flags
@@ -138,7 +133,6 @@ class FeatureFlagClient {
             final FeatureTelemetry telemetry = feature.getTelemetry();
             if (telemetry.isEnabled()) {
                 final Map<String, String> originMetadata = telemetry.getMetadata();
-                originMetadata.put(FEATURE_FLAG_ID, calculateFeatureFlagId(item.getKey(), item.getLabel()));
                 originMetadata.put(E_TAG, item.getETag());
                 if (originEndpoint != null && !originEndpoint.isEmpty()) {
                     final String labelPart = item.getLabel().isEmpty() ? ""
@@ -149,25 +143,6 @@ class FeatureFlagClient {
             }
         }
         return feature;
-    }
-
-    /**
-     * @param key the key of feature flag
-     * @param label the label of feature flag. If label is whitespace, treat as null
-     * @return base64_url(SHA256(utf8_bytes("${key}\n${label}"))).replace('+', '-').replace('/', '_').trimEnd('=')
-     * trimEnd() means trims everything after the first occurrence of the '='
-     */
-    private static String calculateFeatureFlagId(String key, String label) {
-        final String data = String.format("%s\n%s", key, label.isEmpty() ? null : label);
-        try {
-            MessageDigest sha256 = MessageDigest.getInstance("SHA-256");
-            final String beforeTrim = Base64URL.encode(sha256.digest(data.getBytes(StandardCharsets.UTF_8)))
-                .toString().replace('+', '-').replace('/', '_');
-            final int index = beforeTrim.indexOf('=');
-            return beforeTrim.substring(0, index > -1 ? index : beforeTrim.length());
-        } catch (NoSuchAlgorithmException e) {
-        }
-        return "";
     }
 
     /**
