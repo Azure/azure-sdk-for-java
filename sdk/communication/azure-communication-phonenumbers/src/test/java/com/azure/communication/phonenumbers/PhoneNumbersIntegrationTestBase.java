@@ -22,6 +22,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
+import java.util.UUID;
 
 public class PhoneNumbersIntegrationTestBase extends TestProxyTestBase {
     private static final ClientLogger LOGGER = new ClientLogger(PhoneNumbersIntegrationTestBase.class);
@@ -126,6 +127,13 @@ public class PhoneNumbersIntegrationTestBase extends TestProxyTestBase {
             phoneNumber = "REDACTED";
         }
         return phoneNumber;
+    }
+
+    protected UUID getReservationId() {
+        if (getTestMode() == TestMode.PLAYBACK) {
+            return UUID.fromString("11111111-1111-1111-1111-111111111111");
+        }
+        return UUID.randomUUID();
     }
 
     private HttpPipelinePolicy getOverrideMSUserAgentPolicy() {
