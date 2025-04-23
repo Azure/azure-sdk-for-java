@@ -6,6 +6,7 @@ package com.azure.resourcemanager.apimanagement.models;
 
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.apimanagement.fluent.models.AuthorizationAccessPolicyContractInner;
+import java.util.List;
 
 /**
  * An immutable client-side representation of AuthorizationAccessPolicyContract.
@@ -31,6 +32,13 @@ public interface AuthorizationAccessPolicyContract {
      * @return the type value.
      */
     String type();
+
+    /**
+     * Gets the appIds property: The allowed Azure Active Directory Application IDs.
+     * 
+     * @return the appIds value.
+     */
+    List<String> appIds();
 
     /**
      * Gets the tenantId property: The Tenant Id.
@@ -99,8 +107,8 @@ public interface AuthorizationAccessPolicyContract {
          * The stage of the AuthorizationAccessPolicyContract definition which contains all the minimum required
          * properties for the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithTenantId, DefinitionStages.WithObjectId, DefinitionStages.WithIfMatch {
+        interface WithCreate extends DefinitionStages.WithAppIds, DefinitionStages.WithTenantId,
+            DefinitionStages.WithObjectId, DefinitionStages.WithIfMatch {
             /**
              * Executes the create request.
              * 
@@ -115,6 +123,19 @@ public interface AuthorizationAccessPolicyContract {
              * @return the created resource.
              */
             AuthorizationAccessPolicyContract create(Context context);
+        }
+
+        /**
+         * The stage of the AuthorizationAccessPolicyContract definition allowing to specify appIds.
+         */
+        interface WithAppIds {
+            /**
+             * Specifies the appIds property: The allowed Azure Active Directory Application IDs.
+             * 
+             * @param appIds The allowed Azure Active Directory Application IDs.
+             * @return the next definition stage.
+             */
+            WithCreate withAppIds(List<String> appIds);
         }
 
         /**
@@ -169,7 +190,8 @@ public interface AuthorizationAccessPolicyContract {
     /**
      * The template for AuthorizationAccessPolicyContract update.
      */
-    interface Update extends UpdateStages.WithTenantId, UpdateStages.WithObjectId, UpdateStages.WithIfMatch {
+    interface Update extends UpdateStages.WithAppIds, UpdateStages.WithTenantId, UpdateStages.WithObjectId,
+        UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
          * 
@@ -190,6 +212,19 @@ public interface AuthorizationAccessPolicyContract {
      * The AuthorizationAccessPolicyContract update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the AuthorizationAccessPolicyContract update allowing to specify appIds.
+         */
+        interface WithAppIds {
+            /**
+             * Specifies the appIds property: The allowed Azure Active Directory Application IDs.
+             * 
+             * @param appIds The allowed Azure Active Directory Application IDs.
+             * @return the next definition stage.
+             */
+            Update withAppIds(List<String> appIds);
+        }
+
         /**
          * The stage of the AuthorizationAccessPolicyContract update allowing to specify tenantId.
          */

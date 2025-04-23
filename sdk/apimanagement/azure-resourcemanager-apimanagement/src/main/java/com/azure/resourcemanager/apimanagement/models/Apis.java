@@ -116,15 +116,11 @@ public interface Apis {
      * revision has ;rev=n as a suffix where n is the revision number.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
      * request or it should be * for unconditional update.
-     * @param deleteRevisions Delete all revisions of the Api.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId, String ifMatch,
-        Boolean deleteRevisions, Context context);
+    void delete(String resourceGroupName, String serviceName, String apiId, String ifMatch);
 
     /**
      * Deletes the specified API of the API Management service instance.
@@ -135,11 +131,14 @@ public interface Apis {
      * revision has ;rev=n as a suffix where n is the revision number.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
      * request or it should be * for unconditional update.
+     * @param deleteRevisions Delete all revisions of the Api.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(String resourceGroupName, String serviceName, String apiId, String ifMatch);
+    void delete(String resourceGroupName, String serviceName, String apiId, String ifMatch, Boolean deleteRevisions,
+        Context context);
 
     /**
      * Lists a collection of apis associated with tags.
@@ -222,9 +221,8 @@ public interface Apis {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
      */
-    Response<Void> deleteByIdWithResponse(String id, String ifMatch, Boolean deleteRevisions, Context context);
+    void deleteByIdWithResponse(String id, String ifMatch, Boolean deleteRevisions, Context context);
 
     /**
      * Begins definition for a new ApiContract resource.

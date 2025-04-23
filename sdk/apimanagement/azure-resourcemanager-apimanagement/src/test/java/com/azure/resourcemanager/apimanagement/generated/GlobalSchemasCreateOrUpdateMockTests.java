@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.GlobalSchemaContract;
@@ -22,26 +22,26 @@ public final class GlobalSchemasCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"properties\":{\"schemaType\":\"json\",\"description\":\"yrayb\",\"value\":\"dataksnijclfdprez\",\"document\":\"datazxeigydd\"},\"id\":\"fnmbxerzypcr\",\"name\":\"lwvcnm\",\"type\":\"bizxq\"}";
+            = "{\"properties\":{\"schemaType\":\"xml\",\"description\":\"vx\",\"value\":\"dataruskmbq\",\"document\":\"dataecnsqeewfuwgmk\",\"provisioningState\":\"Succeeded\"},\"id\":\"b\",\"name\":\"mebmxzwcf\",\"type\":\"txkurp\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GlobalSchemaContract response = manager.globalSchemas()
-            .define("pfslrx")
-            .withExistingService("dtedxz", "yhbzmgzsyt")
-            .withSchemaType(SchemaType.JSON)
-            .withDescription("bqrqbpiqfstkdlyj")
-            .withValue("datajxefydc")
-            .withDocument("datafkzlch")
-            .withIfMatch("tfrdlfewexbrvb")
+            .define("foiavpg")
+            .withExistingService("tm", "dz")
+            .withSchemaType(SchemaType.XML)
+            .withDescription("siuxyi")
+            .withValue("datawsdxyzgrrllzx")
+            .withDocument("dataomhenqnovt")
+            .withIfMatch("mmxjdkvyzilrlf")
             .create();
 
-        Assertions.assertEquals(SchemaType.JSON, response.schemaType());
-        Assertions.assertEquals("yrayb", response.description());
+        Assertions.assertEquals(SchemaType.XML, response.schemaType());
+        Assertions.assertEquals("vx", response.description());
     }
 }
