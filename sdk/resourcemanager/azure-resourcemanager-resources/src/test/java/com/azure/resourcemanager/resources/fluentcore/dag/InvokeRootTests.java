@@ -79,8 +79,8 @@ public class InvokeRootTests {
     @ParameterizedTest
     @ValueSource(booleans = { true, false })
     public void testIgnoreCachedResultOnRootWithProxy(boolean syncStack) {
-        // Difference between sync/async is that, while async asserts on returned taskItems, sync asserts on invocations
-        // on actual taskItems.
+        // Difference between sync/async is that, while async asserts on returned taskItems(which may include cached items),
+        // sync test asserts on invocations on actual taskItems.
         final HashMap<String, Integer> seen = new HashMap<>();
         Function<Indexable, Indexable> addItemToSeen = (item) -> {
             SupportCountingAndHasName c = (SupportCountingAndHasName) item;
@@ -215,6 +215,7 @@ public class InvokeRootTests {
             taskItem4.taskGroup().invoke(taskItem1.taskGroup().newInvocationContext());
             // Regardless of proxy, the actual task will only be invoked once
             Assertions.assertEquals(1, seen.size());
+            Assertions.assertTrue(seen.containsKey("4"));
             Assertions.assertEquals(1, (long) seen.get("4"));
         } else {
             taskItem4.taskGroup()
@@ -225,6 +226,7 @@ public class InvokeRootTests {
             Assertions.assertTrue(seen.containsKey("1"));
             Assertions.assertTrue(seen.containsKey("2"));
             Assertions.assertTrue(seen.containsKey("3"));
+            Assertions.assertTrue(seen.containsKey("4"));
             Assertions.assertTrue(seen.containsKey("5"));
             Assertions.assertEquals(2, (long) seen.get("1")); // Due to proxy two 1s
             Assertions.assertEquals(1, (long) seen.get("2"));
@@ -232,8 +234,6 @@ public class InvokeRootTests {
             Assertions.assertEquals(2, (long) seen.get("4")); // Due to proxy two 1s
             Assertions.assertEquals(1, (long) seen.get("5"));
         }
-
-        Assertions.assertTrue(seen.containsKey("4"));
 
         Assertions.assertEquals(1, taskItem1.getCallCount());
         Assertions.assertEquals(1, taskItem2.getCallCount());
