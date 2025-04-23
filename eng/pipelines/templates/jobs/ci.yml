@@ -418,10 +418,10 @@ jobs:
           SDKType: ${{ parameters.SDKType }}
 
       - task: PowerShell@2
-        displayName: Generate CG Manifest for projects
+        displayName: Prepare for Component Detection
         inputs:
           pwsh: true
-          filePath: $(Build.SourcesDirectory)/eng/scripts/Create-CgManifest.ps1
+          filePath: $(Build.SourcesDirectory)/eng/pipeline/scripts/Initialize-For-Component-Detection.ps1
           arguments: >
             -Projects "$(ProjectList)"
             -MavenCacheFolder $(MAVEN_CACHE_FOLDER)

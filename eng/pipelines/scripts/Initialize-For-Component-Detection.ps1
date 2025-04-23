@@ -1,11 +1,12 @@
 <#
 .SYNOPSIS
-Creates a cgmanifest file for the given projects.
+Prepares a pipeline run for running Component Detection.
 
 .DESCRIPTION
-Given the passed projects, in the form of 'groupId:artifactId', this script will create a cgmanifest file in the passed
-directory. The cgmanifest file will appropriately attribute dependencies, both Maven project dependencies and Maven
-plugin dependencies, to the projects passed.
+Prepares a pipeline to run Component Detection by creating a 'cgmanifest.json' file in the root of the repository
+for all Maven projects in the specified groupId:artifactId format.
+
+All 'pom.xml' files that are not in the specified projects will be deleted.
 
 .PARAMETER Projects
 The projects to create the cgmanifest for, in the form of 'groupId:artifactId,groupId:artifactId,...'.
@@ -16,7 +17,6 @@ The directory to create the cgmanifest file in. If not specified, the root of th
 .PARAMETER MavenCacheFolder
 The Maven cache folder to use. If not specified, the environment configuration will be used.
 #>
-
 param(
     [Parameter(Mandatory = $true)]
     [string]$Projects,
@@ -25,7 +25,6 @@ param(
     [Parameter(Mandatory = $false)]
     [string]$MavenCacheFolder
 )
-
 class MavenDependency {
     [string]$GroupId
     [string]$ArtifactId
@@ -54,8 +53,6 @@ class MavenDependency {
         return "$($this.GroupId):$($this.ArtifactId):$($this.Version):$($this.DevelopmentDependency)"
     }
 }
-
-
 function Build-CgManifestData {
     param (
         [string]$DependencyFileName,
@@ -90,7 +87,10 @@ function Build-CgManifestData {
     }
 }
 
-$repoRoot = Resolve-Path ($PSScriptRoot + "/../..")
+$repoRoot = Resolve-Path ($PSScriptRoot + "/../../..")
+
+# Delete the root pom.xml.
+Remove-Item -Path (Join-Path $repoRoot "pom.xml") -Force
 
 # Root SDK directory is two levels up from this script's directory and in the 'sdk' folder.
 $sdkRoot = Join-Path $repoRoot "sdk"
@@ -144,12 +144,14 @@ foreach ($pomFile in $pomFiles) {
 
     $projectsOfGroupId = $projectsByGroupId[$groupId]
     if ($null -eq $projectsOfGroupId) {
-        # groupId is not in the list of projects passed, so skip it.
+        # groupId is not in the list of projects passed, so delete it.
+        Remove-Item -Path $pomFile -Force
         continue
     }
 
     if (-not $projectsOfGroupId.Contains($artifactId)) {
-        # artifactId is not in the list of projects passed, so skip it.
+        # artifactId is not in the list of projects passed, so delete it.
+        Remove-Item -Path $pomFile -Force
         continue
     }
 
