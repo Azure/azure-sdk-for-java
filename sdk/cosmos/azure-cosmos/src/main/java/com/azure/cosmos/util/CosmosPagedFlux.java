@@ -119,11 +119,11 @@ public class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, FeedResp
      * Creates an instance of a CosmosPagedFlux for mocking purposes or when injecting CosmosPagedFlux
      * instances from a different data source
      * @param items - the list of items to be returned
-     * @param isChangeFeed - a flag incidcating whether the CosmsoPagedFluy will be returned from a change feed API
+     * @param isChangeFeed - a flag indicating whether the CosmosPagedFlux will be returned from a change feed API
      * @return an instance of CosmosPagedFlux
      * @param <T> The type of the items
      */
-    public static <T> CosmosPagedFlux<T> createFromList(List<T> items, boolean isChangeFeed) {
+    public static <T> CosmosPagedFlux<T> fromList(List<T> items, boolean isChangeFeed) {
         return new CosmosPagedFluxStaticListImpl<>(
             items,
             isChangeFeed
