@@ -361,7 +361,7 @@ public class CosmosClientBuilderTest {
             CacheKey key = new CacheKey(classType.getCanonicalName(), querySpec);
             List<?> cachedResult = this.queryCache.get(key);
             if (cachedResult != null) {
-                return CosmosPagedFlux.createFromList((List<T>)cachedResult, false);
+                return CosmosPagedFlux.fromList((List<T>)cachedResult, false);
             }
 
             return super
