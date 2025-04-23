@@ -1387,7 +1387,7 @@
       "filename": "sdk/ai/azure-ai-projects/**",
       "words": [
         "AISEARCH",
-	      "AISERVICES",
+	"AISERVICES",
         "SUBSCRIPTIONID",
         "RESOURCEGROUPNAME",
         "PROJECTNAME"
