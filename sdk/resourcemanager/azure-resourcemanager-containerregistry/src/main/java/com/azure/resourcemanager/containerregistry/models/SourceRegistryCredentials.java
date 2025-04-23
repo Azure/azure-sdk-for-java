@@ -17,6 +17,13 @@ import java.io.IOException;
 @Fluent
 public final class SourceRegistryCredentials implements JsonSerializable<SourceRegistryCredentials> {
     /*
+     * The Entra identity used for source registry login.
+     * The value is `[system]` for system-assigned managed identity, `[caller]` for caller identity,
+     * and client ID for user-assigned managed identity.
+     */
+    private String identity;
+
+    /*
      * The authentication mode which determines the source registry login scope. The credentials for the source registry
      * will be generated using the given scope. These credentials will be used to login to
      * the source registry during the run.
@@ -27,6 +34,30 @@ public final class SourceRegistryCredentials implements JsonSerializable<SourceR
      * Creates an instance of SourceRegistryCredentials class.
      */
     public SourceRegistryCredentials() {
+    }
+
+    /**
+     * Get the identity property: The Entra identity used for source registry login.
+     * The value is `[system]` for system-assigned managed identity, `[caller]` for caller identity,
+     * and client ID for user-assigned managed identity.
+     * 
+     * @return the identity value.
+     */
+    public String identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The Entra identity used for source registry login.
+     * The value is `[system]` for system-assigned managed identity, `[caller]` for caller identity,
+     * and client ID for user-assigned managed identity.
+     * 
+     * @param identity the identity value to set.
+     * @return the SourceRegistryCredentials object itself.
+     */
+    public SourceRegistryCredentials withIdentity(String identity) {
+        this.identity = identity;
+        return this;
     }
 
     /**
@@ -69,6 +100,7 @@ public final class SourceRegistryCredentials implements JsonSerializable<SourceR
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("identity", this.identity);
         jsonWriter.writeStringField("loginMode", this.loginMode == null ? null : this.loginMode.toString());
         return jsonWriter.writeEndObject();
     }
@@ -88,7 +120,9 @@ public final class SourceRegistryCredentials implements JsonSerializable<SourceR
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("loginMode".equals(fieldName)) {
+                if ("identity".equals(fieldName)) {
+                    deserializedSourceRegistryCredentials.identity = reader.getString();
+                } else if ("loginMode".equals(fieldName)) {
                     deserializedSourceRegistryCredentials.loginMode
                         = SourceRegistryLoginMode.fromString(reader.getString());
                 } else {

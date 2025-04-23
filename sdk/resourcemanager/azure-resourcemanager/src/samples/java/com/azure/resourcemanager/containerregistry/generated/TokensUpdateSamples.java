@@ -16,7 +16,7 @@ import java.util.Arrays;
 public final class TokensUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/stable/2023-07-01/examples/
+     * specification/containerregistry/resource-manager/Microsoft.ContainerRegistry/preview/2025-03-01-preview/examples/
      * TokenUpdate.json
      */
     /**
