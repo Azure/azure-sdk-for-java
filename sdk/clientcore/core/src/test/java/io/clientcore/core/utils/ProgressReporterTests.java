@@ -11,7 +11,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
 import java.util.function.LongConsumer;
 
@@ -103,27 +102,22 @@ public class ProgressReporterTests {
     public void testConcurrentReporting() throws ExecutionException, InterruptedException {
         ProgressReporter progressReporter = ProgressReporter.withProgressListener(listener);
 
-        ForkJoinPool pool = new ForkJoinPool(10);
-        try {
-            List<Callable<Void>> tasks = new ArrayList<>();
-            for (int i = 0; i < 100; i++) {
-                tasks.add(() -> {
-                    ProgressReporter child = progressReporter.createChild();
-                    child.reportProgress(1L);
-                    child.reportProgress(3L);
-                    child.reportProgress(5L);
-                    child.reportProgress(7L);
-                    child.reportProgress(11L);
-                    return null;
-                });
-            }
+        List<Callable<Void>> tasks = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            tasks.add(() -> {
+                ProgressReporter child = progressReporter.createChild();
+                child.reportProgress(1L);
+                child.reportProgress(3L);
+                child.reportProgress(5L);
+                child.reportProgress(7L);
+                child.reportProgress(11L);
+                return null;
+            });
+        }
 
-            List<Future<Void>> asyncs = pool.invokeAll(tasks);
-            for (Future<Void> async : asyncs) {
-                async.get();
-            }
-        } finally {
-            pool.shutdown();
+        List<Future<Void>> asyncs = SharedExecutorService.getInstance().invokeAll(tasks);
+        for (Future<Void> async : asyncs) {
+            async.get();
         }
 
         List<Long> progresses = listener.getProgresses();

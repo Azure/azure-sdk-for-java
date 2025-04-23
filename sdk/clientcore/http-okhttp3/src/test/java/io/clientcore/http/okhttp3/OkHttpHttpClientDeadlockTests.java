@@ -9,6 +9,7 @@ import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.shared.LocalTestServer;
+import io.clientcore.core.utils.SharedExecutorService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,8 +20,8 @@ import javax.servlet.ServletException;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -67,21 +68,23 @@ public class OkHttpHttpClientDeadlockTests {
 
         String endpoint = server.getHttpUri() + GET_ENDPOINT;
 
-        ForkJoinPool pool = new ForkJoinPool();
-        try {
-            List<Future<Response<BinaryData>>> futures = pool.invokeAll(IntStream.range(0, 100)
-                .mapToObj(ignored -> (Callable<Response<BinaryData>>) () -> httpClient
-                    .send(new HttpRequest().setMethod(HttpMethod.GET).setUri(endpoint)))
-                .collect(Collectors.toList()));
+        int parallelization = (int) Math.ceil(Runtime.getRuntime().availableProcessors() / 2.0);
+        Semaphore semaphore = new Semaphore(parallelization);
+        List<Future<Response<BinaryData>>> futures = SharedExecutorService.getInstance()
+            .invokeAll(IntStream.range(0, 100).mapToObj(ignored -> (Callable<Response<BinaryData>>) () -> {
+                try {
+                    semaphore.acquire();
+                    return httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(endpoint));
+                } finally {
+                    semaphore.release();
+                }
+            }).collect(Collectors.toList()));
 
-            for (Future<Response<BinaryData>> future : futures) {
-                Response<BinaryData> response = future.get();
+        for (Future<Response<BinaryData>> future : futures) {
+            Response<BinaryData> response = future.get();
 
-                assertEquals(200, response.getStatusCode());
-                TestUtils.assertArraysEqual(EXPECTED_GET_BYTES, response.getValue().toBytes());
-            }
-        } finally {
-            pool.shutdown();
+            assertEquals(200, response.getStatusCode());
+            TestUtils.assertArraysEqual(EXPECTED_GET_BYTES, response.getValue().toBytes());
         }
     }
 }

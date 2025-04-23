@@ -35,7 +35,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -45,12 +47,10 @@ import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.SHORT_BOD
 import static com.azure.core.http.vertx.VertxHttpClientLocalTestServer.TIMEOUT;
 import static com.azure.core.validation.http.HttpValidatonUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class VertxHttpClientTests {
     private static final String SERVER_HTTP_URI = VertxHttpClientLocalTestServer.getServer().getHttpUri();
@@ -143,8 +143,9 @@ public class VertxHttpClientTests {
         int numRequests = 100; // 100 = 1GB of data read
         HttpClient client = new VertxHttpClientProvider().createInstance();
 
+        int parallelization = (int) Math.ceil(Runtime.getRuntime().availableProcessors() / 2.0);
         ParallelFlux<byte[]> responses = Flux.range(1, numRequests)
-            .parallel()
+            .parallel(parallelization)
             .runOn(Schedulers.boundedElastic())
             .flatMap(ignored -> doRequest(client, "/long"))
             .flatMap(response -> Mono.using(() -> response, HttpResponse::getBodyAsByteArray, HttpResponse::close));
@@ -156,24 +157,29 @@ public class VertxHttpClientTests {
     }
 
     @Test
-    public void testConcurrentRequestsSync() throws InterruptedException {
+    public void testConcurrentRequestsSync() throws InterruptedException, ExecutionException, TimeoutException {
         int numRequests = 100; // 100 = 1GB of data read
         HttpClient client = new VertxHttpClientProvider().createInstance();
-        List<Callable<Void>> requests = new ArrayList<>(numRequests);
+
+        int parallelization = (int) Math.ceil(Runtime.getRuntime().availableProcessors() / 2.0);
+        Semaphore semaphore = new Semaphore(parallelization);
+        List<Callable<byte[]>> requests = new ArrayList<>(numRequests);
         for (int i = 0; i < numRequests; i++) {
             requests.add(() -> {
-                try (HttpResponse response = doRequestSync(client, "/long")) {
-                    byte[] body = response.getBodyAsBinaryData().toBytes();
-                    assertArraysEqual(LONG_BODY, body);
-                    return null;
+                try {
+                    semaphore.acquire();
+                    try (HttpResponse response = doRequestSync(client, "/long")) {
+                        return response.getBodyAsBinaryData().toBytes();
+                    }
+                } finally {
+                    semaphore.release();
                 }
             });
         }
 
-        List<Future<Void>> futures = SharedExecutorService.getInstance().invokeAll(requests, 60, TimeUnit.SECONDS);
-        for (Future<Void> future : futures) {
-            assertTrue(future.isDone());
-            assertDoesNotThrow(() -> future.get());
+        for (Future<byte[]> future : SharedExecutorService.getInstance().invokeAll(requests)) {
+            byte[] body = future.get(60, TimeUnit.SECONDS);
+            assertArraysEqual(LONG_BODY, body);
         }
     }
 

@@ -69,7 +69,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -94,7 +96,6 @@ import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestS
 import static com.azure.core.http.netty.implementation.NettyHttpClientLocalTestServer.TIMEOUT;
 import static com.azure.core.validation.http.HttpValidatonUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -102,7 +103,6 @@ import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Execution(ExecutionMode.SAME_THREAD)
 public class NettyAsyncHttpClientTests {
@@ -236,8 +236,9 @@ public class NettyAsyncHttpClientTests {
         int numRequests = 100; // 100 = 1GB of data read
         HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
 
+        int parallelization = (int) Math.ceil(Runtime.getRuntime().availableProcessors() / 2.0);
         ParallelFlux<byte[]> responses = Flux.range(1, numRequests)
-            .parallel()
+            .parallel(parallelization)
             .runOn(Schedulers.boundedElastic())
             .flatMap(ignored -> doRequest(client, "/long"))
             .flatMap(response -> Mono.using(() -> response, HttpResponse::getBodyAsByteArray, HttpResponse::close));
@@ -249,25 +250,29 @@ public class NettyAsyncHttpClientTests {
     }
 
     @Test
-    public void testConcurrentRequestsSync() throws InterruptedException {
+    public void testConcurrentRequestsSync() throws InterruptedException, ExecutionException, TimeoutException {
         int numRequests = 100; // 100 = 1GB of data read
         HttpClient client = new NettyAsyncHttpClientProvider().createInstance();
 
-        List<Callable<Void>> requests = new ArrayList<>(numRequests);
+        int parallelization = (int) Math.ceil(Runtime.getRuntime().availableProcessors() / 2.0);
+        Semaphore semaphore = new Semaphore(parallelization);
+        List<Callable<byte[]>> requests = new ArrayList<>(numRequests);
         for (int i = 0; i < numRequests; i++) {
             requests.add(() -> {
-                try (HttpResponse response = doRequestSync(client, "/long")) {
-                    byte[] body = response.getBodyAsBinaryData().toBytes();
-                    assertArraysEqual(LONG_BODY, body);
-                    return null;
+                try {
+                    semaphore.acquire();
+                    try (HttpResponse response = doRequestSync(client, "/long")) {
+                        return response.getBodyAsBinaryData().toBytes();
+                    }
+                } finally {
+                    semaphore.release();
                 }
             });
         }
 
-        List<Future<Void>> futures = SharedExecutorService.getInstance().invokeAll(requests, 60, TimeUnit.SECONDS);
-        for (Future<Void> future : futures) {
-            assertTrue(future.isDone());
-            assertDoesNotThrow(() -> future.get());
+        for (Future<byte[]> future : SharedExecutorService.getInstance().invokeAll(requests)) {
+            byte[] body = future.get(60, TimeUnit.SECONDS);
+            assertArraysEqual(LONG_BODY, body);
         }
     }
 

@@ -14,6 +14,7 @@ import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.shared.InsecureTrustManager;
 import io.clientcore.core.shared.LocalTestServer;
+import io.clientcore.core.utils.SharedExecutorService;
 import org.conscrypt.Conscrypt;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
@@ -34,15 +35,17 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import static io.clientcore.http.okhttp3.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Execution(ExecutionMode.SAME_THREAD)
 public class OkHttpHttpClientTests {
@@ -120,28 +123,30 @@ public class OkHttpHttpClientTests {
     }
 
     @Test
-    public void testConcurrentRequests() throws InterruptedException {
+    public void testConcurrentRequests() throws InterruptedException, ExecutionException, TimeoutException {
         int numRequests = 100; // 100 = 1GB of data read
         HttpClient client = new OkHttpHttpClientProvider().getSharedInstance();
 
-        ForkJoinPool pool = new ForkJoinPool();
-        List<Callable<Void>> requests = new ArrayList<>(numRequests);
-
+        int parallelization = (int) Math.ceil(Runtime.getRuntime().availableProcessors() / 2.0);
+        Semaphore semaphore = new Semaphore(parallelization);
+        List<Callable<byte[]>> requests = new ArrayList<>(numRequests);
         for (int i = 0; i < numRequests; i++) {
             requests.add(() -> {
-                try (Response<BinaryData> response = doRequest(client, "/long")) {
-                    byte[] body = response.getValue().toBytes();
-                    assertArraysEqual(LONG_BODY, body);
-
-                    return null;
+                try {
+                    semaphore.acquire();
+                    try (Response<BinaryData> response = doRequest(client, "/long")) {
+                        return response.getValue().toBytes();
+                    }
+                } finally {
+                    semaphore.release();
                 }
             });
         }
 
-        pool.invokeAll(requests);
-        pool.shutdown();
-
-        assertTrue(pool.awaitTermination(60, TimeUnit.SECONDS));
+        for (Future<byte[]> future : SharedExecutorService.getInstance().invokeAll(requests)) {
+            byte[] body = future.get(60, TimeUnit.SECONDS);
+            assertArraysEqual(LONG_BODY, body);
+        }
     }
 
     @Test

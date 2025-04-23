@@ -20,6 +20,7 @@ import io.clientcore.core.http.pipeline.HttpRetryPolicy;
 import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.ProgressReporter;
+import io.clientcore.core.utils.SharedExecutorService;
 import io.clientcore.http.netty4.implementation.MockProxyServer;
 import io.clientcore.http.netty4.implementation.Netty4ProgressAndTimeoutHandler;
 import io.clientcore.http.netty4.implementation.NettyHttpClientLocalTestServer;
@@ -46,17 +47,18 @@ import java.nio.channels.WritableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.Future;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static io.clientcore.http.netty4.TestUtils.assertArraysEqual;
@@ -85,24 +87,29 @@ public class NettyHttpClientTests {
     private static final String SERVER_HTTP_URI = NettyHttpClientLocalTestServer.getServer().getHttpUri();
 
     @Test
-    public void testConcurrentRequestsSync() throws InterruptedException, ExecutionException {
+    public void testConcurrentRequestsSync() throws InterruptedException, ExecutionException, TimeoutException {
         int numRequests = 100; // 100 = 1GB of data read
         HttpClient client = new NettyHttpClientProvider().getSharedInstance();
 
-        ForkJoinPool pool = new ForkJoinPool();
-        try {
-            List<Future<byte[]>> requests
-                = pool.invokeAll(IntStream.range(0, numRequests).mapToObj(ignored -> (Callable<byte[]>) () -> {
+        int parallelization = (int) Math.ceil(Runtime.getRuntime().availableProcessors() / 2.0);
+        Semaphore semaphore = new Semaphore(parallelization);
+        List<Callable<byte[]>> requests = new ArrayList<>(numRequests);
+        for (int i = 0; i < numRequests; i++) {
+            requests.add(() -> {
+                try {
+                    semaphore.acquire();
                     try (Response<BinaryData> response = sendRequest(client, "/long")) {
                         return response.getValue().toBytes();
                     }
-                }).collect(Collectors.toList()), 60, TimeUnit.SECONDS);
+                } finally {
+                    semaphore.release();
+                }
+            });
+        }
 
-            for (Future<byte[]> request : requests) {
-                assertArraysEqual(LONG_BODY, request.get());
-            }
-        } finally {
-            pool.shutdown();
+        for (Future<byte[]> future : SharedExecutorService.getInstance().invokeAll(requests)) {
+            byte[] body = future.get(60, TimeUnit.SECONDS);
+            assertArraysEqual(LONG_BODY, body);
         }
     }
 
