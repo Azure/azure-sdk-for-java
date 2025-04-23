@@ -40,6 +40,8 @@ public class LoggerTelemetryPublisherTest {
 
     private ListAppender<ILoggingEvent> listAppender;
 
+    private static final String FAKE_ID = "fake-id";
+
     @Mock
     private Feature featureMock;
 
@@ -54,7 +56,7 @@ public class LoggerTelemetryPublisherTest {
         listAppender = new ListAppender<>();
         listAppender.start();
         publisherLogger.addAppender(listAppender);
-        when(featureMock.getId()).thenReturn("fake-id");
+        when(featureMock.getId()).thenReturn(FAKE_ID);
     }
 
     @Test
@@ -70,7 +72,7 @@ public class LoggerTelemetryPublisherTest {
         assertEquals(EVENT_NAME, logEvent.getMessage());
         assertEquals(Level.INFO, logEvent.getLevel());
         assertEquals("None", mdcMap.get(REASON));
-        assertEquals("fake-id", mdcMap.get(FEATURE_NAME));
+        assertEquals(FAKE_ID, mdcMap.get(FEATURE_NAME));
         assertEquals("false", mdcMap.get(ENABLED));
         assertEquals(EVALUATION_EVENT_VERSION, mdcMap.get(VERSION));
         assertEquals(EVENT_NAME, mdcMap.get(APPLICATION_INSIGHTS_CUSTOM_EVENT_KEY));
@@ -93,7 +95,7 @@ public class LoggerTelemetryPublisherTest {
         assertEquals(EVENT_NAME, logEvent.getMessage());
         assertEquals(Level.INFO, logEvent.getLevel());
         assertEquals(DEFAULT_WHEN_ENABLED, mdcMap.get(REASON));
-        assertEquals("fake-id", mdcMap.get(FEATURE_NAME));
+        assertEquals(FAKE_ID, mdcMap.get(FEATURE_NAME));
         assertEquals("false", mdcMap.get(ENABLED));
         assertEquals(EVALUATION_EVENT_VERSION, mdcMap.get(VERSION));
         assertEquals(EVENT_NAME, mdcMap.get(APPLICATION_INSIGHTS_CUSTOM_EVENT_KEY));
@@ -115,7 +117,7 @@ public class LoggerTelemetryPublisherTest {
         assertEquals(EVENT_NAME, logEvent.getMessage());
         assertEquals(Level.INFO, logEvent.getLevel());
         assertEquals("None", mdcMap.get(REASON));
-        assertEquals("fake-id", mdcMap.get(FEATURE_NAME));
+        assertEquals(FAKE_ID, mdcMap.get(FEATURE_NAME));
         assertEquals("false", mdcMap.get(ENABLED));
         assertEquals(EVALUATION_EVENT_VERSION, mdcMap.get(VERSION));
         assertEquals(EVENT_NAME, mdcMap.get(APPLICATION_INSIGHTS_CUSTOM_EVENT_KEY));
@@ -145,7 +147,7 @@ public class LoggerTelemetryPublisherTest {
         assertEquals(EVENT_NAME, logEvent.getMessage());
         assertEquals(Level.INFO, logEvent.getLevel());
         assertEquals("Percentile", mdcMap.get(REASON));
-        assertEquals("fake-id", mdcMap.get(FEATURE_NAME));
+        assertEquals(FAKE_ID, mdcMap.get(FEATURE_NAME));
         assertEquals("false", mdcMap.get(ENABLED));
         assertEquals(EVALUATION_EVENT_VERSION, mdcMap.get(VERSION));
         assertEquals(EVENT_NAME, mdcMap.get(APPLICATION_INSIGHTS_CUSTOM_EVENT_KEY));
@@ -189,7 +191,7 @@ public class LoggerTelemetryPublisherTest {
         assertEquals(EVENT_NAME, logEvent.getMessage());
         assertEquals(Level.INFO, logEvent.getLevel());
         assertEquals(DEFAULT_WHEN_ENABLED, mdcMap.get(REASON));
-        assertEquals("fake-id", mdcMap.get(FEATURE_NAME));
+        assertEquals(FAKE_ID, mdcMap.get(FEATURE_NAME));
         assertEquals("false", mdcMap.get(ENABLED));
         assertEquals(EVALUATION_EVENT_VERSION, mdcMap.get(VERSION));
         assertEquals(EVENT_NAME, mdcMap.get(APPLICATION_INSIGHTS_CUSTOM_EVENT_KEY));
@@ -215,7 +217,7 @@ public class LoggerTelemetryPublisherTest {
         assertEquals(EVENT_NAME, logEvent.getMessage());
         assertEquals(Level.INFO, logEvent.getLevel());
         assertEquals("Percentile", mdcMap.get(REASON));
-        assertEquals("fake-id", mdcMap.get(FEATURE_NAME));
+        assertEquals(FAKE_ID, mdcMap.get(FEATURE_NAME));
         assertEquals("false", mdcMap.get(ENABLED));
         assertEquals(EVALUATION_EVENT_VERSION, mdcMap.get(VERSION));
         assertEquals(EVENT_NAME, mdcMap.get(APPLICATION_INSIGHTS_CUSTOM_EVENT_KEY));

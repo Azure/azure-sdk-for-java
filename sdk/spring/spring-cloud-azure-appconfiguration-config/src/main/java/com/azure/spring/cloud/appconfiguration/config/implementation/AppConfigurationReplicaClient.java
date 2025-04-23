@@ -32,6 +32,8 @@ class AppConfigurationReplicaClient {
 
     private final String endpoint;
 
+    private final String originClient;
+
     private final ConfigurationClient client;
 
     private Instant backoffEndTime;
@@ -43,8 +45,9 @@ class AppConfigurationReplicaClient {
      * @param endpoint client endpoint
      * @param client Configuration Client to App Configuration store
      */
-    AppConfigurationReplicaClient(String endpoint, ConfigurationClient client) {
+    AppConfigurationReplicaClient(String endpoint, String originClient, ConfigurationClient client) {
         this.endpoint = endpoint;
+        this.originClient = originClient;
         this.client = client;
         this.backoffEndTime = Instant.now().minusMillis(1);
         this.failedAttempts = 0;
@@ -78,6 +81,13 @@ class AppConfigurationReplicaClient {
      */
     String getEndpoint() {
         return endpoint;
+    }
+
+    /**
+     * @return originClient
+     */
+    String getOriginClient() {
+        return originClient;
     }
 
     /**

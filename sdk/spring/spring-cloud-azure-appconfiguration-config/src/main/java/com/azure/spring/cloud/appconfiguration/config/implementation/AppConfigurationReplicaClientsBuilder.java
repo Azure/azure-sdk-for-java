@@ -156,7 +156,7 @@ public class AppConfigurationReplicaClientsBuilder {
                 LOGGER.debug("Connecting to " + endpoint + " using Connecting String.");
                 ConfigurationClientBuilder builder = createBuilderInstance().connectionString(connectionString);
 
-                clients.add(modifyAndBuildClient(builder, endpoint, connectionStrings.size() - 1));
+                clients.add(modifyAndBuildClient(builder, endpoint, configStore.getEndpoint(), connectionStrings.size() - 1));
             }
         } else {
             DefaultAzureCredential defautAzureCredential = new DefaultAzureCredentialBuilder().build();
@@ -168,7 +168,7 @@ public class AppConfigurationReplicaClientsBuilder {
 
                 builder.endpoint(endpoint);
 
-                clients.add(modifyAndBuildClient(builder, endpoint, endpoints.size() - 1));
+                clients.add(modifyAndBuildClient(builder, endpoint, configStore.getEndpoint(), endpoints.size() - 1));
             }
         }
         return clients;
@@ -180,23 +180,23 @@ public class AppConfigurationReplicaClientsBuilder {
             ConnectionString connectionString = new ConnectionString(configStore.getConnectionString());
             connectionString.setUri(failoverEndpoint);
             ConfigurationClientBuilder builder = createBuilderInstance().connectionString(connectionString.toString());
-            return modifyAndBuildClient(builder, failoverEndpoint, 0);
+            return modifyAndBuildClient(builder, failoverEndpoint, configStore.getEndpoint(), 0);
         } else if (configStore.getConnectionStrings().size() > 0) {
             ConnectionString connectionString = new ConnectionString(configStore.getConnectionStrings().get(0));
             connectionString.setUri(failoverEndpoint);
             ConfigurationClientBuilder builder = createBuilderInstance().connectionString(connectionString.toString());
-            return modifyAndBuildClient(builder, failoverEndpoint, 0);
+            return modifyAndBuildClient(builder, failoverEndpoint, configStore.getEndpoint(), 0);
         } else {
             ConfigurationClientBuilder builder = createBuilderInstance();
             if (!credentialConfigured) {
                 builder.credential(new DefaultAzureCredentialBuilder().build());
             }
             builder.endpoint(failoverEndpoint);
-            return modifyAndBuildClient(builder, failoverEndpoint, 0);
+            return modifyAndBuildClient(builder, failoverEndpoint, configStore.getEndpoint(), 0);
         }
     }
 
-    private AppConfigurationReplicaClient modifyAndBuildClient(ConfigurationClientBuilder builder, String endpoint,
+    private AppConfigurationReplicaClient modifyAndBuildClient(ConfigurationClientBuilder builder, String endpoint, String originEndpoint,
         Integer replicaCount) {
         TracingInfo tracingInfo = new TracingInfo(isKeyVaultConfigured, replicaCount,
             Configuration.getGlobalConfiguration());
@@ -205,7 +205,7 @@ public class AppConfigurationReplicaClientsBuilder {
         if (clientCustomizer != null) {
             clientCustomizer.customize(builder, endpoint);
         }
-        return new AppConfigurationReplicaClient(endpoint, builder.buildClient());
+        return new AppConfigurationReplicaClient(endpoint, originEndpoint, builder.buildClient());
     }
 
     private ConfigurationClientBuilder createBuilderInstance() {

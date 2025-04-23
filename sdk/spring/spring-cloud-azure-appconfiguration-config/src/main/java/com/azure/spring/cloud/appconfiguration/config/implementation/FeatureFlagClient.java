@@ -86,7 +86,7 @@ class FeatureFlagClient {
             context.addData("FeatureFlagTracing", tracing);
 
             FeatureFlags features = replicaClient.listFeatureFlags(settingSelector, context);
-            loadedFeatureFlags.addAll(proccessFeatureFlags(features, keyFilter));
+            loadedFeatureFlags.addAll(proccessFeatureFlags(features, replicaClient.getOriginClient()));
         }
         return loadedFeatureFlags;
     }

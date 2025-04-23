@@ -198,7 +198,7 @@ public class FeatureManager {
         if (!featureFlag.isEnabled()) {
             this.assignDefaultDisabledReason(event);
             event.setEnabled(false);
-            if (telemetryPublisher != null && featureFlag.getTelemetry().getEnabled()) {
+            if (telemetryPublisher != null && featureFlag.getTelemetry().isEnabled()) {
                 telemetryPublisher.publishTelemetry(event);
             }
 
@@ -210,7 +210,7 @@ public class FeatureManager {
 
         result = assignAllocation(result);
         result = result.doOnSuccess(resultEvent -> {
-            if (telemetryPublisher != null && featureFlag.getTelemetry().getEnabled()) {
+            if (telemetryPublisher != null && featureFlag.getTelemetry().isEnabled()) {
                 telemetryPublisher.publishTelemetry(resultEvent);
             } 
         });
