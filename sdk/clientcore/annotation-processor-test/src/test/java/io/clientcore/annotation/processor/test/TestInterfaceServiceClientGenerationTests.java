@@ -3,6 +3,8 @@
 
 package io.clientcore.annotation.processor.test;
 
+import io.clientcore.annotation.processor.test.implementation.ParameterizedHostService;
+import io.clientcore.annotation.processor.test.implementation.ParameterizedMultipleHostService;
 import io.clientcore.annotation.processor.test.implementation.TestInterfaceClientImpl;
 import io.clientcore.annotation.processor.test.implementation.models.Foo;
 import io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON;
@@ -160,10 +162,11 @@ public class TestInterfaceServiceClientGenerationTests {
      * Tests that the response body is correctly returned as a byte array.
      */
     @Test
-    @Disabled("TODO https://github.com/Azure/azure-sdk-for-java/issues/44298")
     public void requestWithByteArrayReturnTypeAndParameterizedHostAndPath() {
-        TestInterfaceClientImpl.TestInterfaceClientService service =
-            createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+
+        ParameterizedHostService service
+            = ParameterizedHostService.getNewInstance(pipeline);
         final byte[] result = service.getByteArray("http", "localhost:" + server.getHttpPort(), 100);
 
         assertNotNull(result);
@@ -960,9 +963,8 @@ public class TestInterfaceServiceClientGenerationTests {
      * Tests that the response body is correctly returned as a byte array.
      */
     @Test
-    @Disabled("TODO https://github.com/Azure/azure-sdk-for-java/issues/44298")
     public void requestWithEmptyByteArrayReturnTypeAndParameterizedHostAndPath() {
-        final byte[] result = createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
+        final byte[] result = createService(ParameterizedHostService.class)
             .getByteArray(getRequestScheme(), "localhost:" + getPort(), 0);
 
         assertNull(result);
@@ -1167,9 +1169,12 @@ public class TestInterfaceServiceClientGenerationTests {
     }
 
     @Test
-    @Disabled("TODO https://github.com/Azure/azure-sdk-for-java/issues/44298")
     public void requestWithMultipleHostParams() {
-        final HttpBinJSON result = createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(getHttpClient()).build();
+
+        ParameterizedMultipleHostService service
+            = ParameterizedMultipleHostService.getNewInstance(pipeline);
+        final HttpBinJSON result = service
             .get(getRequestScheme(), "local", "host:" + getPort());
 
         assertNotNull(result);

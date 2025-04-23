@@ -13,14 +13,9 @@ import io.clientcore.annotation.processor.test.implementation.SimpleXmlSerializa
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
-import java.io.IOException;
-import io.clientcore.core.models.CoreException;
 import io.clientcore.core.utils.CoreUtils;
-import io.clientcore.core.serialization.SerializationFormat;
-import io.clientcore.core.serialization.ObjectSerializer;
 import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.List;
+import io.clientcore.core.serialization.SerializationFormat;
 
 /**
  * Initializes a new instance of the SimpleXmlSerializableServiceImpl type.
@@ -118,9 +113,9 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.SimpleXmlSerializable.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
@@ -146,39 +141,13 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.SimpleXmlSerializable.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
         return (io.clientcore.annotation.processor.test.implementation.models.SimpleXmlSerializable) result;
-    }
-
-    /**
-     * Decodes the body of an {@link Response} into the type returned by the called API.
-     * @param data The BinaryData to decode.
-     * @param serializer The serializer to use.
-     * @param returnType The type of the ParameterizedType return value.
-     * @return The decoded value.
-     * @throws CoreException If the deserialization fails.
-     */
-    private static Object decodeNetworkResponse(BinaryData data, ObjectSerializer serializer, ParameterizedType returnType) {
-        if (data == null) {
-            return null;
-        }
-        try {
-            if (List.class.isAssignableFrom((Class<?>) returnType.getRawType())) {
-                return serializer.deserializeFromBytes(data.toBytes(), returnType);
-            }
-            Type token = returnType.getRawType();
-            if (Response.class.isAssignableFrom((Class<?>) token)) {
-                token = returnType.getActualTypeArguments()[0];
-            }
-            return serializer.deserializeFromBytes(data.toBytes(), token);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(CoreException.from(e));
-        }
     }
 }
