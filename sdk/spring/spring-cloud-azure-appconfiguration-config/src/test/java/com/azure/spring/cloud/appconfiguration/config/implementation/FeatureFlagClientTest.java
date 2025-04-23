@@ -4,7 +4,6 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.E_TAG;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_ID;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_REFERENCE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.DEFAULT_ROLLOUT_PERCENTAGE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.FEATURE_LABEL;
@@ -184,11 +183,8 @@ public class FeatureFlagClientTest {
     @Test
     public void testFeatureFlagTelemetry() {
         Feature feature = FeatureFlagClient.createFeature(TELEMETRY_FEATURE, TEST_ENDPOINT);
-
-        String featureFlagId = "yON6V7DTGfVgOKfnPtue_2hS-CFVV5ecv-dcjqCFQt4";
         String featureFlagReference = String.format("%s/kv/%s", TEST_ENDPOINT, ".appconfig.featureflag/Delta");
 
-        assertEquals(featureFlagId, feature.getTelemetry().getMetadata().get(FEATURE_FLAG_ID));
         assertEquals(featureFlagReference, feature.getTelemetry().getMetadata().get(FEATURE_FLAG_REFERENCE));
         assertEquals(TEST_E_TAG, feature.getTelemetry().getMetadata().get(E_TAG));
     }
