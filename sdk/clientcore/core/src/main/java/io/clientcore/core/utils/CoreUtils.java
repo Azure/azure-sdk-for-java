@@ -531,7 +531,8 @@ public final class CoreUtils {
             }
             return serializer.deserializeFromBytes(data.toBytes(), token);
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(CoreException.from(e));
+            CoreException coreException = CoreException.from(e);
+            throw LOGGER.logThrowableAsError(CoreException.from(coreException));
         }
     }
 
