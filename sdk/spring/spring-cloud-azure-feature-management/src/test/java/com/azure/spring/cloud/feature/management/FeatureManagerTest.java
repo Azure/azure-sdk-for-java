@@ -35,6 +35,7 @@ import com.azure.spring.cloud.feature.management.models.Feature;
 import com.azure.spring.cloud.feature.management.models.FeatureFilterEvaluationContext;
 import com.azure.spring.cloud.feature.management.models.FilterNotFoundException;
 import com.azure.spring.cloud.feature.management.models.Telemetry;
+import com.azure.spring.cloud.feature.management.telemetry.TelemetryPublisher;
 
 /**
  * Unit tests for FeatureManager.

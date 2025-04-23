@@ -41,6 +41,7 @@ import com.azure.spring.cloud.feature.management.targeting.TargetingContext;
 import com.azure.spring.cloud.feature.management.targeting.TargetingContextAccessor;
 import com.azure.spring.cloud.feature.management.targeting.TargetingEvaluationOptions;
 import com.azure.spring.cloud.feature.management.targeting.TargetingFilterContext;
+import com.azure.spring.cloud.feature.management.telemetry.TelemetryPublisher;
 
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;

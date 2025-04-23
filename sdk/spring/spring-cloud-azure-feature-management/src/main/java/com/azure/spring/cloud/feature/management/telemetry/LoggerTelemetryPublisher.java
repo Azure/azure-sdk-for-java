@@ -1,6 +1,17 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-package com.azure.spring.cloud.feature.management;
+package com.azure.spring.cloud.feature.management.telemetry;
+
+import static com.azure.spring.cloud.feature.management.telemetry.TelemetryConstants.APPLICATION_INSIGHTS_CUSTOM_EVENT_KEY;
+import static com.azure.spring.cloud.feature.management.telemetry.TelemetryConstants.DEFAULT_WHEN_ENABLED;
+import static com.azure.spring.cloud.feature.management.telemetry.TelemetryConstants.ENABLED;
+import static com.azure.spring.cloud.feature.management.telemetry.TelemetryConstants.EVALUATION_EVENT_VERSION;
+import static com.azure.spring.cloud.feature.management.telemetry.TelemetryConstants.EVENT_NAME;
+import static com.azure.spring.cloud.feature.management.telemetry.TelemetryConstants.FEATURE_NAME;
+import static com.azure.spring.cloud.feature.management.telemetry.TelemetryConstants.REASON;
+import static com.azure.spring.cloud.feature.management.telemetry.TelemetryConstants.VARIANT;
+import static com.azure.spring.cloud.feature.management.telemetry.TelemetryConstants.VARIANT_ASSIGNMENT_PERCENTAGE;
+import static com.azure.spring.cloud.feature.management.telemetry.TelemetryConstants.VERSION;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,24 +36,6 @@ import com.azure.spring.cloud.feature.management.models.VariantAssignmentReason;
 public class LoggerTelemetryPublisher implements TelemetryPublisher {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoggerTelemetryPublisher.class);
-
-    private static final String EVENT_NAME = "FeatureEvaluation";
-
-    private static final String FEATURE_NAME = "FeatureName";
-
-    private static final String ENABLED = "Enabled";
-
-    private static final String VARIANT = "Variant";
-
-    private static final String REASON = "VariantAssignmentReason";
-
-    private static final String DEFAULT_WHEN_ENABLED = "DefaultWhenEnabled";
-
-    private static final String VERSION = "Version";
-
-    private static final String VARIANT_ASSIGNMENT_PERCENTAGE = "VariantAssignmentPercentage";
-
-    private static final String EVALUATION_EVENT_VERSION = "1.1.0";
 
     /*
      * Publishes telemetry events related to feature evaluations. It logs the
@@ -93,11 +86,11 @@ public class LoggerTelemetryPublisher implements TelemetryPublisher {
         for (Map.Entry<String, String> entry : eventProperties.entrySet()) {
             MDC.put(entry.getKey(), entry.getValue());
         }
-        MDC.put("microsoft.custom_event.name", EVENT_NAME);
+        MDC.put(APPLICATION_INSIGHTS_CUSTOM_EVENT_KEY, EVENT_NAME);
         LOGGER.info(EVENT_NAME);
 
         // Remove the key-value pairs from the MDC context after logging.
-        MDC.remove("microsoft.custom_event.name");
+        MDC.remove(APPLICATION_INSIGHTS_CUSTOM_EVENT_KEY);
         for (String key : eventProperties.keySet()) {
             MDC.remove(key);
         }

@@ -21,6 +21,8 @@ import com.azure.spring.cloud.feature.management.implementation.FeatureManagemen
 import com.azure.spring.cloud.feature.management.implementation.FeatureManagementProperties;
 import com.azure.spring.cloud.feature.management.targeting.TargetingContextAccessor;
 import com.azure.spring.cloud.feature.management.targeting.TargetingEvaluationOptions;
+import com.azure.spring.cloud.feature.management.telemetry.LoggerTelemetryPublisher;
+import com.azure.spring.cloud.feature.management.telemetry.TelemetryPublisher;
 
 /**
  * Configuration for setting up FeatureManager
