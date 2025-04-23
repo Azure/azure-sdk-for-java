@@ -580,7 +580,6 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
         }
     }
 
-
     /**
      * Invokes tasks in the group.
      *
@@ -592,10 +591,10 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
      *                                   before invoking them
      */
     private void invokeIntern(InvocationContext context, boolean shouldRunBeforeGroupInvoke,
-                              Set<String> skipBeforeGroupInvoke) {
+        Set<String> skipBeforeGroupInvoke) {
         if (!isPreparer()) {
             throw logger.logExceptionAsError(
-                    new IllegalStateException("invokeIntern(cxt) can be called only from root TaskGroup"));
+                new IllegalStateException("invokeIntern(cxt) can be called only from root TaskGroup"));
         }
         this.taskGroupTerminateOnErrorStrategy = context.terminateOnErrorStrategy();
         if (shouldRunBeforeGroupInvoke) {
@@ -728,7 +727,7 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
      * @param context the context object shared across all the task entries in this group during execution
      */
     private CompletableFuture<Void> processCompletedTask(TaskGroupEntry<TaskItem> completedEntry,
-                                                         InvocationContext context) {
+        InvocationContext context) {
         reportCompletion(completedEntry);
         if (!isRootEntry(completedEntry)) {
             return invokeReadyTasks(context);
@@ -744,7 +743,7 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
      * @param context the context object shared across all the task entries in this group during execution
      */
     private CompletableFuture<Void> processFaultedTask(TaskGroupEntry<TaskItem> faultedEntry, Throwable throwable,
-                                                       InvocationContext context) {
+        InvocationContext context) {
         markGroupAsCancelledIfTerminationStrategyIsIPTC();
         // CompletableFuture will wrap execution exception into CompletionException, with the actual exception as its cause.
         if (throwable instanceof CompletionException && throwable.getCause() != null) {

@@ -21,7 +21,7 @@ public class TaskGroupThreadTests {
     public void verifyTaskExecuteOnDefaultThread() throws InterruptedException {
         String outerThread = "outer";
         CountDownLatch latch = new CountDownLatch(1);
-        Executors.newSingleThreadExecutor(new DefaultThreadFactory(outerThread)).execute(() ->{
+        Executors.newSingleThreadExecutor(new DefaultThreadFactory(outerThread)).execute(() -> {
             Set<String> items = new HashSet<>();
             Consumer<Indexable> itemConsumer = indexable -> {
                 TestTaskItem taskItem = (TestTaskItem) indexable;
@@ -73,7 +73,8 @@ public class TaskGroupThreadTests {
             taskItem4.addDependency(taskItem1);
             taskItem4.addPostRunDependent(taskItem5);
 
-            taskItem4.taskGroup().invoke(taskItem4.taskGroup().newInvocationContext().withSyncExecutor(currentThreadExecutor));
+            taskItem4.taskGroup()
+                .invoke(taskItem4.taskGroup().newInvocationContext().withSyncExecutor(currentThreadExecutor));
             Assertions.assertEquals(new HashSet<>(Arrays.asList("1", "2", "3", "4", "5")), items);
             latch.countDown();
         });
