@@ -32,11 +32,6 @@ stages:
       - template: /eng/pipelines/templates/variables/image.yml
     jobs:
       - job: SignPackage
-        # CodeSigning via ESRP can take anywhere from 5-15 minutes depending on latency
-        # and the gpg signing can take 2-3 minutes. On top of this there's the injected
-        # Guardian steps which, by themselves, can take 10+ minutes. This also all seems
-        # dependent on the number of libraries in the pipeline.
-        timeoutInMinutes: 40
         pool:
           name: $(WINDOWSPOOL)
           image: $(WINDOWSVMIMAGE)
