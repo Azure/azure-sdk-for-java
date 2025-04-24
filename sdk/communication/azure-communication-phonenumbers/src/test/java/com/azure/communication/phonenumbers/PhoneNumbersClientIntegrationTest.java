@@ -5,8 +5,8 @@ package com.azure.communication.phonenumbers;
 import com.azure.communication.phonenumbers.implementation.converters.PhoneNumberErrorConverter;
 import com.azure.communication.phonenumbers.implementation.models.CommunicationError;
 import com.azure.communication.phonenumbers.implementation.models.CommunicationErrorResponseException;
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumberCapabilitiesRequest;
 import com.azure.communication.phonenumbers.models.AvailablePhoneNumber;
-import com.azure.communication.phonenumbers.models.PhoneNumberBrowseCapabilitiesRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumberAdministrativeDivision;
 import com.azure.communication.phonenumbers.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
@@ -23,7 +23,7 @@ import com.azure.communication.phonenumbers.models.PhoneNumberOperationStatus;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
-import com.azure.communication.phonenumbers.models.PhoneNumbersBrowseRequest;
+import com.azure.communication.phonenumbers.models.BrowseAvailableNumbersRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumbersReservation;
 import com.azure.communication.phonenumbers.models.PurchasePhoneNumbersResult;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
@@ -484,12 +484,11 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void browseAvailablePhoneNumberSucceeds(HttpClient httpClient) {
-        PhoneNumbersBrowseRequest browseRequest = new PhoneNumbersBrowseRequest().setCountryCode("US")
+        BrowseAvailableNumbersRequest browseRequest = new BrowseAvailableNumbersRequest().setCountryCode("US")
             .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
             .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
-            .setCapabilities(
-                new PhoneNumberBrowseCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
-                    .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
+            .setCapabilities(new PhoneNumberCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
+                .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
         List<AvailablePhoneNumber> result = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
             .browseAvailableNumbers(browseRequest);
@@ -500,12 +499,11 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void browseAvailablePhoneNumberWrongCountryCode(HttpClient httpClient) {
-        PhoneNumbersBrowseRequest browseRequest = new PhoneNumbersBrowseRequest().setCountryCode("INVALID")
+        BrowseAvailableNumbersRequest browseRequest = new BrowseAvailableNumbersRequest().setCountryCode("INVALID")
             .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
             .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
-            .setCapabilities(
-                new PhoneNumberBrowseCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
-                    .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
+            .setCapabilities(new PhoneNumberCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
+                .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
         PhoneNumbersClient client = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers");
 
@@ -516,12 +514,11 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void browseAvailablePhoneNumberSucceedsWithAAD(HttpClient httpClient) {
-        PhoneNumbersBrowseRequest browseRequest = new PhoneNumbersBrowseRequest().setCountryCode("US")
+        BrowseAvailableNumbersRequest browseRequest = new BrowseAvailableNumbersRequest().setCountryCode("US")
             .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
             .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
-            .setCapabilities(
-                new PhoneNumberBrowseCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
-                    .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
+            .setCapabilities(new PhoneNumberCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
+                .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
         List<AvailablePhoneNumber> result = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers")
             .browseAvailableNumbers(browseRequest);
@@ -532,12 +529,11 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void browseAvailablePhoneNumberWrongCountryCodeWithAAD(HttpClient httpClient) {
-        PhoneNumbersBrowseRequest browseRequest = new PhoneNumbersBrowseRequest().setCountryCode("US")
+        BrowseAvailableNumbersRequest browseRequest = new BrowseAvailableNumbersRequest().setCountryCode("US")
             .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
             .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
-            .setCapabilities(
-                new PhoneNumberBrowseCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
-                    .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
+            .setCapabilities(new PhoneNumberCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
+                .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
         PhoneNumbersClient client = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers");
 
@@ -548,12 +544,11 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void updatePhoneNumbersReservation(HttpClient httpClient) {
-        PhoneNumbersBrowseRequest browseRequest = new PhoneNumbersBrowseRequest().setCountryCode("US")
+        BrowseAvailableNumbersRequest browseRequest = new BrowseAvailableNumbersRequest().setCountryCode("US")
             .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
             .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
-            .setCapabilities(
-                new PhoneNumberBrowseCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
-                    .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
+            .setCapabilities(new PhoneNumberCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
+                .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
         List<AvailablePhoneNumber> result = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
             .browseAvailableNumbers(browseRequest);
@@ -599,12 +594,11 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void updatePhoneNumbersReservationWithAAD(HttpClient httpClient) {
-        PhoneNumbersBrowseRequest browseRequest = new PhoneNumbersBrowseRequest().setCountryCode("US")
+        BrowseAvailableNumbersRequest browseRequest = new BrowseAvailableNumbersRequest().setCountryCode("US")
             .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
             .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
-            .setCapabilities(
-                new PhoneNumberBrowseCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
-                    .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
+            .setCapabilities(new PhoneNumberCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
+                .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
         List<AvailablePhoneNumber> result = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers")
             .browseAvailableNumbers(browseRequest);
@@ -650,7 +644,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void purchaseWithoutAgreementToNotResellFails(HttpClient httpClient) {
-        PhoneNumbersBrowseRequest browseRequest = new PhoneNumbersBrowseRequest().setCountryCode("FR")
+        BrowseAvailableNumbersRequest browseRequest = new BrowseAvailableNumbersRequest().setCountryCode("FR")
             .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
             .setAssignmentType(PhoneNumberAssignmentType.APPLICATION);
 
@@ -672,7 +666,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void purchaseWithoutAgreementToNotResellFailsWithAAD(HttpClient httpClient) {
-        PhoneNumbersBrowseRequest browseRequest = new PhoneNumbersBrowseRequest().setCountryCode("FR")
+        BrowseAvailableNumbersRequest browseRequest = new BrowseAvailableNumbersRequest().setCountryCode("FR")
             .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
             .setAssignmentType(PhoneNumberAssignmentType.APPLICATION);
 

@@ -10,11 +10,13 @@ import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersPu
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberPurchaseRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberRawOperation;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberSearchRequest;
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersBrowseRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersSearchAvailablePhoneNumbersResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersReleasePhoneNumberResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberCapabilitiesRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersUpdateCapabilitiesResponse;
 import com.azure.communication.phonenumbers.implementation.models.OperatorInformationRequest;
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumberBrowseCapabilitiesRequest;
 import com.azure.communication.phonenumbers.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.models.AvailablePhoneNumber;
 import com.azure.communication.phonenumbers.models.OperatorInformationOptions;
@@ -33,7 +35,7 @@ import com.azure.communication.phonenumbers.models.PhoneNumberOperationStatus;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
-import com.azure.communication.phonenumbers.models.PhoneNumbersBrowseRequest;
+import com.azure.communication.phonenumbers.models.BrowseAvailableNumbersRequest;
 import com.azure.communication.phonenumbers.models.PhoneNumbersPurchaseReservationResponse;
 import com.azure.communication.phonenumbers.models.PhoneNumbersReservation;
 import com.azure.communication.phonenumbers.models.PhoneNumbersReservationPurchaseRequest;
@@ -232,9 +234,11 @@ public final class PhoneNumbersAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<AvailablePhoneNumber>>
-        browseAvailableNumbers(PhoneNumbersBrowseRequest phoneNumbersBrowseRequest) {
+        browseAvailableNumbers(BrowseAvailableNumbersRequest phoneNumbersBrowseRequest) {
         Objects.requireNonNull(phoneNumbersBrowseRequest.getCountryCode(), "'countryCode' cannot be null.");
-        return client.browseAvailableNumbersAsync(phoneNumbersBrowseRequest.getCountryCode(), phoneNumbersBrowseRequest)
+        return client
+            .browseAvailableNumbersAsync(phoneNumbersBrowseRequest.getCountryCode(),
+                mapBrowseRequest(phoneNumbersBrowseRequest))
             .map(response -> {
                 // Extract the list of AvailablePhoneNumber from the response
                 List<AvailablePhoneNumber> availablePhoneNumbers = response.getPhoneNumbers();
@@ -1025,5 +1029,18 @@ public final class PhoneNumbersAsyncClient {
             phoneNumbersMap.put(phoneNumber, null);
         }
         return phoneNumbersMap;
+    }
+
+    private static PhoneNumbersBrowseRequest mapBrowseRequest(BrowseAvailableNumbersRequest phoneNumbersBrowseRequest) {
+        PhoneNumberBrowseCapabilitiesRequest capabilitiesRequest = new PhoneNumberBrowseCapabilitiesRequest()
+            .setCalling(phoneNumbersBrowseRequest.getCapabilities().getCalling())
+            .setSms(phoneNumbersBrowseRequest.getCapabilities().getSms());
+        PhoneNumbersBrowseRequest internalBrowseRequest
+            = new PhoneNumbersBrowseRequest().setPhoneNumberType(phoneNumbersBrowseRequest.getPhoneNumberType())
+                .setCapabilities(capabilitiesRequest)
+                .setAssignmentType(phoneNumbersBrowseRequest.getAssignmentType())
+                .setPhoneNumberPrefixes(phoneNumbersBrowseRequest.getPhoneNumberPrefixes())
+                .setCountryCode(phoneNumbersBrowseRequest.getCountryCode());
+        return internalBrowseRequest;
     }
 }

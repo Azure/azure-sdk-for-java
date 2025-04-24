@@ -4,6 +4,7 @@
 
 package com.azure.communication.phonenumbers.models;
 
+import com.azure.communication.phonenumbers.implementation.models.PhoneNumberCapabilitiesRequest;
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -16,7 +17,7 @@ import java.util.List;
  * The parameters for the browse operation.
  */
 @Fluent
-public final class PhoneNumbersBrowseRequest implements JsonSerializable<PhoneNumbersBrowseRequest> {
+public final class BrowseAvailableNumbersRequest implements JsonSerializable<BrowseAvailableNumbersRequest> {
     /*
      * Represents the number type of the offering.
      */
@@ -25,7 +26,7 @@ public final class PhoneNumbersBrowseRequest implements JsonSerializable<PhoneNu
     /*
      * The minimum desired capabilities for the browse operation request.
      */
-    private PhoneNumberBrowseCapabilitiesRequest capabilities;
+    private PhoneNumberCapabilitiesRequest capabilities;
 
     /*
      * Represents the assignment type of the offering. Also known as the use case.
@@ -45,7 +46,7 @@ public final class PhoneNumbersBrowseRequest implements JsonSerializable<PhoneNu
     /**
      * Creates an instance of PhoneNumbersBrowseRequest class.
      */
-    public PhoneNumbersBrowseRequest() {
+    public BrowseAvailableNumbersRequest() {
     }
 
     /**
@@ -63,7 +64,7 @@ public final class PhoneNumbersBrowseRequest implements JsonSerializable<PhoneNu
      * @param phoneNumberType the phoneNumberType value to set.
      * @return the PhoneNumbersBrowseRequest object itself.
      */
-    public PhoneNumbersBrowseRequest setPhoneNumberType(PhoneNumberType phoneNumberType) {
+    public BrowseAvailableNumbersRequest setPhoneNumberType(PhoneNumberType phoneNumberType) {
         this.phoneNumberType = phoneNumberType;
         return this;
     }
@@ -73,7 +74,7 @@ public final class PhoneNumbersBrowseRequest implements JsonSerializable<PhoneNu
      * 
      * @return the capabilities value.
      */
-    public PhoneNumberBrowseCapabilitiesRequest getCapabilities() {
+    public PhoneNumberCapabilitiesRequest getCapabilities() {
         return this.capabilities;
     }
 
@@ -83,7 +84,7 @@ public final class PhoneNumbersBrowseRequest implements JsonSerializable<PhoneNu
      * @param capabilities the capabilities value to set.
      * @return the PhoneNumbersBrowseRequest object itself.
      */
-    public PhoneNumbersBrowseRequest setCapabilities(PhoneNumberBrowseCapabilitiesRequest capabilities) {
+    public BrowseAvailableNumbersRequest setCapabilities(PhoneNumberCapabilitiesRequest capabilities) {
         this.capabilities = capabilities;
         return this;
     }
@@ -103,7 +104,7 @@ public final class PhoneNumbersBrowseRequest implements JsonSerializable<PhoneNu
      * @param assignmentType the assignmentType value to set.
      * @return the PhoneNumbersBrowseRequest object itself.
      */
-    public PhoneNumbersBrowseRequest setAssignmentType(PhoneNumberAssignmentType assignmentType) {
+    public BrowseAvailableNumbersRequest setAssignmentType(PhoneNumberAssignmentType assignmentType) {
         this.assignmentType = assignmentType;
         return this;
     }
@@ -125,7 +126,7 @@ public final class PhoneNumbersBrowseRequest implements JsonSerializable<PhoneNu
      * @param phoneNumberPrefixes the phoneNumberPrefixes value to set.
      * @return the PhoneNumbersBrowseRequest object itself.
      */
-    public PhoneNumbersBrowseRequest setPhoneNumberPrefixes(List<String> phoneNumberPrefixes) {
+    public BrowseAvailableNumbersRequest setPhoneNumberPrefixes(List<String> phoneNumberPrefixes) {
         this.phoneNumberPrefixes = phoneNumberPrefixes;
         return this;
     }
@@ -145,7 +146,7 @@ public final class PhoneNumbersBrowseRequest implements JsonSerializable<PhoneNu
      * @param countryCode the countryCode value to set.
      * @return the PhoneNumbersBrowseRequest object itself.
      */
-    public PhoneNumbersBrowseRequest setCountryCode(String countryCode) {
+    public BrowseAvailableNumbersRequest setCountryCode(String countryCode) {
         this.countryCode = countryCode;
         return this;
     }
@@ -176,9 +177,9 @@ public final class PhoneNumbersBrowseRequest implements JsonSerializable<PhoneNu
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PhoneNumbersBrowseRequest.
      */
-    public static PhoneNumbersBrowseRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static BrowseAvailableNumbersRequest fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            PhoneNumbersBrowseRequest deserializedPhoneNumbersBrowseRequest = new PhoneNumbersBrowseRequest();
+            BrowseAvailableNumbersRequest deserializedPhoneNumbersBrowseRequest = new BrowseAvailableNumbersRequest();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -188,7 +189,7 @@ public final class PhoneNumbersBrowseRequest implements JsonSerializable<PhoneNu
                         = PhoneNumberType.fromString(reader.getString());
                 } else if ("capabilities".equals(fieldName)) {
                     deserializedPhoneNumbersBrowseRequest.capabilities
-                        = PhoneNumberBrowseCapabilitiesRequest.fromJson(reader);
+                        = PhoneNumberCapabilitiesRequest.fromJson(reader);
                 } else if ("assignmentType".equals(fieldName)) {
                     deserializedPhoneNumbersBrowseRequest.assignmentType
                         = PhoneNumberAssignmentType.fromString(reader.getString());
