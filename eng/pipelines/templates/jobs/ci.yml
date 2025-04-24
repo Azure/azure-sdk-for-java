@@ -359,7 +359,8 @@ jobs:
           displayName: Set PRServiceDirectories from PR diff
       - ${{ else }}:
         - pwsh: |
-            Write-Host "changedServicesString='${{ parameters.ServiceDirectory }}'"
+            $changedServicesString=${{ parameters.ServiceDirectory }}
+            Write-Host "changedServicesString='$changedServicesString'"
             Write-Host "##vso[task.setvariable variable=PRServiceDirectories;]$changedServicesString"
           displayName: Set PRServiceDirectories to ServiceDirectory parameter
 
