@@ -74,7 +74,7 @@ public class TaskGroupThreadTests {
             taskItem4.addPostRunDependent(taskItem5);
 
             taskItem4.taskGroup()
-                .invoke(taskItem4.taskGroup().newInvocationContext().withSyncExecutor(currentThreadExecutor));
+                .invoke(taskItem4.taskGroup().newInvocationContext().withSyncTaskExecutor(currentThreadExecutor));
             Assertions.assertEquals(new HashSet<>(Arrays.asList("1", "2", "3", "4", "5")), items);
             latch.countDown();
         });

@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.concurrent.CompletionException;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -399,7 +400,14 @@ public class DAGErrorTests {
         };
         if (syncStack) {
             try {
-                pancakeFtg.invoke(context);
+                pancakeFtg.invoke(context.withSyncTaskExecutor(
+                    // Ensure the thread pool size > 1, to avoid G runs after B throws exception.
+                    //
+                    // In test pipeline, agent has only 1 cpu core, making the default ForkJoinPool having 1 available
+                    // thread, resulting in task executing sequentially. Since G takes dependency of C, and C is at the
+                    // same execution level as B, G will not execute until B throws exception.
+                    // This will mark the group as canceled, and G will not execute.
+                    Executors.newFixedThreadPool(5)));
             } catch (Throwable e) {
                 consumeError.accept(e);
             }

@@ -959,7 +959,7 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
          * @param syncExecutor the sync Executor
          * @return the context itself
          */
-        public InvocationContext withSyncExecutor(Executor syncExecutor) {
+        public InvocationContext withSyncTaskExecutor(Executor syncExecutor) {
             Objects.requireNonNull(syncExecutor);
             this.syncExecutor = syncExecutor;
             return this;
