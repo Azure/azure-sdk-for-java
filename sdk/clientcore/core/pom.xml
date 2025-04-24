@@ -299,7 +299,7 @@
         </os>
       </activation>
       <properties>
-        <conscrypt.platform.classifier>macos</conscrypt.platform.classifier>
+        <conscrypt.platform.classifier>osx-x86_64</conscrypt.platform.classifier>
       </properties>
     </profile>
 
