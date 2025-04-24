@@ -30,7 +30,7 @@ foreach ($project in ($Projects -split ",")) {
     # Split the project into groupId and artifactId.
     $projectParts = $project -split ":"
     if ($projectParts.Count -ne 2) {
-        Write-Error "Invalid project format: $project. Expected format is 'groupId:artifactId'."
+        Write-Host "Invalid project format: $project. Expected format is 'groupId:artifactId'."
         return
     }
 
@@ -48,17 +48,21 @@ foreach ($project in ($Projects -split ",")) {
 # Then from the SDK root, find all pom.xml files.
 $pomFiles = Get-ChildItem -Path $sdkRoot -Filter pom.xml -Recurse
 
-# For each pom.xml file, get the groupdId and artifactId from the Maven xml.
+# For each pom.xml file, get the groupId and artifactId from the Maven xml.
 foreach ($pomFile in $pomFiles) {
     $xmlContent = New-Object xml
     $xmlContent.Load($pomFile)
 
     # Get the groupId and artifactId from the pom.xml file.
     $groupId = $xmlContent.project.groupId
+    if ($null -eq $groupId -and $null -ne $xmlContent.parent) {
+        $groupId = $xmlContent.parent.groupId
+    }
+
     $artifactId = $xmlContent.project.artifactId
 
     if ($null -eq $groupId -or $null -eq $artifactId) {
-        Write-Error "Invalid pom.xml file: $pomFile. Missing groupId or artifactId."
+        Write-Host "Invalid pom.xml file: $pomFile. Missing groupId or artifactId."
         continue
     }
 
