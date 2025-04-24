@@ -35,6 +35,9 @@ variables:
   AdditionalOptions: ''
 
   # Environment setup for mvn command
+  # Used to pass our custom .m2 location to pipeline steps that we don't control how the Maven command is ran, such as
+  # Component Detection's MavenCLI scanner. Without this it would use the Maven default configuration which wouldn't
+  # contain any built projects or their downloaded dependency, likely resulting in failures.
   MAVEN_OPTS: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
   MAVEN_ARGS: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
 

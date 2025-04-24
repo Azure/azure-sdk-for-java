@@ -57,7 +57,7 @@ foreach ($project in ($Projects -split ",")) {
 # Then from the SDK root, find all pom.xml files.
 $pomFiles = Get-ChildItem -Path $sdkRoot -Filter pom.xml -Recurse
 
-# For each pom.xml file, get the groupId and artifactId from the Maven xml.
+# Iterate through all pom.xml files found and delete all that aren't part of the $Projects passed.
 foreach ($pomFile in $pomFiles) {
     if ($pomFile.Directory.FullName.Contains($parentPomsDir)) {
         # Skip parent POMs.
