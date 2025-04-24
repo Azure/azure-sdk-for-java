@@ -30,7 +30,7 @@ public final class RequestBodyHandler {
      * @param body The BlockStmt to which the statements are added.
      * @param requestBody The request body context containing parameter type and content type.
      * @param processingEnv The processing environment providing utility methods for operating on program elements and types.
-     * @return true if serialization format is set and used in the request body, false otherwise.
+     * @return true if a serialization format is set and used in the request body, false otherwise.
      */
     public static boolean configureRequestBody(BlockStmt body, HttpRequestContext.Body requestBody,
         ProcessingEnvironment processingEnv) {
@@ -81,17 +81,6 @@ public final class RequestBodyHandler {
         body.addStatement(StaticJavaParser.parseStatement("if (binaryData.getLength() != null) { "
             + "httpRequest.getHeaders().set(HttpHeaderName.CONTENT_LENGTH, String.valueOf(binaryData.getLength())); "
             + "httpRequest.setBody(binaryData); }"));
-    }
-
-    /**
-     * Adds a JSON request body to the HTTP request.
-     *
-     * @param body The block statement to which the request body is added.
-     * @param parameterName The name of the parameter.
-     */
-    public static void addJsonRequestBody(BlockStmt body, String parameterName) {
-        body.addStatement(StaticJavaParser.parseStatement(
-            String.format("httpRequest.setBody(BinaryData.fromObject(%s, jsonSerializer));", parameterName)));
     }
 
     /**
