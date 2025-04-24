@@ -50,6 +50,8 @@ public class JdkHttpClientBuilder {
 
     private static final String JAVA_HOME = System.getProperty("java.home");
     private static final String JDK_HTTPCLIENT_ALLOW_RESTRICTED_HEADERS = "jdk.httpclient.allowRestrictedHeaders";
+    private static volatile boolean CONSCRYPT_INITIALIZED = false;
+    private static final Object CONSCRYPT_LOCK = new Object();
 
     // These headers are restricted by default in native JDK12 HttpClient.
     // These headers can be whitelisted by setting jdk.httpclient.allowRestrictedHeaders
@@ -234,11 +236,6 @@ public class JdkHttpClientBuilder {
         return this;
     }
 
-    /**
-     * Build a HttpClient with current configurations.
-     *
-     * @return a {@link HttpClient}.
-     */
     public HttpClient build() {
         java.net.http.HttpClient.Builder httpClientBuilder = java.net.http.HttpClient.newBuilder();
 
@@ -251,14 +248,16 @@ public class JdkHttpClientBuilder {
         Duration responseTimeout = getTimeout(this.responseTimeout, DEFAULT_RESPONSE_TIMEOUT);
         Duration readTimeout = getTimeout(this.readTimeout, DEFAULT_READ_TIMEOUT);
 
-        Configuration buildConfiguration
-            = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
-
-        ProxyOptions buildProxyOptions
-            = (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration) : proxyOptions;
+        Configuration buildConfiguration = (configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
+        ProxyOptions buildProxyOptions = (proxyOptions == null) ? ProxyOptions.fromConfiguration(buildConfiguration) : proxyOptions;
 
         if (executor != null) {
             httpClientBuilder.executor(executor);
+        }
+
+        // Apply optimized SSLContext using Conscrypt if none was explicitly set
+        if (sslContext == null) {
+            sslContext = createOptimizedSslContext();
         }
 
         if (sslContext != null) {
@@ -266,9 +265,13 @@ public class JdkHttpClientBuilder {
         }
 
         if (buildProxyOptions != null) {
-            httpClientBuilder
-                = httpClientBuilder.proxy(new JdkHttpClientProxySelector(buildProxyOptions.getType().toProxyType(),
-                    buildProxyOptions.getAddress(), buildProxyOptions.getNonProxyHosts()));
+            httpClientBuilder = httpClientBuilder.proxy(
+                new JdkHttpClientProxySelector(
+                    buildProxyOptions.getType().toProxyType(),
+                    buildProxyOptions.getAddress(),
+                    buildProxyOptions.getNonProxyHosts()
+                )
+            );
 
             if (buildProxyOptions.getUsername() != null) {
                 httpClientBuilder.authenticator(
@@ -276,9 +279,55 @@ public class JdkHttpClientBuilder {
             }
         }
 
-        return new JdkHttpClient(httpClientBuilder.build(), Collections.unmodifiableSet(getRestrictedHeaders()),
-            writeTimeout, responseTimeout, readTimeout);
+        return new JdkHttpClient(
+            httpClientBuilder.build(),
+            Collections.unmodifiableSet(getRestrictedHeaders()),
+            writeTimeout,
+            responseTimeout,
+            readTimeout
+        );
     }
+
+    private SSLContext createOptimizedSslContext() {
+        try {
+            // Ensure Conscrypt provider is added only once in a thread-safe manner
+            if (!CONSCRYPT_INITIALIZED) {
+                synchronized (CONSCRYPT_LOCK) {
+                    if (!conscryptInitialized) {
+                        if (Security.getProvider("Conscrypt") == null) {
+                            Security.insertProviderAt(org.conscrypt.Conscrypt.newProvider(), 1);
+                        }
+                        CONSCRYPT_INITIALIZED = true;
+                    }
+                }
+            }
+
+            SSLContext context = SSLContext.getInstance("TLS", "Conscrypt");
+
+            // Load default trust manager
+            X509TrustManager defaultTrustManager = DefaultTrustManagerRetriever.getDefaultTrustManager();
+
+            // Wrap with caching
+            CachingTrustManager cachingTrustManager = new CachingTrustManager(defaultTrustManager);
+
+            context.init(null, new javax.net.ssl.TrustManager[]{cachingTrustManager}, null);
+
+            // Optional: configure SSL parameters (mostly advisory, not enforced at context level)
+            SSLParameters sslParameters = context.getDefaultSSLParameters();
+            sslParameters.setCipherSuites(new String[]{
+                "TLS_AES_128_GCM_SHA256",
+                "TLS_AES_256_GCM_SHA384",
+                "TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256",
+                "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256"
+            });
+            sslParameters.setProtocols(new String[]{"TLSv1.3", "TLSv1.2"});
+
+            return context;
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to create optimized SSLContext with Conscrypt.", e);
+        }
+    }
+
 
     Set<String> getRestrictedHeaders() {
         // Compute the effective restricted headers by removing the allowed headers from default restricted headers
