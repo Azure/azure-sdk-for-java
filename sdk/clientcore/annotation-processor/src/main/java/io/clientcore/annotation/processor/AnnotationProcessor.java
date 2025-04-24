@@ -21,6 +21,7 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.implementation.utils.UriEscapers;
 import io.clientcore.core.models.binarydata.BinaryData;
 import java.util.List;
 import java.util.Objects;
@@ -150,6 +151,7 @@ public class AnnotationProcessor extends AbstractProcessor {
         method.setExpectedStatusCodes(httpRequestInfo.expectedStatusCodes());
         method.addStaticHeaders(httpRequestInfo.headers());
         method.addStaticQueryParams(httpRequestInfo.queryParams());
+        templateInput.addImport(requestMethod.getReturnType());
         method.setMethodReturnType(requestMethod.getReturnType());
 
         // Process parameters
@@ -195,7 +197,8 @@ public class AnnotationProcessor extends AbstractProcessor {
             method.addParameter(new HttpRequestContext.MethodParameter(param.asType(), shortParamName,
                 param.getSimpleName().toString()));
         }
-
+        // Needed in PathBuilder
+        templateInput.addImport(UriEscapers.class.getSimpleName());
         // Pre-compute host substitutions
         method.setHost(getHost(method));
 

@@ -32,15 +32,12 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.utils.UriEscapers;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
-import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
 import io.clientcore.core.utils.CoreUtils;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -144,9 +141,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                     processingEnv);
             }
         }
-
-        addDeserializeHelperMethod(
-            classBuilder.addMethod("decodeNetworkResponse", Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC));
     }
 
     private void addLoggerField(String serviceInterfaceShortName) {
@@ -190,33 +184,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
      */
     CompilationUnit getCompilationUnit() {
         return this.compilationUnit;
-    }
-
-    private void addDeserializeHelperMethod(MethodDeclaration deserializeHelperMethod) {
-        deserializeHelperMethod.setType("Object")
-            .addParameter("BinaryData", "data")
-            .addParameter(ObjectSerializer.class, "serializer")
-            .addParameter("ParameterizedType", "returnType");
-        deserializeHelperMethod.tryAddImportToParentCompilationUnit(IOException.class);
-        deserializeHelperMethod.tryAddImportToParentCompilationUnit(ParameterizedType.class);
-        deserializeHelperMethod.tryAddImportToParentCompilationUnit(Type.class);
-        deserializeHelperMethod.tryAddImportToParentCompilationUnit(List.class);
-        deserializeHelperMethod
-            .setJavadocComment("Decodes the body of an {@link Response} into the type returned by the called API.\n"
-                + "@param data The BinaryData to decode.\n" + "@param serializer The serializer to use.\n"
-                + "@param returnType The type of the ParameterizedType return value.\n" + "@return The decoded value.\n"
-                + "@throws CoreException If the deserialization fails.");
-
-        deserializeHelperMethod.setBody(new BlockStmt()
-            .addStatement(StaticJavaParser.parseStatement("if (data == null) { return null; }"))
-            .addStatement(StaticJavaParser
-                .parseStatement("try { if (List.class.isAssignableFrom((Class<?>) returnType.getRawType())) { "
-                    + " return serializer.deserializeFromBytes(data.toBytes(), returnType); } "
-                    + "Type token = returnType.getRawType(); if (Response.class.isAssignableFrom((Class<?>) token)) { "
-                    + " token = returnType.getActualTypeArguments()[0]; } "
-                    + "return serializer.deserializeFromBytes(data.toBytes(), token); } catch (IOException e) { "
-                    + "    throw LOGGER.logThrowableAsError(CoreException.from(e)); }")));
-
     }
 
     // Pattern for all field and method creation is to mutate the passed declaration.
