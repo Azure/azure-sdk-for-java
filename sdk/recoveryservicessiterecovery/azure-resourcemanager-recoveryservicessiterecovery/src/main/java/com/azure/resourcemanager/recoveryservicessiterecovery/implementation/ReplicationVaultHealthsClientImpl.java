@@ -68,18 +68,18 @@ public final class ReplicationVaultHealthsClientImpl implements ReplicationVault
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VaultHealthDetailsInner>> get(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationVaultHealth/default/refresh")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> refresh(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -87,26 +87,26 @@ public final class ReplicationVaultHealthsClientImpl implements ReplicationVault
      * 
      * Gets the health details of the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the health details of the vault along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VaultHealthDetailsInner>> getWithResponseAsync(String resourceName,
-        String resourceGroupName) {
+    private Mono<Response<VaultHealthDetailsInner>> getWithResponseAsync(String resourceGroupName,
+        String resourceName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -114,8 +114,8 @@ public final class ReplicationVaultHealthsClientImpl implements ReplicationVault
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), accept, context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -124,8 +124,8 @@ public final class ReplicationVaultHealthsClientImpl implements ReplicationVault
      * 
      * Gets the health details of the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -133,18 +133,18 @@ public final class ReplicationVaultHealthsClientImpl implements ReplicationVault
      * @return the health details of the vault along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VaultHealthDetailsInner>> getWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<VaultHealthDetailsInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -152,7 +152,7 @@ public final class ReplicationVaultHealthsClientImpl implements ReplicationVault
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
             this.client.getSubscriptionId(), accept, context);
     }
 
@@ -161,16 +161,16 @@ public final class ReplicationVaultHealthsClientImpl implements ReplicationVault
      * 
      * Gets the health details of the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the health details of the vault on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VaultHealthDetailsInner> getAsync(String resourceName, String resourceGroupName) {
-        return getWithResponseAsync(resourceName, resourceGroupName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<VaultHealthDetailsInner> getAsync(String resourceGroupName, String resourceName) {
+        return getWithResponseAsync(resourceGroupName, resourceName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -178,8 +178,8 @@ public final class ReplicationVaultHealthsClientImpl implements ReplicationVault
      * 
      * Gets the health details of the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -187,9 +187,9 @@ public final class ReplicationVaultHealthsClientImpl implements ReplicationVault
      * @return the health details of the vault along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VaultHealthDetailsInner> getWithResponse(String resourceName, String resourceGroupName,
+    public Response<VaultHealthDetailsInner> getWithResponse(String resourceGroupName, String resourceName,
         Context context) {
-        return getWithResponseAsync(resourceName, resourceGroupName, context).block();
+        return getWithResponseAsync(resourceGroupName, resourceName, context).block();
     }
 
     /**
@@ -197,40 +197,40 @@ public final class ReplicationVaultHealthsClientImpl implements ReplicationVault
      * 
      * Gets the health details of the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the health details of the vault.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VaultHealthDetailsInner get(String resourceName, String resourceGroupName) {
-        return getWithResponse(resourceName, resourceGroupName, Context.NONE).getValue();
+    public VaultHealthDetailsInner get(String resourceGroupName, String resourceName) {
+        return getWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
     }
 
     /**
      * Refreshes health summary of the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vault health details definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> refreshWithResponseAsync(String resourceName, String resourceGroupName) {
+    private Mono<Response<Flux<ByteBuffer>>> refreshWithResponseAsync(String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -239,15 +239,15 @@ public final class ReplicationVaultHealthsClientImpl implements ReplicationVault
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.refresh(this.client.getEndpoint(), this.client.getApiVersion(),
-                resourceName, resourceGroupName, this.client.getSubscriptionId(), accept, context))
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Refreshes health summary of the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -255,18 +255,18 @@ public final class ReplicationVaultHealthsClientImpl implements ReplicationVault
      * @return vault health details definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> refreshWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> refreshWithResponseAsync(String resourceGroupName, String resourceName,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -274,15 +274,15 @@ public final class ReplicationVaultHealthsClientImpl implements ReplicationVault
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.refresh(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+        return service.refresh(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
             this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Refreshes health summary of the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -290,8 +290,8 @@ public final class ReplicationVaultHealthsClientImpl implements ReplicationVault
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VaultHealthDetailsInner>, VaultHealthDetailsInner>
-        beginRefreshAsync(String resourceName, String resourceGroupName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = refreshWithResponseAsync(resourceName, resourceGroupName);
+        beginRefreshAsync(String resourceGroupName, String resourceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = refreshWithResponseAsync(resourceGroupName, resourceName);
         return this.client.<VaultHealthDetailsInner, VaultHealthDetailsInner>getLroResult(mono,
             this.client.getHttpPipeline(), VaultHealthDetailsInner.class, VaultHealthDetailsInner.class,
             this.client.getContext());
@@ -300,8 +300,8 @@ public final class ReplicationVaultHealthsClientImpl implements ReplicationVault
     /**
      * Refreshes health summary of the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -310,9 +310,9 @@ public final class ReplicationVaultHealthsClientImpl implements ReplicationVault
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VaultHealthDetailsInner>, VaultHealthDetailsInner>
-        beginRefreshAsync(String resourceName, String resourceGroupName, Context context) {
+        beginRefreshAsync(String resourceGroupName, String resourceName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = refreshWithResponseAsync(resourceName, resourceGroupName, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = refreshWithResponseAsync(resourceGroupName, resourceName, context);
         return this.client.<VaultHealthDetailsInner, VaultHealthDetailsInner>getLroResult(mono,
             this.client.getHttpPipeline(), VaultHealthDetailsInner.class, VaultHealthDetailsInner.class, context);
     }
@@ -320,24 +320,24 @@ public final class ReplicationVaultHealthsClientImpl implements ReplicationVault
     /**
      * Refreshes health summary of the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link SyncPoller} for polling of vault health details definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VaultHealthDetailsInner>, VaultHealthDetailsInner> beginRefresh(String resourceName,
-        String resourceGroupName) {
-        return this.beginRefreshAsync(resourceName, resourceGroupName).getSyncPoller();
+    public SyncPoller<PollResult<VaultHealthDetailsInner>, VaultHealthDetailsInner>
+        beginRefresh(String resourceGroupName, String resourceName) {
+        return this.beginRefreshAsync(resourceGroupName, resourceName).getSyncPoller();
     }
 
     /**
      * Refreshes health summary of the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -345,31 +345,31 @@ public final class ReplicationVaultHealthsClientImpl implements ReplicationVault
      * @return the {@link SyncPoller} for polling of vault health details definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VaultHealthDetailsInner>, VaultHealthDetailsInner> beginRefresh(String resourceName,
-        String resourceGroupName, Context context) {
-        return this.beginRefreshAsync(resourceName, resourceGroupName, context).getSyncPoller();
+    public SyncPoller<PollResult<VaultHealthDetailsInner>, VaultHealthDetailsInner>
+        beginRefresh(String resourceGroupName, String resourceName, Context context) {
+        return this.beginRefreshAsync(resourceGroupName, resourceName, context).getSyncPoller();
     }
 
     /**
      * Refreshes health summary of the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vault health details definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VaultHealthDetailsInner> refreshAsync(String resourceName, String resourceGroupName) {
-        return beginRefreshAsync(resourceName, resourceGroupName).last().flatMap(this.client::getLroFinalResultOrError);
+    private Mono<VaultHealthDetailsInner> refreshAsync(String resourceGroupName, String resourceName) {
+        return beginRefreshAsync(resourceGroupName, resourceName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Refreshes health summary of the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -377,31 +377,31 @@ public final class ReplicationVaultHealthsClientImpl implements ReplicationVault
      * @return vault health details definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VaultHealthDetailsInner> refreshAsync(String resourceName, String resourceGroupName, Context context) {
-        return beginRefreshAsync(resourceName, resourceGroupName, context).last()
+    private Mono<VaultHealthDetailsInner> refreshAsync(String resourceGroupName, String resourceName, Context context) {
+        return beginRefreshAsync(resourceGroupName, resourceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Refreshes health summary of the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vault health details definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VaultHealthDetailsInner refresh(String resourceName, String resourceGroupName) {
-        return refreshAsync(resourceName, resourceGroupName).block();
+    public VaultHealthDetailsInner refresh(String resourceGroupName, String resourceName) {
+        return refreshAsync(resourceGroupName, resourceName).block();
     }
 
     /**
      * Refreshes health summary of the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -409,7 +409,7 @@ public final class ReplicationVaultHealthsClientImpl implements ReplicationVault
      * @return vault health details definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VaultHealthDetailsInner refresh(String resourceName, String resourceGroupName, Context context) {
-        return refreshAsync(resourceName, resourceGroupName, context).block();
+    public VaultHealthDetailsInner refresh(String resourceGroupName, String resourceName, Context context) {
+        return refreshAsync(resourceGroupName, resourceName, context).block();
     }
 }

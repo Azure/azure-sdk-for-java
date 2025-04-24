@@ -10,6 +10,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * Authorization access policy contract.
@@ -79,6 +80,29 @@ public final class AuthorizationAccessPolicyContractInner extends ProxyResource 
     @Override
     public String id() {
         return this.id;
+    }
+
+    /**
+     * Get the appIds property: The allowed Azure Active Directory Application IDs.
+     * 
+     * @return the appIds value.
+     */
+    public List<String> appIds() {
+        return this.innerProperties() == null ? null : this.innerProperties().appIds();
+    }
+
+    /**
+     * Set the appIds property: The allowed Azure Active Directory Application IDs.
+     * 
+     * @param appIds the appIds value to set.
+     * @return the AuthorizationAccessPolicyContractInner object itself.
+     */
+    public AuthorizationAccessPolicyContractInner withAppIds(List<String> appIds) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AuthorizationAccessPolicyContractProperties();
+        }
+        this.innerProperties().withAppIds(appIds);
+        return this;
     }
 
     /**

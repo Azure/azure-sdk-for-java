@@ -6,8 +6,8 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.LogicalNetwork;
@@ -21,23 +21,23 @@ public final class ReplicationLogicalNetworksGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"friendlyName\":\"xwvegenlrj\",\"networkVirtualizationStatus\":\"mwevguyflnxel\",\"logicalNetworkUsage\":\"kfzcdetowwezhy\",\"logicalNetworkDefinitionsStatus\":\"di\"},\"location\":\"wqlqacs\",\"id\":\"qb\",\"name\":\"rtybcel\",\"type\":\"jnxodnjyhzfax\"}";
+            = "{\"properties\":{\"friendlyName\":\"nyumzapdokezvp\",\"networkVirtualizationStatus\":\"knfzqnzbflbqmhb\",\"logicalNetworkUsage\":\"xxvwedhagq\",\"logicalNetworkDefinitionsStatus\":\"seseayuflms\"},\"location\":\"zdcrolrzesbomphz\",\"id\":\"ymunwjivt\",\"name\":\"uszbdjrdfeuj\",\"type\":\"wdalisd\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         SiteRecoveryManager manager = SiteRecoveryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         LogicalNetwork response = manager.replicationLogicalNetworks()
-            .getWithResponse("kwwnq", "qlq", "pwxtvc", "bav", com.azure.core.util.Context.NONE)
+            .getWithResponse("peyxdyuxurxr", "tqmmijgpqfkwna", "ikczscymqfv", "g", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("xwvegenlrj", response.properties().friendlyName());
-        Assertions.assertEquals("mwevguyflnxel", response.properties().networkVirtualizationStatus());
-        Assertions.assertEquals("kfzcdetowwezhy", response.properties().logicalNetworkUsage());
-        Assertions.assertEquals("di", response.properties().logicalNetworkDefinitionsStatus());
-        Assertions.assertEquals("wqlqacs", response.location());
+        Assertions.assertEquals("nyumzapdokezvp", response.properties().friendlyName());
+        Assertions.assertEquals("knfzqnzbflbqmhb", response.properties().networkVirtualizationStatus());
+        Assertions.assertEquals("xxvwedhagq", response.properties().logicalNetworkUsage());
+        Assertions.assertEquals("seseayuflms", response.properties().logicalNetworkDefinitionsStatus());
+        Assertions.assertEquals("zdcrolrzesbomphz", response.location());
     }
 }

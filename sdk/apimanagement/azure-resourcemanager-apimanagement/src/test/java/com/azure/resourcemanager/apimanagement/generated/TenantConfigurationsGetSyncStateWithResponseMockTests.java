@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.ConfigurationIdName;
@@ -22,27 +22,27 @@ public final class TenantConfigurationsGetSyncStateWithResponseMockTests {
     @Test
     public void testGetSyncStateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"branch\":\"jpc\",\"commitId\":\"bkkgqfjwgphhp\",\"isExport\":false,\"isSynced\":true,\"isGitEnabled\":true,\"syncDate\":\"2021-09-29T02:03:46Z\",\"configurationChangeDate\":\"2021-07-08T14:51:46Z\",\"lastOperationId\":\"msqqmdajsq\"},\"id\":\"pxftyifadsliif\",\"name\":\"rbsrpjspbi\",\"type\":\"snxmfooin\"}";
+            = "{\"properties\":{\"branch\":\"yorlrdamyumrob\",\"commitId\":\"xnymuygjwq\",\"isExport\":true,\"isSynced\":false,\"isGitEnabled\":false,\"syncDate\":\"2021-08-26T17:55:34Z\",\"configurationChangeDate\":\"2020-12-28T06:51:19Z\",\"lastOperationId\":\"sdgyhe\"},\"id\":\"ayktutflh\",\"name\":\"gox\",\"type\":\"fsahm\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         TenantConfigurationSyncStateContract response = manager.tenantConfigurations()
-            .getSyncStateWithResponse("mqhedbqrlbyhzy", "uupqk", ConfigurationIdName.CONFIGURATION,
+            .getSyncStateWithResponse("aaiqyxlro", "xpebsxcnhq", ConfigurationIdName.CONFIGURATION,
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("jpc", response.branch());
-        Assertions.assertEquals("bkkgqfjwgphhp", response.commitId());
-        Assertions.assertEquals(false, response.isExport());
-        Assertions.assertEquals(true, response.isSynced());
-        Assertions.assertEquals(true, response.isGitEnabled());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-29T02:03:46Z"), response.syncDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-08T14:51:46Z"), response.configurationChangeDate());
-        Assertions.assertEquals("msqqmdajsq", response.lastOperationId());
+        Assertions.assertEquals("yorlrdamyumrob", response.branch());
+        Assertions.assertEquals("xnymuygjwq", response.commitId());
+        Assertions.assertTrue(response.isExport());
+        Assertions.assertFalse(response.isSynced());
+        Assertions.assertFalse(response.isGitEnabled());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-26T17:55:34Z"), response.syncDate());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-28T06:51:19Z"), response.configurationChangeDate());
+        Assertions.assertEquals("sdgyhe", response.lastOperationId());
     }
 }

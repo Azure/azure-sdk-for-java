@@ -27,28 +27,28 @@ public final class StorageClassificationMappingsImpl implements StorageClassific
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<StorageClassificationMapping> listByReplicationStorageClassifications(String resourceName,
-        String resourceGroupName, String fabricName, String storageClassificationName) {
+    public PagedIterable<StorageClassificationMapping> listByReplicationStorageClassifications(String resourceGroupName,
+        String resourceName, String fabricName, String storageClassificationName) {
         PagedIterable<StorageClassificationMappingInner> inner = this.serviceClient()
-            .listByReplicationStorageClassifications(resourceName, resourceGroupName, fabricName,
+            .listByReplicationStorageClassifications(resourceGroupName, resourceName, fabricName,
                 storageClassificationName);
         return ResourceManagerUtils.mapPage(inner,
             inner1 -> new StorageClassificationMappingImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<StorageClassificationMapping> listByReplicationStorageClassifications(String resourceName,
-        String resourceGroupName, String fabricName, String storageClassificationName, Context context) {
+    public PagedIterable<StorageClassificationMapping> listByReplicationStorageClassifications(String resourceGroupName,
+        String resourceName, String fabricName, String storageClassificationName, Context context) {
         PagedIterable<StorageClassificationMappingInner> inner = this.serviceClient()
-            .listByReplicationStorageClassifications(resourceName, resourceGroupName, fabricName,
+            .listByReplicationStorageClassifications(resourceGroupName, resourceName, fabricName,
                 storageClassificationName, context);
         return ResourceManagerUtils.mapPage(inner,
             inner1 -> new StorageClassificationMappingImpl(inner1, this.manager()));
     }
 
-    public Response<StorageClassificationMapping> getWithResponse(String resourceName, String resourceGroupName,
+    public Response<StorageClassificationMapping> getWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String storageClassificationName, String storageClassificationMappingName, Context context) {
         Response<StorageClassificationMappingInner> inner = this.serviceClient()
-            .getWithResponse(resourceName, resourceGroupName, fabricName, storageClassificationName,
+            .getWithResponse(resourceGroupName, resourceName, fabricName, storageClassificationName,
                 storageClassificationMappingName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
@@ -58,10 +58,10 @@ public final class StorageClassificationMappingsImpl implements StorageClassific
         }
     }
 
-    public StorageClassificationMapping get(String resourceName, String resourceGroupName, String fabricName,
+    public StorageClassificationMapping get(String resourceGroupName, String resourceName, String fabricName,
         String storageClassificationName, String storageClassificationMappingName) {
         StorageClassificationMappingInner inner = this.serviceClient()
-            .get(resourceName, resourceGroupName, fabricName, storageClassificationName,
+            .get(resourceGroupName, resourceName, fabricName, storageClassificationName,
                 storageClassificationMappingName);
         if (inner != null) {
             return new StorageClassificationMappingImpl(inner, this.manager());
@@ -70,45 +70,45 @@ public final class StorageClassificationMappingsImpl implements StorageClassific
         }
     }
 
-    public void delete(String resourceName, String resourceGroupName, String fabricName,
+    public void delete(String resourceGroupName, String resourceName, String fabricName,
         String storageClassificationName, String storageClassificationMappingName) {
         this.serviceClient()
-            .delete(resourceName, resourceGroupName, fabricName, storageClassificationName,
+            .delete(resourceGroupName, resourceName, fabricName, storageClassificationName,
                 storageClassificationMappingName);
     }
 
-    public void delete(String resourceName, String resourceGroupName, String fabricName,
+    public void delete(String resourceGroupName, String resourceName, String fabricName,
         String storageClassificationName, String storageClassificationMappingName, Context context) {
         this.serviceClient()
-            .delete(resourceName, resourceGroupName, fabricName, storageClassificationName,
+            .delete(resourceGroupName, resourceName, fabricName, storageClassificationName,
                 storageClassificationMappingName, context);
     }
 
-    public PagedIterable<StorageClassificationMapping> list(String resourceName, String resourceGroupName) {
+    public PagedIterable<StorageClassificationMapping> list(String resourceGroupName, String resourceName) {
         PagedIterable<StorageClassificationMappingInner> inner
-            = this.serviceClient().list(resourceName, resourceGroupName);
+            = this.serviceClient().list(resourceGroupName, resourceName);
         return ResourceManagerUtils.mapPage(inner,
             inner1 -> new StorageClassificationMappingImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<StorageClassificationMapping> list(String resourceName, String resourceGroupName,
+    public PagedIterable<StorageClassificationMapping> list(String resourceGroupName, String resourceName,
         Context context) {
         PagedIterable<StorageClassificationMappingInner> inner
-            = this.serviceClient().list(resourceName, resourceGroupName, context);
+            = this.serviceClient().list(resourceGroupName, resourceName, context);
         return ResourceManagerUtils.mapPage(inner,
             inner1 -> new StorageClassificationMappingImpl(inner1, this.manager()));
     }
 
     public StorageClassificationMapping getById(String id) {
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
-        }
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
+        if (resourceName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
         String fabricName = ResourceManagerUtils.getValueFromIdByName(id, "replicationFabrics");
         if (fabricName == null) {
@@ -129,21 +129,21 @@ public final class StorageClassificationMappingsImpl implements StorageClassific
                 id)));
         }
         return this
-            .getWithResponse(resourceName, resourceGroupName, fabricName, storageClassificationName,
+            .getWithResponse(resourceGroupName, resourceName, fabricName, storageClassificationName,
                 storageClassificationMappingName, Context.NONE)
             .getValue();
     }
 
     public Response<StorageClassificationMapping> getByIdWithResponse(String id, Context context) {
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
-        }
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
+        if (resourceName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
         String fabricName = ResourceManagerUtils.getValueFromIdByName(id, "replicationFabrics");
         if (fabricName == null) {
@@ -163,20 +163,20 @@ public final class StorageClassificationMappingsImpl implements StorageClassific
                 "The resource ID '%s' is not valid. Missing path segment 'replicationStorageClassificationMappings'.",
                 id)));
         }
-        return this.getWithResponse(resourceName, resourceGroupName, fabricName, storageClassificationName,
+        return this.getWithResponse(resourceGroupName, resourceName, fabricName, storageClassificationName,
             storageClassificationMappingName, context);
     }
 
     public void deleteById(String id) {
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
-        }
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
+        if (resourceName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
         String fabricName = ResourceManagerUtils.getValueFromIdByName(id, "replicationFabrics");
         if (fabricName == null) {
@@ -196,20 +196,20 @@ public final class StorageClassificationMappingsImpl implements StorageClassific
                 "The resource ID '%s' is not valid. Missing path segment 'replicationStorageClassificationMappings'.",
                 id)));
         }
-        this.delete(resourceName, resourceGroupName, fabricName, storageClassificationName,
+        this.delete(resourceGroupName, resourceName, fabricName, storageClassificationName,
             storageClassificationMappingName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
-        if (resourceName == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
-        }
         String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException(
                 String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+        }
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
+        if (resourceName == null) {
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
         String fabricName = ResourceManagerUtils.getValueFromIdByName(id, "replicationFabrics");
         if (fabricName == null) {
@@ -229,7 +229,7 @@ public final class StorageClassificationMappingsImpl implements StorageClassific
                 "The resource ID '%s' is not valid. Missing path segment 'replicationStorageClassificationMappings'.",
                 id)));
         }
-        this.delete(resourceName, resourceGroupName, fabricName, storageClassificationName,
+        this.delete(resourceGroupName, resourceName, fabricName, storageClassificationName,
             storageClassificationMappingName, context);
     }
 

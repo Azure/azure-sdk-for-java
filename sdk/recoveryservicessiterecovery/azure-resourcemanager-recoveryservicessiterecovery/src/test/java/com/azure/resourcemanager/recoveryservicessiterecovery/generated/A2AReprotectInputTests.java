@@ -14,43 +14,46 @@ public final class A2AReprotectInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         A2AReprotectInput model = BinaryData.fromString(
-            "{\"instanceType\":\"A2A\",\"recoveryContainerId\":\"uhvajmailfemjjza\",\"vmDisks\":[{\"diskUri\":\"jiqul\",\"recoveryAzureStorageAccountId\":\"qx\",\"primaryStagingAzureStorageAccountId\":\"dmvr\"},{\"diskUri\":\"cm\",\"recoveryAzureStorageAccountId\":\"erndbrnyeofltfnn\",\"primaryStagingAzureStorageAccountId\":\"rkadjfynnfmuiiir\"},{\"diskUri\":\"pfoh\",\"recoveryAzureStorageAccountId\":\"kfkxbbcbrwjiut\",\"primaryStagingAzureStorageAccountId\":\"njizb\"}],\"recoveryResourceGroupId\":\"woiymrvz\",\"recoveryCloudServiceId\":\"uyrsrziuctix\",\"recoveryAvailabilitySetId\":\"d\",\"policyId\":\"ifrevk\"}")
+            "{\"instanceType\":\"A2A\",\"recoveryContainerId\":\"glpm\",\"vmDisks\":[{\"diskUri\":\"cueljtiahxmfq\",\"recoveryAzureStorageAccountId\":\"yarvsxzqbglcjk\",\"primaryStagingAzureStorageAccountId\":\"yspthzod\"},{\"diskUri\":\"btl\",\"recoveryAzureStorageAccountId\":\"jtgblios\",\"primaryStagingAzureStorageAccountId\":\"kfmkmfdjxyxgbk\"},{\"diskUri\":\"qvjcteoe\",\"recoveryAzureStorageAccountId\":\"l\",\"primaryStagingAzureStorageAccountId\":\"slskkz\"},{\"diskUri\":\"xv\",\"recoveryAzureStorageAccountId\":\"nzdpvoco\",\"primaryStagingAzureStorageAccountId\":\"hpcnabxzfsn\"}],\"recoveryResourceGroupId\":\"ytexvzilmhivzk\",\"recoveryCloudServiceId\":\"wncknr\",\"recoveryAvailabilitySetId\":\"ajlskzptj\",\"policyId\":\"lwe\"}")
             .toObject(A2AReprotectInput.class);
-        Assertions.assertEquals("uhvajmailfemjjza", model.recoveryContainerId());
-        Assertions.assertEquals("jiqul", model.vmDisks().get(0).diskUri());
-        Assertions.assertEquals("qx", model.vmDisks().get(0).recoveryAzureStorageAccountId());
-        Assertions.assertEquals("dmvr", model.vmDisks().get(0).primaryStagingAzureStorageAccountId());
-        Assertions.assertEquals("woiymrvz", model.recoveryResourceGroupId());
-        Assertions.assertEquals("uyrsrziuctix", model.recoveryCloudServiceId());
-        Assertions.assertEquals("d", model.recoveryAvailabilitySetId());
-        Assertions.assertEquals("ifrevk", model.policyId());
+        Assertions.assertEquals("glpm", model.recoveryContainerId());
+        Assertions.assertEquals("cueljtiahxmfq", model.vmDisks().get(0).diskUri());
+        Assertions.assertEquals("yarvsxzqbglcjk", model.vmDisks().get(0).recoveryAzureStorageAccountId());
+        Assertions.assertEquals("yspthzod", model.vmDisks().get(0).primaryStagingAzureStorageAccountId());
+        Assertions.assertEquals("ytexvzilmhivzk", model.recoveryResourceGroupId());
+        Assertions.assertEquals("wncknr", model.recoveryCloudServiceId());
+        Assertions.assertEquals("ajlskzptj", model.recoveryAvailabilitySetId());
+        Assertions.assertEquals("lwe", model.policyId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        A2AReprotectInput model = new A2AReprotectInput().withRecoveryContainerId("uhvajmailfemjjza")
+        A2AReprotectInput model = new A2AReprotectInput().withRecoveryContainerId("glpm")
             .withVmDisks(Arrays.asList(
-                new A2AVmDiskInputDetails().withDiskUri("jiqul")
-                    .withRecoveryAzureStorageAccountId("qx")
-                    .withPrimaryStagingAzureStorageAccountId("dmvr"),
-                new A2AVmDiskInputDetails().withDiskUri("cm")
-                    .withRecoveryAzureStorageAccountId("erndbrnyeofltfnn")
-                    .withPrimaryStagingAzureStorageAccountId("rkadjfynnfmuiiir"),
-                new A2AVmDiskInputDetails().withDiskUri("pfoh")
-                    .withRecoveryAzureStorageAccountId("kfkxbbcbrwjiut")
-                    .withPrimaryStagingAzureStorageAccountId("njizb")))
-            .withRecoveryResourceGroupId("woiymrvz")
-            .withRecoveryCloudServiceId("uyrsrziuctix")
-            .withRecoveryAvailabilitySetId("d")
-            .withPolicyId("ifrevk");
+                new A2AVmDiskInputDetails().withDiskUri("cueljtiahxmfq")
+                    .withRecoveryAzureStorageAccountId("yarvsxzqbglcjk")
+                    .withPrimaryStagingAzureStorageAccountId("yspthzod"),
+                new A2AVmDiskInputDetails().withDiskUri("btl")
+                    .withRecoveryAzureStorageAccountId("jtgblios")
+                    .withPrimaryStagingAzureStorageAccountId("kfmkmfdjxyxgbk"),
+                new A2AVmDiskInputDetails().withDiskUri("qvjcteoe")
+                    .withRecoveryAzureStorageAccountId("l")
+                    .withPrimaryStagingAzureStorageAccountId("slskkz"),
+                new A2AVmDiskInputDetails().withDiskUri("xv")
+                    .withRecoveryAzureStorageAccountId("nzdpvoco")
+                    .withPrimaryStagingAzureStorageAccountId("hpcnabxzfsn")))
+            .withRecoveryResourceGroupId("ytexvzilmhivzk")
+            .withRecoveryCloudServiceId("wncknr")
+            .withRecoveryAvailabilitySetId("ajlskzptj")
+            .withPolicyId("lwe");
         model = BinaryData.fromObject(model).toObject(A2AReprotectInput.class);
-        Assertions.assertEquals("uhvajmailfemjjza", model.recoveryContainerId());
-        Assertions.assertEquals("jiqul", model.vmDisks().get(0).diskUri());
-        Assertions.assertEquals("qx", model.vmDisks().get(0).recoveryAzureStorageAccountId());
-        Assertions.assertEquals("dmvr", model.vmDisks().get(0).primaryStagingAzureStorageAccountId());
-        Assertions.assertEquals("woiymrvz", model.recoveryResourceGroupId());
-        Assertions.assertEquals("uyrsrziuctix", model.recoveryCloudServiceId());
-        Assertions.assertEquals("d", model.recoveryAvailabilitySetId());
-        Assertions.assertEquals("ifrevk", model.policyId());
+        Assertions.assertEquals("glpm", model.recoveryContainerId());
+        Assertions.assertEquals("cueljtiahxmfq", model.vmDisks().get(0).diskUri());
+        Assertions.assertEquals("yarvsxzqbglcjk", model.vmDisks().get(0).recoveryAzureStorageAccountId());
+        Assertions.assertEquals("yspthzod", model.vmDisks().get(0).primaryStagingAzureStorageAccountId());
+        Assertions.assertEquals("ytexvzilmhivzk", model.recoveryResourceGroupId());
+        Assertions.assertEquals("wncknr", model.recoveryCloudServiceId());
+        Assertions.assertEquals("ajlskzptj", model.recoveryAvailabilitySetId());
+        Assertions.assertEquals("lwe", model.policyId());
     }
 }

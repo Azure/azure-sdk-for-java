@@ -30,7 +30,7 @@ public final class StorageApplianceProperties implements JsonSerializable<Storag
     private AdministrativeCredentials administratorCredentials;
 
     /*
-     * The total capacity of the storage appliance.
+     * The total capacity of the storage appliance. Measured in GiB.
      */
     private Long capacity;
 
@@ -40,7 +40,7 @@ public final class StorageApplianceProperties implements JsonSerializable<Storag
     private Long capacityUsed;
 
     /*
-     * The resource ID of the cluster this storage appliance is associated with.
+     * The resource ID of the cluster this storage appliance is associated with. Measured in GiB.
      */
     private String clusterId;
 
@@ -144,7 +144,7 @@ public final class StorageApplianceProperties implements JsonSerializable<Storag
     }
 
     /**
-     * Get the capacity property: The total capacity of the storage appliance.
+     * Get the capacity property: The total capacity of the storage appliance. Measured in GiB.
      * 
      * @return the capacity value.
      */
@@ -162,7 +162,8 @@ public final class StorageApplianceProperties implements JsonSerializable<Storag
     }
 
     /**
-     * Get the clusterId property: The resource ID of the cluster this storage appliance is associated with.
+     * Get the clusterId property: The resource ID of the cluster this storage appliance is associated with. Measured in
+     * GiB.
      * 
      * @return the clusterId value.
      */

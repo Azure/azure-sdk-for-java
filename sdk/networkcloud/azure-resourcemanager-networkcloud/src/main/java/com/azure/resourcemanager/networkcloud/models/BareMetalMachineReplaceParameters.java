@@ -18,7 +18,9 @@ import java.io.IOException;
 @Fluent
 public final class BareMetalMachineReplaceParameters implements JsonSerializable<BareMetalMachineReplaceParameters> {
     /*
-     * The credentials of the baseboard management controller on this bare metal machine.
+     * The credentials of the baseboard management controller on this bare metal machine. The password field is expected
+     * to be an Azure Key Vault key URL. Until the cluster is converted to utilize managed identity by setting the
+     * secret archive settings, the actual password value should be provided instead.
      */
     private AdministrativeCredentials bmcCredentials;
 
@@ -50,7 +52,9 @@ public final class BareMetalMachineReplaceParameters implements JsonSerializable
 
     /**
      * Get the bmcCredentials property: The credentials of the baseboard management controller on this bare metal
-     * machine.
+     * machine. The password field is expected to be an Azure Key Vault key URL. Until the cluster is converted to
+     * utilize managed identity by setting the secret archive settings, the actual password value should be provided
+     * instead.
      * 
      * @return the bmcCredentials value.
      */
@@ -60,7 +64,9 @@ public final class BareMetalMachineReplaceParameters implements JsonSerializable
 
     /**
      * Set the bmcCredentials property: The credentials of the baseboard management controller on this bare metal
-     * machine.
+     * machine. The password field is expected to be an Azure Key Vault key URL. Until the cluster is converted to
+     * utilize managed identity by setting the secret archive settings, the actual password value should be provided
+     * instead.
      * 
      * @param bmcCredentials the bmcCredentials value to set.
      * @return the BareMetalMachineReplaceParameters object itself.

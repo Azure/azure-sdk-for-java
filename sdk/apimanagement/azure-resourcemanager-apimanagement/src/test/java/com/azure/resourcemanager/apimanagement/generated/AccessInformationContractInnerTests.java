@@ -12,21 +12,20 @@ public final class AccessInformationContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AccessInformationContractInner model = BinaryData.fromString(
-            "{\"properties\":{\"id\":\"rlzh\",\"principalId\":\"ihace\",\"enabled\":false},\"id\":\"zlxnqzubf\",\"name\":\"nfdbgmkfwmjcwt\",\"type\":\"wfhxwyrkbre\"}")
+            "{\"properties\":{\"id\":\"n\",\"principalId\":\"n\",\"enabled\":true},\"id\":\"maoyqxfv\",\"name\":\"yxzmx\",\"type\":\"nofxlttxoqx\"}")
             .toObject(AccessInformationContractInner.class);
-        Assertions.assertEquals("rlzh", model.idPropertiesId());
-        Assertions.assertEquals("ihace", model.principalId());
-        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals("n", model.idPropertiesId());
+        Assertions.assertEquals("n", model.principalId());
+        Assertions.assertTrue(model.enabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccessInformationContractInner model = new AccessInformationContractInner().withIdPropertiesId("rlzh")
-            .withPrincipalId("ihace")
-            .withEnabled(false);
+        AccessInformationContractInner model
+            = new AccessInformationContractInner().withIdPropertiesId("n").withPrincipalId("n").withEnabled(true);
         model = BinaryData.fromObject(model).toObject(AccessInformationContractInner.class);
-        Assertions.assertEquals("rlzh", model.idPropertiesId());
-        Assertions.assertEquals("ihace", model.principalId());
-        Assertions.assertEquals(false, model.enabled());
+        Assertions.assertEquals("n", model.idPropertiesId());
+        Assertions.assertEquals("n", model.principalId());
+        Assertions.assertTrue(model.enabled());
     }
 }

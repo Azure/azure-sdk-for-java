@@ -217,6 +217,13 @@ public interface ApiManagementServiceResource {
     PublicNetworkAccess publicNetworkAccess();
 
     /**
+     * Gets the configurationApi property: Configuration API configuration of the API Management service.
+     * 
+     * @return the configurationApi value.
+     */
+    ConfigurationApi configurationApi();
+
+    /**
      * Gets the virtualNetworkConfiguration property: Virtual network configuration of the API Management service.
      * 
      * @return the virtualNetworkConfiguration value.
@@ -337,6 +344,20 @@ public interface ApiManagementServiceResource {
      * @return the platformVersion value.
      */
     PlatformVersion platformVersion();
+
+    /**
+     * Gets the legacyPortalStatus property: Status of legacy portal in the API Management service.
+     * 
+     * @return the legacyPortalStatus value.
+     */
+    LegacyPortalStatus legacyPortalStatus();
+
+    /**
+     * Gets the developerPortalStatus property: Status of developer portal in this API Management service.
+     * 
+     * @return the developerPortalStatus value.
+     */
+    DeveloperPortalStatus developerPortalStatus();
 
     /**
      * Gets the region of the resource.
@@ -461,15 +482,17 @@ public interface ApiManagementServiceResource {
          * The stage of the ApiManagementServiceResource definition which contains all the minimum required properties
          * for the resource to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithIdentity,
-            DefinitionStages.WithZones, DefinitionStages.WithNotificationSenderEmail,
-            DefinitionStages.WithHostnameConfigurations, DefinitionStages.WithPublicIpAddressId,
-            DefinitionStages.WithPublicNetworkAccess, DefinitionStages.WithVirtualNetworkConfiguration,
+        interface WithCreate
+            extends DefinitionStages.WithTags, DefinitionStages.WithIdentity, DefinitionStages.WithZones,
+            DefinitionStages.WithNotificationSenderEmail, DefinitionStages.WithHostnameConfigurations,
+            DefinitionStages.WithPublicIpAddressId, DefinitionStages.WithPublicNetworkAccess,
+            DefinitionStages.WithConfigurationApi, DefinitionStages.WithVirtualNetworkConfiguration,
             DefinitionStages.WithAdditionalLocations, DefinitionStages.WithCustomProperties,
             DefinitionStages.WithCertificates, DefinitionStages.WithEnableClientCertificate,
             DefinitionStages.WithNatGatewayState, DefinitionStages.WithDisableGateway,
             DefinitionStages.WithVirtualNetworkType, DefinitionStages.WithApiVersionConstraint,
-            DefinitionStages.WithRestore, DefinitionStages.WithPrivateEndpointConnections {
+            DefinitionStages.WithRestore, DefinitionStages.WithPrivateEndpointConnections,
+            DefinitionStages.WithLegacyPortalStatus, DefinitionStages.WithDeveloperPortalStatus {
             /**
              * Executes the create request.
              * 
@@ -585,6 +608,19 @@ public interface ApiManagementServiceResource {
              * @return the next definition stage.
              */
             WithCreate withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
+        }
+
+        /**
+         * The stage of the ApiManagementServiceResource definition allowing to specify configurationApi.
+         */
+        interface WithConfigurationApi {
+            /**
+             * Specifies the configurationApi property: Configuration API configuration of the API Management service..
+             * 
+             * @param configurationApi Configuration API configuration of the API Management service.
+             * @return the next definition stage.
+             */
+            WithCreate withConfigurationApi(ConfigurationApi configurationApi);
         }
 
         /**
@@ -798,6 +834,32 @@ public interface ApiManagementServiceResource {
             WithCreate
                 withPrivateEndpointConnections(List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections);
         }
+
+        /**
+         * The stage of the ApiManagementServiceResource definition allowing to specify legacyPortalStatus.
+         */
+        interface WithLegacyPortalStatus {
+            /**
+             * Specifies the legacyPortalStatus property: Status of legacy portal in the API Management service..
+             * 
+             * @param legacyPortalStatus Status of legacy portal in the API Management service.
+             * @return the next definition stage.
+             */
+            WithCreate withLegacyPortalStatus(LegacyPortalStatus legacyPortalStatus);
+        }
+
+        /**
+         * The stage of the ApiManagementServiceResource definition allowing to specify developerPortalStatus.
+         */
+        interface WithDeveloperPortalStatus {
+            /**
+             * Specifies the developerPortalStatus property: Status of developer portal in this API Management service..
+             * 
+             * @param developerPortalStatus Status of developer portal in this API Management service.
+             * @return the next definition stage.
+             */
+            WithCreate withDeveloperPortalStatus(DeveloperPortalStatus developerPortalStatus);
+        }
     }
 
     /**
@@ -813,11 +875,12 @@ public interface ApiManagementServiceResource {
     interface Update extends UpdateStages.WithTags, UpdateStages.WithSku, UpdateStages.WithIdentity,
         UpdateStages.WithZones, UpdateStages.WithPublisherEmail, UpdateStages.WithPublisherName,
         UpdateStages.WithNotificationSenderEmail, UpdateStages.WithHostnameConfigurations,
-        UpdateStages.WithPublicIpAddressId, UpdateStages.WithPublicNetworkAccess,
+        UpdateStages.WithPublicIpAddressId, UpdateStages.WithPublicNetworkAccess, UpdateStages.WithConfigurationApi,
         UpdateStages.WithVirtualNetworkConfiguration, UpdateStages.WithAdditionalLocations,
         UpdateStages.WithCustomProperties, UpdateStages.WithCertificates, UpdateStages.WithEnableClientCertificate,
         UpdateStages.WithNatGatewayState, UpdateStages.WithDisableGateway, UpdateStages.WithVirtualNetworkType,
-        UpdateStages.WithApiVersionConstraint, UpdateStages.WithRestore, UpdateStages.WithPrivateEndpointConnections {
+        UpdateStages.WithApiVersionConstraint, UpdateStages.WithRestore, UpdateStages.WithPrivateEndpointConnections,
+        UpdateStages.WithLegacyPortalStatus, UpdateStages.WithDeveloperPortalStatus {
         /**
          * Executes the update request.
          * 
@@ -976,6 +1039,19 @@ public interface ApiManagementServiceResource {
              * @return the next definition stage.
              */
             Update withPublicNetworkAccess(PublicNetworkAccess publicNetworkAccess);
+        }
+
+        /**
+         * The stage of the ApiManagementServiceResource update allowing to specify configurationApi.
+         */
+        interface WithConfigurationApi {
+            /**
+             * Specifies the configurationApi property: Configuration API configuration of the API Management service..
+             * 
+             * @param configurationApi Configuration API configuration of the API Management service.
+             * @return the next definition stage.
+             */
+            Update withConfigurationApi(ConfigurationApi configurationApi);
         }
 
         /**
@@ -1189,6 +1265,32 @@ public interface ApiManagementServiceResource {
             Update
                 withPrivateEndpointConnections(List<RemotePrivateEndpointConnectionWrapper> privateEndpointConnections);
         }
+
+        /**
+         * The stage of the ApiManagementServiceResource update allowing to specify legacyPortalStatus.
+         */
+        interface WithLegacyPortalStatus {
+            /**
+             * Specifies the legacyPortalStatus property: Status of legacy portal in the API Management service..
+             * 
+             * @param legacyPortalStatus Status of legacy portal in the API Management service.
+             * @return the next definition stage.
+             */
+            Update withLegacyPortalStatus(LegacyPortalStatus legacyPortalStatus);
+        }
+
+        /**
+         * The stage of the ApiManagementServiceResource update allowing to specify developerPortalStatus.
+         */
+        interface WithDeveloperPortalStatus {
+            /**
+             * Specifies the developerPortalStatus property: Status of developer portal in this API Management service..
+             * 
+             * @param developerPortalStatus Status of developer portal in this API Management service.
+             * @return the next definition stage.
+             */
+            Update withDeveloperPortalStatus(DeveloperPortalStatus developerPortalStatus);
+        }
     }
 
     /**
@@ -1245,13 +1347,14 @@ public interface ApiManagementServiceResource {
      * Upgrades an API Management service to the Stv2 platform. For details refer to https://aka.ms/apim-migrate-stv2.
      * This change is not reversible. This is long running operation and could take several minutes to complete.
      * 
+     * @param parameters Optional parameters supplied to migrate service.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a single API Management service resource in List or Get response.
      */
-    ApiManagementServiceResource migrateToStv2(Context context);
+    ApiManagementServiceResource migrateToStv2(MigrateToStv2Contract parameters, Context context);
 
     /**
      * Gets the Single-Sign-On token for the API Management Service which is valid for 5 Minutes.
