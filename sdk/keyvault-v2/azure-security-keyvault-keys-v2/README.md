@@ -1,13 +1,16 @@
-# Azure Key Vault Certificates client library for Java
-Azure Key Vault allows you to securely manage and tightly control your certificates. The Azure Key Vault Certificates
-client library supports certificates backed by RSA and EC keys.
+# Azure Key Vault Keys client library for Java
+Azure Key Vault is a cloud service that provides secure storage of keys for encrypting your data. Multiple keys, and
+multiple versions of the same key, can be kept in Azure Key Vault. Cryptographic keys in Azure Key Vault are represented
+as [JSON Web Key [JWK]][jwk_specification] objects.
 
-Multiple certificates and multiple versions of the same certificate can be kept in the key vault. Cryptographic keys in
-Azure Key Vault backing the certificates are represented as [JSON Web Key (JWK)][jwk_specification] objects. This
-library offers operations to create, retrieve, update, delete, purge, backup, restore, and list the certificates, as
-well as its versions.
+Azure Key Vault Managed HSM is a fully-managed, highly-available, single-tenant, standards-compliant cloud service that
+enables you to safeguard cryptographic keys for your cloud applications using FIPS 140-2 Level 3 validated HSMs.
 
-[Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][azkeyvault_docs] | [Samples][certificates_samples]
+The Azure Key Vault Keys library client supports RSA keys and Elliptic Curve (EC) keys, each with corresponding support
+in hardware security modules (HSM). It offers operations to create, retrieve, update, delete, purge, backup, restore,
+and list the keys and its versions.
+
+[Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][azkeyvault_docs] | [Samples][keys_samples]
 
 ## Getting started
 
@@ -16,8 +19,8 @@ well as its versions.
   - Here are details about [Java 8 client compatibility with Azure Certificate Authority][azure_ca]
 - An [Azure Subscription][azure_subscription].
 - An existing [Azure Key Vault][azure_keyvault]. If you need to create a key vault, you can do so in the Azure Portal by
-  following the steps in [this document][azure_keyvault_portal]. Alternatively, you can use the Azure CLI by following the
-  steps in [this document][azure_keyvault_cli].
+  following the steps in [this document][azure_keyvault_portal]. Alternatively, you can use the Azure CLI by following
+  the steps in [this document][azure_keyvault_cli].
 
 ### Adding the package to your product
 
@@ -46,105 +49,132 @@ and then include the direct dependency in the dependencies section without the v
 <dependencies>
     <dependency>
         <groupId>com.azure.v2</groupId>
-        <artifactId>azure-security-keyvault-certificates</artifactId>
+        <artifactId>azure-security-keyvault-keys</artifactId>
     </dependency>
 </dependencies>
 ```
 
-#### Include direct dependency
+#### Use a direct dependency
 If you want to take dependency on a particular version of the library that is not present in the BOM, add the direct
 dependency to your project as follows.
 
-[//]: # ({x-version-update-start;com.azure:azure-security-keyvault-certificates;current})
+[//]: # ({x-version-update-start;com.azure.v2:azure-security-keyvault-keys;current})
 ```xml
 <dependency>
     <groupId>com.azure.v2</groupId>
-    <artifactId>azure-security-keyvault-certificates</artifactId>
+    <artifactId>azure-security-keyvault-keys</artifactId>
     <version>5.0.0-beta.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
 
 ### Authentication
-In order to interact with the Azure Key Vault service, you will need to create an instance of the
-[`CertificateClient`](#create-certificate-client) class, a vault **endpoint** and a credential object. The examples
-shown in this document use a credential object named  [`DefaultAzureCredential`][default_azure_credential], which is
-appropriate for most scenarios, including local development and production environments. Additionally, we recommend
-using a [managed identity][managed_identity] for authentication in production environments.
+In order to interact with the Azure Key Vault service, you will need to create an instance of either the
+[`KeyClient`](#create-key-client) class or the [`CryptographyClient`](#create-cryptography-client) class, as well as a
+vault **endpoint** and a credential object. The examples shown in this document use a credential object named
+[`DefaultAzureCredential`][default_azure_credential], which is appropriate for most scenarios, including local
+development and production environments. Additionally, we recommend using a [managed identity][managed_identity] for
+authentication in production environments.
 
 You can find more information on different ways of authenticating and their corresponding credential types in the
 [Azure Identity documentation][azure_identity].
 
-#### Create certificate client
-Once you perform [the authentication set up that suits you best][default_azure_credential] and replaced\
-**your-key-vault-endpoint** with the URL for your key vault, you can create the `CertificateClient`:
+#### Create key client
+Once you perform [the authentication set up that suits you best][default_azure_credential] and replaced
+**your-key-vault-endpoint** with the URL for your key vault or managed HSM, you can create the `KeyClient`:
 
-```java readme-sample-createCertificateClient
+```java readme-sample-createKeyClient
+```
+
+#### Create cryptography client
+Once you perform [the `DefaultAzureCredential` set up that suits you best][default_azure_credential] and replaced
+**your-key-vault-endpoint** with the URL for your key vault or managed HSM, you can create the `CryptographyClient`:
+
+```java readme-sample-createCryptographyClient
 ```
 
 ## Key concepts
 
-### Certificate
-Azure Key Vault supports certificates with secret content types (`PKCS12` & `PEM`). The certificate can be backed by
-keys in Azure Key Vault of types (`EC` & `RSA`). In addition to the certificate policy, the following attributes may be
-specified:
-* **enabled:** Specifies whether the certificate is enabled and usable.
-* **created:** Indicates when this version of the certificate was created.
-* **updated:** Indicates when this version of the certificate was updated.
+### Key
+Azure Key Vault supports multiple key types (`RSA` & `EC`) and algorithms, and enables the use of Hardware Security
+Modules (HSM) for high value keys. In addition to the key material, the following attributes may be specified:
+* **enabled:** Specifies whether the key is enabled and usable for cryptographic operations.
+* **not_before:** Identifies the time before which the key must not be used for cryptographic operations.
+* **expires:** Identifies the expiration time on or after which the key MUST NOT be used for cryptographic operations.
+* **created:** Indicates when this version of the key was created.
+* **updated:** Indicates when this version of the key was updated.
 
-### Certificate client
-The certificate client performs the interactions with the Azure Key Vault service for getting, setting, updating,
-deleting, and listing certificates and its versions. The client also supports CRUD operations for certificate issuers
-and contacts in the key vault. Once you've initialized a certificate, you can interact with the primary resource types
-in Azure Key Vault.
+### Key client:
+The key client performs the interactions with the Azure Key Vault service for getting, setting, updating, deleting, and
+listing keys and its versions. Once you have initialized a key, you can interact with the primary resource types in Key
+Vault.
+
+### Cryptography client:
+The cryptography client performs the cryptographic operations locally or calls the Azure Key Vault service depending on
+how much key information is available locally. It supports encrypting, decrypting, signing, verifying, key wrapping, key
+unwrapping, and retrieving the configured key.
 
 ## Examples
 The following sections provide several code snippets covering some of the most common Azure Key Vault service tasks,
 including:
-- [Create a certificate](#create-a-certificate)
-- [Retrieve a certificate](#retrieve-a-certificate)
-- [Update an existing certificate](#update-an-existing-certificate)
-- [Delete a certificate](#delete-a-certificate)
-- [List certificates](#list-certificates)
+- [Create a key](#create-a-key)
+- [Retrieve a key](#retrieve-a-key)
+- [Update an existing key](#update-an-existing-key)
+- [Delete a key](#delete-a-key)
+- [List keys](#list-keys)
+- [Encrypt](#encrypt)
+- [Decrypt](#decrypt)
 
-### Create a certificate
-Create a certificate to be stored in the key vault.
-- `beginCreateCertificate` creates a new certificate in the key vault. If a certificate with the same name already
-exists then a new version of the certificate is created.
+#### Create a key
+Create a key to be stored in the key vault.
+- `createKey` creates a new key in the key vault. If a key with the same name already exists then a new version of the
+key is created.
 
-```java readme-sample-createCertificate
+```java readme-sample-createKey
 ```
 
-### Retrieve a certificate
-Retrieve a previously stored certificate by calling `getCertificate` or `getCertificateVersion`.
+#### Retrieve a key
+Retrieve a previously stored key by calling `getKey`.
 
-```java readme-sample-retrieveCertificate
+```java readme-sample-retrieveKey
 ```
 
-### Update an existing certificate
-Update an existing certificate by calling `updateCertificateProperties`.
+#### Update an existing key
+Update an existing key by calling `updateKeyProperties`.
 
-```java readme-sample-updateCertificate
+```java readme-sample-updateKey
 ```
 
-### Delete a certificate
-Delete an existing certificate by calling `beginDeleteCertificate`.
+#### Delete a key
+Delete an existing key by calling `beginDeleteKey`.
 
-```java readme-sample-deleteCertificate
+```java readme-sample-deleteKey
 ```
 
-### List certificates
-List the certificates in the key vault by calling `listPropertiesOfCertificates`.
+#### List keys
+List the keys in the key vault by calling `listPropertiesOfKeys`.
 
-```java readme-sample-listCertificates
+```java readme-sample-listKeys
+```
+
+#### Encrypt
+Encrypt plain text by calling `encrypt`.
+
+```java readme-sample-encrypt
+```
+
+#### Decrypt
+Decrypt encrypted content by calling `decrypt`.
+
+```java readme-sample-decrypt
 ```
 
 ## Troubleshooting
 See our [troubleshooting guide][troubleshooting_guide] for details on how to diagnose various failure scenarios.
 
 ### General
-Azure Key Vault clients raise exceptions. For example, if you try to retrieve a certificate after it is deleted a `404`
-error is returned, indicating the resource was not found. In the following snippet, the error is handled gracefully by
+Azure Key Vault clients raise exceptions. For example, if you try to retrieve a key after it is deleted a `404` error
+is returned, indicating the resource was not found. In the following snippet, the error is handled gracefully by
 catching the exception and displaying additional information about the error.
 
 ```java readme-sample-troubleshooting
@@ -210,8 +240,8 @@ For details on contributing to this repository, see the [contributing guide][con
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [managed_identity]: https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
 [microsoft_code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
-[certificates_samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-certificates-v2/src/samples/java/com/azure/security/keyvault/secrets
-[samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-certificates-v2/src/samples/README.md
+[keys_samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault-v2/azure-security-keyvault-keys/src/samples/java/com/azure/v2/security/keyvault/secrets
+[samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault-v2/azure-security-keyvault-keys/src/samples/README.md
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
-[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-certificates-v2/src
-[troubleshooting_guide]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-certificates-v2/TROUBLESHOOTING.md
+[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault-v2/azure-security-keyvault-keys/src
+[troubleshooting_guide]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault-v2/azure-security-keyvault-keys/TROUBLESHOOTING.md

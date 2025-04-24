@@ -1,24 +1,23 @@
-# Azure Key Vault Secrets client library for Java
-Azure Key Vault is a cloud service that provides secure storage for secrets, such as passwords and database connection
-strings.
+# Azure Key Vault Certificates client library for Java
+Azure Key Vault allows you to securely manage and tightly control your certificates. The Azure Key Vault Certificates
+client library supports certificates backed by RSA and EC keys.
 
-The Azure Key Vault Secrets client library allows you to securely store and tightly control the access to tokens,
-passwords, API keys, and other secrets. This library offers operations to create, retrieve, update, delete, purge,
-backup, restore, and list the secrets and its versions.
+Multiple certificates and multiple versions of the same certificate can be kept in the key vault. Cryptographic keys in
+Azure Key Vault backing the certificates are represented as [JSON Web Key (JWK)][jwk_specification] objects. This
+library offers operations to create, retrieve, update, delete, purge, backup, restore, and list the certificates, as
+well as its versions.
 
-Use the Azure Key Vault Secrets client library to create and manage secrets.
-
-[Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][azkeyvault_docs] | [Samples][secrets_samples]
+[Source code][source_code] | [API reference documentation][api_documentation] | [Product documentation][azkeyvault_docs] | [Samples][certificates_samples]
 
 ## Getting started
 
 ### Prerequisites
 - A [Java Development Kit (JDK)][jdk_link], version 8 or later.
-    - Here are details about [Java 8 client compatibility with Azure Certificate Authority][azure_ca].
+  - Here are details about [Java 8 client compatibility with Azure Certificate Authority][azure_ca]
 - An [Azure Subscription][azure_subscription].
 - An existing [Azure Key Vault][azure_keyvault]. If you need to create a key vault, you can do so in the Azure Portal by
-following the steps in [this document][azure_keyvault_portal]. Alternatively, you can use the Azure CLI by following the
-steps in [this document][azure_keyvault_cli].
+  following the steps in [this document][azure_keyvault_portal]. Alternatively, you can use the Azure CLI by following the
+  steps in [this document][azure_keyvault_cli].
 
 ### Adding the package to your product
 
@@ -47,20 +46,20 @@ and then include the direct dependency in the dependencies section without the v
 <dependencies>
     <dependency>
         <groupId>com.azure.v2</groupId>
-        <artifactId>azure-security-keyvault-secrets</artifactId>
+        <artifactId>azure-security-keyvault-certificates</artifactId>
     </dependency>
 </dependencies>
 ```
 
-#### Use a direct dependency
+#### Include direct dependency
 If you want to take dependency on a particular version of the library that is not present in the BOM, add the direct
 dependency to your project as follows.
 
-[//]: # ({x-version-update-start;com.azure.v2:azure-security-keyvault-secrets;current})
+[//]: # ({x-version-update-start;com.azure:azure-security-keyvault-certificates;current})
 ```xml
 <dependency>
     <groupId>com.azure.v2</groupId>
-    <artifactId>azure-security-keyvault-secrets</artifactId>
+    <artifactId>azure-security-keyvault-certificates</artifactId>
     <version>5.0.0-beta.1</version>
 </dependency>
 ```
@@ -68,106 +67,90 @@ dependency to your project as follows.
 
 ### Authentication
 In order to interact with the Azure Key Vault service, you will need to create an instance of the
-[`SecretClient`](#create-secret-client) class, a vault **endpoint** and a credential object. The examples shown in this
-document use a credential object named  [`DefaultAzureCredential`][default_azure_credential], which is appropriate for
-most scenarios, including local development and production environments. Additionally, we recommend using a
-[managed identity][managed_identity] for authentication in production environments.
+[`CertificateClient`](#create-certificate-client) class, a vault **endpoint** and a credential object. The examples
+shown in this document use a credential object named  [`DefaultAzureCredential`][default_azure_credential], which is
+appropriate for most scenarios, including local development and production environments. Additionally, we recommend
+using a [managed identity][managed_identity] for authentication in production environments.
 
 You can find more information on different ways of authenticating and their corresponding credential types in the
 [Azure Identity documentation][azure_identity].
 
-#### Create secret client
-Once you perform [the authentication set up that suits you best][default_azure_credential] and replaced
-**your-key-vault-endpoint** with the URL for your key vault, you can create a `SecretClient`:
+#### Create certificate client
+Once you perform [the authentication set up that suits you best][default_azure_credential] and replaced\
+**your-key-vault-endpoint** with the URL for your key vault, you can create the `CertificateClient`:
 
-```java readme-sample-createSecretClient
+```java readme-sample-createCertificateClient
 ```
 
 ## Key concepts
 
-### Secret
-A secret is the fundamental resource within Azure Key Vault. From a developer's perspective, Key Vault APIs accept and
-return secret values as strings. In addition to the secret data, the following attributes may be specified:
-* **enabled:** Specifies whether the secret data can be retrieved.
-* **notBefore:** Identifies the time after which the secret will be active.
-* **expires:** Identifies the expiration time on or after which the secret data should not be retrieved.
-* **created:** Indicates when this version of the secret was created.
-* **updated:** Indicates when this version of the secret was updated.
+### Certificate
+Azure Key Vault supports certificates with secret content types (`PKCS12` & `PEM`). The certificate can be backed by
+keys in Azure Key Vault of types (`EC` & `RSA`). In addition to the certificate policy, the following attributes may be
+specified:
+* **enabled:** Specifies whether the certificate is enabled and usable.
+* **created:** Indicates when this version of the certificate was created.
+* **updated:** Indicates when this version of the certificate was updated.
 
-### Secret client:
-The secret client performs interactions with the Azure Key Vault service for getting, setting, updating, deleting, and
-listing secrets and its versions. Once you've initialized a secret, you can interact with the primary resource types in
-Key Vault.
+### Certificate client
+The certificate client performs the interactions with the Azure Key Vault service for getting, setting, updating,
+deleting, and listing certificates and its versions. The client also supports CRUD operations for certificate issuers
+and contacts in the key vault. Once you've initialized a certificate, you can interact with the primary resource types
+in Azure Key Vault.
 
 ## Examples
-The following sections provide several code snippets covering some of the most common Azure Key Vault Secret service
-tasks, including:
-- [Create a secret](#create-a-secret)
-- [Retrieve a secret](#retrieve-a-secret)
-- [Update an existing secret](#update-an-existing-secret)
-- [Delete a secret](#delete-a-secret)
-- [List secrets](#list-secrets)
+The following sections provide several code snippets covering some of the most common Azure Key Vault service tasks,
+including:
+- [Create a certificate](#create-a-certificate)
+- [Retrieve a certificate](#retrieve-a-certificate)
+- [Update an existing certificate](#update-an-existing-certificate)
+- [Delete a certificate](#delete-a-certificate)
+- [List certificates](#list-certificates)
 
-### Create a secret
-Create a secret to be stored in the key vault.
-- `setSecret` creates a new secret in the key vault. If a secret with the given name already exists then a new version
-of the secret is created.
+### Create a certificate
+Create a certificate to be stored in the key vault.
+- `beginCreateCertificate` creates a new certificate in the key vault. If a certificate with the same name already
+exists then a new version of the certificate is created.
 
-```java readme-sample-createSecret
+```java readme-sample-createCertificate
 ```
 
-### Retrieve a secret
-Retrieve a previously stored secret by calling `getSecret`.
+### Retrieve a certificate
+Retrieve a previously stored certificate by calling `getCertificate` or `getCertificateVersion`.
 
-```java readme-sample-retrieveSecret
+```java readme-sample-retrieveCertificate
 ```
 
-### Update an existing secret
-Update an existing secret by calling `updateSecretProperties`.
+### Update an existing certificate
+Update an existing certificate by calling `updateCertificateProperties`.
 
-```java readme-sample-updateSecret
+```java readme-sample-updateCertificate
 ```
 
-### Delete a secret
-Delete an existing secret by calling `beginDeleteSecret`.
+### Delete a certificate
+Delete an existing certificate by calling `beginDeleteCertificate`.
 
-```java readme-sample-deleteSecret
+```java readme-sample-deleteCertificate
 ```
 
-### List secrets
-List the secrets in the key vault by calling `listPropertiesOfSecrets`.
+### List certificates
+List the certificates in the key vault by calling `listPropertiesOfCertificates`.
 
-```java readme-sample-listSecrets
+```java readme-sample-listCertificates
 ```
-
-### Service API versions
-
-The client library targets the latest service API version by default. The service client builder accepts an optional
-service API version parameter to specify which API version to communicate.
-
-#### Select a service API version
-
-You have the flexibility to explicitly select a supported service API version when initializing a service client via the
-service client builder. This ensures that the client can communicate with services using the specified API version.
-
-When selecting an API version, it is important to verify that there are no breaking changes compared to the latest API
-version. If there are significant differences, API calls may fail due to incompatibility.
-
-Always ensure that the chosen API version is fully supported and operational for your specific use case and that it
-aligns with the service's versioning policy.
 
 ## Troubleshooting
 See our [troubleshooting guide][troubleshooting_guide] for details on how to diagnose various failure scenarios.
 
 ### General
-Azure Key Vault clients raise exceptions. For example, if you try to retrieve a secret after it is deleted a `404` error
-is returned, indicating the resource was not found. In the following snippet, the error is handled gracefully by
+Azure Key Vault clients raise exceptions. For example, if you try to retrieve a certificate after it is deleted a `404`
+error is returned, indicating the resource was not found. In the following snippet, the error is handled gracefully by
 catching the exception and displaying additional information about the error.
 
 ```java readme-sample-troubleshooting
 ```
 
-### Default HTTP Client
+### Default HTTP client
 <!-- TODO (vcolin7): Update with default client after discussing with the team. -->
 All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure the
 client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
@@ -227,8 +210,8 @@ For details on contributing to this repository, see the [contributing guide][con
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [managed_identity]: https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
 [microsoft_code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
-[secrets_samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets-v2/src/samples/java/com/azure/security/keyvault/secrets
-[samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets-v2/src/samples/README.md
+[certificates_samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault-v2/azure-security-keyvault-certificates/src/samples/java/com/azure/v2/security/keyvault/secrets
+[samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault-v2/azure-security-keyvault-certificates/src/samples/README.md
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
-[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets-v2/src
-[troubleshooting_guide]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-secrets-v2/TROUBLESHOOTING.md
+[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault-v2/azure-security-keyvault-certificates/src
+[troubleshooting_guide]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault-v2/azure-security-keyvault-certificates/TROUBLESHOOTING.md
