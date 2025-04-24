@@ -40,210 +40,12 @@
 ### AssociationsInterface_CreateOrUpdate
 
 ```java
-import com.azure.resourcemanager.servicenetworking.models.AssociationProperties;
-import com.azure.resourcemanager.servicenetworking.models.AssociationSubnet;
-import com.azure.resourcemanager.servicenetworking.models.AssociationType;
-
-/**
- * Samples for AssociationsInterface CreateOrUpdate.
- */
-public final class AssociationsInterfaceCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file: 2025-01-01/AssociationPut.json
-     */
-    /**
-     * Sample code: Put Association.
-     * 
-     * @param manager Entry point to TrafficControllerManager.
-     */
-    public static void putAssociation(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager.associationsInterfaces()
-            .define("as1")
-            .withRegion("NorthCentralUS")
-            .withExistingTrafficController("rg1", "tc1")
-            .withProperties(new AssociationProperties().withAssociationType(AssociationType.SUBNETS)
-                .withSubnet(new AssociationSubnet().withId(
-                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet-tc/subnets/tc-subnet")))
-            .create();
-    }
-}
-```
-
-### AssociationsInterface_Delete
-
-```java
-/**
- * Samples for AssociationsInterface Delete.
- */
-public final class AssociationsInterfaceDeleteSamples {
-    /*
-     * x-ms-original-file: 2025-01-01/AssociationDelete.json
-     */
-    /**
-     * Sample code: Delete Association.
-     * 
-     * @param manager Entry point to TrafficControllerManager.
-     */
-    public static void deleteAssociation(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager.associationsInterfaces().delete("rg1", "tc1", "as1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### AssociationsInterface_Get
-
-```java
-/**
- * Samples for AssociationsInterface Get.
- */
-public final class AssociationsInterfaceGetSamples {
-    /*
-     * x-ms-original-file: 2025-01-01/AssociationGet.json
-     */
-    /**
-     * Sample code: Get Association.
-     * 
-     * @param manager Entry point to TrafficControllerManager.
-     */
-    public static void getAssociation(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager.associationsInterfaces().getWithResponse("rg1", "tc1", "as1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### AssociationsInterface_ListByTrafficController
-
-```java
-/**
- * Samples for AssociationsInterface ListByTrafficController.
- */
-public final class AssociationsInterfaceListByTrafficControllerSamples {
-    /*
-     * x-ms-original-file: 2025-01-01/AssociationsGet.json
-     */
-    /**
-     * Sample code: Get Associations.
-     * 
-     * @param manager Entry point to TrafficControllerManager.
-     */
-    public static void getAssociations(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager.associationsInterfaces().listByTrafficController("rg1", "tc1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### AssociationsInterface_Update
-
-```java
-import com.azure.resourcemanager.servicenetworking.models.Association;
-import com.azure.resourcemanager.servicenetworking.models.AssociationSubnetUpdate;
-import com.azure.resourcemanager.servicenetworking.models.AssociationType;
-import com.azure.resourcemanager.servicenetworking.models.AssociationUpdateProperties;
-
-/**
- * Samples for AssociationsInterface Update.
- */
-public final class AssociationsInterfaceUpdateSamples {
-    /*
-     * x-ms-original-file: 2025-01-01/AssociationPatch.json
-     */
-    /**
-     * Sample code: Update Association.
-     * 
-     * @param manager Entry point to TrafficControllerManager.
-     */
-    public static void updateAssociation(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        Association resource = manager.associationsInterfaces()
-            .getWithResponse("rg1", "tc1", "as1", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withProperties(new AssociationUpdateProperties().withAssociationType(AssociationType.SUBNETS)
-                .withSubnet(new AssociationSubnetUpdate().withId(
-                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet-tc/subnets/tc-subnet")))
-            .apply();
-    }
-}
-```
-
-### FrontendsInterface_CreateOrUpdate
-
-```java
-import com.azure.resourcemanager.servicenetworking.models.FrontendProperties;
-
-/**
- * Samples for FrontendsInterface CreateOrUpdate.
- */
-public final class FrontendsInterfaceCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file: 2025-01-01/FrontendPut.json
-     */
-    /**
-     * Sample code: Put Frontend.
-     * 
-     * @param manager Entry point to TrafficControllerManager.
-     */
-    public static void putFrontend(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager.frontendsInterfaces()
-            .define("fe1")
-            .withRegion("NorthCentralUS")
-            .withExistingTrafficController("rg1", "tc1")
-            .withProperties(new FrontendProperties())
-            .create();
-    }
-}
-```
-
-### FrontendsInterface_Delete
-
-```java
-/**
- * Samples for FrontendsInterface Delete.
- */
-public final class FrontendsInterfaceDeleteSamples {
-    /*
-     * x-ms-original-file: 2025-01-01/FrontendDelete.json
-     */
-    /**
-     * Sample code: Delete Frontend.
-     * 
-     * @param manager Entry point to TrafficControllerManager.
-     */
-    public static void deleteFrontend(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager.frontendsInterfaces().delete("rg1", "tc1", "fe1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### FrontendsInterface_Get
-
-```java
-/**
- * Samples for FrontendsInterface Get.
- */
-public final class FrontendsInterfaceGetSamples {
-    /*
-     * x-ms-original-file: 2025-01-01/FrontendGet.json
-     */
-    /**
-     * Sample code: Get Frontend.
-     * 
-     * @param manager Entry point to TrafficControllerManager.
-     */
-    public static void getFrontend(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager.frontendsInterfaces().getWithResponse("rg1", "tc1", "fe1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### FrontendsInterface_ListByTrafficController
-
-```java
 /**
  * Samples for FrontendsInterface ListByTrafficController.
  */
 public final class FrontendsInterfaceListByTrafficControllerSamples {
     /*
-     * x-ms-original-file: 2025-01-01/FrontendsGet.json
+     * x-ms-original-file: 2025-03-01-preview/FrontendsGet.json
      */
     /**
      * Sample code: Get Frontends.
@@ -256,127 +58,7 @@ public final class FrontendsInterfaceListByTrafficControllerSamples {
 }
 ```
 
-### FrontendsInterface_Update
-
-```java
-import com.azure.resourcemanager.servicenetworking.models.Frontend;
-
-/**
- * Samples for FrontendsInterface Update.
- */
-public final class FrontendsInterfaceUpdateSamples {
-    /*
-     * x-ms-original-file: 2025-01-01/FrontendPatch.json
-     */
-    /**
-     * Sample code: Update Frontend.
-     * 
-     * @param manager Entry point to TrafficControllerManager.
-     */
-    public static void updateFrontend(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        Frontend resource = manager.frontendsInterfaces()
-            .getWithResponse("rg1", "tc1", "fe1", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update().apply();
-    }
-}
-```
-
-### Operations_List
-
-```java
-/**
- * Samples for Operations List.
- */
-public final class OperationsListSamples {
-    /*
-     * x-ms-original-file: 2025-01-01/OperationsList.json
-     */
-    /**
-     * Sample code: Get Operations List.
-     * 
-     * @param manager Entry point to TrafficControllerManager.
-     */
-    public static void getOperationsList(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager.operations().list(com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### SecurityPoliciesInterface_CreateOrUpdate
-
-```java
-import com.azure.resourcemanager.servicenetworking.models.SecurityPolicyProperties;
-import com.azure.resourcemanager.servicenetworking.models.WafPolicy;
-
-/**
- * Samples for SecurityPoliciesInterface CreateOrUpdate.
- */
-public final class SecurityPoliciesInterfaceCreateOrUpdateSamples {
-    /*
-     * x-ms-original-file: 2025-01-01/SecurityPolicyPut.json
-     */
-    /**
-     * Sample code: Put SecurityPolicy.
-     * 
-     * @param manager Entry point to TrafficControllerManager.
-     */
-    public static void putSecurityPolicy(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager.securityPoliciesInterfaces()
-            .define("sp1")
-            .withRegion("NorthCentralUS")
-            .withExistingTrafficController("rg1", "tc1")
-            .withProperties(new SecurityPolicyProperties().withWafPolicy(new WafPolicy().withId(
-                "/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Networking/applicationGatewayWebApplicationFirewallPolicies/wp-0")))
-            .create();
-    }
-}
-```
-
-### SecurityPoliciesInterface_Delete
-
-```java
-/**
- * Samples for SecurityPoliciesInterface Delete.
- */
-public final class SecurityPoliciesInterfaceDeleteSamples {
-    /*
-     * x-ms-original-file: 2025-01-01/SecurityPolicyDelete.json
-     */
-    /**
-     * Sample code: Delete SecurityPolicy.
-     * 
-     * @param manager Entry point to TrafficControllerManager.
-     */
-    public static void
-        deleteSecurityPolicy(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager.securityPoliciesInterfaces().delete("rg1", "tc1", "sp1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### SecurityPoliciesInterface_Get
-
-```java
-/**
- * Samples for SecurityPoliciesInterface Get.
- */
-public final class SecurityPoliciesInterfaceGetSamples {
-    /*
-     * x-ms-original-file: 2025-01-01/SecurityPolicyGet.json
-     */
-    /**
-     * Sample code: Get SecurityPolicy.
-     * 
-     * @param manager Entry point to TrafficControllerManager.
-     */
-    public static void getSecurityPolicy(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager.securityPoliciesInterfaces().getWithResponse("rg1", "tc1", "sp1", com.azure.core.util.Context.NONE);
-    }
-}
-```
-
-### SecurityPoliciesInterface_ListByTrafficController
+### AssociationsInterface_Delete
 
 ```java
 /**
@@ -384,7 +66,7 @@ public final class SecurityPoliciesInterfaceGetSamples {
  */
 public final class SecurityPoliciesInterfaceListByTrafficControllerSamples {
     /*
-     * x-ms-original-file: 2025-01-01/SecurityPoliciesGetList.json
+     * x-ms-original-file: 2025-03-01-preview/SecurityPoliciesGetList.json
      */
     /**
      * Sample code: Get SecurityPolicies.
@@ -398,39 +80,7 @@ public final class SecurityPoliciesInterfaceListByTrafficControllerSamples {
 }
 ```
 
-### SecurityPoliciesInterface_Update
-
-```java
-import com.azure.resourcemanager.servicenetworking.models.SecurityPolicy;
-import com.azure.resourcemanager.servicenetworking.models.SecurityPolicyUpdateProperties;
-import com.azure.resourcemanager.servicenetworking.models.WafPolicy;
-
-/**
- * Samples for SecurityPoliciesInterface Update.
- */
-public final class SecurityPoliciesInterfaceUpdateSamples {
-    /*
-     * x-ms-original-file: 2025-01-01/SecurityPolicyPatch.json
-     */
-    /**
-     * Sample code: Update SecurityPolicy.
-     * 
-     * @param manager Entry point to TrafficControllerManager.
-     */
-    public static void
-        updateSecurityPolicy(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        SecurityPolicy resource = manager.securityPoliciesInterfaces()
-            .getWithResponse("rg1", "tc1", "sp1", com.azure.core.util.Context.NONE)
-            .getValue();
-        resource.update()
-            .withProperties(new SecurityPolicyUpdateProperties().withWafPolicy(new WafPolicy().withId(
-                "/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Networking/applicationGatewayWebApplicationFirewallPolicies/wp-0")))
-            .apply();
-    }
-}
-```
-
-### TrafficControllerInterface_CreateOrUpdate
+### AssociationsInterface_Get
 
 ```java
 import java.util.HashMap;
@@ -441,7 +91,7 @@ import java.util.Map;
  */
 public final class TrafficControllerInterfaceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-01-01/TrafficControllerPut.json
+     * x-ms-original-file: 2025-03-01-preview/TrafficControllerPut.json
      */
     /**
      * Sample code: Put Traffic Controller.
@@ -472,7 +122,102 @@ public final class TrafficControllerInterfaceCreateOrUpdateSamples {
 }
 ```
 
-### TrafficControllerInterface_Delete
+### AssociationsInterface_ListByTrafficController
+
+```java
+/**
+ * Samples for AssociationsInterface Get.
+ */
+public final class AssociationsInterfaceGetSamples {
+    /*
+     * x-ms-original-file: 2025-03-01-preview/AssociationGet.json
+     */
+    /**
+     * Sample code: Get Association.
+     * 
+     * @param manager Entry point to TrafficControllerManager.
+     */
+    public static void getAssociation(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
+        manager.associationsInterfaces().getWithResponse("rg1", "tc1", "as1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### AssociationsInterface_Update
+
+```java
+/**
+ * Samples for FrontendsInterface Get.
+ */
+public final class FrontendsInterfaceGetSamples {
+    /*
+     * x-ms-original-file: 2025-03-01-preview/FrontendGet.json
+     */
+    /**
+     * Sample code: Get Frontend.
+     * 
+     * @param manager Entry point to TrafficControllerManager.
+     */
+    public static void getFrontend(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
+        manager.frontendsInterfaces().getWithResponse("rg1", "tc1", "fe1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### FrontendsInterface_CreateOrUpdate
+
+```java
+/**
+ * Samples for AssociationsInterface ListByTrafficController.
+ */
+public final class AssociationsInterfaceListByTrafficControllerSamples {
+    /*
+     * x-ms-original-file: 2025-03-01-preview/AssociationsGet.json
+     */
+    /**
+     * Sample code: Get Associations.
+     * 
+     * @param manager Entry point to TrafficControllerManager.
+     */
+    public static void getAssociations(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
+        manager.associationsInterfaces().listByTrafficController("rg1", "tc1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### FrontendsInterface_Delete
+
+```java
+import com.azure.resourcemanager.servicenetworking.models.AssociationProperties;
+import com.azure.resourcemanager.servicenetworking.models.AssociationSubnet;
+import com.azure.resourcemanager.servicenetworking.models.AssociationType;
+
+/**
+ * Samples for AssociationsInterface CreateOrUpdate.
+ */
+public final class AssociationsInterfaceCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2025-03-01-preview/AssociationPut.json
+     */
+    /**
+     * Sample code: Put Association.
+     * 
+     * @param manager Entry point to TrafficControllerManager.
+     */
+    public static void putAssociation(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
+        manager.associationsInterfaces()
+            .define("as1")
+            .withRegion("NorthCentralUS")
+            .withExistingTrafficController("rg1", "tc1")
+            .withProperties(new AssociationProperties().withAssociationType(AssociationType.SUBNETS)
+                .withSubnet(new AssociationSubnet().withId(
+                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet-tc/subnets/tc-subnet")))
+            .create();
+    }
+}
+```
+
+### FrontendsInterface_Get
 
 ```java
 /**
@@ -480,7 +225,7 @@ public final class TrafficControllerInterfaceCreateOrUpdateSamples {
  */
 public final class TrafficControllerInterfaceDeleteSamples {
     /*
-     * x-ms-original-file: 2025-01-01/TrafficControllerDelete.json
+     * x-ms-original-file: 2025-03-01-preview/TrafficControllerDelete.json
      */
     /**
      * Sample code: Delete Traffic Controller.
@@ -494,74 +239,140 @@ public final class TrafficControllerInterfaceDeleteSamples {
 }
 ```
 
-### TrafficControllerInterface_GetByResourceGroup
+### FrontendsInterface_ListByTrafficController
 
 ```java
+import com.azure.resourcemanager.servicenetworking.models.IpAccessRulesPolicy;
+import com.azure.resourcemanager.servicenetworking.models.SecurityPolicyProperties;
+import com.azure.resourcemanager.servicenetworking.models.WafPolicy;
+import java.util.Arrays;
+
 /**
- * Samples for TrafficControllerInterface GetByResourceGroup.
+ * Samples for SecurityPoliciesInterface CreateOrUpdate.
  */
-public final class TrafficControllerInterfaceGetByResourceGroupSamples {
+public final class SecurityPoliciesInterfaceCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: 2025-01-01/TrafficControllerGet.json
+     * x-ms-original-file: 2025-03-01-preview/IpAccessRulesSecurityPolicyPut.json
      */
     /**
-     * Sample code: Get Traffic Controller.
+     * Sample code: Put IpAccessRules SecurityPolicy.
      * 
      * @param manager Entry point to TrafficControllerManager.
      */
     public static void
-        getTrafficController(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager.trafficControllerInterfaces()
-            .getByResourceGroupWithResponse("rg1", "tc1", com.azure.core.util.Context.NONE);
+        putIpAccessRulesSecurityPolicy(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
+        manager.securityPoliciesInterfaces()
+            .define("sp1")
+            .withRegion("NorthCentralUS")
+            .withExistingTrafficController("rg1", "tc1")
+            .withProperties(new SecurityPolicyProperties()
+                .withIpAccessRulesPolicy(new IpAccessRulesPolicy().withRules(Arrays.asList())))
+            .create();
     }
-}
-```
 
-### TrafficControllerInterface_List
-
-```java
-/**
- * Samples for TrafficControllerInterface List.
- */
-public final class TrafficControllerInterfaceListSamples {
     /*
-     * x-ms-original-file: 2025-01-01/TrafficControllersGetList.json
+     * x-ms-original-file: 2025-03-01-preview/WafSecurityPolicyPut.json
      */
     /**
-     * Sample code: Get Traffic Controllers List.
+     * Sample code: Put WAF SecurityPolicy.
      * 
      * @param manager Entry point to TrafficControllerManager.
      */
     public static void
-        getTrafficControllersList(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager.trafficControllerInterfaces().list(com.azure.core.util.Context.NONE);
+        putWAFSecurityPolicy(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
+        manager.securityPoliciesInterfaces()
+            .define("sp1")
+            .withRegion("NorthCentralUS")
+            .withExistingTrafficController("rg1", "tc1")
+            .withProperties(new SecurityPolicyProperties().withWafPolicy(new WafPolicy().withId(
+                "/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Networking/applicationGatewayWebApplicationFirewallPolicies/wp-0")))
+            .create();
     }
 }
 ```
 
-### TrafficControllerInterface_ListByResourceGroup
+### FrontendsInterface_Update
 
 ```java
+import com.azure.resourcemanager.servicenetworking.models.IpAccessRulesPolicy;
+import com.azure.resourcemanager.servicenetworking.models.SecurityPolicy;
+import com.azure.resourcemanager.servicenetworking.models.SecurityPolicyUpdateProperties;
+import com.azure.resourcemanager.servicenetworking.models.WafPolicy;
+import java.util.Arrays;
+
 /**
- * Samples for TrafficControllerInterface ListByResourceGroup.
+ * Samples for SecurityPoliciesInterface Update.
  */
-public final class TrafficControllerInterfaceListByResourceGroupSamples {
+public final class SecurityPoliciesInterfaceUpdateSamples {
     /*
-     * x-ms-original-file: 2025-01-01/TrafficControllersGet.json
+     * x-ms-original-file: 2025-03-01-preview/IpAccessRulesSecurityPolicyPatch.json
      */
     /**
-     * Sample code: Get Traffic Controllers.
+     * Sample code: Update IpAccessRules SecurityPolicy.
+     * 
+     * @param manager Entry point to TrafficControllerManager.
+     */
+    public static void updateIpAccessRulesSecurityPolicy(
+        com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
+        SecurityPolicy resource = manager.securityPoliciesInterfaces()
+            .getWithResponse("rg1", "tc1", "sp1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new SecurityPolicyUpdateProperties()
+                .withIpAccessRulesPolicy(new IpAccessRulesPolicy().withRules(Arrays.asList())))
+            .apply();
+    }
+
+    /*
+     * x-ms-original-file: 2025-03-01-preview/WafSecurityPolicyPatch.json
+     */
+    /**
+     * Sample code: Update WAF SecurityPolicy.
      * 
      * @param manager Entry point to TrafficControllerManager.
      */
     public static void
-        getTrafficControllers(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
-        manager.trafficControllerInterfaces().listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
+        updateWAFSecurityPolicy(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
+        SecurityPolicy resource = manager.securityPoliciesInterfaces()
+            .getWithResponse("rg1", "tc1", "sp1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new SecurityPolicyUpdateProperties().withWafPolicy(new WafPolicy().withId(
+                "/subscriptions/subid/resourcegroups/rg1/providers/Microsoft.Networking/applicationGatewayWebApplicationFirewallPolicies/wp-0")))
+            .apply();
     }
 }
 ```
 
-### TrafficControllerInterface_Update
+### Operations_List
+
+```java
+import com.azure.resourcemanager.servicenetworking.models.FrontendProperties;
+
+/**
+ * Samples for FrontendsInterface CreateOrUpdate.
+ */
+public final class FrontendsInterfaceCreateOrUpdateSamples {
+    /*
+     * x-ms-original-file: 2025-03-01-preview/FrontendPut.json
+     */
+    /**
+     * Sample code: Put Frontend.
+     * 
+     * @param manager Entry point to TrafficControllerManager.
+     */
+    public static void putFrontend(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
+        manager.frontendsInterfaces()
+            .define("fe1")
+            .withRegion("NorthCentralUS")
+            .withExistingTrafficController("rg1", "tc1")
+            .withProperties(new FrontendProperties())
+            .create();
+    }
+}
+```
+
+### SecurityPoliciesInterface_CreateOrUpdate
 
 ```java
 import com.azure.resourcemanager.servicenetworking.models.TrafficController;
@@ -573,7 +384,7 @@ import java.util.Map;
  */
 public final class TrafficControllerInterfaceUpdateSamples {
     /*
-     * x-ms-original-file: 2025-01-01/TrafficControllerPatch.json
+     * x-ms-original-file: 2025-03-01-preview/TrafficControllerPatch.json
      */
     /**
      * Sample code: Patch Traffic Controller.
@@ -598,6 +409,238 @@ public final class TrafficControllerInterfaceUpdateSamples {
             map.put(key, value);
         }
         return map;
+    }
+}
+```
+
+### SecurityPoliciesInterface_Delete
+
+```java
+/**
+ * Samples for SecurityPoliciesInterface Delete.
+ */
+public final class SecurityPoliciesInterfaceDeleteSamples {
+    /*
+     * x-ms-original-file: 2025-03-01-preview/SecurityPolicyDelete.json
+     */
+    /**
+     * Sample code: Delete SecurityPolicy.
+     * 
+     * @param manager Entry point to TrafficControllerManager.
+     */
+    public static void
+        deleteSecurityPolicy(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
+        manager.securityPoliciesInterfaces().delete("rg1", "tc1", "sp1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### SecurityPoliciesInterface_Get
+
+```java
+import com.azure.resourcemanager.servicenetworking.models.Association;
+import com.azure.resourcemanager.servicenetworking.models.AssociationSubnetUpdate;
+import com.azure.resourcemanager.servicenetworking.models.AssociationType;
+import com.azure.resourcemanager.servicenetworking.models.AssociationUpdateProperties;
+
+/**
+ * Samples for AssociationsInterface Update.
+ */
+public final class AssociationsInterfaceUpdateSamples {
+    /*
+     * x-ms-original-file: 2025-03-01-preview/AssociationPatch.json
+     */
+    /**
+     * Sample code: Update Association.
+     * 
+     * @param manager Entry point to TrafficControllerManager.
+     */
+    public static void updateAssociation(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
+        Association resource = manager.associationsInterfaces()
+            .getWithResponse("rg1", "tc1", "as1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update()
+            .withProperties(new AssociationUpdateProperties().withAssociationType(AssociationType.SUBNETS)
+                .withSubnet(new AssociationSubnetUpdate().withId(
+                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet-tc/subnets/tc-subnet")))
+            .apply();
+    }
+}
+```
+
+### SecurityPoliciesInterface_ListByTrafficController
+
+```java
+import com.azure.resourcemanager.servicenetworking.models.Frontend;
+
+/**
+ * Samples for FrontendsInterface Update.
+ */
+public final class FrontendsInterfaceUpdateSamples {
+    /*
+     * x-ms-original-file: 2025-03-01-preview/FrontendPatch.json
+     */
+    /**
+     * Sample code: Update Frontend.
+     * 
+     * @param manager Entry point to TrafficControllerManager.
+     */
+    public static void updateFrontend(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
+        Frontend resource = manager.frontendsInterfaces()
+            .getWithResponse("rg1", "tc1", "fe1", com.azure.core.util.Context.NONE)
+            .getValue();
+        resource.update().apply();
+    }
+}
+```
+
+### SecurityPoliciesInterface_Update
+
+```java
+/**
+ * Samples for FrontendsInterface Delete.
+ */
+public final class FrontendsInterfaceDeleteSamples {
+    /*
+     * x-ms-original-file: 2025-03-01-preview/FrontendDelete.json
+     */
+    /**
+     * Sample code: Delete Frontend.
+     * 
+     * @param manager Entry point to TrafficControllerManager.
+     */
+    public static void deleteFrontend(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
+        manager.frontendsInterfaces().delete("rg1", "tc1", "fe1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### TrafficControllerInterface_CreateOrUpdate
+
+```java
+/**
+ * Samples for TrafficControllerInterface GetByResourceGroup.
+ */
+public final class TrafficControllerInterfaceGetByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2025-03-01-preview/TrafficControllerGet.json
+     */
+    /**
+     * Sample code: Get Traffic Controller.
+     * 
+     * @param manager Entry point to TrafficControllerManager.
+     */
+    public static void
+        getTrafficController(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
+        manager.trafficControllerInterfaces()
+            .getByResourceGroupWithResponse("rg1", "tc1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### TrafficControllerInterface_Delete
+
+```java
+/**
+ * Samples for TrafficControllerInterface List.
+ */
+public final class TrafficControllerInterfaceListSamples {
+    /*
+     * x-ms-original-file: 2025-03-01-preview/TrafficControllersGetList.json
+     */
+    /**
+     * Sample code: Get Traffic Controllers List.
+     * 
+     * @param manager Entry point to TrafficControllerManager.
+     */
+    public static void
+        getTrafficControllersList(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
+        manager.trafficControllerInterfaces().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### TrafficControllerInterface_GetByResourceGroup
+
+```java
+/**
+ * Samples for AssociationsInterface Delete.
+ */
+public final class AssociationsInterfaceDeleteSamples {
+    /*
+     * x-ms-original-file: 2025-03-01-preview/AssociationDelete.json
+     */
+    /**
+     * Sample code: Delete Association.
+     * 
+     * @param manager Entry point to TrafficControllerManager.
+     */
+    public static void deleteAssociation(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
+        manager.associationsInterfaces().delete("rg1", "tc1", "as1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### TrafficControllerInterface_List
+
+```java
+/**
+ * Samples for Operations List.
+ */
+public final class OperationsListSamples {
+    /*
+     * x-ms-original-file: 2025-03-01-preview/OperationsList.json
+     */
+    /**
+     * Sample code: Get Operations List.
+     * 
+     * @param manager Entry point to TrafficControllerManager.
+     */
+    public static void getOperationsList(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
+        manager.operations().list(com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### TrafficControllerInterface_ListByResourceGroup
+
+```java
+/**
+ * Samples for SecurityPoliciesInterface Get.
+ */
+public final class SecurityPoliciesInterfaceGetSamples {
+    /*
+     * x-ms-original-file: 2025-03-01-preview/SecurityPolicyGet.json
+     */
+    /**
+     * Sample code: Get SecurityPolicy.
+     * 
+     * @param manager Entry point to TrafficControllerManager.
+     */
+    public static void getSecurityPolicy(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
+        manager.securityPoliciesInterfaces().getWithResponse("rg1", "tc1", "sp1", com.azure.core.util.Context.NONE);
+    }
+}
+```
+
+### TrafficControllerInterface_Update
+
+```java
+/**
+ * Samples for TrafficControllerInterface ListByResourceGroup.
+ */
+public final class TrafficControllerInterfaceListByResourceGroupSamples {
+    /*
+     * x-ms-original-file: 2025-03-01-preview/TrafficControllersGet.json
+     */
+    /**
+     * Sample code: Get Traffic Controllers.
+     * 
+     * @param manager Entry point to TrafficControllerManager.
+     */
+    public static void
+        getTrafficControllers(com.azure.resourcemanager.servicenetworking.TrafficControllerManager manager) {
+        manager.trafficControllerInterfaces().listByResourceGroup("rg1", com.azure.core.util.Context.NONE);
     }
 }
 ```
