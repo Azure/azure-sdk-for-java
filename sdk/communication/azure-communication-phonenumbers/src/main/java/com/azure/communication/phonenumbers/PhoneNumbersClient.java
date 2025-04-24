@@ -36,6 +36,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
+import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.SyncPoller;
@@ -240,9 +241,10 @@ public final class PhoneNumbersClient {
      * @return the result of a phone number browse operation {@link PhoneNumbersBrowseResult}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PhoneNumbersBrowseResult browseAvailableNumbers(PhoneNumbersBrowseRequest phoneNumbersBrowseRequest) {
+    public List<AvailablePhoneNumber> browseAvailableNumbers(PhoneNumbersBrowseRequest phoneNumbersBrowseRequest) {
         Objects.requireNonNull(phoneNumbersBrowseRequest.getCountryCode(), "'countryCode' cannot be null.");
-        return client.browseAvailableNumbers(phoneNumbersBrowseRequest.getCountryCode(), phoneNumbersBrowseRequest);
+        return client.browseAvailableNumbers(phoneNumbersBrowseRequest.getCountryCode(), phoneNumbersBrowseRequest)
+            .getPhoneNumbers();
     }
 
     /**
@@ -257,11 +259,19 @@ public final class PhoneNumbersClient {
      * @return the result of a phone number browse operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PhoneNumbersBrowseResult>
+    public Response<List<AvailablePhoneNumber>>
         browseAvailableNumbersWithResponse(PhoneNumbersBrowseRequest phoneNumbersBrowseRequest, Context context) {
         Objects.requireNonNull(phoneNumbersBrowseRequest.getCountryCode(), "'countryCode' cannot be null.");
-        return client.browseAvailableNumbersWithResponse(phoneNumbersBrowseRequest.getCountryCode(),
-            phoneNumbersBrowseRequest, context);
+
+        Response<PhoneNumbersBrowseResult> response = client.browseAvailableNumbersWithResponse(
+            phoneNumbersBrowseRequest.getCountryCode(), phoneNumbersBrowseRequest, context);
+
+        // Extract the list of AvailablePhoneNumber from the response body
+        List<AvailablePhoneNumber> availablePhoneNumbers = response.getValue().getPhoneNumbers();
+
+        // Return a new Response object with the transformed value
+        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            availablePhoneNumbers);
     }
 
     /**

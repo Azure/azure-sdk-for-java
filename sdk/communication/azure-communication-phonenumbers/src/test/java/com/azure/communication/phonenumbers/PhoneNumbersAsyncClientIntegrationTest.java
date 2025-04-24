@@ -24,7 +24,6 @@ import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
 import com.azure.communication.phonenumbers.models.PhoneNumbersBrowseRequest;
-import com.azure.communication.phonenumbers.models.PhoneNumbersBrowseResult;
 import com.azure.communication.phonenumbers.models.PhoneNumbersReservation;
 import com.azure.communication.phonenumbers.models.PurchasePhoneNumbersResult;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
@@ -512,9 +511,8 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
 
         StepVerifier.create(this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
             .browseAvailableNumbers(browseRequest)).assertNext((result) -> {
-                assertEquals(PhoneNumberType.TOLL_FREE, result.getPhoneNumbers().get(0).getPhoneNumberType());
-                assertEquals(PhoneNumberAssignmentType.APPLICATION,
-                    result.getPhoneNumbers().get(0).getAssignmentType());
+                assertEquals(PhoneNumberType.TOLL_FREE, result.get(0).getPhoneNumberType());
+                assertEquals(PhoneNumberAssignmentType.APPLICATION, result.get(0).getAssignmentType());
             }).verifyComplete();
     }
 
@@ -544,9 +542,8 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
 
         StepVerifier.create(this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers")
             .browseAvailableNumbers(browseRequest)).assertNext((result) -> {
-                assertEquals(PhoneNumberType.TOLL_FREE, result.getPhoneNumbers().get(0).getPhoneNumberType());
-                assertEquals(PhoneNumberAssignmentType.APPLICATION,
-                    result.getPhoneNumbers().get(0).getAssignmentType());
+                assertEquals(PhoneNumberType.TOLL_FREE, result.get(0).getPhoneNumberType());
+                assertEquals(PhoneNumberAssignmentType.APPLICATION, result.get(0).getAssignmentType());
             }).verifyComplete();
     }
 
@@ -574,16 +571,16 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                 new PhoneNumberBrowseCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
                     .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
-        PhoneNumbersBrowseResult result = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
+        List<AvailablePhoneNumber> result = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
             .browseAvailableNumbers(browseRequest)
             .block(); // Blocking to retrieve the result synchronously
 
         assertNotNull(result);
-        assertEquals(PhoneNumberType.TOLL_FREE, result.getPhoneNumbers().get(0).getPhoneNumberType());
-        assertEquals(PhoneNumberAssignmentType.APPLICATION, result.getPhoneNumbers().get(0).getAssignmentType());
+        assertEquals(PhoneNumberType.TOLL_FREE, result.get(0).getPhoneNumberType());
+        assertEquals(PhoneNumberAssignmentType.APPLICATION, result.get(0).getAssignmentType());
 
         List<AvailablePhoneNumber> numbersToAdd = new ArrayList<>();
-        numbersToAdd.add(result.getPhoneNumbers().get(0));
+        numbersToAdd.add(result.get(0));
 
         PhoneNumbersReservation reservationResponse
             = this.getClientWithConnectionString(httpClient, "updatePhoneNumberReservation")
@@ -592,7 +589,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
 
         assertEquals(reservationId, reservationResponse.getId());
         assertNotNull(reservationResponse.getPhoneNumbers());
-        assertTrue(reservationResponse.getPhoneNumbers().containsKey(result.getPhoneNumbers().get(0).getId()));
+        assertTrue(reservationResponse.getPhoneNumbers().containsKey(result.get(0).getId()));
 
         reservationResponse = this.getClientWithConnectionString(httpClient, "getPhoneNumberReservation")
             .getReservation(reservationId)
@@ -610,13 +607,13 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         }).verifyComplete();
 
         List<String> numbersToRemove = new ArrayList<>();
-        numbersToRemove.add(result.getPhoneNumbers().get(0).getId());
+        numbersToRemove.add(result.get(0).getId());
 
         reservationResponse = this.getClientWithConnectionString(httpClient, "updatePhoneNumberReservation")
             .createOrUpdateReservation(reservationId, null, numbersToRemove)
             .block();
         assertEquals(reservationId, reservationResponse.getId());
-        assertFalse(reservationResponse.getPhoneNumbers().containsKey(result.getPhoneNumbers().get(0).getId()));
+        assertFalse(reservationResponse.getPhoneNumbers().containsKey(result.get(0).getId()));
 
         this.getClientWithConnectionString(httpClient, "deletePhoneNumberReservation")
             .deleteReservation(reservationId)
@@ -638,16 +635,16 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                 new PhoneNumberBrowseCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
                     .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
-        PhoneNumbersBrowseResult result = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers")
+        List<AvailablePhoneNumber> result = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers")
             .browseAvailableNumbers(browseRequest)
             .block(); // Blocking to retrieve the result synchronously
 
         assertNotNull(result);
-        assertEquals(PhoneNumberType.TOLL_FREE, result.getPhoneNumbers().get(0).getPhoneNumberType());
-        assertEquals(PhoneNumberAssignmentType.APPLICATION, result.getPhoneNumbers().get(0).getAssignmentType());
+        assertEquals(PhoneNumberType.TOLL_FREE, result.get(0).getPhoneNumberType());
+        assertEquals(PhoneNumberAssignmentType.APPLICATION, result.get(0).getAssignmentType());
 
         List<AvailablePhoneNumber> numbersToAdd = new ArrayList<>();
-        numbersToAdd.add(result.getPhoneNumbers().get(0));
+        numbersToAdd.add(result.get(0));
 
         PhoneNumbersReservation reservationResponse
             = this.getClientWithManagedIdentity(httpClient, "updatePhoneNumberReservation")
@@ -656,7 +653,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
 
         assertEquals(reservationId, reservationResponse.getId());
         assertNotNull(reservationResponse.getPhoneNumbers());
-        assertTrue(reservationResponse.getPhoneNumbers().containsKey(result.getPhoneNumbers().get(0).getId()));
+        assertTrue(reservationResponse.getPhoneNumbers().containsKey(result.get(0).getId()));
 
         reservationResponse = this.getClientWithManagedIdentity(httpClient, "getPhoneNumberReservation")
             .getReservation(reservationId)
@@ -674,13 +671,13 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         }).verifyComplete();
 
         List<String> numbersToRemove = new ArrayList<>();
-        numbersToRemove.add(result.getPhoneNumbers().get(0).getId());
+        numbersToRemove.add(result.get(0).getId());
 
         reservationResponse = this.getClientWithManagedIdentity(httpClient, "updatePhoneNumberReservation")
             .createOrUpdateReservation(reservationId, null, numbersToRemove)
             .block();
         assertEquals(reservationId, reservationResponse.getId());
-        assertFalse(reservationResponse.getPhoneNumbers().containsKey(result.getPhoneNumbers().get(0).getId()));
+        assertFalse(reservationResponse.getPhoneNumbers().containsKey(result.get(0).getId()));
 
         this.getClientWithManagedIdentity(httpClient, "deletePhoneNumberReservation")
             .deleteReservation(reservationId)
@@ -699,12 +696,12 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
             .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
             .setAssignmentType(PhoneNumberAssignmentType.APPLICATION);
 
-        PhoneNumbersBrowseResult result = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
+        List<AvailablePhoneNumber> result = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
             .browseAvailableNumbers(browseRequest)
             .block(); // Blocking to retrieve the result synchronously
 
         List<AvailablePhoneNumber> numbersToAdd = new ArrayList<>();
-        numbersToAdd.add(result.getPhoneNumbers().get(0));
+        numbersToAdd.add(result.get(0));
         PhoneNumbersReservation reservationResponse
             = this.getClientWithManagedIdentity(httpClient, "updatePhoneNumberReservation")
                 .createOrUpdateReservation(reservationId, numbersToAdd, null)
@@ -720,12 +717,12 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
             .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
             .setAssignmentType(PhoneNumberAssignmentType.APPLICATION);
 
-        PhoneNumbersBrowseResult result = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers")
+        List<AvailablePhoneNumber> result = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers")
             .browseAvailableNumbers(browseRequest)
             .block(); // Blocking to retrieve the result synchronously
 
         List<AvailablePhoneNumber> numbersToAdd = new ArrayList<>();
-        numbersToAdd.add(result.getPhoneNumbers().get(0));
+        numbersToAdd.add(result.get(0));
         PhoneNumbersReservation reservationResponse
             = this.getClientWithManagedIdentity(httpClient, "updatePhoneNumberReservation")
                 .createOrUpdateReservation(reservationId, numbersToAdd, null)
