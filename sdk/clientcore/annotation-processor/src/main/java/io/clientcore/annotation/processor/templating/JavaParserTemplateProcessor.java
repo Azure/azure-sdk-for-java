@@ -50,6 +50,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
 import java.net.URI;
+import java.lang.reflect.ParameterizedType;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -185,6 +186,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             .addParameter("Response<BinaryData>", "response")
             .addParameter("BinaryData", "data")
             .addParameter("Object", "decodedValue");
+        instantiateUnexpectedException.tryAddImportToParentCompilationUnit(IOException.class);
         instantiateUnexpectedException.setBody(StaticJavaParser.parseBlock("{\n"
             + "    StringBuilder exceptionMessage = new StringBuilder(\"Status code \")\n"
             + "        .append(responseCode).append(\", \");\n"
@@ -602,7 +604,6 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             body.tryAddImportToParentCompilationUnit(CoreUtils.class);
             StringBuilder paramTypeBuilder = new StringBuilder();
             paramTypeBuilder.append(typeElement.getQualifiedName().toString()).append(".class");
-
             if (!declaredType.getTypeArguments().isEmpty()) {
                 TypeMirror firstGenericType = declaredType.getTypeArguments().get(0);
 
@@ -638,10 +639,11 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             errorBlock.append("        ParameterizedType returnType = null;\n");
 
         }
-
+        body.tryAddImportToParentCompilationUnit(ParameterizedType.class);
+        body.tryAddImportToParentCompilationUnit(CoreUtils.class);
         errorBlock.append(
             "        throw instantiateUnexpectedException(responseCode, networkResponse, networkResponse.getValue(), ")
-            .append("decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType));\n")
+            .append("CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType));\n")
             .append("    }\n")
             .append("}\n");
         body.addStatement(StaticJavaParser.parseStatement(errorBlock.toString()));
