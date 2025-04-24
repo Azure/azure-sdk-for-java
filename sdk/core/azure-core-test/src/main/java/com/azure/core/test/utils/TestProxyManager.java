@@ -68,9 +68,7 @@ public final class TestProxyManager {
                     .redirectOutput(repoRootTarget.resolve("test-proxy.log").toFile())
                     .redirectError(repoRootTarget.resolve("test-proxy-error.log").toFile());
                 Map<String, String> environment = builder.environment();
-                environment.put("LOGGING__LOGLEVEL", "Debug");
-                environment.put("LOGGING__LOGLEVEL__MICROSOFT", "Debug");
-                environment.put("LOGGING__LOGLEVEL__DEFAULT", "Debug");
+                environment.put("Logging__LogLevel__Default", "Debug");
                 proxy = builder.start();
             }
             // in either case the proxy should now be started, so let's wait to make sure.
