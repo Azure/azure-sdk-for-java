@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Supported Tomcat 11.0 and Java 11, 17, 21 in `RuntimeStack` for `WebApp`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
