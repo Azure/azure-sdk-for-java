@@ -7,8 +7,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.DeletedServiceContract;
@@ -22,22 +22,22 @@ public final class DeletedServicesListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"serviceId\":\"quo\",\"scheduledPurgeDate\":\"2021-04-14T08:30:31Z\",\"deletionDate\":\"2021-12-07T17:56:58Z\"},\"location\":\"muzembqqiehdhjof\",\"id\":\"wwnaxoxlo\",\"name\":\"xgslqc\",\"type\":\"u\"}]}";
+            = "{\"value\":[{\"properties\":{\"serviceId\":\"mazuflfpiuufhp\",\"scheduledPurgeDate\":\"2021-06-21T14:37:43Z\",\"deletionDate\":\"2021-09-29T05:27:44Z\"},\"location\":\"rgivbh\",\"id\":\"nimjlyhbjfnmmib\",\"name\":\"wcduyrgcay\",\"type\":\"umqeobrwreu\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<DeletedServiceContract> response
             = manager.deletedServices().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("quo", response.iterator().next().serviceId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-14T08:30:31Z"),
+        Assertions.assertEquals("mazuflfpiuufhp", response.iterator().next().serviceId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-21T14:37:43Z"),
             response.iterator().next().scheduledPurgeDate());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-07T17:56:58Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-09-29T05:27:44Z"),
             response.iterator().next().deletionDate());
     }
 }
