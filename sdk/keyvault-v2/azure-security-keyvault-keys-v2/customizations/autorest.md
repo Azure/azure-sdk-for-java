@@ -35,7 +35,7 @@ output-folder: ../
 java: true
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8af9817c15d688c941cda106758045b5deb9a069/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.6-preview.1/keys.json
 title: KeyClient
-namespace: com.azure.security.keyvault.keys
+namespace: com.azure.v2.security.keyvault.keys
 models-subpackage: implementation.models
 custom-types-subpackage: models
 custom-types: KeyCurveName,KeyExportEncryptionAlgorithm,KeyOperation,KeyRotationPolicyAction,KeyType,ReleaseKeyResult
