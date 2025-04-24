@@ -7,6 +7,7 @@ import io.clientcore.core.http.models.ProxyOptions;
 import io.clientcore.core.implementation.http.client.JdkHttpClient;
 import io.clientcore.core.implementation.http.client.JdkHttpClientProxySelector;
 import io.clientcore.core.implementation.utils.ImplUtils;
+import io.clientcore.core.http.client.implementation.CachingTrustManager;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.utils.SharedExecutorService;
 import io.clientcore.core.utils.configuration.Configuration;
