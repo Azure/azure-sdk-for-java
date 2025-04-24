@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.GatewayHostnameConfigurationContract;
@@ -21,24 +21,25 @@ public final class GatewayHostnameConfigurationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"hostname\":\"zlmpxfmdjs\",\"certificateId\":\"mmdzphxulx\",\"negotiateClientCertificate\":true,\"tls10Enabled\":false,\"tls11Enabled\":false,\"http2Enabled\":true},\"id\":\"hdttowqxxcpbzxp\",\"name\":\"loovhati\",\"type\":\"wtc\"}";
+            = "{\"properties\":{\"hostname\":\"rreuec\",\"certificateId\":\"yduqzuscolbqveh\",\"negotiateClientCertificate\":true,\"tls10Enabled\":true,\"tls11Enabled\":true,\"http2Enabled\":true},\"id\":\"cgo\",\"name\":\"rdtd\",\"type\":\"ddwzdlbbcztamky\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GatewayHostnameConfigurationContract response = manager.gatewayHostnameConfigurations()
-            .getWithResponse("sxhdkhm", "mxkahapesnbyou", "lyfzmnxr", "xxjvwbatjgzkm", com.azure.core.util.Context.NONE)
+            .getWithResponse("bktuqnbcjk", "rqmznwwtkuy", "wiieinlicl", "oyoioxdwffwyzqke",
+                com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("zlmpxfmdjs", response.hostname());
-        Assertions.assertEquals("mmdzphxulx", response.certificateId());
-        Assertions.assertEquals(true, response.negotiateClientCertificate());
-        Assertions.assertEquals(false, response.tls10Enabled());
-        Assertions.assertEquals(false, response.tls11Enabled());
-        Assertions.assertEquals(true, response.http2Enabled());
+        Assertions.assertEquals("rreuec", response.hostname());
+        Assertions.assertEquals("yduqzuscolbqveh", response.certificateId());
+        Assertions.assertTrue(response.negotiateClientCertificate());
+        Assertions.assertTrue(response.tls10Enabled());
+        Assertions.assertTrue(response.tls11Enabled());
+        Assertions.assertTrue(response.http2Enabled());
     }
 }

@@ -89,14 +89,6 @@ public class PathBuilderTest {
     }
 
     @Test
-    public void buildsPathWithMultipleSameQueryParameters() {
-        HttpRequestContext context = new HttpRequestContext();
-        context.addSubstitution(new Substitution("endpoint", "myEndpoint"));
-        context.addQueryParam("key", "value1", false, false);
-        assertThrows(IllegalArgumentException.class, () -> context.addQueryParam("key", "value2", false, false));
-    }
-
-    @Test
     public void buildsPathWithClashingSubstitutionNames() {
         HttpRequestContext context = new HttpRequestContext();
         context.addSubstitution(new Substitution("endpoint", "myEndpoint"));

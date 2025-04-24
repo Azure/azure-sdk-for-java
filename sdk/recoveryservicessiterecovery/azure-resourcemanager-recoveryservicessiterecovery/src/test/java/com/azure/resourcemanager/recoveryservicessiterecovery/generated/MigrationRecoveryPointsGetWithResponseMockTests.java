@@ -6,8 +6,8 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.MigrationRecoveryPoint;
@@ -21,20 +21,20 @@ public final class MigrationRecoveryPointsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"recoveryPointTime\":\"2021-05-17T00:20:24Z\",\"recoveryPointType\":\"ApplicationConsistent\"},\"location\":\"hlsfjfouqjpzhea\",\"id\":\"uvkqxqkvadmj\",\"name\":\"ymudj\",\"type\":\"aajzdebhsermcl\"}";
+            = "{\"properties\":{\"recoveryPointTime\":\"2021-07-26T00:55:24Z\",\"recoveryPointType\":\"NotSpecified\"},\"location\":\"gjijzqjhljsazm\",\"id\":\"sisfqqhcmec\",\"name\":\"gsbfeiirpnjy\",\"type\":\"llfkchhgs\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         SiteRecoveryManager manager = SiteRecoveryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         MigrationRecoveryPoint response = manager.migrationRecoveryPoints()
-            .getWithResponse("bfb", "divixzhpjgqzmiao", "weacfxaubu", "ruetcnx", "iqzzdckhsqdrrjsu", "nowobwx",
+            .getWithResponse("kst", "neykeipxutcbvriu", "nfa", "xtvsayyaeiivjq", "qtjwrvewojoq", "xqetxtdqius",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("hlsfjfouqjpzhea", response.location());
+        Assertions.assertEquals("gjijzqjhljsazm", response.location());
     }
 }

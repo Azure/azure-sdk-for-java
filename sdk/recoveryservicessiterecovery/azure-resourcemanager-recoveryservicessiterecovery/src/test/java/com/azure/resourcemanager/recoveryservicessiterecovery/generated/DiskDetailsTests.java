@@ -11,26 +11,25 @@ import org.junit.jupiter.api.Assertions;
 public final class DiskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiskDetails model = BinaryData
-            .fromString(
-                "{\"maxSizeMB\":3920956440221145049,\"vhdType\":\"zm\",\"vhdId\":\"k\",\"vhdName\":\"wsxvjab\"}")
+        DiskDetails model = BinaryData.fromString(
+            "{\"maxSizeMB\":607899688092596249,\"vhdType\":\"yqhyqqzzdcykey\",\"vhdId\":\"ewfopazdazg\",\"vhdName\":\"qgpewqcfutmdpvoz\"}")
             .toObject(DiskDetails.class);
-        Assertions.assertEquals(3920956440221145049L, model.maxSizeMB());
-        Assertions.assertEquals("zm", model.vhdType());
-        Assertions.assertEquals("k", model.vhdId());
-        Assertions.assertEquals("wsxvjab", model.vhdName());
+        Assertions.assertEquals(607899688092596249L, model.maxSizeMB());
+        Assertions.assertEquals("yqhyqqzzdcykey", model.vhdType());
+        Assertions.assertEquals("ewfopazdazg", model.vhdId());
+        Assertions.assertEquals("qgpewqcfutmdpvoz", model.vhdName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiskDetails model = new DiskDetails().withMaxSizeMB(3920956440221145049L)
-            .withVhdType("zm")
-            .withVhdId("k")
-            .withVhdName("wsxvjab");
+        DiskDetails model = new DiskDetails().withMaxSizeMB(607899688092596249L)
+            .withVhdType("yqhyqqzzdcykey")
+            .withVhdId("ewfopazdazg")
+            .withVhdName("qgpewqcfutmdpvoz");
         model = BinaryData.fromObject(model).toObject(DiskDetails.class);
-        Assertions.assertEquals(3920956440221145049L, model.maxSizeMB());
-        Assertions.assertEquals("zm", model.vhdType());
-        Assertions.assertEquals("k", model.vhdId());
-        Assertions.assertEquals("wsxvjab", model.vhdName());
+        Assertions.assertEquals(607899688092596249L, model.maxSizeMB());
+        Assertions.assertEquals("yqhyqqzzdcykey", model.vhdType());
+        Assertions.assertEquals("ewfopazdazg", model.vhdId());
+        Assertions.assertEquals("qgpewqcfutmdpvoz", model.vhdName());
     }
 }

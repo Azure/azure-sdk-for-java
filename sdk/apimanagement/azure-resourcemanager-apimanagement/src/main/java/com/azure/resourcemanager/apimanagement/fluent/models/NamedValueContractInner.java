@@ -159,6 +159,15 @@ public final class NamedValueContractInner extends ProxyResource {
     }
 
     /**
+     * Get the provisioningState property: The provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Get the tags property: Optional tags that when provided can be used to filter the NamedValue list.
      * 
      * @return the tags value.

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class ContainerAppsRevisionReplicasListReplicasSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/Replicas_List.json
+     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/Replicas_List.json
      */
     /**
      * Sample code: List Container App's replicas.

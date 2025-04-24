@@ -14,20 +14,20 @@ public final class SwitchProtectionJobDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SwitchProtectionJobDetails model = BinaryData.fromString(
-            "{\"instanceType\":\"SwitchProtectionJobDetails\",\"newReplicationProtectedItemId\":\"rexw\",\"affectedObjectDetails\":{\"ubheeggzgrnqtl\":\"bexfted\",\"gjq\":\"ozuumr\"}}")
+            "{\"instanceType\":\"SwitchProtectionJobDetails\",\"newReplicationProtectedItemId\":\"xvjeazrah\",\"affectedObjectDetails\":{\"cthtpq\":\"bimyiieqa\",\"zkdiuvflgzhcw\":\"fzdos\"}}")
             .toObject(SwitchProtectionJobDetails.class);
-        Assertions.assertEquals("bexfted", model.affectedObjectDetails().get("ubheeggzgrnqtl"));
-        Assertions.assertEquals("rexw", model.newReplicationProtectedItemId());
+        Assertions.assertEquals("bimyiieqa", model.affectedObjectDetails().get("cthtpq"));
+        Assertions.assertEquals("xvjeazrah", model.newReplicationProtectedItemId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         SwitchProtectionJobDetails model = new SwitchProtectionJobDetails()
-            .withAffectedObjectDetails(mapOf("ubheeggzgrnqtl", "bexfted", "gjq", "ozuumr"))
-            .withNewReplicationProtectedItemId("rexw");
+            .withAffectedObjectDetails(mapOf("cthtpq", "bimyiieqa", "zkdiuvflgzhcw", "fzdos"))
+            .withNewReplicationProtectedItemId("xvjeazrah");
         model = BinaryData.fromObject(model).toObject(SwitchProtectionJobDetails.class);
-        Assertions.assertEquals("bexfted", model.affectedObjectDetails().get("ubheeggzgrnqtl"));
-        Assertions.assertEquals("rexw", model.newReplicationProtectedItemId());
+        Assertions.assertEquals("bimyiieqa", model.affectedObjectDetails().get("cthtpq"));
+        Assertions.assertEquals("xvjeazrah", model.newReplicationProtectedItemId());
     }
 
     // Use "Map.of" if available

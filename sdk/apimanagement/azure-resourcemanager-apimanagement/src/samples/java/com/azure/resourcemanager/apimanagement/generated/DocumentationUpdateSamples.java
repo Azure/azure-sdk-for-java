@@ -12,7 +12,7 @@ import com.azure.resourcemanager.apimanagement.models.DocumentationContract;
 public final class DocumentationUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateDocumentation.json
      */
     /**
@@ -25,6 +25,6 @@ public final class DocumentationUpdateSamples {
         DocumentationContract resource = manager.documentations()
             .getWithResponse("rg1", "apimService1", "57d1f7558aa04f15146d9d8a", com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withTitle("Title updated").withContent("content updated").withIfMatch("*").apply();
+        resource.update().withTitle("Title updated").withContent("content updated").apply();
     }
 }

@@ -11,16 +11,15 @@ ch.qos.logback:logback-classic;1.3.14
 com.azure:azure-servicebus-jms;2.0.0
 com.azure.tools:azure-autorest-customization;1.0.0-beta.9
 com.fasterxml:aalto-xml;1.3.3
-com.fasterxml.jackson.core:jackson-annotations;2.17.2
-com.fasterxml.jackson.core:jackson-core;2.17.2
-com.fasterxml.jackson.core:jackson-databind;2.17.2
-com.fasterxml.jackson.dataformat:jackson-dataformat-avro;2.17.2
-com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.17.2
-com.fasterxml.jackson.dataformat:jackson-dataformat-smile;2.17.2
-com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.17.2
-com.fasterxml.jackson.module:jackson-module-afterburner;2.17.2
-com.fasterxml.jackson.module:jackson-module-blackbird;2.17.2
-com.fasterxml.jackson.module:jackson-module-scala_2.12;2.17.2
+com.fasterxml.jackson.core:jackson-annotations;2.18.3
+com.fasterxml.jackson.core:jackson-core;2.18.3
+com.fasterxml.jackson.core:jackson-databind;2.18.3
+com.fasterxml.jackson.dataformat:jackson-dataformat-xml;2.18.3
+com.fasterxml.jackson.dataformat:jackson-dataformat-smile;2.18.3
+com.fasterxml.jackson.datatype:jackson-datatype-jsr310;2.18.3
+com.fasterxml.jackson.module:jackson-module-afterburner;2.18.3
+com.fasterxml.jackson.module:jackson-module-blackbird;2.18.3
+com.fasterxml.jackson.module:jackson-module-scala_2.12;2.18.3
 com.github.spotbugs:spotbugs;4.8.3
 com.github.spotbugs:spotbugs-annotations;4.8.3
 com.github.spotbugs:spotbugs-maven-plugin;4.8.3.1
@@ -38,6 +37,7 @@ com.microsoft.sqlserver:mssql-jdbc;10.2.3.jre8
 com.microsoft.azure:azure-functions-maven-plugin;1.30.0
 com.microsoft.azure.functions:azure-functions-java-library;2.2.0
 com.mysql:mysql-connector-j;9.0.0
+com.openai:openai-java;1.3.1
 com.squareup.okhttp3:okhttp;4.12.0
 commons-codec:commons-codec;1.15
 commons-net:commons-net;3.9.0
@@ -72,6 +72,7 @@ org.apache.avro:avro;1.11.4
 org.apache.avro:avro-maven-plugin;1.11.4
 org.apache.commons:commons-lang3;3.12.0
 org.apache.httpcomponents:httpclient;4.5.14
+org.apache.httpcomponents.client5:httpclient5;5.4.3
 org.apache.logging.log4j:log4j-api;2.17.2
 org.apache.logging.log4j:log4j-core;2.17.2
 org.apache.logging.log4j:log4j-slf4j-impl;2.17.2
@@ -116,7 +117,7 @@ com.microsoft.azure:azure-mgmt-graph-rbac;1.3.0
 com.microsoft.azure:azure-mgmt-network;1.33.0
 com.microsoft.azure:azure-mgmt-resources;1.3.0
 com.microsoft.azure:azure-storage;8.0.0
-com.microsoft.azure:msal4j;1.19.1
+com.microsoft.azure:msal4j;1.20.1
 com.microsoft.azure:msal4j-brokers;1.0.0
 com.microsoft.azure:msal4j-persistence-extension;1.3.0
 io.opentelemetry:opentelemetry-api;1.49.0
@@ -213,11 +214,11 @@ org.mockito:mockito-inline;4.11.0
 org.moditect:moditect-maven-plugin;1.0.0.RC1
 org.owasp:dependency-check-maven;11.1.1
 org.ow2.asm:asm;9.7.1
-org.revapi:revapi;0.15.0
-org.revapi:revapi-java;0.28.1
-org.revapi:revapi-java-spi;0.25.0
-org.revapi:revapi-reporter-json;0.5.0
-org.revapi:revapi-maven-plugin;0.15.0
+org.revapi:revapi;0.15.1
+org.revapi:revapi-java;0.28.3
+org.revapi:revapi-java-spi;0.25.1
+org.revapi:revapi-reporter-json;0.5.1
+org.revapi:revapi-maven-plugin;0.15.1
 
 # External Dependency Exceptions
 # This section is for external dependencies whose versions were different than
@@ -294,10 +295,6 @@ cosmos_org.sourcelab:kafka-connect-client;4.0.4
 cosmos_io.confluent:kafka-avro-serializer;7.6.0
 cosmos_org.apache.avro:avro;1.11.3
 # Maven Tools for Cosmos Kafka connector only
-
-# sdk\core\azure-core-serializer-avro-jackson\pom.xml
-# This dependency is needed since Jackson Avro uses an older dependency on Apache Avro which is another library.
-jacksonavro_org.apache.avro:avro-maven-plugin;1.8.2
 
 # sdk\mediaservices\microsoft-azure-media\pom.xml which hasn't been released for 2 years
 # all of these unique references below are listed here because they're old, some are over 10 years old

@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class A2AZoneDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        A2AZoneDetails model
-            = BinaryData.fromString("{\"source\":\"rl\",\"target\":\"zji\"}").toObject(A2AZoneDetails.class);
-        Assertions.assertEquals("rl", model.source());
-        Assertions.assertEquals("zji", model.target());
+        A2AZoneDetails model = BinaryData.fromString("{\"source\":\"vqkxiuxqggvq\",\"target\":\"hyhlwcjsqg\"}")
+            .toObject(A2AZoneDetails.class);
+        Assertions.assertEquals("vqkxiuxqggvq", model.source());
+        Assertions.assertEquals("hyhlwcjsqg", model.target());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        A2AZoneDetails model = new A2AZoneDetails().withSource("rl").withTarget("zji");
+        A2AZoneDetails model = new A2AZoneDetails().withSource("vqkxiuxqggvq").withTarget("hyhlwcjsqg");
         model = BinaryData.fromObject(model).toObject(A2AZoneDetails.class);
-        Assertions.assertEquals("rl", model.source());
-        Assertions.assertEquals("zji", model.target());
+        Assertions.assertEquals("vqkxiuxqggvq", model.source());
+        Assertions.assertEquals("hyhlwcjsqg", model.target());
     }
 }

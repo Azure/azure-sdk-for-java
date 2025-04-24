@@ -16,12 +16,12 @@ public final class StorageProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageProfile model = BinaryData.fromString(
-            "{\"osDisk\":{\"createOption\":\"Ephemeral\",\"deleteOption\":\"Delete\",\"diskSizeGB\":1492840844437190897},\"volumeAttachments\":[\"ptgoeiybbabp\",\"hv\",\"slkvntjl\"]}")
+            "{\"osDisk\":{\"createOption\":\"Ephemeral\",\"deleteOption\":\"Delete\",\"diskSizeGB\":2484776416149492622},\"volumeAttachments\":[\"wfcngjsaas\",\"ixtmkzjvkviirhgf\",\"rwsdp\"]}")
             .toObject(StorageProfile.class);
         Assertions.assertEquals(OsDiskCreateOption.EPHEMERAL, model.osDisk().createOption());
         Assertions.assertEquals(OsDiskDeleteOption.DELETE, model.osDisk().deleteOption());
-        Assertions.assertEquals(1492840844437190897L, model.osDisk().diskSizeGB());
-        Assertions.assertEquals("ptgoeiybbabp", model.volumeAttachments().get(0));
+        Assertions.assertEquals(2484776416149492622L, model.osDisk().diskSizeGB());
+        Assertions.assertEquals("wfcngjsaas", model.volumeAttachments().get(0));
     }
 
     @org.junit.jupiter.api.Test
@@ -29,12 +29,12 @@ public final class StorageProfileTests {
         StorageProfile model = new StorageProfile()
             .withOsDisk(new OsDisk().withCreateOption(OsDiskCreateOption.EPHEMERAL)
                 .withDeleteOption(OsDiskDeleteOption.DELETE)
-                .withDiskSizeGB(1492840844437190897L))
-            .withVolumeAttachments(Arrays.asList("ptgoeiybbabp", "hv", "slkvntjl"));
+                .withDiskSizeGB(2484776416149492622L))
+            .withVolumeAttachments(Arrays.asList("wfcngjsaas", "ixtmkzjvkviirhgf", "rwsdp"));
         model = BinaryData.fromObject(model).toObject(StorageProfile.class);
         Assertions.assertEquals(OsDiskCreateOption.EPHEMERAL, model.osDisk().createOption());
         Assertions.assertEquals(OsDiskDeleteOption.DELETE, model.osDisk().deleteOption());
-        Assertions.assertEquals(1492840844437190897L, model.osDisk().diskSizeGB());
-        Assertions.assertEquals("ptgoeiybbabp", model.volumeAttachments().get(0));
+        Assertions.assertEquals(2484776416149492622L, model.osDisk().diskSizeGB());
+        Assertions.assertEquals("wfcngjsaas", model.volumeAttachments().get(0));
     }
 }

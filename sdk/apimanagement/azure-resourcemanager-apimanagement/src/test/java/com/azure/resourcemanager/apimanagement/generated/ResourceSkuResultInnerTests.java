@@ -11,7 +11,7 @@ public final class ResourceSkuResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceSkuResultInner model = BinaryData.fromString(
-            "{\"resourceType\":\"kzfzqxjosho\",\"sku\":{\"name\":\"Consumption\"},\"capacity\":{\"minimum\":399794745,\"maximum\":969217353,\"default\":138243164,\"scaleType\":\"none\"}}")
+            "{\"resourceType\":\"gmipnmliqmvlbhik\",\"sku\":{\"name\":\"Consumption\"},\"capacity\":{\"minimum\":1876385931,\"maximum\":871839986,\"default\":14827281,\"scaleType\":\"manual\"}}")
             .toObject(ResourceSkuResultInner.class);
     }
 

@@ -21,11 +21,6 @@ public final class SpringCloudConfigComponent extends JavaComponentProperties {
      */
     private JavaComponentType componentType = JavaComponentType.SPRING_CLOUD_CONFIG;
 
-    /*
-     * Provisioning state of the Java Component.
-     */
-    private JavaComponentProvisioningState provisioningState;
-
     /**
      * Creates an instance of SpringCloudConfigComponent class.
      */
@@ -40,16 +35,6 @@ public final class SpringCloudConfigComponent extends JavaComponentProperties {
     @Override
     public JavaComponentType componentType() {
         return this.componentType;
-    }
-
-    /**
-     * Get the provisioningState property: Provisioning state of the Java Component.
-     * 
-     * @return the provisioningState value.
-     */
-    @Override
-    public JavaComponentProvisioningState provisioningState() {
-        return this.provisioningState;
     }
 
     /**
@@ -126,8 +111,8 @@ public final class SpringCloudConfigComponent extends JavaComponentProperties {
                 reader.nextToken();
 
                 if ("provisioningState".equals(fieldName)) {
-                    deserializedSpringCloudConfigComponent.provisioningState
-                        = JavaComponentProvisioningState.fromString(reader.getString());
+                    deserializedSpringCloudConfigComponent
+                        .withProvisioningState(JavaComponentProvisioningState.fromString(reader.getString()));
                 } else if ("configurations".equals(fieldName)) {
                     List<JavaComponentConfigurationProperty> configurations
                         = reader.readArray(reader1 -> JavaComponentConfigurationProperty.fromJson(reader1));

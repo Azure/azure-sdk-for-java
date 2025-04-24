@@ -12,30 +12,30 @@ public final class A2AEventDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         A2AEventDetails model = BinaryData.fromString(
-            "{\"instanceType\":\"A2A\",\"protectedItemName\":\"skndnelqkaadlknw\",\"fabricObjectId\":\"anniyopetxivcnr\",\"fabricName\":\"xnucaephblkwqp\",\"fabricLocation\":\"vbqsdt\",\"remoteFabricName\":\"bctvivuzqym\",\"remoteFabricLocation\":\"owog\"}")
+            "{\"instanceType\":\"A2A\",\"protectedItemName\":\"wvcmj\",\"fabricObjectId\":\"xiid\",\"fabricName\":\"czskoswoqiqazu\",\"fabricLocation\":\"mxzkr\",\"remoteFabricName\":\"oiisbamnppcce\",\"remoteFabricLocation\":\"ztdsbeza\"}")
             .toObject(A2AEventDetails.class);
-        Assertions.assertEquals("skndnelqkaadlknw", model.protectedItemName());
-        Assertions.assertEquals("anniyopetxivcnr", model.fabricObjectId());
-        Assertions.assertEquals("xnucaephblkwqp", model.fabricName());
-        Assertions.assertEquals("vbqsdt", model.fabricLocation());
-        Assertions.assertEquals("bctvivuzqym", model.remoteFabricName());
-        Assertions.assertEquals("owog", model.remoteFabricLocation());
+        Assertions.assertEquals("wvcmj", model.protectedItemName());
+        Assertions.assertEquals("xiid", model.fabricObjectId());
+        Assertions.assertEquals("czskoswoqiqazu", model.fabricName());
+        Assertions.assertEquals("mxzkr", model.fabricLocation());
+        Assertions.assertEquals("oiisbamnppcce", model.remoteFabricName());
+        Assertions.assertEquals("ztdsbeza", model.remoteFabricLocation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        A2AEventDetails model = new A2AEventDetails().withProtectedItemName("skndnelqkaadlknw")
-            .withFabricObjectId("anniyopetxivcnr")
-            .withFabricName("xnucaephblkwqp")
-            .withFabricLocation("vbqsdt")
-            .withRemoteFabricName("bctvivuzqym")
-            .withRemoteFabricLocation("owog");
+        A2AEventDetails model = new A2AEventDetails().withProtectedItemName("wvcmj")
+            .withFabricObjectId("xiid")
+            .withFabricName("czskoswoqiqazu")
+            .withFabricLocation("mxzkr")
+            .withRemoteFabricName("oiisbamnppcce")
+            .withRemoteFabricLocation("ztdsbeza");
         model = BinaryData.fromObject(model).toObject(A2AEventDetails.class);
-        Assertions.assertEquals("skndnelqkaadlknw", model.protectedItemName());
-        Assertions.assertEquals("anniyopetxivcnr", model.fabricObjectId());
-        Assertions.assertEquals("xnucaephblkwqp", model.fabricName());
-        Assertions.assertEquals("vbqsdt", model.fabricLocation());
-        Assertions.assertEquals("bctvivuzqym", model.remoteFabricName());
-        Assertions.assertEquals("owog", model.remoteFabricLocation());
+        Assertions.assertEquals("wvcmj", model.protectedItemName());
+        Assertions.assertEquals("xiid", model.fabricObjectId());
+        Assertions.assertEquals("czskoswoqiqazu", model.fabricName());
+        Assertions.assertEquals("mxzkr", model.fabricLocation());
+        Assertions.assertEquals("oiisbamnppcce", model.remoteFabricName());
+        Assertions.assertEquals("ztdsbeza", model.remoteFabricLocation());
     }
 }

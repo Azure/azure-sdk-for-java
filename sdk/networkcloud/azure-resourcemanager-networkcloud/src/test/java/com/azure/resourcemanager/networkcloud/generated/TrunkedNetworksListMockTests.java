@@ -23,7 +23,7 @@ public final class TrunkedNetworksListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"extendedLocation\":{\"name\":\"tmojhvrztnvgyshq\",\"type\":\"dgrtwmew\"},\"properties\":{\"associatedResourceIds\":[\"py\"],\"clusterId\":\"fa\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"cayer\",\"hybridAksClustersAssociatedIds\":[\"ansyb\",\"lpolwzrghsrle\"],\"hybridAksPluginType\":\"SRIOV\",\"interfaceName\":\"scjfncjwvuagf\",\"isolationDomainIds\":[\"tltng\",\"m\",\"e\",\"ptrklzmija\"],\"provisioningState\":\"Canceled\",\"virtualMachinesAssociatedIds\":[\"fsvagh\"],\"vlans\":[7469250402982686005,1276863809676580780,548743314358762108,4282149181142160943]},\"location\":\"gtzjcv\",\"tags\":{\"yxpavidnie\":\"lapsnsso\",\"slpuxgcbdsva\":\"wffcvvye\",\"rkxgpazwugxyqvnj\":\"pnptw\"},\"id\":\"bfe\",\"name\":\"hldiuhzzgqlm\",\"type\":\"aewzgiudjp\"}]}";
+            = "{\"value\":[{\"extendedLocation\":{\"name\":\"nkfscjfn\",\"type\":\"jwvuag\"},\"properties\":{\"associatedResourceIds\":[\"tltng\",\"m\",\"e\",\"ptrklzmija\"],\"clusterId\":\"olxf\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"h\",\"hybridAksClustersAssociatedIds\":[\"nwlslrcigtzjcvbx\",\"lapsnsso\",\"yxpavidnie\",\"wffcvvye\"],\"hybridAksPluginType\":\"SRIOV\",\"interfaceName\":\"uxgcbdsvalpnp\",\"isolationDomainIds\":[\"trkxgpazwu\",\"x\"],\"provisioningState\":\"Succeeded\",\"virtualMachinesAssociatedIds\":[\"obfelhldiuhz\"],\"vlans\":[8460107990489523248,8117328407318697573,1218353473266265232]},\"location\":\"z\",\"tags\":{\"qhnmhk\":\"djpxpqht\",\"gcruxspinym\":\"ezsdsuxheq\",\"zfbmjxuv\":\"qgwokmikp\"},\"id\":\"ipfdvhaxdvwzaehp\",\"name\":\"hthdklmvetatlakf\",\"type\":\"oixwgiksb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,13 +34,13 @@ public final class TrunkedNetworksListMockTests {
 
         PagedIterable<TrunkedNetwork> response = manager.trunkedNetworks().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gtzjcv", response.iterator().next().location());
-        Assertions.assertEquals("lapsnsso", response.iterator().next().tags().get("yxpavidnie"));
-        Assertions.assertEquals("tmojhvrztnvgyshq", response.iterator().next().extendedLocation().name());
-        Assertions.assertEquals("dgrtwmew", response.iterator().next().extendedLocation().type());
+        Assertions.assertEquals("z", response.iterator().next().location());
+        Assertions.assertEquals("djpxpqht", response.iterator().next().tags().get("qhnmhk"));
+        Assertions.assertEquals("nkfscjfn", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("jwvuag", response.iterator().next().extendedLocation().type());
         Assertions.assertEquals(HybridAksPluginType.SRIOV, response.iterator().next().hybridAksPluginType());
-        Assertions.assertEquals("scjfncjwvuagf", response.iterator().next().interfaceName());
-        Assertions.assertEquals("tltng", response.iterator().next().isolationDomainIds().get(0));
-        Assertions.assertEquals(7469250402982686005L, response.iterator().next().vlans().get(0));
+        Assertions.assertEquals("uxgcbdsvalpnp", response.iterator().next().interfaceName());
+        Assertions.assertEquals("trkxgpazwu", response.iterator().next().isolationDomainIds().get(0));
+        Assertions.assertEquals(8460107990489523248L, response.iterator().next().vlans().get(0));
     }
 }

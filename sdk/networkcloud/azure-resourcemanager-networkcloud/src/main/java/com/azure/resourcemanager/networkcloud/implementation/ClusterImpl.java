@@ -8,6 +8,7 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.networkcloud.fluent.models.ClusterInner;
+import com.azure.resourcemanager.networkcloud.models.AnalyticsOutputSettings;
 import com.azure.resourcemanager.networkcloud.models.Cluster;
 import com.azure.resourcemanager.networkcloud.models.ClusterAvailableUpgradeVersion;
 import com.azure.resourcemanager.networkcloud.models.ClusterCapacity;
@@ -30,8 +31,11 @@ import com.azure.resourcemanager.networkcloud.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.networkcloud.models.OperationStatusResult;
 import com.azure.resourcemanager.networkcloud.models.RackDefinition;
 import com.azure.resourcemanager.networkcloud.models.RuntimeProtectionConfiguration;
+import com.azure.resourcemanager.networkcloud.models.SecretArchiveSettings;
 import com.azure.resourcemanager.networkcloud.models.ServicePrincipalInformation;
 import com.azure.resourcemanager.networkcloud.models.ValidationThreshold;
+import com.azure.resourcemanager.networkcloud.models.VulnerabilityScanningSettings;
+import com.azure.resourcemanager.networkcloud.models.VulnerabilityScanningSettingsPatch;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -80,6 +84,10 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
 
     public RackDefinition aggregatorOrSingleRackDefinition() {
         return this.innerModel().aggregatorOrSingleRackDefinition();
+    }
+
+    public AnalyticsOutputSettings analyticsOutputSettings() {
+        return this.innerModel().analyticsOutputSettings();
     }
 
     public String analyticsWorkspaceId() {
@@ -184,12 +192,20 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         return this.innerModel().secretArchive();
     }
 
+    public SecretArchiveSettings secretArchiveSettings() {
+        return this.innerModel().secretArchiveSettings();
+    }
+
     public String supportExpiryDate() {
         return this.innerModel().supportExpiryDate();
     }
 
     public ClusterUpdateStrategy updateStrategy() {
         return this.innerModel().updateStrategy();
+    }
+
+    public VulnerabilityScanningSettings vulnerabilityScanningSettings() {
+        return this.innerModel().vulnerabilityScanningSettings();
     }
 
     public List<String> workloadResourceIds() {
@@ -394,6 +410,16 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         }
     }
 
+    public ClusterImpl withAnalyticsOutputSettings(AnalyticsOutputSettings analyticsOutputSettings) {
+        if (isInCreateMode()) {
+            this.innerModel().withAnalyticsOutputSettings(analyticsOutputSettings);
+            return this;
+        } else {
+            this.updateClusterUpdateParameters.withAnalyticsOutputSettings(analyticsOutputSettings);
+            return this;
+        }
+    }
+
     public ClusterImpl withAnalyticsWorkspaceId(String analyticsWorkspaceId) {
         this.innerModel().withAnalyticsWorkspaceId(analyticsWorkspaceId);
         return this;
@@ -476,6 +502,16 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
         }
     }
 
+    public ClusterImpl withSecretArchiveSettings(SecretArchiveSettings secretArchiveSettings) {
+        if (isInCreateMode()) {
+            this.innerModel().withSecretArchiveSettings(secretArchiveSettings);
+            return this;
+        } else {
+            this.updateClusterUpdateParameters.withSecretArchiveSettings(secretArchiveSettings);
+            return this;
+        }
+    }
+
     public ClusterImpl withUpdateStrategy(ClusterUpdateStrategy updateStrategy) {
         if (isInCreateMode()) {
             this.innerModel().withUpdateStrategy(updateStrategy);
@@ -484,6 +520,17 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
             this.updateClusterUpdateParameters.withUpdateStrategy(updateStrategy);
             return this;
         }
+    }
+
+    public ClusterImpl withVulnerabilityScanningSettings(VulnerabilityScanningSettings vulnerabilityScanningSettings) {
+        this.innerModel().withVulnerabilityScanningSettings(vulnerabilityScanningSettings);
+        return this;
+    }
+
+    public ClusterImpl
+        withVulnerabilityScanningSettings(VulnerabilityScanningSettingsPatch vulnerabilityScanningSettings) {
+        this.updateClusterUpdateParameters.withVulnerabilityScanningSettings(vulnerabilityScanningSettings);
+        return this;
     }
 
     private boolean isInCreateMode() {

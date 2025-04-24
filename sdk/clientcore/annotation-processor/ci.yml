@@ -39,6 +39,7 @@ extends:
       - name: annotation-processor
         groupId: io.clientcore
         safeName: annotationprocessor
+        skipPublishDocMs: true
         releaseInBatch: ${{ parameters.release_clientcoreannotationprocessor }}
     AdditionalModules:
       - name: annotation-processor-test

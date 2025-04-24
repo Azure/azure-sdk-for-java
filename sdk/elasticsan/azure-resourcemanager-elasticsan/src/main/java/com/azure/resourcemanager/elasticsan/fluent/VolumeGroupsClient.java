@@ -13,6 +13,7 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.elasticsan.fluent.models.VolumeGroupInner;
 import com.azure.resourcemanager.elasticsan.models.VolumeGroupUpdate;
+import com.azure.resourcemanager.elasticsan.models.XMsAccessSoftDeletedResources;
 
 /**
  * An instance of this class provides access to all the operations defined in VolumeGroupsClient.
@@ -36,6 +37,8 @@ public interface VolumeGroupsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param elasticSanName The name of the ElasticSan.
+     * @param xMsAccessSoftDeletedResources Optional, returns only soft deleted volume groups if set to true. If set to
+     * false or if not specified, returns only active volume groups.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -43,7 +46,8 @@ public interface VolumeGroupsClient {
      * @return list of Volume Groups as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VolumeGroupInner> listByElasticSan(String resourceGroupName, String elasticSanName, Context context);
+    PagedIterable<VolumeGroupInner> listByElasticSan(String resourceGroupName, String elasticSanName,
+        XMsAccessSoftDeletedResources xMsAccessSoftDeletedResources, Context context);
 
     /**
      * Create a Volume Group.

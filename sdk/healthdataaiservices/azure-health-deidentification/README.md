@@ -64,7 +64,7 @@ You can de-identify text directly using the `DeidentificationClient`:
 String inputText = "Hello, my name is John Smith.";
 
 DeidentificationContent content = new DeidentificationContent(inputText);
-content.setOperation(DeidentificationOperationType.SURROGATE);
+content.setOperationType(DeidentificationOperationType.SURROGATE);
 
 DeidentificationResult result = deidentificationClient.deidentifyText(content);
 System.out.println("De-identified output: " + (result != null ? result.getOutputText() : null));
@@ -122,7 +122,7 @@ DeidentificationClient deidentificationClient = new DeidentificationClientBuilde
 String inputText = "Hello, my name is John Smith.";
 
 DeidentificationContent content = new DeidentificationContent(inputText);
-content.setOperation(DeidentificationOperationType.SURROGATE);
+content.setOperationType(DeidentificationOperationType.SURROGATE);
 
 DeidentificationResult result = deidentificationClient.deidentifyText(content);
 System.out.println("De-identified output: " + (result != null ? result.getOutputText() : null));
@@ -171,7 +171,7 @@ for (DeidentificationJob job : result) {
 String jobName = Configuration.getGlobalConfiguration().get("DEID_JOB_NAME");
 PagedIterable<DeidentificationDocumentDetails> result = deidentificationClient.listJobDocuments(jobName);
 for (DeidentificationDocumentDetails documentDetails : result) {
-    System.out.println(documentDetails.getInput().getLocation() + " - " + documentDetails.getStatus());
+    System.out.println(documentDetails.getInputLocation().getLocation() + " - " + documentDetails.getStatus());
 }
 ```
 
