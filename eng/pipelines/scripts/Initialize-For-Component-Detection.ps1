@@ -20,11 +20,13 @@ param(
 
 $repoRoot = Resolve-Path ($PSScriptRoot + "/../../..")
 
-# Delete the root pom.xml.
+# Delete the root pom.xml and /samples.
 if (-not $DryRun) {
     Remove-Item -Path (Join-Path $repoRoot "pom.xml") -Force
+    Remove-Item -Path (Join-Path $repoRoot "samples" "azure-samples-graalvm-spring-storageexplorer" "pom.xml") -Force
 } else {
     Write-Host "Would delete $(Join-Path $repoRoot "pom.xml")"
+    Write-Host "Would delete $(Join-Path $repoRoot "samples" "azure-samples-graalvm-spring-storageexplorer" "pom.xml")"
 }
 
 # Root SDK directory is in the 'sdk' folder.
