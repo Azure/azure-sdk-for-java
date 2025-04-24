@@ -3,18 +3,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>com.azure</groupId>
+  <groupId>com.azure.v2</groupId>
   <artifactId>azure-keyvault-service</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version>  <!-- Need not change for every release-->
 
   <modules>
-    <module>azure-security-test-keyvault-jca</module>
-    <module>azure-security-keyvault-administration</module>
-    <module>azure-security-keyvault-certificates</module>
-    <module>azure-security-keyvault-jca</module>
-    <module>azure-security-keyvault-keys</module>
-    <module>azure-security-keyvault-secrets</module>
-    <module>azure-security-keyvault-perf</module>
+    <module>azure-security-keyvault-administration-v2</module>
+    <module>azure-security-keyvault-certificates-v2</module>
+    <module>azure-security-keyvault-keys-v2</module>
+    <module>azure-security-keyvault-secrets-v2</module>
   </modules>
 </project>

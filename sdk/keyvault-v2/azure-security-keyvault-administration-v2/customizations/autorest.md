@@ -43,7 +43,7 @@ autorest --tag=settings
 use: '@autorest/java@4.1.42'
 output-folder: ../
 java: true
-namespace: com.azure.security.keyvault.administration
+namespace: com.azure.v2.security.keyvault.administration
 models-subpackage: implementation.models
 custom-types-subpackage: models
 enable-sync-stack: true

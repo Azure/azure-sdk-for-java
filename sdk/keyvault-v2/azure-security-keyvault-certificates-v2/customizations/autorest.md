@@ -36,7 +36,7 @@ output-folder: ../
 java: true
 input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/8af9817c15d688c941cda106758045b5deb9a069/specification/keyvault/data-plane/Microsoft.KeyVault/preview/7.6-preview.1/certificates.json
 title: CertificateClient
-namespace: com.azure.security.keyvault.certificates
+namespace: com.azure.v2.security.keyvault.certificates
 models-subpackage: implementation.models
 custom-types-subpackage: models
 custom-types: AdministratorContact,CertificateContact,CertificateKeyCurveName,CertificateKeyType,CertificateKeyUsage,CertificateOperationError,CertificatePolicyAction,SubjectAlternativeNames

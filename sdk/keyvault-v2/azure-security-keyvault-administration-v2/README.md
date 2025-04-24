@@ -323,7 +323,7 @@ For details on contributing to this repository, see the [contributing guide][con
 
 <!-- LINKS -->
 [api_documentation]: https://azure.github.io/azure-sdk-for-java
-[administration_samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-administration/src/samples/java/com/azure/security/keyvault/administration
+[administration_samples]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault-v2/azure-security-keyvault-administration/src/samples/java/com/azure/v2/security/keyvault/administration
 [azkeyvault_docs]: https://learn.microsoft.com/azure/key-vault/
 [azkeyvault_rest]: https://learn.microsoft.com/rest/api/keyvault/
 [azure_ca]: https://learn.microsoft.com/azure/security/fundamentals/azure-ca-details?tabs=root-and-subordinate-cas-list#client-compatibility-for-public-pkis
@@ -342,9 +342,9 @@ For details on contributing to this repository, see the [contributing guide][con
 [jdk_link]: https://learn.microsoft.com/java/azure/jdk/?view=azure-java-stable
 [managed_identity]: https://learn.microsoft.com/azure/active-directory/managed-identities-azure-resources/overview
 [microsoft_code_of_conduct]: https://opensource.microsoft.com/codeofconduct/
-[samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-administration-v2/src/samples/README.md
+[samples_readme]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault-v2/azure-security-keyvault-administration/src/samples/README.md
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [portal_sas_token]: https://learn.microsoft.com/azure/vs-azure-tools-storage-manage-with-storage-explorer?tabs=windows#generate-a-shared-access-signature-in-storage-explorer
-[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-administration-v2/src
+[source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault-v2/azure-security-keyvault-administration/src
 [storage_readme_sas_token]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/storage/azure-storage-blob#get-credentials
-[troubleshooting_guide]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault/azure-security-keyvault-administration-v2/TROUBLESHOOTING.md
+[troubleshooting_guide]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/keyvault-v2/azure-security-keyvault-administration/TROUBLESHOOTING.md
