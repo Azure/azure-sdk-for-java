@@ -77,5 +77,7 @@ extends:
         scanFolder: $(Build.SourcesDirectory)/credscan.tsv
         toolVersion: 2.3.12.23
         baselineFiles: $(Build.SourcesDirectory)/eng/java.gdnbaselines
+      componentgovernance:
+        enabled: false
 
     stages: ${{ parameters.stages }}
