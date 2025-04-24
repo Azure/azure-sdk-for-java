@@ -6,20 +6,16 @@ package com.azure.security.confidentialledger.generated;
 
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public final class GetCurrentLedgerEntryTests extends ConfidentialLedgerClientTestBase {
+public final class DeleteUserDefinedRoleTests extends ConfidentialLedgerClientTestBase {
     @Test
     @Disabled
-    public void testGetCurrentLedgerEntryTests() {
+    public void testDeleteUserDefinedRoleTests() {
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = confidentialLedgerClient.getCurrentLedgerEntryWithResponse(requestOptions);
+        Response<Void> response = confidentialLedgerClient.deleteUserDefinedRoleWithResponse("reader", requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
-        Assertions.assertEquals(BinaryData.fromString(
-            "{\"collectionId\":\"subledger:0\",\"contents\":\"Current ledger entry contents.\",\"transactionId\":\"2.15\"}")
-            .toObject(Object.class), response.getValue().toObject(Object.class));
     }
 }

@@ -11,15 +11,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public final class GetCurrentLedgerEntryTests extends ConfidentialLedgerClientTestBase {
+public final class GetUserDefinedFunctionTests extends ConfidentialLedgerClientTestBase {
     @Test
     @Disabled
-    public void testGetCurrentLedgerEntryTests() {
+    public void testGetUserDefinedFunctionTests() {
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = confidentialLedgerClient.getCurrentLedgerEntryWithResponse(requestOptions);
+        Response<BinaryData> response
+            = confidentialLedgerClient.getUserDefinedFunctionWithResponse("myFunction", requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
-        Assertions.assertEquals(BinaryData.fromString(
-            "{\"collectionId\":\"subledger:0\",\"contents\":\"Current ledger entry contents.\",\"transactionId\":\"2.15\"}")
-            .toObject(Object.class), response.getValue().toObject(Object.class));
+        Assertions.assertEquals(
+            BinaryData.fromString("{\"code\":\"export function main() { return true }\",\"id\":\"myFunction\"}")
+                .toObject(Object.class),
+            response.getValue().toObject(Object.class));
     }
 }

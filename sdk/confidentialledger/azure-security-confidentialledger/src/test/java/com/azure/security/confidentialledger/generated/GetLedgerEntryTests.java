@@ -16,10 +16,10 @@ public final class GetLedgerEntryTests extends ConfidentialLedgerClientTestBase 
     @Disabled
     public void testGetLedgerEntryTests() {
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = confidentialLedgerClient.getLedgerEntryWithResponse("3.14", requestOptions);
+        Response<BinaryData> response = confidentialLedgerClient.getLedgerEntryWithResponse("2.15", requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertEquals(BinaryData.fromString(
-            "{\"entry\":{\"collectionId\":\"DEFAULT_SUBLEDGER\",\"contents\":\"Ledger entry contents at transaction id 3.14.\",\"transactionId\":\"3.14\"},\"state\":\"Ready\"}")
+            "{\"entry\":{\"collectionId\":\"subledger:0\",\"contents\":\"Ledger entry contents at transaction id 2.15.\",\"transactionId\":\"2.15\"},\"state\":\"Ready\"}")
             .toObject(Object.class), response.getValue().toObject(Object.class));
     }
 }

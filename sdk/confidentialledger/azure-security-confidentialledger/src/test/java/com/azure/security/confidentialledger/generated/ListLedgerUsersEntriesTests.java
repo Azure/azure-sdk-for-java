@@ -11,16 +11,15 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public final class ListLedgerEntriesTests extends ConfidentialLedgerClientTestBase {
+public final class ListLedgerUsersEntriesTests extends ConfidentialLedgerClientTestBase {
     @Test
     @Disabled
-    public void testListLedgerEntriesTests() {
-        RequestOptions requestOptions
-            = new RequestOptions().addQueryParam("fromTransactionId", "2.15").addQueryParam("toTransactionId", "2.20");
-        PagedIterable<BinaryData> response = confidentialLedgerClient.listLedgerEntries(requestOptions);
+    public void testListLedgerUsersEntriesTests() {
+        RequestOptions requestOptions = new RequestOptions();
+        PagedIterable<BinaryData> response = confidentialLedgerClient.listLedgerUsers(requestOptions);
         Assertions.assertEquals(200, response.iterableByPage().iterator().next().getStatusCode());
-        Assertions.assertEquals(BinaryData.fromString(
-            "{\"collectionId\":\"subledger:0\",\"contents\":\"Ledger entry contents at transaction id 2.15.\",\"transactionId\":\"2.15\"}")
+        Assertions.assertEquals(BinaryData
+            .fromString("{\"assignedRoles\":[\"Administrator\",\"Reader\"],\"userId\":\"Certificate object id 1\"}")
             .toObject(Object.class), response.iterator().next().toObject(Object.class));
     }
 }

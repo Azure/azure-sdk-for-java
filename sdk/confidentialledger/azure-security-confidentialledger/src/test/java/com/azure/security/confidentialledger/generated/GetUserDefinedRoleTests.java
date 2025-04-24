@@ -11,15 +11,16 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-public final class GetCurrentLedgerEntryTests extends ConfidentialLedgerClientTestBase {
+public final class GetUserDefinedRoleTests extends ConfidentialLedgerClientTestBase {
     @Test
     @Disabled
-    public void testGetCurrentLedgerEntryTests() {
+    public void testGetUserDefinedRoleTests() {
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = confidentialLedgerClient.getCurrentLedgerEntryWithResponse(requestOptions);
+        Response<BinaryData> response
+            = confidentialLedgerClient.getUserDefinedRoleWithResponse("administrator", requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertEquals(BinaryData.fromString(
-            "{\"collectionId\":\"subledger:0\",\"contents\":\"Current ledger entry contents.\",\"transactionId\":\"2.15\"}")
+            "[{\"roleActions\":[\"Microsoft.ConfidentialLedger/ledger/users/write\",\"Microsoft.ConfidentialLedger/ledger/users/read\"],\"roleName\":\"administrator\"}]")
             .toObject(Object.class), response.getValue().toObject(Object.class));
     }
 }

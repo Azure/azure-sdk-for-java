@@ -4,24 +4,26 @@
 
 package com.azure.security.confidentialledger.generated;
 
-import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.RequestOptions;
+import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.confidentialledger.ConfidentialLedgerClient;
 import com.azure.security.confidentialledger.ConfidentialLedgerClientBuilder;
 
-public class ListLedgerEntries {
+public class CreateUserDefinedEndpoint {
     public static void main(String[] args) {
         ConfidentialLedgerClient confidentialLedgerClient
             = new ConfidentialLedgerClientBuilder().credential(new DefaultAzureCredentialBuilder().build())
                 .ledgerEndpoint(Configuration.getGlobalConfiguration().get("LEDGERENDPOINT"))
                 .buildClient();
-        // BEGIN:com.azure.security.confidentialledger.generated.listledgerentries.listledgerentries
-        RequestOptions requestOptions
-            = new RequestOptions().addQueryParam("fromTransactionId", "2.15").addQueryParam("toTransactionId", "2.20");
-        PagedIterable<BinaryData> response = confidentialLedgerClient.listLedgerEntries(requestOptions);
-        // END:com.azure.security.confidentialledger.generated.listledgerentries.listledgerentries
+        // BEGIN:com.azure.security.confidentialledger.generated.createuserdefinedendpoint.createuserdefinedendpoint
+        BinaryData bundle = BinaryData.fromString(
+            "{\"metadata\":{\"endpoints\":{\"/content\":{\"get\":{\"authn_policies\":[{}],\"forwarding_required\":\"always\"}}}},\"modules\":{\"name\":\"test.js\",\"module\":\"TESTJS\"}}");
+        RequestOptions requestOptions = new RequestOptions();
+        Response<Void> response
+            = confidentialLedgerClient.createUserDefinedEndpointWithResponse(bundle, requestOptions);
+        // END:com.azure.security.confidentialledger.generated.createuserdefinedendpoint.createuserdefinedendpoint
     }
 }
