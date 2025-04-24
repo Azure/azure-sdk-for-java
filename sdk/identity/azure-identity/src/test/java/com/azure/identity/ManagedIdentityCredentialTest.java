@@ -157,7 +157,7 @@ public class ManagedIdentityCredentialTest {
         ManagedIdentityCredential credential
             = new ManagedIdentityCredentialBuilder().configuration(configuration).objectId(OBJECT_ID).build();
         StepVerifier.create(credential.getToken(request))
-            .expectErrorMatches(t -> t instanceof CredentialUnavailableException)
+            .expectErrorMatches(t -> t instanceof ClientAuthenticationException)
             .verify();
     }
 
