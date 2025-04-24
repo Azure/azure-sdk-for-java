@@ -2,18 +2,21 @@
 // Licensed under the MIT License.
 package io.clientcore.annotation.processor.test;
 
+import io.clientcore.annotation.processor.test.implementation.ParameterizedHostService;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
-import io.clientcore.core.implementation.utils.UriEscapers;
-import io.clientcore.core.models.binarydata.BinaryData;
-import io.clientcore.annotation.processor.test.implementation.ParameterizedHostService;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
-import io.clientcore.core.http.models.HttpResponseException;
+import io.clientcore.core.utils.CoreUtils;
+import java.io.IOException;
+import java.lang.reflect.ParameterizedType;
+import java.nio.charset.StandardCharsets;
 
 /**
  * Initializes a new instance of the ParameterizedHostServiceImpl type.
@@ -58,6 +61,32 @@ public class ParameterizedHostServiceImpl implements ParameterizedHostService {
             }
             BinaryData responseBody = networkResponse.getValue();
             return responseBody != null ? responseBody.toBytes() : null;
+            if (!expectedResponse) {
+                if (networkResponse.getValue() == null || networkResponse.getValue().toBytes().length == 0) {
+                    throw instantiateUnexpectedException(responseCode, networkResponse, null, null);
+                } else {
+                    ParameterizedType returnType = null;
+                    throw instantiateUnexpectedException(responseCode, networkResponse, networkResponse.getValue(),
+                        CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType));
+                }
+            }
         }
+    }
+
+    private static HttpResponseException instantiateUnexpectedException(int responseCode, Response<BinaryData> response, BinaryData data, Object decodedValue) {
+        StringBuilder exceptionMessage = new StringBuilder("Status code ").append(responseCode).append(", ");
+        String contentType = response.getHeaders().getValue(HttpHeaderName.CONTENT_TYPE);
+        if ("application/octet-stream".equalsIgnoreCase(contentType)) {
+            String contentLength = response.getHeaders().getValue(HttpHeaderName.CONTENT_LENGTH);
+            exceptionMessage.append("(").append(contentLength).append("-byte body)");
+        } else if (data == null || data.toBytes().length == 0) {
+            exceptionMessage.append("(empty body)");
+        } else {
+            exceptionMessage.append('"').append(new String(data.toBytes(), StandardCharsets.UTF_8)).append('"');
+        }
+        if (decodedValue instanceof IOException || decodedValue instanceof IllegalStateException) {
+            return new HttpResponseException(exceptionMessage.toString(), response, (Throwable) decodedValue);
+        }
+        return new HttpResponseException(exceptionMessage.toString(), response, decodedValue);
     }
 }
