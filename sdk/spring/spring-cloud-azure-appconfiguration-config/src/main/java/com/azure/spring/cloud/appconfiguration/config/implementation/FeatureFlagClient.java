@@ -6,14 +6,19 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.AppC
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEFAULT_REQUIREMENT_TYPE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.E_TAG;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_ID;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_PREFIX;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_REFERENCE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.REQUIREMENT_TYPE_SERVICE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.SELECT_ALL_FEATURE_FLAGS;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.TELEMETRY;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -110,7 +115,7 @@ class FeatureFlagClient {
      */
     protected static Feature createFeature(FeatureFlagConfigurationSetting item, String originEndpoint) {
         String requirementType = DEFAULT_REQUIREMENT_TYPE;
-        FeatureTelemetry featureTelemetry = new FeatureTelemetry();
+        FeatureTelemetry featureTelemetry = null;
         try {
             JsonNode node = CASE_INSENSITIVE_MAPPER.readTree(item.getValue());
             JsonNode conditions = node.get(CONDITIONS);
@@ -119,6 +124,7 @@ class FeatureFlagClient {
             }
             JsonNode telemetryNode = node.get(TELEMETRY);
             if (telemetryNode != null) {
+                featureTelemetry = new FeatureTelemetry();
                 ObjectMapper objectMapper = JsonMapper.builder()
                     .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
                 featureTelemetry = objectMapper.convertValue(telemetryNode, FeatureTelemetry.class);
@@ -140,9 +146,38 @@ class FeatureFlagClient {
                     originMetadata.put(FEATURE_FLAG_REFERENCE,
                         String.format("%s/kv/%s%s", originEndpoint, item.getKey(), labelPart));
                 }
+                originMetadata.put(FEATURE_FLAG_ID, calculateFeatureId(item.getKey(), item.getLabel()));
             }
         }
         return feature;
+    }
+
+    /**
+     * Calculates a feature ID based on the given key and label.
+     *
+     * @param key   The key of the feature flag.
+     * @param label The label of the feature flag.
+     * @return The calculated feature ID as a Base64-encoded string.
+     */
+    private static String calculateFeatureId(String key, String label) {
+        try {
+            // Construct the basic value
+            StringBuilder basicValue = new StringBuilder(key).append("\n");
+            if (label != null && !label.trim().isEmpty()) {
+                basicValue.append(label);
+            }
+
+            // Hash the basic value using SHA-256
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hashBytes = digest.digest(basicValue.toString().getBytes(StandardCharsets.UTF_8));
+
+            // Encode the hash bytes to Base64
+            String encodedFlag = Base64.getUrlEncoder().withoutPadding().encodeToString(hashBytes);
+
+            return encodedFlag;
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException("SHA-256 algorithm not available", e);
+        }
     }
 
     /**

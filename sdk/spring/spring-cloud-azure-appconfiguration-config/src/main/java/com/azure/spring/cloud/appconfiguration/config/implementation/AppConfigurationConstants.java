@@ -67,5 +67,7 @@ public class AppConfigurationConstants {
 
     public static final String FEATURE_FLAG_REFERENCE = "FeatureFlagReference";
 
+    public static final String FEATURE_FLAG_ID = "FeatureFlagId";
+
     public static final String E_TAG = "ETag";
 }

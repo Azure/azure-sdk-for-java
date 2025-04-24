@@ -4,6 +4,7 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.E_TAG;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_ID;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_REFERENCE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.DEFAULT_ROLLOUT_PERCENTAGE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.FEATURE_LABEL;
@@ -16,6 +17,7 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.Test
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestUtils.createItemFeatureFlag;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
@@ -189,4 +191,15 @@ public class FeatureFlagClientTest {
         assertEquals(TEST_E_TAG, feature.getTelemetry().getMetadata().get(E_TAG));
     }
 
+    @Test
+    public void testFeatureFlagIdInTelemetry() {
+        Feature feature = FeatureFlagClient.createFeature(TELEMETRY_FEATURE, TEST_ENDPOINT);
+
+        assertEquals((feature.getTelemetry().getMetadata().get(FEATURE_FLAG_ID)), "ZI0Ib9p93C_BT4u9kTfGu6Z2FD2N0F-TZyaePLPK3Jk");
+
+        feature = FeatureFlagClient.createFeature(ALL_FEATURE, TEST_ENDPOINT);
+        assertNull(feature.getTelemetry());
+    }
+
 }
+ 
