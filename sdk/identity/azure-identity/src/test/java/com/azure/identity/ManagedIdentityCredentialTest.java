@@ -43,35 +43,34 @@ public class ManagedIdentityCredentialTest {
     }
 
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = { true, false })
     public void testInvalidJsonResponse(boolean isChained) {
         HttpClient client = TestUtils.getMockHttpClient(
-                getMockResponse(400, "{\"error\":\"invalid_request\",\"error_description\":\"Required metadata header not specified\"}"),
-                getMockResponse( 200, "invalid json")
-        );
+            getMockResponse(400,
+                "{\"error\":\"invalid_request\",\"error_description\":\"Required metadata header not specified\"}"),
+            getMockResponse(200, "invalid json"));
 
         String endpoint = "http://localhost";
         String secret = "secret";
 
         Configuration configuration
-                = TestUtils.createTestConfiguration(new TestConfigurationSource().put("MSI_ENDPOINT", endpoint) // This must stay to signal we are in an app service context
+            = TestUtils.createTestConfiguration(new TestConfigurationSource().put("MSI_ENDPOINT", endpoint) // This must stay to signal we are in an app service context
                 .put("MSI_SECRET", secret)
                 .put("IDENTITY_ENDPOINT", endpoint)
                 .put("IDENTITY_HEADER", secret));
 
-        IdentityClientOptions options = new IdentityClientOptions()
-                .setChained(isChained)
-                .setHttpClient(client)
-                .setConfiguration(configuration);
+        IdentityClientOptions options
+            = new IdentityClientOptions().setChained(isChained).setHttpClient(client).setConfiguration(configuration);
         ManagedIdentityCredential cred = new ManagedIdentityCredential("clientId", null, null, options);
         StepVerifier.create(cred.getToken(new TokenRequestContext().addScopes("https://management.azure.com")))
-                .expectErrorMatches(t -> {
-                    if (isChained) {
-                        return t instanceof CredentialUnavailableException;
-                    } else {
-                        return t instanceof ClientAuthenticationException;
-                    }
-                }).verify();
+            .expectErrorMatches(t -> {
+                if (isChained) {
+                    return t instanceof CredentialUnavailableException;
+                } else {
+                    return t instanceof ClientAuthenticationException;
+                }
+            })
+            .verify();
 
     }
 

@@ -929,9 +929,9 @@ public class IdentityClient extends IdentityClientBase {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
 
         return getPipeline().send(request)
-                .onErrorMap(t -> new CredentialUnavailableException("ManagedIdentityCredential authentication unavailable. "
-                        + "Connection to IMDS endpoint cannot be established, " + t.getMessage() + ".", t))
-                .flatMap(response -> Mono.just(true));
+            .onErrorMap(t -> new CredentialUnavailableException("ManagedIdentityCredential authentication unavailable. "
+                + "Connection to IMDS endpoint cannot be established, " + t.getMessage() + ".", t))
+            .flatMap(response -> Mono.just(true));
     }
 
     private static Proxy proxyOptionsToJavaNetProxy(ProxyOptions options) {
