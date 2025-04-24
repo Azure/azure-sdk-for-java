@@ -36,6 +36,7 @@ import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
 import com.azure.communication.phonenumbers.models.BrowseAvailableNumbersRequest;
+import com.azure.communication.phonenumbers.models.CreateOrUpdateReservationOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumbersPurchaseReservationResponse;
 import com.azure.communication.phonenumbers.models.PhoneNumbersReservation;
 import com.azure.communication.phonenumbers.models.PhoneNumbersReservationPurchaseRequest;
@@ -967,13 +968,10 @@ public final class PhoneNumbersAsyncClient {
      * @return represents a reservation for phone numbers on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersReservation> createOrUpdateReservation(UUID reservationId, List<AvailablePhoneNumber> add,
-        List<String> remove) {
-        if (reservationId == null) {
-            reservationId = UUID.randomUUID();
-        }
+    public Mono<PhoneNumbersReservation> createOrUpdateReservation(CreateOrUpdateReservationOptions request) {
+        UUID reservationId = request.getReservationId() != null ? request.getReservationId() : UUID.randomUUID();
 
-        Map<String, AvailablePhoneNumber> phoneNumbersMap = updatePhoneNumbersMap(new HashMap<>(), add, remove);
+        Map<String, AvailablePhoneNumber> phoneNumbersMap = updatePhoneNumbersMap(new HashMap<>(), request);
         PhoneNumbersReservation reservation = new PhoneNumbersReservation().setPhoneNumbers(phoneNumbersMap);
         return client.createOrUpdateReservationAsync(reservationId, reservation);
     }
@@ -1023,9 +1021,9 @@ public final class PhoneNumbersAsyncClient {
     }
 
     private Map<String, AvailablePhoneNumber> updatePhoneNumbersMap(Map<String, AvailablePhoneNumber> phoneNumbersMap,
-        List<AvailablePhoneNumber> AddphoneNumbers, List<String> removePhoneNumbers) {
-        phoneNumbersMap = createPhoneNumbersMap(phoneNumbersMap, AddphoneNumbers);
-        for (String phoneNumber : removePhoneNumbers) {
+        CreateOrUpdateReservationOptions request) {
+        phoneNumbersMap = createPhoneNumbersMap(phoneNumbersMap, request.getPhoneNumbersToAdd());
+        for (String phoneNumber : request.getPhoneNumbersToRemove()) {
             phoneNumbersMap.put(phoneNumber, null);
         }
         return phoneNumbersMap;

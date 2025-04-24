@@ -5,7 +5,6 @@ package com.azure.communication.phonenumbers;
 import com.azure.communication.phonenumbers.implementation.converters.PhoneNumberErrorConverter;
 import com.azure.communication.phonenumbers.implementation.models.CommunicationError;
 import com.azure.communication.phonenumbers.implementation.models.CommunicationErrorResponseException;
-import com.azure.communication.phonenumbers.implementation.models.PhoneNumberCapabilitiesRequest;
 import com.azure.communication.phonenumbers.models.AvailablePhoneNumber;
 import com.azure.communication.phonenumbers.models.PhoneNumberAdministrativeDivision;
 import com.azure.communication.phonenumbers.models.OperatorInformationResult;
@@ -24,6 +23,7 @@ import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
 import com.azure.communication.phonenumbers.models.BrowseAvailableNumbersRequest;
+import com.azure.communication.phonenumbers.models.CreateOrUpdateReservationOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumbersReservation;
 import com.azure.communication.phonenumbers.models.PurchasePhoneNumbersResult;
 import com.azure.communication.phonenumbers.models.PurchasedPhoneNumber;
@@ -547,7 +547,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         BrowseAvailableNumbersRequest browseRequest = new BrowseAvailableNumbersRequest().setCountryCode("US")
             .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
             .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
-            .setCapabilities(new PhoneNumberCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
+            .setCapabilities(new PhoneNumberCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
                 .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
         List<AvailablePhoneNumber> result = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
@@ -559,7 +559,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
         PhoneNumbersReservation reservationResponse
             = this.getClientWithConnectionString(httpClient, "updatePhoneNumberReservation")
-                .createOrUpdateReservation(reservationId, numbersToAdd, null);
+                .createOrUpdateReservation(new CreateOrUpdateReservationOptions(reservationId, numbersToAdd, null));
         assertEquals(reservationId, reservationResponse.getId());
         assertNotNull(reservationResponse.getPhoneNumbers());
         assertTrue(reservationResponse.getPhoneNumbers().containsKey(result.get(0).getId()));
@@ -580,7 +580,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         numbersToRemove.add(result.get(0).getId());
 
         reservationResponse = this.getClientWithConnectionString(httpClient, "updatePhoneNumberReservation")
-            .createOrUpdateReservation(reservationId, null, numbersToRemove);
+            .createOrUpdateReservation(new CreateOrUpdateReservationOptions(reservationId, null, numbersToRemove));
         assertEquals(reservationId, reservationResponse.getId());
         assertFalse(reservationResponse.getPhoneNumbers().containsKey(result.get(0).getId()));
 
@@ -597,7 +597,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         BrowseAvailableNumbersRequest browseRequest = new BrowseAvailableNumbersRequest().setCountryCode("US")
             .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
             .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
-            .setCapabilities(new PhoneNumberCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
+            .setCapabilities(new PhoneNumberCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
                 .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
         List<AvailablePhoneNumber> result = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers")
@@ -608,7 +608,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
         PhoneNumbersReservation reservationResponse
             = this.getClientWithConnectionString(httpClient, "updatePhoneNumberReservation")
-                .createOrUpdateReservation(reservationId, numbersToAdd, null);
+                .createOrUpdateReservation(new CreateOrUpdateReservationOptions(reservationId, numbersToAdd, null));
 
         assertEquals(reservationId, reservationResponse.getId());
         assertNotNull(reservationResponse.getPhoneNumbers());
@@ -630,7 +630,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         numbersToRemove.add(result.get(0).getId());
 
         reservationResponse = this.getClientWithManagedIdentity(httpClient, "updatePhoneNumberReservation")
-            .createOrUpdateReservation(reservationId, null, numbersToRemove);
+            .createOrUpdateReservation(new CreateOrUpdateReservationOptions(reservationId, null, numbersToRemove));
         assertEquals(reservationId, reservationResponse.getId());
         assertFalse(reservationResponse.getPhoneNumbers().containsKey(result.get(0).getId()));
 
@@ -658,7 +658,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
         PhoneNumbersReservation reservationResponse
             = this.getClientWithManagedIdentity(httpClient, "updatePhoneNumberReservation")
-                .createOrUpdateReservation(reservationId, numbersToAdd, null);
+                .createOrUpdateReservation(new CreateOrUpdateReservationOptions(reservationId, numbersToAdd, null));
         assertThrows(RuntimeException.class, () -> client.beginReservationPurchase(reservationResponse.getId()),
             "Missing agreement to not resell.");
     }
@@ -680,7 +680,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
         PhoneNumbersReservation reservationResponse
             = this.getClientWithManagedIdentity(httpClient, "updatePhoneNumberReservation")
-                .createOrUpdateReservation(reservationId, numbersToAdd, null);
+                .createOrUpdateReservation(new CreateOrUpdateReservationOptions(reservationId, numbersToAdd, null));
 
         assertThrows(RuntimeException.class, () -> client.beginReservationPurchase(reservationResponse.getId()),
             "Missing agreement to not resell.");

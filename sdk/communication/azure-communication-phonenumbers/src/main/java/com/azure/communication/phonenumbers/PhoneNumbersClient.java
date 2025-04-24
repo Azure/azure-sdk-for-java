@@ -17,6 +17,7 @@ import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersBr
 import com.azure.communication.phonenumbers.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.models.AvailablePhoneNumber;
 import com.azure.communication.phonenumbers.models.BrowseAvailableNumbersRequest;
+import com.azure.communication.phonenumbers.models.CreateOrUpdateReservationOptions;
 import com.azure.communication.phonenumbers.models.OperatorInformationOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
@@ -1047,13 +1048,10 @@ public final class PhoneNumbersClient {
      * @return represents a reservation for phone numbers {@link PhoneNumbersReservation}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PhoneNumbersReservation createOrUpdateReservation(UUID reservationId, List<AvailablePhoneNumber> add,
-        List<String> remove) {
-        if (reservationId == null) {
-            reservationId = UUID.randomUUID();
-        }
+    public PhoneNumbersReservation createOrUpdateReservation(CreateOrUpdateReservationOptions request) {
+        UUID reservationId = request.getReservationId() != null ? request.getReservationId() : UUID.randomUUID();
 
-        Map<String, AvailablePhoneNumber> phoneNumbersMap = updatePhoneNumbersMap(new HashMap<>(), add, remove);
+        Map<String, AvailablePhoneNumber> phoneNumbersMap = updatePhoneNumbersMap(new HashMap<>(), request);
         PhoneNumbersReservation reservation = new PhoneNumbersReservation().setPhoneNumbers(phoneNumbersMap);
         return client.createOrUpdateReservation(reservationId, reservation);
     }
@@ -1061,27 +1059,33 @@ public final class PhoneNumbersClient {
     /**
      * Creates or updates a reservation by its ID.
      * 
-     * Adds and removes phone numbers from the reservation with the given ID. The response will be the updated state of
-     * the reservation. Phone numbers can be reserved by including them in the payload. If a number is already in the
-     * reservation, it will be ignored. To remove a phone number, set it explicitly to null in the request payload. This
-     * operation is idempotent. If a reservation with the same ID already exists, it will be updated, otherwise a new
-     * one is created. Only reservations with 'active' status can be updated. Updating a reservation will extend the
-     * expiration time of the reservation to 15 minutes after the last change, up to a maximum of 2 hours from creation
-     * time. Partial success is possible, in which case the response will have a 207 status code.
+     * Adds and removes phone numbers from the reservation with the given ID. The
+     * response will be the updated state of
+     * the reservation. Phone numbers can be reserved by including them in the
+     * payload. If a number is already in the
+     * reservation, it will be ignored. To remove a phone number, set it explicitly
+     * to null in the request payload. This
+     * operation is idempotent. If a reservation with the same ID already exists, it
+     * will be updated, otherwise a new
+     * one is created. Only reservations with 'active' status can be updated.
+     * Updating a reservation will extend the
+     * expiration time of the reservation to 15 minutes after the last change, up to
+     * a maximum of 2 hours from creation
+     * time. Partial success is possible, in which case the response will have a 207
+     * status code.
      * 
      * @param reservationId The id of the reservation that's going to be updated.
-     * @param add The phone numbers to be added to the reservation.
-     * @param remove The phone numbers to be removed from the reservation.
-     * @param context A {@link Context} representing the request context.
-     * @return represents a reservation for phone numbers along with {@link Response}.
+     * @param add           The phone numbers to be added to the reservation.
+     * @param remove        The phone numbers to be removed from the reservation.
+     * @param context       A {@link Context} representing the request context.
+     * @return represents a reservation for phone numbers along with
+     *         {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PhoneNumbersReservation> createOrUpdateReservation(UUID reservationId,
-        List<AvailablePhoneNumber> add, List<String> remove, Context context) {
-        if (reservationId == null) {
-            reservationId = UUID.randomUUID();
-        }
-        Map<String, AvailablePhoneNumber> phoneNumbersMap = updatePhoneNumbersMap(new HashMap<>(), add, remove);
+    public Response<PhoneNumbersReservation> createOrUpdateReservation(CreateOrUpdateReservationOptions request,
+        Context context) {
+        UUID reservationId = request.getReservationId() != null ? request.getReservationId() : UUID.randomUUID();
+        Map<String, AvailablePhoneNumber> phoneNumbersMap = updatePhoneNumbersMap(new HashMap<>(), request);
         PhoneNumbersReservation reservation = new PhoneNumbersReservation().setPhoneNumbers(phoneNumbersMap);
         return client.createOrUpdateReservationWithResponse(reservationId, reservation, context);
     }
@@ -1123,10 +1127,9 @@ public final class PhoneNumbersClient {
     }
 
     private static Map<String, AvailablePhoneNumber> updatePhoneNumbersMap(
-        Map<String, AvailablePhoneNumber> phoneNumbersMap, List<AvailablePhoneNumber> AddphoneNumbers,
-        List<String> removePhoneNumbers) {
-        phoneNumbersMap = createPhoneNumbersMap(phoneNumbersMap, AddphoneNumbers);
-        for (String phoneNumber : removePhoneNumbers) {
+        Map<String, AvailablePhoneNumber> phoneNumbersMap, CreateOrUpdateReservationOptions request) {
+        phoneNumbersMap = createPhoneNumbersMap(phoneNumbersMap, request.getPhoneNumbersToAdd());
+        for (String phoneNumber : request.getPhoneNumbersToRemove()) {
             phoneNumbersMap.put(phoneNumber, null);
         }
         return phoneNumbersMap;
