@@ -218,7 +218,7 @@ import static com.azure.v2.data.appconfiguration.implementation.Utility.validate
  * @see ConfigurationClientBuilder
  * @see ConfigurationSetting
  */
-@ServiceClient(builder = AzureAppConfigurationClientBuilder.class)
+@ServiceClient(builder = ConfigurationClientBuilder.class)
 public final class ConfigurationClient {
     private static final ClientLogger LOGGER = new ClientLogger(ConfigurationClient.class);
     private final AzureAppConfigurationClientImpl serviceClient;

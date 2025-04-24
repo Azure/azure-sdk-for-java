@@ -1,5 +1,5 @@
-commit: b45d1e065ae2c512d8096b93f598ea78a24fe40c
+commit: 851f2e44f08fe7b6e6f7c182d17cb3b0b4477780
 additionalDirectories: []
-repo: srnagar/azure-rest-api-specs
+repo: mssfang/azure-rest-api-specs
 directory: specification/appconfiguration/AppConfiguration
 
