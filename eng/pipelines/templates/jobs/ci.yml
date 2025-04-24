@@ -419,6 +419,14 @@ jobs:
 
       - template: /eng/pipelines/templates/steps/post-job-cleanup.yml
 
+      - task: PowerShell@2
+        displayName: Prepare for Component Detection
+        inputs:
+          pwsh: true
+          filePath: $(Build.SourcesDirectory)/eng/pipelines/scripts/Initialize-For-Component-Detection.ps1
+          arguments: >
+            -Projects "$(ProjectList)"
+
       - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
 
       # Troubleshooting artifacts are creating in the staging directory under the folder 'troubleshooting'.

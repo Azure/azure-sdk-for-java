@@ -34,6 +34,10 @@ variables:
   DefaultTestMavenOptions: '$(MemoryOptions) $(LoggingOptions)'
   AdditionalOptions: ''
 
+  # Environment setup for mvn command
+  MAVEN_OPTS: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
+  MAVEN_ARGS: '-Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
+
   # Exists if needed in coalesce situations.
   DefaultTestGoals: 'surefire:test'
   # This will be overwritten by the test matrix, if configured.
