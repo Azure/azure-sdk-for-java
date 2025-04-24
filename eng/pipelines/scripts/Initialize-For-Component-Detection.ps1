@@ -13,7 +13,9 @@ The projects ran as part of the pipeline, in the form of 'groupId:artifactId,gro
 #>
 param(
     [Parameter(Mandatory = $true)]
-    [string]$Projects
+    [string]$Projects,
+    [Parameter(Mandatory = $false)]
+    [boolean]$DryRun = $false
 )
 
 $repoRoot = Resolve-Path ($PSScriptRoot + "/../../..")
@@ -55,8 +57,8 @@ foreach ($pomFile in $pomFiles) {
 
     # Get the groupId and artifactId from the pom.xml file.
     $groupId = $xmlContent.project.groupId
-    if ($null -eq $groupId -and $null -ne $xmlContent.parent) {
-        $groupId = $xmlContent.parent.groupId
+    if ($null -eq $groupId -and $null -ne $xmlContent.project.parent) {
+        $groupId = $xmlContent.project.parent.groupId
     }
 
     $artifactId = $xmlContent.project.artifactId
@@ -69,13 +71,18 @@ foreach ($pomFile in $pomFiles) {
     $projectsOfGroupId = $projectsByGroupId[$groupId]
     if ($null -eq $projectsOfGroupId) {
         # groupId is not in the list of projects passed, so delete it.
-        Remove-Item -Path $pomFile -Force
-        continue
-    }
-
-    if (-not $projectsOfGroupId.Contains($artifactId)) {
+        if (-not $DryRun) {
+            Remove-Item -Path $pomFile -Force
+        } else {
+            Write-Host "Would delete $pomXml"
+        }
+    } elseif (-not $projectsOfGroupId.Contains($artifactId)) {
         # artifactId is not in the list of projects passed, so delete it.
-        Remove-Item -Path $pomFile -Force
+        if (-not $DryRun) {
+            Remove-Item -Path $pomFile -Force
+        } else {
+            Write-Host "Would delete $pomXml"
+        }
         continue
     }
 }
