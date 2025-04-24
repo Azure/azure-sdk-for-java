@@ -3,7 +3,7 @@
 package com.azure.security.keyvault.jca.implementation.utils;
 
 import com.azure.security.keyvault.jca.implementation.model.AccessToken;
-import org.apache.http.HttpResponse;
+import org.apache.hc.core5.http.ClassicHttpResponse;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -305,7 +305,7 @@ public final class AccessTokenUtil {
         LOGGER.entering("AccessTokenUtil", "getLoginUri", resourceUri);
         LOGGER.log(INFO, "Getting login URI using: {0}", resourceUri);
 
-        HttpResponse response = HttpUtil.getWithResponse(resourceUri, null);
+        ClassicHttpResponse response = HttpUtil.getWithResponse(resourceUri, null);
 
         if (response == null) {
             throw new IllegalStateException("Could not obtain login URI to retrieve access token from.");

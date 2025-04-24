@@ -14,20 +14,20 @@ public final class ReplicationProtectionIntentInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplicationProtectionIntentInner model = BinaryData.fromString(
-            "{\"properties\":{\"friendlyName\":\"er\",\"jobId\":\"tvsoxhlwntsj\",\"jobState\":\"rsxypruuu\",\"isActive\":true,\"creationTimeUTC\":\"hrszi\",\"providerSpecificDetails\":{\"instanceType\":\"ReplicationProtectionIntentProviderSpecificSettings\"}},\"location\":\"uelyetndn\",\"id\":\"fqyggagflnlgmtr\",\"name\":\"ahzjmucftb\",\"type\":\"r\"}")
+            "{\"properties\":{\"friendlyName\":\"ovyrrleaesinu\",\"jobId\":\"ljqobbpihehcecyb\",\"jobState\":\"qbr\",\"isActive\":true,\"creationTimeUTC\":\"pxdlv\",\"providerSpecificDetails\":{\"instanceType\":\"ReplicationProtectionIntentProviderSpecificSettings\"}},\"location\":\"rexcrseqwjksghu\",\"id\":\"gzhxog\",\"name\":\"ggsvoujkxibdaf\",\"type\":\"rkmdyom\"}")
             .toObject(ReplicationProtectionIntentInner.class);
-        Assertions.assertEquals("er", model.properties().friendlyName());
-        Assertions.assertEquals("uelyetndn", model.location());
+        Assertions.assertEquals("ovyrrleaesinu", model.properties().friendlyName());
+        Assertions.assertEquals("rexcrseqwjksghu", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ReplicationProtectionIntentInner model = new ReplicationProtectionIntentInner()
-            .withProperties(new ReplicationProtectionIntentProperties().withFriendlyName("er")
+            .withProperties(new ReplicationProtectionIntentProperties().withFriendlyName("ovyrrleaesinu")
                 .withProviderSpecificDetails(new ReplicationProtectionIntentProviderSpecificSettings()))
-            .withLocation("uelyetndn");
+            .withLocation("rexcrseqwjksghu");
         model = BinaryData.fromObject(model).toObject(ReplicationProtectionIntentInner.class);
-        Assertions.assertEquals("er", model.properties().friendlyName());
-        Assertions.assertEquals("uelyetndn", model.location());
+        Assertions.assertEquals("ovyrrleaesinu", model.properties().friendlyName());
+        Assertions.assertEquals("rexcrseqwjksghu", model.location());
     }
 }

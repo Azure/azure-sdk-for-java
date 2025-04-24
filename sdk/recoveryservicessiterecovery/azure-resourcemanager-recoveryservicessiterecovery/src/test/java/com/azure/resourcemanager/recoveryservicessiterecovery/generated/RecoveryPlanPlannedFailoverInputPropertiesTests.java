@@ -15,18 +15,19 @@ public final class RecoveryPlanPlannedFailoverInputPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RecoveryPlanPlannedFailoverInputProperties model = BinaryData.fromString(
-            "{\"failoverDirection\":\"PrimaryToRecovery\",\"providerSpecificDetails\":[{\"instanceType\":\"RecoveryPlanProviderSpecificFailoverInput\"},{\"instanceType\":\"RecoveryPlanProviderSpecificFailoverInput\"},{\"instanceType\":\"RecoveryPlanProviderSpecificFailoverInput\"}]}")
+            "{\"failoverDirection\":\"RecoveryToPrimary\",\"providerSpecificDetails\":[{\"instanceType\":\"RecoveryPlanProviderSpecificFailoverInput\"},{\"instanceType\":\"RecoveryPlanProviderSpecificFailoverInput\"},{\"instanceType\":\"RecoveryPlanProviderSpecificFailoverInput\"},{\"instanceType\":\"RecoveryPlanProviderSpecificFailoverInput\"}]}")
             .toObject(RecoveryPlanPlannedFailoverInputProperties.class);
-        Assertions.assertEquals(PossibleOperationsDirections.PRIMARY_TO_RECOVERY, model.failoverDirection());
+        Assertions.assertEquals(PossibleOperationsDirections.RECOVERY_TO_PRIMARY, model.failoverDirection());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RecoveryPlanPlannedFailoverInputProperties model = new RecoveryPlanPlannedFailoverInputProperties()
-            .withFailoverDirection(PossibleOperationsDirections.PRIMARY_TO_RECOVERY)
+            .withFailoverDirection(PossibleOperationsDirections.RECOVERY_TO_PRIMARY)
             .withProviderSpecificDetails(Arrays.asList(new RecoveryPlanProviderSpecificFailoverInput(),
-                new RecoveryPlanProviderSpecificFailoverInput(), new RecoveryPlanProviderSpecificFailoverInput()));
+                new RecoveryPlanProviderSpecificFailoverInput(), new RecoveryPlanProviderSpecificFailoverInput(),
+                new RecoveryPlanProviderSpecificFailoverInput()));
         model = BinaryData.fromObject(model).toObject(RecoveryPlanPlannedFailoverInputProperties.class);
-        Assertions.assertEquals(PossibleOperationsDirections.PRIMARY_TO_RECOVERY, model.failoverDirection());
+        Assertions.assertEquals(PossibleOperationsDirections.RECOVERY_TO_PRIMARY, model.failoverDirection());
     }
 }

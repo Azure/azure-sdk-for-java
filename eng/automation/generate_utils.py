@@ -336,7 +336,7 @@ def generate_typespec_project(
     group_id: str = None,
     api_version: str = None,
     generate_beta_sdk: bool = True,
-    version: str = None, # SDK version
+    version: str = None,  # SDK version
     **kwargs,
 ):
 
@@ -416,12 +416,14 @@ def generate_typespec_project(
                     # clear existing generated source code, and regenerate
                     drop_changes(sdk_root)
                     remove_generated_source_code(sdk_folder, f"{group_id}.{service}")
-                    _, current_version = set_or_increase_version(sdk_root, group_id, module, version=version, preview = generate_beta_sdk)
+                    _, current_version = set_or_increase_version(
+                        sdk_root, group_id, module, version=version, preview=generate_beta_sdk
+                    )
                     tsp_cmd.append("--emitter-options")
-                    emitter_options = f'package-version={current_version}'
+                    emitter_options = f"package-version={current_version}"
                     # currently for self-serve, may also need it in regular generation
                     if api_version:
-                        emitter_options += f';api-version={api_version}'
+                        emitter_options += f";api-version={api_version}"
                     tsp_cmd.append(emitter_options)
                     # regenerate
                     check_call(tsp_cmd, sdk_root)

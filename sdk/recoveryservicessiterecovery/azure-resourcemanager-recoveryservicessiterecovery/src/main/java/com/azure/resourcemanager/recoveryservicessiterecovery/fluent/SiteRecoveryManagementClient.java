@@ -159,6 +159,27 @@ public interface SiteRecoveryManagementClient {
     TargetComputeSizesClient getTargetComputeSizes();
 
     /**
+     * Gets the ReplicationProtectionClustersClient object to access its operations.
+     * 
+     * @return the ReplicationProtectionClustersClient object.
+     */
+    ReplicationProtectionClustersClient getReplicationProtectionClusters();
+
+    /**
+     * Gets the ClusterRecoveryPointsClient object to access its operations.
+     * 
+     * @return the ClusterRecoveryPointsClient object.
+     */
+    ClusterRecoveryPointsClient getClusterRecoveryPoints();
+
+    /**
+     * Gets the ClusterRecoveryPointOperationsClient object to access its operations.
+     * 
+     * @return the ClusterRecoveryPointOperationsClient object.
+     */
+    ClusterRecoveryPointOperationsClient getClusterRecoveryPointOperations();
+
+    /**
      * Gets the ReplicationProtectionContainerMappingsClient object to access its operations.
      * 
      * @return the ReplicationProtectionContainerMappingsClient object.

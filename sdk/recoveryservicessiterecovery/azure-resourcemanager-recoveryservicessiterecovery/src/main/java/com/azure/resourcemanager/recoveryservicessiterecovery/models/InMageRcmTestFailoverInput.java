@@ -31,6 +31,11 @@ public final class InMageRcmTestFailoverInput extends TestFailoverProviderSpecif
      */
     private String recoveryPointId;
 
+    /*
+     * A value indicating the inplace OS Upgrade version.
+     */
+    private String osUpgradeVersion;
+
     /**
      * Creates an instance of InMageRcmTestFailoverInput class.
      */
@@ -90,6 +95,26 @@ public final class InMageRcmTestFailoverInput extends TestFailoverProviderSpecif
     }
 
     /**
+     * Get the osUpgradeVersion property: A value indicating the inplace OS Upgrade version.
+     * 
+     * @return the osUpgradeVersion value.
+     */
+    public String osUpgradeVersion() {
+        return this.osUpgradeVersion;
+    }
+
+    /**
+     * Set the osUpgradeVersion property: A value indicating the inplace OS Upgrade version.
+     * 
+     * @param osUpgradeVersion the osUpgradeVersion value to set.
+     * @return the InMageRcmTestFailoverInput object itself.
+     */
+    public InMageRcmTestFailoverInput withOsUpgradeVersion(String osUpgradeVersion) {
+        this.osUpgradeVersion = osUpgradeVersion;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -107,6 +132,7 @@ public final class InMageRcmTestFailoverInput extends TestFailoverProviderSpecif
         jsonWriter.writeStringField("instanceType", this.instanceType);
         jsonWriter.writeStringField("networkId", this.networkId);
         jsonWriter.writeStringField("recoveryPointId", this.recoveryPointId);
+        jsonWriter.writeStringField("osUpgradeVersion", this.osUpgradeVersion);
         return jsonWriter.writeEndObject();
     }
 
@@ -131,6 +157,8 @@ public final class InMageRcmTestFailoverInput extends TestFailoverProviderSpecif
                     deserializedInMageRcmTestFailoverInput.networkId = reader.getString();
                 } else if ("recoveryPointId".equals(fieldName)) {
                     deserializedInMageRcmTestFailoverInput.recoveryPointId = reader.getString();
+                } else if ("osUpgradeVersion".equals(fieldName)) {
+                    deserializedInMageRcmTestFailoverInput.osUpgradeVersion = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

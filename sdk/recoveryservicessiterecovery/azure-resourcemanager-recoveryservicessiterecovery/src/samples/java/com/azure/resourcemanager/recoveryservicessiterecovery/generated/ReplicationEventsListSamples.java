@@ -10,7 +10,7 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 public final class ReplicationEventsListSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationEvents_List.json
      */
     /**
@@ -20,6 +20,6 @@ public final class ReplicationEventsListSamples {
      */
     public static void getsTheListOfAzureSiteRecoveryEvents(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationEvents().list("vault1", "resourceGroupPS1", null, com.azure.core.util.Context.NONE);
+        manager.replicationEvents().list("resourceGroupPS1", "vault1", null, com.azure.core.util.Context.NONE);
     }
 }

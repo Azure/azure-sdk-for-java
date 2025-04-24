@@ -13,27 +13,27 @@ public final class NewProtectionProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NewProtectionProfile model = BinaryData.fromString(
-            "{\"resourceType\":\"New\",\"policyName\":\"pc\",\"recoveryPointHistory\":1754737974,\"crashConsistentFrequencyInMinutes\":381406744,\"appConsistentFrequencyInMinutes\":198630766,\"multiVmSyncStatus\":\"Enable\"}")
+            "{\"resourceType\":\"New\",\"policyName\":\"kiixepbntqqwwgfg\",\"recoveryPointHistory\":1239880780,\"crashConsistentFrequencyInMinutes\":1343907621,\"appConsistentFrequencyInMinutes\":1964169412,\"multiVmSyncStatus\":\"Enable\"}")
             .toObject(NewProtectionProfile.class);
-        Assertions.assertEquals("pc", model.policyName());
-        Assertions.assertEquals(1754737974, model.recoveryPointHistory());
-        Assertions.assertEquals(381406744, model.crashConsistentFrequencyInMinutes());
-        Assertions.assertEquals(198630766, model.appConsistentFrequencyInMinutes());
+        Assertions.assertEquals("kiixepbntqqwwgfg", model.policyName());
+        Assertions.assertEquals(1239880780, model.recoveryPointHistory());
+        Assertions.assertEquals(1343907621, model.crashConsistentFrequencyInMinutes());
+        Assertions.assertEquals(1964169412, model.appConsistentFrequencyInMinutes());
         Assertions.assertEquals(SetMultiVmSyncStatus.ENABLE, model.multiVmSyncStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NewProtectionProfile model = new NewProtectionProfile().withPolicyName("pc")
-            .withRecoveryPointHistory(1754737974)
-            .withCrashConsistentFrequencyInMinutes(381406744)
-            .withAppConsistentFrequencyInMinutes(198630766)
+        NewProtectionProfile model = new NewProtectionProfile().withPolicyName("kiixepbntqqwwgfg")
+            .withRecoveryPointHistory(1239880780)
+            .withCrashConsistentFrequencyInMinutes(1343907621)
+            .withAppConsistentFrequencyInMinutes(1964169412)
             .withMultiVmSyncStatus(SetMultiVmSyncStatus.ENABLE);
         model = BinaryData.fromObject(model).toObject(NewProtectionProfile.class);
-        Assertions.assertEquals("pc", model.policyName());
-        Assertions.assertEquals(1754737974, model.recoveryPointHistory());
-        Assertions.assertEquals(381406744, model.crashConsistentFrequencyInMinutes());
-        Assertions.assertEquals(198630766, model.appConsistentFrequencyInMinutes());
+        Assertions.assertEquals("kiixepbntqqwwgfg", model.policyName());
+        Assertions.assertEquals(1239880780, model.recoveryPointHistory());
+        Assertions.assertEquals(1343907621, model.crashConsistentFrequencyInMinutes());
+        Assertions.assertEquals(1964169412, model.appConsistentFrequencyInMinutes());
         Assertions.assertEquals(SetMultiVmSyncStatus.ENABLE, model.multiVmSyncStatus());
     }
 }

@@ -3,6 +3,7 @@
 
 package com.azure.ai.openai.stainless;
 
+import com.azure.core.test.annotation.LiveOnly;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import com.openai.azure.credential.AzureApiKeyCredential;
@@ -39,6 +40,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@LiveOnly
 public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     private OpenAIClient client;
 
@@ -261,6 +263,7 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     }
 
     @Disabled
+    
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#azureOnlyClient")
     public void testChatCompletionByod(String apiType, String apiVersion, String testModel) {
@@ -344,6 +347,7 @@ public class OpenAIOkHttpClientTest extends OpenAIOkHttpClientTestBase {
     }
 
     @Disabled("Deprecated feature not working.")
+    
     @ParameterizedTest
     @MethodSource("com.azure.ai.openai.stainless.TestUtils#allApiTypeClient")
     public void testChatCompletionGivenFunction(String apiType, String apiVersion, String testModel) {

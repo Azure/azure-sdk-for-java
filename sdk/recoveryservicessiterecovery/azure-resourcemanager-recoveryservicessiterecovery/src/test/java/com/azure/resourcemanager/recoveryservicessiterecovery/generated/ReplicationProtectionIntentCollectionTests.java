@@ -16,11 +16,11 @@ public final class ReplicationProtectionIntentCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ReplicationProtectionIntentCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"friendlyName\":\"dfzantkwcegy\",\"jobId\":\"lbnseqac\",\"jobState\":\"vpilg\",\"isActive\":false,\"creationTimeUTC\":\"jagmdi\",\"providerSpecificDetails\":{\"instanceType\":\"ReplicationProtectionIntentProviderSpecificSettings\"}},\"location\":\"eiookjbsah\",\"id\":\"tdtpdelqacslmo\",\"name\":\"oebn\",\"type\":\"xofvcjk\"},{\"properties\":{\"friendlyName\":\"razftxejwabmdujt\",\"jobId\":\"cope\",\"jobState\":\"m\",\"isActive\":false,\"creationTimeUTC\":\"u\",\"providerSpecificDetails\":{\"instanceType\":\"ReplicationProtectionIntentProviderSpecificSettings\"}},\"location\":\"kyqltqsrogt\",\"id\":\"wkffdjkt\",\"name\":\"ysidfvclgl\",\"type\":\"n\"},{\"properties\":{\"friendlyName\":\"jtkbusqogsfika\",\"jobId\":\"ansharujtjiqxfz\",\"jobState\":\"qttv\",\"isActive\":true,\"creationTimeUTC\":\"hjpenuygbq\",\"providerSpecificDetails\":{\"instanceType\":\"ReplicationProtectionIntentProviderSpecificSettings\"}},\"location\":\"ekewvnqvcdlguauc\",\"id\":\"f\",\"name\":\"jwnlax\",\"type\":\"un\"}],\"nextLink\":\"ikczvvitacgxmf\"}")
+            "{\"value\":[{\"properties\":{\"friendlyName\":\"eovvtzej\",\"jobId\":\"jklntikyj\",\"jobState\":\"k\",\"isActive\":true,\"creationTimeUTC\":\"o\",\"providerSpecificDetails\":{\"instanceType\":\"ReplicationProtectionIntentProviderSpecificSettings\"}},\"location\":\"zvhqjwtrhtgvg\",\"id\":\"pcrrk\",\"name\":\"lawjmjsmwrok\",\"type\":\"dxfzzzwyjaf\"},{\"properties\":{\"friendlyName\":\"hguynuchlgmltxdw\",\"jobId\":\"ozusgz\",\"jobState\":\"ns\",\"isActive\":true,\"creationTimeUTC\":\"fpafolpymwamxq\",\"providerSpecificDetails\":{\"instanceType\":\"ReplicationProtectionIntentProviderSpecificSettings\"}},\"location\":\"gpgdphtvdulaj\",\"id\":\"lejchcsr\",\"name\":\"zknmzlanrupd\",\"type\":\"vnphc\"},{\"properties\":{\"friendlyName\":\"tpjhm\",\"jobId\":\"hvthlaiwdcxsm\",\"jobState\":\"zhzdtxetlgydlhqv\",\"isActive\":true,\"creationTimeUTC\":\"xybafiqgea\",\"providerSpecificDetails\":{\"instanceType\":\"ReplicationProtectionIntentProviderSpecificSettings\"}},\"location\":\"gjekglklby\",\"id\":\"lidwcwvmzegjon\",\"name\":\"hj\",\"type\":\"rwgdnqzbrfks\"},{\"properties\":{\"friendlyName\":\"zmtksjci\",\"jobId\":\"igsxcdgljplk\",\"jobState\":\"acht\",\"isActive\":true,\"creationTimeUTC\":\"rytswfpf\",\"providerSpecificDetails\":{\"instanceType\":\"ReplicationProtectionIntentProviderSpecificSettings\"}},\"location\":\"ycxnmskw\",\"id\":\"qjjyslurl\",\"name\":\"shhkvpedw\",\"type\":\"slsrhmpq\"}],\"nextLink\":\"wskondcbrwimuvqe\"}")
             .toObject(ReplicationProtectionIntentCollection.class);
-        Assertions.assertEquals("dfzantkwcegy", model.value().get(0).properties().friendlyName());
-        Assertions.assertEquals("eiookjbsah", model.value().get(0).location());
-        Assertions.assertEquals("ikczvvitacgxmf", model.nextLink());
+        Assertions.assertEquals("eovvtzej", model.value().get(0).properties().friendlyName());
+        Assertions.assertEquals("zvhqjwtrhtgvg", model.value().get(0).location());
+        Assertions.assertEquals("wskondcbrwimuvqe", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -28,21 +28,25 @@ public final class ReplicationProtectionIntentCollectionTests {
         ReplicationProtectionIntentCollection model
             = new ReplicationProtectionIntentCollection().withValue(Arrays.asList(
                 new ReplicationProtectionIntentInner()
-                    .withProperties(new ReplicationProtectionIntentProperties().withFriendlyName("dfzantkwcegy")
+                    .withProperties(new ReplicationProtectionIntentProperties().withFriendlyName("eovvtzej")
                         .withProviderSpecificDetails(new ReplicationProtectionIntentProviderSpecificSettings()))
-                    .withLocation("eiookjbsah"),
+                    .withLocation("zvhqjwtrhtgvg"),
                 new ReplicationProtectionIntentInner()
-                    .withProperties(new ReplicationProtectionIntentProperties().withFriendlyName("razftxejwabmdujt")
+                    .withProperties(new ReplicationProtectionIntentProperties().withFriendlyName("hguynuchlgmltxdw")
                         .withProviderSpecificDetails(new ReplicationProtectionIntentProviderSpecificSettings()))
-                    .withLocation("kyqltqsrogt"),
+                    .withLocation("gpgdphtvdulaj"),
                 new ReplicationProtectionIntentInner()
-                    .withProperties(new ReplicationProtectionIntentProperties().withFriendlyName("jtkbusqogsfika")
+                    .withProperties(new ReplicationProtectionIntentProperties().withFriendlyName("tpjhm")
                         .withProviderSpecificDetails(new ReplicationProtectionIntentProviderSpecificSettings()))
-                    .withLocation("ekewvnqvcdlguauc")))
-                .withNextLink("ikczvvitacgxmf");
+                    .withLocation("gjekglklby"),
+                new ReplicationProtectionIntentInner()
+                    .withProperties(new ReplicationProtectionIntentProperties().withFriendlyName("zmtksjci")
+                        .withProviderSpecificDetails(new ReplicationProtectionIntentProviderSpecificSettings()))
+                    .withLocation("ycxnmskw")))
+                .withNextLink("wskondcbrwimuvqe");
         model = BinaryData.fromObject(model).toObject(ReplicationProtectionIntentCollection.class);
-        Assertions.assertEquals("dfzantkwcegy", model.value().get(0).properties().friendlyName());
-        Assertions.assertEquals("eiookjbsah", model.value().get(0).location());
-        Assertions.assertEquals("ikczvvitacgxmf", model.nextLink());
+        Assertions.assertEquals("eovvtzej", model.value().get(0).properties().friendlyName());
+        Assertions.assertEquals("zvhqjwtrhtgvg", model.value().get(0).location());
+        Assertions.assertEquals("wskondcbrwimuvqe", model.nextLink());
     }
 }

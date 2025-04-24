@@ -68,7 +68,7 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProtectableItemCollection>> listByReplicationProtectionContainers(
             @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceName") String resourceName, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName,
             @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
             @PathParam("protectionContainerName") String protectionContainerName, @QueryParam("$filter") String filter,
             @QueryParam("$take") String take, @QueryParam("$skipToken") String skipToken,
@@ -79,9 +79,9 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ProtectableItemInner>> get(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName,
             @PathParam("protectionContainerName") String protectionContainerName,
             @PathParam("protectableItemName") String protectableItemName, @HeaderParam("Accept") String accept,
             Context context);
@@ -100,8 +100,8 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
      * 
      * Lists the protectable items in a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param filter OData filter options.
@@ -114,18 +114,18 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProtectableItemInner>> listByReplicationProtectionContainersSinglePageAsync(
-        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName, String filter,
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName, String filter,
         String take, String skipToken) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -141,7 +141,7 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByReplicationProtectionContainers(this.client.getEndpoint(),
-                this.client.getApiVersion(), resourceName, resourceGroupName, this.client.getSubscriptionId(),
+                this.client.getApiVersion(), resourceGroupName, resourceName, this.client.getSubscriptionId(),
                 fabricName, protectionContainerName, filter, take, skipToken, accept, context))
             .<PagedResponse<ProtectableItemInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
                 res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
@@ -153,8 +153,8 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
      * 
      * Lists the protectable items in a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param filter OData filter options.
@@ -168,18 +168,18 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ProtectableItemInner>> listByReplicationProtectionContainersSinglePageAsync(
-        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName, String filter,
+        String resourceGroupName, String resourceName, String fabricName, String protectionContainerName, String filter,
         String take, String skipToken, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -195,9 +195,9 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByReplicationProtectionContainers(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName, filter, take,
-                skipToken, accept, context)
+            .listByReplicationProtectionContainers(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
+                filter, take, skipToken, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -207,8 +207,8 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
      * 
      * Lists the protectable items in a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param filter OData filter options.
@@ -220,11 +220,11 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
      * @return protectable item collection as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ProtectableItemInner> listByReplicationProtectionContainersAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String filter, String take,
+    private PagedFlux<ProtectableItemInner> listByReplicationProtectionContainersAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String filter, String take,
         String skipToken) {
         return new PagedFlux<>(
-            () -> listByReplicationProtectionContainersSinglePageAsync(resourceName, resourceGroupName, fabricName,
+            () -> listByReplicationProtectionContainersSinglePageAsync(resourceGroupName, resourceName, fabricName,
                 protectionContainerName, filter, take, skipToken),
             nextLink -> listByReplicationProtectionContainersNextSinglePageAsync(nextLink));
     }
@@ -234,8 +234,8 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
      * 
      * Lists the protectable items in a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -244,13 +244,13 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
      * @return protectable item collection as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ProtectableItemInner> listByReplicationProtectionContainersAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName) {
+    private PagedFlux<ProtectableItemInner> listByReplicationProtectionContainersAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName) {
         final String filter = null;
         final String take = null;
         final String skipToken = null;
         return new PagedFlux<>(
-            () -> listByReplicationProtectionContainersSinglePageAsync(resourceName, resourceGroupName, fabricName,
+            () -> listByReplicationProtectionContainersSinglePageAsync(resourceGroupName, resourceName, fabricName,
                 protectionContainerName, filter, take, skipToken),
             nextLink -> listByReplicationProtectionContainersNextSinglePageAsync(nextLink));
     }
@@ -260,8 +260,8 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
      * 
      * Lists the protectable items in a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param filter OData filter options.
@@ -274,11 +274,11 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
      * @return protectable item collection as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<ProtectableItemInner> listByReplicationProtectionContainersAsync(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String filter, String take,
+    private PagedFlux<ProtectableItemInner> listByReplicationProtectionContainersAsync(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String filter, String take,
         String skipToken, Context context) {
         return new PagedFlux<>(
-            () -> listByReplicationProtectionContainersSinglePageAsync(resourceName, resourceGroupName, fabricName,
+            () -> listByReplicationProtectionContainersSinglePageAsync(resourceGroupName, resourceName, fabricName,
                 protectionContainerName, filter, take, skipToken, context),
             nextLink -> listByReplicationProtectionContainersNextSinglePageAsync(nextLink, context));
     }
@@ -288,8 +288,8 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
      * 
      * Lists the protectable items in a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -298,12 +298,12 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
      * @return protectable item collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ProtectableItemInner> listByReplicationProtectionContainers(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName) {
+    public PagedIterable<ProtectableItemInner> listByReplicationProtectionContainers(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName) {
         final String filter = null;
         final String take = null;
         final String skipToken = null;
-        return new PagedIterable<>(listByReplicationProtectionContainersAsync(resourceName, resourceGroupName,
+        return new PagedIterable<>(listByReplicationProtectionContainersAsync(resourceGroupName, resourceName,
             fabricName, protectionContainerName, filter, take, skipToken));
     }
 
@@ -312,8 +312,8 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
      * 
      * Lists the protectable items in a protection container.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param filter OData filter options.
@@ -326,10 +326,10 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
      * @return protectable item collection as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ProtectableItemInner> listByReplicationProtectionContainers(String resourceName,
-        String resourceGroupName, String fabricName, String protectionContainerName, String filter, String take,
+    public PagedIterable<ProtectableItemInner> listByReplicationProtectionContainers(String resourceGroupName,
+        String resourceName, String fabricName, String protectionContainerName, String filter, String take,
         String skipToken, Context context) {
-        return new PagedIterable<>(listByReplicationProtectionContainersAsync(resourceName, resourceGroupName,
+        return new PagedIterable<>(listByReplicationProtectionContainersAsync(resourceGroupName, resourceName,
             fabricName, protectionContainerName, filter, take, skipToken, context));
     }
 
@@ -338,8 +338,8 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
      * 
      * The operation to get the details of a protectable item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param protectableItemName Protectable item name.
@@ -349,18 +349,18 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
      * @return replication protected item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProtectableItemInner>> getWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<ProtectableItemInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String protectableItemName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -379,8 +379,8 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), fabricName, protectionContainerName,
                 protectableItemName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
@@ -390,8 +390,8 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
      * 
      * The operation to get the details of a protectable item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param protectableItemName Protectable item name.
@@ -402,18 +402,18 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
      * @return replication protected item along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ProtectableItemInner>> getWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<ProtectableItemInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String protectableItemName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -432,7 +432,7 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
             this.client.getSubscriptionId(), fabricName, protectionContainerName, protectableItemName, accept, context);
     }
 
@@ -441,8 +441,8 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
      * 
      * The operation to get the details of a protectable item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param protectableItemName Protectable item name.
@@ -452,9 +452,9 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
      * @return replication protected item on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ProtectableItemInner> getAsync(String resourceName, String resourceGroupName, String fabricName,
+    private Mono<ProtectableItemInner> getAsync(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String protectableItemName) {
-        return getWithResponseAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+        return getWithResponseAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
             protectableItemName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -463,8 +463,8 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
      * 
      * The operation to get the details of a protectable item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param protectableItemName Protectable item name.
@@ -475,9 +475,9 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
      * @return replication protected item along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ProtectableItemInner> getWithResponse(String resourceName, String resourceGroupName,
+    public Response<ProtectableItemInner> getWithResponse(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String protectableItemName, Context context) {
-        return getWithResponseAsync(resourceName, resourceGroupName, fabricName, protectionContainerName,
+        return getWithResponseAsync(resourceGroupName, resourceName, fabricName, protectionContainerName,
             protectableItemName, context).block();
     }
 
@@ -486,8 +486,8 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
      * 
      * The operation to get the details of a protectable item.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param protectionContainerName Protection container name.
      * @param protectableItemName Protectable item name.
@@ -497,9 +497,9 @@ public final class ReplicationProtectableItemsClientImpl implements ReplicationP
      * @return replication protected item.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ProtectableItemInner get(String resourceName, String resourceGroupName, String fabricName,
+    public ProtectableItemInner get(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String protectableItemName) {
-        return getWithResponse(resourceName, resourceGroupName, fabricName, protectionContainerName,
+        return getWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
             protectableItemName, Context.NONE).getValue();
     }
 

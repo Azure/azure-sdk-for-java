@@ -14,7 +14,7 @@ import java.util.Arrays;
 public final class ReplicationFabricsReassociateGatewaySamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationFabrics_ReassociateGateway.json
      */
     /**
@@ -25,7 +25,7 @@ public final class ReplicationFabricsReassociateGatewaySamples {
     public static void performFailoverOfTheProcessServer(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager.replicationFabrics()
-            .reassociateGateway("MadhaviVault", "MadhaviVRG", "GRACE-V2A-1",
+            .reassociateGateway("MadhaviVRG", "MadhaviVault", "GRACE-V2A-1",
                 new FailoverProcessServerRequest().withProperties(new FailoverProcessServerRequestProperties()
                     .withContainerName("cloud_1f3c15af-2256-4568-9e06-e1ef4f728f75")
                     .withSourceProcessServerId("AFA0EC54-1894-4E44-9CAB02DB8854B117")

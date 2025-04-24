@@ -3,6 +3,7 @@
 ### 4.69.0-beta.1 (Unreleased)
 
 #### Features Added
+* Added API to allow customers to wrap/extend `CosmosAsyncContainer` - [PR 43724](https://github.com/Azure/azure-sdk-for-java/pull/43724) and [PR 45087](https://github.com/Azure/azure-sdk-for-java/pull/45087) 
 
 #### Breaking Changes
 

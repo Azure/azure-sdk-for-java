@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ApiManagementServiceApplyNetworkConfigurationParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApiManagementServiceApplyNetworkConfigurationParameters model
-            = BinaryData.fromString("{\"location\":\"kixvvlwy\"}")
-                .toObject(ApiManagementServiceApplyNetworkConfigurationParameters.class);
-        Assertions.assertEquals("kixvvlwy", model.location());
+        ApiManagementServiceApplyNetworkConfigurationParameters model = BinaryData.fromString("{\"location\":\"qqw\"}")
+            .toObject(ApiManagementServiceApplyNetworkConfigurationParameters.class);
+        Assertions.assertEquals("qqw", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApiManagementServiceApplyNetworkConfigurationParameters model
-            = new ApiManagementServiceApplyNetworkConfigurationParameters().withLocation("kixvvlwy");
+            = new ApiManagementServiceApplyNetworkConfigurationParameters().withLocation("qqw");
         model = BinaryData.fromObject(model).toObject(ApiManagementServiceApplyNetworkConfigurationParameters.class);
-        Assertions.assertEquals("kixvvlwy", model.location());
+        Assertions.assertEquals("qqw", model.location());
     }
 }

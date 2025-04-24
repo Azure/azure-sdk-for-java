@@ -10,6 +10,7 @@ import com.puppycrawl.tools.checkstyle.api.DetailNode;
 import com.puppycrawl.tools.checkstyle.api.FullIdent;
 import com.puppycrawl.tools.checkstyle.api.JavadocTokenTypes;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
+import com.puppycrawl.tools.checkstyle.checks.javadoc.AbstractJavadocCheck;
 import com.puppycrawl.tools.checkstyle.utils.BlockCommentPosition;
 import com.puppycrawl.tools.checkstyle.utils.JavadocUtil;
 
@@ -36,11 +37,7 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
         + " does not refer to any sample.";
 
     private static final int[] TOKENS = new int[] {
-        TokenTypes.PACKAGE_DEF,
-        TokenTypes.BLOCK_COMMENT_BEGIN,
-        TokenTypes.CLASS_DEF,
-        TokenTypes.METHOD_DEF
-    };
+        TokenTypes.PACKAGE_DEF, TokenTypes.BLOCK_COMMENT_BEGIN, TokenTypes.CLASS_DEF, TokenTypes.METHOD_DEF };
 
     private String packageName;
     // A LIFO queue contains all class name visited, remove the class name when leave the same token
@@ -94,6 +91,11 @@ public class JavadocCodeSnippetCheck extends AbstractCheck {
                 // Checkstyle complains if there's no default block in switch
                 break;
         }
+    }
+
+    @Override
+    public void destroy() {
+        super.destroy();
     }
 
     /**

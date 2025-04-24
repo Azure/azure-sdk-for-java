@@ -12,20 +12,21 @@ import org.junit.jupiter.api.Assertions;
 public final class RecipientsContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecipientsContractProperties model
-            = BinaryData.fromString("{\"emails\":[\"wytkujsqy\",\"mmoxfablqgpwbmwh\"],\"users\":[\"li\"]}")
-                .toObject(RecipientsContractProperties.class);
-        Assertions.assertEquals("wytkujsqy", model.emails().get(0));
-        Assertions.assertEquals("li", model.users().get(0));
+        RecipientsContractProperties model = BinaryData
+            .fromString(
+                "{\"emails\":[\"pab\",\"reu\",\"zosgyjxvcvasorm\",\"exzvdube\"],\"users\":[\"ygbadu\",\"ecovs\"]}")
+            .toObject(RecipientsContractProperties.class);
+        Assertions.assertEquals("pab", model.emails().get(0));
+        Assertions.assertEquals("ygbadu", model.users().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         RecipientsContractProperties model
-            = new RecipientsContractProperties().withEmails(Arrays.asList("wytkujsqy", "mmoxfablqgpwbmwh"))
-                .withUsers(Arrays.asList("li"));
+            = new RecipientsContractProperties().withEmails(Arrays.asList("pab", "reu", "zosgyjxvcvasorm", "exzvdube"))
+                .withUsers(Arrays.asList("ygbadu", "ecovs"));
         model = BinaryData.fromObject(model).toObject(RecipientsContractProperties.class);
-        Assertions.assertEquals("wytkujsqy", model.emails().get(0));
-        Assertions.assertEquals("li", model.users().get(0));
+        Assertions.assertEquals("pab", model.emails().get(0));
+        Assertions.assertEquals("ygbadu", model.users().get(0));
     }
 }
