@@ -31,7 +31,7 @@ public class RuntimeStackTests {
      * To run this test, upgrade Azure CLI to latest version by running "az upgrade", and remove "@Disabled".
      */
     @Test
-    //    @Disabled
+    @Disabled
     public void listNewRuntimeStacks() throws IOException, InterruptedException {
         Set<String> latestStacks = getLatestStacks();
         Set<String> allCurrentStacks = Arrays.stream(RuntimeStack.class.getDeclaredFields())
