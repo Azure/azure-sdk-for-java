@@ -1180,6 +1180,10 @@ public class SearchIndexingBufferedSenderUnitTests {
 
         AtomicLong firstFlushCompletionTime = new AtomicLong();
         AtomicLong secondFlushCompletionTime = new AtomicLong();
+
+        // Delay the second flush by 100ms to ensure that it starts after the first flush.
+        // The mocked HttpRequest will delay the response by 2 seconds, so if the second flush does finish first it will
+        // be a true indication of incorrect behavior.
         Mono.when(batchingClient.flush().doFinally(ignored -> {
             firstFlushCompletionTime.set(System.nanoTime());
             countDownLatch.countDown();
