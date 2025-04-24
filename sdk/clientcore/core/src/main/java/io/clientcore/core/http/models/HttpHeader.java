@@ -22,7 +22,7 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  * appended at the end of the same {@link HttpHeader} with commas separating them.
  */
 @Metadata(properties = MetadataProperties.FLUENT)
-public final class HttpHeader {
+public class HttpHeader {
 
     private final HttpHeaderName name;
 
