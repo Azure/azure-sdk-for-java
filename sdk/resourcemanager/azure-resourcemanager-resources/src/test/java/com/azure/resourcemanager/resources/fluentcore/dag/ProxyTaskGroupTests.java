@@ -60,7 +60,12 @@ public class ProxyTaskGroupTests {
             });
         }
 
-        Assertions.assertEquals(0, groupItems.size());
+        try {
+            Assertions.assertEquals(0, groupItems.size());
+        } catch (Exception e) {
+            System.out.println(groupItems);
+            throw new RuntimeException(e);
+        }
 
         Map<String, Set<String>> shouldNotSee = new HashMap<>();
 
@@ -185,7 +190,12 @@ public class ProxyTaskGroupTests {
             });
         }
 
-        Assertions.assertEquals(0, group1Items.size());
+        try {
+            Assertions.assertEquals(0, group1Items.size());
+        } catch (Exception e) {
+            System.out.println(group1Items);
+            throw new RuntimeException(e);
+        }
 
         Map<String, Set<String>> shouldNotSee = new HashMap<>();
 
@@ -470,7 +480,12 @@ public class ProxyTaskGroupTests {
             });
         }
 
-        Assertions.assertEquals(0, group1Items.size());
+        try {
+            Assertions.assertEquals(0, group1Items.size());
+        } catch (Exception e) {
+            System.out.println(group1Items);
+            throw new RuntimeException(e);
+        }
 
         Map<String, Set<String>> shouldNotSee = new HashMap<>();
         // NotSeen entries for group-1
@@ -627,7 +642,12 @@ public class ProxyTaskGroupTests {
             });
         }
 
-        Assertions.assertEquals(0, group2Items.size());
+        try {
+            Assertions.assertEquals(0, group2Items.size());
+        } catch (Exception e) {
+            System.out.println(group2Items);
+            throw new RuntimeException(e);
+        }
 
         Map<String, Set<String>> shouldNotSee = new HashMap<>();
         // NotSeen entries for group-1
@@ -931,7 +951,12 @@ public class ProxyTaskGroupTests {
             "R" }));
         //        Sets.SetView<String> diff = Sets.difference(seen, expectedToSee);
         seen.removeAll(expectedToSee);
-        Assertions.assertEquals(0, seen.size());
+        try {
+            Assertions.assertEquals(0, seen.size());
+        } catch (Exception e) {
+            System.out.println(seen);
+            throw new RuntimeException(e);
+        }
 
         // Test invocation order for "group-1 proxy"
         //
