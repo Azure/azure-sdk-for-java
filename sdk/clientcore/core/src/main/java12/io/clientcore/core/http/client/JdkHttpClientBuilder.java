@@ -237,6 +237,11 @@ public class JdkHttpClientBuilder {
         return this;
     }
 
+    /**
+     * Build a HttpClient with current configurations.
+     *
+     * @return a {@link HttpClient}.
+     */
     public HttpClient build() {
         java.net.http.HttpClient.Builder httpClientBuilder = java.net.http.HttpClient.newBuilder();
 
