@@ -962,9 +962,7 @@ public final class PhoneNumbersAsyncClient {
      * expiration time of the reservation to 15 minutes after the last change, up to a maximum of 2 hours from creation
      * time. Partial success is possible, in which case the response will have a 207 status code.
      * 
-     * @param reservationId The id of the reservation that's going to be updated.
-     * @param add The phone numbers to be added to the reservation.
-     * @param remove The phone numbers to be removed from the reservation.
+     * @param request The request object containing the reservation ID and the phone numbers to add or remove.
      * @return represents a reservation for phone numbers on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
