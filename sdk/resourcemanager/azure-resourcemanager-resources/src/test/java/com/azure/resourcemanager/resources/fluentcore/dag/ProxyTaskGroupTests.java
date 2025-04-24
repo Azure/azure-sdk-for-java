@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
 public class ProxyTaskGroupTests {
@@ -302,15 +303,23 @@ public class ProxyTaskGroupTests {
         if (syncStack) {
             group2.invoke(group2.newInvocationContext());
         } else {
-            group2Items.addAll(group1Items);
             group2.invokeAsync(group2.newInvocationContext()).subscribe(value -> {
                 StringIndexable stringIndexable = toStringIndexable(value);
-                Assertions.assertTrue(group2Items.contains(stringIndexable.str()));
+                Assertions.assertTrue(
+                    group2Items.contains(stringIndexable.str()) || group1Items.contains(stringIndexable.str()));
+                group1Items.remove(stringIndexable.str());
                 group2Items.remove(stringIndexable.str());
             });
         }
 
-        Assertions.assertEquals(0, group2Items.size());
+        try {
+            Assertions.assertEquals(0, group1Items.size());
+            Assertions.assertEquals(0, group2Items.size());
+        } catch (Exception e) {
+            System.out.println(group1Items);
+            System.out.println(group2Items);
+            throw new RuntimeException(e);
+        }
 
         Map<String, Set<String>> shouldNotSee = new HashMap<>();
         // NotSeen entries for group-1
