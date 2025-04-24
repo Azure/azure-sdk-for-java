@@ -16,6 +16,10 @@ public class CreateOrUpdateReservationOptions {
 
     /**
      * Creates an instance of CreateOrUpdateReservationOptions class.
+     * 
+     * @param reservationId The reservation ID.
+     * @param phoneNumbersToAdd The list of phone numbers to add to the reservation.
+     * @param phoneNumbersToRemove The list of phone numbers to remove from the reservation.
      */
     public CreateOrUpdateReservationOptions(UUID reservationId, List<AvailablePhoneNumber> phoneNumbersToAdd,
         List<String> phoneNumbersToRemove) {
@@ -37,10 +41,11 @@ public class CreateOrUpdateReservationOptions {
      * Set the reservationId property: The reservation ID.
      * 
      * @param reservationId the reservationId value to set.
-     * @return this object.
+     * @return the CreateOrUpdateReservationOptions itself.
      */
-    public void setReservationId(UUID reservationId) {
+    public CreateOrUpdateReservationOptions setReservationId(UUID reservationId) {
         this.reservationId = reservationId;
+        return this;
     }
 
     /**
@@ -56,10 +61,11 @@ public class CreateOrUpdateReservationOptions {
      * Set the phoneNumbersToAdd property: The list of phone numbers to add to the reservation.
      * 
      * @param phoneNumbersToAdd the phoneNumbersToAdd value to set.
-     * @return this object.
+     * @return the CreateOrUpdateReservationOptions itself.
      */
-    public void setPhoneNumbersToAdd(List<AvailablePhoneNumber> phoneNumbersToAdd) {
+    public CreateOrUpdateReservationOptions setPhoneNumbersToAdd(List<AvailablePhoneNumber> phoneNumbersToAdd) {
         this.phoneNumbersToAdd = phoneNumbersToAdd;
+        return this;
     }
 
     /**
@@ -75,9 +81,10 @@ public class CreateOrUpdateReservationOptions {
      * Set the phoneNumbersToRemove property: The list of phone numbers to remove from the reservation.
      * 
      * @param phoneNumbersToRemove the phoneNumbersToRemove value to set.
-     * @return this object.
+     * @return the CreateOrUpdateReservationOptions itself.
      */
-    public void setPhoneNumbersToRemove(List<String> phoneNumbersToRemove) {
+    public CreateOrUpdateReservationOptions setPhoneNumbersToRemove(List<String> phoneNumbersToRemove) {
         this.phoneNumbersToRemove = phoneNumbersToRemove;
+        return this;
     }
 }
