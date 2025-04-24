@@ -21,10 +21,15 @@ param(
 $repoRoot = Resolve-Path ($PSScriptRoot + "/../../..")
 
 # Delete the root pom.xml.
-Remove-Item -Path (Join-Path $repoRoot "pom.xml") -Force
+if (-not $DryRun) {
+    Remove-Item -Path (Join-Path $repoRoot "pom.xml") -Force
+} else {
+    Write-Host "Would delete $(Join-Path $repoRoot "pom.xml")"
+}
 
 # Root SDK directory is in the 'sdk' folder.
 $sdkRoot = Join-Path $repoRoot "sdk"
+$parentPomsDir = Join-Path $sdkRoot "parents"
 
 # Process and validate the projects passed.
 $projectsByGroupId = @{}
@@ -52,6 +57,11 @@ $pomFiles = Get-ChildItem -Path $sdkRoot -Filter pom.xml -Recurse
 
 # For each pom.xml file, get the groupId and artifactId from the Maven xml.
 foreach ($pomFile in $pomFiles) {
+    if ($pomFile.Directory.FullName.Contains($parentPomsDir)) {
+        # Skip parent POMs.
+        continue
+    }
+
     $xmlContent = New-Object xml
     $xmlContent.Load($pomFile)
 
@@ -74,14 +84,14 @@ foreach ($pomFile in $pomFiles) {
         if (-not $DryRun) {
             Remove-Item -Path $pomFile -Force
         } else {
-            Write-Host "Would delete $pomXml"
+            Write-Host "Would delete $pomFile"
         }
     } elseif (-not $projectsOfGroupId.Contains($artifactId)) {
         # artifactId is not in the list of projects passed, so delete it.
         if (-not $DryRun) {
             Remove-Item -Path $pomFile -Force
         } else {
-            Write-Host "Would delete $pomXml"
+            Write-Host "Would delete $pomFile"
         }
         continue
     }
