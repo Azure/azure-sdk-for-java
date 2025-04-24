@@ -44,6 +44,7 @@ public class ManagementConstants {
     public static final String STATUS_CODE = "statusCode";
     public static final String LEGACY_STATUS_CODE = "status-code";
     public static final String RULES = "rules";
+    public static final String ENQUEUED_TIME_UTC = "enqueued-time-utc";
 
     // Operation name key.
     static final String MANAGEMENT_OPERATION_KEY = "operation";
@@ -61,6 +62,7 @@ public class ManagementConstants {
     static final String OPERATION_ADD_RULE = AmqpConstants.VENDOR + ":add-rule";
     static final String OPERATION_REMOVE_RULE = AmqpConstants.VENDOR + ":remove-rule";
     static final String OPERATION_GET_RULES = AmqpConstants.VENDOR + ":enumerate-rules";
+    static final String OPERATION_DELETE_MESSAGES = AmqpConstants.VENDOR + ":batch-delete-messages";
 
     static final String SERVER_TIMEOUT = AmqpConstants.VENDOR + ":server-timeout";
 
