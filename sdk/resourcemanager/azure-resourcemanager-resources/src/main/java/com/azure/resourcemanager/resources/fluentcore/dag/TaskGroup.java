@@ -276,6 +276,46 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
 
     /**
      * Invokes tasks in the group.
+     *
+     * @return the root result of task group.
+     */
+    public Mono<Indexable> invokeAsync() {
+        return invokeAsync(this.newInvocationContext()).then(Mono.defer(() -> {
+            if (proxyTaskGroupWrapper.isActive()) {
+                return Mono.just(proxyTaskGroupWrapper.taskGroup().root().taskResult());
+            }
+            return Mono.just(root().taskResult());
+        }));
+    }
+
+    /**
+     * Invokes dependency tasks in the group, but not the group itself.
+     *
+     * @param context group level shared context that need be passed to invokeAsync(cxt)
+     *                method of each task item in the group when it is selected for invocation.
+     * @return an observable that emits the result of tasks in the order they finish.
+     */
+    public Flux<Indexable> invokeDependencyAsync(final InvocationContext context) {
+        final String postRunErrorMessage
+            = "Resource configuration which includes 'after create/update' operation is not supported.";
+
+        context.put(TaskGroup.InvocationContext.KEY_SKIP_TASKS, Collections.singleton(this.key()));
+        return Flux.defer(() -> {
+            if (proxyTaskGroupWrapper.isActive()) {
+                return Flux.error(new IllegalStateException(postRunErrorMessage));
+            } else {
+                Set<String> processedKeys = runBeforeGroupInvoke(null);
+                if (proxyTaskGroupWrapper.isActive()) {
+                    return Flux.error(new IllegalStateException(postRunErrorMessage));
+                } else {
+                    return invokeInternAsync(context, false, null);
+                }
+            }
+        });
+    }
+
+    /**
+     * Invokes tasks in the group.
      * By Default, tasks will be executed concurrently on {@link ForkJoinPool#commonPool()}.
      *
      * @param context group level shared context that need be passed to invokeAsync(cxt)
@@ -312,43 +352,27 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
     }
 
     /**
-     * Invokes tasks in the group.
-     *
-     * @return the root result of task group.
-     */
-    public Mono<Indexable> invokeAsync() {
-        return invokeAsync(this.newInvocationContext()).then(Mono.defer(() -> {
-            if (proxyTaskGroupWrapper.isActive()) {
-                return Mono.just(proxyTaskGroupWrapper.taskGroup().root().taskResult());
-            }
-            return Mono.just(root().taskResult());
-        }));
-    }
-
-    /**
-     * Invokes dependency tasks in the group, but not.
+     * Invokes dependency tasks in the group, but not the group itself.
      *
      * @param context group level shared context that need be passed to invokeAsync(cxt)
      *                method of each task item in the group when it is selected for invocation.
-     * @return an observable that emits the result of tasks in the order they finishes.
      */
-    public Flux<Indexable> invokeDependencyAsync(final InvocationContext context) {
+    public void invokeDependency(final InvocationContext context) {
         final String postRunErrorMessage
             = "Resource configuration which includes 'after create/update' operation is not supported.";
 
         context.put(TaskGroup.InvocationContext.KEY_SKIP_TASKS, Collections.singleton(this.key()));
-        return Flux.defer(() -> {
+
+        if (proxyTaskGroupWrapper.isActive()) {
+            throw new IllegalStateException(postRunErrorMessage);
+        } else {
+            Set<String> processedKeys = runBeforeGroupInvoke(null);
             if (proxyTaskGroupWrapper.isActive()) {
-                return Flux.error(new IllegalStateException(postRunErrorMessage));
+                throw new IllegalStateException(postRunErrorMessage);
             } else {
-                Set<String> processedKeys = runBeforeGroupInvoke(null);
-                if (proxyTaskGroupWrapper.isActive()) {
-                    return Flux.error(new IllegalStateException(postRunErrorMessage));
-                } else {
-                    return invokeInternAsync(context, false, null);
-                }
+                invokeIntern(context, false, null);
             }
-        });
+        }
     }
 
     /**

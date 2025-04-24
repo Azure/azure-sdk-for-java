@@ -242,6 +242,50 @@ public class InvokeRootTests {
         Assertions.assertEquals(1, taskItem5.getCallCount());
     }
 
+    @ParameterizedTest
+    @ValueSource(booleans = { true, false })
+    public void canInvokeDependencyWithoutItself(boolean syncStack) {
+        // Difference between sync/async is that, while async asserts on returned taskItems, sync asserts on invocations
+        // on actual taskItems.
+        final HashMap<String, Integer> seen = new HashMap<>();
+        Function<Indexable, Indexable> addItemToSeen = (item) -> {
+            // async will return VoidIndexable upon skipped task
+            if (!syncStack && item instanceof VoidIndexable) {
+                return item;
+            }
+            SupportCountingAndHasName c = (SupportCountingAndHasName) item;
+            if (seen.containsKey(c.name())) {
+                Integer a = seen.get(c.name()) + 1;
+                seen.put(c.name(), a);
+            } else {
+                seen.put(c.name(), 1);
+            }
+            return item;
+        };
+        TestTaskItem taskItem1 = new TestTaskItem("1", addItemToSeen);
+        TestTaskItem taskItem2 = new TestTaskItem("2", addItemToSeen);
+        TestTaskItem taskItem3 = new TestTaskItem("3", addItemToSeen);
+        TestTaskItem taskItem4 = new TestTaskItem("4", addItemToSeen);
+        TestTaskItem taskItem5 = new TestTaskItem("5", addItemToSeen);
+
+        taskItem1.addDependency(taskItem2);
+        taskItem2.addDependency(taskItem3);
+        taskItem3.addDependency(taskItem4);
+        taskItem4.addDependency(taskItem5);
+
+        if (syncStack) {
+            taskItem1.taskGroup().invokeDependency(taskItem1.taskGroup().newInvocationContext());
+        } else {
+            taskItem1.taskGroup()
+                .invokeDependencyAsync(taskItem1.taskGroup().newInvocationContext())
+                .map(addItemToSeen)
+                .blockLast();
+        }
+
+        Assertions.assertEquals(4, seen.size());
+        Assertions.assertFalse(seen.containsKey("1"));
+    }
+
     class TestTaskItem extends IndexableTaskItem implements SupportCountingAndHasName {
         private final String name;
         private int callCount = 0;
