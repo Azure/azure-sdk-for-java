@@ -1,9 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.appconfiguration;
+package com.azure.v2.data.appconfiguration;
 
-import com.azure.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.v2.data.appconfiguration.models.ConfigurationSetting;
+import io.clientcore.core.utils.configuration.Configuration;
 
 /**
  * Sample demonstrates how to add, get, and delete a configuration setting.
@@ -17,7 +18,7 @@ public class HelloWorld {
     public static void main(String[] args) {
         // The connection string value can be obtained by going to your App Configuration instance in the Azure portal
         // and navigating to "Access Keys" page under the "Settings" section.
-        String connectionString = "endpoint={endpoint_value};id={id_value};secret={secret_value}";
+        String connectionString = Configuration.getGlobalConfiguration().get("AZURE_APPCONFIG_CONNECTION_STRING");
 
         final ConfigurationClient client = new ConfigurationClientBuilder()
             .connectionString(connectionString)
@@ -36,7 +37,7 @@ public class HelloWorld {
         System.out.printf("[GetConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue());
 
         setting = client.deleteConfigurationSetting(key, null);
-        System.out.printf("[DeleteConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue());
+        System.out.printf("[DeleteConfigurationSetting] Key: %s, Value: %s%n", setting.getKey(), setting.getValue());
 
         System.out.println("End of synchronous sample.");
     }
