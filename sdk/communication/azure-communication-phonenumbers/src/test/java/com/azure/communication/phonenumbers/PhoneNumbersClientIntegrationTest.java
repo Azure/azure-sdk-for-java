@@ -487,7 +487,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         BrowseAvailableNumbersRequest browseRequest = new BrowseAvailableNumbersRequest().setCountryCode("US")
             .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
             .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
-            .setCapabilities(new PhoneNumberCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
+            .setCapabilities(new PhoneNumberCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
                 .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
         List<AvailablePhoneNumber> result = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
@@ -502,7 +502,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         BrowseAvailableNumbersRequest browseRequest = new BrowseAvailableNumbersRequest().setCountryCode("INVALID")
             .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
             .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
-            .setCapabilities(new PhoneNumberCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
+            .setCapabilities(new PhoneNumberCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
                 .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
         PhoneNumbersClient client = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers");
@@ -517,7 +517,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         BrowseAvailableNumbersRequest browseRequest = new BrowseAvailableNumbersRequest().setCountryCode("US")
             .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
             .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
-            .setCapabilities(new PhoneNumberCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
+            .setCapabilities(new PhoneNumberCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
                 .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
         List<AvailablePhoneNumber> result = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers")
@@ -532,7 +532,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         BrowseAvailableNumbersRequest browseRequest = new BrowseAvailableNumbersRequest().setCountryCode("US")
             .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
             .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
-            .setCapabilities(new PhoneNumberCapabilitiesRequest().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
+            .setCapabilities(new PhoneNumberCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
                 .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
         PhoneNumbersClient client = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers");

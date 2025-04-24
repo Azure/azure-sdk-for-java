@@ -4,7 +4,6 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.communication.phonenumbers.implementation.models.PhoneNumberCapabilitiesRequest;
 import com.azure.core.annotation.Fluent;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
@@ -26,7 +25,7 @@ public final class BrowseAvailableNumbersRequest implements JsonSerializable<Bro
     /*
      * The minimum desired capabilities for the browse operation request.
      */
-    private PhoneNumberCapabilitiesRequest capabilities;
+    private PhoneNumberCapabilities capabilities;
 
     /*
      * Represents the assignment type of the offering. Also known as the use case.
@@ -74,7 +73,7 @@ public final class BrowseAvailableNumbersRequest implements JsonSerializable<Bro
      * 
      * @return the capabilities value.
      */
-    public PhoneNumberCapabilitiesRequest getCapabilities() {
+    public PhoneNumberCapabilities getCapabilities() {
         return this.capabilities;
     }
 
@@ -84,7 +83,7 @@ public final class BrowseAvailableNumbersRequest implements JsonSerializable<Bro
      * @param capabilities the capabilities value to set.
      * @return the PhoneNumbersBrowseRequest object itself.
      */
-    public BrowseAvailableNumbersRequest setCapabilities(PhoneNumberCapabilitiesRequest capabilities) {
+    public BrowseAvailableNumbersRequest setCapabilities(PhoneNumberCapabilities capabilities) {
         this.capabilities = capabilities;
         return this;
     }
@@ -188,8 +187,7 @@ public final class BrowseAvailableNumbersRequest implements JsonSerializable<Bro
                     deserializedPhoneNumbersBrowseRequest.phoneNumberType
                         = PhoneNumberType.fromString(reader.getString());
                 } else if ("capabilities".equals(fieldName)) {
-                    deserializedPhoneNumbersBrowseRequest.capabilities
-                        = PhoneNumberCapabilitiesRequest.fromJson(reader);
+                    deserializedPhoneNumbersBrowseRequest.capabilities = PhoneNumberCapabilities.fromJson(reader);
                 } else if ("assignmentType".equals(fieldName)) {
                     deserializedPhoneNumbersBrowseRequest.assignmentType
                         = PhoneNumberAssignmentType.fromString(reader.getString());
