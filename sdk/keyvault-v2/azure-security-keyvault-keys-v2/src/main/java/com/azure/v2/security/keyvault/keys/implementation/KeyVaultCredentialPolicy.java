@@ -6,12 +6,12 @@ import com.azure.v2.core.credentials.TokenCredential;
 import com.azure.v2.core.credentials.TokenRequestContext;
 import com.azure.v2.core.http.pipeline.BearerTokenAuthenticationPolicy;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipelineNextPolicy;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.Base64Uri;
-import io.clientcore.core.utils.Context;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -96,7 +96,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
     }
 
     public Map<String, Object> authorizeRequestInternal(HttpRequest request) {
-        Context context = request.getRequestOptions().getContext();
+        RequestContext requestContext = request.getContext();
 
         // If this policy doesn't have challenge parameters cached try to get it from the static challenge cache.
         if (this.challenge == null) {
@@ -120,7 +120,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         // don't want to send any unprotected data to vaults which require it.
 
         // Do not overwrite previous contents if retrying after initial request failed (e.g. timeout).
-        if (context.get(KEY_VAULT_STASHED_CONTENT_KEY) == null) {
+        if (requestContext.getMetadata(KEY_VAULT_STASHED_CONTENT_KEY) == null) {
             if (request.getBody() != null) {
                 Map<String, Object> bodyCache = new HashMap<>();
 
@@ -246,13 +246,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
 
         if (authorizeRequestOnChallengeInternal(request, response, bodyCache)) {
             // The body needs to be closed or read to the end to release the connection.
-            try {
-                response.close();
-            } catch (IOException e) {
-                throw LOGGER.logThrowableAsError(
-                    new UncheckedIOException("Failed to close the response stream after receiving a 401 challenge.",
-                        e));
-            }
+            response.close();
 
             HttpPipelineNextPolicy nextPolicy = next.copy();
             Response<BinaryData> newResponse = next.process();
