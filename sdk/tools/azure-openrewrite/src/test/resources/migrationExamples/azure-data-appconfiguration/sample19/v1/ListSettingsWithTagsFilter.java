@@ -31,8 +31,8 @@ public class ListSettingsWithTagsFilter {
 
         // Instantiate a client that will be used to call the service.
         ConfigurationClient client = new ConfigurationClientBuilder()
-                .connectionString(connectionString)
-                .buildClient();
+                                         .connectionString(connectionString)
+                                         .buildClient();
 
         Map<String, String> tags = new HashMap<>();
         tags.put("release", "first");
@@ -49,8 +49,8 @@ public class ListSettingsWithTagsFilter {
         List<String> tagsFilterInString = getTagsFilterInString(tags2);
         System.out.println("List settings with tags filter = " + tagsFilterInString);
         PagedIterable<ConfigurationSetting> configurationSettings = client.listConfigurationSettings(new SettingSelector().setKeyFilter("key*")
-                .setTagsFilter(tagsFilterInString));
+                                                                                                         .setTagsFilter(tagsFilterInString));
         configurationSettings.forEach(setting -> System.out.printf(
-                "\tKey: %s, Value: %s, Tags: %s%n", setting.getKey(), setting.getValue(), setting.getTags()));
+            "\tKey: %s, Value: %s, Tags: %s%n", setting.getKey(), setting.getValue(), setting.getTags()));
     }
 }

@@ -1,11 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.v2.data.appconfiguration;
-
 import com.azure.v2.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.v2.identity.AzureCliCredential;
-import com.azure.v2.identity.AzureCliCredentialBuilder;
+import com.azure.v2.identity.DefaultAzureCredential;
+import com.azure.v2.identity.DefaultAzureCredentialBuilder;
 import io.clientcore.core.utils.configuration.Configuration;
 
 /**
@@ -28,7 +26,7 @@ public class EntraIdAuthentication {
         //      ManagedIdentityCredential
         //      SharedTokenCacheCredential
         //      Fails if none of the credentials above could be created.
-        AzureCliCredential tokenCredential = new AzureCliCredentialBuilder().build();
+        DefaultAzureCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         final ConfigurationClient client = new ConfigurationClientBuilder()
             .credential(tokenCredential) // Entra authentication

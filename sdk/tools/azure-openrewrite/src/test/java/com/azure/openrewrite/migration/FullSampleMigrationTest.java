@@ -94,7 +94,7 @@ public class FullSampleMigrationTest implements RewriteTest {
             4,
             4,
             4,
-            true,
+            false,
             new TabsAndIndentsStyle.MethodDeclarationParameters(true)
         ));
 
@@ -161,17 +161,12 @@ public class FullSampleMigrationTest implements RewriteTest {
             Assumptions.abort("Migration samples are identical. No migration detected.");
         }
 
-        try  {
-            rewriteRun(
-                spec -> spec
-                    .parser(JavaParser.fromJavaVersion().classpath("azure-core", "core").styles(getStyles()))
-                    .recipeFromResources(RECIPE_NAME),
-                sourceSpecs.toArray(new SourceSpecs[sourceSpecs.size()])
-            );
-        } catch (AssertionError e) {
-            String message = e.getMessage();
-            throw new AssertionError("Migration failed for sample directory: " + name + "\n" + e.getLocalizedMessage());
-        }
+        rewriteRun(
+            spec -> spec
+                .parser(JavaParser.fromJavaVersion().classpath(JavaParser.runtimeClasspath()).styles(getStyles()))
+                .recipeFromResources(RECIPE_NAME),
+            sourceSpecs.toArray(new SourceSpecs[sourceSpecs.size()])
+        );
 
     }
 }

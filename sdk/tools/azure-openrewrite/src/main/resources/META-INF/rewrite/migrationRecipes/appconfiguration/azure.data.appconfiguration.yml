@@ -1,0 +1,15 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+# --------------------------------------------------------------------
+# Module Migration Recipes for azure.data.appconfiguration
+# --------------------------------------------------------------------
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.openrewrite.recipes.azure.data.appconfiguration
+displayName: Migrate module azure.data.appconfiguration to next generation stack
+description: This recipe migrates the azure.data.appconfiguration module to the next generation stack.
+recipeList:
+
+  - org.openrewrite.java.ChangePackage:
+      oldPackageName: com.azure.data.appconfiguration
+      newPackageName: com.azure.v2.data.appconfiguration
+

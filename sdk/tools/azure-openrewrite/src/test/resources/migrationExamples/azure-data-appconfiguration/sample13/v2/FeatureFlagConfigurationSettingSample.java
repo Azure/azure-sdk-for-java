@@ -1,14 +1,13 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.v2.data.appconfiguration;
-
+import com.azure.v2.data.appconfiguration.ConfigurationClient;
+import com.azure.v2.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.v2.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.v2.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.v2.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.v2.data.appconfiguration.models.SettingSelector;
 import io.clientcore.core.http.paging.PagedIterable;
-import io.clientcore.core.utils.configuration.Configuration;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,10 +26,10 @@ public class FeatureFlagConfigurationSettingSample {
     public static void main(String[] args) {
         // The connection string value can be obtained by going to your App Configuration instance in the Azure portal
         // and navigating to "Access Keys" page under the "Settings" section.
-        String connectionString = Configuration.getGlobalConfiguration().get("AZURE_APPCONFIG_CONNECTION_STRING");
+        String connectionString = "endpoint={endpoint_value};id={id_value};secret={secret_value}";
         final ConfigurationClient client = new ConfigurationClientBuilder()
-            .connectionString(connectionString)
-            .buildClient();
+                                               .connectionString(connectionString)
+                                               .buildClient();
 
         // Name of the key to add to the configuration service.
         final String key = "hello";
@@ -38,7 +37,7 @@ public class FeatureFlagConfigurationSettingSample {
         System.out.println("Beginning of synchronous sample...");
 
         FeatureFlagFilter percentageFilter = new FeatureFlagFilter("Microsoft.Percentage")
-            .addParameter("Value", 30);
+                                                 .addParameter("Value", 30);
         FeatureFlagConfigurationSetting featureFlagConfigurationSetting =
             new FeatureFlagConfigurationSetting(key, true)
                 .setClientFilters(Arrays.asList(percentageFilter));

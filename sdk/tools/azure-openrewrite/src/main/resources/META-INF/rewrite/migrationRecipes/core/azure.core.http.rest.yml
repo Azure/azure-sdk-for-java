@@ -43,7 +43,7 @@ recipeList:
 
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.azure.core.http.rest.PagedIterable
-      newFullyQualifiedTypeName: com.azure.v2.core.http.rest.PagedIterable
+      newFullyQualifiedTypeName: io.clientcore.core.http.paging.PagedIterable
 
   # TODO: Migrate Methods and Fields
 

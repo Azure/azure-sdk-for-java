@@ -32,20 +32,20 @@ public class ConditionalRequestForSettingsPagination {
 
         // Instantiate a client that will be used to call the service.
         ConfigurationClient client = new ConfigurationClientBuilder()
-                .connectionString(connectionString)
-                .buildClient();
+                                         .connectionString(connectionString)
+                                         .buildClient();
 
         // list all settings and get their page ETags
         List<MatchConditions> matchConditionsList = client.listConfigurationSettings(null)
-                .streamByPage()
-                .collect(Collectors.toList())
-                .stream()
-                .map(pagedResponse -> new MatchConditions().setIfNoneMatch(
-                        pagedResponse.getHeaders().getValue(HttpHeaderName.ETAG)))
-                .collect(Collectors.toList());
+                                                        .streamByPage()
+                                                        .collect(Collectors.toList())
+                                                        .stream()
+                                                        .map(pagedResponse -> new MatchConditions().setIfNoneMatch(
+                                                            pagedResponse.getHeaders().getValue(HttpHeaderName.ETAG)))
+                                                        .collect(Collectors.toList());
 
         PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(
-                new SettingSelector().setMatchConditions(matchConditionsList));
+            new SettingSelector().setMatchConditions(matchConditionsList));
 
         settings.iterableByPage().forEach(pagedResponse -> {
             int statusCode = pagedResponse.getStatusCode();
@@ -65,4 +65,3 @@ public class ConditionalRequestForSettingsPagination {
         });
     }
 }
-

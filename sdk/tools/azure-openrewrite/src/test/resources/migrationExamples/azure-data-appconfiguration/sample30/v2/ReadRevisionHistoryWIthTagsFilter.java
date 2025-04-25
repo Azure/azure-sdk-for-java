@@ -32,8 +32,8 @@ public class ReadRevisionHistoryWIthTagsFilter {
 
         // Instantiate a client that will be used to call the service.
         ConfigurationClient client = new ConfigurationClientBuilder()
-            .connectionString(connectionString)
-            .buildClient();
+                                         .connectionString(connectionString)
+                                         .buildClient();
 
         Map<String, String> tags = new HashMap<>();
         tags.put("release", "first");

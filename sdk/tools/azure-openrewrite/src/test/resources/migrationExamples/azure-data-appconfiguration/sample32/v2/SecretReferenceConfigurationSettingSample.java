@@ -7,7 +7,6 @@ import com.azure.v2.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.v2.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.azure.v2.data.appconfiguration.models.SettingSelector;
 import io.clientcore.core.http.paging.PagedIterable;
-import io.clientcore.core.utils.configuration.Configuration;
 
 /**
  * Sample demonstrates how to add, get, list, and delete a secret reference configuration setting.
@@ -22,10 +21,10 @@ public class SecretReferenceConfigurationSettingSample {
     public static void main(String[] args) {
         // The connection string value can be obtained by going to your App Configuration instance in the Azure portal
         // and navigating to "Access Keys" page under the "Settings" section.
-        String connectionString = Configuration.getGlobalConfiguration().get("AZURE_APPCONFIG_CONNECTION_STRING");
+        String connectionString = "endpoint={endpoint_value};id={id_value};secret={secret_value}";
         final ConfigurationClient client = new ConfigurationClientBuilder()
-            .connectionString(connectionString)
-            .buildClient();
+                                               .connectionString(connectionString)
+                                               .buildClient();
 
         // Name of the key to add to the configuration service.
         final String key = "hello";
