@@ -265,7 +265,9 @@ def verify_self_serve_parameters(api_version, sdk_release_type):
             raise ValueError(f"SDK release type is [stable], but API version [{api_version}] is preview.")
         logging.info(f"[SelfServe] Generate with apiVersion: {api_version} and sdkReleaseType: {sdk_release_type}")
     elif api_version or sdk_release_type:
-        raise ValueError("Both [API version] and [SDK release type] parameters are required for self-serve SDK generation.")
+        raise ValueError(
+            "Both [API version] and [SDK release type] parameters are required for self-serve SDK generation."
+        )
 
 
 def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
@@ -281,8 +283,10 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
     breaking: bool = False
     changelog = ""
     breaking_change_items = []
+    run_mode: str = config["runMode"] if "runMode" in config else None
 
-    verify_self_serve_parameters(api_version, sdk_release_type)
+    if run_mode == "release" or run_mode == "local":
+        verify_self_serve_parameters(api_version, sdk_release_type)
 
     succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
         tsp_project,
@@ -293,7 +297,7 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
         remove_before_regen=True,
         group_id=GROUP_ID,
         api_version=api_version,
-        generate_beta_sdk=release_beta_sdk
+        generate_beta_sdk=release_beta_sdk,
     )
 
     if succeeded:

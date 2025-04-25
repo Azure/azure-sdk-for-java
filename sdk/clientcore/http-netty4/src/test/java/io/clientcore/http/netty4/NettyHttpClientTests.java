@@ -14,15 +14,20 @@ import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
+import io.clientcore.core.http.pipeline.HttpPipelinePolicy;
 import io.clientcore.core.http.pipeline.HttpRetryOptions;
 import io.clientcore.core.http.pipeline.HttpRetryPolicy;
 import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.utils.ProgressReporter;
 import io.clientcore.http.netty4.implementation.MockProxyServer;
+import io.clientcore.http.netty4.implementation.Netty4ProgressAndTimeoutHandler;
 import io.clientcore.http.netty4.implementation.NettyHttpClientLocalTestServer;
+import io.netty.channel.ChannelPipeline;
 import io.netty.handler.proxy.ProxyConnectException;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -33,6 +38,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.URI;
 import java.nio.channels.Channels;
 import java.nio.channels.WritableByteChannel;
@@ -82,7 +89,7 @@ public class NettyHttpClientTests {
         int numRequests = 100; // 100 = 1GB of data read
         HttpClient client = new NettyHttpClientProvider().getSharedInstance();
 
-        ForkJoinPool pool = new ForkJoinPool();
+        ForkJoinPool pool = new ForkJoinPool((int) Math.ceil(Runtime.getRuntime().availableProcessors() / 2.0));
         try {
             List<Future<byte[]>> requests
                 = pool.invokeAll(IntStream.range(0, numRequests).mapToObj(ignored -> (Callable<byte[]>) () -> {
@@ -249,28 +256,33 @@ public class NettyHttpClientTests {
      * This test validates that the eager retrying of Proxy Authentication (407) responses doesn't return to the
      * HttpPipeline before connecting.
      */
+    @Disabled("Need to add eager proxy retry support")
     @Test
     public void proxyAuthenticationErrorEagerlyRetries() throws IOException {
         // Create a Netty HttpClient to share backing resources that are warmed up before making a time based call.
         try (MockProxyServer mockProxyServer = new MockProxyServer("1", "1")) {
-            AtomicInteger responseHandleCount = new AtomicInteger();
+            AtomicInteger callCount = new AtomicInteger();
+            HttpPipelinePolicy callCountingPolicy = (httpRequest, next) -> {
+                callCount.incrementAndGet();
+                return next.process();
+            };
+
             HttpRetryPolicy retryPolicy = new HttpRetryPolicy(new HttpRetryOptions(3, Duration.ofSeconds(1)));
             ProxyOptions proxyOptions
                 = new ProxyOptions(ProxyOptions.Type.HTTP, mockProxyServer.socketAddress()).setCredentials("1", "1");
 
             // Create an HttpPipeline where any exception has a retry delay of 10 seconds.
-            HttpPipeline httpPipeline = new HttpPipelineBuilder().addPolicy(retryPolicy).addPolicy((context, next) -> {
-                Response<BinaryData> response = next.process();
-                responseHandleCount.incrementAndGet();
-                return response;
-            }).httpClient(new NettyHttpClientBuilder().proxy(proxyOptions).build()).build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().addPolicy(retryPolicy)
+                .addPolicy(callCountingPolicy)
+                .httpClient(new NettyHttpClientBuilder().proxy(proxyOptions).build())
+                .build();
 
             try (Response<BinaryData> response
                 = httpPipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(PROXY_TO_ADDRESS)))) {
                 assertEquals(418, response.getStatusCode());
             }
 
-            assertEquals(1, responseHandleCount.get());
+            assertEquals(1, callCount.get());
         }
     }
 
@@ -278,7 +290,7 @@ public class NettyHttpClientTests {
      * This test validates that if the eager retrying of Proxy Authentication (407) responses uses all retries returns
      * the correct error.
      */
-    @Test
+    @RepeatedTest(100)
     public void failedProxyAuthenticationReturnsCorrectError() {
         try (MockProxyServer mockProxyServer = new MockProxyServer("1", "1")) {
             HttpClient httpClient = new NettyHttpClientBuilder()
@@ -290,7 +302,14 @@ public class NettyHttpClientTests {
                 () -> httpClient.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(PROXY_TO_ADDRESS))));
 
             Throwable exception = coreException.getCause();
-            assertInstanceOf(ProxyConnectException.class, exception);
+            assertInstanceOf(ProxyConnectException.class, exception, () -> {
+                StringWriter stringWriter = new StringWriter();
+                stringWriter.write(exception.toString());
+                PrintWriter printWriter = new PrintWriter(stringWriter);
+                exception.printStackTrace(printWriter);
+
+                return stringWriter.toString();
+            });
 
             assertTrue(coreException.getCause().getMessage().contains("Proxy Authentication Required"),
                 () -> "Expected exception message to contain \"Proxy Authentication Required\", it was: "
@@ -317,6 +336,26 @@ public class NettyHttpClientTests {
     //        }
     //    }
 
+    /**
+     * Tests that {@link Netty4ProgressAndTimeoutHandler} isn't added to the {@link ChannelPipeline} where there isn't
+     * a {@link ProgressReporter} and no timeouts are added.
+     */
+    @Test
+    public void progressAndTimeoutHandlerNotAdded() throws IOException {
+        HttpClient client = new NettyHttpClientBuilder().connectTimeout(Duration.ZERO)
+            .writeTimeout(Duration.ZERO)
+            .responseTimeout(Duration.ZERO)
+            .readTimeout(Duration.ZERO)
+            .build();
+
+        try (Response<BinaryData> response
+            = client.send(new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(LONG_BODY_PATH)))) {
+            assertNotNull(response);
+            assertEquals(200, response.getStatusCode());
+            assertArraysEqual(LONG_BODY, response.getValue().toBytes());
+        }
+    }
+
     private static Stream<Arguments> requestHeaderSupplier() {
         return Stream.of(Arguments.of(null, NULL_REPLACEMENT), Arguments.of("", ""), Arguments.of("aValue", "aValue"));
     }
@@ -331,7 +370,7 @@ public class NettyHttpClientTests {
         return client.send(request);
     }
 
-    private static URI uri(String path) {
+    public static URI uri(String path) {
         return URI.create(SERVER_HTTP_URI + path);
     }
 

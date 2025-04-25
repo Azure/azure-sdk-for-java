@@ -20,7 +20,7 @@ public class GetReceipt {
                 .buildClient();
         // BEGIN:com.azure.security.confidentialledger.generated.getreceipt.getreceipt
         RequestOptions requestOptions = new RequestOptions();
-        Response<BinaryData> response = confidentialLedgerClient.getReceiptWithResponse("3.14", requestOptions);
+        Response<BinaryData> response = confidentialLedgerClient.getReceiptWithResponse("2.15", requestOptions);
         // END:com.azure.security.confidentialledger.generated.getreceipt.getreceipt
     }
 }

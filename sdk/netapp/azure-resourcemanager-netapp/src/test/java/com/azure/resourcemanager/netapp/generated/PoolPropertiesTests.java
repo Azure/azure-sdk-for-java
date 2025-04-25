@@ -15,26 +15,26 @@ public final class PoolPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PoolProperties model = BinaryData.fromString(
-            "{\"poolId\":\"nsmvbxwyj\",\"size\":9187109765948314327,\"serviceLevel\":\"Premium\",\"provisioningState\":\"caalnjixisxyaw\",\"totalThroughputMibps\":82.835205,\"utilizedThroughputMibps\":64.62957,\"qosType\":\"Manual\",\"coolAccess\":true,\"encryptionType\":\"Single\"}")
+            "{\"poolId\":\"wzbtdhxu\",\"size\":5441871026164197951,\"serviceLevel\":\"Standard\",\"provisioningState\":\"pow\",\"totalThroughputMibps\":48.1994,\"utilizedThroughputMibps\":92.36481,\"qosType\":\"Auto\",\"coolAccess\":true,\"encryptionType\":\"Single\"}")
             .toObject(PoolProperties.class);
-        Assertions.assertEquals(9187109765948314327L, model.size());
-        Assertions.assertEquals(ServiceLevel.PREMIUM, model.serviceLevel());
-        Assertions.assertEquals(QosType.MANUAL, model.qosType());
+        Assertions.assertEquals(5441871026164197951L, model.size());
+        Assertions.assertEquals(ServiceLevel.STANDARD, model.serviceLevel());
+        Assertions.assertEquals(QosType.AUTO, model.qosType());
         Assertions.assertEquals(true, model.coolAccess());
         Assertions.assertEquals(EncryptionType.SINGLE, model.encryptionType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PoolProperties model = new PoolProperties().withSize(9187109765948314327L)
-            .withServiceLevel(ServiceLevel.PREMIUM)
-            .withQosType(QosType.MANUAL)
+        PoolProperties model = new PoolProperties().withSize(5441871026164197951L)
+            .withServiceLevel(ServiceLevel.STANDARD)
+            .withQosType(QosType.AUTO)
             .withCoolAccess(true)
             .withEncryptionType(EncryptionType.SINGLE);
         model = BinaryData.fromObject(model).toObject(PoolProperties.class);
-        Assertions.assertEquals(9187109765948314327L, model.size());
-        Assertions.assertEquals(ServiceLevel.PREMIUM, model.serviceLevel());
-        Assertions.assertEquals(QosType.MANUAL, model.qosType());
+        Assertions.assertEquals(5441871026164197951L, model.size());
+        Assertions.assertEquals(ServiceLevel.STANDARD, model.serviceLevel());
+        Assertions.assertEquals(QosType.AUTO, model.qosType());
         Assertions.assertEquals(true, model.coolAccess());
         Assertions.assertEquals(EncryptionType.SINGLE, model.encryptionType());
     }

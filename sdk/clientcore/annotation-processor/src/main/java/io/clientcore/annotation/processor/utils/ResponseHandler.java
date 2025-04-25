@@ -11,19 +11,17 @@ import com.github.javaparser.ast.stmt.ReturnStmt;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.implementation.TypeUtil;
-import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.SerializationFormat;
 import io.clientcore.core.utils.CoreUtils;
-
+import java.io.InputStream;
+import java.lang.reflect.ParameterizedType;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Utility class to generate response body mode assignment and response handling based on the response body mode.
@@ -157,6 +155,7 @@ public final class ResponseHandler {
         boolean serializationFormatSet) {
         TypeElement typeElement = (TypeElement) returnType.asElement();
         body.tryAddImportToParentCompilationUnit(CoreUtils.class);
+        body.tryAddImportToParentCompilationUnit(ParameterizedType.class);
 
         if (!returnType.getTypeArguments().isEmpty()) {
             TypeMirror firstGenericType = returnType.getTypeArguments().get(0);
@@ -201,9 +200,9 @@ public final class ResponseHandler {
 
     private static void addSerializationFormatResponseBodyStatements(BlockStmt body) {
         body.addStatement("if (jsonSerializer.supportsFormat(serializationFormat)) { "
-            + "    result = decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType); "
+            + "    result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType); "
             + "} else if (xmlSerializer.supportsFormat(serializationFormat)) { "
-            + "    result = decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType); "
+            + "    result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType); "
             + "} else { " + "    throw new RuntimeException(new UnsupportedOperationException("
             + "        \"None of the provided serializers support the format: \" + serializationFormat + \".\")); "
             + "}");
@@ -261,8 +260,6 @@ public final class ResponseHandler {
     }
 
     private static void closeResponse(BlockStmt body) {
-        body.tryAddImportToParentCompilationUnit(IOException.class);
-        body.tryAddImportToParentCompilationUnit(CoreException.class);
         body.addStatement(StaticJavaParser.parseStatement("networkResponse.close();"));
     }
 

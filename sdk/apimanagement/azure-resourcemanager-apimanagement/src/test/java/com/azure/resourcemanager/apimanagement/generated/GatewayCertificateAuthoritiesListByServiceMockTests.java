@@ -7,8 +7,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.GatewayCertificateAuthorityContract;
@@ -22,19 +22,19 @@ public final class GatewayCertificateAuthoritiesListByServiceMockTests {
     @Test
     public void testListByService() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"isTrusted\":false},\"id\":\"lrnanbrp\",\"name\":\"ocuxfba\",\"type\":\"egjtjltckiw\"}]}";
+            = "{\"value\":[{\"properties\":{\"isTrusted\":false},\"id\":\"dzaj\",\"name\":\"cr\",\"type\":\"xppoqimyhxn\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<GatewayCertificateAuthorityContract> response = manager.gatewayCertificateAuthorities()
-            .listByService("wndalnjjh", "gkjjpcpi", "lzyxvtajfjatoid", "ekurdgcpzanaqve", 1994313986, 139918077,
+            .listByService("t", "bxrgrztkyqgu", "uuihkybgkyncyzj", "dfeemxiurpf", 1697703764, 835958074,
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(false, response.iterator().next().isTrusted());
+        Assertions.assertFalse(response.iterator().next().isTrusted());
     }
 }

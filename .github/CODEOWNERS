@@ -587,10 +587,10 @@
 # ServiceLabel: %MySQL
 # ServiceOwners:                                     @ambhatna @savjani
 
-# PRLabel:  %OpenTelemetry
+# PRLabel:  %Monitor - Autoconfigure
 /sdk/monitor/azure-monitor-opentelemetry-exporter/   @trask @ramthi @heyams @jeanbisutti @harsimar
 
-# PRLabel:  %OpenTelemetry
+# PRLabel:  %Monitor - Autoconfigure
 /sdk/monitor/azure-monitor-opentelemetry-autoconfigure/   @trask @ramthi @heyams @jeanbisutti @harsimar @rajkumar-rangaraj @TimothyMothra @xiang17
 
 # ServiceLabel: %Network
@@ -658,6 +658,9 @@
 
 # PRLabel: %OpenAI
 /sdk/openai/azure-ai-openai-realtime/              @brandom-msft @jpalvarezl @mssfang
+
+# PRLabel: %OpenAI
+/sdk/openai/azure-ai-openai-stainless/             @brandom-msft @jpalvarezl @mssfang
 
 # ServiceLabel: %Operational Insights
 # ServiceOwners:                                     @AzmonLogA

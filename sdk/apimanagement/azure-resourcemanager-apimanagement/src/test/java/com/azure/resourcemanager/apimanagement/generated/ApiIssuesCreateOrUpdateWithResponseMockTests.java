@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.IssueContract;
@@ -22,32 +22,32 @@ public final class ApiIssuesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"title\":\"pmoh\",\"description\":\"rtlikff\",\"userId\":\"dzt\",\"createdDate\":\"2021-09-28T17:32:38Z\",\"state\":\"resolved\",\"apiId\":\"ynzfwvzdteqjmyqx\"},\"id\":\"hgkaxnyprijyoxx\",\"name\":\"xbsowrrlcck\",\"type\":\"yfp\"}";
+            = "{\"properties\":{\"title\":\"yhgtrttcuayiq\",\"description\":\"lnkmmxzifbqgqex\",\"userId\":\"wqzr\",\"createdDate\":\"2021-10-28T17:36:48Z\",\"state\":\"closed\",\"apiId\":\"kvf\"},\"id\":\"gkuobpwain\",\"name\":\"gobot\",\"type\":\"xiewhpnyjtuq\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         IssueContract response = manager.apiIssues()
-            .define("wwlojkbgnf")
-            .withExistingApi("xok", "xamqecjrzvlcivqx", "emklphx")
-            .withTitle("zj")
-            .withDescription("fsunh")
-            .withUserId("evlahxczywyw")
-            .withCreatedDate(OffsetDateTime.parse("2021-02-12T19:21:32Z"))
-            .withState(State.CLOSED)
-            .withApiId("rewcnnaaxqjfda")
-            .withIfMatch("yzqbye")
+            .define("klfqfx")
+            .withExistingApi("fytkhhkemrv", "xeoj", "dyulglhelwr")
+            .withTitle("xgogypbztgaexjns")
+            .withDescription("vctvuzimbwttm")
+            .withUserId("lvry")
+            .withCreatedDate(OffsetDateTime.parse("2021-03-13T18:26:04Z"))
+            .withState(State.RESOLVED)
+            .withApiId("ukfaj")
+            .withIfMatch("idxcorjv")
             .create();
 
-        Assertions.assertEquals("pmoh", response.title());
-        Assertions.assertEquals("rtlikff", response.description());
-        Assertions.assertEquals("dzt", response.userId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-09-28T17:32:38Z"), response.createdDate());
-        Assertions.assertEquals(State.RESOLVED, response.state());
-        Assertions.assertEquals("ynzfwvzdteqjmyqx", response.apiId());
+        Assertions.assertEquals("yhgtrttcuayiq", response.title());
+        Assertions.assertEquals("lnkmmxzifbqgqex", response.description());
+        Assertions.assertEquals("wqzr", response.userId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-28T17:36:48Z"), response.createdDate());
+        Assertions.assertEquals(State.CLOSED, response.state());
+        Assertions.assertEquals("kvf", response.apiId());
     }
 }

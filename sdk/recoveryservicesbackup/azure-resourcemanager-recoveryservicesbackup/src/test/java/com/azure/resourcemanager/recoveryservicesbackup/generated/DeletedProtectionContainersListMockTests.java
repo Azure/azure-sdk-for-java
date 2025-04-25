@@ -7,8 +7,8 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.BackupManagementType;
@@ -23,26 +23,26 @@ public final class DeletedProtectionContainersListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"containerType\":\"ProtectionContainer\",\"friendlyName\":\"pjhgejkb\",\"backupManagementType\":\"AzureStorage\",\"registrationStatus\":\"aurghooxa\",\"healthStatus\":\"bkhxj\",\"protectableObjectType\":\"oez\"},\"eTag\":\"xrkdknkobektm\",\"location\":\"o\",\"tags\":{\"cdgzseznux\":\"tzamicbig\"},\"id\":\"euairaabmdlqjb\",\"name\":\"dp\",\"type\":\"ixlhupm\"}]}";
+            = "{\"value\":[{\"properties\":{\"containerType\":\"ProtectionContainer\",\"friendlyName\":\"qibzji\",\"backupManagementType\":\"Invalid\",\"registrationStatus\":\"biphryvcjwqwoqs\",\"healthStatus\":\"tjhdhzy\",\"protectableObjectType\":\"pijhfrzgdkk\"},\"eTag\":\"v\",\"location\":\"ukhsusmmorf\",\"tags\":{\"neyttl\":\"wilzzhnijmriprlk\",\"bkut\":\"cxiv\"},\"id\":\"umltwjflu\",\"name\":\"ynbpvzlqywauy\",\"type\":\"njc\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ProtectionContainerResource> response
-            = manager.deletedProtectionContainers().list("ycqsxr", "d", "ewuyqa", com.azure.core.util.Context.NONE);
+            = manager.deletedProtectionContainers().list("wyj", "nldpxottd", "i", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("o", response.iterator().next().location());
-        Assertions.assertEquals("tzamicbig", response.iterator().next().tags().get("cdgzseznux"));
-        Assertions.assertEquals("pjhgejkb", response.iterator().next().properties().friendlyName());
-        Assertions.assertEquals(BackupManagementType.AZURE_STORAGE,
+        Assertions.assertEquals("ukhsusmmorf", response.iterator().next().location());
+        Assertions.assertEquals("wilzzhnijmriprlk", response.iterator().next().tags().get("neyttl"));
+        Assertions.assertEquals("qibzji", response.iterator().next().properties().friendlyName());
+        Assertions.assertEquals(BackupManagementType.INVALID,
             response.iterator().next().properties().backupManagementType());
-        Assertions.assertEquals("aurghooxa", response.iterator().next().properties().registrationStatus());
-        Assertions.assertEquals("bkhxj", response.iterator().next().properties().healthStatus());
-        Assertions.assertEquals("oez", response.iterator().next().properties().protectableObjectType());
-        Assertions.assertEquals("xrkdknkobektm", response.iterator().next().etag());
+        Assertions.assertEquals("biphryvcjwqwoqs", response.iterator().next().properties().registrationStatus());
+        Assertions.assertEquals("tjhdhzy", response.iterator().next().properties().healthStatus());
+        Assertions.assertEquals("pijhfrzgdkk", response.iterator().next().properties().protectableObjectType());
+        Assertions.assertEquals("v", response.iterator().next().etag());
     }
 }

@@ -22,7 +22,7 @@ public class ListProcessedDocumentsWithinAJobAsync {
         PagedFlux<DeidentificationDocumentDetails> resultPagedFlux = deidentificationClient.listJobDocuments(jobName);
 
         resultPagedFlux.subscribe(
-            documentDetails -> System.out.println(documentDetails.getInput().getLocation() + " - " + documentDetails.getStatus()),
+            documentDetails -> System.out.println(documentDetails.getInputLocation().getLocation() + " - " + documentDetails.getStatus()),
             error -> System.err.println("Error: " + error)
         );
         // END:com.azure.health.deidentification.samples.list_processed_documents_within_a_job_async

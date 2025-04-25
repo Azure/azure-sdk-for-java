@@ -29,8 +29,8 @@ public final class UpdateReplicationProtectedItemInputTests {
         Assertions.assertEquals("l", model.properties().vmNics().get(0).nicId());
         Assertions.assertEquals("jwosytxitcskfck",
             model.properties().vmNics().get(0).ipConfigs().get(0).ipConfigName());
-        Assertions.assertEquals(true, model.properties().vmNics().get(0).ipConfigs().get(0).isPrimary());
-        Assertions.assertEquals(false, model.properties().vmNics().get(0).ipConfigs().get(0).isSeletedForFailover());
+        Assertions.assertTrue(model.properties().vmNics().get(0).ipConfigs().get(0).isPrimary());
+        Assertions.assertFalse(model.properties().vmNics().get(0).ipConfigs().get(0).isSeletedForFailover());
         Assertions.assertEquals("kkezzikhlyfjhdgq",
             model.properties().vmNics().get(0).ipConfigs().get(0).recoverySubnetName());
         Assertions.assertEquals("ebdunyg",
@@ -48,15 +48,15 @@ public final class UpdateReplicationProtectedItemInputTests {
             model.properties().vmNics().get(0).ipConfigs().get(0).tfoLBBackendAddressPoolIds().get(0));
         Assertions.assertEquals("fxrxxle", model.properties().vmNics().get(0).selectionType());
         Assertions.assertEquals("ramxjezwlwnw", model.properties().vmNics().get(0).recoveryNetworkSecurityGroupId());
-        Assertions.assertEquals(false, model.properties().vmNics().get(0).enableAcceleratedNetworkingOnRecovery());
+        Assertions.assertFalse(model.properties().vmNics().get(0).enableAcceleratedNetworkingOnRecovery());
         Assertions.assertEquals("cvydypatdoo", model.properties().vmNics().get(0).tfoNetworkSecurityGroupId());
-        Assertions.assertEquals(false, model.properties().vmNics().get(0).enableAcceleratedNetworkingOnTfo());
+        Assertions.assertFalse(model.properties().vmNics().get(0).enableAcceleratedNetworkingOnTfo());
         Assertions.assertEquals("niodkooeb", model.properties().vmNics().get(0).recoveryNicName());
         Assertions.assertEquals("ujhemmsbvdkcrodt", model.properties().vmNics().get(0).recoveryNicResourceGroupName());
-        Assertions.assertEquals(true, model.properties().vmNics().get(0).reuseExistingNic());
+        Assertions.assertTrue(model.properties().vmNics().get(0).reuseExistingNic());
         Assertions.assertEquals("wj", model.properties().vmNics().get(0).tfoNicName());
         Assertions.assertEquals("lt", model.properties().vmNics().get(0).tfoNicResourceGroupName());
-        Assertions.assertEquals(true, model.properties().vmNics().get(0).tfoReuseExistingNic());
+        Assertions.assertTrue(model.properties().vmNics().get(0).tfoReuseExistingNic());
         Assertions.assertEquals("vefkdlfoakggk", model.properties().vmNics().get(0).targetNicName());
         Assertions.assertEquals(LicenseType.NOT_SPECIFIED, model.properties().licenseType());
         Assertions.assertEquals("ao", model.properties().recoveryAvailabilitySetId());
@@ -121,8 +121,8 @@ public final class UpdateReplicationProtectedItemInputTests {
         Assertions.assertEquals("l", model.properties().vmNics().get(0).nicId());
         Assertions.assertEquals("jwosytxitcskfck",
             model.properties().vmNics().get(0).ipConfigs().get(0).ipConfigName());
-        Assertions.assertEquals(true, model.properties().vmNics().get(0).ipConfigs().get(0).isPrimary());
-        Assertions.assertEquals(false, model.properties().vmNics().get(0).ipConfigs().get(0).isSeletedForFailover());
+        Assertions.assertTrue(model.properties().vmNics().get(0).ipConfigs().get(0).isPrimary());
+        Assertions.assertFalse(model.properties().vmNics().get(0).ipConfigs().get(0).isSeletedForFailover());
         Assertions.assertEquals("kkezzikhlyfjhdgq",
             model.properties().vmNics().get(0).ipConfigs().get(0).recoverySubnetName());
         Assertions.assertEquals("ebdunyg",
@@ -140,15 +140,15 @@ public final class UpdateReplicationProtectedItemInputTests {
             model.properties().vmNics().get(0).ipConfigs().get(0).tfoLBBackendAddressPoolIds().get(0));
         Assertions.assertEquals("fxrxxle", model.properties().vmNics().get(0).selectionType());
         Assertions.assertEquals("ramxjezwlwnw", model.properties().vmNics().get(0).recoveryNetworkSecurityGroupId());
-        Assertions.assertEquals(false, model.properties().vmNics().get(0).enableAcceleratedNetworkingOnRecovery());
+        Assertions.assertFalse(model.properties().vmNics().get(0).enableAcceleratedNetworkingOnRecovery());
         Assertions.assertEquals("cvydypatdoo", model.properties().vmNics().get(0).tfoNetworkSecurityGroupId());
-        Assertions.assertEquals(false, model.properties().vmNics().get(0).enableAcceleratedNetworkingOnTfo());
+        Assertions.assertFalse(model.properties().vmNics().get(0).enableAcceleratedNetworkingOnTfo());
         Assertions.assertEquals("niodkooeb", model.properties().vmNics().get(0).recoveryNicName());
         Assertions.assertEquals("ujhemmsbvdkcrodt", model.properties().vmNics().get(0).recoveryNicResourceGroupName());
-        Assertions.assertEquals(true, model.properties().vmNics().get(0).reuseExistingNic());
+        Assertions.assertTrue(model.properties().vmNics().get(0).reuseExistingNic());
         Assertions.assertEquals("wj", model.properties().vmNics().get(0).tfoNicName());
         Assertions.assertEquals("lt", model.properties().vmNics().get(0).tfoNicResourceGroupName());
-        Assertions.assertEquals(true, model.properties().vmNics().get(0).tfoReuseExistingNic());
+        Assertions.assertTrue(model.properties().vmNics().get(0).tfoReuseExistingNic());
         Assertions.assertEquals("vefkdlfoakggk", model.properties().vmNics().get(0).targetNicName());
         Assertions.assertEquals(LicenseType.NOT_SPECIFIED, model.properties().licenseType());
         Assertions.assertEquals("ao", model.properties().recoveryAvailabilitySetId());

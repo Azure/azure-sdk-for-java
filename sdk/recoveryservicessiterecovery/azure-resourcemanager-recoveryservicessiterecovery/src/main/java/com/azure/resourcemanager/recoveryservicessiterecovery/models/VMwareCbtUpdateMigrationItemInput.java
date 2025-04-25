@@ -88,6 +88,16 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
     private SqlServerLicenseType sqlServerLicenseType;
 
     /*
+     * The license type for Linux VM's.
+     */
+    private LinuxLicenseType linuxLicenseType;
+
+    /*
+     * The OS name selected by user.
+     */
+    private String userSelectedOSName;
+
+    /*
      * A value indicating whether auto resync is to be done.
      */
     private String performAutoResync;
@@ -386,6 +396,46 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
     }
 
     /**
+     * Get the linuxLicenseType property: The license type for Linux VM's.
+     * 
+     * @return the linuxLicenseType value.
+     */
+    public LinuxLicenseType linuxLicenseType() {
+        return this.linuxLicenseType;
+    }
+
+    /**
+     * Set the linuxLicenseType property: The license type for Linux VM's.
+     * 
+     * @param linuxLicenseType the linuxLicenseType value to set.
+     * @return the VMwareCbtUpdateMigrationItemInput object itself.
+     */
+    public VMwareCbtUpdateMigrationItemInput withLinuxLicenseType(LinuxLicenseType linuxLicenseType) {
+        this.linuxLicenseType = linuxLicenseType;
+        return this;
+    }
+
+    /**
+     * Get the userSelectedOSName property: The OS name selected by user.
+     * 
+     * @return the userSelectedOSName value.
+     */
+    public String userSelectedOSName() {
+        return this.userSelectedOSName;
+    }
+
+    /**
+     * Set the userSelectedOSName property: The OS name selected by user.
+     * 
+     * @param userSelectedOSName the userSelectedOSName value to set.
+     * @return the VMwareCbtUpdateMigrationItemInput object itself.
+     */
+    public VMwareCbtUpdateMigrationItemInput withUserSelectedOSName(String userSelectedOSName) {
+        this.userSelectedOSName = userSelectedOSName;
+        return this;
+    }
+
+    /**
      * Get the performAutoResync property: A value indicating whether auto resync is to be done.
      * 
      * @return the performAutoResync value.
@@ -502,6 +552,9 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
         jsonWriter.writeStringField("licenseType", this.licenseType == null ? null : this.licenseType.toString());
         jsonWriter.writeStringField("sqlServerLicenseType",
             this.sqlServerLicenseType == null ? null : this.sqlServerLicenseType.toString());
+        jsonWriter.writeStringField("linuxLicenseType",
+            this.linuxLicenseType == null ? null : this.linuxLicenseType.toString());
+        jsonWriter.writeStringField("userSelectedOSName", this.userSelectedOSName);
         jsonWriter.writeStringField("performAutoResync", this.performAutoResync);
         jsonWriter.writeMapField("targetVmTags", this.targetVmTags, (writer, element) -> writer.writeString(element));
         jsonWriter.writeMapField("targetDiskTags", this.targetDiskTags,
@@ -560,6 +613,11 @@ public final class VMwareCbtUpdateMigrationItemInput extends UpdateMigrationItem
                 } else if ("sqlServerLicenseType".equals(fieldName)) {
                     deserializedVMwareCbtUpdateMigrationItemInput.sqlServerLicenseType
                         = SqlServerLicenseType.fromString(reader.getString());
+                } else if ("linuxLicenseType".equals(fieldName)) {
+                    deserializedVMwareCbtUpdateMigrationItemInput.linuxLicenseType
+                        = LinuxLicenseType.fromString(reader.getString());
+                } else if ("userSelectedOSName".equals(fieldName)) {
+                    deserializedVMwareCbtUpdateMigrationItemInput.userSelectedOSName = reader.getString();
                 } else if ("performAutoResync".equals(fieldName)) {
                     deserializedVMwareCbtUpdateMigrationItemInput.performAutoResync = reader.getString();
                 } else if ("targetVmTags".equals(fieldName)) {

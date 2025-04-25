@@ -73,6 +73,11 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
     private String multiVmGroupId;
 
     /*
+     * The replication protection cluster Id.
+     */
+    private String protectionClusterId;
+
+    /*
      * The boot diagnostic storage account.
      */
     private String recoveryBootDiagStorageAccountId;
@@ -334,6 +339,26 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
     }
 
     /**
+     * Get the protectionClusterId property: The replication protection cluster Id.
+     * 
+     * @return the protectionClusterId value.
+     */
+    public String protectionClusterId() {
+        return this.protectionClusterId;
+    }
+
+    /**
+     * Set the protectionClusterId property: The replication protection cluster Id.
+     * 
+     * @param protectionClusterId the protectionClusterId value to set.
+     * @return the A2AEnableProtectionInput object itself.
+     */
+    public A2AEnableProtectionInput withProtectionClusterId(String protectionClusterId) {
+        this.protectionClusterId = protectionClusterId;
+        return this;
+    }
+
+    /**
      * Get the recoveryBootDiagStorageAccountId property: The boot diagnostic storage account.
      * 
      * @return the recoveryBootDiagStorageAccountId value.
@@ -559,6 +584,7 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
             (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("multiVmGroupName", this.multiVmGroupName);
         jsonWriter.writeStringField("multiVmGroupId", this.multiVmGroupId);
+        jsonWriter.writeStringField("protectionClusterId", this.protectionClusterId);
         jsonWriter.writeStringField("recoveryBootDiagStorageAccountId", this.recoveryBootDiagStorageAccountId);
         jsonWriter.writeJsonField("diskEncryptionInfo", this.diskEncryptionInfo);
         jsonWriter.writeStringField("recoveryAvailabilityZone", this.recoveryAvailabilityZone);
@@ -614,6 +640,8 @@ public final class A2AEnableProtectionInput extends EnableProtectionProviderSpec
                     deserializedA2AEnableProtectionInput.multiVmGroupName = reader.getString();
                 } else if ("multiVmGroupId".equals(fieldName)) {
                     deserializedA2AEnableProtectionInput.multiVmGroupId = reader.getString();
+                } else if ("protectionClusterId".equals(fieldName)) {
+                    deserializedA2AEnableProtectionInput.protectionClusterId = reader.getString();
                 } else if ("recoveryBootDiagStorageAccountId".equals(fieldName)) {
                     deserializedA2AEnableProtectionInput.recoveryBootDiagStorageAccountId = reader.getString();
                 } else if ("diskEncryptionInfo".equals(fieldName)) {

@@ -11,7 +11,7 @@ public final class ApiManagementSkuRestrictionInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApiManagementSkuRestrictionInfo model
-            = BinaryData.fromString("{\"locations\":[\"scotyx\",\"riifefn\"],\"zones\":[\"vrqoemwsi\",\"eailwdqmqf\"]}")
+            = BinaryData.fromString("{\"locations\":[\"kdknczgorywnvo\"],\"zones\":[\"mdevdlhqvbkarbpy\"]}")
                 .toObject(ApiManagementSkuRestrictionInfo.class);
     }
 

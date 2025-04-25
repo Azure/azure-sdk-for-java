@@ -17,7 +17,8 @@ import java.util.Map;
 public final class ConsolesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2024-07-01/examples/Consoles_Patch.json
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-10-01-preview/examples/
+     * Consoles_Patch.json
      */
     /**
      * Sample code: Patch virtual machine console.

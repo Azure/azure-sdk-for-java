@@ -5,26 +5,43 @@
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.recoveryservicessiterecovery.models.ManagedRunCommandScriptInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.VMwareCbtMigrateInput;
+import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class VMwareCbtMigrateInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VMwareCbtMigrateInput model = BinaryData
-            .fromString(
-                "{\"instanceType\":\"VMwareCbt\",\"performShutdown\":\"ara\",\"osUpgradeVersion\":\"wuasnjeglhtrx\"}")
+        VMwareCbtMigrateInput model = BinaryData.fromString(
+            "{\"instanceType\":\"VMwareCbt\",\"performShutdown\":\"qmtxynoflqobf\",\"osUpgradeVersion\":\"ngxebihexhnk\",\"postMigrationSteps\":[{\"stepName\":\"iqcdolrpg\",\"scriptUrl\":\"psjlbsm\",\"scriptParameters\":\"dafbncuy\"},{\"stepName\":\"eykcnhpplzh\",\"scriptUrl\":\"fzxjzi\",\"scriptParameters\":\"ucrln\"},{\"stepName\":\"wnuwkkfzzetl\",\"scriptUrl\":\"hdyxz\",\"scriptParameters\":\"vwywjvrlgqpwwlzp\"}]}")
             .toObject(VMwareCbtMigrateInput.class);
-        Assertions.assertEquals("ara", model.performShutdown());
-        Assertions.assertEquals("wuasnjeglhtrx", model.osUpgradeVersion());
+        Assertions.assertEquals("qmtxynoflqobf", model.performShutdown());
+        Assertions.assertEquals("ngxebihexhnk", model.osUpgradeVersion());
+        Assertions.assertEquals("iqcdolrpg", model.postMigrationSteps().get(0).stepName());
+        Assertions.assertEquals("psjlbsm", model.postMigrationSteps().get(0).scriptUrl());
+        Assertions.assertEquals("dafbncuy", model.postMigrationSteps().get(0).scriptParameters());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VMwareCbtMigrateInput model
-            = new VMwareCbtMigrateInput().withPerformShutdown("ara").withOsUpgradeVersion("wuasnjeglhtrx");
+        VMwareCbtMigrateInput model = new VMwareCbtMigrateInput().withPerformShutdown("qmtxynoflqobf")
+            .withOsUpgradeVersion("ngxebihexhnk")
+            .withPostMigrationSteps(Arrays.asList(
+                new ManagedRunCommandScriptInput().withStepName("iqcdolrpg")
+                    .withScriptUrl("psjlbsm")
+                    .withScriptParameters("dafbncuy"),
+                new ManagedRunCommandScriptInput().withStepName("eykcnhpplzh")
+                    .withScriptUrl("fzxjzi")
+                    .withScriptParameters("ucrln"),
+                new ManagedRunCommandScriptInput().withStepName("wnuwkkfzzetl")
+                    .withScriptUrl("hdyxz")
+                    .withScriptParameters("vwywjvrlgqpwwlzp")));
         model = BinaryData.fromObject(model).toObject(VMwareCbtMigrateInput.class);
-        Assertions.assertEquals("ara", model.performShutdown());
-        Assertions.assertEquals("wuasnjeglhtrx", model.osUpgradeVersion());
+        Assertions.assertEquals("qmtxynoflqobf", model.performShutdown());
+        Assertions.assertEquals("ngxebihexhnk", model.osUpgradeVersion());
+        Assertions.assertEquals("iqcdolrpg", model.postMigrationSteps().get(0).stepName());
+        Assertions.assertEquals("psjlbsm", model.postMigrationSteps().get(0).scriptUrl());
+        Assertions.assertEquals("dafbncuy", model.postMigrationSteps().get(0).scriptParameters());
     }
 }

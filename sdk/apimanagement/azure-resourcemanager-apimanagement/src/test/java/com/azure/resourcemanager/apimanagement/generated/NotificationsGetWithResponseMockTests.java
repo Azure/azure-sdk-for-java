@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.NotificationContract;
@@ -22,23 +22,23 @@ public final class NotificationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"title\":\"cypazwiimdlzg\",\"description\":\"oa\",\"recipients\":{\"emails\":[\"pamesi\",\"wqadewhuwxkyx\"],\"users\":[\"f\"]}},\"id\":\"mrnaifllxccpr\",\"name\":\"iyfozwhomydxgtuq\",\"type\":\"vfquzih\"}";
+            = "{\"properties\":{\"title\":\"knaxrhljwquf\",\"description\":\"pypboqlefxfpwm\",\"recipients\":{\"emails\":[\"fijf\",\"jjrvsvhmsmrihdd\",\"bwlbqn\"],\"users\":[\"errxyiw\",\"zpsvcmzsfstyy\",\"sqnwnlcfzfjdzkft\",\"sydphdbzzetfgk\"]}},\"id\":\"qb\",\"name\":\"hvdulymkgjsr\",\"type\":\"h\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         NotificationContract response = manager.notifications()
-            .getWithResponse("gavfyihu", "sbpwn", NotificationName.ACCOUNT_CLOSED_PUBLISHER,
+            .getWithResponse("qvjy", "m", NotificationName.PURCHASE_PUBLISHER_NOTIFICATION_MESSAGE,
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("cypazwiimdlzg", response.title());
-        Assertions.assertEquals("oa", response.description());
-        Assertions.assertEquals("pamesi", response.recipients().emails().get(0));
-        Assertions.assertEquals("f", response.recipients().users().get(0));
+        Assertions.assertEquals("knaxrhljwquf", response.title());
+        Assertions.assertEquals("pypboqlefxfpwm", response.description());
+        Assertions.assertEquals("fijf", response.recipients().emails().get(0));
+        Assertions.assertEquals("errxyiw", response.recipients().users().get(0));
     }
 }

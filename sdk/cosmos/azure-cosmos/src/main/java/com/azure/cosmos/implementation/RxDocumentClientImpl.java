@@ -1946,8 +1946,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                                    String documentCollectionLink,
                                                                    ServerBatchRequest serverBatchRequest,
                                                                    RequestOptions options,
-                                                                   boolean disableAutomaticIdGeneration,
-                                                                   DiagnosticsClientContext clientContextOverride) {
+                                                                   boolean disableAutomaticIdGeneration) {
 
         checkArgument(StringUtils.isNotEmpty(documentCollectionLink), "expected non empty documentCollectionLink");
         checkNotNull(serverBatchRequest, "expected non null serverBatchRequest");
@@ -2021,10 +2020,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     return Mono.error(new IllegalStateException("documentCollectionValueHolder or documentCollectionValueHolder.v cannot be null"));
                 }
 
-                CosmosDiagnosticsContext diagnosticsContext
-                    = clientContextOverride.getMostRecentlyCreatedDiagnostics().getDiagnosticsContext();
-
-                return this.partitionKeyRangeCache.tryLookupAsync(metadataDiagnosticsContext, documentCollectionValueHolder.v.getResourceId(), null, null, diagnosticsContext)
+                return this.partitionKeyRangeCache.tryLookupAsync(metadataDiagnosticsContext, documentCollectionValueHolder.v.getResourceId(), null, null)
                     .flatMap(collectionRoutingMapValueHolder -> {
 
                         if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
@@ -2433,10 +2429,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         return Mono.error(new IllegalStateException("documentCollectionValueHolder or documentCollectionValueHolder.v cannot be null"));
                     }
 
-                    CosmosDiagnosticsContext diagnosticsContext
-                        = clientContextOverride.getMostRecentlyCreatedDiagnostics().getDiagnosticsContext();
-
-                    return this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollectionValueHolder.v.getResourceId(), null, null, diagnosticsContext)
+                    return this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollectionValueHolder.v.getResourceId(), null, null)
                         .flatMap(collectionRoutingMapValueHolder -> {
 
                             if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
@@ -2801,10 +2794,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         return Mono.error(new IllegalStateException("documentCollectionValueHolder or documentCollectionValueHolder.v cannot be null"));
                     }
 
-                    CosmosDiagnosticsContext diagnosticsContext
-                        = clientContextOverride.getMostRecentlyCreatedDiagnostics().getDiagnosticsContext();
-
-                    return this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollectionValueHolder.v.getResourceId(), null, null, diagnosticsContext)
+                    return this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollectionValueHolder.v.getResourceId(), null, null)
                         .flatMap(collectionRoutingMapValueHolder -> {
 
                             if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
@@ -3102,10 +3092,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     return Mono.error(new IllegalStateException("documentCollectionValueHolder or documentCollectionValueHolder.v cannot be null"));
                 }
 
-                CosmosDiagnosticsContext diagnosticsContext
-                    = clientContextOverride.getMostRecentlyCreatedDiagnostics().getDiagnosticsContext();
-
-                return this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollectionValueHolder.v.getResourceId(), null, null, diagnosticsContext)
+                return this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollectionValueHolder.v.getResourceId(), null, null)
                     .flatMap(collectionRoutingMapValueHolder -> {
 
                         if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
@@ -3320,10 +3307,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     return Mono.error(new IllegalStateException("documentCollectionValueHolder or documentCollectionValueHolder.v cannot be null"));
                 }
 
-                CosmosDiagnosticsContext diagnosticsContext
-                    = clientContextOverride.getMostRecentlyCreatedDiagnostics().getDiagnosticsContext();
-
-                return this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollectionValueHolder.v.getResourceId(), null, null, diagnosticsContext)
+                return this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollectionValueHolder.v.getResourceId(), null, null)
                     .flatMap(collectionRoutingMapValueHolder -> {
 
                         if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
@@ -3496,11 +3480,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Mono<RxDocumentServiceRequest> requestObs = addPartitionKeyInformation(
                 request, null, internalObjectNode, options, collectionObs, crossRegionAvailabilityContextForRequest);
 
-            CosmosDiagnosticsContext diagnosticsContext
-                = clientContextOverride.getMostRecentlyCreatedDiagnostics().getDiagnosticsContext();
-
             return collectionObs
-                .flatMap(documentCollectionValueHolder -> this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollectionValueHolder.v.getResourceId(), null, null, diagnosticsContext)
+                .flatMap(documentCollectionValueHolder -> this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollectionValueHolder.v.getResourceId(), null, null)
                     .flatMap(collectionRoutingMapValueHolder -> {
                         return requestObs
                             .flatMap(req -> {
@@ -3680,18 +3661,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         return Mono.error(new IllegalStateException("documentCollectionValueHolder or documentCollectionValueHolder.v cannot be null"));
                     }
 
-                DocumentCollection documentCollection = documentCollectionValueHolder.v;
-
-                CosmosDiagnosticsContext diagnosticsContextForInternalStateCapture
-                    = Utils.generateDiagnosticsContextForInternalStateCapture(
-                    clientContextOverride,
-                    ResourceType.PartitionKeyRange,
-                    ConsistencyLevel.STRONG,
-                    this.connectionPolicy.getConnectionMode(),
-                    OperationType.Read,
-                    options);
-
-                    return this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollection.getResourceId(), null, null, diagnosticsContextForInternalStateCapture)
+                    DocumentCollection documentCollection = documentCollectionValueHolder.v;
+                    return this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollection.getResourceId(), null, null)
                         .flatMap(collectionRoutingMapValueHolder -> {
 
                             if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
@@ -3788,8 +3759,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         .tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                             collection.getResourceId(),
                             null,
-                            null,
-                            state.getDiagnosticsContextSnapshot());
+                            null);
 
                     return valueHolderMono
                         .flatMap(collectionRoutingMapValueHolder -> {
@@ -4336,10 +4306,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
                     checkNotNull(collectionRid, "Argument 'collectionRid' cannot be null!");
 
-                    DiagnosticsClientContext diagnosticsClientContext = request.getDiagnosticsClientContext();
-                    CosmosDiagnosticsContext diagnosticsContext = diagnosticsClientContext.getMostRecentlyCreatedDiagnostics().getDiagnosticsContext();
-
-                    return RxDocumentClientImpl.this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), collectionRid, null, null, diagnosticsContext)
+                    return RxDocumentClientImpl.this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), collectionRid, null, null)
                         .flatMap(collectionRoutingMapValueHolder -> {
 
                             if (collectionRoutingMapValueHolder.v == null) {
@@ -4522,8 +4489,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                             BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                             collection.getResourceId(),
                             null,
-                            null,
-                            state.getDiagnosticsContextSnapshot()).flux();
+                            null).flux();
 
                     return valueHolderMono.flatMap(collectionRoutingMapValueHolder -> {
 
@@ -4841,8 +4807,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         options,
                         documentClientRetryPolicy,
                         disableAutomaticIdGeneration,
-                        requestReference,
-                        scopedDiagnosticsFactory), documentClientRetryPolicy),
+                        requestReference), documentClientRetryPolicy),
                 scopedDiagnosticsFactory
             ),
             requestReference);
@@ -4891,13 +4856,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                                                          RequestOptions options,
                                                                          DocumentClientRetryPolicy requestRetryPolicy,
                                                                          boolean disableAutomaticIdGeneration,
-                                                                         AtomicReference<RxDocumentServiceRequest> requestReference,
-                                                                  DiagnosticsClientContext clientContextOverride) {
+                                                                         AtomicReference<RxDocumentServiceRequest> requestReference) {
 
         try {
             logger.debug("Executing a Batch request with number of operations {}", serverBatchRequest.getOperations().size());
 
-            Mono<RxDocumentServiceRequest> requestObs = getBatchDocumentRequest(requestRetryPolicy, collectionLink, serverBatchRequest, options, disableAutomaticIdGeneration, clientContextOverride);
+            Mono<RxDocumentServiceRequest> requestObs = getBatchDocumentRequest(requestRetryPolicy, collectionLink, serverBatchRequest, options, disableAutomaticIdGeneration);
 
             Mono<RxDocumentServiceResponse> responseObservable =
                 requestObs.flatMap(request -> {
@@ -5910,22 +5874,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             requestHeaders.put(HttpConstants.HttpHeaders.PAGE_SIZE, Integer.toString(pageSize));
             RxDocumentServiceRequest request =  RxDocumentServiceRequest.create(this,
                 OperationType.ReadFeed, resourceType, resourceLink, requestHeaders, nonNullOptions);
-
-            List<String> excludeRegions = nonNullOptions.getExcludedRegions();
-
-            if (request.requestContext != null) {
-
-                if (excludeRegions != null && !excludeRegions.isEmpty()) {
-                    request.requestContext.setExcludeRegions(excludeRegions);
-
-                    CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest
-                        = request.requestContext.getCrossRegionAvailabilityContext();
-
-                    crossRegionAvailabilityContextForRequest
-                        .setEnableRegionReorderingForAuxiliaryRequests(qryOptAccessor.isRegionReorderingForAuxiliaryRequestsEnabled(options));
-                }
-            }
-
             retryPolicy.onBeforeSendRequest(request);
             return request;
         };
@@ -6293,7 +6241,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     collection.getResourceId(),
                     RANGE_INCLUDING_ALL_PARTITION_KEY_RANGES,
                     forceRefresh,
-                    null,
                     null);
 
             return valueHolderMono.map(partitionKeyRangeList -> toFeedRanges(partitionKeyRangeList, request));

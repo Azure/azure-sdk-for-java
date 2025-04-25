@@ -11,16 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class StorageAppliancePatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StorageAppliancePatchProperties model = BinaryData.fromString("{\"serialNumber\":\"ytmhdroznnhdrlkt\"}")
-            .toObject(StorageAppliancePatchProperties.class);
-        Assertions.assertEquals("ytmhdroznnhdrlkt", model.serialNumber());
+        StorageAppliancePatchProperties model
+            = BinaryData.fromString("{\"serialNumber\":\"ku\"}").toObject(StorageAppliancePatchProperties.class);
+        Assertions.assertEquals("ku", model.serialNumber());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StorageAppliancePatchProperties model
-            = new StorageAppliancePatchProperties().withSerialNumber("ytmhdroznnhdrlkt");
+        StorageAppliancePatchProperties model = new StorageAppliancePatchProperties().withSerialNumber("ku");
         model = BinaryData.fromObject(model).toObject(StorageAppliancePatchProperties.class);
-        Assertions.assertEquals("ytmhdroznnhdrlkt", model.serialNumber());
+        Assertions.assertEquals("ku", model.serialNumber());
     }
 }

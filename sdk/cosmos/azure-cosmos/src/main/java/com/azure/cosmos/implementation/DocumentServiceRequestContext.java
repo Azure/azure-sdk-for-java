@@ -69,8 +69,7 @@ public class DocumentServiceRequestContext implements Cloneable {
     // Track request timelines of HTTP requests which were in transit when RxGatewayStoreModel#invokeAsync pipeline is cancelled
     public final List<GatewayRequestTimelineContext> cancelledGatewayRequestTimelineContexts = new CopyOnWriteArrayList<>(new ArrayList<>());
 
-    private volatile CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest
-        = new CrossRegionAvailabilityContextForRxDocumentServiceRequest(null, null, null);
+    private volatile CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest;
 
     private volatile Supplier<DocumentClientRetryPolicy> clientRetryPolicySupplier;
 

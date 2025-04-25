@@ -1267,7 +1267,6 @@ public class PerPartitionAutomaticFailoverE2ETests extends TestSuiteBase {
                     containerResponse.getProperties().getResourceId(),
                     PartitionKeyInternalHelper.FullRange,
                     false,
-                    null,
                     null));
     }
 

@@ -11,7 +11,7 @@ public final class AgentDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AgentDetails model = BinaryData.fromString(
-            "{\"agentId\":\"qfhefkwabsol\",\"machineId\":\"nqqlmgnl\",\"biosId\":\"sjxtel\",\"fqdn\":\"hvuqbo\",\"disks\":[{\"diskId\":\"zqocarku\",\"diskName\":\"bc\",\"isOSDisk\":\"dtsnxawqytllhdyz\",\"capacityInBytes\":4408018623458565457,\"lunId\":790899458}]}")
+            "{\"agentId\":\"hffbxrq\",\"machineId\":\"ijpeuql\",\"biosId\":\"x\",\"fqdn\":\"ztv\",\"disks\":[{\"diskId\":\"wmjswenaww\",\"diskName\":\"ecleqioulndhzyo\",\"isOSDisk\":\"jhtollh\",\"capacityInBytes\":8341261771253161349,\"lunId\":751540892},{\"diskId\":\"zln\",\"diskName\":\"xpno\",\"isOSDisk\":\"oanfbcswqagyw\",\"capacityInBytes\":6053958316551408314,\"lunId\":1994276220},{\"diskId\":\"rktpgaeu\",\"diskName\":\"awohpmw\",\"isOSDisk\":\"nucsk\",\"capacityInBytes\":7257337232422356380,\"lunId\":596878782}]}")
             .toObject(AgentDetails.class);
     }
 
