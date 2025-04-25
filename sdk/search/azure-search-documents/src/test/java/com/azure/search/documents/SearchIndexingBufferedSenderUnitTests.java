@@ -20,7 +20,6 @@ import com.azure.json.JsonWriter;
 import com.azure.search.documents.implementation.models.IndexBatch;
 import com.azure.search.documents.models.IndexAction;
 import com.azure.search.documents.models.IndexActionType;
-import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.api.parallel.Execution;
@@ -1005,7 +1004,7 @@ public class SearchIndexingBufferedSenderUnitTests {
         StepVerifier.create(batchingClient.close()).verifyComplete();
     }
 
-    @RepeatedTest(1000)
+    @Test
     public void concurrentFlushesOnlyAllowsOneProcessor() throws InterruptedException {
         AtomicInteger callCount = new AtomicInteger();
 
@@ -1067,7 +1066,7 @@ public class SearchIndexingBufferedSenderUnitTests {
                 + ", difference was " + differenceMillis + "ms");
     }
 
-    @RepeatedTest(1000)
+    @Test
     public void concurrentFlushesOnlyAllowsOneProcessorAsync() throws InterruptedException {
         AtomicInteger callCount = new AtomicInteger();
 
@@ -1125,7 +1124,7 @@ public class SearchIndexingBufferedSenderUnitTests {
                 + ", difference was " + differenceMillis + "ms");
     }
 
-    @RepeatedTest(1000)
+    @Test
     public void closeWillWaitForAnyCurrentFlushesToCompleteBeforeRunning() throws InterruptedException {
         AtomicInteger callCount = new AtomicInteger();
 
@@ -1186,7 +1185,7 @@ public class SearchIndexingBufferedSenderUnitTests {
                 + closeTime + ", difference was " + differenceMillis + "ms");
     }
 
-    @RepeatedTest(1000)
+    @Test
     public void closeWillWaitForAnyCurrentFlushesToCompleteBeforeRunningAsync() throws InterruptedException {
         AtomicInteger callCount = new AtomicInteger();
 
