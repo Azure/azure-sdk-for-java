@@ -1117,29 +1117,39 @@ public final class PhoneNumbersClient {
     private static Map<String, AvailablePhoneNumber> createPhoneNumbersMap(
         Map<String, AvailablePhoneNumber> phoneNumbersMap, List<AvailablePhoneNumber> phoneNumbers) {
         for (AvailablePhoneNumber phoneNumber : phoneNumbers) {
-            phoneNumbersMap.put(phoneNumber.getPhoneNumber(), phoneNumber);
+            phoneNumbersMap.put(phoneNumber.getId(), phoneNumber);
         }
         return phoneNumbersMap;
     }
 
     private static Map<String, AvailablePhoneNumber> updatePhoneNumbersMap(
         Map<String, AvailablePhoneNumber> phoneNumbersMap, CreateOrUpdateReservationOptions request) {
-        phoneNumbersMap = createPhoneNumbersMap(phoneNumbersMap, request.getPhoneNumbersToAdd());
-        for (String phoneNumber : request.getPhoneNumbersToRemove()) {
-            phoneNumbersMap.put(phoneNumber, null);
+        if (request.getPhoneNumbersToAdd() != null) {
+            phoneNumbersMap = createPhoneNumbersMap(phoneNumbersMap, request.getPhoneNumbersToAdd());
+        }
+        if (request.getPhoneNumbersToRemove() != null) {
+            for (String phoneNumber : request.getPhoneNumbersToRemove()) {
+                phoneNumbersMap.put(phoneNumber, null);
+            }
         }
         return phoneNumbersMap;
     }
 
     private static PhoneNumbersBrowseRequest mapBrowseRequest(BrowseAvailableNumbersRequest phoneNumbersBrowseRequest) {
-        PhoneNumberBrowseCapabilitiesRequest capabilitiesRequest = new PhoneNumberBrowseCapabilitiesRequest()
-            .setCalling(phoneNumbersBrowseRequest.getCapabilities().getCalling())
-            .setSms(phoneNumbersBrowseRequest.getCapabilities().getSms());
+        PhoneNumberBrowseCapabilitiesRequest capabilitiesRequest = new PhoneNumberBrowseCapabilitiesRequest();
+        if (phoneNumbersBrowseRequest.getCapabilities() != null) {
+            if (phoneNumbersBrowseRequest.getCapabilities().getCalling() != null) {
+                capabilitiesRequest.setCalling(phoneNumbersBrowseRequest.getCapabilities().getCalling());
+            }
+            if (phoneNumbersBrowseRequest.getCapabilities().getSms() != null) {
+                capabilitiesRequest.setSms(phoneNumbersBrowseRequest.getCapabilities().getSms());
+            }
+        }
         PhoneNumbersBrowseRequest internalBrowseRequest
             = new com.azure.communication.phonenumbers.implementation.models.PhoneNumbersBrowseRequest()
                 .setPhoneNumberType(phoneNumbersBrowseRequest.getPhoneNumberType())
-                .setCapabilities(capabilitiesRequest)
                 .setAssignmentType(phoneNumbersBrowseRequest.getAssignmentType())
+                .setCapabilities(capabilitiesRequest)
                 .setPhoneNumberPrefixes(phoneNumbersBrowseRequest.getPhoneNumberPrefixes())
                 .setCountryCode(phoneNumbersBrowseRequest.getCountryCode());
         return internalBrowseRequest;
