@@ -47,12 +47,7 @@ public class SyncProxyTaskGroupTests {
         //
         group.invoke(group.newInvocationContext());
 
-        try {
-            Assertions.assertEquals(0, groupItems.size());
-        } catch (Throwable e) {
-            System.out.println(groupItems);
-            throw new RuntimeException(e);
-        }
+        Assertions.assertEquals(0, groupItems.size());
 
         Map<String, Set<String>> shouldNotSee = new HashMap<>();
 
@@ -168,12 +163,7 @@ public class SyncProxyTaskGroupTests {
         //
         group1.invoke(group1.newInvocationContext());
 
-        try {
-            Assertions.assertEquals(0, group1Items.size());
-        } catch (Throwable e) {
-            System.out.println(group1Items);
-            throw new RuntimeException(e);
-        }
+        Assertions.assertEquals(0, group1Items.size());
 
         Map<String, Set<String>> shouldNotSee = new HashMap<>();
 
@@ -289,14 +279,8 @@ public class SyncProxyTaskGroupTests {
         //
         group2.invoke(group2.newInvocationContext());
 
-        try {
-            Assertions.assertEquals(0, group1Items.size());
-            Assertions.assertEquals(0, group2Items.size());
-        } catch (Throwable e) {
-            System.out.println(group1Items);
-            System.out.println(group2Items);
-            throw new RuntimeException(e);
-        }
+        Assertions.assertEquals(0, group1Items.size());
+        Assertions.assertEquals(0, group2Items.size());
 
         Map<String, Set<String>> shouldNotSee = new HashMap<>();
         // NotSeen entries for group-1
@@ -436,12 +420,7 @@ public class SyncProxyTaskGroupTests {
         //
         group1.invoke(group1.newInvocationContext());
 
-        try {
-            Assertions.assertEquals(0, group1Items.size());
-        } catch (Throwable e) {
-            System.out.println(group1Items);
-            throw new RuntimeException(e);
-        }
+        Assertions.assertEquals(0, group1Items.size());
 
         Map<String, Set<String>> shouldNotSee = new HashMap<>();
         // NotSeen entries for group-1
@@ -585,12 +564,7 @@ public class SyncProxyTaskGroupTests {
         //
         group2.invoke(group2.newInvocationContext());
 
-        try {
-            Assertions.assertEquals(0, group2Items.size());
-        } catch (Throwable e) {
-            System.out.println(group2Items);
-            throw new RuntimeException(e);
-        }
+        Assertions.assertEquals(0, group2Items.size());
 
         Map<String, Set<String>> shouldNotSee = new HashMap<>();
         // NotSeen entries for group-1

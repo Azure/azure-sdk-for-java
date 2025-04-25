@@ -174,8 +174,6 @@ public class SyncInvokeRootTests {
 
     @Test
     public void canInvokeDependencyWithoutItself() {
-        // Difference between sync/async is that, while async asserts on returned taskItems, sync asserts on invocations
-        // on actual taskItems.
         final HashMap<String, Integer> seen = new HashMap<>();
         Function<Indexable, Indexable> addItemToSeen = (item) -> {
             SupportCountingAndHasName c = (SupportCountingAndHasName) item;
