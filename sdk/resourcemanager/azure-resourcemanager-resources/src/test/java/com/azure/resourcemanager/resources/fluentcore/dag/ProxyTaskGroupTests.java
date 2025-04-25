@@ -62,7 +62,7 @@ public class ProxyTaskGroupTests {
 
         try {
             Assertions.assertEquals(0, groupItems.size());
-        } catch (Exception e) {
+        } catch (Throwable e) {
             System.out.println(groupItems);
             throw new RuntimeException(e);
         }
@@ -192,7 +192,7 @@ public class ProxyTaskGroupTests {
 
         try {
             Assertions.assertEquals(0, group1Items.size());
-        } catch (Exception e) {
+        } catch (Throwable e) {
             System.out.println(group1Items);
             throw new RuntimeException(e);
         }
@@ -325,7 +325,7 @@ public class ProxyTaskGroupTests {
         try {
             Assertions.assertEquals(0, group1Items.size());
             Assertions.assertEquals(0, group2Items.size());
-        } catch (Exception e) {
+        } catch (Throwable e) {
             System.out.println(group1Items);
             System.out.println(group2Items);
             throw new RuntimeException(e);
@@ -482,7 +482,7 @@ public class ProxyTaskGroupTests {
 
         try {
             Assertions.assertEquals(0, group1Items.size());
-        } catch (Exception e) {
+        } catch (Throwable e) {
             System.out.println(group1Items);
             throw new RuntimeException(e);
         }
@@ -644,7 +644,7 @@ public class ProxyTaskGroupTests {
 
         try {
             Assertions.assertEquals(0, group2Items.size());
-        } catch (Exception e) {
+        } catch (Throwable e) {
             System.out.println(group2Items);
             throw new RuntimeException(e);
         }
@@ -953,7 +953,7 @@ public class ProxyTaskGroupTests {
         seen.removeAll(expectedToSee);
         try {
             Assertions.assertEquals(0, seen.size());
-        } catch (Exception e) {
+        } catch (Throwable e) {
             System.out.println(seen);
             throw new RuntimeException(e);
         }
