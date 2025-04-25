@@ -16,7 +16,7 @@ import com.azure.v2.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.v2.security.keyvault.keys.cryptography.models.WrapResult;
 import com.azure.v2.security.keyvault.keys.models.JsonWebKey;
 import com.azure.v2.security.keyvault.keys.models.KeyOperation;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
@@ -41,27 +41,27 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, RequestOptions requestOptions) {
+    public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, RequestContext requestContext) {
         throw new UnsupportedOperationException("The encrypt operation is not supported for EC keys.");
     }
 
     @Override
-    public EncryptResult encrypt(EncryptParameters options, RequestOptions requestOptions) {
+    public EncryptResult encrypt(EncryptParameters options, RequestContext requestContext) {
         throw new UnsupportedOperationException("The encrypt operation is not supported for EC keys.");
     }
 
     @Override
-    public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] plaintext, RequestOptions requestOptions) {
+    public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] plaintext, RequestContext requestContext) {
         throw new UnsupportedOperationException("The decrypt operation is not supported for EC keys.");
     }
 
     @Override
-    public DecryptResult decrypt(DecryptParameters options, RequestOptions requestOptions) {
+    public DecryptResult decrypt(DecryptParameters options, RequestContext requestContext) {
         throw new UnsupportedOperationException("The decrypt operation is not supported for EC keys.");
     }
 
     @Override
-    public SignResult sign(SignatureAlgorithm algorithm, byte[] digest, RequestOptions requestOptions) {
+    public SignResult sign(SignatureAlgorithm algorithm, byte[] digest, RequestContext requestContext) {
         Objects.requireNonNull(algorithm, "Signature algorithm cannot be null.");
         Objects.requireNonNull(digest, "Digest content cannot be null.");
 
@@ -71,7 +71,7 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
         if (baseAlgorithm == null) {
             if (implClient != null) {
                 try {
-                    return implClient.sign(algorithm, digest, requestOptions);
+                    return implClient.sign(algorithm, digest, requestContext);
                 } catch (IOException e) {
                     throw new UncheckedIOException(e);
                 }
@@ -85,7 +85,7 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
         if (ecKeyPair.getPrivate() == null) {
             if (implClient != null) {
                 try {
-                    return implClient.sign(algorithm, digest, requestOptions);
+                    return implClient.sign(algorithm, digest, requestContext);
                 } catch (IOException e) {
                     throw new UncheckedIOException(e);
                 }
@@ -120,7 +120,7 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     public VerifyResult verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
 
         Objects.requireNonNull(algorithm, "Signature algorithm cannot be null.");
         Objects.requireNonNull(digest, "Digest content cannot be null.");
@@ -132,7 +132,7 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
         if (baseAlgorithm == null) {
             if (implClient != null) {
                 try {
-                    return implClient.verify(algorithm, digest, signature, requestOptions);
+                    return implClient.verify(algorithm, digest, signature, requestContext);
                 } catch (IOException e) {
                     throw new UncheckedIOException(e);
                 }
@@ -146,7 +146,7 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
         if (ecKeyPair.getPublic() == null) {
             if (implClient != null) {
                 try {
-                    return implClient.verify(algorithm, digest, signature, requestOptions);
+                    return implClient.verify(algorithm, digest, signature, requestContext);
                 } catch (IOException e) {
                     throw new UncheckedIOException(e);
                 }
@@ -180,19 +180,19 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    public WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] keyToWrap, RequestOptions requestOptions) {
+    public WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] keyToWrap, RequestContext requestContext) {
         throw new UnsupportedOperationException("The key wrap operation is not supported for EC keys.");
     }
 
     @Override
-    public UnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, RequestOptions requestOptions) {
+    public UnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, RequestContext requestContext) {
         throw new UnsupportedOperationException("The key unwrap operation is not supported for EC keys.");
     }
 
     @Override
-    public SignResult signData(SignatureAlgorithm algorithm, byte[] data, RequestOptions requestOptions) {
+    public SignResult signData(SignatureAlgorithm algorithm, byte[] data, RequestContext requestContext) {
         try {
-            return sign(algorithm, calculateDigest(algorithm, data), requestOptions);
+            return sign(algorithm, calculateDigest(algorithm, data), requestContext);
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
@@ -200,10 +200,10 @@ class EcKeyCryptographyClient extends LocalKeyCryptographyClient {
 
     @Override
     public VerifyResult verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
 
         try {
-            return verify(algorithm, calculateDigest(algorithm, data), signature, requestOptions);
+            return verify(algorithm, calculateDigest(algorithm, data), signature, requestContext);
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }

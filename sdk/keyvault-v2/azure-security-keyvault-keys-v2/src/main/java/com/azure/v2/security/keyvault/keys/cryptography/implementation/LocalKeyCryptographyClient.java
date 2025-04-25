@@ -15,7 +15,7 @@ import com.azure.v2.security.keyvault.keys.cryptography.models.UnwrapResult;
 import com.azure.v2.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.v2.security.keyvault.keys.cryptography.models.WrapResult;
 import com.azure.v2.security.keyvault.keys.models.JsonWebKey;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 
 public abstract class LocalKeyCryptographyClient {
     final CryptographyClientImpl implClient;
@@ -27,29 +27,29 @@ public abstract class LocalKeyCryptographyClient {
     }
 
     public abstract EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext,
-        RequestOptions requestOptions);
+        RequestContext requestContext);
 
-    public abstract EncryptResult encrypt(EncryptParameters encryptParameters, RequestOptions requestOptions);
+    public abstract EncryptResult encrypt(EncryptParameters encryptParameters, RequestContext requestContext);
 
     public abstract DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] plaintext,
-        RequestOptions requestOptions);
+        RequestContext requestContext);
 
-    public abstract DecryptResult decrypt(DecryptParameters decryptParameters, RequestOptions requestOptions);
+    public abstract DecryptResult decrypt(DecryptParameters decryptParameters, RequestContext requestContext);
 
-    public abstract SignResult sign(SignatureAlgorithm algorithm, byte[] digest, RequestOptions requestOptions);
+    public abstract SignResult sign(SignatureAlgorithm algorithm, byte[] digest, RequestContext requestContext);
 
     public abstract VerifyResult verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature,
-        RequestOptions requestOptions);
+        RequestContext requestContext);
 
-    public abstract WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] keyToWrap, RequestOptions requestOptions);
+    public abstract WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] keyToWrap, RequestContext requestContext);
 
     public abstract UnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey,
-        RequestOptions requestOptions);
+        RequestContext requestContext);
 
-    public abstract SignResult signData(SignatureAlgorithm algorithm, byte[] data, RequestOptions requestOptions);
+    public abstract SignResult signData(SignatureAlgorithm algorithm, byte[] data, RequestContext requestContext);
 
     public abstract VerifyResult verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature,
-        RequestOptions requestOptions);
+        RequestContext requestContext);
 
     public JsonWebKey getJsonWebKey() {
         return jsonWebKey;
