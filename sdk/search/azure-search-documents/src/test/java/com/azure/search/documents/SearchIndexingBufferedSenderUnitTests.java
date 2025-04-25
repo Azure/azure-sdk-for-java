@@ -12,6 +12,7 @@ import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.SharedExecutorService;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
@@ -38,7 +39,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -1005,7 +1005,7 @@ public class SearchIndexingBufferedSenderUnitTests {
         StepVerifier.create(batchingClient.close()).verifyComplete();
     }
 
-    @Test
+    @RepeatedTest(1000)
     public void concurrentFlushesOnlyAllowsOneProcessor() throws InterruptedException {
         AtomicInteger callCount = new AtomicInteger();
 
@@ -1031,7 +1031,7 @@ public class SearchIndexingBufferedSenderUnitTests {
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
         AtomicLong firstFlushCompletionTime = new AtomicLong();
-        ForkJoinPool.commonPool().execute(() -> {
+        SharedExecutorService.getInstance().execute(() -> {
             try {
                 batchingClient.flush();
             } finally {
@@ -1040,10 +1040,10 @@ public class SearchIndexingBufferedSenderUnitTests {
             }
         });
 
-        Thread.sleep(10); // Give the first operation a chance to start
+        Thread.sleep(100); // Give the first operation a chance to start
 
         AtomicLong secondFlushCompletionTime = new AtomicLong();
-        ForkJoinPool.commonPool().execute(() -> {
+        SharedExecutorService.getInstance().execute(() -> {
             try {
                 batchingClient.flush();
             } finally {
@@ -1052,13 +1052,15 @@ public class SearchIndexingBufferedSenderUnitTests {
             }
         });
 
-        countDownLatch.await();
-        assertTrue(firstFlushCompletionTime.get() > secondFlushCompletionTime.get(),
-            () -> "Expected first flush to complete before the second flush but was " + firstFlushCompletionTime.get()
-                + " and " + secondFlushCompletionTime.get() + ".");
+        if (!countDownLatch.await(10, TimeUnit.SECONDS)) {
+            fail("Timed out waiting for flushes to complete.");
+        }
+        assertTrue(firstFlushCompletionTime.get() <= secondFlushCompletionTime.get(),
+            () -> "Expected first close attempt to complete before second close attempt. First close finished at "
+                + firstFlushCompletionTime.get() + ", second close finished at " + secondFlushCompletionTime.get());
     }
 
-    @Test
+    @RepeatedTest(1000)
     public void concurrentFlushesOnlyAllowsOneProcessorAsync() throws InterruptedException {
         AtomicInteger callCount = new AtomicInteger();
 
@@ -1066,7 +1068,8 @@ public class SearchIndexingBufferedSenderUnitTests {
             = getSearchClientBuilder().httpClient(wrapWithAsserting(request -> {
                 int count = callCount.getAndIncrement();
                 if (count == 0) {
-                    return createMockBatchSplittingResponse(request, 0, 5).delayElement(Duration.ofSeconds(2));
+                    sleep(2000);
+                    return createMockBatchSplittingResponse(request, 0, 5);
                 } else if (count == 1) {
                     return createMockBatchSplittingResponse(request, 5, 5);
                 } else {
@@ -1082,28 +1085,28 @@ public class SearchIndexingBufferedSenderUnitTests {
         CountDownLatch countDownLatch = new CountDownLatch(2);
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON)).block();
 
+        // Delay the second flush by 100ms to ensure that it starts after the first flush.
+        // The mocked HttpRequest will delay the response by 2 seconds, so if the second flush does finish first it will
+        // be a true indication of incorrect behavior.
         AtomicLong firstFlushCompletionTime = new AtomicLong();
-        Mono.using(() -> 1, ignored -> batchingClient.flush(), ignored -> {
+        AtomicLong secondFlushCompletionTime = new AtomicLong();
+        Mono.when(batchingClient.flush().doFinally(ignored -> {
             firstFlushCompletionTime.set(System.nanoTime());
             countDownLatch.countDown();
-        }).subscribe();
-
-        Thread.sleep(10); // Give the first operation a chance to start
-
-        AtomicLong secondFlushCompletionTime = new AtomicLong();
-        Mono.using(() -> 1, ignored -> batchingClient.flush(), ignored -> {
+        }), Mono.delay(Duration.ofMillis(100)).then(batchingClient.flush().doFinally(ignored -> {
             secondFlushCompletionTime.set(System.nanoTime());
             countDownLatch.countDown();
-        }).subscribe();
+        }))).subscribe();
 
-        countDownLatch.await();
-        assertTrue(firstFlushCompletionTime.get() > secondFlushCompletionTime.get(),
-            () -> "Expected first flush to complete before the second flush but was " + firstFlushCompletionTime.get()
-                + " and " + secondFlushCompletionTime.get() + ".");
+        if (!countDownLatch.await(10, TimeUnit.SECONDS)) {
+            fail("Timed out waiting for flushes to complete.");
+        }
+        assertTrue(firstFlushCompletionTime.get() <= secondFlushCompletionTime.get(),
+            () -> "Expected first close attempt to complete before second close attempt. First close finished at "
+                + firstFlushCompletionTime.get() + ", second close finished at " + secondFlushCompletionTime.get());
     }
 
-    //@RepeatedTest(1000)
-    @Test
+    @RepeatedTest(1000)
     public void closeWillWaitForAnyCurrentFlushesToCompleteBeforeRunning() throws InterruptedException {
         AtomicInteger callCount = new AtomicInteger();
 
@@ -1111,7 +1114,8 @@ public class SearchIndexingBufferedSenderUnitTests {
             = getSearchClientBuilder().httpClient(wrapWithAsserting(request -> {
                 int count = callCount.getAndIncrement();
                 if (count == 0) {
-                    return createMockBatchSplittingResponse(request, 0, 5).delayElement(Duration.ofSeconds(2));
+                    sleep(2000);
+                    return createMockBatchSplittingResponse(request, 0, 5);
                 } else if (count == 1) {
                     return createMockBatchSplittingResponse(request, 5, 5);
                 } else {
@@ -1127,30 +1131,34 @@ public class SearchIndexingBufferedSenderUnitTests {
         CountDownLatch countDownLatch = new CountDownLatch(2);
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
-        AtomicLong firstFlushCompletionTime = new AtomicLong();
-        ForkJoinPool.commonPool().execute(() -> {
-            try {
-                batchingClient.flush();
-            } finally {
-                firstFlushCompletionTime.set(System.nanoTime());
-                countDownLatch.countDown();
-            }
-        });
-
-        Thread.sleep(10); // Give the first operation a chance to start.
-
-        AtomicLong secondFlushCompletionTime = new AtomicLong();
-        ForkJoinPool.commonPool().execute(() -> {
+        AtomicLong firstCloseCompletionTime = new AtomicLong();
+        SharedExecutorService.getInstance().execute(() -> {
             try {
                 batchingClient.close();
             } finally {
-                secondFlushCompletionTime.set(System.nanoTime());
+                firstCloseCompletionTime.set(System.nanoTime());
                 countDownLatch.countDown();
             }
         });
 
-        countDownLatch.await();
-        assertTrue(firstFlushCompletionTime.get() <= secondFlushCompletionTime.get());
+        Thread.sleep(100); // Give the first operation a chance to start.
+
+        AtomicLong secondCloseCompletionTime = new AtomicLong();
+        SharedExecutorService.getInstance().execute(() -> {
+            try {
+                batchingClient.close();
+            } finally {
+                secondCloseCompletionTime.set(System.nanoTime());
+                countDownLatch.countDown();
+            }
+        });
+
+        if (!countDownLatch.await(10, TimeUnit.SECONDS)) {
+            fail("Timed out waiting for closes to complete.");
+        }
+        assertTrue(firstCloseCompletionTime.get() <= secondCloseCompletionTime.get(),
+            () -> "Expected first close attempt to complete before second close attempt. First close finished at "
+                + firstCloseCompletionTime.get() + ", second close finished at " + secondCloseCompletionTime.get());
     }
 
     @RepeatedTest(1000)
@@ -1178,26 +1186,25 @@ public class SearchIndexingBufferedSenderUnitTests {
         CountDownLatch countDownLatch = new CountDownLatch(2);
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON)).block();
 
-        AtomicLong firstFlushCompletionTime = new AtomicLong();
-        AtomicLong secondFlushCompletionTime = new AtomicLong();
-
-        // Delay the second flush by 100ms to ensure that it starts after the first flush.
+        // Delay the second close by 100ms to ensure that it starts after the first flush.
         // The mocked HttpRequest will delay the response by 2 seconds, so if the second flush does finish first it will
         // be a true indication of incorrect behavior.
-        Mono.when(batchingClient.flush().doFinally(ignored -> {
-            firstFlushCompletionTime.set(System.nanoTime());
+        AtomicLong firstCloseCompletionTime = new AtomicLong();
+        AtomicLong secondCloseCompletionTime = new AtomicLong();
+        Mono.when(batchingClient.close().doFinally(ignored -> {
+            firstCloseCompletionTime.set(System.nanoTime());
             countDownLatch.countDown();
-        }), Mono.delay(Duration.ofMillis(100)).then(batchingClient.flush().doFinally(ignored -> {
-            secondFlushCompletionTime.set(System.nanoTime());
+        }), Mono.delay(Duration.ofMillis(100)).then(batchingClient.close().doFinally(ignored -> {
+            secondCloseCompletionTime.set(System.nanoTime());
             countDownLatch.countDown();
         }))).subscribe();
 
         if (!countDownLatch.await(10, TimeUnit.SECONDS)) {
-            fail("Timed out waiting for flushes to complete.");
+            fail("Timed out waiting for closes to complete.");
         }
-        assertTrue(firstFlushCompletionTime.get() <= secondFlushCompletionTime.get(),
-            () -> "Expected first flush attempt to complete before second flush attempt. First flush finished at "
-                + firstFlushCompletionTime.get() + ", second flush finished at " + secondFlushCompletionTime.get());
+        assertTrue(firstCloseCompletionTime.get() <= secondCloseCompletionTime.get(),
+            () -> "Expected first close attempt to complete before second close attempt. First close finished at "
+                + firstCloseCompletionTime.get() + ", second close finished at " + secondCloseCompletionTime.get());
     }
 
     @Test
