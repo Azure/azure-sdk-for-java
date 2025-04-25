@@ -5,18 +5,25 @@ package com.azure.resourcemanager.resources.fluentcore.dag;
 
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
+import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.Executors;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
-public class DAGErrorTests {
-    private static final ClientLogger LOGGER = new ClientLogger(DAGErrorTests.class);
+/**
+ * Sync-stack variant of {@link DAGErrorTests}.
+ */
+public class SyncDAGErrorTests {
+    private static final ClientLogger LOGGER = new ClientLogger(SyncDAGErrorTests.class);
 
     @Test
     public void testTerminateOnInProgressTaskCompletion() {
@@ -48,40 +55,47 @@ public class DAGErrorTests {
          *   |
          *   |------------------------------------------------------------------>[H](1)----->[I](0)
          */
-        PancakeImpl pancakeM = new PancakeImpl("M", 250);
-        PancakeImpl pancakeN = new PancakeImpl("N", 250);
-        PancakeImpl pancakeK = new PancakeImpl("K", 250);
-        PancakeImpl pancakeQ = new PancakeImpl("Q", 8000);
-        PancakeImpl pancakeI = new PancakeImpl("I", 8000);
+        final Set<String> seen = new HashSet<>();
+        Function<Indexable, IPancake> consumeCake = indexable -> {
+            IPancake pancake = (IPancake) indexable;
+            LOGGER.log(LogLevel.VERBOSE, () -> "map.onNext: " + pancake.name());
+            seen.add(pancake.name());
+            return pancake;
+        };
+        PancakeImpl pancakeM = new PancakeImplWrapper("M", 250, consumeCake);
+        PancakeImpl pancakeN = new PancakeImplWrapper("N", 250, consumeCake);
+        PancakeImpl pancakeK = new PancakeImplWrapper("K", 250, consumeCake);
+        PancakeImpl pancakeQ = new PancakeImplWrapper("Q", 8000, consumeCake);
+        PancakeImpl pancakeI = new PancakeImplWrapper("I", 8000, consumeCake);
 
-        PancakeImpl pancakeJ = new PancakeImpl("J", 250);
+        PancakeImpl pancakeJ = new PancakeImplWrapper("J", 250, consumeCake);
         pancakeJ.withInstantPancake(pancakeM);
         pancakeJ.withInstantPancake(pancakeN);
-        PancakeImpl pancakeP = new PancakeImpl("P", 250);
+        PancakeImpl pancakeP = new PancakeImplWrapper("P", 250, consumeCake);
         pancakeP.withDelayedPancake(pancakeQ);
-        PancakeImpl pancakeH = new PancakeImpl("H", 250);
+        PancakeImpl pancakeH = new PancakeImplWrapper("H", 250, consumeCake);
         pancakeH.withInstantPancake(pancakeI);
 
-        PancakeImpl pancakeA = new PancakeImpl("A", 250);
-        PancakeImpl pancakeL = new PancakeImpl("L", 250);
+        PancakeImpl pancakeA = new PancakeImplWrapper("A", 250, consumeCake);
+        PancakeImpl pancakeL = new PancakeImplWrapper("L", 250, consumeCake);
         pancakeL.withInstantPancake(pancakeP);
 
-        PancakeImpl pancakeB = new PancakeImpl("B", 4000, true); // Task B wait for 4000 ms then emit error
+        PancakeImpl pancakeB = new PancakeImplWrapper("B", 4000, true, consumeCake); // Task B wait for 4000 ms then emit error
         pancakeB.withInstantPancake(pancakeA);
-        PancakeImpl pancakeC = new PancakeImpl("C", 250);
+        PancakeImpl pancakeC = new PancakeImplWrapper("C", 250, consumeCake);
         pancakeC.withInstantPancake(pancakeA);
 
-        PancakeImpl pancakeD = new PancakeImpl("D", 250);
+        PancakeImpl pancakeD = new PancakeImplWrapper("D", 250, consumeCake);
         pancakeD.withInstantPancake(pancakeB);
-        PancakeImpl pancakeG = new PancakeImpl("G", 250);
+        PancakeImpl pancakeG = new PancakeImplWrapper("G", 250, consumeCake);
         pancakeG.withInstantPancake(pancakeC);
         pancakeG.withDelayedPancake(pancakeL);
 
-        PancakeImpl pancakeE = new PancakeImpl("E", 250);
+        PancakeImpl pancakeE = new PancakeImplWrapper("E", 250, consumeCake);
         pancakeE.withInstantPancake(pancakeB);
         pancakeE.withInstantPancake(pancakeG);
 
-        PancakeImpl pancakeF = new PancakeImpl("F", 250);
+        PancakeImpl pancakeF = new PancakeImplWrapper("F", 250, consumeCake);
         pancakeF.withInstantPancake(pancakeD);
         pancakeF.withInstantPancake(pancakeE);
         pancakeF.withInstantPancake(pancakeH);
@@ -102,29 +116,30 @@ public class DAGErrorTests {
 
         expectedToSee.add("C");
 
-        final Set<String> seen = new HashSet<>();
         final List<Throwable> exceptions = new ArrayList<>();
 
         TaskGroup pancakeFtg = pancakeF.taskGroup();
         TaskGroup.InvocationContext context = pancakeFtg.newInvocationContext()
             .withTerminateOnErrorStrategy(TaskGroupTerminateOnErrorStrategy.TERMINATE_ON_IN_PROGRESS_TASKS_COMPLETION);
-        IPancake rootPancake = pancakeFtg.invokeAsync(context).map(indexable -> {
-            IPancake pancake = (IPancake) indexable;
-            LOGGER.log(LogLevel.VERBOSE, () -> "map.onNext: " + pancake.name());
-            seen.add(pancake.name());
-            return pancake;
-        }).onErrorResume(throwable -> {
+
+        Consumer<Throwable> consumeError = throwable -> {
             LOGGER.log(LogLevel.VERBOSE, () -> "map.onErrorResumeNext: ", throwable);
             exceptions.add(throwable);
-            return Mono.empty();
-        }).blockLast();
+        };
+        try {
+            pancakeFtg.invoke(context);
+        } catch (Throwable e) {
+            consumeError.accept(e);
+        }
 
         expectedToSee.removeAll(seen);
         Assertions.assertTrue(expectedToSee.isEmpty());
         Assertions.assertEquals(exceptions.size(), 1);
         Assertions.assertInstanceOf(RuntimeException.class, exceptions.get(0));
-        RuntimeException runtimeException = (RuntimeException) exceptions.get(0);
-        Assertions.assertTrue(runtimeException.getMessage().equalsIgnoreCase("B"));
+        // CompletableFuture will wrap exception into CompletionException and the actual exception as its cause.
+        Assertions.assertInstanceOf(CompletionException.class, exceptions.get(0));
+        RuntimeException cause = (RuntimeException) exceptions.get(0).getCause();
+        Assertions.assertTrue(cause.getMessage().equalsIgnoreCase("B"));
     }
 
     @Test
@@ -160,40 +175,48 @@ public class DAGErrorTests {
          *   |
          *   |------------------------------------------------------------------>[H](1)----->[I](0)
          */
-        PastaImpl pastaM = new PastaImpl("M", 250);
-        PastaImpl pastaN = new PastaImpl("N", 250);
-        PastaImpl pastaK = new PastaImpl("K", 250);
-        PastaImpl pastaQ = new PastaImpl("Q", 8000);
-        PastaImpl pastaI = new PastaImpl("I", 8000);
 
-        PastaImpl pastaJ = new PastaImpl("J", 250);
+        final Set<String> seen = new HashSet<>();
+        Function<Indexable, IPasta> consumePasta = indexable -> {
+            IPasta pasta = (IPasta) indexable;
+            LOGGER.log(LogLevel.VERBOSE, () -> "map.onNext: " + pasta.name());
+            seen.add(pasta.name());
+            return pasta;
+        };
+        PastaImpl pastaM = new PastaImplWrapper("M", 250, consumePasta);
+        PastaImpl pastaN = new PastaImplWrapper("N", 250, consumePasta);
+        PastaImpl pastaK = new PastaImplWrapper("K", 250, consumePasta);
+        PastaImpl pastaQ = new PastaImplWrapper("Q", 8000, consumePasta);
+        PastaImpl pastaI = new PastaImplWrapper("I", 8000, consumePasta);
+
+        PastaImpl pastaJ = new PastaImplWrapper("J", 250, consumePasta);
         pastaJ.withInstantPasta(pastaM);
         pastaJ.withInstantPasta(pastaN);
-        PastaImpl pastaP = new PastaImpl("P", 250);
+        PastaImpl pastaP = new PastaImplWrapper("P", 250, consumePasta);
         pastaP.withDelayedPasta(pastaQ);
-        PastaImpl pastaH = new PastaImpl("H", 250);
+        PastaImpl pastaH = new PastaImplWrapper("H", 250, consumePasta);
         pastaH.withInstantPasta(pastaI);
 
-        PastaImpl pastaA = new PastaImpl("A", 250);
-        PastaImpl pastaL = new PastaImpl("L", 250);
+        PastaImpl pastaA = new PastaImplWrapper("A", 250, consumePasta);
+        PastaImpl pastaL = new PastaImplWrapper("L", 250, consumePasta);
         pastaL.withInstantPasta(pastaP);
 
-        PastaImpl pastaB = new PastaImpl("B", 4000, true); // Task B wait for 4000 ms then emit error
+        PastaImpl pastaB = new PastaImplWrapper("B", 4000, true, consumePasta); // Task B wait for 4000 ms then emit error
         pastaB.withInstantPasta(pastaA);
-        PastaImpl pastaC = new PastaImpl("C", 250);
+        PastaImpl pastaC = new PastaImplWrapper("C", 250, consumePasta);
         pastaC.withInstantPasta(pastaA);
 
-        PastaImpl pastaD = new PastaImpl("D", 250);
+        PastaImpl pastaD = new PastaImplWrapper("D", 250, consumePasta);
         pastaD.withInstantPasta(pastaB);
-        PastaImpl pastaG = new PastaImpl("G", 250);
+        PastaImpl pastaG = new PastaImplWrapper("G", 250, consumePasta);
         pastaG.withInstantPasta(pastaC);
         pastaG.withDelayedPasta(pastaL);
 
-        PastaImpl pastaE = new PastaImpl("E", 250);
+        PastaImpl pastaE = new PastaImplWrapper("E", 250, consumePasta);
         pastaE.withInstantPasta(pastaB);
         pastaE.withInstantPasta(pastaG);
 
-        PastaImpl pastaF = new PastaImpl("F", 250);
+        PastaImpl pastaF = new PastaImplWrapper("F", 250, consumePasta);
         pastaF.withInstantPasta(pastaD);
         pastaF.withInstantPasta(pastaE);
         pastaF.withInstantPasta(pastaH);
@@ -219,29 +242,30 @@ public class DAGErrorTests {
 
         expectedToSee.add("G");
 
-        final Set<String> seen = new HashSet<>();
         final List<Throwable> exceptions = new ArrayList<>();
 
         TaskGroup pastaFtg = pastaF.taskGroup();
         TaskGroup.InvocationContext context = pastaFtg.newInvocationContext()
             .withTerminateOnErrorStrategy(TaskGroupTerminateOnErrorStrategy.TERMINATE_ON_HITTING_LCA_TASK);
 
-        IPasta rootPasta = pastaFtg.invokeAsync(context).map(indexable -> {
-            IPasta pasta = (IPasta) indexable;
-            LOGGER.log(LogLevel.VERBOSE, () -> "map.onNext: " + pasta.name());
-            seen.add(pasta.name());
-            return pasta;
-        }).onErrorResume(throwable -> {
+        Consumer<Throwable> consumeError = throwable -> {
             LOGGER.log(LogLevel.VERBOSE, () -> "map.onErrorResumeNext: ", throwable);
             exceptions.add(throwable);
-            return Mono.empty();
-        }).blockLast();
+        };
+
+        try {
+            pastaFtg.invoke(context);
+        } catch (Throwable e) {
+            consumeError.accept(e);
+        }
 
         expectedToSee.removeAll(seen);
         Assertions.assertTrue(expectedToSee.isEmpty());
         Assertions.assertEquals(exceptions.size(), 1);
         Assertions.assertInstanceOf(RuntimeException.class, exceptions.get(0));
-        RuntimeException runtimeException = (RuntimeException) exceptions.get(0);
+        // CompletableFuture will wrap exception into CompletionException and the actual exception as its cause.
+        Assertions.assertInstanceOf(CompletionException.class, exceptions.get(0));
+        RuntimeException runtimeException = (RuntimeException) exceptions.get(0).getCause();
         Assertions.assertTrue(runtimeException.getMessage().equalsIgnoreCase("B"));
     }
 
@@ -274,41 +298,47 @@ public class DAGErrorTests {
          *   |
          *   |------------------------------------------------------------------>[H](1)----->[I](0)
          */
+        final Set<String> seen = new TreeSet<>();
+        Function<Indexable, IPancake> consumeCake = indexable -> {
+            IPancake pancake = (IPancake) indexable;
+            LOGGER.log(LogLevel.VERBOSE, () -> "map.onNext: " + pancake.name());
+            seen.add(pancake.name());
+            return pancake;
+        };
+        PancakeImpl pancakeM = new PancakeImplWrapper("M", 250, consumeCake);
+        PancakeImpl pancakeN = new PancakeImplWrapper("N", 250, consumeCake);
+        PancakeImpl pancakeK = new PancakeImplWrapper("K", 250, consumeCake);
+        PancakeImpl pancakeQ = new PancakeImplWrapper("Q", 250, consumeCake);
+        PancakeImpl pancakeI = new PancakeImplWrapper("I", 250, consumeCake);
 
-        PancakeImpl pancakeM = new PancakeImpl("M", 250);
-        PancakeImpl pancakeN = new PancakeImpl("N", 250);
-        PancakeImpl pancakeK = new PancakeImpl("K", 250);
-        PancakeImpl pancakeQ = new PancakeImpl("Q", 250);
-        PancakeImpl pancakeI = new PancakeImpl("I", 250);
-
-        PancakeImpl pancakeJ = new PancakeImpl("J", 250);
+        PancakeImpl pancakeJ = new PancakeImplWrapper("J", 250, consumeCake);
         pancakeJ.withInstantPancake(pancakeM);
         pancakeJ.withInstantPancake(pancakeN);
-        PancakeImpl pancakeP = new PancakeImpl("P", 250);
+        PancakeImpl pancakeP = new PancakeImplWrapper("P", 250, consumeCake);
         pancakeP.withDelayedPancake(pancakeQ);
-        PancakeImpl pancakeH = new PancakeImpl("H", 250);
+        PancakeImpl pancakeH = new PancakeImplWrapper("H", 250, consumeCake);
         pancakeH.withInstantPancake(pancakeI);
 
-        PancakeImpl pancakeA = new PancakeImpl("A", 250);
-        PancakeImpl pancakeL = new PancakeImpl("L", 250);
+        PancakeImpl pancakeA = new PancakeImplWrapper("A", 250, consumeCake);
+        PancakeImpl pancakeL = new PancakeImplWrapper("L", 250, consumeCake);
         pancakeL.withInstantPancake(pancakeP);
 
-        PancakeImpl pancakeB = new PancakeImpl("B", 3500, true); // Task B wait for 3500 ms then emit error
+        PancakeImpl pancakeB = new PancakeImplWrapper("B", 3500, true, consumeCake); // Task B wait for 3500 ms then emit error
         pancakeB.withInstantPancake(pancakeA);
-        PancakeImpl pancakeC = new PancakeImpl("C", 250);
+        PancakeImpl pancakeC = new PancakeImplWrapper("C", 250, consumeCake);
         pancakeC.withInstantPancake(pancakeA);
 
-        PancakeImpl pancakeD = new PancakeImpl("D", 250);
+        PancakeImpl pancakeD = new PancakeImplWrapper("D", 250, consumeCake);
         pancakeD.withInstantPancake(pancakeB);
-        PancakeImpl pancakeG = new PancakeImpl("G", 250, true); // Task G wait for 250 ms then emit error
+        PancakeImpl pancakeG = new PancakeImplWrapper("G", 250, true, consumeCake); // Task G wait for 250 ms then emit error
         pancakeG.withInstantPancake(pancakeC);
         pancakeG.withDelayedPancake(pancakeL);
 
-        PancakeImpl pancakeE = new PancakeImpl("E", 250);
+        PancakeImpl pancakeE = new PancakeImplWrapper("E", 250, consumeCake);
         pancakeE.withInstantPancake(pancakeB);
         pancakeE.withInstantPancake(pancakeG);
 
-        PancakeImpl pancakeF = new PancakeImpl("F", 250);
+        PancakeImpl pancakeF = new PancakeImplWrapper("F", 250, consumeCake);
         pancakeF.withInstantPancake(pancakeD);
         pancakeF.withInstantPancake(pancakeE);
         pancakeF.withInstantPancake(pancakeH);
@@ -332,35 +362,41 @@ public class DAGErrorTests {
 
         expectedToSee.add("C");
 
-        final Set<String> seen = new TreeSet<>();
         final List<Throwable> exceptions = new ArrayList<>();
 
         TaskGroup pancakeFtg = pancakeF.taskGroup();
         TaskGroup.InvocationContext context = pancakeFtg.newInvocationContext()
             .withTerminateOnErrorStrategy(TaskGroupTerminateOnErrorStrategy.TERMINATE_ON_IN_PROGRESS_TASKS_COMPLETION);
 
-        IPancake rootPancake = pancakeFtg.invokeAsync(context).map(indexable -> {
-            IPancake pancake = (IPancake) indexable;
-            String name = pancake.name();
-            LOGGER.log(LogLevel.VERBOSE, () -> "map.onNext:" + name);
-            seen.add(name);
-            return pancake;
-        }).onErrorResume(throwable -> {
-            LOGGER.log(LogLevel.VERBOSE, () -> "map.onErrorResumeNext:", throwable);
+        Consumer<Throwable> consumeError = throwable -> {
+            LOGGER.log(LogLevel.VERBOSE, () -> "map.onErrorResumeNext: ", throwable);
             exceptions.add(throwable);
-            return Mono.empty();
-        }).blockLast();
+        };
+        try {
+            pancakeFtg.invoke(context.withSyncTaskExecutor(
+                // Ensure the thread pool size > 1, to avoid G runs after B throws exception.
+                //
+                // In test pipeline, agent has only 1 cpu core, making the default ForkJoinPool having 1 available
+                // thread, resulting in task executing sequentially. Since G takes dependency of C, and C is at the
+                // same execution level as B, G will not execute until B throws exception.
+                // This will mark the group as canceled, and G will not execute.
+                Executors.newFixedThreadPool(5)));
+        } catch (Throwable e) {
+            consumeError.accept(e);
+        }
 
         expectedToSee.removeAll(seen);
         Assertions.assertTrue(expectedToSee.isEmpty());
         Assertions.assertEquals(exceptions.size(), 1);
         Assertions.assertInstanceOf(RuntimeException.class, exceptions.get(0));
-        RuntimeException compositeException = (RuntimeException) exceptions.get(0);
-        Assertions.assertEquals(compositeException.getSuppressed().length, 2);
-        for (Throwable throwable : compositeException.getSuppressed()) {
-            String message = throwable.getMessage();
-            Assertions.assertTrue("B".equalsIgnoreCase(message) || "G".equalsIgnoreCase(message));
-        }
+
+        // For CompletableFuture.allOf():
+        // If any of the given CompletableFutures complete exceptionally, then the returned
+        // CompletableFuture also does so, with a CompletionException holding this exception as its cause.
+        Assertions.assertInstanceOf(CompletionException.class, exceptions.get(0));
+        Throwable cause = exceptions.get(0).getCause();
+        String message = cause.getMessage();
+        Assertions.assertTrue("B".equalsIgnoreCase(message) || "G".equalsIgnoreCase(message));
     }
 
     @Test
@@ -388,40 +424,47 @@ public class DAGErrorTests {
          *    |----------------------------------------------------------------->[H](1)------>[I](0)
          */
 
-        PancakeImpl pancakeM = new PancakeImpl("M", 250);
-        PancakeImpl pancakeN = new PancakeImpl("N", 250);
-        PancakeImpl pancakeK = new PancakeImpl("K", 250);
-        PancakeImpl pancakeQ = new PancakeImpl("Q", 250);
-        PancakeImpl pancakeI = new PancakeImpl("I", 250);
+        final Set<String> seen = new TreeSet<>();
+        Function<Indexable, IPancake> consumeCake = indexable -> {
+            IPancake pancake = (IPancake) indexable;
+            LOGGER.log(LogLevel.VERBOSE, () -> "map.onNext: " + pancake.name());
+            seen.add(pancake.name());
+            return pancake;
+        };
+        PancakeImpl pancakeM = new PancakeImplWrapper("M", 250, consumeCake);
+        PancakeImpl pancakeN = new PancakeImplWrapper("N", 250, consumeCake);
+        PancakeImpl pancakeK = new PancakeImplWrapper("K", 250, consumeCake);
+        PancakeImpl pancakeQ = new PancakeImplWrapper("Q", 250, consumeCake);
+        PancakeImpl pancakeI = new PancakeImplWrapper("I", 250, consumeCake);
 
-        PancakeImpl pancakeJ = new PancakeImpl("J", 250);
+        PancakeImpl pancakeJ = new PancakeImplWrapper("J", 250, consumeCake);
         pancakeJ.withInstantPancake(pancakeM);
         pancakeJ.withInstantPancake(pancakeN);
-        PancakeImpl pancakeP = new PancakeImpl("P", 250);
+        PancakeImpl pancakeP = new PancakeImplWrapper("P", 250, consumeCake);
         pancakeP.withDelayedPancake(pancakeQ);
-        PancakeImpl pancakeH = new PancakeImpl("H", 250);
+        PancakeImpl pancakeH = new PancakeImplWrapper("H", 250, consumeCake);
         pancakeH.withInstantPancake(pancakeI);
 
-        PancakeImpl pancakeA = new PancakeImpl("A", 250);
-        PancakeImpl pancakeL = new PancakeImpl("L", 250);
+        PancakeImpl pancakeA = new PancakeImplWrapper("A", 250, consumeCake);
+        PancakeImpl pancakeL = new PancakeImplWrapper("L", 250, consumeCake);
         pancakeL.withInstantPancake(pancakeP);
 
-        PancakeImpl pancakeB = new PancakeImpl("B", 250);
+        PancakeImpl pancakeB = new PancakeImplWrapper("B", 250, consumeCake);
         pancakeB.withInstantPancake(pancakeA);
-        PancakeImpl pancakeC = new PancakeImpl("C", 250);
+        PancakeImpl pancakeC = new PancakeImplWrapper("C", 250, consumeCake);
         pancakeC.withInstantPancake(pancakeA);
 
-        PancakeImpl pancakeD = new PancakeImpl("D", 250);
+        PancakeImpl pancakeD = new PancakeImplWrapper("D", 250, consumeCake);
         pancakeD.withInstantPancake(pancakeB);
-        PancakeImpl pancakeG = new PancakeImpl("G", 250);
+        PancakeImpl pancakeG = new PancakeImplWrapper("G", 250, consumeCake);
         pancakeG.withInstantPancake(pancakeC);
         pancakeG.withDelayedPancake(pancakeL);
 
-        PancakeImpl pancakeE = new PancakeImpl("E", 250);
+        PancakeImpl pancakeE = new PancakeImplWrapper("E", 250, consumeCake);
         pancakeE.withInstantPancake(pancakeB);
         pancakeE.withInstantPancake(pancakeG);
 
-        PancakeImpl pancakeF = new PancakeImpl("F", 250, true); // Emit error on root
+        PancakeImpl pancakeF = new PancakeImplWrapper("F", 250, true, consumeCake); // Emit error on root
         pancakeF.withInstantPancake(pancakeD);
         pancakeF.withInstantPancake(pancakeE);
         pancakeF.withInstantPancake(pancakeH);
@@ -450,28 +493,83 @@ public class DAGErrorTests {
         expectedToSee.add("G");
 
         expectedToSee.add("E");
-        final Set<String> seen = new HashSet<>();
         final List<Throwable> exceptions = new ArrayList<>();
 
         TaskGroup pancakeFtg = pancakeF.taskGroup();
         TaskGroup.InvocationContext context = pancakeFtg.newInvocationContext()
             .withTerminateOnErrorStrategy(TaskGroupTerminateOnErrorStrategy.TERMINATE_ON_IN_PROGRESS_TASKS_COMPLETION);
-        IPancake rootPancake = pancakeFtg.invokeAsync(context).map(indexable -> {
-            IPancake pancake = (IPancake) indexable;
-            seen.add(pancake.name());
-            LOGGER.log(LogLevel.VERBOSE, () -> "map.onNext:" + pancake.name());
-            return pancake;
-        }).onErrorResume(throwable -> {
-            LOGGER.log(LogLevel.VERBOSE, () -> "map.onErrorResumeNext:", throwable);
+
+        Consumer<Throwable> consumeError = throwable -> {
+            LOGGER.log(LogLevel.VERBOSE, () -> "map.onErrorResumeNext: ", throwable);
             exceptions.add(throwable);
-            return Mono.empty();
-        }).blockLast();
+        };
+        try {
+            pancakeFtg.invoke(context);
+        } catch (Throwable e) {
+            consumeError.accept(e);
+        }
 
         expectedToSee.removeAll(seen);
         Assertions.assertTrue(expectedToSee.isEmpty());
         Assertions.assertEquals(exceptions.size(), 1);
         Assertions.assertInstanceOf(RuntimeException.class, exceptions.get(0));
-        RuntimeException runtimeException = (RuntimeException) exceptions.get(0);
+        // CompletableFuture will wrap exception into CompletionException and the actual exception as its cause.
+        Assertions.assertInstanceOf(CompletionException.class, exceptions.get(0));
+        RuntimeException runtimeException = (RuntimeException) exceptions.get(0).getCause();
         Assertions.assertTrue(runtimeException.getMessage().equalsIgnoreCase("F"));
+    }
+
+    /*
+     * A wrapper around PancakeImpl for sync-stack tests to record which PancakeImpls have been created.
+     */
+    private static class PancakeImplWrapper extends PancakeImpl {
+        private Function<Indexable, IPancake> postSyncInvoke;
+
+        PancakeImplWrapper(String name, long eventDelayInMilliseconds, Function<Indexable, IPancake> postSyncInvoke) {
+            super(name, eventDelayInMilliseconds);
+            this.postSyncInvoke = postSyncInvoke;
+        }
+
+        PancakeImplWrapper(String name, long eventDelayInMilliseconds, boolean fault,
+            Function<Indexable, IPancake> postSyncInvoke) {
+            super(name, eventDelayInMilliseconds, fault);
+            this.postSyncInvoke = postSyncInvoke;
+        }
+
+        @Override
+        public IPancake createResource() {
+            IPancake cake = super.createResource();
+            if (this.postSyncInvoke != null) {
+                return this.postSyncInvoke.apply(cake);
+            }
+            return cake;
+        }
+    }
+
+    /*
+     * A wrapper around PastaImpl for sync-stack tests to record which PastaImpls have been created.
+     */
+    private static class PastaImplWrapper extends PastaImpl {
+        private Function<Indexable, IPasta> postSyncInvoke;
+
+        PastaImplWrapper(String name, long eventDelayInMilliseconds, Function<Indexable, IPasta> postSyncInvoke) {
+            super(name, eventDelayInMilliseconds);
+            this.postSyncInvoke = postSyncInvoke;
+        }
+
+        PastaImplWrapper(String name, long eventDelayInMilliseconds, boolean fault,
+            Function<Indexable, IPasta> postSyncInvoke) {
+            super(name, eventDelayInMilliseconds, fault);
+            this.postSyncInvoke = postSyncInvoke;
+        }
+
+        @Override
+        public IPasta createResource() {
+            IPasta pasta = super.createResource();
+            if (this.postSyncInvoke != null) {
+                return this.postSyncInvoke.apply(pasta);
+            }
+            return pasta;
+        }
     }
 }

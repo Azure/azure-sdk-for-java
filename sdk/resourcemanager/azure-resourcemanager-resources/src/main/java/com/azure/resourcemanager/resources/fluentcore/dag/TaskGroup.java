@@ -364,11 +364,11 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
         context.put(TaskGroup.InvocationContext.KEY_SKIP_TASKS, Collections.singleton(this.key()));
 
         if (proxyTaskGroupWrapper.isActive()) {
-            throw new IllegalStateException(postRunErrorMessage);
+            throw logger.logExceptionAsError(new IllegalStateException(postRunErrorMessage));
         } else {
             Set<String> processedKeys = runBeforeGroupInvoke(null);
             if (proxyTaskGroupWrapper.isActive()) {
-                throw new IllegalStateException(postRunErrorMessage);
+                throw logger.logExceptionAsError(new IllegalStateException(postRunErrorMessage));
             } else {
                 invokeIntern(context, false, null);
             }

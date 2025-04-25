@@ -16,7 +16,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.function.Consumer;
 
-public class TaskGroupThreadTests {
+public class SyncTaskGroupThreadTests {
     @Test
     public void verifyTaskExecuteOnDefaultThread() throws InterruptedException {
         String outerThread = "outer";
