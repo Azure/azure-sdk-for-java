@@ -312,7 +312,7 @@ public final class CertificateClient {
      * @throws IllegalArgumentException If the provided {@code name} is {@code null} or an empty string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public KeyVaultCertificate getCertificate(String name, String version) {
+    public KeyVaultCertificateWithPolicy getCertificate(String name, String version) {
         try {
             if (isNullOrEmpty(name)) {
                 throw new IllegalArgumentException("'name' cannot be null or empty.");
@@ -1382,15 +1382,9 @@ public final class CertificateClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<IssuerProperties> listPropertiesOfIssuers(RequestContext requestContext) {
         try {
-            RequestContext requestOptionsForNextPage = new RequestContext();
-
-            requestOptionsForNextPage.setContext(requestContext != null && requestContext.getContext() != null
-                ? requestContext.getContext()
-                : Context.none());
-
             return mapPages(pagingOptions -> clientImpl.getCertificateIssuersSinglePage(null),
-                (pagingOptions, nextLink) -> clientImpl.getCertificateIssuersNextSinglePage(nextLink,
-                    requestOptionsForNextPage), IssuerPropertiesHelper::createIssuerProperties);
+                (pagingOptions, nextLink) -> clientImpl.getCertificateIssuersNextSinglePage(nextLink, requestContext),
+                IssuerPropertiesHelper::createIssuerProperties);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
