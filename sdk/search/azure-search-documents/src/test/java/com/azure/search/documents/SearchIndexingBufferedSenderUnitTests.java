@@ -38,6 +38,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -1132,7 +1133,7 @@ public class SearchIndexingBufferedSenderUnitTests {
             = getSearchClientBuilder().httpClient(wrapWithAsserting(request -> {
                 int count = callCount.getAndIncrement();
                 if (count == 0) {
-                    sleep(3000);
+                    sleep(2000);
                     return createMockBatchSplittingResponse(request, 0, 5);
                 } else if (count == 1) {
                     return createMockBatchSplittingResponse(request, 5, 5);
@@ -1150,7 +1151,7 @@ public class SearchIndexingBufferedSenderUnitTests {
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
         AtomicLong flushCompletionTime = new AtomicLong();
-        SharedExecutorService.getInstance().execute(() -> {
+        Future<?> future1 = SharedExecutorService.getInstance().execute(() -> {
             try {
                 batchingClient.flush();
             } finally {
@@ -1163,23 +1164,29 @@ public class SearchIndexingBufferedSenderUnitTests {
         // The mocked HttpRequest will delay the response by 2 seconds, so if the close does finish first it will be a
         // true indication of incorrect behavior.
         AtomicLong closeCompletionTime = new AtomicLong();
-        SharedExecutorService.getInstance().schedule(() -> {
+        Future<?> future2 = SharedExecutorService.getInstance().schedule(() -> {
             try {
                 batchingClient.close();
             } finally {
                 closeCompletionTime.set(System.currentTimeMillis());
                 countDownLatch.countDown();
             }
-        }, 500, TimeUnit.MILLISECONDS);
+        }, 100, TimeUnit.MILLISECONDS);
 
         if (!countDownLatch.await(10, TimeUnit.SECONDS)) {
             fail("Timed out waiting for closes to complete.");
         }
 
+        assertDoesNotThrow(() -> future1.get());
+        assertDoesNotThrow(() -> future2.get());
+
         long flushTime = flushCompletionTime.get();
         long closeTime = closeCompletionTime.get();
         long differenceMillis = Math.abs(flushTime - closeTime);
-        assertTrue(flushCompletionTime.get() <= closeCompletionTime.get(),
+
+        // Add a little wiggle room for close completion time.
+        // If close did run before flush, then an exception would have been thrown in one of the futures.
+        assertTrue(flushCompletionTime.get() <= (closeCompletionTime.get() + 10),
             () -> "Expected flush to complete before close as close will wait for any in-flight flush requests to "
                 + "finish before closing buffered sender. Flush finished at " + flushTime + ", close finished at "
                 + closeTime + ", difference was " + differenceMillis + "ms");
@@ -1193,7 +1200,7 @@ public class SearchIndexingBufferedSenderUnitTests {
             = getSearchClientBuilder().httpClient(wrapWithAsserting(request -> {
                 int count = callCount.getAndIncrement();
                 if (count == 0) {
-                    sleep(3000);
+                    sleep(2000);
                     return createMockBatchSplittingResponse(request, 0, 5);
                 } else if (count == 1) {
                     return createMockBatchSplittingResponse(request, 5, 5);
@@ -1211,7 +1218,7 @@ public class SearchIndexingBufferedSenderUnitTests {
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON)).block();
 
         AtomicLong flushCompletionTime = new AtomicLong();
-        SharedExecutorService.getInstance().execute(() -> {
+        Future<?> future1 = SharedExecutorService.getInstance().execute(() -> {
             Mono.using(() -> 1, ignored -> batchingClient.flush(), ignored -> {
                 flushCompletionTime.set(System.currentTimeMillis());
                 countDownLatch.countDown();
@@ -1222,21 +1229,27 @@ public class SearchIndexingBufferedSenderUnitTests {
         // The mocked HttpRequest will delay the response by 2 seconds, so if the close does finish first it will be a
         // true indication of incorrect behavior.
         AtomicLong closeCompletionTime = new AtomicLong();
-        SharedExecutorService.getInstance().schedule(() -> {
+        Future<?> future2 = SharedExecutorService.getInstance().schedule(() -> {
             Mono.using(() -> 1, ignored -> batchingClient.close(), ignored -> {
                 closeCompletionTime.set(System.currentTimeMillis());
                 countDownLatch.countDown();
             }).block();
-        }, 500, TimeUnit.MILLISECONDS);
+        }, 100, TimeUnit.MILLISECONDS);
 
         if (!countDownLatch.await(10, TimeUnit.SECONDS)) {
             fail("Timed out waiting for closes to complete.");
         }
 
+        assertDoesNotThrow(() -> future1.get());
+        assertDoesNotThrow(() -> future2.get());
+
         long flushTime = flushCompletionTime.get();
         long closeTime = closeCompletionTime.get();
         long differenceMillis = Math.abs(flushTime - closeTime);
-        assertTrue(flushCompletionTime.get() <= closeCompletionTime.get(),
+
+        // Add a little wiggle room for close completion time.
+        // If close did run before flush, then an exception would have been thrown in one of the futures.
+        assertTrue(flushCompletionTime.get() <= (closeCompletionTime.get() + 10),
             () -> "Expected flush to complete before close as close will wait for any in-flight flush requests to "
                 + "finish before closing buffered sender. Flush finished at " + flushTime + ", close finished at "
                 + closeTime + ", difference was " + differenceMillis + "ms");
