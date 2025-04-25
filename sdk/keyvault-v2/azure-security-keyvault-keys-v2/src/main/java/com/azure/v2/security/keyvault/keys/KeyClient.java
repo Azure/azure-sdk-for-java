@@ -1368,8 +1368,7 @@ public final class KeyClient {
     public PagedIterable<KeyProperties> listPropertiesOfKeys(RequestContext requestContext) {
         try {
             return mapPages(pagingOptions -> clientImpl.getKeysSinglePage(null, requestContext),
-                (pagingOptions, nextLink) -> clientImpl.getKeysNextSinglePage(nextLink,
-                    requestContext.toBuilder().build()),
+                (pagingOptions, nextLink) -> clientImpl.getKeysNextSinglePage(nextLink, requestContext),
                 KeyVaultKeysModelsUtils::createKeyProperties);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -1418,8 +1417,7 @@ public final class KeyClient {
     public PagedIterable<DeletedKey> listDeletedKeys(RequestContext requestContext) {
         try {
             return mapPages(pagingOptions -> clientImpl.getDeletedKeysSinglePage(null, requestContext),
-                (pagingOptions, nextLink) -> clientImpl.getDeletedKeysNextSinglePage(nextLink,
-                    requestContext.toBuilder().build()),
+                (pagingOptions, nextLink) -> clientImpl.getDeletedKeysNextSinglePage(nextLink, requestContext),
                 KeyVaultKeysModelsUtils::createDeletedKey);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -1488,8 +1486,7 @@ public final class KeyClient {
             }
 
             return mapPages(pagingOptions -> clientImpl.getKeyVersionsSinglePage(name, null, requestContext),
-                (pagingOptions, nextLink) -> clientImpl.getKeyVersionsNextSinglePage(nextLink,
-                    requestContext.toBuilder().build()),
+                (pagingOptions, nextLink) -> clientImpl.getKeyVersionsNextSinglePage(nextLink, requestContext),
                 KeyVaultKeysModelsUtils::createKeyProperties);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);

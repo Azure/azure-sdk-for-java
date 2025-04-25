@@ -211,7 +211,7 @@ public final class KeyVaultAccessControlClient {
             return mapPages(pagingOptions -> clientImpl.getRoleDefinitions()
                     .listSinglePage(roleScope.getValue(), null, requestContext),
                 (pagingOptions, nextLink) -> clientImpl.getRoleDefinitions()
-                    .listNextSinglePage(nextLink, requestContext.toBuilder().build()),
+                    .listNextSinglePage(nextLink, requestContext),
                 KeyVaultAdministrationUtil::roleDefinitionToKeyVaultRoleDefinition);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -494,7 +494,7 @@ public final class KeyVaultAccessControlClient {
             return mapPages(pagingOptions -> clientImpl.getRoleAssignments()
                     .listForScopeSinglePage(roleScope.toString(), null, requestContext),
                 (pagingOptions, nextLink) -> clientImpl.getRoleAssignments()
-                    .listForScopeNextSinglePage(nextLink, requestContext.toBuilder().build()),
+                    .listForScopeNextSinglePage(nextLink, requestContext),
                 KeyVaultAdministrationUtil::roleAssignmentToKeyVaultRoleAssignment);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);

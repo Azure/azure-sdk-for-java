@@ -860,8 +860,8 @@ public final class CertificateClient {
 
         try {
             return mapPages(pagingOptions -> clientImpl.getCertificatesSinglePage(null, includePending),
-                (pagingOptions, nextLink) -> clientImpl.getCertificatesNextSinglePage(nextLink,
-                    requestContext.toBuilder().build()), CertificatePropertiesHelper::createCertificateProperties);
+                (pagingOptions, nextLink) -> clientImpl.getCertificatesNextSinglePage(nextLink, requestContext),
+                CertificatePropertiesHelper::createCertificateProperties);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -916,8 +916,8 @@ public final class CertificateClient {
 
         try {
             return mapPages(pagingOptions -> clientImpl.getDeletedCertificatesSinglePage(null, includePending),
-                (pagingOptions, nextLink) -> clientImpl.getDeletedCertificatesNextSinglePage(nextLink,
-                    requestContext.toBuilder().build()), DeletedCertificateHelper::createDeletedCertificate);
+                (pagingOptions, nextLink) -> clientImpl.getDeletedCertificatesNextSinglePage(nextLink, requestContext),
+                DeletedCertificateHelper::createDeletedCertificate);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -985,8 +985,8 @@ public final class CertificateClient {
 
         try {
             return mapPages(pagingOptions -> clientImpl.getCertificateVersionsSinglePage(name, null),
-                (pagingOptions, nextLink) -> clientImpl.getCertificateVersionsNextSinglePage(nextLink,
-                    requestContext.toBuilder().build()), CertificatePropertiesHelper::createCertificateProperties);
+                (pagingOptions, nextLink) -> clientImpl.getCertificateVersionsNextSinglePage(nextLink, requestContext),
+                CertificatePropertiesHelper::createCertificateProperties);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
