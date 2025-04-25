@@ -75,7 +75,6 @@ public final class KeyVaultBackupClientBuilder implements ConfigurationTrait<Key
     }
     private final List<HttpPipelinePolicy> pipelinePolicies;
     private TokenCredential credential;
-    private HttpPipeline pipeline;
     private String endpoint;
     private HttpClient httpClient;
     private HttpInstrumentationOptions instrumentationOptions;
@@ -94,20 +93,14 @@ public final class KeyVaultBackupClientBuilder implements ConfigurationTrait<Key
     }
 
     /**
-     * Creates a {@link KeyVaultBackupClient} based on options set in the builder. Every time {@code buildClient()} is called,
-     * a new instance of {@link KeyVaultBackupClient} is created.
-     *
-     * <p>If {@link KeyVaultBackupClientBuilder#httpPipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
-     * {@link KeyVaultBackupClientBuilder#endpoint(String) endpoint} are used to create the
-     * {@link KeyVaultBackupClientBuilder client}. All other builder settings are ignored. If {@code pipeline} is not set, then
-     * a {@link KeyVaultBackupClientBuilder#credential(TokenCredential) credential} and
-     * {@link KeyVaultBackupClientBuilder#endpoint(String) endpoint} are required to build the {@link KeyVaultBackupClient client}.</p>
+     * Creates a {@link KeyVaultBackupClient} based on options set in the builder. Every time {@code buildClient()} is
+     * called, a new instance of {@link KeyVaultBackupClient} is created.
      *
      * @return A {@link KeyVaultBackupClient} based on the options set in this builder.
      *
-     * @throws IllegalStateException If an {@link KeyVaultBackupClientBuilder#endpoint(String) endpoint} has not been set or if
-     * either of a {@link KeyVaultBackupClientBuilder#credential(TokenCredential) credential} or
-     * {@link KeyVaultBackupClientBuilder#httpPipeline(HttpPipeline) pipeline} were not provided.
+     * @throws IllegalStateException If an {@link KeyVaultBackupClientBuilder#endpoint(String) endpoint} has not been
+     * set or if either of a {@link KeyVaultBackupClientBuilder#credential(TokenCredential) credential} was not
+     * provided.
      */
     public KeyVaultBackupClient buildClient() {
         Configuration configuration = this.configuration == null
@@ -123,12 +116,9 @@ public final class KeyVaultBackupClientBuilder implements ConfigurationTrait<Key
                     + " 'AZURE_KEYVAULT_ENDPOINT'."));
         }
 
-        KeyVaultAdministrationServiceVersion version = this.version == null ? KeyVaultAdministrationServiceVersion.getLatest() : this.version;
-
-        if (pipeline != null) {
-            return new KeyVaultBackupClient(
-                new KeyVaultAdministrationClientImpl(pipeline, endpoint, version.getVersion()));
-        }
+        KeyVaultAdministrationServiceVersion version = this.version == null
+            ? KeyVaultAdministrationServiceVersion.getLatest()
+            : this.version;
 
         if (credential == null) {
             throw LOGGER.logThrowableAsError(new IllegalStateException(
@@ -138,10 +128,11 @@ public final class KeyVaultBackupClientBuilder implements ConfigurationTrait<Key
 
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-
-        // TODO (vcolin7): Figure out where to get applicationId from.
+        Configuration buildConfiguration = configuration == null
+            ? Configuration.getGlobalConfiguration()
+            : configuration;
         UserAgentOptions userAgentOptions = new UserAgentOptions()
-            //.setApplicationId(null)
+            .setApplicationId(buildConfiguration.get("application.id"))
             .setSdkName(CLIENT_NAME)
             .setSdkVersion(CLIENT_VERSION);
 
@@ -233,13 +224,6 @@ public final class KeyVaultBackupClientBuilder implements ConfigurationTrait<Key
      *     the details.</li>
      * </ul>
      *
-     * <p><strong>Note:</strong> It is important to understand the precedence order of the {@link HttpTrait} APIs. In
-     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
-     * they will be ignored. If no {@link HttpPipeline} is specified, an HTTP pipeline will be constructed internally
-     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
-     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
-     * documentation of types that implement this trait to understand the full set of implications.</p>
-     *
      * @param instrumentationOptions The {@link HttpInstrumentationOptions configuration} to use when recording
      * telemetry about HTTP requests sent to the service and responses received from it.
      * @return The updated {@link KeyVaultBackupClientBuilder} object.
@@ -253,13 +237,6 @@ public final class KeyVaultBackupClientBuilder implements ConfigurationTrait<Key
 
     /**
      * Adds a {@link HttpPipelinePolicy pipeline policy} to apply on each request sent.
-     *
-     * <p><strong>Note:</strong> It is important to understand the precedence order of the {@link HttpTrait} APIs. In
-     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
-     * they will be ignored. If no {@link HttpPipeline} is specified, an HTTP pipeline will be constructed internally
-     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
-     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
-     * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param pipelinePolicy A {@link HttpPipelinePolicy pipeline policy}.
      * @return The updated {@link KeyVaultBackupClientBuilder} object.
@@ -280,39 +257,12 @@ public final class KeyVaultBackupClientBuilder implements ConfigurationTrait<Key
     /**
      * Sets the {@link HttpClient} to use for sending and receiving requests to and from the service.
      *
-     * <p><strong>Note:</strong> It is important to understand the precedence order of the {@link HttpTrait} APIs. In
-     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
-     * they will be ignored. If no {@link HttpPipeline} is specified, an HTTP pipeline will be constructed internally
-     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
-     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
-     * documentation of types that implement this trait to understand the full set of implications.</p>
-     *
      * @param client The {@link HttpClient} to use for requests.
      * @return The updated {@link KeyVaultBackupClientBuilder} object.
      */
     @Override
     public KeyVaultBackupClientBuilder httpClient(HttpClient client) {
         this.httpClient = client;
-
-        return this;
-    }
-
-    /**
-     * Sets the {@link HttpPipeline} to use for the service client.
-     *
-     * <p><strong>Note:</strong> It is important to understand the precedence order of the {@link HttpTrait} APIs. In
-     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
-     * they will be ignored. If no {@link HttpPipeline} is specified, an HTTP pipeline will be constructed internally
-     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
-     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
-     * documentation of types that implement this trait to understand the full set of implications.</p>
-     *
-     * @param pipeline {@link HttpPipeline} to use for sending service requests and receiving responses.
-     * @return The updated {@link KeyVaultBackupClientBuilder} object.
-     */
-    @Override
-    public KeyVaultBackupClientBuilder httpPipeline(HttpPipeline pipeline) {
-        this.pipeline = pipeline;
 
         return this;
     }
@@ -350,13 +300,6 @@ public final class KeyVaultBackupClientBuilder implements ConfigurationTrait<Key
     /**
      * Sets the {@link HttpRetryOptions} for all the requests made through the client.
      *
-     * <p><strong>Note:</strong> It is important to understand the precedence order of the {@link HttpTrait} APIs. In
-     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
-     * they will be ignored. If no {@link HttpPipeline} is specified, an HTTP pipeline will be constructed internally
-     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
-     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
-     * documentation of types that implement this trait to understand the full set of implications.</p>
-     *
      * @param retryOptions The {@link HttpRetryOptions} to use for all the requests made through the client.
      * @return The updated {@link KeyVaultBackupClientBuilder} object.
      */
@@ -369,13 +312,6 @@ public final class KeyVaultBackupClientBuilder implements ConfigurationTrait<Key
 
     /**
      * Sets the {@link HttpRedirectOptions} for all the requests made through the client.
-     *
-     * <p><strong>Note:</strong> It is important to understand the precedence order of the {@link HttpTrait} APIs. In
-     * particular, if a {@link HttpPipeline} is specified, this takes precedence over all other APIs in the trait, and
-     * they will be ignored. If no {@link HttpPipeline} is specified, an HTTP pipeline will be constructed internally
-     * based on the settings provided to this trait. Additionally, there may be other APIs in types that implement this
-     * trait that are also ignored if an {@link HttpPipeline} is specified, so please be sure to refer to the
-     * documentation of types that implement this trait to understand the full set of implications.</p>
      *
      * @param redirectOptions The {@link HttpRedirectOptions} to use for all the requests made through the client.
      * @return The updated {@link KeyVaultBackupClientBuilder} object.
