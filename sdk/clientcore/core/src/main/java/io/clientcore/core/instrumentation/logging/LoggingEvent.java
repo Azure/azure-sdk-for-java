@@ -34,7 +34,7 @@ import static io.clientcore.core.implementation.instrumentation.AttributeKeys.TR
  *
  * <p>Logging event with context.</p>
  *
- * <!-- src_embed io.clientcore.core.util.logging.loggingeventbuilder -->
+ * <!-- src_embed io.clientcore.core.instrumentation.logging.loggingeventbuilder -->
  * <pre>
  * logger.atInfo&#40;&#41;
  *     .addKeyValue&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
@@ -42,7 +42,7 @@ import static io.clientcore.core.implementation.instrumentation.AttributeKeys.TR
  *     .addKeyValue&#40;&quot;key3&quot;, this::getName&#41;
  *     .log&#40;&quot;A structured log message.&quot;&#41;;
  * </pre>
- * <!-- end io.clientcore.core.util.logging.loggingeventbuilder -->
+ * <!-- end io.clientcore.core.instrumentation.logging.loggingeventbuilder -->
  */
 @Metadata(properties = FLUENT)
 public final class LoggingEvent {
@@ -91,14 +91,14 @@ public final class LoggingEvent {
      *
      * <p>Adding string value to logging event context.</p>
      *
-     * <!-- src_embed io.clientcore.core.util.logging.clientlogger.atInfo -->
+     * <!-- src_embed io.clientcore.core.instrumentation.logging.clientlogger.atInfo -->
      * <pre>
      * logger.atInfo&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
      *     .addKeyValue&#40;&quot;hello&quot;, name&#41;
      *     .log&#40;&quot;A structured log message.&quot;&#41;;
      * </pre>
-     * <!-- end io.clientcore.core.util.logging.clientlogger.atInfo -->
+     * <!-- end io.clientcore.core.instrumentation.logging.clientlogger.atInfo -->
      *
      * @param key String key.
      * @param value String value.
@@ -121,14 +121,14 @@ public final class LoggingEvent {
      *
      * <p>Adding string value to logging event context.</p>
      *
-     * <!-- src_embed io.clientcore.core.util.logging.clientlogger.atverbose.addKeyValue#object -->
+     * <!-- src_embed io.clientcore.core.instrumentation.logging.clientlogger.atverbose.addKeyValue#object -->
      * <pre>
      * logger.atVerbose&#40;&#41;
      *     &#47;&#47; equivalent to addKeyValue&#40;&quot;key&quot;, &#40;&#41; -&gt; new LoggableObject&#40;&quot;string representation&quot;&#41;.toString&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, new LoggableObject&#40;&quot;string representation&quot;&#41;&#41;
      *     .log&#40;&quot;A structured log message.&quot;&#41;;
      * </pre>
-     * <!-- end io.clientcore.core.util.logging.clientlogger.atverbose.addKeyValue#object -->
+     * <!-- end io.clientcore.core.instrumentation.logging.clientlogger.atverbose.addKeyValue#object -->
      *
      * @param key String key.
      * @param value Object value.
@@ -163,13 +163,13 @@ public final class LoggingEvent {
      *
      * <p>Adding a long value to the logging event context.</p>
      *
-     * <!-- src_embed io.clientcore.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <!-- src_embed io.clientcore.core.instrumentation.logging.clientlogger.atverbose.addKeyValue#primitive -->
      * <pre>
      * logger.atVerbose&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, 1L&#41;
      *     .log&#40;&quot;A structured log message.&quot;&#41;;
      * </pre>
-     * <!-- end io.clientcore.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <!-- end io.clientcore.core.instrumentation.logging.clientlogger.atverbose.addKeyValue#primitive -->
      *
      * @param key Key to associate the provided {@code value} with.
      * @param value The long value.
@@ -345,7 +345,8 @@ public final class LoggingEvent {
 
             jsonWriter.writeEndObject().flush();
 
-            return shortMessage + "; " + outputStream.toString(StandardCharsets.UTF_8);
+            String context = outputStream.toString(StandardCharsets.UTF_8);
+            return shortMessage == null ? context : shortMessage + "; " + context;
         } catch (IOException ex) {
             throw new UncheckedIOException(ex);
         }

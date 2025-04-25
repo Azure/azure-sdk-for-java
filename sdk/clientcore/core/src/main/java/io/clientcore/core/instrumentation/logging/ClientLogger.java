@@ -74,7 +74,7 @@ public class ClientLogger {
      * <p><strong>Code samples</strong></p>
      *
      * <p>Logging with context.</p>
-     * * <!-- src_embed io.clientcore.core.util.logging.clientlogger#globalcontext -->
+     * * <!-- src_embed io.clientcore.core.instrumentation.logging.clientlogger#globalcontext -->
      * <pre>
      * Map&lt;String, Object&gt; context = new HashMap&lt;&gt;&#40;&#41;;
      * context.put&#40;&quot;connectionId&quot;, &quot;95a47cf&quot;&#41;;
@@ -82,7 +82,7 @@ public class ClientLogger {
      * ClientLogger loggerWithContext = new ClientLogger&#40;ClientLoggerJavaDocCodeSnippets.class, context&#41;;
      * loggerWithContext.info&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
      * </pre>
-     * <!-- end io.clientcore.core.util.logging.clientlogger#globalcontext -->
+     * <!-- end io.clientcore.core.instrumentation.logging.clientlogger#globalcontext -->
      *
      * @param clazz Class creating the logger.
      * @param context Context to be populated on every log record written with this logger.
@@ -131,13 +131,13 @@ public class ClientLogger {
      *
      * <p>Logging with context at error level.</p>
      *
-     * <!-- src_embed io.clientcore.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <!-- src_embed io.clientcore.core.instrumentation.logging.clientlogger.atverbose.addKeyValue#primitive -->
      * <pre>
      * logger.atVerbose&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, 1L&#41;
      *     .log&#40;&quot;A structured log message.&quot;&#41;;
      * </pre>
-     * <!-- end io.clientcore.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <!-- end io.clientcore.core.instrumentation.logging.clientlogger.atverbose.addKeyValue#primitive -->
      *
      * @return instance of {@link LoggingEvent}  or no-op if error logging is disabled.
      */
@@ -152,14 +152,14 @@ public class ClientLogger {
      *
      * <p>Logging with context at warning level.</p>
      *
-     * <!-- src_embed io.clientcore.core.util.logging.clientlogger.atWarning -->
+     * <!-- src_embed io.clientcore.core.instrumentation.logging.clientlogger.atWarning -->
      * <pre>
      * logger.atWarning&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
      *     .setThrowable&#40;exception&#41;
      *     .log&#40;&quot;A structured log message with exception.&quot;&#41;;
      * </pre>
-     * <!-- end io.clientcore.core.util.logging.clientlogger.atWarning -->
+     * <!-- end io.clientcore.core.instrumentation.logging.clientlogger.atWarning -->
      *
      * @return instance of {@link LoggingEvent} or no-op if warn logging is disabled.
      */
@@ -175,14 +175,14 @@ public class ClientLogger {
      *
      * <p>Logging with context at info level.</p>
      *
-     * <!-- src_embed io.clientcore.core.util.logging.clientlogger.atInfo -->
+     * <!-- src_embed io.clientcore.core.instrumentation.logging.clientlogger.atInfo -->
      * <pre>
      * logger.atInfo&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
      *     .addKeyValue&#40;&quot;hello&quot;, name&#41;
      *     .log&#40;&quot;A structured log message.&quot;&#41;;
      * </pre>
-     * <!-- end io.clientcore.core.util.logging.clientlogger.atInfo -->
+     * <!-- end io.clientcore.core.instrumentation.logging.clientlogger.atInfo -->
      *
      * @return instance of {@link LoggingEvent} or no-op if info logging is disabled.
      */
@@ -197,13 +197,13 @@ public class ClientLogger {
      *
      * <p>Logging with context at verbose level.</p>
      *
-     * <!-- src_embed io.clientcore.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <!-- src_embed io.clientcore.core.instrumentation.logging.clientlogger.atverbose.addKeyValue#primitive -->
      * <pre>
      * logger.atVerbose&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, 1L&#41;
      *     .log&#40;&quot;A structured log message.&quot;&#41;;
      * </pre>
-     * <!-- end io.clientcore.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <!-- end io.clientcore.core.instrumentation.logging.clientlogger.atverbose.addKeyValue#primitive -->
      *
      * @return instance of {@link LoggingEvent} or no-op if verbose logging is disabled.
      */
@@ -219,14 +219,14 @@ public class ClientLogger {
      *
      * <p>Logging with context at provided level.</p>
      *
-     * <!-- src_embed io.clientcore.core.util.logging.clientlogger.atLevel -->
+     * <!-- src_embed io.clientcore.core.instrumentation.logging.clientlogger.atLevel -->
      * <pre>
      * LogLevel level = response.getStatusCode&#40;&#41; == 200 ? LogLevel.INFORMATIONAL : LogLevel.WARNING;
      * logger.atLevel&#40;level&#41;
      *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
      *     .log&#40;&quot;message&quot;&#41;;
      * </pre>
-     * <!-- end io.clientcore.core.util.logging.clientlogger.atLevel -->
+     * <!-- end io.clientcore.core.instrumentation.logging.clientlogger.atLevel -->
      *
      * @param level log level.
      * @return instance of {@link LoggingEvent} or no-op if logging at provided level is disabled.
@@ -248,8 +248,32 @@ public class ClientLogger {
     /**
      * Creates {@link ExceptionLoggingEvent} that creates and logs the exception augmented with
      * additional context at the {@link LogLevel#ERROR} level.
+     * <p><strong>Code samples</strong></p>
      *
-     * @param throwableFactory Factory method to create the exception.
+     * <p> Creating new exception and logging it with context.</p>
+     * <!-- src_embed io.clientcore.core.instrumentation.logging.clientlogger.throwableaterror.message -->
+     * <pre>
+     * throw logger.throwableAtError&#40;IllegalArgumentException::new&#41;
+     *     .addKeyValue&#40;&quot;url&quot;, url&#41;
+     *     .log&#40;&quot;Invalid URL&quot;&#41;;
+     * </pre>
+     * <!-- end io.clientcore.core.instrumentation.logging.clientlogger.throwableaterror.message -->
+     *
+     * <p> Creating new exception with cause and logging it with context.</p>
+     * <!-- src_embed io.clientcore.core.instrumentation.logging.clientlogger.throwableaterror.cause -->
+     * <pre>
+     * try &#123;
+     *     connect&#40;&quot;xyz.com&quot;&#41;;
+     * &#125; catch &#40;Exception e&#41; &#123;
+     *     throw logger.throwableAtError&#40;CoreException::from&#41;
+     *         .addKeyValue&#40;&quot;requestId&quot;, requestId&#41;
+     *         .log&#40;e&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end io.clientcore.core.instrumentation.logging.clientlogger.throwableaterror.cause -->
+     *
+     * @param throwableFactory Factory method to create the exception using message augmented with additional context
+     *                         and the cause of the exception.
      * @return {@link ExceptionLoggingEvent}.
      * @param <T> Type of the exception being logged.
      */
@@ -263,7 +287,8 @@ public class ClientLogger {
      * Creates {@link ExceptionLoggingEvent} that creates and logs the exception augmented with
      * additional context at the {@link LogLevel#WARNING} level.
      *
-     * @param throwableFactory Factory method to create the exception.
+     * @param throwableFactory Factory method to create the exception using message augmented with additional context
+     *                         and the cause of the exception.
      * @return {@link ExceptionLoggingEvent}.
      * @param <T> Type of the exception being logged.
      */

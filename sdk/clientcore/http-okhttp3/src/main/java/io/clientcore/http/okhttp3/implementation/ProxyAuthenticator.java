@@ -26,9 +26,6 @@ import static io.clientcore.core.http.models.HttpHeaderName.PROXY_AUTHORIZATION;
  * This class handles authorizing requests being sent through a proxy which require authentication.
  */
 public final class ProxyAuthenticator implements Authenticator {
-    private static final String VALIDATION_ERROR_TEMPLATE = "The '%s' returned in the 'Proxy-Authentication-Info' "
-        + "header doesn't match the value sent in the 'Proxy-Authorization' header. Sent: %s, received: %s.";
-
     private static final String PREEMPTIVE_AUTHENTICATE = "Preemptive Authenticate";
 
     /**
@@ -234,11 +231,12 @@ public final class ProxyAuthenticator implements Authenticator {
             String receivedValue = authenticationInfoPieces.get(name);
 
             if (!receivedValue.equalsIgnoreCase(sentValue)) {
-                throw LOGGER.throwableAtError(IllegalArgumentException::new)
+                throw LOGGER.throwableAtError(IllegalStateException::new)
                     .addKeyValue("name", name)
                     .addKeyValue("sentValue", sentValue)
                     .addKeyValue("receivedValue", receivedValue)
-                    .log("Received 'Proxy-Authentication-Info' does not match value sent in the 'Proxy-Authorization' header.");
+                    .log(
+                        "Received 'Proxy-Authentication-Info' does not match value sent in the 'Proxy-Authorization' header.");
             }
         }
     }

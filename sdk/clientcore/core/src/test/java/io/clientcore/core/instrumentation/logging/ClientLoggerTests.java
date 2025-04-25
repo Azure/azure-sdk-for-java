@@ -181,6 +181,62 @@ public class ClientLoggerTests {
         assertMessage(expectedMessage, logValues, LogLevel.INFORMATIONAL, LogLevel.WARNING);
     }
 
+    @Test
+    public void logExceptionWithoutContext() {
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL);
+
+        String shortMessage = "connection dropped";
+        IOException ioException = assertThrows(IOException.class, () -> {
+            throw logger.throwableAtWarning(IOException::new).log(shortMessage);
+        });
+
+        assertEquals("connection dropped", ioException.getMessage());
+
+        Map<String, Object> expectedMessage = new HashMap<>();
+        expectedMessage.put("message", shortMessage);
+        expectedMessage.put("exception.type", ioException.getClass().getCanonicalName());
+
+        String logValues = byteArraySteamToString(logCaptureStream);
+
+        System.out.println(logValues);
+        assertTrue(logValues.contains(shortMessage));
+        assertMessage(expectedMessage, logValues, LogLevel.INFORMATIONAL, LogLevel.WARNING);
+    }
+
+    /**
+     * Tests logging Throwable with context
+     */
+    @Test
+    public void logExceptionWithoutMessage() {
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL);
+
+        UnknownHostException cause = new UnknownHostException("Unable to resolve host www.xyz.com");
+        CoreException coreException = assertThrows(CoreException.class, () -> {
+            throw logger.throwableAtWarning(CoreException::from)
+                .addKeyValue("connectionId", "foo")
+                .addKeyValue("linkName", 1)
+                .log(cause);
+        });
+
+        Map<String, Object> exceptionMessageMap = fromJson(coreException.getMessage());
+        assertEquals("foo", exceptionMessageMap.get("connectionId"));
+        assertEquals(1, exceptionMessageMap.get("linkName"));
+        assertEquals("java.net.UnknownHostException", exceptionMessageMap.get("cause.type"));
+        assertEquals("Unable to resolve host www.xyz.com", exceptionMessageMap.get("cause.message"));
+
+        Map<String, Object> expectedMessage = new HashMap<>();
+        expectedMessage.put("connectionId", "foo");
+        expectedMessage.put("linkName", 1);
+        expectedMessage.put("exception.type", coreException.getClass().getCanonicalName());
+        expectedMessage.put("cause.type", cause.getClass().getCanonicalName());
+        expectedMessage.put("cause.message", cause.getMessage());
+
+        String logValues = byteArraySteamToString(logCaptureStream);
+
+        assertTrue(logValues.contains(cause.getMessage()));
+        assertMessage(expectedMessage, logValues, LogLevel.INFORMATIONAL, LogLevel.WARNING);
+    }
+
     /**
      * Tests logging Throwable with context
      */

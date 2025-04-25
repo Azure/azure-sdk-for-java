@@ -97,9 +97,8 @@ public class ExceptionLoggingEvent<T extends Throwable> {
      * @return The created exception.
      */
     public T log(Throwable cause) {
-        return log(cause.getMessage(), cause);
+        return log(null, cause);
     }
-
 
     /**
      * Logs the exception with the provided short message and cause.
