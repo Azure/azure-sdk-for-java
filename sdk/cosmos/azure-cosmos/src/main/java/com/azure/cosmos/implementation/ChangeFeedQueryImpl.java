@@ -2,6 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosItemSerializer;
@@ -227,13 +229,16 @@ class ChangeFeedQueryImpl<T> {
                         checkNotNull(documentCollectionValueHolder, "Argument 'documentCollectionValueHolder' cannot be null!");
                         checkNotNull(documentCollectionValueHolder.v, "Argument 'documentCollectionValueHolder.v' cannot be null!");
 
-                        DiagnosticsClientContext diagnosticsClientContext = request.getDiagnosticsClientContext();
-                        CosmosDiagnostics cosmosDiagnostics = diagnosticsClientContext != null ?
-                            diagnosticsClientContext.getMostRecentlyCreatedDiagnostics() : null;
-                        CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics != null ?
-                            cosmosDiagnostics.getDiagnosticsContext() : null;
+                        CosmosDiagnosticsContext cosmosDiagnosticsContextForInternalStateCapture
+                            = Utils.generateDiagnosticsContextForInternalStateCapture(
+                            request.getDiagnosticsClientContext(),
+                            ResourceType.PartitionKeyRange,
+                            ConsistencyLevel.STRONG,
+                            ConnectionMode.GATEWAY,
+                            OperationType.Read,
+                            changeFeedRequestOptionsAccessor.getImpl(this.options));
 
-                        return client.getPartitionKeyRangeCache().tryLookupAsync(null, documentCollectionValueHolder.v.getResourceId(), null, null, diagnosticsContext)
+                        return client.getPartitionKeyRangeCache().tryLookupAsync(null, documentCollectionValueHolder.v.getResourceId(), null, null, cosmosDiagnosticsContextForInternalStateCapture)
                             .flatMap(collectionRoutingMapValueHolder -> {
 
                                 checkNotNull(collectionRoutingMapValueHolder, "Argument 'collectionRoutingMapValueHolder' cannot be null!");

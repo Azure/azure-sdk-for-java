@@ -4,6 +4,8 @@
 package com.azure.cosmos.implementation.feedranges;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.implementation.Constants;
@@ -15,8 +17,10 @@ import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.NotFoundException;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ReadFeedKeyType;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
@@ -112,12 +116,14 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
 
                 final String containerRid = collection.getResourceId();
 
-                DiagnosticsClientContext diagnosticsClientContext
-                    = request.getDiagnosticsClientContext();
-                CosmosDiagnostics cosmosDiagnostics
-                    = diagnosticsClientContext.getMostRecentlyCreatedDiagnostics();
-                CosmosDiagnosticsContext cosmosDiagnosticsContext
-                    = cosmosDiagnostics.getDiagnosticsContext();
+                CosmosDiagnosticsContext cosmosDiagnosticsContextForInternalStateCapture
+                    = Utils.generateDiagnosticsContextForInternalStateCapture(
+                    request.getDiagnosticsClientContext(),
+                    ResourceType.PartitionKeyRange,
+                    ConsistencyLevel.STRONG,
+                    ConnectionMode.GATEWAY,
+                    OperationType.Read,
+                    null);
 
                 return routingMapProvider
                     .tryGetOverlappingRangesAsync(
@@ -126,7 +132,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                         this.range,
                         false,
                         null,
-                        cosmosDiagnosticsContext)
+                        cosmosDiagnosticsContextForInternalStateCapture)
                     .flatMap(pkRangeHolder -> {
                         final ArrayList<String> rangeList = new ArrayList<>();
 

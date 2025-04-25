@@ -763,7 +763,7 @@ public final class BulkExecutor<TContext> implements Disposable {
             // add it in the mainSink.
 
             return itemBulkOperation.getRetryPolicy()
-                .shouldRetryForGone(cosmosException.getStatusCode(), cosmosException.getSubStatusCode(), itemBulkOperation, cosmosException)
+                .shouldRetryForGone(cosmosException.getStatusCode(), cosmosException.getSubStatusCode(), itemBulkOperation, cosmosException, this.cosmosBulkExecutionOptions)
                 .flatMap(shouldRetryGone -> {
                     if (shouldRetryGone) {
                         logDebugOrWarning(

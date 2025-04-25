@@ -4,6 +4,8 @@
 package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosException;
@@ -16,7 +18,9 @@ import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceThrottleRetryPolicy;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.directconnectivity.WFConstants;
@@ -120,35 +124,34 @@ final class BulkExecutorUtil {
         if (operation instanceof ItemBulkOperation<?, ?>) {
             final ItemBulkOperation<?, ?> itemBulkOperation = (ItemBulkOperation<?, ?>) operation;
 
-            CosmosDiagnosticsContext diagnosticsContext
-                = ctxAccessor.create(
-                    null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
+            CosmosDiagnosticsContext cosmosDiagnosticsContextForInternalStateCapture
+                = Utils.generateDiagnosticsContextForInternalStateCapture(
+                (DiagnosticsClientContext) null,
+                ResourceType.DocumentCollection,
+                ConsistencyLevel.STRONG,
+                ConnectionMode.GATEWAY,
+                OperationType.Read,
                 bulkExecutionOptions);
 
             return Mono.defer(() ->
-                BulkExecutorUtil.getCollectionInfoAsync(docClientWrapper, container, collectionBeforeRecreation.get(), diagnosticsContext)
+                BulkExecutorUtil.getCollectionInfoAsync(docClientWrapper, container, collectionBeforeRecreation.get(), cosmosDiagnosticsContextForInternalStateCapture)
                 .flatMap(collection -> {
                     final PartitionKeyDefinition definition = collection.getPartitionKey();
                     final PartitionKeyInternal partitionKeyInternal = getPartitionKeyInternal(operation, definition);
                     itemBulkOperation.setPartitionKeyJson(partitionKeyInternal.toJson());
 
+
+                    CosmosDiagnosticsContext cosmosDiagnosticsContextForPkRangeInternalStateCapture
+                        = Utils.generateDiagnosticsContextForInternalStateCapture(
+                        (DiagnosticsClientContext) null,
+                        ResourceType.PartitionKeyRange,
+                        ConsistencyLevel.STRONG,
+                        ConnectionMode.GATEWAY,
+                        OperationType.Read,
+                        bulkExecutionOptions);
+
                     return docClientWrapper.getPartitionKeyRangeCache()
-                        .tryLookupAsync(null, collection.getResourceId(), null, null, null)
+                        .tryLookupAsync(null, collection.getResourceId(), null, null, cosmosDiagnosticsContextForPkRangeInternalStateCapture)
                         .map((Utils.ValueHolder<CollectionRoutingMap> routingMap) -> {
 
                             if (routingMap.v == null) {

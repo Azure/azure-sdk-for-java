@@ -3,6 +3,8 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.implementation.BadRequestException;
@@ -89,11 +91,14 @@ public class DocumentQueryExecutionContextFactory {
         DefaultDocumentQueryExecutionContext<T> queryExecutionContext, boolean queryPlanCachingEnabled,
         Map<String, PartitionedQueryExecutionInfo> queryPlanCache) {
 
-        CosmosDiagnostics mostRecentlyCreatedDiagnostics
-            = diagnosticsClientContext.getMostRecentlyCreatedDiagnostics();
-
-        CosmosDiagnosticsContext diagnosticsContext
-            = mostRecentlyCreatedDiagnostics.getDiagnosticsContext();
+        CosmosDiagnosticsContext cosmosDiagnosticsContextForInternalStateCapture
+            = Utils.generateDiagnosticsContextForInternalStateCapture(
+            diagnosticsClientContext,
+            ResourceType.PartitionKeyRange,
+            ConsistencyLevel.STRONG,
+            ConnectionMode.GATEWAY,
+            OperationType.Read,
+            queryRequestOptionsAccessor.getImpl(cosmosQueryRequestOptions));
 
         // The partitionKeyRangeIdInternal is no more a public API on
         // FeedOptions, but have the below condition
@@ -105,10 +110,10 @@ public class DocumentQueryExecutionContextFactory {
                 .getTargetPartitionKeyRangesById(
                     collection.getResourceId(),
                     ModelBridgeInternal.getPartitionKeyRangeIdInternal(cosmosQueryRequestOptions),
-                    diagnosticsContext);
+                    cosmosDiagnosticsContextForInternalStateCapture);
 
             Mono<List<Range<String>>> allRanges = queryExecutionContext.getTargetPartitionKeyRanges(
-                collection.getResourceId(), new ArrayList<>(Arrays.asList(PartitionKeyInternalHelper.FullRange)), diagnosticsContext
+                collection.getResourceId(), new ArrayList<>(Arrays.asList(PartitionKeyInternalHelper.FullRange)), cosmosDiagnosticsContextForInternalStateCapture
             ).map(pkRanges -> pkRanges.stream().map(PartitionKeyRange::toRange).collect(Collectors.toList()));
 
             return Mono.zip(partitionKeyRanges, allRanges).
@@ -135,7 +140,7 @@ public class DocumentQueryExecutionContextFactory {
                 queryExecutionContext,
                 startTime,
                 endTime,
-                diagnosticsContext);
+                cosmosDiagnosticsContextForInternalStateCapture);
         }
 
         if (queryPlanCachingEnabled &&
@@ -146,7 +151,7 @@ public class DocumentQueryExecutionContextFactory {
             if (partitionedQueryExecutionInfo != null) {
                 logger.debug("Skipping query plan round trip by using the cached plan");
                 return getTargetRangesFromQueryPlan(cosmosQueryRequestOptions, collection, queryExecutionContext,
-                                                    partitionedQueryExecutionInfo, startTime, endTime, diagnosticsContext);
+                                                    partitionedQueryExecutionInfo, startTime, endTime, cosmosDiagnosticsContextForInternalStateCapture);
             }
         }
 
@@ -168,7 +173,7 @@ public class DocumentQueryExecutionContextFactory {
                 }
 
                 return getTargetRangesFromQueryPlan(cosmosQueryRequestOptions, collection, queryExecutionContext,
-                                                    partitionedQueryExecutionInfo, startTime, endTime, diagnosticsContext);
+                                                    partitionedQueryExecutionInfo, startTime, endTime, cosmosDiagnosticsContextForInternalStateCapture);
             });
     }
 

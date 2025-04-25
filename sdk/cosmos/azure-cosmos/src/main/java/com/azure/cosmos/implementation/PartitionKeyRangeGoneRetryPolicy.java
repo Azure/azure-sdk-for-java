@@ -3,6 +3,8 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosException;
@@ -78,19 +80,21 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
 
             return collectionObs.flatMap(collectionValueHolder -> {
 
-                DiagnosticsClientContext diagnosticsClientContext
-                    = request.getDiagnosticsClientContext();
-                CosmosDiagnostics cosmosDiagnostics
-                    = diagnosticsClientContext.getMostRecentlyCreatedDiagnostics();
-                CosmosDiagnosticsContext cosmosDiagnosticsContext
-                    = cosmosDiagnostics.getDiagnosticsContext();
+                CosmosDiagnosticsContext cosmosDiagnosticsContextForInternalStateCapture
+                    = Utils.generateDiagnosticsContextForInternalStateCapture(
+                    clientException,
+                    ResourceType.PartitionKeyRange,
+                    ConsistencyLevel.STRONG,
+                    ConnectionMode.GATEWAY,
+                    OperationType.Read,
+                    null);
 
                 Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMapObs = this.partitionKeyRangeCache.tryLookupAsync(
                     BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics),
                     collectionValueHolder.v.getResourceId(),
                     null,
                     request.properties,
-                    cosmosDiagnosticsContext);
+                    cosmosDiagnosticsContextForInternalStateCapture);
 
                 Mono<Utils.ValueHolder<CollectionRoutingMap>> refreshedRoutingMapObs = routingMapObs.flatMap(routingMapValueHolder -> {
                     if (routingMapValueHolder.v != null) {
@@ -100,7 +104,7 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
                             collectionValueHolder.v.getResourceId(),
                             routingMapValueHolder.v,
                             request.properties,
-                            cosmosDiagnosticsContext);
+                            cosmosDiagnosticsContextForInternalStateCapture);
                     } else {
                         return Mono.just(new Utils.ValueHolder<>(null));
                     }

@@ -4,11 +4,16 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentClientRetryPolicy;
 import com.azure.cosmos.implementation.GlobalEndpointManager;
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.GoneException;
@@ -249,14 +254,19 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                         return Mono.just(ShouldRetryResult.noRetry());
                     }
 
+                    CosmosException cosmosException = Utils.as(e, CosmosException.class);
+
                     if (this.state.getContinuation() == null) {
                         final FeedRangeInternal feedRange = this.state.getFeedRange();
 
-                        CosmosDiagnostics mostRecentlyCreatedDiagnostics
-                            = this.diagnosticsClientContext.getMostRecentlyCreatedDiagnostics();
-                        CosmosDiagnosticsContext diagnosticsContext
-                            = mostRecentlyCreatedDiagnostics != null ?
-                            mostRecentlyCreatedDiagnostics.getDiagnosticsContext() : null;
+                        CosmosDiagnosticsContext cosmosDiagnosticsContextForInternalStateCapture
+                            = Utils.generateDiagnosticsContextForInternalStateCapture(
+                            cosmosException,
+                            ResourceType.DocumentCollection,
+                            ConsistencyLevel.STRONG,
+                            ConnectionMode.GATEWAY,
+                            OperationType.Read,
+                            null);
 
                         final Mono<Range<String>> effectiveRangeMono = feedRange.getNormalizedEffectiveRange(
                             this.client.getPartitionKeyRangeCache(),
@@ -265,8 +275,8 @@ class ChangeFeedFetcher<T> extends Fetcher<T> {
                                 this.diagnosticsContext,
                                 this.state.getContainerRid(),
                                 this.requestOptionProperties,
-                                diagnosticsContext),
-                            diagnosticsContext);
+                                cosmosDiagnosticsContextForInternalStateCapture),
+                            cosmosDiagnosticsContextForInternalStateCapture);
 
                         return effectiveRangeMono
                             .map(effectiveRange -> this.state.setContinuation(

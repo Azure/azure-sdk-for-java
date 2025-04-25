@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
@@ -766,18 +767,20 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                         return Mono.empty();
                     }
 
-                    DiagnosticsClientContext diagnosticsClientContext
-                        = request.getDiagnosticsClientContext();
-                    CosmosDiagnostics cosmosDiagnostics
-                        = diagnosticsClientContext.getMostRecentlyCreatedDiagnostics();
-                    CosmosDiagnosticsContext cosmosDiagnosticsContext
-                        = cosmosDiagnostics.getDiagnosticsContext();
+                    CosmosDiagnosticsContext cosmosDiagnosticsContextForInternalStateCapture
+                        = Utils.generateDiagnosticsContextForInternalStateCapture(
+                        request.getDiagnosticsClientContext(),
+                        ResourceType.PartitionKeyRange,
+                        ConsistencyLevel.STRONG,
+                        ConnectionMode.GATEWAY,
+                        OperationType.Read,
+                        null);
 
                     return partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                         collectionValueHolder.v.getResourceId(),
                         null,
                         null,
-                        cosmosDiagnosticsContext).flatMap(collectionRoutingMapValueHolder -> {
+                        cosmosDiagnosticsContextForInternalStateCapture).flatMap(collectionRoutingMapValueHolder -> {
                         if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
                             //Apply the ambient session.
                             String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);

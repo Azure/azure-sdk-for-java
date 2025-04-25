@@ -3,6 +3,8 @@
 package com.azure.cosmos.implementation.caches;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
@@ -11,9 +13,11 @@ import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.NotFoundException;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PathsHelper;
 import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.ResourceId;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -57,12 +61,14 @@ public abstract class RxCollectionCache {
         //  Mono Void to represent only terminal events specifically complete and error
         Mono<Void> init = null;
 
-        DiagnosticsClientContext diagnosticsClientContext
-            = request.getDiagnosticsClientContext();
-        CosmosDiagnostics cosmosDiagnostics
-            = diagnosticsClientContext.getMostRecentlyCreatedDiagnostics();
-        CosmosDiagnosticsContext cosmosDiagnosticsContext
-            = cosmosDiagnostics.getDiagnosticsContext();
+        CosmosDiagnosticsContext cosmosDiagnosticsContextForInternalStateCapture
+            = Utils.generateDiagnosticsContextForInternalStateCapture(
+            request.getDiagnosticsClientContext(),
+            ResourceType.PartitionKeyRange,
+            ConsistencyLevel.STRONG,
+            ConnectionMode.GATEWAY,
+            OperationType.Read,
+            null);
 
         if (request.getIsNameBased()) {
             if (request.isForceNameCacheRefresh()) {
@@ -71,7 +77,7 @@ public abstract class RxCollectionCache {
             }
 
             Mono<Utils.ValueHolder<DocumentCollection>> collectionInfoObs = this.resolveByPartitionKeyRangeIdentityAsync(
-                BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),request.getPartitionKeyRangeIdentity(), request.properties, cosmosDiagnosticsContext);
+                BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),request.getPartitionKeyRangeIdentity(), request.properties, cosmosDiagnosticsContextForInternalStateCapture);
 
             if (init != null) {
                 collectionInfoObs = init.then(collectionInfoObs);
@@ -83,7 +89,7 @@ public abstract class RxCollectionCache {
                 }
                 if (request.requestContext.resolvedCollectionRid == null) {
 
-                    Mono<DocumentCollection> collectionInfoRes = this.resolveByNameAsync(metaDataDiagnosticsContext, request.getResourceAddress(), request.properties, cosmosDiagnosticsContext);
+                    Mono<DocumentCollection> collectionInfoRes = this.resolveByNameAsync(metaDataDiagnosticsContext, request.getResourceAddress(), request.properties, cosmosDiagnosticsContextForInternalStateCapture);
 
                     return collectionInfoRes.flatMap(collection -> {
                         // TODO: how to async log this?
@@ -98,18 +104,18 @@ public abstract class RxCollectionCache {
 
                     });
                 } else {
-                    return this.resolveByRidAsync(metaDataDiagnosticsContext, request.requestContext.resolvedCollectionRid, request.properties, cosmosDiagnosticsContext);
+                    return this.resolveByRidAsync(metaDataDiagnosticsContext, request.requestContext.resolvedCollectionRid, request.properties, cosmosDiagnosticsContextForInternalStateCapture);
                 }
             });
         } else {
-            return resolveByPartitionKeyRangeIdentityAsync(metaDataDiagnosticsContext, request.getPartitionKeyRangeIdentity(),request.properties, cosmosDiagnosticsContext)
+            return resolveByPartitionKeyRangeIdentityAsync(metaDataDiagnosticsContext, request.getPartitionKeyRangeIdentity(),request.properties, cosmosDiagnosticsContextForInternalStateCapture)
                 .flatMap(collectionValueHolder -> {
 
                     if (collectionValueHolder.v != null) {
                         return Mono.just(collectionValueHolder);
                     }
 
-                    return this.resolveByRidAsync(metaDataDiagnosticsContext, request.getResourceAddress(), request.properties, cosmosDiagnosticsContext);
+                    return this.resolveByRidAsync(metaDataDiagnosticsContext, request.getResourceAddress(), request.properties, cosmosDiagnosticsContextForInternalStateCapture);
                 });
         }
     }

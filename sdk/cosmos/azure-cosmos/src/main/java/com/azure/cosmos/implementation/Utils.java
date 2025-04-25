@@ -8,6 +8,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
+import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.uuid.EthernetAddress;
@@ -828,6 +829,37 @@ public class Utils {
         OverridableRequestOptions requestOptions) {
 
         CosmosDiagnostics cosmosDiagnostics = diagnosticsClientContext != null ? diagnosticsClientContext.getMostRecentlyCreatedDiagnostics() : null;
+        CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics != null ? cosmosDiagnostics.getDiagnosticsContext() : null;
+
+        return diagnosticsContext != null ? diagnosticsContext : diagnosticsContextAccessor.create(
+            Strings.Emtpy,
+            Strings.Emtpy,
+            Strings.Emtpy,
+            Strings.Emtpy,
+            Strings.Emtpy,
+            resourceType,
+            operationType,
+            Strings.Emtpy,
+            consistencyLevel,
+            null,
+            diagnosticsThresholdsAccessor.getDefaultDiagnosticsThresholds(),
+            Strings.Emtpy,
+            connectionMode.toString(),
+            Strings.Emtpy,
+            -1,
+            Strings.Emtpy,
+            requestOptions);
+    }
+
+    public static CosmosDiagnosticsContext generateDiagnosticsContextForInternalStateCapture(
+        CosmosException cosmosException,
+        ResourceType resourceType,
+        ConsistencyLevel consistencyLevel,
+        ConnectionMode connectionMode,
+        OperationType operationType,
+        OverridableRequestOptions requestOptions) {
+
+        CosmosDiagnostics cosmosDiagnostics = cosmosException != null ? cosmosException.getDiagnostics() : null;
         CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics != null ? cosmosDiagnostics.getDiagnosticsContext() : null;
 
         return diagnosticsContext != null ? diagnosticsContext : diagnosticsContextAccessor.create(

@@ -3,6 +3,8 @@
 package com.azure.cosmos.implementation.query;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosException;
@@ -250,10 +252,16 @@ class DocumentProducer<T> {
                 dce,
                 this.operationContextTextProvider.get());
 
-            CosmosDiagnostics cosmosDiagnostics = dce.getDiagnostics();
-            CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics != null ? cosmosDiagnostics.getDiagnosticsContext() : null;
+            CosmosDiagnosticsContext cosmosDiagnosticsContextForInternalStateCapture
+                = Utils.generateDiagnosticsContextForInternalStateCapture(
+                dce,
+                ResourceType.PartitionKeyRange,
+                ConsistencyLevel.STRONG,
+                ConnectionMode.GATEWAY,
+                OperationType.Read,
+                null);
 
-            Mono<Utils.ValueHolder<List<PartitionKeyRange>>> replacementRangesObs = getReplacementRanges(feedRange.getRange(), diagnosticsContext);
+            Mono<Utils.ValueHolder<List<PartitionKeyRange>>> replacementRangesObs = getReplacementRanges(feedRange.getRange(), cosmosDiagnosticsContextForInternalStateCapture);
 
             // Since new DocumentProducers are instantiated for the new replacement ranges, if for the new
             // replacement partitions split happens the corresponding DocumentProducer can recursively handle splits.
