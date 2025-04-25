@@ -93,15 +93,17 @@ public class TestProxyPlaybackClient implements HttpClient {
                 .setBody(new RecordFilePayload(recordFile.toString(), assetJsonPath).toJsonString())
                 .setHeader(HttpHeaderName.ACCEPT, "application/json")
                 .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
-            HttpResponse response = sendRequestWithRetries(request);
-            checkForTestProxyErrors(response);
-            xRecordingId = response.getHeaderValue(X_RECORDING_ID);
-            xRecordingFileLocation
-                = new String(Base64.getUrlDecoder().decode(response.getHeaders().getValue(X_RECORDING_FILE_LOCATION)),
-                    StandardCharsets.UTF_8);
-            addProxySanitization(this.sanitizers);
-            addMatcherRequests(this.matchers);
-            String body = response.getBodyAsString().block();
+            String body;
+            try (HttpResponse response = sendRequestWithRetries(request)) {
+                checkForTestProxyErrors(response);
+                xRecordingId = response.getHeaderValue(X_RECORDING_ID);
+                xRecordingFileLocation
+                        = new String(Base64.getUrlDecoder().decode(response.getHeaders().getValue(X_RECORDING_FILE_LOCATION)),
+                        StandardCharsets.UTF_8);
+                addProxySanitization(this.sanitizers);
+                addMatcherRequests(this.matchers);
+                body = response.getBodyAsString().block();
+            }
             // The test proxy stores variables in a map with no guaranteed order.
             // The Java implementation of recording did not use a map, but relied on the order
             // of the variables as they were stored. Our scheme instead sets an increasing integer
@@ -136,8 +138,13 @@ public class TestProxyPlaybackClient implements HttpClient {
             try {
                 HttpResponse response = client.sendSync(request, Context.NONE);
                 if (response.getStatusCode() / 100 != 2) {
+                    String body = response.getBodyAsString().block();
+                    int statusCode = response.getStatusCode();
+                    // We don't generally want to close the response here as the caller will need it,
+                    // but if we're throwing we should clean it up.
+                    response.close();
                     throw new RuntimeException("Test proxy returned a non-successful status code. "
-                        + response.getStatusCode() + "; response: " + response.getBodyAsString().block());
+                            + statusCode + "; response: " + body);
                 }
                 return response;
             } catch (Exception e) {
@@ -165,7 +172,9 @@ public class TestProxyPlaybackClient implements HttpClient {
     public void stopPlayback() {
         HttpRequest request
             = new HttpRequest(HttpMethod.POST, proxyUrl + "/playback/stop").setHeader(X_RECORDING_ID, xRecordingId);
-        sendRequestWithRetries(request);
+        try (HttpResponse response = sendRequestWithRetries(request)) {
+            checkForTestProxyErrors(response);
+        }
     }
 
     /**
@@ -224,7 +233,9 @@ public class TestProxyPlaybackClient implements HttpClient {
             HttpRequest request
                 = createAddSanitizersRequest(sanitizers, proxyUrl).setHeader(X_RECORDING_ID, xRecordingId);
 
-            sendRequestWithRetries(request);
+            try (HttpResponse response = sendRequestWithRetries(request)) {
+                checkForTestProxyErrors(response);
+            }
         } else {
             this.sanitizers.addAll(sanitizers);
         }
@@ -250,7 +261,9 @@ public class TestProxyPlaybackClient implements HttpClient {
                 throw new RuntimeException(e);
             }
 
-            sendRequestWithRetries(request);
+            try (HttpResponse response = sendRequestWithRetries(request)) {
+                checkForTestProxyErrors(response);
+            }
         }
     }
 
@@ -266,7 +279,9 @@ public class TestProxyPlaybackClient implements HttpClient {
             }
             matcherRequests.forEach(request -> {
                 request.setHeader(X_RECORDING_ID, xRecordingId);
-                sendRequestWithRetries(request);
+                try (HttpResponse response = sendRequestWithRetries(request)) {
+                    checkForTestProxyErrors(response);
+                }
             });
         } else {
             this.matchers.addAll(matchers);

@@ -18,6 +18,7 @@ import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.utils.HttpURLConnectionHttpClient;
 import com.azure.core.test.utils.TestProxyUtils;
 import com.azure.core.util.Context;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.json.JsonProviders;
 import com.azure.json.JsonWriter;
 import reactor.core.publisher.Mono;
@@ -32,6 +33,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Queue;
+import java.util.concurrent.TimeUnit;
 
 import static com.azure.core.test.utils.TestProxyUtils.checkForTestProxyErrors;
 import static com.azure.core.test.utils.TestProxyUtils.createAddSanitizersRequest;
@@ -43,6 +45,7 @@ import static com.azure.core.test.utils.TestProxyUtils.loadSanitizers;
  * A {@link HttpPipelinePolicy} for redirecting traffic through the test proxy for recording.
  */
 public class TestProxyRecordPolicy implements HttpPipelinePolicy {
+    private static final ClientLogger LOGGER = new ClientLogger(TestProxyRecordPolicy.class);
     private static final HttpHeaderName X_RECORDING_ID = HttpHeaderName.fromString("x-recording-id");
     private final HttpClient client;
     private final URL proxyUrl;
@@ -79,7 +82,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
                 .setBody(new RecordFilePayload(recordFile.toString(), assetJsonPath).toJsonString())
                 .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
 
-            try (HttpResponse response = client.sendSync(request, Context.NONE)) {
+            try (HttpResponse response = sendRequestWithRetries(request)) {
                 checkForTestProxyErrors(response);
                 if (response.getStatusCode() != 200) {
                     throw new RuntimeException(response.getBodyAsBinaryData().toString());
@@ -99,7 +102,9 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
         HttpRequest request = new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/SetRecordingOptions")
             .setBody("{\"HandleRedirects\": false}")
             .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
-        client.sendSync(request, Context.NONE).close();
+        try (HttpResponse response = sendRequestWithRetries(request)) {
+            checkForTestProxyErrors(response);
+        }
     }
 
     /**
@@ -113,7 +118,7 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
             .setHeader(X_RECORDING_ID, xRecordingId)
             .setBody(serializeVariables(variables));
 
-        try (HttpResponse response = client.sendSync(request, Context.NONE)) {
+        try (HttpResponse response = sendRequestWithRetries(request)) {
             checkForTestProxyErrors(response);
             if (response.getStatusCode() != 200) {
                 throw new RuntimeException(response.getBodyAsBinaryData().toString());
@@ -197,7 +202,9 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
             HttpRequest request
                 = createAddSanitizersRequest(sanitizers, proxyUrl).setHeader(X_RECORDING_ID, xRecordingId);
 
-            client.sendSync(request, Context.NONE).close();
+            try (HttpResponse response = sendRequestWithRetries(request)) {
+                checkForTestProxyErrors(response);
+            }
         } else {
             this.sanitizers.addAll(sanitizers);
         }
@@ -227,7 +234,9 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
                 throw new RuntimeException(e);
             }
 
-            client.sendSync(request, Context.NONE).close();
+            try (HttpResponse response = sendRequestWithRetries(request)) {
+                checkForTestProxyErrors(response);
+            }
         }
     }
 
@@ -241,9 +250,45 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
             HttpRequest request = new HttpRequest(HttpMethod.POST, proxyUrl + "/admin/setrecordingoptions")
                 .setBody(testProxyRecordingOptions.toJsonString())
                 .setHeader(HttpHeaderName.CONTENT_TYPE, "application/json");
-            client.sendSync(request, Context.NONE).close();
+            try (HttpResponse response = sendRequestWithRetries(request)) {
+                checkForTestProxyErrors(response);
+            }
         } catch (IOException ex) {
             throw new IllegalArgumentException("Failed to process JSON input", ex);
+        }
+    }
+
+    private HttpResponse sendRequestWithRetries(HttpRequest request) {
+        int retries = 0;
+        while (true) {
+            try {
+                HttpResponse response = client.sendSync(request, Context.NONE);
+                if (response.getStatusCode() / 100 != 2) {
+                    String body = response.getBodyAsString().block();
+                    int statusCode = response.getStatusCode();
+                    // We don't generally want to close the response here as the caller will need it,
+                    // but if we're throwing we should clean it up.
+                    response.close();
+                    throw new RuntimeException("Test proxy returned a non-successful status code. "
+                            + statusCode + "; response: " + body);
+                }
+                return response;
+            } catch (Exception e) {
+                retries++;
+                if (retries >= 3) {
+                    throw e;
+                }
+                sleep(1);
+                LOGGER.warning("Retrying request to test proxy. Retry attempt: " + retries);
+            }
+        }
+    }
+
+    private void sleep(int durationInSeconds) {
+        try {
+            TimeUnit.SECONDS.sleep(durationInSeconds);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         }
     }
 }

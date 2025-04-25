@@ -74,6 +74,9 @@ public class TestProxyTestServer implements Closeable {
 
     @Override
     public void close() {
-        server.disposeNow();
+        if (server != null) {
+            server.disposeNow();
+        }
     }
 }
+
