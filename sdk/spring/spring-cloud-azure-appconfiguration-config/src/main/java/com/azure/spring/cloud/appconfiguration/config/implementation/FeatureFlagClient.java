@@ -131,8 +131,6 @@ class FeatureFlagClient {
                 ObjectMapper objectMapper = JsonMapper.builder()
                     .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
                 featureTelemetry = objectMapper.convertValue(telemetryNode, FeatureTelemetry.class);
-            } else {
-                featureTelemetry = null; // Do not enable telemetry by default
             }
 
             feature = new Feature(item, requirementType, featureTelemetry);

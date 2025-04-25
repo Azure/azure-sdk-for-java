@@ -16,7 +16,6 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.Test
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestUtils.createItemFeatureFlag;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
@@ -205,27 +204,27 @@ public class FeatureFlagClientTest {
     public void testAllocationIdWithDifferentSeed() {
         FeatureFlagConfigurationSetting featureFlag = createItemFeatureFlag(
             ".appconfig.featureflag/", "TestFeature",
-            "{\"allocation\":{\"seed\":\"newSeed\"}}", FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE, TEST_E_TAG);
+            "{\"allocation\":{\"seed\":\"newSeed\"},\"telemetry\":{\"enabled\":true}}", FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE, TEST_E_TAG);
 
         Feature feature = FeatureFlagClient.createFeature(featureFlag, TEST_ENDPOINT);
-        assertEquals("newSeed", feature.getTelemetry().getMetadata().get("AllocationId"));
+        assertEquals("RkxUK5CoaOaNWBjc55Mi", feature.getTelemetry().getMetadata().get("AllocationId"));
     }
 
     @Test
     public void testAllocationIdWithVariants() {
+        String flagValue = "{\"allocation\": { \"percentile\": [{\"variant\": \"Off\", \"from\": 0, \"to\": 50}, {\"variant\": \"On\", \"from\": 50, \"to\": 100}], \"default_when_enabled\": \"Off2\", \"default_when_disabled\": \"Off\" }, \"telemetry\": {\"enabled\": true}}";
         FeatureFlagConfigurationSetting featureFlag = createItemFeatureFlag(
-            ".appconfig.featureflag/", "TestFeature",
-            "{\"allocation\":{\"variants\":[{\"name\":\"VariantA\",\"configuration_value\":{\"key\":\"valueA\"}},{\"name\":\"VariantB\",\"configuration_value\":{\"key\":\"valueB\"}}]}}", FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE, TEST_E_TAG);
+            ".appconfig.featureflag/", "TestFeature", flagValue, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE, TEST_E_TAG);
 
         Feature feature = FeatureFlagClient.createFeature(featureFlag, TEST_ENDPOINT);
-        assertNotNull(feature.getTelemetry().getMetadata().get("AllocationId"));
+        assertEquals("wGzzPy4qGy92SHnMtSvY",feature.getTelemetry().getMetadata().get("AllocationId"));
     }
 
     @Test
     public void testAllocationIdWithEmptyAllocation() {
         FeatureFlagConfigurationSetting featureFlag = createItemFeatureFlag(
             ".appconfig.featureflag/", "TestFeature",
-            "{\"allocation\":{}}", FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE, TEST_E_TAG);
+            "{\"allocation\":{},\"telemetry\":{\"enabled\":true}}}", FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE, TEST_E_TAG);
 
         Feature feature = FeatureFlagClient.createFeature(featureFlag, TEST_ENDPOINT);
         assertNull(feature.getTelemetry().getMetadata().get("AllocationId"));
