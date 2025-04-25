@@ -1013,7 +1013,7 @@ public class SearchIndexingBufferedSenderUnitTests {
             = getSearchClientBuilder().httpClient(wrapWithAsserting(request -> {
                 int count = callCount.getAndIncrement();
                 if (count == 0) {
-                    sleep(2000);
+                    sleep(3000);
                     return createMockBatchSplittingResponse(request, 0, 5);
                 } else if (count == 1) {
                     return createMockBatchSplittingResponse(request, 5, 5);
@@ -1035,29 +1035,36 @@ public class SearchIndexingBufferedSenderUnitTests {
             try {
                 batchingClient.flush();
             } finally {
-                firstFlushCompletionTime.set(System.nanoTime());
+                firstFlushCompletionTime.set(System.currentTimeMillis());
                 countDownLatch.countDown();
             }
         });
 
-        Thread.sleep(100); // Give the first operation a chance to start
-
+        // Delay the second flush by 100ms to ensure that it starts after the first flush.
+        // The mocked HttpRequest will delay the response by 2 seconds, so if the second flush does finish first it will
+        // be a true indication of incorrect behavior.
         AtomicLong secondFlushCompletionTime = new AtomicLong();
-        SharedExecutorService.getInstance().execute(() -> {
+        SharedExecutorService.getInstance().schedule(() -> {
             try {
                 batchingClient.flush();
             } finally {
-                secondFlushCompletionTime.set(System.nanoTime());
+                secondFlushCompletionTime.set(System.currentTimeMillis());
                 countDownLatch.countDown();
             }
-        });
+        }, 500, TimeUnit.MILLISECONDS);
 
         if (!countDownLatch.await(10, TimeUnit.SECONDS)) {
             fail("Timed out waiting for flushes to complete.");
         }
-        assertTrue(firstFlushCompletionTime.get() <= secondFlushCompletionTime.get(),
-            () -> "Expected first close attempt to complete before second close attempt. First close finished at "
-                + firstFlushCompletionTime.get() + ", second close finished at " + secondFlushCompletionTime.get());
+
+        long firstFlushTime = firstFlushCompletionTime.get();
+        long secondFlushTime = secondFlushCompletionTime.get();
+        long differenceMillis = Math.abs(firstFlushTime - secondFlushTime);
+        assertTrue(firstFlushTime >= secondFlushTime,
+            () -> "Expected second flush to completed before long-running first flush as multiple flushes can't happen "
+                + "concurrently, and when a flush is in-flight all others no-op until the in-flight flush completes. "
+                + "First flush finished at " + firstFlushTime + ", second flush finished at " + secondFlushTime
+                + ", difference was " + differenceMillis + "ms");
     }
 
     @RepeatedTest(1000)
@@ -1068,7 +1075,7 @@ public class SearchIndexingBufferedSenderUnitTests {
             = getSearchClientBuilder().httpClient(wrapWithAsserting(request -> {
                 int count = callCount.getAndIncrement();
                 if (count == 0) {
-                    sleep(2000);
+                    sleep(3000);
                     return createMockBatchSplittingResponse(request, 0, 5);
                 } else if (count == 1) {
                     return createMockBatchSplittingResponse(request, 5, 5);
@@ -1085,25 +1092,37 @@ public class SearchIndexingBufferedSenderUnitTests {
         CountDownLatch countDownLatch = new CountDownLatch(2);
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON)).block();
 
+        AtomicLong firstFlushCompletionTime = new AtomicLong();
+        SharedExecutorService.getInstance().execute(() -> {
+            Mono.using(() -> 1, ignored -> batchingClient.flush(), ignored -> {
+                firstFlushCompletionTime.set(System.currentTimeMillis());
+                countDownLatch.countDown();
+            }).block();
+        });
+
         // Delay the second flush by 100ms to ensure that it starts after the first flush.
         // The mocked HttpRequest will delay the response by 2 seconds, so if the second flush does finish first it will
         // be a true indication of incorrect behavior.
-        AtomicLong firstFlushCompletionTime = new AtomicLong();
         AtomicLong secondFlushCompletionTime = new AtomicLong();
-        Mono.when(batchingClient.flush().doFinally(ignored -> {
-            firstFlushCompletionTime.set(System.nanoTime());
-            countDownLatch.countDown();
-        }), Mono.delay(Duration.ofMillis(100)).then(batchingClient.flush().doFinally(ignored -> {
-            secondFlushCompletionTime.set(System.nanoTime());
-            countDownLatch.countDown();
-        }))).subscribe();
+        SharedExecutorService.getInstance().schedule(() -> {
+            Mono.using(() -> 1, ignored -> batchingClient.flush(), ignored -> {
+                secondFlushCompletionTime.set(System.currentTimeMillis());
+                countDownLatch.countDown();
+            }).block();
+        }, 500, TimeUnit.MILLISECONDS);
 
         if (!countDownLatch.await(10, TimeUnit.SECONDS)) {
             fail("Timed out waiting for flushes to complete.");
         }
-        assertTrue(firstFlushCompletionTime.get() <= secondFlushCompletionTime.get(),
-            () -> "Expected first close attempt to complete before second close attempt. First close finished at "
-                + firstFlushCompletionTime.get() + ", second close finished at " + secondFlushCompletionTime.get());
+
+        long firstFlushTime = firstFlushCompletionTime.get();
+        long secondFlushTime = secondFlushCompletionTime.get();
+        long differenceMillis = Math.abs(firstFlushTime - secondFlushTime);
+        assertTrue(firstFlushTime >= secondFlushTime,
+            () -> "Expected second flush to completed before long-running first flush as multiple flushes can't happen "
+                + "concurrently, and when a flush is in-flight all others no-op until the in-flight flush completes. "
+                + "First flush finished at " + firstFlushTime + ", second flush finished at " + secondFlushTime
+                + ", difference was " + differenceMillis + "ms");
     }
 
     @RepeatedTest(1000)
@@ -1114,7 +1133,7 @@ public class SearchIndexingBufferedSenderUnitTests {
             = getSearchClientBuilder().httpClient(wrapWithAsserting(request -> {
                 int count = callCount.getAndIncrement();
                 if (count == 0) {
-                    sleep(2000);
+                    sleep(3000);
                     return createMockBatchSplittingResponse(request, 0, 5);
                 } else if (count == 1) {
                     return createMockBatchSplittingResponse(request, 5, 5);
@@ -1131,34 +1150,40 @@ public class SearchIndexingBufferedSenderUnitTests {
         CountDownLatch countDownLatch = new CountDownLatch(2);
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
-        AtomicLong firstCloseCompletionTime = new AtomicLong();
+        AtomicLong flushCompletionTime = new AtomicLong();
         SharedExecutorService.getInstance().execute(() -> {
             try {
-                batchingClient.close();
+                batchingClient.flush();
             } finally {
-                firstCloseCompletionTime.set(System.nanoTime());
+                flushCompletionTime.set(System.currentTimeMillis());
                 countDownLatch.countDown();
             }
         });
 
-        Thread.sleep(100); // Give the first operation a chance to start.
-
-        AtomicLong secondCloseCompletionTime = new AtomicLong();
-        SharedExecutorService.getInstance().execute(() -> {
+        // Delay the close by 100ms to ensure that it starts after the flush.
+        // The mocked HttpRequest will delay the response by 2 seconds, so if the close does finish first it will be a
+        // true indication of incorrect behavior.
+        AtomicLong closeCompletionTime = new AtomicLong();
+        SharedExecutorService.getInstance().schedule(() -> {
             try {
                 batchingClient.close();
             } finally {
-                secondCloseCompletionTime.set(System.nanoTime());
+                closeCompletionTime.set(System.currentTimeMillis());
                 countDownLatch.countDown();
             }
-        });
+        }, 500, TimeUnit.MILLISECONDS);
 
         if (!countDownLatch.await(10, TimeUnit.SECONDS)) {
             fail("Timed out waiting for closes to complete.");
         }
-        assertTrue(firstCloseCompletionTime.get() <= secondCloseCompletionTime.get(),
-            () -> "Expected first close attempt to complete before second close attempt. First close finished at "
-                + firstCloseCompletionTime.get() + ", second close finished at " + secondCloseCompletionTime.get());
+
+        long flushTime = flushCompletionTime.get();
+        long closeTime = closeCompletionTime.get();
+        long differenceMillis = Math.abs(flushTime - closeTime);
+        assertTrue(flushCompletionTime.get() <= closeCompletionTime.get(),
+            () -> "Expected flush to complete before close as close will wait for any in-flight flush requests to "
+                + "finish before closing buffered sender. Flush finished at " + flushTime + ", close finished at "
+                + closeTime + ", difference was " + differenceMillis + "ms");
     }
 
     @RepeatedTest(1000)
@@ -1169,7 +1194,7 @@ public class SearchIndexingBufferedSenderUnitTests {
             = getSearchClientBuilder().httpClient(wrapWithAsserting(request -> {
                 int count = callCount.getAndIncrement();
                 if (count == 0) {
-                    sleep(2000);
+                    sleep(3000);
                     return createMockBatchSplittingResponse(request, 0, 5);
                 } else if (count == 1) {
                     return createMockBatchSplittingResponse(request, 5, 5);
@@ -1186,25 +1211,36 @@ public class SearchIndexingBufferedSenderUnitTests {
         CountDownLatch countDownLatch = new CountDownLatch(2);
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON)).block();
 
-        // Delay the second close by 100ms to ensure that it starts after the first flush.
-        // The mocked HttpRequest will delay the response by 2 seconds, so if the second flush does finish first it will
-        // be a true indication of incorrect behavior.
-        AtomicLong firstCloseCompletionTime = new AtomicLong();
-        AtomicLong secondCloseCompletionTime = new AtomicLong();
-        Mono.when(batchingClient.close().doFinally(ignored -> {
-            firstCloseCompletionTime.set(System.nanoTime());
-            countDownLatch.countDown();
-        }), Mono.delay(Duration.ofMillis(100)).then(batchingClient.close().doFinally(ignored -> {
-            secondCloseCompletionTime.set(System.nanoTime());
-            countDownLatch.countDown();
-        }))).subscribe();
+        AtomicLong flushCompletionTime = new AtomicLong();
+        SharedExecutorService.getInstance().execute(() -> {
+            Mono.using(() -> 1, ignored -> batchingClient.flush(), ignored -> {
+                flushCompletionTime.set(System.currentTimeMillis());
+                countDownLatch.countDown();
+            }).block();
+        });
+
+        // Delay the close by 100ms to ensure that it starts after the flush.
+        // The mocked HttpRequest will delay the response by 2 seconds, so if the close does finish first it will be a
+        // true indication of incorrect behavior.
+        AtomicLong closeCompletionTime = new AtomicLong();
+        SharedExecutorService.getInstance().schedule(() -> {
+            Mono.using(() -> 1, ignored -> batchingClient.close(), ignored -> {
+                closeCompletionTime.set(System.currentTimeMillis());
+                countDownLatch.countDown();
+            }).block();
+        }, 500, TimeUnit.MILLISECONDS);
 
         if (!countDownLatch.await(10, TimeUnit.SECONDS)) {
             fail("Timed out waiting for closes to complete.");
         }
-        assertTrue(firstCloseCompletionTime.get() <= secondCloseCompletionTime.get(),
-            () -> "Expected first close attempt to complete before second close attempt. First close finished at "
-                + firstCloseCompletionTime.get() + ", second close finished at " + secondCloseCompletionTime.get());
+
+        long flushTime = flushCompletionTime.get();
+        long closeTime = closeCompletionTime.get();
+        long differenceMillis = Math.abs(flushTime - closeTime);
+        assertTrue(flushCompletionTime.get() <= closeCompletionTime.get(),
+            () -> "Expected flush to complete before close as close will wait for any in-flight flush requests to "
+                + "finish before closing buffered sender. Flush finished at " + flushTime + ", close finished at "
+                + closeTime + ", difference was " + differenceMillis + "ms");
     }
 
     @Test
