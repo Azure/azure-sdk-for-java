@@ -81,6 +81,8 @@ jobs:
 
     variables:
       - template: /eng/pipelines/templates/variables/globals.yml
+      - name: LOGGING__LOGLEVEL__DEFAULT
+        value: Debug
 
     timeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
 
