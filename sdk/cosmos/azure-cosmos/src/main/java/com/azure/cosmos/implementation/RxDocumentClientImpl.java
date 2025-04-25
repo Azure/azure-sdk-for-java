@@ -3680,12 +3680,18 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         return Mono.error(new IllegalStateException("documentCollectionValueHolder or documentCollectionValueHolder.v cannot be null"));
                     }
 
-                    DocumentCollection documentCollection = documentCollectionValueHolder.v;
+                DocumentCollection documentCollection = documentCollectionValueHolder.v;
 
-                    CosmosDiagnosticsContext diagnosticsContext
-                        = clientContextOverride.getMostRecentlyCreatedDiagnostics().getDiagnosticsContext();
+                CosmosDiagnosticsContext diagnosticsContextForInternalStateCapture
+                    = Utils.generateDiagnosticsContextForInternalStateCapture(
+                    clientContextOverride,
+                    ResourceType.PartitionKeyRange,
+                    ConsistencyLevel.STRONG,
+                    this.connectionPolicy.getConnectionMode(),
+                    OperationType.Read,
+                    options);
 
-                    return this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollection.getResourceId(), null, null, diagnosticsContext)
+                    return this.partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), documentCollection.getResourceId(), null, null, diagnosticsContextForInternalStateCapture)
                         .flatMap(collectionRoutingMapValueHolder -> {
 
                             if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {

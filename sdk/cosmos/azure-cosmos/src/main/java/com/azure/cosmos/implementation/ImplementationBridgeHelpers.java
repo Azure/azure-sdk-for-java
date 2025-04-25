@@ -1493,6 +1493,7 @@ public class ImplementationBridgeHelpers {
             float getRequestChargeThreshold(CosmosDiagnosticsThresholds thresholds);
             int getPayloadSizeThreshold(CosmosDiagnosticsThresholds thresholds);
             boolean isFailureCondition(CosmosDiagnosticsThresholds thresholds, int statusCode, int subStatusCode);
+            CosmosDiagnosticsThresholds getDefaultDiagnosticsThresholds();
         }
     }
 

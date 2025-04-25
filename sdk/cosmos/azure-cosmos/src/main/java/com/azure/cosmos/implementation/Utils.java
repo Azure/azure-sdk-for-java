@@ -3,7 +3,11 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
+import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.uuid.EthernetAddress;
@@ -91,6 +95,12 @@ public class Utils {
 
     private static AtomicReference<ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor> itemSerializerAccessor =
         new AtomicReference<>(null);
+
+    private static final ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor diagnosticsContextAccessor
+        = ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
+
+    private static final ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.CosmosDiagnosticsThresholdsAccessor diagnosticsThresholdsAccessor
+        = ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.getCosmosAsyncClientAccessor();
 
     public static ObjectMapper getDocumentObjectMapper(String serializationInclusionMode) {
         if (Strings.isNullOrEmpty(serializationInclusionMode)) {
@@ -807,5 +817,36 @@ public class Utils {
                     String.valueOf(DEFAULT_ALLOW_UNQUOTED_CONTROL_CHARS)));
 
         return Boolean.parseBoolean(shouldAllowUnquotedControlCharsConfig);
+    }
+
+    public static CosmosDiagnosticsContext generateDiagnosticsContextForInternalStateCapture(
+        DiagnosticsClientContext diagnosticsClientContext,
+        ResourceType resourceType,
+        ConsistencyLevel consistencyLevel,
+        ConnectionMode connectionMode,
+        OperationType operationType,
+        OverridableRequestOptions requestOptions) {
+
+        CosmosDiagnostics cosmosDiagnostics = diagnosticsClientContext != null ? diagnosticsClientContext.getMostRecentlyCreatedDiagnostics() : null;
+        CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics != null ? cosmosDiagnostics.getDiagnosticsContext() : null;
+
+        return diagnosticsContext != null ? diagnosticsContext : diagnosticsContextAccessor.create(
+            Strings.Emtpy,
+            Strings.Emtpy,
+            Strings.Emtpy,
+            Strings.Emtpy,
+            Strings.Emtpy,
+            resourceType,
+            operationType,
+            Strings.Emtpy,
+            consistencyLevel,
+            null,
+            diagnosticsThresholdsAccessor.getDefaultDiagnosticsThresholds(),
+            Strings.Emtpy,
+            connectionMode.toString(),
+            Strings.Emtpy,
+            -1,
+            Strings.Emtpy,
+            requestOptions);
     }
 }

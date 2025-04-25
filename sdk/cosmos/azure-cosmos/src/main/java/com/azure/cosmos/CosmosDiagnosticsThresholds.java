@@ -278,6 +278,11 @@ public final class CosmosDiagnosticsThresholds {
                     checkNotNull(thresholds,"Argument 'thresholds' must not be null.");
                     return thresholds.isFailureCondition(statusCode, subStatusCode);
                 }
+
+                @Override
+                public CosmosDiagnosticsThresholds getDefaultDiagnosticsThresholds() {
+                    return DEFAULT;
+                }
             }
         );
     }

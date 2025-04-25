@@ -4,6 +4,8 @@
 package com.azure.cosmos.implementation.feedranges;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.implementation.Constants;
@@ -13,6 +15,8 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
@@ -128,12 +132,14 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
                     this.partitionKey,
                     collection.getPartitionKey());
 
-                DiagnosticsClientContext diagnosticsClientContext
-                    = request.getDiagnosticsClientContext();
-                CosmosDiagnostics cosmosDiagnostics
-                    = diagnosticsClientContext.getMostRecentlyCreatedDiagnostics();
                 CosmosDiagnosticsContext cosmosDiagnosticsContext
-                    = cosmosDiagnostics.getDiagnosticsContext();
+                    = Utils.generateDiagnosticsContextForInternalStateCapture(
+                    request.getDiagnosticsClientContext(),
+                    ResourceType.PartitionKeyRange,
+                    ConsistencyLevel.STRONG,
+                    ConnectionMode.GATEWAY,
+                    OperationType.Read,
+                    null);
 
                 return routingMapProvider
                     .tryGetOverlappingRangesAsync(

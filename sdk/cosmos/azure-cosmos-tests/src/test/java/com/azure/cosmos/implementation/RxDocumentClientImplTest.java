@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.ProxyOptions;
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
@@ -110,16 +111,13 @@ public class RxDocumentClientImplTest {
         this.defaultItemSerializer = Mockito.mock(CosmosItemSerializer.class);
     }
 
-    // todo: fix and revert enabled = false when circuit breaker is enabled
-    @Test(groups = {"unit"}, enabled = true)
+    @Test(groups = {"unit"})
     public void readMany() {
 
         // setup static method mocks
         MockedStatic<HttpClient> httpClientMock = Mockito.mockStatic(HttpClient.class);
         MockedStatic<PartitionKeyInternalHelper> partitionKeyInternalHelperMock = Mockito.mockStatic(PartitionKeyInternalHelper.class);
         MockedStatic<DocumentQueryExecutionContextFactory> documentQueryExecutionFactoryMock = Mockito.mockStatic(DocumentQueryExecutionContextFactory.class);
-//        MockedStatic<ObservableHelper> observableHelperMock = Mockito.mockStatic(ObservableHelper.class);
-
         // setup mocks
         DocumentClientRetryPolicy documentClientRetryPolicyMock = Mockito.mock(DocumentClientRetryPolicy.class);
         RxGatewayStoreModel gatewayStoreModelMock = Mockito.mock(RxGatewayStoreModel.class);
@@ -224,6 +222,7 @@ public class RxDocumentClientImplTest {
         Mockito
             .when(serverStoreModelMock.processMessage(Mockito.any(RxDocumentServiceRequest.class)))
             .thenReturn(Mono.just(mockRxDocumentServiceResponse(pointReadResult, headersForPointReads)));
+        Mockito.when(this.connectionPolicyMock.getConnectionMode()).thenReturn(ConnectionMode.GATEWAY);
 
         // initialize object to be tested
         RxDocumentClientImpl rxDocumentClient = new RxDocumentClientImpl(
