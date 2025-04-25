@@ -27,10 +27,10 @@ The client-core annotation processor for introducing compile-time code generatio
               <proc>only</proc>
               <generatedSourcesDirectory>${project.build.directory}/generated-sources/</generatedSourcesDirectory>
               <annotationProcessorPaths>
-                <annotationProcessorPath>
+                <annotationProcessorPath>[version_client.txt](../../../eng/versioning/version_client.txt)
                   <groupId>io.clientcore</groupId>
                   <artifactId>annotation-processor</artifactId>
-                  <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:annotation-processor;current} -->
+                  <version>1.0.0-beta.3</version> <!-- {x-version-update;io.clientcore:annotation-processor;current} -->
                 </annotationProcessorPath>
               </annotationProcessorPaths>
               <annotationProcessors>
@@ -48,7 +48,7 @@ The client-core annotation processor for introducing compile-time code generatio
           <dependency>
             <groupId>io.clientcore</groupId>
             <artifactId>annotation-processor</artifactId>
-            <version>1.0.0-beta.1</version> <!-- {x-version-update;io.clientcore:annotation-processor;current} -->
+            <version>1.0.0-beta.3</version> <!-- {x-version-update;io.clientcore:annotation-processor;current} -->
           </dependency>
         </dependencies>
       </plugin>

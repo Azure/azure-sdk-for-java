@@ -1,14 +1,11 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.3 (2025-04-25)
 
 ### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Add diagnostic/logging messages for annotation processor [#45116](https://github.com/Azure/azure-sdk-for-java/pull/45116)
+- Add support for parameterized host in annotation-processor [#45099](https://github.com/Azure/azure-sdk-for-java/pull/45099)
+- Add support for static headers and query params in compile time codegen [#44750](https://github.com/Azure/azure-sdk-for-java/pull/44750)
 
 ## 1.0.0-beta.2 (2025-04-03)
 

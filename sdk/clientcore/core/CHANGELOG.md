@@ -1,14 +1,13 @@
 # Release History
 
-## 1.0.0-beta.9 (Unreleased)
+## 1.0.0-beta.9 (2025-04-25)
 
 ### Features Added
+- Added base exception type `CoreException` and use unchecked exceptions on BinaryData and high-level APIs (#44892)(https://github.com/Azure/azure-sdk-for-java/pull/44892)
 
 ### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Removed `log(Throwable) overload and added setThrowable() method on LoggingEvent.
+- Updated ChallengeHandler to use AuthenticateChallenge APIs instead of HttpRequest or Response APIs.
 
 ## 1.0.0-beta.8 (2025-04-03)
 
