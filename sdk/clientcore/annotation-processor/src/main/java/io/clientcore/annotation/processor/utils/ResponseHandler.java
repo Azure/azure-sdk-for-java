@@ -34,7 +34,7 @@ public final class ResponseHandler {
      * @param body the method builder to append generated code.
      * @param returnType the return type of the method.
      * @param method whether request options are used.
-     * @param serializationFormatSet indicates if serialization format is set.
+     * @param serializationFormatSet indicates if a serialization format is set.
      */
     public static void generateResponseHandling(BlockStmt body, TypeMirror returnType, HttpRequestContext method,
         boolean serializationFormatSet) {

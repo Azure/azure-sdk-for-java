@@ -36,6 +36,7 @@ import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 import javax.lang.model.element.VariableElement;
+import javax.tools.Diagnostic;
 
 /**
  * Annotation processor that generates client code based on annotated interfaces.
@@ -56,18 +57,28 @@ public class AnnotationProcessor extends AbstractProcessor {
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
-        // We iterate through each interface annotated with @ServiceInterface separately.
-        // This outer for-loop is not strictly necessary, as we only have one annotation that we care about
-        // (@ServiceInterface), but we'll leave it here for now
-        annotations.stream()
-            .map(roundEnv::getElementsAnnotatedWith)
-            .flatMap(Set::stream)
+        // Gather all elements to process
+        Set<? extends Element> elementsToProcess = annotations.stream()
+            .flatMap(annotation -> roundEnv.getElementsAnnotatedWith(annotation).stream())
             .filter(element -> element.getKind().isInterface())
-            .forEach(element -> {
-                if (element.getAnnotation(ServiceInterface.class) != null) {
-                    this.processServiceInterface(element);
-                }
-            });
+            .collect(Collectors.toSet());
+
+        if (elementsToProcess.isEmpty()) {
+            // No interfaces to process in this round; skip logging
+            return false;
+        }
+
+        processingEnv.getMessager()
+            .printMessage(Diagnostic.Kind.NOTE,
+                "[Clientcore SDK AnnotationProcessor] Starting annotation processing for service interfaces.");
+
+        for (Element element : elementsToProcess) {
+            this.processServiceInterface(element);
+        }
+
+        processingEnv.getMessager()
+            .printMessage(Diagnostic.Kind.NOTE,
+                "[Clientcore SDK AnnotationProcessor] Completed annotation processing.");
 
         return true;
     }
@@ -76,7 +87,9 @@ public class AnnotationProcessor extends AbstractProcessor {
         if (serviceInterface == null || serviceInterface.getKind() != ElementKind.INTERFACE) {
             throw new IllegalArgumentException("Invalid service interface provided.");
         }
-
+        processingEnv.getMessager()
+            .printMessage(Diagnostic.Kind.NOTE,
+                "Generating client implementation for: " + serviceInterface.asType().toString());
         TemplateInput templateInput = new TemplateInput();
 
         // Determine the fully qualified name (FQN) and package name
@@ -124,8 +137,6 @@ public class AnnotationProcessor extends AbstractProcessor {
 
         // Process the template
         TemplateProcessor.getInstance().process(templateInput, processingEnv);
-
-        // Additional formatting or logging if necessary
     }
 
     private void addImports(TemplateInput templateInput) {
@@ -177,13 +188,13 @@ public class AnnotationProcessor extends AbstractProcessor {
             } else if (headerParam != null) {
                 // Only add header param if the key is not already present (e.g., set by static header params)
                 String key = headerParam.value();
-                if (method.getHeaders() == null || !method.getHeaders().containsKey(key)) {
+                if (!method.getHeaders().containsKey(key)) {
                     method.addHeader(headerParam.value(), param.getSimpleName().toString());
                 }
             } else if (queryParam != null) {
                 // Only add query param if the key is not already present (e.g., set by static query params)
                 String key = queryParam.value();
-                if (method.getQueryParams() == null || !method.getQueryParams().containsKey(key)) {
+                if (!method.getQueryParams().containsKey(key)) {
                     method.addQueryParam(key, param.getSimpleName().toString(), queryParam.multipleQueryParams(),
                         !queryParam.encoded());
                 }
@@ -205,7 +216,7 @@ public class AnnotationProcessor extends AbstractProcessor {
         return method;
     }
 
-    private static String getHost(HttpRequestContext method) {
+    private String getHost(HttpRequestContext method) {
         String path = method.getPath();
         // Set the path after host, concatenating the path segment in the host.
         if (path != null && !path.isEmpty() && !"/".equals(path)) {

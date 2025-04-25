@@ -49,6 +49,7 @@ import java.util.stream.Collectors;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
+import javax.tools.Diagnostic;
 
 import static io.clientcore.annotation.processor.utils.ResponseHandler.generateResponseHandling;
 
@@ -102,8 +103,11 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         addCopyrightComments();
         setPackageDeclaration(packageName);
         createClass(serviceInterfaceImplShortName, serviceInterfaceShortName, templateInput, processingEnv);
-
+        processingEnv.getMessager()
+            .printMessage(Diagnostic.Kind.NOTE, "Writing generated source file for: " + serviceInterfaceImplShortName);
         writeFile(packageName, serviceInterfaceImplShortName, processingEnv);
+        processingEnv.getMessager()
+            .printMessage(Diagnostic.Kind.NOTE, "Completed code generation for: " + serviceInterfaceImplShortName);
     }
 
     void addImports(TemplateInput templateInput) {
@@ -260,7 +264,9 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             fileWriter.write(compilationUnit.toString());
             fileWriter.flush();
         } catch (IOException e) {
-            e.printStackTrace();
+            processingEnv.getMessager()
+                .printMessage(Diagnostic.Kind.ERROR, "Failed to write generated source file for "
+                    + serviceInterfaceImplShortName + ": " + e.getMessage());
         }
     }
 

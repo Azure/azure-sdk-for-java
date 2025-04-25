@@ -283,8 +283,10 @@ def sdk_automation_typespec_project(tsp_project: str, config: dict) -> dict:
     breaking: bool = False
     changelog = ""
     breaking_change_items = []
+    run_mode: str = config["runMode"] if "runMode" in config else None
 
-    verify_self_serve_parameters(api_version, sdk_release_type)
+    if run_mode == "release" or run_mode == "local":
+        verify_self_serve_parameters(api_version, sdk_release_type)
 
     succeeded, require_sdk_integration, sdk_folder, service, module = generate_typespec_project(
         tsp_project,
