@@ -69,26 +69,27 @@ public final class TestUtils {
 
         try {
             if (value != null) {
-                JsonNode node = MAPPER.readTree(value).get("conditions").get("client_filters");
+                JsonNode node = MAPPER.readTree(value).get("conditions");
+                if (node != null) {
+                    JsonNode clientFiltersNode = node.get("client_filters");
+                    if (clientFiltersNode != null) {
+                        for (int i = 0; i < clientFiltersNode.size(); i++) {
+                            JsonNode nodeFilter = clientFiltersNode.get(i);
+                            FeatureFlagFilter filter = new FeatureFlagFilter(nodeFilter.get("Name").asText());
 
-                for (int i = 0; i < node.size(); i++) {
-                    JsonNode nodeFilter = node.get(i);
-                    FeatureFlagFilter filter = new FeatureFlagFilter(nodeFilter.get("Name").asText());
-
-                    JsonNode nodeParams = nodeFilter.get("Parameters");
-                    if (nodeParams != null) {
-                        for (int j = 0; j < nodeParams.size(); j++) {
-                            // JsonNode param = nodeParams.
-                            Map<String, Object> result = MAPPER.convertValue(nodeParams,
-                                new TypeReference<Map<String, Object>>() {
-                                });
-                            Set<String> parameters = result.keySet();
-                            for (String paramKey : parameters) {
-                                filter.addParameter(paramKey, result.get(paramKey));
+                            JsonNode nodeParams = nodeFilter.get("Parameters");
+                            if (nodeParams != null) {
+                                Map<String, Object> result = MAPPER.convertValue(nodeParams,
+                                    new TypeReference<Map<String, Object>>() {
+                                    });
+                                Set<String> parameters = result.keySet();
+                                for (String paramKey : parameters) {
+                                    filter.addParameter(paramKey, result.get(paramKey));
+                                }
                             }
+                            item.addClientFilter(filter);
                         }
                     }
-                    item.addClientFilter(filter);
                 }
             }
         } catch (JsonProcessingException e) {

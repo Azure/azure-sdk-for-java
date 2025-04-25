@@ -4,7 +4,6 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.E_TAG;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
-import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_ID;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_REFERENCE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.DEFAULT_ROLLOUT_PERCENTAGE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.FEATURE_LABEL;
@@ -17,6 +16,7 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.Test
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestUtils.createItemFeatureFlag;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
@@ -192,14 +192,42 @@ public class FeatureFlagClientTest {
     }
 
     @Test
-    public void testFeatureFlagIdInTelemetry() {
+    public void testAllocationIdInTelemetry() {
         Feature feature = FeatureFlagClient.createFeature(TELEMETRY_FEATURE, TEST_ENDPOINT);
 
-        assertEquals((feature.getTelemetry().getMetadata().get(FEATURE_FLAG_ID)), "ZI0Ib9p93C_BT4u9kTfGu6Z2FD2N0F-TZyaePLPK3Jk");
+        assertEquals("wz4oTwm3SjARe1SrmzT7", feature.getTelemetry().getMetadata().get("AllocationId"));
 
         feature = FeatureFlagClient.createFeature(ALL_FEATURE, TEST_ENDPOINT);
         assertNull(feature.getTelemetry());
     }
 
+    @Test
+    public void testAllocationIdWithDifferentSeed() {
+        FeatureFlagConfigurationSetting featureFlag = createItemFeatureFlag(
+            ".appconfig.featureflag/", "TestFeature",
+            "{\"allocation\":{\"seed\":\"newSeed\"}}", FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE, TEST_E_TAG);
+
+        Feature feature = FeatureFlagClient.createFeature(featureFlag, TEST_ENDPOINT);
+        assertEquals("newSeed", feature.getTelemetry().getMetadata().get("AllocationId"));
+    }
+
+    @Test
+    public void testAllocationIdWithVariants() {
+        FeatureFlagConfigurationSetting featureFlag = createItemFeatureFlag(
+            ".appconfig.featureflag/", "TestFeature",
+            "{\"allocation\":{\"variants\":[{\"name\":\"VariantA\",\"configuration_value\":{\"key\":\"valueA\"}},{\"name\":\"VariantB\",\"configuration_value\":{\"key\":\"valueB\"}}]}}", FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE, TEST_E_TAG);
+
+        Feature feature = FeatureFlagClient.createFeature(featureFlag, TEST_ENDPOINT);
+        assertNotNull(feature.getTelemetry().getMetadata().get("AllocationId"));
+    }
+
+    @Test
+    public void testAllocationIdWithEmptyAllocation() {
+        FeatureFlagConfigurationSetting featureFlag = createItemFeatureFlag(
+            ".appconfig.featureflag/", "TestFeature",
+            "{\"allocation\":{}}", FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE, TEST_E_TAG);
+
+        Feature feature = FeatureFlagClient.createFeature(featureFlag, TEST_ENDPOINT);
+        assertNull(feature.getTelemetry().getMetadata().get("AllocationId"));
+    }
 }
- 
