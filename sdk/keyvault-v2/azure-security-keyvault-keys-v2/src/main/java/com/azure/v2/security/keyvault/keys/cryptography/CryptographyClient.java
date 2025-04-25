@@ -25,7 +25,7 @@ import io.clientcore.core.annotations.ReturnType;
 import io.clientcore.core.annotations.ServiceClient;
 import io.clientcore.core.annotations.ServiceMethod;
 import io.clientcore.core.http.models.HttpResponseException;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
@@ -175,7 +175,7 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultKey getKey() {
-        return getKeyWithResponse(RequestOptions.none()).getValue();
+        return getKeyWithResponse(RequestContext.none()).getValue();
     }
 
     /**
@@ -185,10 +185,10 @@ public class CryptographyClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Gets the key the client is configured with from the service. Prints out details of the response returned by
      * the service and the requested key.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.getKeyWithResponse#RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.getKeyWithResponse#RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.getKeyWithResponse#RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.getKeyWithResponse#RequestContext -->
      *
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional options that are passed through the HTTP pipeline during the service call.
      *
      * @return A response object whose {@link Response#getValue() value} contains the requested key.
      *
@@ -197,10 +197,10 @@ public class CryptographyClient {
      * {@link JsonWebKey} instance).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyVaultKey> getKeyWithResponse(RequestOptions requestOptions) {
+    public Response<KeyVaultKey> getKeyWithResponse(RequestContext requestContext) {
         if (clientImpl != null) {
             try {
-                return clientImpl.getKeyWithResponse(requestOptions);
+                return clientImpl.getKeyWithResponse(requestContext);
             } catch (RuntimeException e) {
                 throw LOGGER.logThrowableAsError(e);
             }
@@ -260,7 +260,7 @@ public class CryptographyClient {
     public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext) {
         try {
             if (isLocalClientAvailable()) {
-                return localKeyCryptographyClient.encrypt(algorithm, plaintext, RequestOptions.none());
+                return localKeyCryptographyClient.encrypt(algorithm, plaintext, RequestContext.none());
             } else {
                 return clientImpl.encrypt(algorithm, plaintext);
             }
@@ -305,11 +305,11 @@ public class CryptographyClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Encrypts the content and prints out the result's details'.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptParameters-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptParameters-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptParameters-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptParameters-RequestContext -->
      *
      * @param encryptParameters The parameters to use in the encryption operation.
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional options that are passed through the HTTP pipeline during the service call.
      *
      * @return A result object whose {@link EncryptResult#getCipherText() ciphertext} contains the encrypted content.
      *
@@ -318,12 +318,12 @@ public class CryptographyClient {
      * @throws UnsupportedOperationException If the encrypt operation is not supported or configured on the key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public EncryptResult encrypt(EncryptParameters encryptParameters, RequestOptions requestOptions) {
+    public EncryptResult encrypt(EncryptParameters encryptParameters, RequestContext requestContext) {
         try {
             if (isLocalClientAvailable()) {
-                return localKeyCryptographyClient.encrypt(encryptParameters, requestOptions);
+                return localKeyCryptographyClient.encrypt(encryptParameters, requestContext);
             } else {
-                return clientImpl.encrypt(encryptParameters, requestOptions);
+                return clientImpl.encrypt(encryptParameters, requestContext);
             }
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -384,9 +384,9 @@ public class CryptographyClient {
     public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext) {
         try {
             if (isLocalClientAvailable()) {
-                return localKeyCryptographyClient.decrypt(algorithm, ciphertext, RequestOptions.none());
+                return localKeyCryptographyClient.decrypt(algorithm, ciphertext, RequestContext.none());
             } else {
-                return clientImpl.decrypt(algorithm, ciphertext, RequestOptions.none());
+                return clientImpl.decrypt(algorithm, ciphertext, RequestContext.none());
             }
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -428,14 +428,14 @@ public class CryptographyClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Decrypts the encrypted content prints out the result's details</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.decrypt#DecryptParameters-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.decrypt#DecryptParameters-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.decrypt#DecryptParameters-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.decrypt#DecryptParameters-RequestContext -->
      *
      * @param decryptParameters The parameters to use in the decryption operation. Microsoft recommends you not use CBC
      * without first ensuring the integrity of the ciphertext using an HMAC, for example.
      * See <a href="https://docs.microsoft.com/dotnet/standard/security/vulnerabilities-cbc-mode">Timing vulnerabilities
      * with CBC-mode symmetric decryption using padding</a> for more information.
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional options that are passed through the HTTP pipeline during the service call.
      *
      * @return A result object whose {@link DecryptResult#getPlainText() plaintext} contains the decrypted content.
      *
@@ -444,12 +444,12 @@ public class CryptographyClient {
      * @throws UnsupportedOperationException If the encrypt operation is not supported or configured on the key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DecryptResult decrypt(DecryptParameters decryptParameters, RequestOptions requestOptions) {
+    public DecryptResult decrypt(DecryptParameters decryptParameters, RequestContext requestContext) {
         try {
             if (isLocalClientAvailable()) {
-                return localKeyCryptographyClient.decrypt(decryptParameters, requestOptions);
+                return localKeyCryptographyClient.decrypt(decryptParameters, requestContext);
             } else {
-                return clientImpl.decrypt(decryptParameters, requestOptions);
+                return clientImpl.decrypt(decryptParameters, requestContext);
             }
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -497,9 +497,9 @@ public class CryptographyClient {
     public SignResult sign(SignatureAlgorithm algorithm, byte[] digest) {
         try {
             if (isLocalClientAvailable()) {
-                return localKeyCryptographyClient.sign(algorithm, digest, RequestOptions.none());
+                return localKeyCryptographyClient.sign(algorithm, digest, RequestContext.none());
             } else {
-                return clientImpl.sign(algorithm, digest, RequestOptions.none());
+                return clientImpl.sign(algorithm, digest, RequestContext.none());
             }
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -531,12 +531,12 @@ public class CryptographyClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Signs the digest and prints out the result's details.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.sign#SignatureAlgorithm-byte-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.sign#SignatureAlgorithm-byte-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.sign#SignatureAlgorithm-byte-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.sign#SignatureAlgorithm-byte-RequestContext -->
      *
      * @param algorithm The algorithm to use for signing.
      * @param digest The content from which signature is to be created.
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional options that are passed through the HTTP pipeline during the service call.
      *
      * @return A result object that contains the created {@link SignResult#getSignature() signature}.
      *
@@ -546,12 +546,12 @@ public class CryptographyClient {
      * @throws UnsupportedOperationException If the sign operation is not supported or configured on the key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SignResult sign(SignatureAlgorithm algorithm, byte[] digest, RequestOptions requestOptions) {
+    public SignResult sign(SignatureAlgorithm algorithm, byte[] digest, RequestContext requestContext) {
         try {
             if (isLocalClientAvailable()) {
-                return localKeyCryptographyClient.sign(algorithm, digest, requestOptions);
+                return localKeyCryptographyClient.sign(algorithm, digest, requestContext);
             } else {
-                return clientImpl.sign(algorithm, digest, requestOptions);
+                return clientImpl.sign(algorithm, digest, requestContext);
             }
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -600,7 +600,7 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VerifyResult verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature) {
-        return verify(algorithm, digest, signature, RequestOptions.none());
+        return verify(algorithm, digest, signature, RequestContext.none());
     }
 
     /**
@@ -627,13 +627,13 @@ public class CryptographyClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Verifies the signature against the specified digest prints out the verification details when a response has
      * been received.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.verify#SignatureAlgorithm-byte-byte-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.verify#SignatureAlgorithm-byte-byte-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.verify#SignatureAlgorithm-byte-byte-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.verify#SignatureAlgorithm-byte-byte-RequestContext -->
      *
      * @param algorithm The algorithm to use for signing.
      * @param digest The content from which signature was created.
      * @param signature The signature to be verified.
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional options that are passed through the HTTP pipeline during the service call.
      *
      * @return A result object indicating if the signature verification result is {@link VerifyResult#isValid() valid}.
      *
@@ -643,12 +643,12 @@ public class CryptographyClient {
      * @throws UnsupportedOperationException If the verify operation is not supported or configured on the key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VerifyResult verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, RequestOptions requestOptions) {
+    public VerifyResult verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, RequestContext requestContext) {
         try {
             if (isLocalClientAvailable()) {
-                return localKeyCryptographyClient.verify(algorithm, digest, signature, requestOptions);
+                return localKeyCryptographyClient.verify(algorithm, digest, signature, requestContext);
             } else {
-                return clientImpl.verify(algorithm, digest, signature, requestOptions);
+                return clientImpl.verify(algorithm, digest, signature, requestContext);
             }
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -695,7 +695,7 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] key) {
-        return wrapKey(algorithm, key, RequestOptions.none());
+        return wrapKey(algorithm, key, RequestContext.none());
     }
 
     /**
@@ -722,12 +722,12 @@ public class CryptographyClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Wraps the key content and prints out the result's details</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.wrapKey#KeyWrapAlgorithm-byte-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.wrapKey#KeyWrapAlgorithm-byte-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.wrapKey#KeyWrapAlgorithm-byte-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.wrapKey#KeyWrapAlgorithm-byte-RequestContext -->
      *
      * @param algorithm The encryption algorithm to use for wrapping the key.
      * @param key The key content to be wrapped.
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional options that are passed through the HTTP pipeline during the service call.
      *
      * @return A result object whose {@link WrapResult#getEncryptedKey() encrypted key} contains the wrapped key result.
      *
@@ -736,12 +736,12 @@ public class CryptographyClient {
      * @throws UnsupportedOperationException If the wrap operation is not supported or configured on the key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] key, RequestOptions requestOptions) {
+    public WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] key, RequestContext requestContext) {
         try {
             if (isLocalClientAvailable()) {
-                return localKeyCryptographyClient.wrapKey(algorithm, key, requestOptions);
+                return localKeyCryptographyClient.wrapKey(algorithm, key, requestContext);
             } else {
-                return clientImpl.wrapKey(algorithm, key, requestOptions);
+                return clientImpl.wrapKey(algorithm, key, requestContext);
             }
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -788,7 +788,7 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey) {
-        return unwrapKey(algorithm, encryptedKey, RequestOptions.none());
+        return unwrapKey(algorithm, encryptedKey, RequestContext.none());
     }
 
     /**
@@ -815,12 +815,12 @@ public class CryptographyClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Unwraps the key content and prints out the result's details</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.unwrapKey#KeyWrapAlgorithm-byte-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.unwrapKey#KeyWrapAlgorithm-byte-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.unwrapKey#KeyWrapAlgorithm-byte-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.unwrapKey#KeyWrapAlgorithm-byte-RequestContext -->
      *
      * @param algorithm The encryption algorithm to use for wrapping the key.
      * @param encryptedKey The encrypted key content to unwrap.
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional options that are passed through the HTTP pipeline during the service call.
      *
      * @return A result object whose {@link UnwrapResult#getKey() decrypted key} contains the unwrapped key result.
      *
@@ -829,12 +829,12 @@ public class CryptographyClient {
      * @throws UnsupportedOperationException If the unwrap operation is not supported or configured on the key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public UnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, RequestOptions requestOptions) {
+    public UnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, RequestContext requestContext) {
         try {
             if (isLocalClientAvailable()) {
-                return localKeyCryptographyClient.unwrapKey(algorithm, encryptedKey, requestOptions);
+                return localKeyCryptographyClient.unwrapKey(algorithm, encryptedKey, requestContext);
             } else {
-                return clientImpl.unwrapKey(algorithm, encryptedKey, requestOptions);
+                return clientImpl.unwrapKey(algorithm, encryptedKey, requestContext);
             }
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -880,7 +880,7 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SignResult signData(SignatureAlgorithm algorithm, byte[] data) {
-        return signData(algorithm, data, RequestOptions.none());
+        return signData(algorithm, data, RequestContext.none());
     }
 
      /**
@@ -906,8 +906,8 @@ public class CryptographyClient {
       *
       * <p><strong>Code Sample</strong></p>
       * <p>Signs the digest and prints out the result's details.</p>
-      * <!-- src_embed com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.signData#SignatureAlgorithm-byte-RequestOptions -->
-      * <!-- end com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.signData#SignatureAlgorithm-byte-RequestOptions -->
+      * <!-- src_embed com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.signData#SignatureAlgorithm-byte-RequestContext -->
+      * <!-- end com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.signData#SignatureAlgorithm-byte-RequestContext -->
       *
       * @param algorithm The algorithm to use for signing.
       * @param data The content from which signature is to be created.
@@ -919,12 +919,12 @@ public class CryptographyClient {
       * @throws UnsupportedOperationException If the sign operation is not supported or configured on the key.
       */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SignResult signData(SignatureAlgorithm algorithm, byte[] data, RequestOptions requestOptions) {
+    public SignResult signData(SignatureAlgorithm algorithm, byte[] data, RequestContext requestContext) {
         try {
             if (isLocalClientAvailable()) {
-                return localKeyCryptographyClient.signData(algorithm, data, requestOptions);
+                return localKeyCryptographyClient.signData(algorithm, data, requestContext);
             } else {
-                return clientImpl.signData(algorithm, data, requestOptions);
+                return clientImpl.signData(algorithm, data, requestContext);
             }
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -974,7 +974,7 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VerifyResult verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature) {
-        return verifyData(algorithm, data, signature, RequestOptions.none());
+        return verifyData(algorithm, data, signature, RequestContext.none());
     }
 
     /**
@@ -1001,13 +1001,13 @@ public class CryptographyClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Verifies the signature against the raw data prints out the verification details when a response has been
      * received.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.verifyData#SignatureAlgorithm-byte-byte-RequestOptions -->
-     * <!-- end com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.verifyData#SignatureAlgorithm-byte-byte-RequestOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.verifyData#SignatureAlgorithm-byte-byte-RequestContext -->
+     * <!-- end com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.verifyData#SignatureAlgorithm-byte-byte-RequestContext -->
      *
      * @param algorithm The algorithm to use for signing.
      * @param data The raw content against which signature is to be verified.
      * @param signature The signature to be verified.
-     * @param requestOptions Additional options that are passed through the HTTP pipeline during the service call.
+     * @param requestContext Additional options that are passed through the HTTP pipeline during the service call.
      *
      * @return A result object indicating if the signature verification result is {@link VerifyResult#isValid() valid}.
      *
@@ -1016,12 +1016,12 @@ public class CryptographyClient {
      * @throws UnsupportedOperationException if the verify operation is not supported or configured on the key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VerifyResult verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature, RequestOptions requestOptions) {
+    public VerifyResult verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature, RequestContext requestContext) {
         try {
             if (isLocalClientAvailable()) {
-                return localKeyCryptographyClient.verifyData(algorithm, data, signature, requestOptions);
+                return localKeyCryptographyClient.verifyData(algorithm, data, signature, requestContext);
             } else {
-                return clientImpl.verifyData(algorithm, data, signature, requestOptions);
+                return clientImpl.verifyData(algorithm, data, signature, requestContext);
             }
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -1038,13 +1038,17 @@ public class CryptographyClient {
                 localKeyCryptographyClient = retrieveJwkAndCreateLocalClient(clientImpl);
             } catch (Throwable t) {
                 if (isThrowableRetryable(t)) {
-                    LOGGER.atVerbose().log("Could not set up local cryptography for this operation. Defaulting "
-                        + "to service-side cryptography.", t);
+                    LOGGER.atVerbose()
+                        .setThrowable(t)
+                        .log("Could not set up local cryptography for this operation. Defaulting "
+                            + "to service-side cryptography.");
                 } else {
                     skipLocalClientCreation = true;
 
-                    LOGGER.atVerbose().log("Could not set up local cryptography. Defaulting to service-side"
-                        + " cryptography for all operations.", t);
+                    LOGGER.atVerbose()
+                        .setThrowable(t)
+                        .log("Could not set up local cryptography. Defaulting to service-side"
+                            + " cryptography for all operations.");
                 }
             }
         }

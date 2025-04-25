@@ -17,7 +17,7 @@ import io.clientcore.core.http.annotations.QueryParam;
 import io.clientcore.core.http.annotations.UnexpectedResponseExceptionDetail;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpResponseException;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 
@@ -93,8 +93,9 @@ public final class SecretMinClientImpl {
     public interface SecretMinClientService {
         static SecretMinClientService getNewInstance(HttpPipeline pipeline) {
             try {
-                Class<?> clazz
-                    = Class.forName("com.azure.v2.security.keyvault.keys.implementation.SecretMinClientServiceImpl");
+                Class<?> clazz =
+                    Class.forName("com.azure.v2.security.keyvault.keys.implementation.SecretMinClientServiceImpl");
+
                 return (SecretMinClientService) clazz.getMethod("getNewInstance", HttpPipeline.class)
                     .invoke(null, pipeline);
             } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException
@@ -111,14 +112,14 @@ public final class SecretMinClientImpl {
         Response<SecretBundle> getSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
             @PathParam("secret-version") String secretVersion, @HeaderParam("Accept") String accept,
-            RequestOptions requestOptions);
+            RequestContext requestContext);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "/secrets/{secret-name}", expectedStatusCodes = { 200 })
         @UnexpectedResponseExceptionDetail(exceptionBodyClass = KeyVaultError.class)
         Response<SecretBundle> setSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl,
             @QueryParam("api-version") String apiVersion, @PathParam("secret-name") String secretName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") SecretSetParameters parameters, RequestOptions requestOptions);
+            @BodyParam("application/json") SecretSetParameters parameters, RequestContext requestContext);
     }
 
     /**
@@ -130,7 +131,7 @@ public final class SecretMinClientImpl {
      * @param secretName The name of the secret.
      * @param secretVersion The version of the secret. This URI fragment is optional. If not specified, the latest
      * version of the secret is returned.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -140,10 +141,12 @@ public final class SecretMinClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecretBundle> getSecretWithResponse(String secretName, String secretVersion,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
+
         final String accept = "application/json";
+
         return service.getSecret(this.getEndpoint(), this.getServiceVersion(), secretName,
-            secretVersion, accept, requestOptions);
+            secretVersion, accept, requestContext);
     }
 
     /**
@@ -155,7 +158,7 @@ public final class SecretMinClientImpl {
      * @param secretName The name of the secret. The value you provide may be copied globally for the purpose of running
      * the service. The value provided should not include personally identifiable or sensitive information.
      * @param parameters The parameters for setting the secret.
-     * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
+     * @param requestContext The options to configure the HTTP request before HTTP client sends it.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the service returns an error.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -163,10 +166,12 @@ public final class SecretMinClientImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SecretBundle> setSecretWithResponse(String secretName, SecretSetParameters parameters,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
+
         final String contentType = "application/json";
         final String accept = "application/json";
+
         return service.setSecret(this.getEndpoint(), this.getServiceVersion(), secretName, contentType,
-            accept, parameters, requestOptions);
+            accept, parameters, requestContext);
     }
 }

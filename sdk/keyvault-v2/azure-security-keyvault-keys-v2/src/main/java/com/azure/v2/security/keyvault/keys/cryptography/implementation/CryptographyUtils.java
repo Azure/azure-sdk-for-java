@@ -13,7 +13,7 @@ import com.azure.v2.security.keyvault.keys.models.JsonWebKey;
 import com.azure.v2.security.keyvault.keys.models.KeyOperation;
 import com.azure.v2.security.keyvault.keys.models.KeyType;
 import io.clientcore.core.http.models.HttpResponseException;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
 import java.net.MalformedURLException;
@@ -80,7 +80,7 @@ public final class CryptographyUtils {
             // default to using service-side cryptography.
             JsonWebKey jsonWebKey = CryptographyUtils.SECRETS_COLLECTION.equals(implClient.getKeyCollection())
                 ? implClient.getSecretKey()
-                : implClient.getKeyWithResponse(RequestOptions.none()).getValue().getKey();
+                : implClient.getKeyWithResponse(RequestContext.none()).getValue().getKey();
 
             if (jsonWebKey == null) {
                 throw new IllegalStateException(

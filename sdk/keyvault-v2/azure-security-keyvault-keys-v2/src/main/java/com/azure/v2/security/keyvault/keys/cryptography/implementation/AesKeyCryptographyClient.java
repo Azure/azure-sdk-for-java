@@ -16,7 +16,7 @@ import com.azure.v2.security.keyvault.keys.cryptography.models.VerifyResult;
 import com.azure.v2.security.keyvault.keys.cryptography.models.WrapResult;
 import com.azure.v2.security.keyvault.keys.models.JsonWebKey;
 import com.azure.v2.security.keyvault.keys.models.KeyOperation;
-import io.clientcore.core.http.models.RequestOptions;
+import io.clientcore.core.http.models.RequestContext;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -81,28 +81,28 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, RequestOptions requestOptions) {
+    public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, RequestContext requestContext) {
         try {
-            return encryptInternal(algorithm, plaintext, null, null, requestOptions);
+            return encryptInternal(algorithm, plaintext, null, null, requestContext);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public EncryptResult encrypt(EncryptParameters encryptParameters, RequestOptions requestOptions) {
+    public EncryptResult encrypt(EncryptParameters encryptParameters, RequestContext requestContext) {
         Objects.requireNonNull(encryptParameters, "Encrypt parameters cannot be null.");
 
         try {
             return encryptInternal(encryptParameters.getAlgorithm(), encryptParameters.getPlainText(),
-                encryptParameters.getIv(), encryptParameters.getAdditionalAuthenticatedData(), requestOptions);
+                encryptParameters.getIv(), encryptParameters.getAdditionalAuthenticatedData(), requestContext);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     private EncryptResult encryptInternal(EncryptionAlgorithm algorithm, byte[] plaintext, byte[] iv,
-        byte[] additionalAuthenticatedData, RequestOptions requestOptions)
+        byte[] additionalAuthenticatedData, RequestContext requestContext)
         throws BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException, InvalidKeyException,
         NoSuchAlgorithmException, NoSuchPaddingException, IOException {
 
@@ -114,7 +114,7 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         if (!(baseAlgorithm instanceof SymmetricEncryptionAlgorithm)) {
             if (implClient != null) {
-                return implClient.encrypt(algorithm, plaintext, null, null, requestOptions);
+                return implClient.encrypt(algorithm, plaintext, null, null, requestContext);
             }
 
             throw new NoSuchAlgorithmException(algorithm.toString());
@@ -144,29 +144,29 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext, RequestOptions requestOptions) {
+    public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext, RequestContext requestContext) {
         try {
-            return decryptInternal(algorithm, ciphertext, null, null, null, requestOptions);
+            return decryptInternal(algorithm, ciphertext, null, null, null, requestContext);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public DecryptResult decrypt(DecryptParameters decryptParameters, RequestOptions requestOptions) {
+    public DecryptResult decrypt(DecryptParameters decryptParameters, RequestContext requestContext) {
         Objects.requireNonNull(decryptParameters, "Decrypt parameters cannot be null.");
 
         try {
             return decryptInternal(decryptParameters.getAlgorithm(), decryptParameters.getCipherText(),
                 decryptParameters.getIv(), decryptParameters.getAdditionalAuthenticatedData(),
-                decryptParameters.getAuthenticationTag(), requestOptions);
+                decryptParameters.getAuthenticationTag(), requestContext);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
     private DecryptResult decryptInternal(EncryptionAlgorithm algorithm, byte[] ciphertext, byte[] iv,
-        byte[] additionalAuthenticatedData, byte[] authenticationTag, RequestOptions requestOptions)
+        byte[] additionalAuthenticatedData, byte[] authenticationTag, RequestContext requestContext)
         throws BadPaddingException, IllegalBlockSizeException, InvalidAlgorithmParameterException, InvalidKeyException,
         NoSuchAlgorithmException, NoSuchPaddingException, IOException {
 
@@ -178,7 +178,7 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         if (!(baseAlgorithm instanceof SymmetricEncryptionAlgorithm)) {
             if (implClient != null) {
-                return implClient.decrypt(algorithm, ciphertext, requestOptions);
+                return implClient.decrypt(algorithm, ciphertext, requestContext);
             }
 
             throw new NoSuchAlgorithmException(algorithm.toString());
@@ -198,18 +198,18 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    public SignResult sign(SignatureAlgorithm algorithm, byte[] digest, RequestOptions requestOptions) {
+    public SignResult sign(SignatureAlgorithm algorithm, byte[] digest, RequestContext requestContext) {
         throw new UnsupportedOperationException("The sign operation not supported for OCT/symmetric keys.");
     }
 
     public VerifyResult verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
 
         throw new UnsupportedOperationException("The verify operation is not supported for OCT/symmetric keys.");
     }
 
     @Override
-    public WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] keyToWrap, RequestOptions requestOptions) {
+    public WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] keyToWrap, RequestContext requestContext) {
         Objects.requireNonNull(algorithm, "Key wrap algorithm cannot be null.");
         Objects.requireNonNull(keyToWrap, "Key content to be wrapped cannot be null.");
 
@@ -219,7 +219,7 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
         if (!(baseAlgorithm instanceof LocalKeyWrapAlgorithm)) {
             if (implClient != null) {
                 try {
-                    return implClient.wrapKey(algorithm, keyToWrap, requestOptions);
+                    return implClient.wrapKey(algorithm, keyToWrap, requestContext);
                 } catch (IOException e) {
                     throw new UncheckedIOException(e);
                 }
@@ -256,7 +256,7 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    public UnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, RequestOptions requestOptions) {
+    public UnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, RequestContext requestContext) {
         Objects.requireNonNull(algorithm, "Key wrap algorithm cannot be null.");
         Objects.requireNonNull(encryptedKey, "Encrypted key content to be unwrapped cannot be null.");
 
@@ -267,7 +267,7 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
         if (!(baseAlgorithm instanceof LocalKeyWrapAlgorithm)) {
             if (implClient != null) {
                 try {
-                    return implClient.unwrapKey(algorithm, encryptedKey, requestOptions);
+                    return implClient.unwrapKey(algorithm, encryptedKey, requestContext);
                 } catch (IOException e) {
                     throw new UncheckedIOException(e);
                 }
@@ -290,13 +290,13 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
     }
 
     @Override
-    public SignResult signData(SignatureAlgorithm algorithm, byte[] data, RequestOptions requestOptions) {
-        return sign(algorithm, data, requestOptions);
+    public SignResult signData(SignatureAlgorithm algorithm, byte[] data, RequestContext requestContext) {
+        return sign(algorithm, data, requestContext);
     }
 
     public VerifyResult verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature,
-        RequestOptions requestOptions) {
+        RequestContext requestContext) {
 
-        return verify(algorithm, data, signature, requestOptions);
+        return verify(algorithm, data, signature, requestContext);
     }
 }
