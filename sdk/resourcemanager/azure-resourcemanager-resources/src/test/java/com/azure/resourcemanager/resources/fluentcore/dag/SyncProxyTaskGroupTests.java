@@ -853,7 +853,11 @@ public class SyncProxyTaskGroupTests {
          *                |                         |
          *                ------->group4-------------
          */
-        Consumer<String> vertexConsumer = vertex -> Assertions.assertTrue(verticesNames.remove(vertex));
+        Consumer<String> vertexConsumer = vertex -> Assertions.assertTrue(() -> {
+            synchronized (verticesNames) {
+                return verticesNames.remove(vertex);
+            }
+        });
 
         TaskGroup group1 = new TaskGroup(vertex1, new StringTaskItem(vertex1, vertexConsumer));
         TaskGroup group2 = new TaskGroup(vertex2, new StringTaskItem(vertex2, vertexConsumer));
