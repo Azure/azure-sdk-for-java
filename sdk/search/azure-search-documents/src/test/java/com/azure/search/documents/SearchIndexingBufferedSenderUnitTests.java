@@ -1151,7 +1151,7 @@ public class SearchIndexingBufferedSenderUnitTests {
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON));
 
         AtomicLong flushCompletionTime = new AtomicLong();
-        Future<?> future1 = SharedExecutorService.getInstance().execute(() -> {
+        Future<?> future1 = SharedExecutorService.getInstance().submit(() -> {
             try {
                 batchingClient.flush();
             } finally {
@@ -1218,7 +1218,7 @@ public class SearchIndexingBufferedSenderUnitTests {
         batchingClient.addUploadActions(readJsonFileToList(HOTELS_DATA_JSON)).block();
 
         AtomicLong flushCompletionTime = new AtomicLong();
-        Future<?> future1 = SharedExecutorService.getInstance().execute(() -> {
+        Future<?> future1 = SharedExecutorService.getInstance().submit(() -> {
             Mono.using(() -> 1, ignored -> batchingClient.flush(), ignored -> {
                 flushCompletionTime.set(System.currentTimeMillis());
                 countDownLatch.countDown();
