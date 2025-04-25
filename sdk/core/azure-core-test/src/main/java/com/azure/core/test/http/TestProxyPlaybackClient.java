@@ -149,6 +149,8 @@ public class TestProxyPlaybackClient implements HttpClient {
                 return response;
             } catch (Exception e) {
                 retries++;
+
+                LOGGER.error("Failed in the retry loop. RecordingID " + xRecordingId + " message: " + e.getMessage());
                 if (retries >= 3) {
                     throw e;
                 }

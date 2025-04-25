@@ -274,6 +274,9 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
                 }
                 return response;
             } catch (Exception e) {
+
+                LOGGER.error("Failed in the retry loop. RecordingID " + xRecordingId + " message: " + e.getMessage());
+
                 retries++;
                 if (retries >= 3) {
                     throw e;
