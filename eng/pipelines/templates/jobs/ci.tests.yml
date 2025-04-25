@@ -174,3 +174,11 @@ jobs:
           }
         displayName: Dump Test-Proxy Error Logs
         condition: succeededOrFailed()
+    
+      - pwsh: |
+          $content = (Invoke-WebRequest -Uri "http://localhost:5000/Audit/Logs")
+          Write-Host $content.Content
+        displayName: Dump Test-Proxy Audit Logs
+        condition: succeededOrFailed()
+
+      - template: /eng/common/testproxy/test-proxy-tool-shutdown.yml
