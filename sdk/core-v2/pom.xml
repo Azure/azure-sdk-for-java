@@ -12,5 +12,6 @@
   <modules>
     <module>azure-core</module>
     <module>azure-core-test</module>
+    <module>http-stress</module>
   </modules>
 </project>

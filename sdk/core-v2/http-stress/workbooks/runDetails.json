@@ -1,0 +1,310 @@
+{
+  "version": "Notebook/1.0",
+  "items": [
+    {
+      "type": 1,
+      "content": {
+        "json": "## Workbook for java clientcore HTTP stress tests.\n\nSelect the run from the following list."
+      },
+      "name": "text - 2"
+    },
+    {
+      "type": 9,
+      "content": {
+        "version": "KqlParameterItem/1.0",
+        "parameters": [
+          {
+            "id": "ab5bb927-f8a4-4491-8621-d300820d2ff3",
+            "version": "KqlParameterItem/1.0",
+            "name": "timeRange",
+            "label": "Time Range",
+            "type": 4,
+            "typeSettings": {
+              "selectableValues": [
+                {
+                  "durationMs": 900000
+                },
+                {
+                  "durationMs": 1800000
+                },
+                {
+                  "durationMs": 3600000
+                },
+                {
+                  "durationMs": 14400000
+                },
+                {
+                  "durationMs": 43200000
+                },
+                {
+                  "durationMs": 86400000
+                },
+                {
+                  "durationMs": 172800000
+                },
+                {
+                  "durationMs": 259200000
+                },
+                {
+                  "durationMs": 604800000
+                }
+              ],
+              "allowCustom": true
+            },
+            "value": {
+              "durationMs": 1800000
+            }
+          },
+          {
+            "id": "1b563bbe-70e0-48e6-ae33-d71d97ab8332",
+            "version": "KqlParameterItem/1.0",
+            "name": "runId",
+            "label": "Pod name",
+            "type": 2,
+            "isRequired": true,
+            "query": "dependencies\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-clientcore-http\" and name == \"before run\"\r\n| extend runId = tostring(split(cloud_RoleName, \"-\")[2])\r\n| summarize start=min(timestamp) by runId, pod = tostring(customDimensions[\"hostname\"])\r\n| order by start desc\r\n| project runId, pod",
+            "typeSettings": {
+              "additionalResourceOptions": [],
+              "showDefault": false
+            },
+            "queryType": 0,
+            "resourceType": "microsoft.insights/components",
+            "value": null
+          }
+        ],
+        "style": "pills",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "30",
+      "name": "parameters - 2",
+      "styleSettings": {
+        "maxWidth": "30"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let runId = \"{runId}\";\r\nlet roleName = strcat(\"java-clientcore-http-\", runId);\r\nlet metrics = customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName == roleName;\r\nlet testSpans = dependencies\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName == roleName;\r\nlet errors = metrics\r\n| where name == \"test.run.duration\"\r\n| extend errorType = tostring(customDimensions[\"error.type\"])\r\n| summarize error_by_type=sum(valueCount) by errorType\r\n| summarize test_errors=make_bag(bag_pack(errorType, error_by_type))\r\n| evaluate narrow();\r\nlet runs = metrics \r\n| where name == \"test.run.duration\" \r\n| summarize successful_runs=sumif(valueCount, customDimensions[\"error.type\"] == \"\"), total_runs=sum(valueCount)\r\n| evaluate narrow();\r\nlet parameters = testSpans \r\n| where name == \"before run\"\r\n| project params_pod=customDimensions[\"hostname\"], params_scenarioName=customDimensions[\"scenarioName\"], params_durationSec=customDimensions[\"durationSec\"], params_concurrency=customDimensions[\"concurrency\"], params_sync=customDimensions[\"sync\"], params_httpClient=strcat(tostring(customDimensions[\"httpClientPackage\"]), \":\", tostring(customDimensions[\"httpClientPackageVersion\"])), params_JRE=strcat(tostring(customDimensions[\"jreVendor\"]), \" \", tostring(customDimensions[\"jreVersion\"]))\r\n| evaluate narrow();\r\nlet actualDuration = metrics\r\n| where name == \"test.run.duration\"\r\n| summarize maxTs = max(timestamp), minTs = min(timestamp)\r\n| project actual_durationSec=(maxTs-minTs)/1s\r\n| evaluate narrow();\r\nlet avgThroughput = metrics \r\n| where name == \"test.run.duration\" \r\n| summarize throughputPerMin=sum(valueCount) by bin(timestamp, 1m) // in case AppInsights ingestion drops something\r\n| summarize avg_throughtputPerSec=avg(throughputPerMin/60)\r\n| evaluate narrow();\r\nparameters \r\n| union runs, errors, actualDuration, avgThroughput\r\n| project Property = Column, Value\r\n",
+        "size": 0,
+        "showAnalytics": true,
+        "title": "Test summary",
+        "noDataMessageStyle": 5,
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "gridSettings": {
+          "sortBy": [
+            {
+              "itemKey": "Property",
+              "sortOrder": 1
+            }
+          ]
+        },
+        "sortBy": [
+          {
+            "itemKey": "Property",
+            "sortOrder": 1
+          }
+        ]
+      },
+      "customWidth": "30",
+      "name": "query - 9",
+      "styleSettings": {
+        "maxWidth": "30"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "let runs = customMetrics \r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-clientcore-http\" \r\n| extend runId = tostring(split(cloud_RoleName, \"-\")[2])\r\n| summarize start=min(timestamp), end=max(timestamp) by runId\r\n| project start, duration= end-start, runId;\r\nlet runSpans = dependencies\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-clientcore-http\"  and name == \"before run\"\r\n| extend runId = tostring(split(cloud_RoleName, \"-\")[2])\r\n| distinct runId, pod=tostring(customDimensions[\"hostname\"]), client=strcat(tostring(customDimensions[\"httpClientPackage\"]), \":\", tostring(customDimensions[\"httpClientPackageVersion\"]));\r\nruns \r\n| join kind = innerunique runSpans on runId\r\n| order by start desc\r\n| project-away runId1\r\n",
+        "size": 0,
+        "title": "Runs in {timeRange:label}",
+        "noDataMessageStyle": 5,
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "gridSettings": {
+          "sortBy": [
+            {
+              "itemKey": "start",
+              "sortOrder": 2
+            }
+          ]
+        },
+        "sortBy": [
+          {
+            "itemKey": "start",
+            "sortOrder": 2
+          }
+        ]
+      },
+      "customWidth": "40",
+      "name": "query - 8",
+      "styleSettings": {
+        "maxWidth": "40"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where name == \"test.run.duration\" and cloud_RoleName startswith \"java-clientcore-http\" and cloud_RoleName endswith \"{runId}\"\r\n| where customDimensions[\"error.type\"] == \"\"\r\n| summarize successful_runs=sum(valueCount) by bin(timestamp, 1m)\r\n| render timechart",
+        "size": 0,
+        "aggregation": 3,
+        "title": "Test run success rate (per minute)",
+        "noDataMessageStyle": 5,
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "30",
+      "name": "query - 3",
+      "styleSettings": {
+        "maxWidth": "30",
+        "showBorder": true
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where name == \"test.run.duration\"\r\n| where cloud_RoleName startswith \"java-clientcore-http\" and cloud_RoleName endswith \"{runId}\"\r\n| where customDimensions[\"error.type\"] == \"\"\r\n| summarize avg_duration = avg(valueSum/valueCount) * 1000 by bin(timestamp, 1m)\r\n| render timechart",
+        "size": 0,
+        "aggregation": 3,
+        "title": "Duration of successfull operation (ms)",
+        "noDataMessageStyle": 5,
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "30",
+      "name": "query - 5",
+      "styleSettings": {
+        "maxWidth": "30",
+        "showBorder": true
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-clientcore-http\" and cloud_RoleName endswith \"{runId}\"\r\n| where name == \"test.run.duration\"\r\n| extend status = tostring(customDimensions[\"error.type\"])\r\n| where status != \"\"\r\n| summarize test_errors = sum(valueCount) by status, bin(timestamp, 1m)\r\n| render linechart",
+        "size": 0,
+        "aggregation": 3,
+        "title": "Error rate (per minute)",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "30",
+      "name": "query - 3 - Copy",
+      "styleSettings": {
+        "maxWidth": "30",
+        "showBorder": true
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-clientcore-http\" and cloud_RoleName endswith \"{runId}\"\r\n| where name == \"jvm.memory.used\" and customDimensions[\"jvm.memory.type\"]==\"heap\"\r\n| summarize heap_memory_used=sum(valueSum/valueCount) by bin(timestamp, 1m)\r\n| render areachart",
+        "size": 0,
+        "aggregation": 3,
+        "title": "Heap memory used (MB)",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "30",
+      "name": "query - 8",
+      "styleSettings": {
+        "maxWidth": "30"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-clientcore-http\" and cloud_RoleName endswith \"{runId}\"\r\n| where name == \"jvm.cpu.recent_utilization\"\r\n| summarize cpu_time_percent=avg(value) * 100 by bin(timestamp, 1m)\r\n| render timechart\r\n",
+        "size": 0,
+        "aggregation": 3,
+        "title": "CPU %",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "30",
+      "name": "query - 9",
+      "styleSettings": {
+        "maxWidth": "30"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-clientcore-http\" and cloud_RoleName endswith \"{runId}\"\r\n| where name == \"jvm.thread.count\"\r\n| summarize max_thread_count=max(valueMax) by bin(timestamp, 1m)\r\n| render timechart\r\n",
+        "size": 0,
+        "aggregation": 3,
+        "title": "Thread count",
+        "noDataMessageStyle": 5,
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "15",
+      "name": "query - 11",
+      "styleSettings": {
+        "maxWidth": "15"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "customMetrics\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-clientcore-http\" and cloud_RoleName endswith \"{runId}\"\r\n| where name == \"jvm.gc.duration\" \r\n| extend gc_type=tostring(customDimensions[\"jvm.gc.name\"])\r\n| summarize gc_percentage=sum(valueSum) / 60 * 100 by gc_type, bin(timestamp, 1m)\r\n| render timechart\r\n",
+        "size": 0,
+        "aggregation": 3,
+        "title": "% of time spent in GC",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "15",
+      "name": "query - 11",
+      "styleSettings": {
+        "maxWidth": "15"
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "traces \r\n| union exceptions\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-clientcore-http\" and cloud_RoleName endswith \"{runId}\" and severityLevel > 1\r\n| extend category = tostring(customDimensions[\"LoggerName\"])\r\n| extend logOrExceptionMessage = coalesce(message, outerMessage) \r\n| extend message = case(logOrExceptionMessage startswith \"{\\\"az.sdk.message\", azSdkContext=parse_json(logOrExceptionMessage)[\"az.sdk.message\"], substring(logOrExceptionMessage, 0, 48))\r\n| project timestamp, category, message, severity = case(severityLevel == 2, \"Warning\", severityLevel == 3, \"Error\", severityLevel == 1, \"Info\", \"\")\r\n| summarize occurences = count() by severity, category, message\r\n| order by occurences desc\r\n",
+        "size": 0,
+        "title": "Warnings and errors in logs (sampled, 0.001%)",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components",
+        "sortBy": []
+      },
+      "customWidth": "60",
+      "name": "query - 6",
+      "styleSettings": {
+        "maxWidth": "60",
+        "showBorder": true
+      }
+    },
+    {
+      "type": 3,
+      "content": {
+        "version": "KqlItem/1.0",
+        "query": "traces \r\n| union exceptions\r\n| where timestamp >= {timeRange:start} and timestamp <= {timeRange:end}\r\n| where cloud_RoleName startswith \"java-clientcore-http\" and cloud_RoleName endswith \"{runId}\" and severityLevel > 1\r\n| extend severity = case(severityLevel == 2, \"Warning\", severityLevel == 3, \"Error\", \"\")\r\n| summarize warnings = countif(severityLevel==2), errors = countif(severityLevel==3) by bin(timestamp, 1m)\r\n| render timechart\r\n",
+        "size": 0,
+        "title": "Errors and warnings in logs (sampled, 0.001%) over time",
+        "queryType": 0,
+        "resourceType": "microsoft.insights/components"
+      },
+      "customWidth": "30",
+      "name": "query - 12",
+      "styleSettings": {
+        "maxWidth": "30",
+        "showBorder": true
+      }
+    }
+  ],
+  "$schema": "https://github.com/Microsoft/Application-Insights-Workbooks/blob/master/schema/workbook.json"
+}
