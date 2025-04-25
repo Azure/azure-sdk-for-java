@@ -115,7 +115,7 @@ jobs:
           runProxy: true
 
       - pwsh: |
-          $targetDirectories = ConvertFrom-Json "$(SparseCheckoutDirectories)"
+          $targetDirectories = ConvertFrom-Json '$(SparseCheckoutDirectories)'
 
           foreach ($folder in $targetDirectories) {
             Write-Host "Examining $folder for assets.json files to restore"
