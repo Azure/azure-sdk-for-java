@@ -11,6 +11,7 @@ import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.http.pipeline.HttpPipeline;
@@ -28,6 +29,7 @@ import java.util.Objects;
 
 import static com.azure.v2.core.implementation.polling.PollingUtils.getAbsolutePath;
 import static com.azure.v2.core.implementation.polling.PollingUtils.operationResourceCanPoll;
+import static com.azure.v2.core.implementation.polling.PollingUtils.serializeResponse;
 
 /**
  * Implements a operation resource polling strategy, typically from Operation-Location.
@@ -157,11 +159,13 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
                 PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType), retryAfter);
         }
 
-        throw LOGGER.logThrowableAsError(new RuntimeException(
-            String.format("Operation failed or cancelled with status code %d, '%s' header: %s, and response body: %s",
-                response.getStatusCode(), operationLocationHeaderName, operationLocationHeader,
-                PollingUtils.serializeResponse(response.getValue(), serializer))));
-
+        throw LOGGER.throwableAtError((message, cause) -> new HttpResponseException(message, response, cause))
+            .addKeyValue("http.response.status_code", response.getStatusCode())
+            .addKeyValue("http.response.body.content", serializeResponse(response.getValue(), serializer).toString())
+            .addKeyValue("operationLocationHeaderName", operationLocationHeaderName.getValue())
+            .addKeyValue("operationLocationHeaderValue",
+                operationLocationHeader == null ? null : operationLocationHeader.getValue())
+            .log("Operation failed or cancelled");
     }
 
     @Override

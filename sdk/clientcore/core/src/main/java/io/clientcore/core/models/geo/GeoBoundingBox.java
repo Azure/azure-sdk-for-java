@@ -185,7 +185,8 @@ public final class GeoBoundingBox implements JsonSerializable<GeoBoundingBox> {
                     return maxAltitude;
 
                 default:
-                    throw LOGGER.logThrowableAsWarning(new IndexOutOfBoundsException("Index out of range: " + i));
+                    throw LOGGER.throwableAtWarning((m, c) -> new IndexOutOfBoundsException(m))
+                        .log("Index out of range: " + i);
             }
         } else {
             switch (i) {
@@ -202,7 +203,8 @@ public final class GeoBoundingBox implements JsonSerializable<GeoBoundingBox> {
                     return north;
 
                 default:
-                    throw LOGGER.logThrowableAsWarning(new IndexOutOfBoundsException("Index out of range: " + i));
+                    throw LOGGER.throwableAtWarning((m, c) -> new IndexOutOfBoundsException(m))
+                        .log("Index out of range: " + i);
             }
         }
     }

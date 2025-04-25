@@ -234,8 +234,11 @@ public final class ProxyAuthenticator implements Authenticator {
             String receivedValue = authenticationInfoPieces.get(name);
 
             if (!receivedValue.equalsIgnoreCase(sentValue)) {
-                throw LOGGER.logThrowableAsError(new IllegalStateException(
-                    String.format(VALIDATION_ERROR_TEMPLATE, name, sentValue, receivedValue)));
+                throw LOGGER.throwableAtError(IllegalArgumentException::new)
+                    .addKeyValue("name", name)
+                    .addKeyValue("sentValue", sentValue)
+                    .addKeyValue("receivedValue", receivedValue)
+                    .log("Received 'Proxy-Authentication-Info' does not match value sent in the 'Proxy-Authorization' header.");
             }
         }
     }

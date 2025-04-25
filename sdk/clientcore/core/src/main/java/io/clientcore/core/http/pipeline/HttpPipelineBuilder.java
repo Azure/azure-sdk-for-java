@@ -152,10 +152,9 @@ public class HttpPipelineBuilder {
 
         HttpPipelinePosition order = policy.getPipelinePosition();
         if (order == null) {
-            String exceptionMessage
-                = String.format("%s policy has invalid pipeline position - position cannot be null.",
-                    policy.getClass().getCanonicalName());
-            throw LOGGER.logThrowableAsError(new IllegalArgumentException(exceptionMessage));
+            throw LOGGER.throwableAtError(IllegalArgumentException::new)
+                .addKeyValue("policyType", policy.getClass().getCanonicalName())
+                .log("Policy has invalid pipeline position - position cannot be null.");
         }
 
         if (order == HttpPipelinePosition.BEFORE_REDIRECT) {

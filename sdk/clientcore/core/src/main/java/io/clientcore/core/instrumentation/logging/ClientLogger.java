@@ -12,6 +12,7 @@ import io.clientcore.core.utils.configuration.Configuration;
 import java.nio.file.InvalidPathException;
 import java.util.Collections;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 /**
  * This is a fluent logger helper class that wraps an SLF4J Logger (if available) or a default implementation of the
@@ -96,21 +97,6 @@ public class ClientLogger {
     ClientLogger(DefaultLogger defaultLogger, Map<String, Object> context) {
         logger = new Slf4jLoggerShim(defaultLogger);
         globalContext = context == null ? null : Collections.unmodifiableMap(context);
-    }
-
-    /**
-     * Logs the {@link Throwable} at the warning level and returns it to be thrown.
-     * <p>
-     * This API covers the cases where a checked exception type needs to be thrown and logged.
-     *
-     * @param throwable Throwable to be logged and returned.
-     * @param <T> Type of the Throwable being logged.
-     * @return The passed {@link Throwable}.
-     * @throws NullPointerException If {@code throwable} is {@code null}.
-     */
-    public <T extends Throwable> T logThrowableAsWarning(T throwable) {
-        LoggingEvent.create(logger, LogLevel.WARNING, globalContext).setThrowable(throwable).log();
-        return throwable;
     }
 
     /**
@@ -259,4 +245,31 @@ public class ClientLogger {
         }
     }
 
+    /**
+     * Creates {@link ExceptionLoggingEvent} that creates and logs the exception augmented with
+     * additional context at the {@link LogLevel#ERROR} level.
+     *
+     * @param throwableFactory Factory method to create the exception.
+     * @return {@link ExceptionLoggingEvent}.
+     * @param <T> Type of the exception being logged.
+     */
+    public <T extends Throwable> ExceptionLoggingEvent<T>
+        throwableAtError(BiFunction<String, Throwable, T> throwableFactory) {
+        return new ExceptionLoggingEvent<>(new LoggingEvent(logger, LogLevel.ERROR, globalContext, true),
+            throwableFactory);
+    }
+
+    /**
+     * Creates {@link ExceptionLoggingEvent} that creates and logs the exception augmented with
+     * additional context at the {@link LogLevel#WARNING} level.
+     *
+     * @param throwableFactory Factory method to create the exception.
+     * @return {@link ExceptionLoggingEvent}.
+     * @param <T> Type of the exception being logged.
+     */
+    public <T extends Throwable> ExceptionLoggingEvent<T>
+        throwableAtWarning(BiFunction<String, Throwable, T> throwableFactory) {
+        return new ExceptionLoggingEvent<>(new LoggingEvent(logger, LogLevel.WARNING, globalContext, true),
+            throwableFactory);
+    }
 }

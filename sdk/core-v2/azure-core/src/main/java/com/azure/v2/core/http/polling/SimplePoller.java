@@ -70,8 +70,8 @@ final class SimplePoller<T, U> implements Poller<T, U> {
         Function<PollingContext<T>, U> fetchResultOperation) {
         Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
         if (pollInterval.isNegative() || pollInterval.isZero()) {
-            throw LOGGER.logThrowableAsWarning(
-                new IllegalArgumentException("Negative or zero value for 'defaultPollInterval' is not allowed."));
+            throw LOGGER.throwableAtWarning(IllegalArgumentException::new)
+                .log("Negative or zero value for 'defaultPollInterval' is not allowed.");
         }
         this.pollInterval = pollInterval;
         Objects.requireNonNull(syncActivationOperation, "'syncActivationOperation' cannot be null.");
