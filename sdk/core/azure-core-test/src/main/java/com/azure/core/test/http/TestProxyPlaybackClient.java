@@ -97,9 +97,9 @@ public class TestProxyPlaybackClient implements HttpClient {
             try (HttpResponse response = sendRequestWithRetries(request)) {
                 checkForTestProxyErrors(response);
                 xRecordingId = response.getHeaderValue(X_RECORDING_ID);
-                xRecordingFileLocation
-                        = new String(Base64.getUrlDecoder().decode(response.getHeaders().getValue(X_RECORDING_FILE_LOCATION)),
-                        StandardCharsets.UTF_8);
+                xRecordingFileLocation = new String(
+                    Base64.getUrlDecoder().decode(response.getHeaders().getValue(X_RECORDING_FILE_LOCATION)),
+                    StandardCharsets.UTF_8);
                 addProxySanitization(this.sanitizers);
                 addMatcherRequests(this.matchers);
                 body = response.getBodyAsString().block();
@@ -143,8 +143,8 @@ public class TestProxyPlaybackClient implements HttpClient {
                     // We don't generally want to close the response here as the caller will need it,
                     // but if we're throwing we should clean it up.
                     response.close();
-                    throw new RuntimeException("Test proxy returned a non-successful status code. "
-                            + statusCode + "; response: " + body);
+                    throw new RuntimeException(
+                        "Test proxy returned a non-successful status code. " + statusCode + "; response: " + body);
                 }
                 return response;
             } catch (Exception e) {

@@ -269,8 +269,8 @@ public class TestProxyRecordPolicy implements HttpPipelinePolicy {
                     // We don't generally want to close the response here as the caller will need it,
                     // but if we're throwing we should clean it up.
                     response.close();
-                    throw new RuntimeException("Test proxy returned a non-successful status code. "
-                            + statusCode + "; response: " + body);
+                    throw new RuntimeException(
+                        "Test proxy returned a non-successful status code. " + statusCode + "; response: " + body);
                 }
                 return response;
             } catch (Exception e) {
