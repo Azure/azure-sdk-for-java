@@ -806,8 +806,7 @@ public final class SecretClient {
     public PagedIterable<SecretProperties> listPropertiesOfSecrets(RequestContext requestContext) {
         try {
             return mapPages(pagingOptions -> clientImpl.getSecretsSinglePage(null, requestContext),
-                (pagingOptions, nextLink) -> clientImpl.getSecretsNextSinglePage(nextLink,
-                    requestContext.toBuilder().build()),
+                (pagingOptions, nextLink) -> clientImpl.getSecretsNextSinglePage(nextLink, requestContext),
                 SecretsModelsUtils::createSecretProperties);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -860,8 +859,8 @@ public final class SecretClient {
                 .map(pagedResponse -> mapPagedResponse(pagedResponse, SecretsModelsUtils::createDeletedSecret));
 
             return mapPages(pagingOptions -> clientImpl.getDeletedSecretsSinglePage(null, requestContext),
-                (pagingOptions, nextLink) -> clientImpl.getDeletedSecretsNextSinglePage(nextLink,
-                    requestContext.toBuilder().build()), SecretsModelsUtils::createDeletedSecret);
+                (pagingOptions, nextLink) -> clientImpl.getDeletedSecretsNextSinglePage(nextLink, requestContext),
+                SecretsModelsUtils::createDeletedSecret);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -929,8 +928,8 @@ public final class SecretClient {
             }
 
             return mapPages(pagingOptions -> clientImpl.getSecretVersionsSinglePage(name, null, requestContext),
-                (pagingOptions, nextLink) -> clientImpl.getSecretVersionsNextSinglePage(nextLink,
-                    requestContext.toBuilder().build()), SecretsModelsUtils::createSecretProperties);
+                (pagingOptions, nextLink) -> clientImpl.getSecretVersionsNextSinglePage(nextLink, requestContext),
+                SecretsModelsUtils::createSecretProperties);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
