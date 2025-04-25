@@ -11,17 +11,19 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.durabletask.DurableTaskManager;
-import com.azure.resourcemanager.durabletask.models.TaskHub;
+import com.azure.resourcemanager.durabletask.models.PurgeableOrchestrationState;
+import com.azure.resourcemanager.durabletask.models.RetentionPolicy;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.core.publisher.Mono;
 
-public final class TaskHubsListBySchedulerMockTests {
+public final class RetentionPoliciesListBySchedulerMockTests {
     @Test
     public void testListByScheduler() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"dashboardUrl\":\"eyyvxyqjpkcat\"},\"id\":\"ngj\",\"name\":\"rcczsqpjhvmd\",\"type\":\"jvnysounqe\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\",\"retentionPolicies\":[{\"retentionPeriodInDays\":2127806039,\"orchestrationState\":\"Canceled\"},{\"retentionPeriodInDays\":1232407744,\"orchestrationState\":\"Completed\"},{\"retentionPeriodInDays\":1859867828,\"orchestrationState\":\"Canceled\"}]},\"id\":\"g\",\"name\":\"lpbuxwgipwhonowk\",\"type\":\"shwankixzbinje\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -30,8 +32,12 @@ public final class TaskHubsListBySchedulerMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<TaskHub> response
-            = manager.taskHubs().listByScheduler("tehfiqscjeypvh", "zrkgqhcjrefovg", com.azure.core.util.Context.NONE);
+        PagedIterable<RetentionPolicy> response = manager.retentionPolicies()
+            .listByScheduler("yhxdeoejzicwi", "sjttgzfbish", com.azure.core.util.Context.NONE);
 
+        Assertions.assertEquals(2127806039,
+            response.iterator().next().properties().retentionPolicies().get(0).retentionPeriodInDays());
+        Assertions.assertEquals(PurgeableOrchestrationState.CANCELED,
+            response.iterator().next().properties().retentionPolicies().get(0).orchestrationState());
     }
 }
