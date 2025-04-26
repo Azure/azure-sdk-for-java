@@ -7,7 +7,6 @@ import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
-import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -97,11 +96,11 @@ public class Utils {
     private static AtomicReference<ImplementationBridgeHelpers.CosmosItemSerializerHelper.CosmosItemSerializerAccessor> itemSerializerAccessor =
         new AtomicReference<>(null);
 
-    private static final ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor diagnosticsContextAccessor
-        = ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
+    private static AtomicReference<ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor> diagnosticsContextAccessor
+        = new AtomicReference<>(null);
 
-    private static final ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.CosmosDiagnosticsThresholdsAccessor diagnosticsThresholdsAccessor
-        = ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.getCosmosAsyncClientAccessor();
+    private static AtomicReference<ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.CosmosDiagnosticsThresholdsAccessor> diagnosticsThresholdsAccessor
+        = new AtomicReference<>(null);
 
     public static ObjectMapper getDocumentObjectMapper(String serializationInclusionMode) {
         if (Strings.isNullOrEmpty(serializationInclusionMode)) {
@@ -143,6 +142,39 @@ public class Utils {
         }
 
         return itemSerializerAccessor.get();
+    }
+
+    private static ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor ensureDiagnosticsContextAccessorIsInitialized() {
+
+        ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor snapshot = diagnosticsContextAccessor.get();
+
+        if (snapshot != null) {
+            return snapshot;
+        }
+
+        ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.CosmosDiagnosticsContextAccessor newInstance =
+            ImplementationBridgeHelpers.CosmosDiagnosticsContextHelper.getCosmosDiagnosticsContextAccessor();
+        if (diagnosticsContextAccessor.compareAndSet(null, newInstance)) {
+            return newInstance;
+        }
+
+        return diagnosticsContextAccessor.get();
+    }
+
+    private static ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.CosmosDiagnosticsThresholdsAccessor ensureDiagnosticsThresholdsAccessorIsInitialized() {
+        ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.CosmosDiagnosticsThresholdsAccessor snapshot = diagnosticsThresholdsAccessor.get();
+        if (snapshot != null) {
+            return snapshot;
+        }
+
+        ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.CosmosDiagnosticsThresholdsAccessor newInstance =
+            ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.getCosmosDiagnosticsThresholdsAccessor();
+
+        if (diagnosticsThresholdsAccessor.compareAndSet(null, newInstance)) {
+            return newInstance;
+        }
+
+        return diagnosticsThresholdsAccessor.get();
     }
 
     private static ObjectMapper createAndInitializeObjectMapper(boolean allowDuplicateProperties) {
@@ -831,7 +863,7 @@ public class Utils {
         CosmosDiagnostics cosmosDiagnostics = diagnosticsClientContext != null ? diagnosticsClientContext.getMostRecentlyCreatedDiagnostics() : null;
         CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics != null ? cosmosDiagnostics.getDiagnosticsContext() : null;
 
-        return diagnosticsContext != null ? diagnosticsContext : diagnosticsContextAccessor.create(
+        return diagnosticsContext != null ? diagnosticsContext : ensureDiagnosticsContextAccessorIsInitialized().create(
             Strings.Emtpy,
             Strings.Emtpy,
             Strings.Emtpy,
@@ -842,7 +874,7 @@ public class Utils {
             Strings.Emtpy,
             consistencyLevel,
             null,
-            diagnosticsThresholdsAccessor.getDefaultDiagnosticsThresholds(),
+            ensureDiagnosticsThresholdsAccessorIsInitialized().getDefaultDiagnosticsThresholds(),
             Strings.Emtpy,
             connectionMode.toString(),
             Strings.Emtpy,
@@ -862,7 +894,7 @@ public class Utils {
         CosmosDiagnostics cosmosDiagnostics = cosmosException != null ? cosmosException.getDiagnostics() : null;
         CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics != null ? cosmosDiagnostics.getDiagnosticsContext() : null;
 
-        return diagnosticsContext != null ? diagnosticsContext : diagnosticsContextAccessor.create(
+        return diagnosticsContext != null ? diagnosticsContext : ensureDiagnosticsContextAccessorIsInitialized().create(
             Strings.Emtpy,
             Strings.Emtpy,
             Strings.Emtpy,
@@ -873,7 +905,7 @@ public class Utils {
             Strings.Emtpy,
             consistencyLevel,
             null,
-            diagnosticsThresholdsAccessor.getDefaultDiagnosticsThresholds(),
+            ensureDiagnosticsThresholdsAccessorIsInitialized().getDefaultDiagnosticsThresholds(),
             Strings.Emtpy,
             connectionMode.toString(),
             Strings.Emtpy,

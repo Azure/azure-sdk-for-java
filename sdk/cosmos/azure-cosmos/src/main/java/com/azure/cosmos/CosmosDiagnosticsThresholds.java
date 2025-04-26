@@ -281,7 +281,7 @@ public final class CosmosDiagnosticsThresholds {
 
                 @Override
                 public CosmosDiagnosticsThresholds getDefaultDiagnosticsThresholds() {
-                    return new CosmosDiagnosticsThresholds();
+                    return DEFAULT;
                 }
             }
         );

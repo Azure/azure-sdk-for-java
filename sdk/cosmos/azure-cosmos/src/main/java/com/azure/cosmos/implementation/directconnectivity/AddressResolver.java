@@ -4,6 +4,8 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.CosmosDiagnosticsContext;
@@ -361,16 +363,19 @@ public class AddressResolver implements IAddressResolver {
 
         Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request);
 
-        DiagnosticsClientContext diagnosticsClientContext = request.getDiagnosticsClientContext();
-        CosmosDiagnostics cosmosDiagnostics = diagnosticsClientContext != null ?
-            diagnosticsClientContext.getMostRecentlyCreatedDiagnostics() : null;
-        CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics != null ?
-            cosmosDiagnostics.getDiagnosticsContext() : null;
+        CosmosDiagnosticsContext cosmosDiagnosticsContextForInternalStateCapture
+            = Utils.generateDiagnosticsContextForInternalStateCapture(
+            request.getDiagnosticsClientContext(),
+            ResourceType.PartitionKeyRange,
+            ConsistencyLevel.STRONG,
+            ConnectionMode.GATEWAY,
+            OperationType.Read,
+            null);
 
         Mono<RefreshState> stateObs = collectionObs.flatMap(collectionValueHolder -> {
             state.collection = collectionValueHolder.v;
             Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMapObs =
-                this.collectionRoutingMapCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), collectionValueHolder.v.getResourceId(), null, request.forceCollectionRoutingMapRefresh, request.properties, diagnosticsContext);
+                this.collectionRoutingMapCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), collectionValueHolder.v.getResourceId(), null, request.forceCollectionRoutingMapRefresh, request.properties, cosmosDiagnosticsContextForInternalStateCapture);
             final Utils.ValueHolder<DocumentCollection> underlyingCollection = collectionValueHolder;
             return routingMapObs.flatMap(routingMapValueHolder -> {
                 state.routingMap = routingMapValueHolder.v;
@@ -379,7 +384,7 @@ public class AddressResolver implements IAddressResolver {
                     state.collectionRoutingMapCacheIsUptoDate = true;
                     request.forcePartitionKeyRangeRefresh = false;
                     if (routingMapValueHolder.v != null) {
-                        return this.collectionRoutingMapCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), underlyingCollection.v.getResourceId(), routingMapValueHolder.v, request.properties, diagnosticsContext)
+                        return this.collectionRoutingMapCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), underlyingCollection.v.getResourceId(), routingMapValueHolder.v, request.properties, cosmosDiagnosticsContextForInternalStateCapture)
                             .map(newRoutingMapValueHolder -> {
                                 state.routingMap = newRoutingMapValueHolder.v;
                                 return state;
@@ -409,7 +414,7 @@ public class AddressResolver implements IAddressResolver {
                             collectionValueHolder.v.getResourceId(),
                             null,
                             request.properties,
-                            diagnosticsContext);
+                            cosmosDiagnosticsContextForInternalStateCapture);
 
                         return newRoutingMapObs.map(routingMapValueHolder -> {
                             newState.routingMap = routingMapValueHolder.v;
@@ -496,18 +501,21 @@ public class AddressResolver implements IAddressResolver {
                         if (!funcState.collectionRoutingMapCacheIsUptoDate) {
                             funcState.collectionRoutingMapCacheIsUptoDate = true;
 
-                            DiagnosticsClientContext diagnosticsClientContext = request.getDiagnosticsClientContext();
-                            CosmosDiagnostics cosmosDiagnostics = diagnosticsClientContext != null ?
-                                diagnosticsClientContext.getMostRecentlyCreatedDiagnostics() : null;
-                            CosmosDiagnosticsContext diagnosticsContext = cosmosDiagnostics != null ?
-                                cosmosDiagnostics.getDiagnosticsContext() : null;
+                            CosmosDiagnosticsContext cosmosDiagnosticsContextForInternalStateCapture
+                                = Utils.generateDiagnosticsContextForInternalStateCapture(
+                                request.getDiagnosticsClientContext(),
+                                ResourceType.PartitionKeyRange,
+                                ConsistencyLevel.STRONG,
+                                ConnectionMode.GATEWAY,
+                                OperationType.Read,
+                                null);
 
                             Mono<Utils.ValueHolder<CollectionRoutingMap>> newRoutingMapObs = this.collectionRoutingMapCache.tryLookupAsync(
                                 BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                                 funcState.collection.getResourceId(),
                                 funcState.routingMap,
                                 request.properties,
-                                diagnosticsContext);
+                                cosmosDiagnosticsContextForInternalStateCapture);
 
                             return getStateWithNewRoutingMap(funcState, newRoutingMapObs);
                         } else {

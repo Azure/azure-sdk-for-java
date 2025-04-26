@@ -13,7 +13,7 @@ import java.util.List;
 
 public final class CosmosQueryRequestOptionsImpl extends CosmosQueryRequestOptionsBase<CosmosQueryRequestOptionsImpl> {
     private final static ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.CosmosDiagnosticsThresholdsAccessor thresholdsAccessor =
-        ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.getCosmosAsyncClientAccessor();
+        ImplementationBridgeHelpers.CosmosDiagnosticsThresholdsHelper.getCosmosDiagnosticsThresholdsAccessor();
     private String partitionKeyRangeId;
     private Boolean scanInQueryEnabled;
     private Boolean emitVerboseTracesInQuery;

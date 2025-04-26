@@ -57,7 +57,7 @@ public class ExcludeRegionTests extends TestSuiteBase {
         = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofDays(100)).build();
 
     private static final CosmosEndToEndOperationLatencyPolicyConfig THREE_SECS_E2E_TIMEOUT
-        = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofDays(100)).build();
+        = new CosmosEndToEndOperationLatencyPolicyConfigBuilder(Duration.ofSeconds(3)).build();
 
     @Factory(dataProvider = "clientBuildersWithSessionConsistency")
     public ExcludeRegionTests(CosmosClientBuilder clientBuilder) {
