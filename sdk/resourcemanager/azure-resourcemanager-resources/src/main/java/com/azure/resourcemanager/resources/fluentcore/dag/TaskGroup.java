@@ -708,7 +708,7 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
      * @param entry the entry holding task
      * @param context a group level shared context that is passed to {@link TaskItem#invoke(InvocationContext)}
      *                method of the task item this entry wraps.
-     * @return  a {@link CompletableFuture} that kicks off execution of the given task, and future sets of tasks
+     * @return a {@link CompletableFuture} that kicks off execution of the given task, and future sets of tasks
      */
     private CompletableFuture<Void> invokeTask(TaskGroupEntry<TaskItem> entry, InvocationContext context) {
         if (isGroupCancelled.get()) {
