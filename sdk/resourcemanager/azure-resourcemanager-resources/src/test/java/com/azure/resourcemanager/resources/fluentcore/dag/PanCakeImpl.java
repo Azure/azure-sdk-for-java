@@ -96,36 +96,6 @@ class PancakeImpl extends CreatableUpdatableImpl<IPancake, PancakeInner, Pancake
     }
 
     @Override
-    public IPancake createResource() {
-        if (this.errorToThrow == null) {
-            LOGGER.log(LogLevel.VERBOSE, () -> "Pancake(" + this.name() + ")::createResourceAsync() 'onNext()'");
-            try {
-                Thread.sleep(this.eventDelayInMilliseconds);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        } else {
-            LOGGER.log(LogLevel.VERBOSE, () -> "Pancake(" + this.name() + ")::createResourceAsync() 'onError()'");
-            try {
-                Thread.sleep(this.eventDelayInMilliseconds);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            throw (RuntimeException) errorToThrow;
-        }
-        return this;
-    }
-
-    @Override
-    public IPancake updateResource() {
-        return this.createResource();
-    }
-
-    @Override
-    public void afterPostRun(boolean isGroupFaulted) {
-    }
-
-    @Override
     public boolean isInCreateMode() {
         return true;
     }

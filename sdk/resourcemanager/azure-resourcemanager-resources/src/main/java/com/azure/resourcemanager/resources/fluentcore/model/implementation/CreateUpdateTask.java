@@ -3,9 +3,9 @@
 
 package com.azure.resourcemanager.resources.fluentcore.model.implementation;
 
-import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskGroup;
 import com.azure.resourcemanager.resources.fluentcore.dag.TaskItem;
+import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import reactor.core.publisher.Mono;
 
@@ -70,22 +70,6 @@ public class CreateUpdateTask<ResourceT extends Indexable> implements TaskItem {
         return this.resourceCreatorUpdater.isHot();
     }
 
-    @Override
-    public void invokeAfterPostRun(boolean isGroupFaulted) {
-        this.resourceCreatorUpdater.afterPostRun(isGroupFaulted);
-    }
-
-    @Override
-    public Indexable invoke(TaskGroup.InvocationContext context) {
-        if (this.resourceCreatorUpdater.isInCreateMode()) {
-            this.resource = this.resourceCreatorUpdater.createResource();
-            return this.resource;
-        } else {
-            this.resource = this.resourceCreatorUpdater.updateResource();
-            return this.resource;
-        }
-    }
-
     /**
      * Represents a type that know how to create or update a resource of type {@link T}.
      * <p>
@@ -137,38 +121,5 @@ public class CreateUpdateTask<ResourceT extends Indexable> implements TaskItem {
          * @return a completable represents the asynchronous action
          */
         Mono<Void> afterPostRunAsync(boolean isGroupFaulted);
-
-        /**
-         * Creates the resource synchronously.
-         *
-         * @return the created resource
-         */
-        default T createResource() {
-            // TODO(xiaofei) remove default implementation
-            return createResourceAsync().block();
-        }
-
-        /**
-         * Updates the resource synchronously.
-         *
-         * @return the updated resource
-         */
-        default T updateResource() {
-            // TODO(xiaofei) remove default implementation
-            return updateResourceAsync().block();
-        }
-
-        /**
-         * Perform any action followed by the processing of work scheduled to be invoked
-         * (i.e. "post run") after {@link this#createResource()} or
-         * {@link this#updateResource()}.
-         *
-         * @param isGroupFaulted true if one or more tasks in the group this creatorUpdater
-         *                       belongs to are in faulted state.
-         */
-        default void afterPostRun(boolean isGroupFaulted) {
-            // TODO(xiaofei) remove default implementation
-            afterPostRunAsync(isGroupFaulted).block();
-        }
     }
 }

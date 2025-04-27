@@ -3,11 +3,14 @@
 
 package com.azure.resourcemanager.resources.fluentcore.dag;
 
+import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
+import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -186,54 +189,54 @@ public class SyncDAGErrorTests {
          */
 
         final Set<String> seen = new HashSet<>();
-        Function<Indexable, IPasta> consumePasta = indexable -> {
-            IPasta pasta = (IPasta) indexable;
-            LOGGER.log(LogLevel.VERBOSE, () -> "map.onNext: " + pasta.name());
+        Function<Indexable, IPancake> consumePancake = indexable -> {
+            IPancake pancake = (IPancake) indexable;
+            LOGGER.log(LogLevel.VERBOSE, () -> "map.onNext: " + pancake.name());
             synchronized (seen) {
-                seen.add(pasta.name());
+                seen.add(pancake.name());
             }
-            return pasta;
+            return pancake;
         };
-        PastaImpl pastaM = new PastaImplWrapper("M", 250, consumePasta);
-        PastaImpl pastaN = new PastaImplWrapper("N", 250, consumePasta);
-        PastaImpl pastaK = new PastaImplWrapper("K", 250, consumePasta);
-        PastaImpl pastaQ = new PastaImplWrapper("Q", 8000, consumePasta);
-        PastaImpl pastaI = new PastaImplWrapper("I", 8000, consumePasta);
+        PancakeImpl pancakeM = new PancakeImplWrapper("M", 250, consumePancake);
+        PancakeImpl pancakeN = new PancakeImplWrapper("N", 250, consumePancake);
+        PancakeImpl pancakeK = new PancakeImplWrapper("K", 250, consumePancake);
+        PancakeImpl pancakeQ = new PancakeImplWrapper("Q", 8000, consumePancake);
+        PancakeImpl pancakeI = new PancakeImplWrapper("I", 8000, consumePancake);
 
-        PastaImpl pastaJ = new PastaImplWrapper("J", 250, consumePasta);
-        pastaJ.withInstantPasta(pastaM);
-        pastaJ.withInstantPasta(pastaN);
-        PastaImpl pastaP = new PastaImplWrapper("P", 250, consumePasta);
-        pastaP.withDelayedPasta(pastaQ);
-        PastaImpl pastaH = new PastaImplWrapper("H", 250, consumePasta);
-        pastaH.withInstantPasta(pastaI);
+        PancakeImpl pancakeJ = new PancakeImplWrapper("J", 250, consumePancake);
+        pancakeJ.withInstantPancake(pancakeM);
+        pancakeJ.withInstantPancake(pancakeN);
+        PancakeImpl pancakeP = new PancakeImplWrapper("P", 250, consumePancake);
+        pancakeP.withDelayedPancake(pancakeQ);
+        PancakeImpl pancakeH = new PancakeImplWrapper("H", 250, consumePancake);
+        pancakeH.withInstantPancake(pancakeI);
 
-        PastaImpl pastaA = new PastaImplWrapper("A", 250, consumePasta);
-        PastaImpl pastaL = new PastaImplWrapper("L", 250, consumePasta);
-        pastaL.withInstantPasta(pastaP);
+        PancakeImpl pancakeA = new PancakeImplWrapper("A", 250, consumePancake);
+        PancakeImpl pancakeL = new PancakeImplWrapper("L", 250, consumePancake);
+        pancakeL.withInstantPancake(pancakeP);
 
-        PastaImpl pastaB = new PastaImplWrapper("B", 4000, true, consumePasta); // Task B wait for 4000 ms then emit error
-        pastaB.withInstantPasta(pastaA);
-        PastaImpl pastaC = new PastaImplWrapper("C", 250, consumePasta);
-        pastaC.withInstantPasta(pastaA);
+        PancakeImpl pancakeB = new PancakeImplWrapper("B", 4000, true, consumePancake); // Task B wait for 4000 ms then emit error
+        pancakeB.withInstantPancake(pancakeA);
+        PancakeImpl pancakeC = new PancakeImplWrapper("C", 250, consumePancake);
+        pancakeC.withInstantPancake(pancakeA);
 
-        PastaImpl pastaD = new PastaImplWrapper("D", 250, consumePasta);
-        pastaD.withInstantPasta(pastaB);
-        PastaImpl pastaG = new PastaImplWrapper("G", 250, consumePasta);
-        pastaG.withInstantPasta(pastaC);
-        pastaG.withDelayedPasta(pastaL);
+        PancakeImpl pancakeD = new PancakeImplWrapper("D", 250, consumePancake);
+        pancakeD.withInstantPancake(pancakeB);
+        PancakeImpl pancakeG = new PancakeImplWrapper("G", 250, consumePancake);
+        pancakeG.withInstantPancake(pancakeC);
+        pancakeG.withDelayedPancake(pancakeL);
 
-        PastaImpl pastaE = new PastaImplWrapper("E", 250, consumePasta);
-        pastaE.withInstantPasta(pastaB);
-        pastaE.withInstantPasta(pastaG);
+        PancakeImpl pancakeE = new PancakeImplWrapper("E", 250, consumePancake);
+        pancakeE.withInstantPancake(pancakeB);
+        pancakeE.withInstantPancake(pancakeG);
 
-        PastaImpl pastaF = new PastaImplWrapper("F", 250, consumePasta);
-        pastaF.withInstantPasta(pastaD);
-        pastaF.withInstantPasta(pastaE);
-        pastaF.withInstantPasta(pastaH);
+        PancakeImpl pancakeF = new PancakeImplWrapper("F", 250, consumePancake);
+        pancakeF.withInstantPancake(pancakeD);
+        pancakeF.withInstantPancake(pancakeE);
+        pancakeF.withInstantPancake(pancakeH);
 
-        pastaA.withDelayedPasta(pastaJ);
-        pastaA.withDelayedPasta(pastaK);
+        pancakeA.withInstantPancake(pancakeJ);
+        pancakeA.withInstantPancake(pancakeK);
 
         final Set<String> expectedToSee = new HashSet<>();
         expectedToSee.add("M");
@@ -255,8 +258,8 @@ public class SyncDAGErrorTests {
 
         final List<Throwable> exceptions = new ArrayList<>();
 
-        TaskGroup pastaFtg = pastaF.taskGroup();
-        TaskGroup.InvocationContext context = pastaFtg.newInvocationContext()
+        TaskGroup pancakeFtg = pancakeF.taskGroup();
+        TaskGroup.InvocationContext context = pancakeFtg.newInvocationContext()
             .withTerminateOnErrorStrategy(TaskGroupTerminateOnErrorStrategy.TERMINATE_ON_HITTING_LCA_TASK);
 
         Consumer<Throwable> consumeError = throwable -> {
@@ -265,7 +268,7 @@ public class SyncDAGErrorTests {
         };
 
         try {
-            pastaFtg.invoke(context);
+            pancakeFtg.invoke(context);
         } catch (Throwable e) {
             consumeError.accept(e);
         }
@@ -552,8 +555,8 @@ public class SyncDAGErrorTests {
         }
 
         @Override
-        public IPancake createResource() {
-            IPancake cake = super.createResource();
+        public IPancake create() {
+            IPancake cake = super.create();
             if (this.postSyncInvoke != null) {
                 return this.postSyncInvoke.apply(cake);
             }
@@ -561,30 +564,133 @@ public class SyncDAGErrorTests {
         }
     }
 
-    /*
-     * A wrapper around PastaImpl for sync-stack tests to record which PastaImpls have been created.
-     */
-    private static class PastaImplWrapper extends PastaImpl {
-        private Function<Indexable, IPasta> postSyncInvoke;
+    // Temporary implementation when sync interfaces are not supported in CreateUpdateTask.
+    private static class PancakeImpl implements TaskGroup.HasTaskGroup, IPancake, TaskItem {
+        private final String name;
+        final List<Creatable<IPancake>> delayedPancakes;
+        final long eventDelayInMilliseconds;
+        final Throwable errorToThrow;
+        private final TaskGroup taskGroup;
+        private IPancake result;
 
-        PastaImplWrapper(String name, long eventDelayInMilliseconds, Function<Indexable, IPasta> postSyncInvoke) {
-            super(name, eventDelayInMilliseconds);
-            this.postSyncInvoke = postSyncInvoke;
+        PancakeImpl(String name, long eventDelayInMilliseconds) {
+            this(name, eventDelayInMilliseconds, false);
         }
 
-        PastaImplWrapper(String name, long eventDelayInMilliseconds, boolean fault,
-            Function<Indexable, IPasta> postSyncInvoke) {
-            super(name, eventDelayInMilliseconds, fault);
-            this.postSyncInvoke = postSyncInvoke;
+        PancakeImpl(String name, long eventDelayInMilliseconds, boolean fault) {
+            this.name = name;
+            this.taskGroup = new TaskGroup(this.name, this);
+            this.eventDelayInMilliseconds = eventDelayInMilliseconds;
+            if (fault) {
+                this.errorToThrow = new RuntimeException(name);
+            } else {
+                this.errorToThrow = null;
+            }
+            delayedPancakes = new ArrayList<>();
         }
 
         @Override
-        public IPasta createResource() {
-            IPasta pasta = super.createResource();
-            if (this.postSyncInvoke != null) {
-                return this.postSyncInvoke.apply(pasta);
+        public String name() {
+            return this.name;
+        }
+
+        @Override
+        public TaskGroup taskGroup() {
+            return this.taskGroup;
+        }
+
+        @Override
+        public Indexable invoke(TaskGroup.InvocationContext context) {
+            return this.create();
+        }
+
+        @Override
+        public IPancake create() {
+            if (this.errorToThrow == null) {
+                LOGGER.log(LogLevel.VERBOSE, () -> "Pancake(" + this.name() + ")::createResource() 'onNext()'");
+                try {
+                    Thread.sleep(this.eventDelayInMilliseconds);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                this.result = this;
+            } else {
+                LOGGER.log(LogLevel.VERBOSE, () -> "Pancake(" + this.name() + ")::createResource() 'onError()'");
+                try {
+                    Thread.sleep(this.eventDelayInMilliseconds);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+                throw (RuntimeException) errorToThrow;
             }
-            return pasta;
+            return this;
+        }
+
+        @Override
+        public String key() {
+            return this.name;
+        }
+
+        @Override
+        public Indexable result() {
+            return result;
+        }
+
+        @Override
+        public void beforeGroupInvoke() {
+            for (Creatable<IPancake> pancake : this.delayedPancakes) {
+                this.taskGroup.addDependency((TaskGroup.HasTaskGroup) pancake);
+            }
+        }
+
+        @Override
+        public IPancake withInstantPancake(Creatable<IPancake> anotherPancake) {
+            this.taskGroup.addDependency((TaskGroup.HasTaskGroup) anotherPancake);
+            return this;
+        }
+
+        @Override
+        public IPancake withDelayedPancake(Creatable<IPancake> anotherPancake) {
+            this.delayedPancakes.add(anotherPancake);
+            return this;
+        }
+
+        // Below are not used in tests
+        ////////////////////////////////
+
+        @Override
+        public Mono<IPancake> createAsync() {
+            throw new UnsupportedOperationException(
+                "method [createAsync] not implemented in class [com.azure.resourcemanager.resources.fluentcore.dag.SyncDAGErrorTests.PancakeImpl]");
+        }
+
+        @Override
+        public IPancake create(Context context) {
+            throw new UnsupportedOperationException(
+                "method [create] not implemented in class [com.azure.resourcemanager.resources.fluentcore.dag.SyncDAGErrorTests.PancakeImpl]");
+        }
+
+        @Override
+        public Mono<IPancake> createAsync(Context context) {
+            throw new UnsupportedOperationException(
+                "method [createAsync] not implemented in class [com.azure.resourcemanager.resources.fluentcore.dag.SyncDAGErrorTests.PancakeImpl]");
+        }
+
+        @Override
+        public boolean isHot() {
+            return false;
+        }
+
+        @Override
+        public Mono<Indexable> invokeAsync(TaskGroup.InvocationContext context) {
+            throw new UnsupportedOperationException(
+                "method [invokeAsync] not implemented in class [com.azure.resourcemanager.resources.fluentcore.dag.SyncDAGErrorTests.PancakeImpl]");
+        }
+
+        @Override
+        public Mono<Void> invokeAfterPostRunAsync(boolean isGroupFaulted) {
+            throw new UnsupportedOperationException(
+                "method [invokeAfterPostRunAsync] not implemented in class [com.azure.resourcemanager.resources.fluentcore.dag.SyncDAGErrorTests.PancakeImpl]");
         }
     }
 }
