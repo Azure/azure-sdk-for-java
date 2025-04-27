@@ -124,8 +124,7 @@ public final class TaskGroupEntry<TaskT extends TaskItem> extends DAGNode<TaskT,
      * @return a result of type {@link Indexable}.
      * @throws ErroredDependencyTaskException when the task has faulted descent dependency tasks
      */
-    public Indexable invokeTask(boolean ignoreCachedResult, final TaskGroup.InvocationContext context)
-        throws ErroredDependencyTaskException {
+    public Indexable invokeTask(boolean ignoreCachedResult, final TaskGroup.InvocationContext context) {
         if (hasFaultedDescentDependencyTasks) {
             throw logger.logThrowableAsWarning(new ErroredDependencyTaskException());
         }
