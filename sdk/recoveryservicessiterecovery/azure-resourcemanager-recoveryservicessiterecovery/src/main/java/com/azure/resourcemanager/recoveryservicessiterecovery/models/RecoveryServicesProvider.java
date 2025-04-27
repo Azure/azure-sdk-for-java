@@ -91,14 +91,14 @@ public interface RecoveryServicesProvider {
          */
         interface WithParentResource {
             /**
-             * Specifies resourceName, resourceGroupName, fabricName.
+             * Specifies resourceGroupName, resourceName, fabricName.
              * 
-             * @param resourceName The name of the recovery services vault.
              * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+             * @param resourceName The name of the recovery services vault.
              * @param fabricName Fabric name.
              * @return the next definition stage.
              */
-            WithProperties withExistingReplicationFabric(String resourceName, String resourceGroupName,
+            WithProperties withExistingReplicationFabric(String resourceGroupName, String resourceName,
                 String fabricName);
         }
 

@@ -13,24 +13,24 @@ public final class InMageAgentDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageAgentDetails model = BinaryData.fromString(
-            "{\"agentVersion\":\"wyambhba\",\"agentUpdateStatus\":\"bz\",\"postUpdateRebootStatus\":\"k\",\"agentExpiryDate\":\"2021-01-13T18:27:32Z\"}")
+            "{\"agentVersion\":\"pcjycb\",\"agentUpdateStatus\":\"lrgttwfldsiuor\",\"postUpdateRebootStatus\":\"ikcedpk\",\"agentExpiryDate\":\"2021-02-08T07:42:37Z\"}")
             .toObject(InMageAgentDetails.class);
-        Assertions.assertEquals("wyambhba", model.agentVersion());
-        Assertions.assertEquals("bz", model.agentUpdateStatus());
-        Assertions.assertEquals("k", model.postUpdateRebootStatus());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-13T18:27:32Z"), model.agentExpiryDate());
+        Assertions.assertEquals("pcjycb", model.agentVersion());
+        Assertions.assertEquals("lrgttwfldsiuor", model.agentUpdateStatus());
+        Assertions.assertEquals("ikcedpk", model.postUpdateRebootStatus());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-08T07:42:37Z"), model.agentExpiryDate());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageAgentDetails model = new InMageAgentDetails().withAgentVersion("wyambhba")
-            .withAgentUpdateStatus("bz")
-            .withPostUpdateRebootStatus("k")
-            .withAgentExpiryDate(OffsetDateTime.parse("2021-01-13T18:27:32Z"));
+        InMageAgentDetails model = new InMageAgentDetails().withAgentVersion("pcjycb")
+            .withAgentUpdateStatus("lrgttwfldsiuor")
+            .withPostUpdateRebootStatus("ikcedpk")
+            .withAgentExpiryDate(OffsetDateTime.parse("2021-02-08T07:42:37Z"));
         model = BinaryData.fromObject(model).toObject(InMageAgentDetails.class);
-        Assertions.assertEquals("wyambhba", model.agentVersion());
-        Assertions.assertEquals("bz", model.agentUpdateStatus());
-        Assertions.assertEquals("k", model.postUpdateRebootStatus());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-01-13T18:27:32Z"), model.agentExpiryDate());
+        Assertions.assertEquals("pcjycb", model.agentVersion());
+        Assertions.assertEquals("lrgttwfldsiuor", model.agentUpdateStatus());
+        Assertions.assertEquals("ikcedpk", model.postUpdateRebootStatus());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-08T07:42:37Z"), model.agentExpiryDate());
     }
 }

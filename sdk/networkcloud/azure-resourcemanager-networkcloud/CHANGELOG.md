@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,57 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0-beta.1 (2025-04-21)
+
+- Azure Resource Manager NetworkCloud client library for Java. This package contains Microsoft Azure SDK for NetworkCloud Management SDK. The Network Cloud APIs provide management of the Azure Operator Nexus compute resources such as on-premises clusters, hardware resources, and workload infrastructure resources. Package tag package-2024-10-01-preview. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.VulnerabilityScanningSettingsPatch` was added
+
+* `models.VulnerabilityScanningSettingsContainerScan` was added
+
+* `models.VulnerabilityScanningSettings` was added
+
+* `models.SecretArchiveSettings` was added
+
+* `models.AnalyticsOutputSettings` was added
+
+#### `models.Cluster` was modified
+
+* `analyticsOutputSettings()` was added
+* `secretArchiveSettings()` was added
+* `vulnerabilityScanningSettings()` was added
+
+#### `models.ClusterPatchParameters` was modified
+
+* `vulnerabilityScanningSettings()` was added
+* `withVulnerabilityScanningSettings(models.VulnerabilityScanningSettingsPatch)` was added
+* `withAnalyticsOutputSettings(models.AnalyticsOutputSettings)` was added
+* `secretArchiveSettings()` was added
+* `analyticsOutputSettings()` was added
+* `withSecretArchiveSettings(models.SecretArchiveSettings)` was added
+
+#### `models.VirtualMachine$Definition` was modified
+
+* `withConsoleExtendedLocation(models.ExtendedLocation)` was added
+
+#### `models.VirtualMachine` was modified
+
+* `consoleExtendedLocation()` was added
+
+#### `models.Cluster$Definition` was modified
+
+* `withAnalyticsOutputSettings(models.AnalyticsOutputSettings)` was added
+* `withVulnerabilityScanningSettings(models.VulnerabilityScanningSettings)` was added
+* `withSecretArchiveSettings(models.SecretArchiveSettings)` was added
+
+#### `models.Cluster$Update` was modified
+
+* `withVulnerabilityScanningSettings(models.VulnerabilityScanningSettingsPatch)` was added
+* `withSecretArchiveSettings(models.SecretArchiveSettings)` was added
+* `withAnalyticsOutputSettings(models.AnalyticsOutputSettings)` was added
 
 ## 1.1.0 (2025-02-21)
 

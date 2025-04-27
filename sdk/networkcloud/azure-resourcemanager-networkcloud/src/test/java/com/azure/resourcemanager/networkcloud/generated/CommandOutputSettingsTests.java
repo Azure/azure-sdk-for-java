@@ -14,12 +14,12 @@ public final class CommandOutputSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommandOutputSettings model = BinaryData.fromString(
-            "{\"associatedIdentity\":{\"identityType\":\"SystemAssignedIdentity\",\"userAssignedIdentityResourceId\":\"yrs\"},\"containerUrl\":\"sytgadgvraea\"}")
+            "{\"associatedIdentity\":{\"identityType\":\"SystemAssignedIdentity\",\"userAssignedIdentityResourceId\":\"uijfqk\"},\"containerUrl\":\"e\"}")
             .toObject(CommandOutputSettings.class);
         Assertions.assertEquals(ManagedServiceIdentitySelectorType.SYSTEM_ASSIGNED_IDENTITY,
             model.associatedIdentity().identityType());
-        Assertions.assertEquals("yrs", model.associatedIdentity().userAssignedIdentityResourceId());
-        Assertions.assertEquals("sytgadgvraea", model.containerUrl());
+        Assertions.assertEquals("uijfqk", model.associatedIdentity().userAssignedIdentityResourceId());
+        Assertions.assertEquals("e", model.containerUrl());
     }
 
     @org.junit.jupiter.api.Test
@@ -28,12 +28,12 @@ public final class CommandOutputSettingsTests {
             = new CommandOutputSettings()
                 .withAssociatedIdentity(
                     new IdentitySelector().withIdentityType(ManagedServiceIdentitySelectorType.SYSTEM_ASSIGNED_IDENTITY)
-                        .withUserAssignedIdentityResourceId("yrs"))
-                .withContainerUrl("sytgadgvraea");
+                        .withUserAssignedIdentityResourceId("uijfqk"))
+                .withContainerUrl("e");
         model = BinaryData.fromObject(model).toObject(CommandOutputSettings.class);
         Assertions.assertEquals(ManagedServiceIdentitySelectorType.SYSTEM_ASSIGNED_IDENTITY,
             model.associatedIdentity().identityType());
-        Assertions.assertEquals("yrs", model.associatedIdentity().userAssignedIdentityResourceId());
-        Assertions.assertEquals("sytgadgvraea", model.containerUrl());
+        Assertions.assertEquals("uijfqk", model.associatedIdentity().userAssignedIdentityResourceId());
+        Assertions.assertEquals("e", model.containerUrl());
     }
 }

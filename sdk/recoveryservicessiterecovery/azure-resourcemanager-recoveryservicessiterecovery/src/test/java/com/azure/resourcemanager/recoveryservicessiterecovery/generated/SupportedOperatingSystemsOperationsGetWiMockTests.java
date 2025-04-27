@@ -6,8 +6,8 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.SupportedOperatingSystems;
@@ -21,20 +21,20 @@ public final class SupportedOperatingSystemsOperationsGetWiMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"supportedOsList\":[{\"instanceType\":\"hpi\",\"supportedOs\":[{},{},{},{}]},{\"instanceType\":\"fxhvnodqqz\",\"supportedOs\":[{}]},{\"instanceType\":\"roswnfq\",\"supportedOs\":[{},{},{},{}]}]},\"location\":\"sxfrwvlyp\",\"id\":\"tusk\",\"name\":\"nc\",\"type\":\"ocl\"}";
+            = "{\"properties\":{\"supportedOsList\":[{\"instanceType\":\"puokk\",\"supportedOs\":[{},{}]},{\"instanceType\":\"ppgtp\",\"supportedOs\":[{},{}]}]},\"location\":\"lpwaulkwuy\",\"id\":\"sjwnwn\",\"name\":\"d\",\"type\":\"nfgtmupblh\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         SiteRecoveryManager manager = SiteRecoveryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         SupportedOperatingSystems response = manager.supportedOperatingSystemsOperations()
-            .getWithResponse("htekxnvkdvc", "owrdtd", "ddwzdlbbcztamky", com.azure.core.util.Context.NONE)
+            .getWithResponse("pghjmgpceqaklsfx", "rxix", "mfqmvnhsfjxt", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("hpi", response.properties().supportedOsList().get(0).instanceType());
-        Assertions.assertEquals("sxfrwvlyp", response.location());
+        Assertions.assertEquals("puokk", response.properties().supportedOsList().get(0).instanceType());
+        Assertions.assertEquals("lpwaulkwuy", response.location());
     }
 }

@@ -11,22 +11,21 @@ import org.junit.jupiter.api.Assertions;
 public final class MobilityServiceUpdateTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MobilityServiceUpdate model = BinaryData
-            .fromString("{\"version\":\"cdsgxceluji\",\"rebootStatus\":\"lluunxh\",\"osType\":\"lfxzfwuge\"}")
-            .toObject(MobilityServiceUpdate.class);
-        Assertions.assertEquals("cdsgxceluji", model.version());
-        Assertions.assertEquals("lluunxh", model.rebootStatus());
-        Assertions.assertEquals("lfxzfwuge", model.osType());
+        MobilityServiceUpdate model
+            = BinaryData.fromString("{\"version\":\"dqyxajclgr\",\"rebootStatus\":\"vqcwyzoqzk\",\"osType\":\"cwwsj\"}")
+                .toObject(MobilityServiceUpdate.class);
+        Assertions.assertEquals("dqyxajclgr", model.version());
+        Assertions.assertEquals("vqcwyzoqzk", model.rebootStatus());
+        Assertions.assertEquals("cwwsj", model.osType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MobilityServiceUpdate model = new MobilityServiceUpdate().withVersion("cdsgxceluji")
-            .withRebootStatus("lluunxh")
-            .withOsType("lfxzfwuge");
+        MobilityServiceUpdate model
+            = new MobilityServiceUpdate().withVersion("dqyxajclgr").withRebootStatus("vqcwyzoqzk").withOsType("cwwsj");
         model = BinaryData.fromObject(model).toObject(MobilityServiceUpdate.class);
-        Assertions.assertEquals("cdsgxceluji", model.version());
-        Assertions.assertEquals("lluunxh", model.rebootStatus());
-        Assertions.assertEquals("lfxzfwuge", model.osType());
+        Assertions.assertEquals("dqyxajclgr", model.version());
+        Assertions.assertEquals("vqcwyzoqzk", model.rebootStatus());
+        Assertions.assertEquals("cwwsj", model.osType());
     }
 }

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 public final class ReplicationAppliancesListSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationAppliances_List.json
      */
     /**
@@ -20,6 +20,6 @@ public final class ReplicationAppliancesListSamples {
      */
     public static void
         getsTheListOfAppliances(com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager.replicationAppliances().list("vault1", "resourceGroupPS1", null, com.azure.core.util.Context.NONE);
+        manager.replicationAppliances().list("resourceGroupPS1", "vault1", null, com.azure.core.util.Context.NONE);
     }
 }

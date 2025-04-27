@@ -7,8 +7,8 @@ package com.azure.resourcemanager.elasticsan.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.elasticsan.ElasticSanManager;
 import com.azure.resourcemanager.elasticsan.models.AutoScalePolicyEnforcement;
@@ -26,32 +26,32 @@ public final class ElasticSansListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"sku\":{\"name\":\"Premium_ZRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"xxivetv\",\"cqaqtdoqmcbx\"],\"provisioningState\":\"Failed\",\"baseSizeTiB\":6954045498945463242,\"extendedCapacitySizeTiB\":3672551309837777377,\"totalVolumeSizeGiB\":7604258511132328014,\"volumeGroupCount\":397995156939067079,\"totalIops\":5569659769910909339,\"totalMBps\":2266213380430430335,\"totalSizeTiB\":2696095639939857222,\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Updating\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"krvrns\",\"shqjohxcrsbf\",\"vasrruvwb\"]},\"id\":\"qfsubcgjbirx\",\"name\":\"pybsrfbjfdtw\",\"type\":\"sotftpvj\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"zznfqqnvwpmqta\"]},\"id\":\"oujmkcjhwqytj\",\"name\":\"ybn\",\"type\":\"jewgdrjerv\"},{\"properties\":{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"eh\",\"ndoygmifthnzdnd\",\"l\"]},\"id\":\"ayqigynduhav\",\"name\":\"qlkth\",\"type\":\"maqolbgycduie\"},{\"properties\":{\"provisioningState\":\"Updating\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"mvaolps\"]},\"id\":\"qlfmmdnbb\",\"name\":\"lzpswiydm\",\"type\":\"wyhzdx\"}],\"publicNetworkAccess\":\"Disabled\",\"autoScaleProperties\":{\"scaleUpProperties\":{\"unusedSizeTiB\":7356345482061325448,\"increaseCapacityUnitByTiB\":2094895457348601171,\"capacityUnitScaleUpLimitTiB\":469729797397645907,\"autoScalePolicyEnforcement\":\"None\"}}},\"location\":\"dvxzbncblylpst\",\"tags\":{\"ntnev\":\"hxsrzdzucersc\"},\"id\":\"iwjmygtdssls\",\"name\":\"tmweriofzpyq\",\"type\":\"emwabnet\"}]}";
+            = "{\"value\":[{\"properties\":{\"sku\":{\"name\":\"Premium_ZRS\",\"tier\":\"Premium\"},\"availabilityZones\":[\"vaolpsslqlf\",\"mdnbbglzpswiy\"],\"provisioningState\":\"Deleted\",\"baseSizeTiB\":6855898880348717340,\"extendedCapacitySizeTiB\":2986988161676305406,\"totalVolumeSizeGiB\":3868778507667885775,\"volumeGroupCount\":5645412032437353957,\"totalIops\":5470431238820396350,\"totalMBps\":6861155578766594130,\"totalSizeTiB\":4489175795860033731,\"privateEndpointConnections\":[{\"properties\":{\"provisioningState\":\"Failed\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"zbn\"]},\"id\":\"lylpstdb\",\"name\":\"hxsrzdzucersc\",\"type\":\"ntnev\"},{\"properties\":{\"provisioningState\":\"Restoring\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"gtdsslswt\",\"weriofzpyqsem\",\"abnetshh\"]},\"id\":\"h\",\"name\":\"d\",\"type\":\"lvwiwubmwmbesl\"},{\"properties\":{\"provisioningState\":\"Deleting\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"pp\",\"flcxoga\"]},\"id\":\"onz\",\"name\":\"nsikvmkqzeqqkdl\",\"type\":\"fzxmhhvhgureodkw\"},{\"properties\":{\"provisioningState\":\"Failed\",\"privateEndpoint\":{},\"privateLinkServiceConnectionState\":{},\"groupIds\":[\"tibqdxbxwakb\",\"gqxndlkzgxhuripl\",\"podxunkb\",\"bxmubyynt\"]},\"id\":\"rbqtkoie\",\"name\":\"seotgqrllt\",\"type\":\"u\"}],\"publicNetworkAccess\":\"Disabled\",\"autoScaleProperties\":{\"scaleUpProperties\":{\"unusedSizeTiB\":3347544403521690336,\"increaseCapacityUnitByTiB\":2140041182301879771,\"capacityUnitScaleUpLimitTiB\":2676034725139393325,\"autoScalePolicyEnforcement\":\"Disabled\"}}},\"location\":\"u\",\"tags\":{\"morppxebmnzbtbh\":\"vpbttd\"},\"id\":\"pglkf\",\"name\":\"ohdneuel\",\"type\":\"phsdyhto\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ElasticSanManager manager = ElasticSanManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ElasticSan> response = manager.elasticSans().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dvxzbncblylpst", response.iterator().next().location());
-        Assertions.assertEquals("hxsrzdzucersc", response.iterator().next().tags().get("ntnev"));
+        Assertions.assertEquals("u", response.iterator().next().location());
+        Assertions.assertEquals("vpbttd", response.iterator().next().tags().get("morppxebmnzbtbh"));
         Assertions.assertEquals(SkuName.PREMIUM_ZRS, response.iterator().next().sku().name());
         Assertions.assertEquals(SkuTier.PREMIUM, response.iterator().next().sku().tier());
-        Assertions.assertEquals("xxivetv", response.iterator().next().availabilityZones().get(0));
-        Assertions.assertEquals(6954045498945463242L, response.iterator().next().baseSizeTiB());
-        Assertions.assertEquals(3672551309837777377L, response.iterator().next().extendedCapacitySizeTiB());
+        Assertions.assertEquals("vaolpsslqlf", response.iterator().next().availabilityZones().get(0));
+        Assertions.assertEquals(6855898880348717340L, response.iterator().next().baseSizeTiB());
+        Assertions.assertEquals(2986988161676305406L, response.iterator().next().extendedCapacitySizeTiB());
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, response.iterator().next().publicNetworkAccess());
-        Assertions.assertEquals(7356345482061325448L,
+        Assertions.assertEquals(3347544403521690336L,
             response.iterator().next().autoScaleProperties().scaleUpProperties().unusedSizeTiB());
-        Assertions.assertEquals(2094895457348601171L,
+        Assertions.assertEquals(2140041182301879771L,
             response.iterator().next().autoScaleProperties().scaleUpProperties().increaseCapacityUnitByTiB());
-        Assertions.assertEquals(469729797397645907L,
+        Assertions.assertEquals(2676034725139393325L,
             response.iterator().next().autoScaleProperties().scaleUpProperties().capacityUnitScaleUpLimitTiB());
-        Assertions.assertEquals(AutoScalePolicyEnforcement.NONE,
+        Assertions.assertEquals(AutoScalePolicyEnforcement.DISABLED,
             response.iterator().next().autoScaleProperties().scaleUpProperties().autoScalePolicyEnforcement());
     }
 }

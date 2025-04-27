@@ -13,28 +13,28 @@ public final class VMwareCbtSecurityProfilePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VMwareCbtSecurityProfileProperties model = BinaryData.fromString(
-            "{\"targetVmSecurityType\":\"None\",\"isTargetVmSecureBootEnabled\":\"ennqfabqca\",\"isTargetVmTpmEnabled\":\"lectcxsfmb\",\"isTargetVmIntegrityMonitoringEnabled\":\"xmsynbkd\",\"isTargetVmConfidentialEncryptionEnabled\":\"yufxuzmsvzyq\"}")
+            "{\"targetVmSecurityType\":\"TrustedLaunch\",\"isTargetVmSecureBootEnabled\":\"efhawkmibuyd\",\"isTargetVmTpmEnabled\":\"urn\",\"isTargetVmIntegrityMonitoringEnabled\":\"updyttqm\",\"isTargetVmConfidentialEncryptionEnabled\":\"vj\"}")
             .toObject(VMwareCbtSecurityProfileProperties.class);
-        Assertions.assertEquals(SecurityType.NONE, model.targetVmSecurityType());
-        Assertions.assertEquals("ennqfabqca", model.isTargetVmSecureBootEnabled());
-        Assertions.assertEquals("lectcxsfmb", model.isTargetVmTpmEnabled());
-        Assertions.assertEquals("xmsynbkd", model.isTargetVmIntegrityMonitoringEnabled());
-        Assertions.assertEquals("yufxuzmsvzyq", model.isTargetVmConfidentialEncryptionEnabled());
+        Assertions.assertEquals(SecurityType.TRUSTED_LAUNCH, model.targetVmSecurityType());
+        Assertions.assertEquals("efhawkmibuyd", model.isTargetVmSecureBootEnabled());
+        Assertions.assertEquals("urn", model.isTargetVmTpmEnabled());
+        Assertions.assertEquals("updyttqm", model.isTargetVmIntegrityMonitoringEnabled());
+        Assertions.assertEquals("vj", model.isTargetVmConfidentialEncryptionEnabled());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VMwareCbtSecurityProfileProperties model
-            = new VMwareCbtSecurityProfileProperties().withTargetVmSecurityType(SecurityType.NONE)
-                .withIsTargetVmSecureBootEnabled("ennqfabqca")
-                .withIsTargetVmTpmEnabled("lectcxsfmb")
-                .withIsTargetVmIntegrityMonitoringEnabled("xmsynbkd")
-                .withIsTargetVmConfidentialEncryptionEnabled("yufxuzmsvzyq");
+            = new VMwareCbtSecurityProfileProperties().withTargetVmSecurityType(SecurityType.TRUSTED_LAUNCH)
+                .withIsTargetVmSecureBootEnabled("efhawkmibuyd")
+                .withIsTargetVmTpmEnabled("urn")
+                .withIsTargetVmIntegrityMonitoringEnabled("updyttqm")
+                .withIsTargetVmConfidentialEncryptionEnabled("vj");
         model = BinaryData.fromObject(model).toObject(VMwareCbtSecurityProfileProperties.class);
-        Assertions.assertEquals(SecurityType.NONE, model.targetVmSecurityType());
-        Assertions.assertEquals("ennqfabqca", model.isTargetVmSecureBootEnabled());
-        Assertions.assertEquals("lectcxsfmb", model.isTargetVmTpmEnabled());
-        Assertions.assertEquals("xmsynbkd", model.isTargetVmIntegrityMonitoringEnabled());
-        Assertions.assertEquals("yufxuzmsvzyq", model.isTargetVmConfidentialEncryptionEnabled());
+        Assertions.assertEquals(SecurityType.TRUSTED_LAUNCH, model.targetVmSecurityType());
+        Assertions.assertEquals("efhawkmibuyd", model.isTargetVmSecureBootEnabled());
+        Assertions.assertEquals("urn", model.isTargetVmTpmEnabled());
+        Assertions.assertEquals("updyttqm", model.isTargetVmIntegrityMonitoringEnabled());
+        Assertions.assertEquals("vj", model.isTargetVmConfidentialEncryptionEnabled());
     }
 }

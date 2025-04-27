@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRetryPolicy;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.InvalidPartitionException;
 import com.azure.cosmos.implementation.PartitionIsMigratingException;
 import com.azure.cosmos.implementation.PartitionKeyRangeGoneException;
@@ -17,6 +18,7 @@ import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.RetryWithException;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.ShouldRetryResult;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,6 +42,9 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
     private volatile RetryWithException lastRetryWithException;
     private RetryContext retryContext;
     private static final ThreadLocalRandom random = ThreadLocalRandom.current();
+
+    private static final ImplementationBridgeHelpers.CosmosExceptionHelper.CosmosExceptionAccessor cosmosExceptionsAccessor
+        = ImplementationBridgeHelpers.CosmosExceptionHelper.getCosmosExceptionAccessor();
 
     public GoneAndRetryWithRetryPolicy(RxDocumentServiceRequest request, Integer waitTimeInSeconds) {
         this.retryContext = BridgeInternal.getRetryContext(request.requestContext.cosmosDiagnostics);
@@ -209,7 +214,14 @@ public class GoneAndRetryWithRetryPolicy implements IRetryPolicy {
                     this.attemptCount,
                     exception);
 
-                return Mono.just(ShouldRetryResult.noRetry(
+                // wrapping this is as a 408 doesn't affect retry semantics in ClientRetryPolicy layer for writes
+                // this will also allow PPAF to mark such a partitionKeyRange as unavailable for that region
+                exceptionToThrow = cosmosExceptionsAccessor.createCosmosException(HttpConstants.StatusCodes.REQUEST_TIMEOUT, exception);
+
+                GoneException goneException = Utils.as(exception, GoneException.class);
+                BridgeInternal.setSubStatusCode(exceptionToThrow, goneException.getSubStatusCode());
+
+                return Mono.just(ShouldRetryResult.noRetry(exceptionToThrow,
                     Quadruple.with(true, true, Duration.ofMillis(0), this.attemptCount.get())));
             }
 

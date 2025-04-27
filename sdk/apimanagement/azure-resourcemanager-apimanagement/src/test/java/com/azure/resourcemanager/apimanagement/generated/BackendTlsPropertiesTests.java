@@ -12,18 +12,18 @@ public final class BackendTlsPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         BackendTlsProperties model
-            = BinaryData.fromString("{\"validateCertificateChain\":true,\"validateCertificateName\":true}")
+            = BinaryData.fromString("{\"validateCertificateChain\":true,\"validateCertificateName\":false}")
                 .toObject(BackendTlsProperties.class);
-        Assertions.assertEquals(true, model.validateCertificateChain());
-        Assertions.assertEquals(true, model.validateCertificateName());
+        Assertions.assertTrue(model.validateCertificateChain());
+        Assertions.assertFalse(model.validateCertificateName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         BackendTlsProperties model
-            = new BackendTlsProperties().withValidateCertificateChain(true).withValidateCertificateName(true);
+            = new BackendTlsProperties().withValidateCertificateChain(true).withValidateCertificateName(false);
         model = BinaryData.fromObject(model).toObject(BackendTlsProperties.class);
-        Assertions.assertEquals(true, model.validateCertificateChain());
-        Assertions.assertEquals(true, model.validateCertificateName());
+        Assertions.assertTrue(model.validateCertificateChain());
+        Assertions.assertFalse(model.validateCertificateName());
     }
 }

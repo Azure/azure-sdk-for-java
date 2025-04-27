@@ -15,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -61,8 +62,12 @@ public final class PathBuilder {
                     = serialize(JsonSerializer.getInstance(), substitution.getParameterVariableName());
 
                 String replacementValue;
-
-                if (substitution.shouldEncode()) {
+                Optional<HttpRequestContext.MethodParameter> paramOpt = method.getParameters()
+                    .stream()
+                    .filter(parameter -> parameter.getName().equals(substitution.getParameterVariableName()))
+                    .findFirst();
+                boolean isValueTypeString = paramOpt.isPresent() && "String".equals(paramOpt.get().getShortTypeName());
+                if (isValueTypeString && substitution.shouldEncode()) {
                     replacementValue = "UriEscapers.PATH_ESCAPER.escape(" + substitutionValue + ")";
                 } else {
                     replacementValue = substitutionValue != null ? Objects.toString(substitutionValue, "null") : "";

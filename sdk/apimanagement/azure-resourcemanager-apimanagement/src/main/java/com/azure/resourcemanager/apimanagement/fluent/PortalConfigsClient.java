@@ -6,9 +6,9 @@ package com.azure.resourcemanager.apimanagement.fluent;
 
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
-import com.azure.resourcemanager.apimanagement.fluent.models.PortalConfigCollectionInner;
 import com.azure.resourcemanager.apimanagement.fluent.models.PortalConfigContractInner;
 import com.azure.resourcemanager.apimanagement.models.PortalConfigsGetEntityTagResponse;
 import com.azure.resourcemanager.apimanagement.models.PortalConfigsGetResponse;
@@ -22,28 +22,28 @@ public interface PortalConfigsClient {
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of the developer portal configurations along with {@link Response}.
+     * @return the collection of the developer portal configurations as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PortalConfigCollectionInner> listByServiceWithResponse(String resourceGroupName, String serviceName,
-        Context context);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<PortalConfigContractInner> listByService(String resourceGroupName, String serviceName);
 
     /**
      * Lists the developer portal configurations.
      * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serviceName The name of the API Management service.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the collection of the developer portal configurations.
+     * @return the collection of the developer portal configurations as paginated response with {@link PagedIterable}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    PortalConfigCollectionInner listByService(String resourceGroupName, String serviceName);
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<PortalConfigContractInner> listByService(String resourceGroupName, String serviceName,
+        Context context);
 
     /**
      * Gets the entity state (Etag) version of the developer portal configuration.

@@ -11,23 +11,22 @@ import org.junit.jupiter.api.Assertions;
 public final class AgentPoolUpgradeSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AgentPoolUpgradeSettings model = BinaryData
-            .fromString(
-                "{\"drainTimeout\":6269428665110751573,\"maxSurge\":\"moadsuvarmy\",\"maxUnavailable\":\"mjsjqb\"}")
+        AgentPoolUpgradeSettings model = BinaryData.fromString(
+            "{\"drainTimeout\":7914857163807651319,\"maxSurge\":\"ymareqnajxqugj\",\"maxUnavailable\":\"ycubeddgs\"}")
             .toObject(AgentPoolUpgradeSettings.class);
-        Assertions.assertEquals(6269428665110751573L, model.drainTimeout());
-        Assertions.assertEquals("moadsuvarmy", model.maxSurge());
-        Assertions.assertEquals("mjsjqb", model.maxUnavailable());
+        Assertions.assertEquals(7914857163807651319L, model.drainTimeout());
+        Assertions.assertEquals("ymareqnajxqugj", model.maxSurge());
+        Assertions.assertEquals("ycubeddgs", model.maxUnavailable());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AgentPoolUpgradeSettings model = new AgentPoolUpgradeSettings().withDrainTimeout(6269428665110751573L)
-            .withMaxSurge("moadsuvarmy")
-            .withMaxUnavailable("mjsjqb");
+        AgentPoolUpgradeSettings model = new AgentPoolUpgradeSettings().withDrainTimeout(7914857163807651319L)
+            .withMaxSurge("ymareqnajxqugj")
+            .withMaxUnavailable("ycubeddgs");
         model = BinaryData.fromObject(model).toObject(AgentPoolUpgradeSettings.class);
-        Assertions.assertEquals(6269428665110751573L, model.drainTimeout());
-        Assertions.assertEquals("moadsuvarmy", model.maxSurge());
-        Assertions.assertEquals("mjsjqb", model.maxUnavailable());
+        Assertions.assertEquals(7914857163807651319L, model.drainTimeout());
+        Assertions.assertEquals("ymareqnajxqugj", model.maxSurge());
+        Assertions.assertEquals("ycubeddgs", model.maxUnavailable());
     }
 }

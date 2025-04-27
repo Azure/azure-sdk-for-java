@@ -32,6 +32,11 @@ public final class InMageRcmUnplannedFailoverInput extends UnplannedFailoverProv
      */
     private String recoveryPointId;
 
+    /*
+     * A value indicating the inplace OS Upgrade version.
+     */
+    private String osUpgradeVersion;
+
     /**
      * Creates an instance of InMageRcmUnplannedFailoverInput class.
      */
@@ -91,6 +96,26 @@ public final class InMageRcmUnplannedFailoverInput extends UnplannedFailoverProv
     }
 
     /**
+     * Get the osUpgradeVersion property: A value indicating the inplace OS Upgrade version.
+     * 
+     * @return the osUpgradeVersion value.
+     */
+    public String osUpgradeVersion() {
+        return this.osUpgradeVersion;
+    }
+
+    /**
+     * Set the osUpgradeVersion property: A value indicating the inplace OS Upgrade version.
+     * 
+     * @param osUpgradeVersion the osUpgradeVersion value to set.
+     * @return the InMageRcmUnplannedFailoverInput object itself.
+     */
+    public InMageRcmUnplannedFailoverInput withOsUpgradeVersion(String osUpgradeVersion) {
+        this.osUpgradeVersion = osUpgradeVersion;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -115,6 +140,7 @@ public final class InMageRcmUnplannedFailoverInput extends UnplannedFailoverProv
         jsonWriter.writeStringField("performShutdown", this.performShutdown);
         jsonWriter.writeStringField("instanceType", this.instanceType);
         jsonWriter.writeStringField("recoveryPointId", this.recoveryPointId);
+        jsonWriter.writeStringField("osUpgradeVersion", this.osUpgradeVersion);
         return jsonWriter.writeEndObject();
     }
 
@@ -141,6 +167,8 @@ public final class InMageRcmUnplannedFailoverInput extends UnplannedFailoverProv
                     deserializedInMageRcmUnplannedFailoverInput.instanceType = reader.getString();
                 } else if ("recoveryPointId".equals(fieldName)) {
                     deserializedInMageRcmUnplannedFailoverInput.recoveryPointId = reader.getString();
+                } else if ("osUpgradeVersion".equals(fieldName)) {
+                    deserializedInMageRcmUnplannedFailoverInput.osUpgradeVersion = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

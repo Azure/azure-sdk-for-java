@@ -33,6 +33,11 @@ public final class PolicyFragmentContractProperties implements JsonSerializable<
      */
     private PolicyFragmentContentFormat format;
 
+    /*
+     * The provisioning state
+     */
+    private String provisioningState;
+
     /**
      * Creates an instance of PolicyFragmentContractProperties class.
      */
@@ -100,6 +105,15 @@ public final class PolicyFragmentContractProperties implements JsonSerializable<
     }
 
     /**
+     * Get the provisioningState property: The provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -150,6 +164,8 @@ public final class PolicyFragmentContractProperties implements JsonSerializable<
                 } else if ("format".equals(fieldName)) {
                     deserializedPolicyFragmentContractProperties.format
                         = PolicyFragmentContentFormat.fromString(reader.getString());
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedPolicyFragmentContractProperties.provisioningState = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

@@ -24,6 +24,11 @@ public final class OperationListResult implements JsonSerializable<OperationList
      */
     private List<OperationInner> value;
 
+    /*
+     * URL to get the next set of operation list results (if there are any).
+     */
+    private String nextLink;
+
     /**
      * Creates an instance of OperationListResult class.
      */
@@ -48,6 +53,15 @@ public final class OperationListResult implements JsonSerializable<OperationList
     public OperationListResult withValue(List<OperationInner> value) {
         this.value = value;
         return this;
+    }
+
+    /**
+     * Get the nextLink property: URL to get the next set of operation list results (if there are any).
+     * 
+     * @return the nextLink value.
+     */
+    public String nextLink() {
+        return this.nextLink;
     }
 
     /**
@@ -89,6 +103,8 @@ public final class OperationListResult implements JsonSerializable<OperationList
                 if ("value".equals(fieldName)) {
                     List<OperationInner> value = reader.readArray(reader1 -> OperationInner.fromJson(reader1));
                     deserializedOperationListResult.value = value;
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedOperationListResult.nextLink = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

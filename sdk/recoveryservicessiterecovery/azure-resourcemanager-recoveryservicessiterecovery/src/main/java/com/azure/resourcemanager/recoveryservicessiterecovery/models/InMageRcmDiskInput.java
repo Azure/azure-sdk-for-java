@@ -37,6 +37,11 @@ public final class InMageRcmDiskInput implements JsonSerializable<InMageRcmDiskI
      */
     private String diskEncryptionSetId;
 
+    /*
+     * The logical sector size (in bytes), 512 by default.
+     */
+    private Integer sectorSizeInBytes;
+
     /**
      * Creates an instance of InMageRcmDiskInput class.
      */
@@ -124,6 +129,26 @@ public final class InMageRcmDiskInput implements JsonSerializable<InMageRcmDiskI
     }
 
     /**
+     * Get the sectorSizeInBytes property: The logical sector size (in bytes), 512 by default.
+     * 
+     * @return the sectorSizeInBytes value.
+     */
+    public Integer sectorSizeInBytes() {
+        return this.sectorSizeInBytes;
+    }
+
+    /**
+     * Set the sectorSizeInBytes property: The logical sector size (in bytes), 512 by default.
+     * 
+     * @param sectorSizeInBytes the sectorSizeInBytes value to set.
+     * @return the InMageRcmDiskInput object itself.
+     */
+    public InMageRcmDiskInput withSectorSizeInBytes(Integer sectorSizeInBytes) {
+        this.sectorSizeInBytes = sectorSizeInBytes;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -156,6 +181,7 @@ public final class InMageRcmDiskInput implements JsonSerializable<InMageRcmDiskI
         jsonWriter.writeStringField("logStorageAccountId", this.logStorageAccountId);
         jsonWriter.writeStringField("diskType", this.diskType == null ? null : this.diskType.toString());
         jsonWriter.writeStringField("diskEncryptionSetId", this.diskEncryptionSetId);
+        jsonWriter.writeNumberField("sectorSizeInBytes", this.sectorSizeInBytes);
         return jsonWriter.writeEndObject();
     }
 
@@ -183,6 +209,8 @@ public final class InMageRcmDiskInput implements JsonSerializable<InMageRcmDiskI
                     deserializedInMageRcmDiskInput.diskType = DiskAccountType.fromString(reader.getString());
                 } else if ("diskEncryptionSetId".equals(fieldName)) {
                     deserializedInMageRcmDiskInput.diskEncryptionSetId = reader.getString();
+                } else if ("sectorSizeInBytes".equals(fieldName)) {
+                    deserializedInMageRcmDiskInput.sectorSizeInBytes = reader.getNullable(JsonReader::getInt);
                 } else {
                     reader.skipChildren();
                 }

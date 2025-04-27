@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed an issue during bulk write operations that could result in failing the Spark job in `BulkWriter.flushAndClose` too eagerly in certain cases. - See [PR 44992](https://github.com/Azure/azure-sdk-for-java/pull/44992)
 
 #### Other Changes
 
