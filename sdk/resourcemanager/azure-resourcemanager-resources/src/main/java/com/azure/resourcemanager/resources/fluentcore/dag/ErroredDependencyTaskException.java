@@ -6,5 +6,5 @@ package com.azure.resourcemanager.resources.fluentcore.dag;
 /**
  * An FaultedDependencyException is emitted when a task cannot be executed due to a faulted decedent task.
  */
-final class ErroredDependencyTaskException extends RuntimeException {
+final class ErroredDependencyTaskException extends Exception {
 }

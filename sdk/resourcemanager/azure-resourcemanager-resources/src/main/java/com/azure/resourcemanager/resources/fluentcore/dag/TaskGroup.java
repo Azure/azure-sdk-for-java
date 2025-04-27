@@ -706,7 +706,7 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
      * @param entry the entry holding task
      * @param context a group level shared context that is passed to {@link TaskItem#invoke(InvocationContext)}
      *                method of the task item this entry wraps.
-     * @return an {@link CompletableFuture} that emits result of task in the given entry
+     * @return a {@link CompletableFuture} that executes the given task entry
      */
     private CompletableFuture<Void> invokeTask(TaskGroupEntry<TaskItem> entry, InvocationContext context) {
         if (isGroupCancelled.get()) {
@@ -729,13 +729,18 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
                 completableFuture = CompletableFuture.completedFuture(null);
             } else {
                 completableFuture = CompletableFuture.supplyAsync(() -> {
-                    entry.invokeTask(ignoreCachedResult, context);
+                    try {
+                        entry.invokeTask(ignoreCachedResult, context);
+                    } catch (Exception e) {
+                        // Wrap checked exception into CompletionException so that CompletableFuture won't wrap it again.
+                        throw new CompletionException(e);
+                    }
                     return null;
                 }, context.syncExecutor());
             }
             return completableFuture.exceptionally(Function.identity()).thenComposeAsync(result -> {
                 if (result instanceof Throwable) {
-                    return processFaultedTask(entry, (Throwable) result, context);
+                    return processFaultedTask(entry, ((Throwable) result).getCause(), context);
                 }
                 return processCompletedTask(entry, context);
             }, context.syncExecutor());
