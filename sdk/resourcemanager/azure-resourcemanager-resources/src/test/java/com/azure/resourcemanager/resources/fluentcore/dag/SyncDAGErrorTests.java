@@ -59,7 +59,9 @@ public class SyncDAGErrorTests {
         Function<Indexable, IPancake> consumeCake = indexable -> {
             IPancake pancake = (IPancake) indexable;
             LOGGER.log(LogLevel.VERBOSE, () -> "map.onNext: " + pancake.name());
-            seen.add(pancake.name());
+            synchronized (seen) {
+                seen.add(pancake.name());
+            }
             return pancake;
         };
         PancakeImpl pancakeM = new PancakeImplWrapper("M", 250, consumeCake);
@@ -120,6 +122,13 @@ public class SyncDAGErrorTests {
 
         TaskGroup pancakeFtg = pancakeF.taskGroup();
         TaskGroup.InvocationContext context = pancakeFtg.newInvocationContext()
+            // Ensure the thread pool size > 1, to avoid C runs after B throws exception.
+            //
+            // In test pipeline, sometimes agent has only 1 cpu core, making the default ForkJoinPool having 1 available
+            // thread, resulting in task executing sequentially. Since  C is at the
+            // same execution level as B, C could execute after B throws exception.
+            // This will mark the group as canceled, and C will not execute.
+            .withSyncTaskExecutor(Executors.newFixedThreadPool(5))
             .withTerminateOnErrorStrategy(TaskGroupTerminateOnErrorStrategy.TERMINATE_ON_IN_PROGRESS_TASKS_COMPLETION);
 
         Consumer<Throwable> consumeError = throwable -> {
@@ -180,7 +189,9 @@ public class SyncDAGErrorTests {
         Function<Indexable, IPasta> consumePasta = indexable -> {
             IPasta pasta = (IPasta) indexable;
             LOGGER.log(LogLevel.VERBOSE, () -> "map.onNext: " + pasta.name());
-            seen.add(pasta.name());
+            synchronized (seen) {
+                seen.add(pasta.name());
+            }
             return pasta;
         };
         PastaImpl pastaM = new PastaImplWrapper("M", 250, consumePasta);
@@ -302,7 +313,9 @@ public class SyncDAGErrorTests {
         Function<Indexable, IPancake> consumeCake = indexable -> {
             IPancake pancake = (IPancake) indexable;
             LOGGER.log(LogLevel.VERBOSE, () -> "map.onNext: " + pancake.name());
-            seen.add(pancake.name());
+            synchronized (seen) {
+                seen.add(pancake.name());
+            }
             return pancake;
         };
         PancakeImpl pancakeM = new PancakeImplWrapper("M", 250, consumeCake);
@@ -428,7 +441,9 @@ public class SyncDAGErrorTests {
         Function<Indexable, IPancake> consumeCake = indexable -> {
             IPancake pancake = (IPancake) indexable;
             LOGGER.log(LogLevel.VERBOSE, () -> "map.onNext: " + pancake.name());
-            seen.add(pancake.name());
+            synchronized (seen) {
+                seen.add(pancake.name());
+            }
             return pancake;
         };
         PancakeImpl pancakeM = new PancakeImplWrapper("M", 250, consumeCake);

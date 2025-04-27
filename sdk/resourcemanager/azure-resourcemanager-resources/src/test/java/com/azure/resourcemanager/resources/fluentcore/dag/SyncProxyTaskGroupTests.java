@@ -727,8 +727,7 @@ public class SyncProxyTaskGroupTests {
         boolean b2 = seen.equals(new ArrayList<>(Arrays.asList(new String[] { "C", "A", "B", "C" })));
 
         if (!b1 && !b2) {
-            Assertions.assertTrue(false,
-                "Emission order should be either [A, C, B, C] or [C, A, B, C] but got " + seen);
+            Assertions.fail("Emission order should be either [A, C, B, C] or [C, A, B, C] but got " + seen);
         }
 
         Assertions.assertEquals(beforeGroupInvokeCntB[0], 1);

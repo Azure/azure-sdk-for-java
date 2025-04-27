@@ -34,7 +34,7 @@ public class SyncInvokeRootTests {
 
         taskItem1.addDependency(taskItem2);
 
-        taskItem1.taskGroup().invoke(taskItem1.taskGroup().newInvocationContext());
+        taskItem1.taskGroup().invoke(taskItem1.taskGroup().newInvocationContext().withSyncTaskExecutor(Runnable::run));
 
         Assertions.assertEquals(2, seen.size());
         Assertions.assertTrue(seen.containsKey("A"));
@@ -47,7 +47,7 @@ public class SyncInvokeRootTests {
 
         seen.clear();
 
-        taskItem1.taskGroup().invoke(taskItem1.taskGroup().newInvocationContext());
+        taskItem1.taskGroup().invoke(taskItem1.taskGroup().newInvocationContext().withSyncTaskExecutor(Runnable::run));
 
         Assertions.assertEquals(1, seen.size());
         Assertions.assertTrue(seen.containsKey("A"));
@@ -79,7 +79,7 @@ public class SyncInvokeRootTests {
         taskItem1.addDependency(taskItem2);
         taskItem1.addPostRunDependent(taskItem3);
 
-        taskItem1.taskGroup().invoke(taskItem1.taskGroup().newInvocationContext());
+        taskItem1.taskGroup().invoke(taskItem1.taskGroup().newInvocationContext().withSyncTaskExecutor(Runnable::run));
         Assertions.assertEquals(1, (long) seen.get("X"));
 
         Assertions.assertEquals(3, seen.size()); // X, Y, Z
@@ -96,7 +96,7 @@ public class SyncInvokeRootTests {
 
         seen.clear();
 
-        taskItem1.taskGroup().invoke(taskItem1.taskGroup().newInvocationContext());
+        taskItem1.taskGroup().invoke(taskItem1.taskGroup().newInvocationContext().withSyncTaskExecutor(Runnable::run));
 
         Assertions.assertTrue(seen.containsKey("X"));
         Assertions.assertEquals(1, seen.size());
@@ -135,7 +135,7 @@ public class SyncInvokeRootTests {
         taskItem4.addDependency(taskItem1);
         taskItem4.addPostRunDependent(taskItem5);
 
-        taskItem4.taskGroup().invoke(taskItem1.taskGroup().newInvocationContext());
+        taskItem4.taskGroup().invoke(taskItem1.taskGroup().newInvocationContext().withSyncTaskExecutor(Runnable::run));
         // Regardless of proxy, the actual task will only be invoked once
         Assertions.assertEquals(1, (long) seen.get("1"));
         Assertions.assertEquals(1, (long) seen.get("4"));
@@ -159,7 +159,7 @@ public class SyncInvokeRootTests {
 
         seen.clear();
 
-        taskItem4.taskGroup().invoke(taskItem1.taskGroup().newInvocationContext());
+        taskItem4.taskGroup().invoke(taskItem1.taskGroup().newInvocationContext().withSyncTaskExecutor(Runnable::run));
         // Regardless of proxy, the actual task will only be invoked once
         Assertions.assertEquals(1, seen.size());
         Assertions.assertTrue(seen.containsKey("4"));
@@ -196,7 +196,8 @@ public class SyncInvokeRootTests {
         taskItem3.addDependency(taskItem4);
         taskItem4.addDependency(taskItem5);
 
-        taskItem1.taskGroup().invokeDependency(taskItem1.taskGroup().newInvocationContext());
+        taskItem1.taskGroup()
+            .invokeDependency(taskItem1.taskGroup().newInvocationContext().withSyncTaskExecutor(Runnable::run));
 
         Assertions.assertEquals(4, seen.size());
         Assertions.assertFalse(seen.containsKey("1"));

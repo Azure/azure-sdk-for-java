@@ -735,7 +735,7 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
                         entry.invokeTask(ignoreCachedResult, context);
                     } catch (Exception e) {
                         // Wrap checked exception into CompletionException so that CompletableFuture won't wrap it again.
-                        throw new CompletionException(e);
+                        throw logger.logThrowableAsWarning(new CompletionException(e));
                     }
                     return null;
                 }, context.syncExecutor());
