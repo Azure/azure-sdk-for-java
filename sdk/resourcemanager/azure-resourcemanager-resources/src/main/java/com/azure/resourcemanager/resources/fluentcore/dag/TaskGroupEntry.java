@@ -119,7 +119,7 @@ public final class TaskGroupEntry<TaskT extends TaskItem> extends DAGNode<TaskT,
      *                           parameter indicates the cached result can be returned without invoking task again,
      *                           if true then cached result will be ignored and task will be invoked
      * @param context the context object shared across all the entries in the group that this entry belongs to,
-     *                           this will be passed to {@link TaskItem#invokeAsync(TaskGroup.InvocationContext)}
+     *                           this will be passed to {@link TaskItem#invoke(TaskGroup.InvocationContext)}
      *                           method of the task item
      * @return a result of type {@link Indexable}.
      * @throws ErroredDependencyTaskException when the task has faulted descent dependency tasks

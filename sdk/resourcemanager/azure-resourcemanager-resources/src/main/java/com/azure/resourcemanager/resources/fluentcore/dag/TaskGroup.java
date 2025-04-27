@@ -316,10 +316,12 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
 
     /**
      * Invokes tasks in the group.
-     * By Default, tasks will be executed concurrently on {@link ForkJoinPool#commonPool()}.
+     * {@link TaskGroupEntry#invokeTask(boolean, InvocationContext)} method of each entry in the group will be invoked
+     * when it is selected for execution.Tasks will be executed concurrently on {@link ForkJoinPool#commonPool()} by default.
      *
-     * @param context group level shared context that need be passed to invokeAsync(cxt)
-     *                method of each task item in the group when it is selected for invocation.
+     * @param context group level shared context that need be passed to
+     *                {@link TaskGroupEntry#invokeTask(boolean, InvocationContext)}
+     *                method of each entry in the group when it is selected for execution
      *
      * @return the root result of task group.
      */
@@ -343,7 +345,8 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
 
     /**
      * Invokes tasks in the group.
-     * By Default, tasks will be executed concurrently on {@link ForkJoinPool#commonPool()}.
+     * {@link TaskGroupEntry#invokeTask(boolean, InvocationContext)} method of each entry in the group will be invoked
+     * when it is selected for execution. Tasks will be executed concurrently on {@link ForkJoinPool#commonPool()} by default.
      *
      * @return the root result of task group.
      */
@@ -607,7 +610,7 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
     /**
      * Invokes tasks in the group.
      *
-     * @param context group level shared context that need be passed to invokeAsync(cxt)
+     * @param context group level shared context that need be passed to {@link TaskGroupEntry#invokeTask(boolean, InvocationContext)}
      *                                   method of each task item in the group when it is selected for invocation.
      * @param shouldRunBeforeGroupInvoke indicate whether to run the 'beforeGroupInvoke' method
      *                                   of each tasks before invoking them
@@ -637,6 +640,7 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
      * @param context group level shared context that need be passed to
      *                {@link TaskGroupEntry#invokeTask(boolean, InvocationContext)}
      *                method of each entry in the group when it is selected for execution
+     * @return a {@link CompletableFuture} that kicks off execution of the ready tasks, and future sets of tasks
      */
     private CompletableFuture<Void> invokeReadyTasks(InvocationContext context) {
         TaskGroupEntry<TaskItem> readyTaskEntry = super.getNext();
@@ -664,9 +668,7 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
      * @param context a group level shared context
      * @return An {@link CompletableFuture} that represents asynchronous work started by
      * {@link TaskItem#invokeAfterPostRun(boolean)} method of actual TaskItem and result of subset
-     * of tasks which gets scheduled after proxy task. If group was not in faulted state and
-     * {@link TaskItem#invokeAfterPostRun(boolean)} emits no error then stream also includes
-     * result produced by actual TaskItem.
+     * of tasks which gets scheduled after proxy task.
      */
     private CompletableFuture<Void> invokeAfterPostRun(TaskGroupEntry<TaskItem> entry, InvocationContext context) {
         final ProxyTaskItem proxyTaskItem = (ProxyTaskItem) entry.data();
@@ -706,7 +708,7 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
      * @param entry the entry holding task
      * @param context a group level shared context that is passed to {@link TaskItem#invoke(InvocationContext)}
      *                method of the task item this entry wraps.
-     * @return a {@link CompletableFuture} that executes the given task entry
+     * @return  a {@link CompletableFuture} that kicks off execution of the given task, and future sets of tasks
      */
     private CompletableFuture<Void> invokeTask(TaskGroupEntry<TaskItem> entry, InvocationContext context) {
         if (isGroupCancelled.get()) {
@@ -754,6 +756,7 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
      *
      * @param completedEntry the entry holding completed task
      * @param context the context object shared across all the task entries in this group during execution
+     * @return a {@link CompletableFuture} that kicks off execution of next set of ready tasks
      */
     private CompletableFuture<Void> processCompletedTask(TaskGroupEntry<TaskItem> completedEntry,
         InvocationContext context) {
@@ -770,6 +773,7 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
      * @param faultedEntry the entry holding faulted task
      * @param throwable the reason for fault
      * @param context the context object shared across all the task entries in this group during execution
+     * @return a {@link CompletableFuture} that kicks off execution of next set of ready tasks
      */
     private CompletableFuture<Void> processFaultedTask(TaskGroupEntry<TaskItem> faultedEntry, Throwable throwable,
         InvocationContext context) {
@@ -849,7 +853,7 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
      * @return a {@link CompletableFuture} that completes by throwing specified {@link Throwable}
      * @param <T> result type, can be ignored
      */
-    public static <T> CompletableFuture<T> failedFuture(Throwable throwable) {
+    private static <T> CompletableFuture<T> failedFuture(Throwable throwable) {
         CompletableFuture<T> future = new CompletableFuture<>();
         future.completeExceptionally(throwable);
         return future;
