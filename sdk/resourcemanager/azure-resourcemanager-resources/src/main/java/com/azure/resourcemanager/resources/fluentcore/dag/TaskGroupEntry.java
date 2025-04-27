@@ -127,7 +127,7 @@ public final class TaskGroupEntry<TaskT extends TaskItem> extends DAGNode<TaskT,
     public Indexable invokeTask(boolean ignoreCachedResult, final TaskGroup.InvocationContext context)
         throws ErroredDependencyTaskException {
         if (hasFaultedDescentDependencyTasks) {
-            throw new ErroredDependencyTaskException();
+            throw logger.logThrowableAsWarning(new ErroredDependencyTaskException());
         }
         final TaskT taskItem = this.taskItem();
         if (!ignoreCachedResult && hasCachedResult()) {
