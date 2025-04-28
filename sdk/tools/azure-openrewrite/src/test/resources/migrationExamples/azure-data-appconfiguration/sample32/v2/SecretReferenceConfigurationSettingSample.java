@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.data.appconfiguration;
+package com.azure.v2.data.appconfiguration;
 
-import com.azure.core.http.rest.PagedIterable;
-import com.azure.data.appconfiguration.models.ConfigurationSetting;
-import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
-import com.azure.data.appconfiguration.models.SettingSelector;
+import com.azure.v2.data.appconfiguration.models.ConfigurationSetting;
+import com.azure.v2.data.appconfiguration.models.SecretReferenceConfigurationSetting;
+import com.azure.v2.data.appconfiguration.models.SettingSelector;
+import io.clientcore.core.http.paging.PagedIterable;
 
 /**
  * Sample demonstrates how to add, get, list, and delete a secret reference configuration setting.

@@ -1,0 +1,12 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+# --------------------------------------------------------------------
+# Library Migration Recipes for azure-identity
+# --------------------------------------------------------------------
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.openrewrite.migration.azure.identity
+displayName: Migrate the Track-2 library azure-identity to next generation (Track-3) stack
+description: This recipe migrates the azure-identity library to the next generation stack.
+recipeList:
+
+  - com.azure.openrewrite.recipes.azure.identity

@@ -1,0 +1,12 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+# --------------------------------------------------------------------
+# Library Migration Recipes for azure-data-appconfiguration
+# --------------------------------------------------------------------
+type: specs.openrewrite.org/v1beta/recipe
+name: com.azure.openrewrite.migration.azure.data.appconfiguration
+displayName: Migrate Track 2 Library azure-data-appconfiguration to Track 3
+description: This recipe migrates the Track 2 library azure-data-appconfiguration to the next generation stack (Track 3).
+recipeList:
+  - com.azure.openrewrite.recipes.azure.data.appconfiguration
+  - com.azure.openrewrite.recipes.azure.data.appconfiguration.models

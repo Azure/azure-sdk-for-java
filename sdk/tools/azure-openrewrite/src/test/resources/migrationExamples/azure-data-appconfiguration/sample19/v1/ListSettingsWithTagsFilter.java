@@ -8,7 +8,6 @@ import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 
-import javax.net.ssl.SSLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,15 +23,15 @@ public class ListSettingsWithTagsFilter {
      *
      * @param args Unused. Arguments to the program.
      */
-    public static void main(String[] args) throws SSLException {
+    public static void main(String[] args) {
         // The connection string value can be obtained by going to your App Configuration instance in the Azure portal
         // and navigating to the "Access Keys" page under the "Settings" section.
         String connectionString = Configuration.getGlobalConfiguration().get("AZURE_APPCONFIG_CONNECTION_STRING");
 
         // Instantiate a client that will be used to call the service.
         ConfigurationClient client = new ConfigurationClientBuilder()
-                .connectionString(connectionString)
-                .buildClient();
+                                         .connectionString(connectionString)
+                                         .buildClient();
 
         Map<String, String> tags = new HashMap<>();
         tags.put("release", "first");
@@ -49,8 +48,8 @@ public class ListSettingsWithTagsFilter {
         List<String> tagsFilterInString = getTagsFilterInString(tags2);
         System.out.println("List settings with tags filter = " + tagsFilterInString);
         PagedIterable<ConfigurationSetting> configurationSettings = client.listConfigurationSettings(new SettingSelector().setKeyFilter("key*")
-                .setTagsFilter(tagsFilterInString));
+                                                                                                         .setTagsFilter(tagsFilterInString));
         configurationSettings.forEach(setting -> System.out.printf(
-                "\tKey: %s, Value: %s, Tags: %s%n", setting.getKey(), setting.getValue(), setting.getTags()));
+            "\tKey: %s, Value: %s, Tags: %s%n", setting.getKey(), setting.getValue(), setting.getTags()));
     }
 }

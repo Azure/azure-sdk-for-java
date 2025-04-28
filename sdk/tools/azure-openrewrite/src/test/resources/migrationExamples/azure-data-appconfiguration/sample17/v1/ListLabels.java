@@ -23,8 +23,8 @@ public class ListLabels {
         String connectionString = Configuration.getGlobalConfiguration().get("AZURE_APPCONFIG_CONNECTION_STRING");
 
         final ConfigurationClient client = new ConfigurationClientBuilder()
-                .connectionString(connectionString)
-                .buildClient();
+                                               .connectionString(connectionString)
+                                               .buildClient();
 
         // Prepare three settings with different labels, prod1, prod2, prod3
         ConfigurationSetting setting = client.setConfigurationSetting("prod:prod1", "prod1", "prod1");
@@ -39,14 +39,14 @@ public class ListLabels {
         // If you want to list all labels by wildcard, pass wildcard where AppConfig supports, such as "prod*",
         System.out.println("List all labels:");
         client.listLabels(null, Context.NONE)
-                .forEach(label -> System.out.println("\tLabel name = " + label.getName()));
+            .forEach(label -> System.out.println("\tLabel name = " + label.getName()));
 
         System.out.println("List label by exact match:");
         client.listLabels(new SettingLabelSelector().setNameFilter("prod2"), Context.NONE)
-                .forEach(label -> System.out.println("\tLabel name = " + label.getName()));
+            .forEach(label -> System.out.println("\tLabel name = " + label.getName()));
 
         System.out.println("List labels by wildcard:");
         client.listLabels(new SettingLabelSelector().setNameFilter("prod*"), Context.NONE)
-                .forEach(label -> System.out.println("\tLabel name = " + label.getName()));
+            .forEach(label -> System.out.println("\tLabel name = " + label.getName()));
     }
 }

@@ -36,7 +36,7 @@ public class HelloWorld {
         System.out.printf("[GetConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue());
 
         setting = client.deleteConfigurationSetting(key, null);
-        System.out.printf("[DeleteConfigurationSetting] Key: %s, Value: %s", setting.getKey(), setting.getValue());
+        System.out.printf("[DeleteConfigurationSetting] Key: %s, Value: %s%n", setting.getKey(), setting.getValue());
 
         System.out.println("End of synchronous sample.");
     }
