@@ -133,7 +133,7 @@ public final class HelloWorld {
         BinaryData testRun = BinaryData.fromObject(testRunMap);
 
         // receive response with BinaryData content
-        SyncPoller<BinaryData, BinaryData> testRunPoller = testRunClient.beginTestRunWithResponse(testRunId, testRun, null);
+        SyncPoller<BinaryData, BinaryData> testRunPoller = testRunClient.beginTestRun(testRunId, testRun, null);
 
         System.out.println(testRunPoller.poll().getValue().toString());
         /*

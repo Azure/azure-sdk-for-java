@@ -194,7 +194,7 @@ LoadTestAdministrationClient adminClient = new LoadTestAdministrationClientBuild
 BinaryData fileData = BinaryData.fromFile(new File("path/to/file").toPath());
 
 // receive response with BinaryData content
-PollResponse<BinaryData> fileUrlOut = adminClient.beginUploadTestFileWithResponse("test12345", "sample-file.jmx", fileData, null)
+PollResponse<BinaryData> fileUrlOut = adminClient.beginUploadTestFile("test12345", "sample-file.jmx", fileData, null)
     .waitForCompletion(Duration.ofMinutes(2));
 System.out.println(fileUrlOut.getValue().toString());
 ```
@@ -216,7 +216,7 @@ testRunMap.put("displayName", "SDK-Created-TestRun");
 BinaryData testRun = BinaryData.fromObject(testRunMap);
 
 // start test with poller
-SyncPoller<BinaryData, BinaryData> poller = testRunClient.beginTestRunWithResponse("testrun12345", testRun, null);
+SyncPoller<BinaryData, BinaryData> poller = testRunClient.beginTestRun("testrun12345", testRun, null);
 Duration pollInterval = Duration.ofSeconds(5);
 poller = poller.setPollInterval(pollInterval);
 

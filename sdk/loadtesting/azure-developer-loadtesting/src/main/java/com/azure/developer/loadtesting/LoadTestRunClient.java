@@ -118,7 +118,7 @@ public final class LoadTestRunClient {
      * status(ACCEPTED/NOTSTARTED/PROVISIONING/PROVISIONED/CONFIGURING/CONFIGURED/EXECUTING/EXECUTED/DEPROVISIONING/DEPROVISIONED/DONE/CANCELLING/CANCELLED/FAILED/VALIDATION_SUCCESS/VALIDATION_FAILURE).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginTestRunWithResponse(String testRunId, BinaryData body,
+    public SyncPoller<BinaryData, BinaryData> beginTestRun(String testRunId, BinaryData body,
         RequestOptions testRunRequestOptions) {
         RequestOptions defaultRequestOptions = new RequestOptions();
         if (testRunRequestOptions != null) {
@@ -1749,7 +1749,7 @@ public final class LoadTestRunClient {
      * status(ACCEPTED/NOTSTARTED/EXECUTING/DONE/CANCELLING/CANCELLED/FAILED).
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginTestProfileRunWithResponse(String testProfileRunId, BinaryData body,
+    public SyncPoller<BinaryData, BinaryData> beginTestProfileRun(String testProfileRunId, BinaryData body,
         RequestOptions testProfileRunRequestOptions) {
         RequestOptions defaultRequestOptions = new RequestOptions();
         if (testProfileRunRequestOptions != null) {

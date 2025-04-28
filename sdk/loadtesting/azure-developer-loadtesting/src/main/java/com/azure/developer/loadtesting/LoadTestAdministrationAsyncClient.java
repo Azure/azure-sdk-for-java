@@ -130,8 +130,8 @@ public final class LoadTestAdministrationAsyncClient {
      * @return A {@link PollerFlux} to poll on and retrieve the file info with validation status.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginUploadTestFileWithResponse(String testId, String fileName,
-        BinaryData body, RequestOptions fileUploadRequestOptions) {
+    public PollerFlux<BinaryData, BinaryData> beginUploadTestFile(String testId, String fileName, BinaryData body,
+        RequestOptions fileUploadRequestOptions) {
         RequestOptions defaultRequestOptions = new RequestOptions();
         if (fileUploadRequestOptions != null) {
             defaultRequestOptions.setContext(fileUploadRequestOptions.getContext());

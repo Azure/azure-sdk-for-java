@@ -119,8 +119,8 @@ public final class LoadTestAdministrationClient {
      * @return A {@link SyncPoller} to poll on and retrieve the file info with validation status.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<BinaryData, BinaryData> beginUploadTestFileWithResponse(String testId, String fileName,
-        BinaryData body, RequestOptions fileUploadRequestOptions) {
+    public SyncPoller<BinaryData, BinaryData> beginUploadTestFile(String testId, String fileName, BinaryData body,
+        RequestOptions fileUploadRequestOptions) {
         RequestOptions defaultRequestOptions = new RequestOptions();
         if (fileUploadRequestOptions != null) {
             defaultRequestOptions.setContext(fileUploadRequestOptions.getContext());
