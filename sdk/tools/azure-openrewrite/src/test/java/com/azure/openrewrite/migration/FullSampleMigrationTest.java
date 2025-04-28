@@ -139,7 +139,7 @@ public class FullSampleMigrationTest implements RewriteTest {
             }
         });
 
-        .        assertFullMigration(fileMap, sampleDirString);
+        assertFullMigration(fileMap, sampleDirString);
     }
 
     public void assertFullMigration(Map<String,String> fileMap, String name) throws IOException {
