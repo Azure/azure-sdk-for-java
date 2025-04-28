@@ -135,6 +135,26 @@
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <configuration>
+          <systemPropertyVariables>
+            <!-- Enable full wiretap -->
+            <reactor.netty.http.client.accessLogAllowedHeaderNames>*</reactor.netty.http.client.accessLogAllowedHeaderNames>
+            <reactor.netty.http.server.accessLogAllowedHeaderNames>*</reactor.netty.http.server.accessLogAllowedHeaderNames>
+
+            <!-- Set simplelogger to TRACE for deep logging -->
+            <org.slf4j.simpleLogger.log.reactor.netty>TRACE</org.slf4j.simpleLogger.log.reactor.netty>
+            <org.slf4j.simpleLogger.log.reactor.netty.transport>TRACE</org.slf4j.simpleLogger.log.reactor.netty.transport>
+            <org.slf4j.simpleLogger.log.reactor.netty.channel>TRACE</org.slf4j.simpleLogger.log.reactor.netty.channel>
+            <org.slf4j.simpleLogger.log.reactor.netty.http.client.HttpClient>TRACE</org.slf4j.simpleLogger.log.reactor.netty.http.client.HttpClient>
+
+            <!-- Optional: globally lower slf4j simple logger threshold -->
+            <org.slf4j.simpleLogger.defaultLogLevel>INFO</org.slf4j.simpleLogger.defaultLogLevel>
+          </systemPropertyVariables>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
         <version>3.5.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
         <configuration>
