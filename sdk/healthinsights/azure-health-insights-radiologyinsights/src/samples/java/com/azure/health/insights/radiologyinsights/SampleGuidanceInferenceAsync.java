@@ -396,13 +396,13 @@ public class SampleGuidanceInferenceAsync {
 
         FhirR4CodeableConcept procedureCode = new FhirR4CodeableConcept();
         FhirR4Coding procedureCoding = new FhirR4Coding();
-        procedureCoding.setSystem("Http://hl7.org/fhir/ValueSet/cpt-all");
-        procedureCoding.setCode("USPELVIS");
-        procedureCoding.setDisplay("US PELVIS COMPLETE");
+        procedureCoding.setSystem("http://loinc.org");
+        procedureCoding.setCode("CTCHWO");
+        procedureCoding.setDisplay("CT CHEST WO CONTRAST");
 
         procedureCode.setCoding(Arrays.asList(procedureCoding));
         orderedProcedure.setCode(procedureCode);
-        orderedProcedure.setDescription("US PELVIS COMPLETE");
+        orderedProcedure.setDescription("CT CHEST WO CONTRAST");
 
         adminMetadata.setOrderedProcedures(Arrays.asList(orderedProcedure));
         adminMetadata.setEncounterId("encounterid1");

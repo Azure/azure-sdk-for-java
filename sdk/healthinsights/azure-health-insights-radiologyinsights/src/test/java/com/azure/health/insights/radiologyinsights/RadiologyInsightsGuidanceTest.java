@@ -1,8 +1,6 @@
 package com.azure.health.insights.radiologyinsights;
 
-import com.azure.health.insights.radiologyinsights.models.QualityMeasureComplianceType;
-import com.azure.health.insights.radiologyinsights.models.QualityMeasureInference;
-import com.azure.health.insights.radiologyinsights.models.QualityMeasureType;
+import com.azure.health.insights.radiologyinsights.models.GuidanceInference;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInference;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceResult;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceType;
@@ -13,12 +11,10 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 
-/**
- * Unit tests for {@link RadiologyInsightsClient}.
- */
-public class RadiologyInsightsQualityMeasureTest extends RadiologyInsightsClientTestBase {
+public class RadiologyInsightsGuidanceTest extends RadiologyInsightsClientTestBase {
 
     private RadiologyInsightsClient getClient() {
         return getClientBuilder().buildClient();
@@ -39,15 +35,14 @@ public class RadiologyInsightsQualityMeasureTest extends RadiologyInsightsClient
             + "1. Previously identified small pulmonary nodules in the right upper lobe have resolved, but there are multiple new small nodules scattered throughout both lungs. Recommend short-term follow-up with noncontrast chest CT in 3 months as per current  Current guidelines (2017 Fleischner Society).\r\n"
             + "2. Severe emphysema.\r\n" + "\r\n" + "Findings communicated to Dr. Jane Smith.";
         setDocumentContent(documentContent);
-        setInferenceType(RadiologyInsightsInferenceType.QUALITY_MEASURE);
+        setInferenceType(RadiologyInsightsInferenceType.GUIDANCE);
         setOrderCode("CTCHWO");
         setOrderDescription("CT CHEST WO CONTRAST");
-        setQualityMeasureOptions(new QualityMeasureType[]{ QualityMeasureType.MIPS364});
 
         try {
             testRadiologyInsightsWithResponse(request -> {
                 RadiologyInsightsInferenceResult riResponse = setPlaybackSyncPollerPollInterval(
-                    getClient().beginInferRadiologyInsights("job1715007451740", request)).getFinalResult();
+                    getClient().beginInferRadiologyInsights("job1715007451742", request)).getFinalResult();
 
                 List<RadiologyInsightsPatientResult> patients = riResponse.getPatientResults();
                 assertEquals(1, patients.size());
@@ -57,21 +52,8 @@ public class RadiologyInsightsQualityMeasureTest extends RadiologyInsightsClient
                 assertEquals(1, inferences.size());
 
                 RadiologyInsightsInference inference = inferences.get(0);
-                assertInstanceOf(QualityMeasureInference.class, inference,
-                    "Inference should be an instance of QualityMeasureInference");
-
-                QualityMeasureInference qualityMeasureInference = (QualityMeasureInference) inference;
-                String qualityMeasureDenominator = qualityMeasureInference.getQualityMeasureDenominator();
-                assertEquals("INCIDENTAL PULMONARY NODULE", qualityMeasureDenominator,
-                    "Expected QualityMeasureDenominator is INCIDENTAL PULMONARY NODULE");
-
-                QualityMeasureComplianceType qualityMeasureComplianceType = qualityMeasureInference.getComplianceType();
-                assertEquals("performanceMet", qualityMeasureComplianceType.getValue(),
-                    "Expected QualityMeasureComplianceType is performanceMet");
-
-                List<String> qualityCriteriaList = qualityMeasureInference.getQualityCriteria();
-                assertEquals("FOLLOW-UP RECOMMENDATION", qualityCriteriaList.get(0),
-                    "Expected QualityCriteria is FOLLOW-UP RECOMMENDATION");
+                assertInstanceOf(GuidanceInference.class, inference,
+                    "Inference should be an instance of GuidanceInference");
             });
 
         } catch (Throwable t) {
@@ -80,5 +62,4 @@ public class RadiologyInsightsQualityMeasureTest extends RadiologyInsightsClient
             Assertions.fail(message);
         }
     }
-
 }

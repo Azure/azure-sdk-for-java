@@ -37,6 +37,8 @@ import com.azure.health.insights.radiologyinsights.models.PatientDocument;
 import com.azure.health.insights.radiologyinsights.models.PatientEncounter;
 import com.azure.health.insights.radiologyinsights.models.PatientRecord;
 import com.azure.health.insights.radiologyinsights.models.PatientSex;
+import com.azure.health.insights.radiologyinsights.models.QualityMeasureOptions;
+import com.azure.health.insights.radiologyinsights.models.QualityMeasureType;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsData;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceOptions;
 import com.azure.health.insights.radiologyinsights.models.RadiologyInsightsInferenceType;
@@ -56,6 +58,7 @@ abstract class RadiologyInsightsClientTestBase extends TestProxyTestBase {
     private RadiologyInsightsInferenceType inferenceType;
     private String orderCode;
     private String orderDescription;
+    private QualityMeasureOptions qualityMeasureOptions;
 
     void testRadiologyInsightsWithResponse(Consumer<RadiologyInsightsData> testRunner) {
         testRunner.accept(createRadiologyInsightsJob());
@@ -193,6 +196,7 @@ abstract class RadiologyInsightsClientTestBase extends TestProxyTestBase {
         findingOptions.setProvideFocusedSentenceEvidence(false);
         inferenceOptions.setFollowupRecommendationOptions(followupOptions);
         inferenceOptions.setFindingOptions(findingOptions);
+        inferenceOptions.setQualityMeasureOptions(qualityMeasureOptions);
         return inferenceOptions;
     }
 
@@ -271,6 +275,10 @@ abstract class RadiologyInsightsClientTestBase extends TestProxyTestBase {
 
     public void setOrderDescription(String orderDescription) {
         this.orderDescription = orderDescription;
+    }
+
+    public void setQualityMeasureOptions(QualityMeasureType [] qualityMeasureOptions) {
+        this.qualityMeasureOptions=new QualityMeasureOptions(Arrays.asList(qualityMeasureOptions));
     }
 
 }
