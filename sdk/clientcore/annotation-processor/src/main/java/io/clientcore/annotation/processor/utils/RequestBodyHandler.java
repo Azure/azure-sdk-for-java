@@ -200,6 +200,7 @@ public final class RequestBodyHandler {
      * @param parameterName The name of the parameter to be serialized.
      */
     public static void handleRequestBodySerialization(BlockStmt body, String parameterName) {
+        body.tryAddImportToParentCompilationUnit(SerializationFormat.class);
         body.addStatement(StaticJavaParser.parseStatement(
             "SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());"));
         body.addStatement(StaticJavaParser.parseStatement(String.format(
