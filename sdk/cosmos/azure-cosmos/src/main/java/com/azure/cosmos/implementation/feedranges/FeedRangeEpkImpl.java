@@ -178,12 +178,14 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                 final String containerRid = collection.getResourceId();
                 request.setEffectiveRange(this.range);
 
-                DiagnosticsClientContext diagnosticsClientContext
-                    = request.getDiagnosticsClientContext();
-                CosmosDiagnostics cosmosDiagnostics
-                    = diagnosticsClientContext.getMostRecentlyCreatedDiagnostics();
-                CosmosDiagnosticsContext cosmosDiagnosticsContext
-                    = cosmosDiagnostics.getDiagnosticsContext();
+                CosmosDiagnosticsContext cosmosDiagnosticsContextForInternalStateTracking
+                    = Utils.generateDiagnosticsContextForInternalStateCapture(
+                    request.getDiagnosticsClientContext(),
+                    ResourceType.PartitionKeyRange,
+                    ConsistencyLevel.STRONG,
+                    ConnectionMode.GATEWAY,
+                    OperationType.Read,
+                    null);
 
                 return routingMapProvider
                     .tryGetOverlappingRangesAsync(
@@ -192,7 +194,7 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                         this.range,
                         false,
                         null,
-                        cosmosDiagnosticsContext)
+                        cosmosDiagnosticsContextForInternalStateTracking)
                     .flatMap(pkRangeHolder -> {
                         if (pkRangeHolder == null) {
                             return Mono.error(new NotFoundException(
