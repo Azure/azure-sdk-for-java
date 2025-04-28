@@ -11,6 +11,10 @@
 
 ### Other Changes
 
+#### Dependency Updates
+
+- Upgraded from `org.apache.httpcomponents:httpclient:4.5.14` to `org.apache.httpcomponents.client5:httpclient5:5.4.3`.
+
 ## 2.10.0 (2024-11-26)
 
 ### Bugs Fixed

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.SettingsTypeName;
@@ -22,19 +22,19 @@ public final class TenantSettingsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"settings\":{\"udekm\":\"eeohpfedxgd\",\"nztukirdedijdhz\":\"hwzmehcdfdxth\",\"swlxdknxc\":\"wvueweivaje\"}},\"id\":\"glzbcxdfsgwig\",\"name\":\"iwbwjudxzfvna\",\"type\":\"c\"}";
+            = "{\"properties\":{\"settings\":{\"cpqboubeh\":\"x\",\"oqqseoinxkot\":\"ipyiafsuu\"}},\"id\":\"rnlgnwwjikg\",\"name\":\"wdcz\",\"type\":\"kz\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         TenantSettingsContract response = manager.tenantSettings()
-            .getWithResponse("iustkqywab", "lgrrsk", SettingsTypeName.PUBLIC, com.azure.core.util.Context.NONE)
+            .getWithResponse("cmsqznv", "hjtrashnfofiy", SettingsTypeName.PUBLIC, com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("eeohpfedxgd", response.settings().get("udekm"));
+        Assertions.assertEquals("x", response.settings().get("cpqboubeh"));
     }
 }

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.PortalSignupSettings;
@@ -21,22 +21,21 @@ public final class SignUpSettingsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"enabled\":true,\"termsOfService\":{\"text\":\"la\",\"enabled\":false,\"consentRequired\":false}},\"id\":\"gmrodb\",\"name\":\"apqra\",\"type\":\"z\"}";
+            = "{\"properties\":{\"enabled\":false,\"termsOfService\":{\"text\":\"zxbwnyyihcty\",\"enabled\":false,\"consentRequired\":false}},\"id\":\"zbkhtvug\",\"name\":\"utiql\",\"type\":\"vnfyfyftkvzb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PortalSignupSettings response = manager.signUpSettings()
-            .getWithResponse("ttqhpvaru", "vuwjyul", com.azure.core.util.Context.NONE)
-            .getValue();
+        PortalSignupSettings response
+            = manager.signUpSettings().getWithResponse("wgznacmkwcy", "l", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals(true, response.enabled());
-        Assertions.assertEquals("la", response.termsOfService().text());
-        Assertions.assertEquals(false, response.termsOfService().enabled());
-        Assertions.assertEquals(false, response.termsOfService().consentRequired());
+        Assertions.assertFalse(response.enabled());
+        Assertions.assertEquals("zxbwnyyihcty", response.termsOfService().text());
+        Assertions.assertFalse(response.termsOfService().enabled());
+        Assertions.assertFalse(response.termsOfService().consentRequired());
     }
 }

@@ -7,8 +7,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.IssueCommentContract;
@@ -22,21 +22,21 @@ public final class ApiIssueCommentsListByServiceMockTests {
     @Test
     public void testListByService() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"text\":\"k\",\"createdDate\":\"2021-04-05T21:35:25Z\",\"userId\":\"znfgvlx\"},\"id\":\"xmnctigpksywi\",\"name\":\"k\",\"type\":\"ktgkdprtqjytdc\"}]}";
+            = "{\"value\":[{\"properties\":{\"text\":\"yqycymzrlcfgdwza\",\"createdDate\":\"2021-05-16T19:00:31Z\",\"userId\":\"dheadnyciwz\"},\"id\":\"ilykqadfgesv\",\"name\":\"oha\",\"type\":\"bri\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<IssueCommentContract> response = manager.apiIssueComments()
-            .listByService("ms", "auemqomxoa", "knuyapvibzicyvi", "hcaptkhjx", "rkbn", 1045968811, 1932908026,
+            .listByService("zyvextchslro", "dowuwhdlri", "io", "ttcbiichgku", "sozodwjcfq", 1673174284, 502317321,
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("k", response.iterator().next().text());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-05T21:35:25Z"), response.iterator().next().createdDate());
-        Assertions.assertEquals("znfgvlx", response.iterator().next().userId());
+        Assertions.assertEquals("yqycymzrlcfgdwza", response.iterator().next().text());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-16T19:00:31Z"), response.iterator().next().createdDate());
+        Assertions.assertEquals("dheadnyciwz", response.iterator().next().userId());
     }
 }

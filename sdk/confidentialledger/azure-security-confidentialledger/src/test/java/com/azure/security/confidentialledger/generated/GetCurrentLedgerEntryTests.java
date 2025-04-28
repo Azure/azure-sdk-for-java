@@ -19,7 +19,7 @@ public final class GetCurrentLedgerEntryTests extends ConfidentialLedgerClientTe
         Response<BinaryData> response = confidentialLedgerClient.getCurrentLedgerEntryWithResponse(requestOptions);
         Assertions.assertEquals(200, response.getStatusCode());
         Assertions.assertEquals(BinaryData.fromString(
-            "{\"collectionId\":\"DEFAULT_SUBLEDGER\",\"contents\":\"Current ledger entry contents.\",\"transactionId\":\"4.2\"}")
+            "{\"collectionId\":\"subledger:0\",\"contents\":\"Current ledger entry contents.\",\"transactionId\":\"2.15\"}")
             .toObject(Object.class), response.getValue().toObject(Object.class));
     }
 }

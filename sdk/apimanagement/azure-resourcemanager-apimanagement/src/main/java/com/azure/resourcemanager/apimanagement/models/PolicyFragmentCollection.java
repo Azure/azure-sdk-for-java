@@ -4,38 +4,153 @@
 
 package com.azure.resourcemanager.apimanagement.models;
 
-import com.azure.resourcemanager.apimanagement.fluent.models.PolicyFragmentCollectionInner;
+import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.apimanagement.fluent.models.PolicyFragmentContractInner;
+import java.io.IOException;
 import java.util.List;
 
 /**
- * An immutable client-side representation of PolicyFragmentCollection.
+ * The response of the get policy fragments operation.
  */
-public interface PolicyFragmentCollection {
+@Fluent
+public final class PolicyFragmentCollection implements JsonSerializable<PolicyFragmentCollection> {
+    /*
+     * Policy fragment contract value.
+     */
+    private List<PolicyFragmentContractInner> value;
+
+    /*
+     * Total record count number.
+     */
+    private Long count;
+
+    /*
+     * Next page link if any.
+     */
+    private String nextLink;
+
     /**
-     * Gets the value property: Policy fragment contract value.
+     * Creates an instance of PolicyFragmentCollection class.
+     */
+    public PolicyFragmentCollection() {
+    }
+
+    /**
+     * Get the value property: Policy fragment contract value.
      * 
      * @return the value value.
      */
-    List<PolicyFragmentContract> value();
+    public List<PolicyFragmentContractInner> value() {
+        return this.value;
+    }
 
     /**
-     * Gets the count property: Total record count number.
+     * Set the value property: Policy fragment contract value.
+     * 
+     * @param value the value value to set.
+     * @return the PolicyFragmentCollection object itself.
+     */
+    public PolicyFragmentCollection withValue(List<PolicyFragmentContractInner> value) {
+        this.value = value;
+        return this;
+    }
+
+    /**
+     * Get the count property: Total record count number.
      * 
      * @return the count value.
      */
-    Long count();
+    public Long count() {
+        return this.count;
+    }
 
     /**
-     * Gets the nextLink property: Next page link if any.
+     * Set the count property: Total record count number.
+     * 
+     * @param count the count value to set.
+     * @return the PolicyFragmentCollection object itself.
+     */
+    public PolicyFragmentCollection withCount(Long count) {
+        this.count = count;
+        return this;
+    }
+
+    /**
+     * Get the nextLink property: Next page link if any.
      * 
      * @return the nextLink value.
      */
-    String nextLink();
+    public String nextLink() {
+        return this.nextLink;
+    }
 
     /**
-     * Gets the inner com.azure.resourcemanager.apimanagement.fluent.models.PolicyFragmentCollectionInner object.
+     * Set the nextLink property: Next page link if any.
      * 
-     * @return the inner object.
+     * @param nextLink the nextLink value to set.
+     * @return the PolicyFragmentCollection object itself.
      */
-    PolicyFragmentCollectionInner innerModel();
+    public PolicyFragmentCollection withNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
+    }
+
+    /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("value", this.value, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeNumberField("count", this.count);
+        jsonWriter.writeStringField("nextLink", this.nextLink);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of PolicyFragmentCollection from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of PolicyFragmentCollection if the JsonReader was pointing to an instance of it, or null if
+     * it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the PolicyFragmentCollection.
+     */
+    public static PolicyFragmentCollection fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PolicyFragmentCollection deserializedPolicyFragmentCollection = new PolicyFragmentCollection();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("value".equals(fieldName)) {
+                    List<PolicyFragmentContractInner> value
+                        = reader.readArray(reader1 -> PolicyFragmentContractInner.fromJson(reader1));
+                    deserializedPolicyFragmentCollection.value = value;
+                } else if ("count".equals(fieldName)) {
+                    deserializedPolicyFragmentCollection.count = reader.getNullable(JsonReader::getLong);
+                } else if ("nextLink".equals(fieldName)) {
+                    deserializedPolicyFragmentCollection.nextLink = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedPolicyFragmentCollection;
+        });
+    }
 }
