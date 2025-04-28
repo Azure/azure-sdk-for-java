@@ -9,6 +9,7 @@ import com.github.javaparser.ast.stmt.IfStmt;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.SerializationFormat;
+import io.clientcore.core.utils.CoreUtils;
 import java.nio.ByteBuffer;
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.TypeElement;
@@ -199,7 +200,6 @@ public final class RequestBodyHandler {
      * @param parameterName The name of the parameter to be serialized.
      */
     public static void handleRequestBodySerialization(BlockStmt body, String parameterName) {
-        body.tryAddImportToParentCompilationUnit(SerializationFormat.class);
         body.addStatement(StaticJavaParser.parseStatement(
             "SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());"));
         body.addStatement(StaticJavaParser.parseStatement(String.format(
@@ -211,6 +211,9 @@ public final class RequestBodyHandler {
 
     private static void addRequestBodyWithNullCheck(BlockStmt body, TypeMirror parameterType, String parameterName,
         Elements elementUtils, Types typeUtils) {
+        body.tryAddImportToParentCompilationUnit(SerializationFormat.class);
+        body.tryAddImportToParentCompilationUnit(CoreUtils.class);
+
         BlockStmt ifBlock = new BlockStmt();
         IfStmt ifStatement = new IfStmt(StaticJavaParser.parseExpression(parameterName + " != null"), ifBlock, null);
 
