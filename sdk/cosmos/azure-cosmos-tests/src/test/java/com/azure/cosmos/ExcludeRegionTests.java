@@ -116,7 +116,7 @@ public class ExcludeRegionTests extends TestSuiteBase {
             { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM },
             { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM },
             { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM },
-            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM },
+            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM }
         };
     }
 
@@ -223,9 +223,30 @@ public class ExcludeRegionTests extends TestSuiteBase {
         TestItem createdItem = TestItem.createNewItem();
         this.cosmosAsyncContainer.createItem(createdItem).block();
 
-        FaultInjectionRule serverErrorRule = new FaultInjectionRuleBuilder("excludeRegionTest-" + operationType)
+        // Allows the collection to be usable in all regions
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+        FaultInjectionRule gatewayResponseDelay = new FaultInjectionRuleBuilder("excludeRegionTest-" + operationType)
             .condition(
                 new FaultInjectionConditionBuilder()
+                    .connectionType(FaultInjectionConnectionType.GATEWAY)
+                    .region(this.preferredRegionList.get(0))
+                    .build())
+            .result(
+                FaultInjectionResultBuilders
+                    .getResultBuilder(FaultInjectionServerErrorType.RESPONSE_DELAY)
+                    .delay(Duration.ofSeconds(70))
+                    .build()
+            ).build();
+
+        FaultInjectionRule backendResponseDelay = new FaultInjectionRuleBuilder("excludeRegionTest-" + operationType)
+            .condition(
+                new FaultInjectionConditionBuilder()
+                    .connectionType(FaultInjectionConnectionType.DIRECT)
                     .region(this.preferredRegionList.get(0))
                     .build())
             .result(
@@ -245,7 +266,11 @@ public class ExcludeRegionTests extends TestSuiteBase {
             CosmosAsyncDatabase databaseBackedByDifferentClient = asyncClient.getDatabase(databaseId);
             CosmosAsyncContainer containerBackedByDifferentClient = databaseBackedByDifferentClient.getContainer(containerId);
 
-            CosmosFaultInjectionHelper.configureFaultInjectionRules(containerBackedByDifferentClient, Arrays.asList(serverErrorRule)).block();
+            if (this.clientWithPreferredRegions.getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
+                CosmosFaultInjectionHelper.configureFaultInjectionRules(containerBackedByDifferentClient, Arrays.asList(gatewayResponseDelay, backendResponseDelay)).block();
+            } else {
+                CosmosFaultInjectionHelper.configureFaultInjectionRules(containerBackedByDifferentClient, Arrays.asList(gatewayResponseDelay)).block();
+            }
 
             CosmosDiagnosticsContext cosmosDiagnosticsContextPostRegionOutage = this.performDocumentOperation(
                 containerBackedByDifferentClient,
@@ -259,7 +284,7 @@ public class ExcludeRegionTests extends TestSuiteBase {
         } catch (CosmosException cosmosException) {
             fail("Request should succeeded in other regions");
         } finally {
-            serverErrorRule.disable();
+            gatewayResponseDelay.disable();
         }
     }
 
@@ -372,7 +397,7 @@ public class ExcludeRegionTests extends TestSuiteBase {
 
                 TestItem itemToBeDeleted = TestItem.createNewItem();
 
-                cosmosAsyncContainer.createItem(itemToBeDeleted).block();
+                cosmosAsyncContainer.createItem(itemToBeDeleted, cosmosItemRequestOptions).block();
 
                 try {
                     Thread.sleep(1000);

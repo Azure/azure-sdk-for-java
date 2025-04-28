@@ -5968,6 +5968,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             requestHeaders.put(HttpConstants.HttpHeaders.PAGE_SIZE, Integer.toString(pageSize));
             RxDocumentServiceRequest request =  RxDocumentServiceRequest.create(this,
                 OperationType.ReadFeed, resourceType, resourceLink, requestHeaders, nonNullOptions);
+
+            if (nonNullOptions.getExcludedRegions() != null && !nonNullOptions.getExcludedRegions().isEmpty()) {
+                request.requestContext.setExcludeRegions(nonNullOptions.getExcludedRegions());
+            }
+
             retryPolicy.onBeforeSendRequest(request);
             return request;
         };
