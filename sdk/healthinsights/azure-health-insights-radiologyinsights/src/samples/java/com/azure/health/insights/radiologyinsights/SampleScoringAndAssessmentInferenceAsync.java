@@ -112,7 +112,6 @@ public class SampleScoringAndAssessmentInferenceAsync {
                 if (completedResult.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
                     System.out.println("Completed poll response, status: " + completedResult.getStatus());
                     mono = completedResult.getFinalResult();
-                    displayScoringAndAssessmentInference(mono.block());
                 }
             }, error -> {
                 System.err.println(error.getMessage());
@@ -120,6 +119,7 @@ public class SampleScoringAndAssessmentInferenceAsync {
             });
 
         latch.await();
+        displayScoringAndAssessmentInference(mono.block());
     }
 
     /**

@@ -112,7 +112,6 @@ public class SampleFindingInferenceAsync {
                 if (completedResult.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
                     System.out.println("Completed poll response, status: " + completedResult.getStatus());
                     mono = completedResult.getFinalResult();
-                    displayFindings(mono.block());
                 }
             }, error -> {
                 System.err.println(error.getMessage());
@@ -120,6 +119,7 @@ public class SampleFindingInferenceAsync {
             });
 
         latch.await();
+        displayFindings(mono.block());
     }
 
     private static Mono<RadiologyInsightsInferenceResult> mono = null;

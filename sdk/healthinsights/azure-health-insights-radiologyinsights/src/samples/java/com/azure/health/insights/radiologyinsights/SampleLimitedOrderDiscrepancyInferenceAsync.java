@@ -105,7 +105,6 @@ public class SampleLimitedOrderDiscrepancyInferenceAsync {
                 if (completedResult.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
                     System.out.println("Completed poll response, status: " + completedResult.getStatus());
                     mono = completedResult.getFinalResult();
-                    displayLimitedOrderDiscrepancies(mono.block());
                 }
             }, error -> {
                 System.err.println(error.getMessage());
@@ -113,6 +112,7 @@ public class SampleLimitedOrderDiscrepancyInferenceAsync {
             });
 
         latch.await();
+        displayLimitedOrderDiscrepancies(mono.block());
     }
 
     private static Mono<RadiologyInsightsInferenceResult> mono = null;

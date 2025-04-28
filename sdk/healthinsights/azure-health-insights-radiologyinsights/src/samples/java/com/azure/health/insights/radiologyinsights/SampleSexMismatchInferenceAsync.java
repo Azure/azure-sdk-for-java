@@ -109,7 +109,6 @@ public class SampleSexMismatchInferenceAsync {
                 if (completedResult.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
                     System.out.println("Completed poll response, status: " + completedResult.getStatus());
                     mono = completedResult.getFinalResult();
-                    displaySexMismatches(mono.block());
                 }
             }, error -> {
                 System.err.println(error.getMessage());
@@ -117,6 +116,7 @@ public class SampleSexMismatchInferenceAsync {
             });
 
         latch.await();
+        displaySexMismatches(mono.block());
     }
 
     private static Mono<RadiologyInsightsInferenceResult> mono = null;

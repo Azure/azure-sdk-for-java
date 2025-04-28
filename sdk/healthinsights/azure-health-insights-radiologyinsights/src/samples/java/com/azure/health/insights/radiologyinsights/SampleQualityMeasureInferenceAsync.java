@@ -94,7 +94,6 @@ public class SampleQualityMeasureInferenceAsync {
      */
     public static void main(final String[] args) throws InterruptedException {
         String endpoint = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT");
-
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
         RadiologyInsightsClientBuilder clientBuilder = new RadiologyInsightsClientBuilder()
             .endpoint(endpoint)
@@ -116,7 +115,6 @@ public class SampleQualityMeasureInferenceAsync {
                 if (completedResult.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
                     System.out.println("Completed poll response, status: " + completedResult.getStatus());
                     mono = completedResult.getFinalResult();
-                    displayQualityMeasureInference(mono.block());
                 }
             }, error -> {
                 System.err.println(error.getMessage());
@@ -124,6 +122,7 @@ public class SampleQualityMeasureInferenceAsync {
             });
 
         latch.await();
+        displayQualityMeasureInference(mono.block());
     }
 
     /**

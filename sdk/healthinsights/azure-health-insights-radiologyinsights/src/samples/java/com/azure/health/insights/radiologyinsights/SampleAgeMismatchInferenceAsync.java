@@ -110,7 +110,6 @@ public class SampleAgeMismatchInferenceAsync {
                 if (completedResult.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
                     System.out.println("Completed poll response, status: " + completedResult.getStatus());
                     mono = completedResult.getFinalResult();
-                    displayAgeMismatches(mono.block());
                 }
             }, error -> {
                 System.err.println(error.getMessage());
@@ -118,6 +117,7 @@ public class SampleAgeMismatchInferenceAsync {
             });
 
         latch.await();
+        displayAgeMismatches(mono.block());
     }
 
     private static Mono<RadiologyInsightsInferenceResult> mono = null;

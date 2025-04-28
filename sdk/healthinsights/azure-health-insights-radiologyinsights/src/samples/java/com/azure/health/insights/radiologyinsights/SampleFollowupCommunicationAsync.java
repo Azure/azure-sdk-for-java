@@ -111,7 +111,6 @@ public class SampleFollowupCommunicationAsync {
                 if (completedResult.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
                     System.out.println("Completed poll response, status: " + completedResult.getStatus());
                     mono = completedResult.getFinalResult();
-                    displayFollowupCommunications(mono.block());
                 }
             }, error -> {
                 System.err.println(error.getMessage());
@@ -119,6 +118,7 @@ public class SampleFollowupCommunicationAsync {
             });
 
         latch.await();
+        displayFollowupCommunications(mono.block());
     }
 
     private static Mono<RadiologyInsightsInferenceResult> mono = null;
