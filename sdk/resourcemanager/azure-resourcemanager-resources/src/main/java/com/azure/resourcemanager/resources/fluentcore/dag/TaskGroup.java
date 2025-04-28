@@ -15,9 +15,15 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Function;
 
 /**
  * Type representing a group of task entries with dependencies between them. Initially a task
@@ -40,6 +46,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * The result produced by the tasks in the group are of type {@link Indexable}.
  */
 public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> implements Indexable {
+    private static final String INVOKE_DEPENDENCY_POST_RUN_NOT_ALLOWED_MESSAGE
+        = "Resource configuration which includes 'after create/update' operation is not supported.";
     /**
      * The root task in this task group.
      */
@@ -283,29 +291,89 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
     }
 
     /**
-     * Invokes dependency tasks in the group, but not.
+     * Invokes dependency tasks in the group, but not the group itself.
      *
      * @param context group level shared context that need be passed to invokeAsync(cxt)
      *                method of each task item in the group when it is selected for invocation.
-     * @return an observable that emits the result of tasks in the order they finishes.
+     * @return an observable that emits the result of tasks in the order they finish.
      */
     public Flux<Indexable> invokeDependencyAsync(final InvocationContext context) {
-        final String postRunErrorMessage
-            = "Resource configuration which includes 'after create/update' operation is not supported.";
 
         context.put(TaskGroup.InvocationContext.KEY_SKIP_TASKS, Collections.singleton(this.key()));
         return Flux.defer(() -> {
             if (proxyTaskGroupWrapper.isActive()) {
-                return Flux.error(new IllegalStateException(postRunErrorMessage));
+                return Flux.error(new IllegalStateException(INVOKE_DEPENDENCY_POST_RUN_NOT_ALLOWED_MESSAGE));
             } else {
                 Set<String> processedKeys = runBeforeGroupInvoke(null);
                 if (proxyTaskGroupWrapper.isActive()) {
-                    return Flux.error(new IllegalStateException(postRunErrorMessage));
+                    return Flux.error(new IllegalStateException(INVOKE_DEPENDENCY_POST_RUN_NOT_ALLOWED_MESSAGE));
                 } else {
                     return invokeInternAsync(context, false, null);
                 }
             }
         });
+    }
+
+    /**
+     * Invokes tasks in the group.
+     * {@link TaskGroupEntry#invokeTask(boolean, InvocationContext)} method of each entry in the group will be invoked
+     * when it is selected for execution.Tasks will be executed concurrently on {@link ForkJoinPool#commonPool()} by default.
+     *
+     * @param context group level shared context that need be passed to
+     *                {@link TaskGroupEntry#invokeTask(boolean, InvocationContext)}
+     *                method of each entry in the group when it is selected for execution
+     *
+     * @return the root result of task group.
+     */
+    public Indexable invoke(final InvocationContext context) {
+        if (proxyTaskGroupWrapper.isActive()) {
+            proxyTaskGroupWrapper.taskGroup().invokeIntern(context, true, null);
+            return proxyTaskGroupWrapper.taskGroup().root().taskResult();
+        } else {
+            Set<String> processedKeys = runBeforeGroupInvoke(null);
+            if (proxyTaskGroupWrapper.isActive()) {
+                // If proxy got activated after 'runBeforeGroupInvoke()' stage due to the addition of direct
+                // 'postRunDependent's then delegate group invocation to proxy group.
+                //
+                proxyTaskGroupWrapper.taskGroup().invokeIntern(context, true, processedKeys);
+            } else {
+                invokeIntern(context, false, null);
+            }
+            return root().taskResult();
+        }
+    }
+
+    /**
+     * Invokes tasks in the group.
+     * {@link TaskGroupEntry#invokeTask(boolean, InvocationContext)} method of each entry in the group will be invoked
+     * when it is selected for execution. Tasks will be executed concurrently on {@link ForkJoinPool#commonPool()} by default.
+     *
+     * @return the root result of task group.
+     */
+    public Indexable invoke() {
+        return invoke(this.newInvocationContext());
+    }
+
+    /**
+     * Invokes dependency tasks in the group, but not the group itself.
+     *
+     * @param context group level shared context that need be passed to invoke(cxt)
+     *                method of each task item in the group when it is selected for invocation.
+     */
+    public void invokeDependency(final InvocationContext context) {
+        context.put(TaskGroup.InvocationContext.KEY_SKIP_TASKS, Collections.singleton(this.key()));
+
+        if (proxyTaskGroupWrapper.isActive()) {
+            throw logger.logExceptionAsError(new IllegalStateException(INVOKE_DEPENDENCY_POST_RUN_NOT_ALLOWED_MESSAGE));
+        } else {
+            Set<String> processedKeys = runBeforeGroupInvoke(null);
+            if (proxyTaskGroupWrapper.isActive()) {
+                throw logger
+                    .logExceptionAsError(new IllegalStateException(INVOKE_DEPENDENCY_POST_RUN_NOT_ALLOWED_MESSAGE));
+            } else {
+                invokeIntern(context, false, null);
+            }
+        }
     }
 
     /**
@@ -481,7 +549,7 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
                     (error) -> processFaultedTaskAsync(entry, error, context), () -> {
                         if (isFaulted) {
                             if (entry.hasFaultedDescentDependencyTasks()) {
-                                return processFaultedTaskAsync(entry, new ErroredDependencyTaskException(), context);
+                                return processFaultedTaskAsync(entry, new FailedDependencyTaskException(), context);
                             } else {
                                 return processFaultedTaskAsync(entry, taskCancelledException, context);
                             }
@@ -538,6 +606,189 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
     }
 
     /**
+     * Invokes tasks in the group.
+     *
+     * @param context group level shared context that need be passed to {@link TaskGroupEntry#invokeTask(boolean, InvocationContext)}
+     *                                   method of each task item in the group when it is selected for invocation.
+     * @param shouldRunBeforeGroupInvoke indicate whether to run the 'beforeGroupInvoke' method
+     *                                   of each tasks before invoking them
+     * @param skipBeforeGroupInvoke the tasks keys for which 'beforeGroupInvoke' should not be called
+     *                                   before invoking them
+     */
+    private void invokeIntern(InvocationContext context, boolean shouldRunBeforeGroupInvoke,
+        Set<String> skipBeforeGroupInvoke) {
+        if (!isPreparer()) {
+            throw logger.logExceptionAsError(
+                new IllegalStateException("invokeIntern(cxt) can be called only from root TaskGroup"));
+        }
+        this.taskGroupTerminateOnErrorStrategy = context.terminateOnErrorStrategy();
+        if (shouldRunBeforeGroupInvoke) {
+            // Prepare tasks and queue the ready tasks (terminal tasks with no dependencies)
+            //
+            this.runBeforeGroupInvoke(skipBeforeGroupInvoke);
+        }
+        // Runs the ready tasks concurrently
+        //
+        this.invokeReadyTasks(context).join();
+    }
+
+    /**
+     * Invokes the ready tasks currently.
+     *
+     * @param context group level shared context that need be passed to
+     *                {@link TaskGroupEntry#invokeTask(boolean, InvocationContext)}
+     *                method of each entry in the group when it is selected for execution
+     * @return a {@link CompletableFuture} that kicks off execution of the ready tasks, and future sets of tasks
+     */
+    private CompletableFuture<Void> invokeReadyTasks(InvocationContext context) {
+        TaskGroupEntry<TaskItem> readyTaskEntry = super.getNext();
+        final List<CompletableFuture<?>> futures = new ArrayList<>();
+        // Enumerate the ready tasks (those with dependencies resolved) and kickoff them concurrently
+        //
+        while (readyTaskEntry != null) {
+            final TaskGroupEntry<TaskItem> currentEntry = readyTaskEntry;
+            final TaskItem currentTaskItem = currentEntry.data();
+            if (currentTaskItem instanceof ProxyTaskItem) {
+                futures.add(invokeAfterPostRun(currentEntry, context));
+            } else {
+                futures.add(invokeTask(currentEntry, context));
+            }
+            readyTaskEntry = super.getNext();
+        }
+        return CompletableFuture.allOf(futures.toArray(new CompletableFuture<?>[0]));
+    }
+
+    /**
+     * Invokes the {@link TaskItem#invokeAfterPostRun(boolean)} method of an actual TaskItem
+     * if the given entry holds a ProxyTaskItem.
+     *
+     * @param entry the entry holding a ProxyTaskItem
+     * @param context a group level shared context
+     * @return An {@link CompletableFuture} that represents asynchronous work started by
+     * {@link TaskItem#invokeAfterPostRun(boolean)} method of actual TaskItem and result of subset
+     * of tasks which gets scheduled after proxy task.
+     */
+    private CompletableFuture<Void> invokeAfterPostRun(TaskGroupEntry<TaskItem> entry, InvocationContext context) {
+        final ProxyTaskItem proxyTaskItem = (ProxyTaskItem) entry.data();
+        if (proxyTaskItem == null) {
+            return CompletableFuture.completedFuture(null);
+        }
+        final boolean isFaulted = entry.hasFaultedDescentDependencyTasks() || isGroupCancelled.get();
+
+        // We could make the ThreadPool configurable in InvocationContext/ResourceManagerUtils.InternalRuntimeContext,
+        // instead of the default ForkJoinPool.commonPool().
+        //
+        return CompletableFuture.supplyAsync(() -> {
+            proxyTaskItem.invokeAfterPostRun(isFaulted);
+            return null;
+        }, context.syncExecutor()).exceptionally(Function.identity()).thenComposeAsync(result -> {
+            if (result instanceof Throwable) {
+                return processFaultedTask(entry, (Throwable) result, context);
+            }
+            if (isFaulted) {
+                if (entry.hasFaultedDescentDependencyTasks()) {
+                    return processFaultedTask(entry, new FailedDependencyTaskException(), context);
+                } else {
+                    return processFaultedTask(entry, taskCancelledException, context);
+                }
+            } else {
+                return processCompletedTask(entry, context);
+            }
+        }, context.syncExecutor());
+    }
+
+    /**
+     * Invokes the task stored in the given entry.
+     * <p>
+     * if the task cannot be invoked because the group marked as cancelled then a
+     * {@link TaskCancelledException} will be thrown.
+     *
+     * @param entry the entry holding task
+     * @param context a group level shared context that is passed to {@link TaskItem#invoke(InvocationContext)}
+     *                method of the task item this entry wraps.
+     * @return a {@link CompletableFuture} that kicks off execution of the given task, and future sets of tasks
+     */
+    private CompletableFuture<Void> invokeTask(TaskGroupEntry<TaskItem> entry, InvocationContext context) {
+        if (isGroupCancelled.get()) {
+            // One or more tasks are in faulted state, though this task MAYBE invoked if it does not
+            // have faulted tasks as transitive dependencies, we won't do it since group is cancelled
+            // due to termination strategy TERMINATE_ON_IN_PROGRESS_TASKS_COMPLETION.
+            //
+            return processFaultedTask(entry, taskCancelledException, context);
+        } else {
+            // Any cached result will be ignored for root resource
+            //
+            boolean ignoreCachedResult = isRootEntry(entry) || (entry.proxy() != null && isRootEntry(entry.proxy()));
+
+            // We could make the ThreadPool configurable in InvocationContext/ResourceManagerUtils.InternalRuntimeContext,
+            // instead of the default ForkJoinPool.commonPool().
+            //
+            Object skipTasks = context.get(InvocationContext.KEY_SKIP_TASKS);
+            CompletableFuture<Object> completableFuture;
+            if (skipTasks instanceof Set && ((Set) skipTasks).contains(entry.key())) {
+                completableFuture = CompletableFuture.completedFuture(null);
+            } else {
+                completableFuture = CompletableFuture.supplyAsync(() -> {
+                    entry.invokeTask(ignoreCachedResult, context);
+                    return null;
+                }, context.syncExecutor());
+            }
+            return completableFuture.exceptionally(Function.identity()).thenComposeAsync(result -> {
+                if (result instanceof Throwable) {
+                    return processFaultedTask(entry, ((Throwable) result).getCause(), context);
+                }
+                return processCompletedTask(entry, context);
+            }, context.syncExecutor());
+        }
+    }
+
+    /**
+     * Handles successful completion of a task.
+     * <p>
+     * If the task is not root (terminal) task then this kickoff execution of next set of ready tasks
+     *
+     * @param completedEntry the entry holding completed task
+     * @param context the context object shared across all the task entries in this group during execution
+     * @return a {@link CompletableFuture} that kicks off execution of next set of ready tasks
+     */
+    private CompletableFuture<Void> processCompletedTask(TaskGroupEntry<TaskItem> completedEntry,
+        InvocationContext context) {
+        reportCompletion(completedEntry);
+        if (!isRootEntry(completedEntry)) {
+            return invokeReadyTasks(context);
+        }
+        return CompletableFuture.completedFuture(null);
+    }
+
+    /**
+     * Handles a faulted task.
+     *
+     * @param faultedEntry the entry holding faulted task
+     * @param throwable the reason for fault
+     * @param context the context object shared across all the task entries in this group during execution
+     * @return a {@link CompletableFuture} that kicks off execution of next set of ready tasks
+     */
+    private CompletableFuture<Void> processFaultedTask(TaskGroupEntry<TaskItem> faultedEntry, Throwable throwable,
+        InvocationContext context) {
+        markGroupAsCancelledIfTerminationStrategyIsIPTC();
+        // CompletableFuture will wrap execution exception into CompletionException, with the actual exception as its cause.
+        if (throwable instanceof CompletionException && throwable.getCause() != null) {
+            throwable = throwable.getCause();
+        }
+        reportError(faultedEntry, throwable);
+        if (isRootEntry(faultedEntry)) {
+            if (shouldPropagateException(throwable)) {
+                return failedFuture(throwable);
+            }
+            return CompletableFuture.completedFuture(null);
+        } else if (shouldPropagateException(throwable)) {
+            return CompletableFuture.allOf(invokeReadyTasks(context), failedFuture(throwable));
+        } else {
+            return invokeReadyTasks(context);
+        }
+    }
+
+    /**
      * Mark this TaskGroup as cancelled if the termination strategy associated with the group
      * is {@link TaskGroupTerminateOnErrorStrategy#TERMINATE_ON_IN_PROGRESS_TASKS_COMPLETION}.
      */
@@ -565,7 +816,7 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
      * emitted by the final stream.
      */
     private static boolean shouldPropagateException(Throwable throwable) {
-        return (!(throwable instanceof ErroredDependencyTaskException)
+        return (!(throwable instanceof FailedDependencyTaskException)
             && !(throwable instanceof TaskCancelledException));
     }
 
@@ -586,6 +837,19 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
      */
     public InvocationContext newInvocationContext() {
         return new InvocationContext(this);
+    }
+
+    /**
+     * Constructs a {@link CompletableFuture} that completes by throwing specified {@link Throwable}.
+     *
+     * @param throwable the error to throw
+     * @return a {@link CompletableFuture} that completes by throwing specified {@link Throwable}
+     * @param <T> result type, can be ignored
+     */
+    private static <T> CompletableFuture<T> failedFuture(Throwable throwable) {
+        CompletableFuture<T> future = new CompletableFuture<>();
+        future.completeExceptionally(throwable);
+        return future;
     }
 
     /**
@@ -611,6 +875,7 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
         private final Map<String, Object> properties;
         private final TaskGroup taskGroup;
         private TaskGroupTerminateOnErrorStrategy terminateOnErrorStrategy;
+        private Executor syncExecutor = ForkJoinPool.commonPool();
         private final ClientLogger logger = new ClientLogger(this.getClass());
 
         /**
@@ -687,6 +952,29 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
          */
         public boolean hasKey(String key) {
             return this.get(key) != null;
+        }
+
+        /**
+         * Sets the {@link Executor} for task execution, when the TaskGroup is invoked
+         * via {@link TaskGroup#invoke(InvocationContext)}.
+         *
+         * @param syncExecutor the sync Executor
+         * @return the context itself
+         */
+        public InvocationContext withSyncTaskExecutor(Executor syncExecutor) {
+            Objects.requireNonNull(syncExecutor);
+            this.syncExecutor = syncExecutor;
+            return this;
+        }
+
+        /**
+         * Sets the {@link Executor} for task execution, when the TaskGroup is invoked
+         * via {@link TaskGroup#invoke(InvocationContext)}.
+         *
+         * @return the {@link Executor} for sync TaskGroup invocation
+         */
+        public Executor syncExecutor() {
+            return syncExecutor;
         }
     }
 
@@ -831,6 +1119,16 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
             } else {
                 return this.actualTaskItem.invokeAfterPostRunAsync(isGroupFaulted).subscribeOn(Schedulers.immediate());
             }
+        }
+
+        @Override
+        public Indexable invoke(InvocationContext context) {
+            return actualTaskItem.result();
+        }
+
+        @Override
+        public void invokeAfterPostRun(boolean isGroupFaulted) {
+            this.actualTaskItem.invokeAfterPostRun(isGroupFaulted);
         }
     }
 }
