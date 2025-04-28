@@ -110,12 +110,15 @@ public class RxClientCollectionCache extends RxCollectionCache {
         if (diagnosticsContext != null) {
             OverridableRequestOptions requestOptions
                 = diagnosticsContextAccessor.getRequestOptions(diagnosticsContext);
-            request.requestContext.setExcludeRegions(requestOptions.getExcludedRegions());
 
-            CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest
-                = request.requestContext.getCrossRegionAvailabilityContext();
+            if (requestOptions != null) {
+                request.requestContext.setExcludeRegions(requestOptions.getExcludedRegions());
 
-            crossRegionAvailabilityContextForRequest.setEnableRegionReorderingForAuxiliaryRequests(true);
+                CrossRegionAvailabilityContextForRxDocumentServiceRequest crossRegionAvailabilityContextForRequest
+                    = request.requestContext.getCrossRegionAvailabilityContext();
+
+                crossRegionAvailabilityContextForRequest.setEnableRegionReorderingForAuxiliaryRequests(true);
+            }
         }
 
         request.getHeaders().put(HttpConstants.HttpHeaders.X_DATE, Utils.nowAsRFC1123());
