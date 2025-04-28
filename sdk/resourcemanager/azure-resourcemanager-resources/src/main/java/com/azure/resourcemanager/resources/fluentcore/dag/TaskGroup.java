@@ -46,6 +46,8 @@ import java.util.function.Function;
  * The result produced by the tasks in the group are of type {@link Indexable}.
  */
 public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> implements Indexable {
+    private static final String INVOKE_DEPENDENCY_POST_RUN_NOT_ALLOWED_MESSAGE
+        = "Resource configuration which includes 'after create/update' operation is not supported.";
     /**
      * The root task in this task group.
      */
@@ -296,17 +298,15 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
      * @return an observable that emits the result of tasks in the order they finish.
      */
     public Flux<Indexable> invokeDependencyAsync(final InvocationContext context) {
-        final String postRunErrorMessage
-            = "Resource configuration which includes 'after create/update' operation is not supported.";
 
         context.put(TaskGroup.InvocationContext.KEY_SKIP_TASKS, Collections.singleton(this.key()));
         return Flux.defer(() -> {
             if (proxyTaskGroupWrapper.isActive()) {
-                return Flux.error(new IllegalStateException(postRunErrorMessage));
+                return Flux.error(new IllegalStateException(INVOKE_DEPENDENCY_POST_RUN_NOT_ALLOWED_MESSAGE));
             } else {
                 Set<String> processedKeys = runBeforeGroupInvoke(null);
                 if (proxyTaskGroupWrapper.isActive()) {
-                    return Flux.error(new IllegalStateException(postRunErrorMessage));
+                    return Flux.error(new IllegalStateException(INVOKE_DEPENDENCY_POST_RUN_NOT_ALLOWED_MESSAGE));
                 } else {
                     return invokeInternAsync(context, false, null);
                 }
@@ -357,21 +357,19 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
     /**
      * Invokes dependency tasks in the group, but not the group itself.
      *
-     * @param context group level shared context that need be passed to invokeAsync(cxt)
+     * @param context group level shared context that need be passed to invoke(cxt)
      *                method of each task item in the group when it is selected for invocation.
      */
     public void invokeDependency(final InvocationContext context) {
-        final String postRunErrorMessage
-            = "Resource configuration which includes 'after create/update' operation is not supported.";
-
         context.put(TaskGroup.InvocationContext.KEY_SKIP_TASKS, Collections.singleton(this.key()));
 
         if (proxyTaskGroupWrapper.isActive()) {
-            throw logger.logExceptionAsError(new IllegalStateException(postRunErrorMessage));
+            throw logger.logExceptionAsError(new IllegalStateException(INVOKE_DEPENDENCY_POST_RUN_NOT_ALLOWED_MESSAGE));
         } else {
             Set<String> processedKeys = runBeforeGroupInvoke(null);
             if (proxyTaskGroupWrapper.isActive()) {
-                throw logger.logExceptionAsError(new IllegalStateException(postRunErrorMessage));
+                throw logger
+                    .logExceptionAsError(new IllegalStateException(INVOKE_DEPENDENCY_POST_RUN_NOT_ALLOWED_MESSAGE));
             } else {
                 invokeIntern(context, false, null);
             }
@@ -551,7 +549,7 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
                     (error) -> processFaultedTaskAsync(entry, error, context), () -> {
                         if (isFaulted) {
                             if (entry.hasFaultedDescentDependencyTasks()) {
-                                return processFaultedTaskAsync(entry, new ErroredDependencyTaskException(), context);
+                                return processFaultedTaskAsync(entry, new FailedDependencyTaskException(), context);
                             } else {
                                 return processFaultedTaskAsync(entry, taskCancelledException, context);
                             }
@@ -689,7 +687,7 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
             }
             if (isFaulted) {
                 if (entry.hasFaultedDescentDependencyTasks()) {
-                    return processFaultedTask(entry, new ErroredDependencyTaskException(), context);
+                    return processFaultedTask(entry, new FailedDependencyTaskException(), context);
                 } else {
                     return processFaultedTask(entry, taskCancelledException, context);
                 }
@@ -818,7 +816,7 @@ public class TaskGroup extends DAGraph<TaskItem, TaskGroupEntry<TaskItem>> imple
      * emitted by the final stream.
      */
     private static boolean shouldPropagateException(Throwable throwable) {
-        return (!(throwable instanceof ErroredDependencyTaskException)
+        return (!(throwable instanceof FailedDependencyTaskException)
             && !(throwable instanceof TaskCancelledException));
     }
 

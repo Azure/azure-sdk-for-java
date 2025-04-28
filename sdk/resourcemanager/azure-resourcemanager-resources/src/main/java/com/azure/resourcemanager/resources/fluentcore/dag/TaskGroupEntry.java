@@ -83,7 +83,7 @@ public final class TaskGroupEntry<TaskT extends TaskItem> extends DAGNode<TaskT,
     /**
      * Invokes the task this entry holds.
      * if the task cannot be invoked due to faulted dependencies then an observable that emit
-     * {@link ErroredDependencyTaskException} will be returned.
+     * {@link FailedDependencyTaskException} will be returned.
      *
      * @param ignoreCachedResult if the task is already invoked and has result cached then a value false for this
      *                           parameter indicates the cached result can be returned without invoking task again,
@@ -96,7 +96,7 @@ public final class TaskGroupEntry<TaskT extends TaskItem> extends DAGNode<TaskT,
      */
     public Mono<Indexable> invokeTaskAsync(boolean ignoreCachedResult, final TaskGroup.InvocationContext context) {
         if (hasFaultedDescentDependencyTasks) {
-            return Mono.error(new ErroredDependencyTaskException());
+            return Mono.error(new FailedDependencyTaskException());
         }
         final TaskT taskItem = this.taskItem();
         if (!ignoreCachedResult && hasCachedResult()) {
@@ -112,7 +112,7 @@ public final class TaskGroupEntry<TaskT extends TaskItem> extends DAGNode<TaskT,
 
     /**
      * Invokes the task this entry holds.
-     * if the task cannot be invoked due to faulted dependencies then {@link ErroredDependencyTaskException}
+     * if the task cannot be invoked due to faulted dependencies then {@link FailedDependencyTaskException}
      * will be thrown.
      *
      * @param ignoreCachedResult if the task is already invoked and has result cached then a value false for this
@@ -122,11 +122,11 @@ public final class TaskGroupEntry<TaskT extends TaskItem> extends DAGNode<TaskT,
      *                           this will be passed to {@link TaskItem#invoke(TaskGroup.InvocationContext)}
      *                           method of the task item
      * @return a result of type {@link Indexable}.
-     * @throws ErroredDependencyTaskException when the task has faulted descent dependency tasks
+     * @throws FailedDependencyTaskException when the task has faulted descent dependency tasks
      */
     public Indexable invokeTask(boolean ignoreCachedResult, final TaskGroup.InvocationContext context) {
         if (hasFaultedDescentDependencyTasks) {
-            throw logger.logThrowableAsWarning(new ErroredDependencyTaskException());
+            throw logger.logThrowableAsWarning(new FailedDependencyTaskException());
         }
         final TaskT taskItem = this.taskItem();
         if (!ignoreCachedResult && hasCachedResult()) {

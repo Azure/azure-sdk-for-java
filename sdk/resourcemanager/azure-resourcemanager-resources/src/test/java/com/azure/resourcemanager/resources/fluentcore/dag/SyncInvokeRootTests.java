@@ -12,6 +12,9 @@ import reactor.core.publisher.Mono;
 import java.util.HashMap;
 import java.util.function.Function;
 
+/**
+ * Sync-stack variant of {@link InvokeRootTests}.
+ */
 public class SyncInvokeRootTests {
 
     @Test

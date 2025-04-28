@@ -3,7 +3,6 @@
 
 package com.azure.resourcemanager.resources.fluentcore.dag;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -20,8 +19,10 @@ import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.function.Consumer;
 
+/**
+ * Sync-stack variant of {@link ProxyTaskGroupTests}.
+ */
 public class SyncProxyTaskGroupTests {
-    private static final ClientLogger LOGGER = new ClientLogger(SyncProxyTaskGroupTests.class);
 
     @Test
     public void testSimpleTaskGroupSanity() {
