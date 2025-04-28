@@ -7,8 +7,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.UserContract;
@@ -23,27 +23,27 @@ public final class UsersListByServiceMockTests {
     @Test
     public void testListByService() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"firstName\":\"rinvfcds\",\"lastName\":\"sinybntlxwayxujz\",\"email\":\"g\",\"registrationDate\":\"2021-04-04T23:35:14Z\",\"groups\":[{\"displayName\":\"rjucazwe\",\"description\":\"ahulxgcemxoan\",\"builtIn\":true,\"type\":\"system\",\"externalId\":\"nenxg\"},{\"displayName\":\"hmmgblqyfg\",\"description\":\"fpqifs\",\"builtIn\":false,\"type\":\"system\",\"externalId\":\"fxjiqpdso\"},{\"displayName\":\"wnnayooghjxhppp\",\"description\":\"sqiwlm\",\"builtIn\":true,\"type\":\"system\",\"externalId\":\"eohoygowdzizzu\"}],\"state\":\"pending\",\"note\":\"cppqvovsirtase\",\"identities\":[{\"provider\":\"pexhhjjat\",\"id\":\"p\"},{\"provider\":\"iroxamnvrcqjpb\",\"id\":\"nsihdzxeufj\"}]},\"id\":\"b\",\"name\":\"zm\",\"type\":\"xdmppib\"}]}";
+            = "{\"value\":[{\"properties\":{\"firstName\":\"jhtgncfbjvmdkgvu\",\"lastName\":\"mlsuuhwuox\",\"email\":\"i\",\"registrationDate\":\"2021-02-22T06:32:58Z\",\"groups\":[{\"displayName\":\"otmygzjrks\",\"description\":\"bafdb\",\"builtIn\":true,\"type\":\"external\",\"externalId\":\"leimswxoignqumjm\"},{\"displayName\":\"gzetuvfpsijpmept\",\"description\":\"snpafksprrvjw\",\"builtIn\":false,\"type\":\"system\",\"externalId\":\"obaqolwfkbdwzvht\"},{\"displayName\":\"fdygap\",\"description\":\"wmivazfnbzcjms\",\"builtIn\":false,\"type\":\"external\",\"externalId\":\"yxkcvahvb\"}],\"state\":\"pending\",\"note\":\"jivw\",\"identities\":[{\"provider\":\"icyctak\",\"id\":\"jyholsmahbjc\"}]},\"id\":\"vskqxgb\",\"name\":\"gozr\",\"type\":\"lklaurly\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<UserContract> response = manager.users()
-            .listByService("nrfvqgcuwgk", "qcbrewtfuxkts", "nikcgittfmlpihte", 155854355, 834642276, true,
+            .listByService("coeexwgzszjqzmq", "h", "hihkhjl", 762252227, 1527090209, true,
                 com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("rinvfcds", response.iterator().next().firstName());
-        Assertions.assertEquals("sinybntlxwayxujz", response.iterator().next().lastName());
-        Assertions.assertEquals("g", response.iterator().next().email());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-04T23:35:14Z"),
+        Assertions.assertEquals("jhtgncfbjvmdkgvu", response.iterator().next().firstName());
+        Assertions.assertEquals("mlsuuhwuox", response.iterator().next().lastName());
+        Assertions.assertEquals("i", response.iterator().next().email());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-22T06:32:58Z"),
             response.iterator().next().registrationDate());
         Assertions.assertEquals(UserState.PENDING, response.iterator().next().state());
-        Assertions.assertEquals("cppqvovsirtase", response.iterator().next().note());
-        Assertions.assertEquals("pexhhjjat", response.iterator().next().identities().get(0).provider());
-        Assertions.assertEquals("p", response.iterator().next().identities().get(0).id());
+        Assertions.assertEquals("jivw", response.iterator().next().note());
+        Assertions.assertEquals("icyctak", response.iterator().next().identities().get(0).provider());
+        Assertions.assertEquals("jyholsmahbjc", response.iterator().next().identities().get(0).id());
     }
 }

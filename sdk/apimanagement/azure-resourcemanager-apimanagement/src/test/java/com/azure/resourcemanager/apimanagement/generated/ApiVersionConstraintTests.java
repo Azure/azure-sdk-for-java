@@ -12,14 +12,14 @@ public final class ApiVersionConstraintTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApiVersionConstraint model
-            = BinaryData.fromString("{\"minApiVersion\":\"nbpvzlq\"}").toObject(ApiVersionConstraint.class);
-        Assertions.assertEquals("nbpvzlq", model.minApiVersion());
+            = BinaryData.fromString("{\"minApiVersion\":\"ekewnazeaj\"}").toObject(ApiVersionConstraint.class);
+        Assertions.assertEquals("ekewnazeaj", model.minApiVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApiVersionConstraint model = new ApiVersionConstraint().withMinApiVersion("nbpvzlq");
+        ApiVersionConstraint model = new ApiVersionConstraint().withMinApiVersion("ekewnazeaj");
         model = BinaryData.fromObject(model).toObject(ApiVersionConstraint.class);
-        Assertions.assertEquals("nbpvzlq", model.minApiVersion());
+        Assertions.assertEquals("ekewnazeaj", model.minApiVersion());
     }
 }

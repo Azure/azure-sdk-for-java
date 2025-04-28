@@ -11,7 +11,7 @@ public final class ContentTypeCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ContentTypeCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"id\":\"kl\",\"name\":\"etatlakf\",\"description\":\"ixwgiksbbvtooxrp\",\"schema\":\"datawp\",\"version\":\"hgjtnhtukfaci\"},\"id\":\"mbf\",\"name\":\"tumeezbxvqxb\",\"type\":\"uvwc\"}],\"nextLink\":\"sgomtmjz\"}")
+            "{\"value\":[{\"properties\":{\"id\":\"hgejkbvhhdaurgh\",\"name\":\"xaex\",\"description\":\"hxjxjoezlqxrkdkn\",\"schema\":\"databekt\",\"version\":\"o\"},\"id\":\"omtzamicb\",\"name\":\"gwcd\",\"type\":\"zseznuxkeuairaa\"},{\"properties\":{\"id\":\"lqjbedpfixlhupmo\",\"name\":\"hzbdnpxpkcd\",\"description\":\"eyxel\",\"schema\":\"datacghf\",\"version\":\"ufssjyghsfxr\"},\"id\":\"bh\",\"name\":\"mmgmqf\",\"type\":\"efgvqcp\"}],\"nextLink\":\"jgquxweysland\"}")
             .toObject(ContentTypeCollection.class);
     }
 

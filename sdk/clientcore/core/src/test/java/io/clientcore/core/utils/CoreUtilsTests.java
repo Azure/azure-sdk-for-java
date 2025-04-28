@@ -4,7 +4,14 @@ package io.clientcore.core.utils;
 
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.models.CoreException;
+import io.clientcore.core.models.Person;
+import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.SerializationFormat;
+import io.clientcore.core.serialization.json.JsonSerializer;
+import java.io.IOException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.time.OffsetDateTime;
@@ -45,6 +52,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class CoreUtilsTests {
     private static final SecureRandom RANDOM = new SecureRandom();
+    private static final JsonSerializer SERIALIZER = new JsonSerializer();
+    private static final ParameterizedType PLAIN_OBJECT = CoreUtils.createParameterizedType(Person.class);
+    private static final ParameterizedType PLAIN_LIST_OBJECT
+        = CoreUtils.createParameterizedType(List.class, Person.class);
 
     @ParameterizedTest
     @MethodSource("arrayIsNullOrEmptySupplier")
@@ -322,6 +333,47 @@ public class CoreUtilsTests {
         // Null value for parameter
         String result = CoreUtils.appendQueryParams(url, null);
         assertEquals(expected, result, "The URL should be correctly updated with the query parameter.");
+    }
+
+    @Test
+    void decodeNetworkResponseReturnsNullIfDataIsNull() {
+        assertNull(CoreUtils.decodeNetworkResponse(null, SERIALIZER, PLAIN_OBJECT));
+    }
+
+    @Test
+    void decodeNetworkResponseListType() {
+        String json = "[{\"name\":\"A\",\"age\":0},{\"name\":\"B\",\"age\":0}]";
+        BinaryData data = BinaryData.fromString(json);
+        Object result = CoreUtils.decodeNetworkResponse(data, SERIALIZER, PLAIN_LIST_OBJECT);
+        assertEquals(Arrays.asList(new Person().setName("A"), new Person().setName("B")), result);
+    }
+
+    @Test
+    void decodeNetworkResponsePlainType() {
+        String json = "{\"name\":\"A\",\"age\":0}";
+        BinaryData data = BinaryData.fromString(json);
+        Object result = CoreUtils.decodeNetworkResponse(data, SERIALIZER, PLAIN_OBJECT);
+        assertEquals(new Person().setName("A"), result);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    void decodeNetworkResponseThrowsCoreException() {
+        // Custom serializer that always throws IOException
+        JsonSerializer serializer = new ThrowingJsonSerializer();
+        BinaryData data = BinaryData.fromBytes(new byte[] { 99 }); // Data is irrelevant here
+        CoreException ex
+            = assertThrows(CoreException.class, () -> CoreUtils.decodeNetworkResponse(data, serializer, PLAIN_OBJECT));
+        assertTrue(ex.getCause() instanceof IOException);
+        assertEquals("Unknown data", ex.getCause().getMessage());
+    }
+
+    private static class ThrowingJsonSerializer extends JsonSerializer {
+        @SuppressWarnings("unchecked")
+        @Override
+        public <T> T deserializeFromBytes(byte[] data, Type type) throws IOException {
+            throw new IOException("Unknown data");
+        }
     }
 
     private static Stream<Arguments> stringJoinSupplier() {

@@ -11,7 +11,7 @@ public final class ApiManagementServiceGetDomainOwnershipIdentifierResultInnerTe
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApiManagementServiceGetDomainOwnershipIdentifierResultInner model
-            = BinaryData.fromString("{\"domainOwnershipIdentifier\":\"bea\"}")
+            = BinaryData.fromString("{\"domainOwnershipIdentifier\":\"bfiobpnjodfc\"}")
                 .toObject(ApiManagementServiceGetDomainOwnershipIdentifierResultInner.class);
     }
 
