@@ -3,7 +3,6 @@
 
 package com.azure.v2.data.appconfiguration;
 
-import com.azure.core.http.MatchConditions;
 import com.azure.v2.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.v2.data.appconfiguration.models.SettingSelector;
 import io.clientcore.core.http.models.HttpHeaderName;
@@ -37,13 +36,13 @@ public class ConditionalRequestForSettingsPagination {
                                          .buildClient();
 
         // list all settings and get their page ETags
-        List<MatchConditions> matchConditionsList = client.listConfigurationSettings(null)
-                                                        .streamByPage()
-                                                        .collect(Collectors.toList())
-                                                        .stream()
-                                                        .map(pagedResponse -> new MatchConditions().setIfNoneMatch(
-                                                            pagedResponse.getHeaders().getValue(HttpHeaderName.ETAG)))
-                                                        .collect(Collectors.toList());
+        List<HttpMatchConditions> matchConditionsList = client.listConfigurationSettings(null)
+                                                            .streamByPage()
+                                                            .collect(Collectors.toList())
+                                                            .stream()
+                                                            .map(pagedResponse -> new HttpMatchConditions().setIfNoneMatch(
+                                                                pagedResponse.getHeaders().getValue(HttpHeaderName.ETAG)))
+                                                            .collect(Collectors.toList());
 
         PagedIterable<ConfigurationSetting> settings = client.listConfigurationSettings(
             new SettingSelector().setMatchConditions(matchConditionsList));

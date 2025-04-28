@@ -12,4 +12,6 @@ recipeList:
   - com.azure.openrewrite.recipes.AzureCore
   - com.azure.openrewrite.migration.azure.data.appconfiguration
 
+  - org.openrewrite.java.format.TabsAndIndents
+
 

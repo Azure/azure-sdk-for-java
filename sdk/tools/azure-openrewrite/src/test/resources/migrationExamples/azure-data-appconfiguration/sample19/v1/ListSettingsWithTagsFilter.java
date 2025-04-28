@@ -8,7 +8,6 @@ import com.azure.core.util.Configuration;
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.data.appconfiguration.models.SettingSelector;
 
-import javax.net.ssl.SSLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +23,7 @@ public class ListSettingsWithTagsFilter {
      *
      * @param args Unused. Arguments to the program.
      */
-    public static void main(String[] args) throws SSLException {
+    public static void main(String[] args) {
         // The connection string value can be obtained by going to your App Configuration instance in the Azure portal
         // and navigating to the "Access Keys" page under the "Settings" section.
         String connectionString = Configuration.getGlobalConfiguration().get("AZURE_APPCONFIG_CONNECTION_STRING");

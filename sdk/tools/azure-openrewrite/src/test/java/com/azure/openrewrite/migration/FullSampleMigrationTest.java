@@ -94,7 +94,7 @@ public class FullSampleMigrationTest implements RewriteTest {
             4,
             4,
             4,
-            false,
+            true,
             new TabsAndIndentsStyle.MethodDeclarationParameters(true)
         ));
 
@@ -139,7 +139,7 @@ public class FullSampleMigrationTest implements RewriteTest {
             }
         });
 
-        assertFullMigration(fileMap, sampleDirString);
+        .        assertFullMigration(fileMap, sampleDirString);
     }
 
     public void assertFullMigration(Map<String,String> fileMap, String name) throws IOException {
