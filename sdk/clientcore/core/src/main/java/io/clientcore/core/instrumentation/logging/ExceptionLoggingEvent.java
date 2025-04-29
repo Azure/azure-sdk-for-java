@@ -3,9 +3,12 @@
 
 package io.clientcore.core.instrumentation.logging;
 
+import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 
 import java.util.function.BiFunction;
+
+import static io.clientcore.core.annotations.MetadataProperties.FLUENT;
 
 /**
  * This class is used to create a logging event for exception with contextual
@@ -13,6 +16,7 @@ import java.util.function.BiFunction;
  *
  * @param <T> The type of the exception to be logged.
  */
+@Metadata(properties = FLUENT)
 public class ExceptionLoggingEvent<T extends Throwable> {
     private final LoggingEvent log;
     private final BiFunction<String, Throwable, T> throwableFactory;
@@ -86,7 +90,8 @@ public class ExceptionLoggingEvent<T extends Throwable> {
      * @return The created exception.
      */
     public T log(String shortMessage) {
-        return log(shortMessage, null);
+        return logImpl(shortMessage,
+            throwableFactory.apply(log.getExceptionMessageWithContext(shortMessage, null), null));
     }
 
     /**
@@ -97,7 +102,7 @@ public class ExceptionLoggingEvent<T extends Throwable> {
      * @return The created exception.
      */
     public T log(Throwable cause) {
-        return log(null, cause);
+        return logImpl(null, throwableFactory.apply(log.getExceptionMessageWithContext(null, cause), cause));
     }
 
     /**
@@ -109,9 +114,13 @@ public class ExceptionLoggingEvent<T extends Throwable> {
      * @return The created exception.
      */
     public T log(String shortMessage, Throwable cause) {
-        T ex = throwableFactory.apply(log.getExceptionMessageWithContext(shortMessage, cause), cause);
-        log.recordExceptionDetails(ex, null);
+        return logImpl(shortMessage,
+            throwableFactory.apply(log.getExceptionMessageWithContext(shortMessage, cause), cause));
+    }
+
+    private T logImpl(String shortMessage, T exception) {
+        log.recordExceptionDetails(exception, null);
         log.log(shortMessage);
-        return ex;
+        return exception;
     }
 }

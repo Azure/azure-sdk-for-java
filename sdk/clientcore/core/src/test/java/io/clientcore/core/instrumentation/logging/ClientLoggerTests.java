@@ -32,6 +32,7 @@ import static io.clientcore.core.instrumentation.logging.InstrumentationTestUtil
 import static io.clientcore.core.instrumentation.logging.InstrumentationTestUtils.createRandomInstrumentationContext;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -159,12 +160,10 @@ public class ClientLoggerTests {
         ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL);
 
         String shortMessage = "connection dropped";
-        IOException ioException = assertThrows(IOException.class, () -> {
-            throw logger.throwableAtWarning(IOException::new)
-                .addKeyValue("connectionId", "foo")
-                .addKeyValue("linkName", 1)
-                .log(shortMessage);
-        });
+        IOException ioException = logger.throwableAtWarning(IOException::new)
+            .addKeyValue("connectionId", "foo")
+            .addKeyValue("linkName", 1)
+            .log(shortMessage);
 
         assertEquals("connection dropped; {\"connectionId\":\"foo\",\"linkName\":1}", ioException.getMessage());
 
@@ -186,10 +185,7 @@ public class ClientLoggerTests {
         ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL);
 
         String shortMessage = "connection dropped";
-        IOException ioException = assertThrows(IOException.class, () -> {
-            throw logger.throwableAtWarning(IOException::new).log(shortMessage);
-        });
-
+        IOException ioException = logger.throwableAtWarning(IOException::new).log(shortMessage);
         assertEquals("connection dropped", ioException.getMessage());
 
         Map<String, Object> expectedMessage = new HashMap<>();
@@ -211,12 +207,10 @@ public class ClientLoggerTests {
         ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.INFORMATIONAL);
 
         UnknownHostException cause = new UnknownHostException("Unable to resolve host www.xyz.com");
-        CoreException coreException = assertThrows(CoreException.class, () -> {
-            throw logger.throwableAtWarning(CoreException::from)
-                .addKeyValue("connectionId", "foo")
-                .addKeyValue("linkName", 1)
-                .log(cause);
-        });
+        CoreException coreException = logger.throwableAtWarning(CoreException::from)
+            .addKeyValue("connectionId", "foo")
+            .addKeyValue("linkName", 1)
+            .log(cause);
 
         Map<String, Object> exceptionMessageMap = fromJson(coreException.getMessage());
         assertEquals("foo", exceptionMessageMap.get("connectionId"));
@@ -245,12 +239,10 @@ public class ClientLoggerTests {
         ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.ERROR);
 
         String shortMessage = "connection dropped";
-        IOException ioException = assertThrows(IOException.class, () -> {
-            throw logger.throwableAtWarning(IOException::new)
-                .addKeyValue("connectionId", "foo")
-                .addKeyValue("linkName", 1)
-                .log(shortMessage);
-        });
+        IOException ioException = logger.throwableAtWarning(IOException::new)
+            .addKeyValue("connectionId", "foo")
+            .addKeyValue("linkName", 1)
+            .log(shortMessage);
 
         assertEquals("connection dropped; {\"connectionId\":\"foo\",\"linkName\":1}", ioException.getMessage());
 
@@ -269,12 +261,10 @@ public class ClientLoggerTests {
         UnknownHostException ioException = new UnknownHostException("Unable to resolve host www.xyz.com");
 
         String shortMessage = "Can't connect";
-        CoreException coreException = assertThrows(CoreException.class, () -> {
-            throw logger.throwableAtError(CoreException::from)
-                .addKeyValue("server.address", "foo")
-                .addKeyValue("server.port", 42)
-                .log(shortMessage, ioException);
-        });
+        CoreException coreException = logger.throwableAtError(CoreException::from)
+            .addKeyValue("server.address", "foo")
+            .addKeyValue("server.port", 42)
+            .log(shortMessage, ioException);
 
         assertEquals(
             "Can't connect; {\"server.address\":\"foo\",\"server.port\":42,\"cause.type\":\"java.net.UnknownHostException\",\"cause.message\":\"Unable to resolve host www.xyz.com\"}",
@@ -304,9 +294,8 @@ public class ClientLoggerTests {
         String exceptionMessage = "An exception message";
         IllegalStateException illegalStateException = createIllegalStateException(exceptionMessage);
 
-        assertThrows(IllegalStateException.class, () -> {
-            throw setupLogLevelAndGetLogger(logLevelToConfigure).logThrowableAsError(illegalStateException);
-        });
+        assertInstanceOf(IllegalStateException.class,
+            setupLogLevelAndGetLogger(logLevelToConfigure).logThrowableAsError(illegalStateException));
 
         String logValues = byteArraySteamToString(logCaptureStream);
         assertEquals(logContainsMessage, logValues.contains(exceptionMessage));
@@ -324,9 +313,8 @@ public class ClientLoggerTests {
         String exceptionMessage = "An exception message";
         IOException ioException = createIOException(exceptionMessage);
 
-        assertThrows(IOException.class, () -> {
-            throw setupLogLevelAndGetLogger(logLevelToConfigure).logThrowableAsError(ioException);
-        });
+        assertInstanceOf(IOException.class,
+            setupLogLevelAndGetLogger(logLevelToConfigure).logThrowableAsError(ioException));
 
         String logValues = byteArraySteamToString(logCaptureStream);
         assertEquals(logContainsMessage, logValues.contains(exceptionMessage));

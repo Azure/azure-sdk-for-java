@@ -324,9 +324,13 @@ public final class LoggingEvent {
     }
 
     String getExceptionMessageWithContext(String shortMessage, Throwable cause) {
+        while (cause != null && cause.getCause() != null) {
+            cause = cause.getCause();
+        }
+
         if (cause != null) {
-            addKeyValueInternal(CAUSE_TYPE_KEY, cause.getClass().getCanonicalName());
-            addKeyValueInternal(CAUSE_MESSAGE_KEY, cause.getMessage());
+            addKeyValue(CAUSE_TYPE_KEY, cause.getClass().getCanonicalName());
+            addKeyValue(CAUSE_MESSAGE_KEY, cause.getMessage());
         }
 
         int pairsCount
