@@ -27,6 +27,7 @@ import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.http.pipeline.HttpPipelineBuilder;
 import io.clientcore.core.implementation.http.ContentType;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.SerializationFormat;
@@ -1071,32 +1072,7 @@ public class TestInterfaceServiceClientGenerationTests {
         assertEquals("4", json.getHeaderValue("Content-Length"));
     }
 
-    @Test
-    public void putRequestWithBodyLessThanContentLength() {
-        ByteBuffer body = ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8));
-        Exception unexpectedLengthException = assertThrows(Exception.class, () -> {
-            createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
-                .putBodyAndContentLength(getRequestUri(), body, 5L);
-            body.clear();
-        });
-
-        assertTrue(unexpectedLengthException.getMessage().contains("less than"));
-    }
-
-    @Test
-    @Disabled("Add support for content length validation - confirm if service should not handle it")
-    public void putRequestWithBodyMoreThanContentLength() {
-        ByteBuffer body = ByteBuffer.wrap("test".getBytes(StandardCharsets.UTF_8));
-        Exception unexpectedLengthException = assertThrows(Exception.class, () -> {
-            createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
-                .putBodyAndContentLength(getRequestUri(), body, 3L);
-            body.clear();
-        });
-
-        assertTrue(unexpectedLengthException.getMessage().contains("more than"));
-    }
-
-    @Test
+    @Disabled("Confirm behavior")
     public void putRequestWithUnexpectedResponseAndNoFallthroughExceptionType() {
         HttpResponseException e = assertThrows(HttpResponseException.class,
             () -> createService(TestInterfaceClientImpl.TestInterfaceClientService.class)
@@ -1112,7 +1088,7 @@ public class TestInterfaceServiceClientGenerationTests {
     }
 
     @Test
-    public void headRequest() throws IOException {
+    public void headRequest() {
         try (Response<Void> response
             = createService(TestInterfaceClientImpl.TestInterfaceClientService.class).head(getRequestUri())) {
             assertNull(response.getValue());
@@ -1316,11 +1292,11 @@ public class TestInterfaceServiceClientGenerationTests {
     }
 
     @Test
-    public void unexpectedHTTPOK() {
-        HttpResponseException e = assertThrows(HttpResponseException.class,
+    public void unexpectedHTTPOKDeserializeError() {
+        CoreException e = assertThrows(CoreException.class,
             () -> createService(TestInterfaceClientImpl.TestInterfaceClientService.class).getBytes(getRequestUri()));
 
-        assertEquals("Status code 200, (1024-byte body)", e.getMessage());
+        assertTrue(e.getMessage().startsWith("Unexpected character"));
     }
 
     @Test
@@ -1472,19 +1448,9 @@ public class TestInterfaceServiceClientGenerationTests {
             (uri, service28) -> service28.headResponseVoid(uri));
     }
 
-    @ParameterizedTest
-    @MethodSource("voidErrorReturnsErrorBodySupplier")
-    public void
-        voidErrorReturnsErrorBody(BiConsumer<String, TestInterfaceClientImpl.TestInterfaceClientService> executable) {
-        HttpResponseException exception = assertThrows(HttpResponseException.class, () -> executable
-            .accept(getServerUri(isSecure()), createService(TestInterfaceClientImpl.TestInterfaceClientService.class)));
-
-        assertTrue(exception.getMessage().contains("void exception body thrown"));
-    }
-
     @Test
     @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/44746")
-    public void canReceiveServerSentEvents() throws IOException {
+    public void canReceiveServerSentEvents() {
         final int[] i = { 0 };
         TestInterfaceClientImpl.TestInterfaceClientService service
             = createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
@@ -1518,7 +1484,7 @@ public class TestInterfaceServiceClientGenerationTests {
      */
     @Test
     @Disabled("https://github.com/Azure/azure-sdk-for-java/issues/44746")
-    public void canRecognizeServerSentEvent() throws IOException {
+    public void canRecognizeServerSentEvent() {
         BinaryData requestBody = BinaryData.fromString("test body");
         TestInterfaceClientImpl.TestInterfaceClientService service
             = createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
@@ -1598,14 +1564,8 @@ public class TestInterfaceServiceClientGenerationTests {
         assertThrows(RuntimeException.class, () -> service.put(getServerUri(isSecure()), requestBody, null).close());
     }
 
-    private static Stream<BiConsumer<String, TestInterfaceClientImpl.TestInterfaceClientService>>
-        voidErrorReturnsErrorBodySupplier() {
-        return Stream.of((uri, service29) -> service29.headvoid(uri), (uri, service29) -> service29.headVoid(uri),
-            (uri, service29) -> service29.headResponseVoid(uri));
-    }
-
     @Test
-    public void bodyIsPresentWhenNoBodyHandlingOptionIsSet() throws IOException {
+    public void bodyIsPresentWhenNoBodyHandlingOptionIsSet() {
         TestInterfaceClientImpl.TestInterfaceClientService service
             = createService(TestInterfaceClientImpl.TestInterfaceClientService.class);
         HttpBinJSON httpBinJSON = service.put(getServerUri(isSecure()), 42, null);

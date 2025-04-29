@@ -298,26 +298,6 @@ public final class TestInterfaceClientImpl {
             @HeaderParam("Content-Length") long contentLength);
 
         @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 201 })
-        HttpBinJSON putWithUnexpectedResponse(@HostParam("uri") String uri,
-            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
-
-        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 201 })
-        @UnexpectedResponseExceptionDetail(exceptionBodyClass = HttpBinJSON.class)
-        HttpBinJSON putWithUnexpectedResponseAndExceptionType(@HostParam("uri") String uri,
-            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
-
-        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 201 })
-        @UnexpectedResponseExceptionDetail(statusCode = { 200 }, exceptionBodyClass = HttpBinJSON.class)
-        HttpBinJSON putWithUnexpectedResponseAndDeterminedExceptionType(@HostParam("uri") String uri,
-            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
-
-        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 201 })
-        @UnexpectedResponseExceptionDetail(statusCode = { 400 })
-        @UnexpectedResponseExceptionDetail(exceptionBodyClass = HttpBinJSON.class)
-        HttpBinJSON putWithUnexpectedResponseAndFallthroughExceptionType(@HostParam("uri") String uri,
-            @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
-
-        @HttpRequestInformation(method = HttpMethod.PUT, path = "put", expectedStatusCodes = { 201 })
         @UnexpectedResponseExceptionDetail(statusCode = { 400 }, exceptionBodyClass = HttpBinJSON.class)
         HttpBinJSON putWithUnexpectedResponseAndNoFallthroughExceptionType(@HostParam("uri") String uri,
             @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);

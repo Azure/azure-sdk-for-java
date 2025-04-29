@@ -17,6 +17,7 @@ import io.clientcore.core.serialization.xml.XmlSerializer;
 import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.utils.CoreUtils;
 import java.lang.reflect.ParameterizedType;
+import io.clientcore.core.utils.Base64Uri;
 import io.clientcore.core.serialization.SerializationFormat;
 
 /**
