@@ -12,7 +12,6 @@ import io.clientcore.core.utils.configuration.Configuration;
 import java.nio.file.InvalidPathException;
 import java.util.Collections;
 import java.util.Map;
-import java.util.function.BiFunction;
 
 /**
  * This is a fluent logger helper class that wraps an SLF4J Logger (if available) or a default implementation of the
@@ -253,9 +252,9 @@ public class ClientLogger {
      * <p> Creating new exception and logging it with context.</p>
      * <!-- src_embed io.clientcore.core.instrumentation.logging.clientlogger.throwableaterror.message -->
      * <pre>
-     * throw logger.throwableAtError&#40;IllegalArgumentException::new&#41;
+     * throw logger.throwableAtError&#40;&#41;
      *     .addKeyValue&#40;&quot;url&quot;, url&#41;
-     *     .log&#40;&quot;Invalid URL&quot;&#41;;
+     *     .log&#40;&quot;Invalid URL&quot;, IllegalArgumentException::new&#41;;
      * </pre>
      * <!-- end io.clientcore.core.instrumentation.logging.clientlogger.throwableaterror.message -->
      *
@@ -265,36 +264,26 @@ public class ClientLogger {
      * try &#123;
      *     connect&#40;&quot;xyz.com&quot;&#41;;
      * &#125; catch &#40;Exception e&#41; &#123;
-     *     throw logger.throwableAtError&#40;CoreException::from&#41;
+     *     throw logger.throwableAtError&#40;&#41;
      *         .addKeyValue&#40;&quot;requestId&quot;, requestId&#41;
-     *         .log&#40;e&#41;;
+     *         .log&#40;e, CoreException::from&#41;;
      * &#125;
      * </pre>
      * <!-- end io.clientcore.core.instrumentation.logging.clientlogger.throwableaterror.cause -->
      *
-     * @param throwableFactory Factory method to create the exception using message augmented with additional context
-     *                         and the cause of the exception.
      * @return {@link ExceptionLoggingEvent}.
-     * @param <T> Type of the exception being logged.
      */
-    public <T extends Throwable> ExceptionLoggingEvent<T>
-        throwableAtError(BiFunction<String, Throwable, T> throwableFactory) {
-        return new ExceptionLoggingEvent<>(new LoggingEvent(logger, LogLevel.ERROR, globalContext, true),
-            throwableFactory);
+    public ExceptionLoggingEvent throwableAtError() {
+        return new ExceptionLoggingEvent(new LoggingEvent(logger, LogLevel.ERROR, globalContext, true));
     }
 
     /**
      * Creates {@link ExceptionLoggingEvent} that creates and logs the exception augmented with
      * additional context at the {@link LogLevel#WARNING} level.
      *
-     * @param throwableFactory Factory method to create the exception using message augmented with additional context
-     *                         and the cause of the exception.
      * @return {@link ExceptionLoggingEvent}.
-     * @param <T> Type of the exception being logged.
      */
-    public <T extends Throwable> ExceptionLoggingEvent<T>
-        throwableAtWarning(BiFunction<String, Throwable, T> throwableFactory) {
-        return new ExceptionLoggingEvent<>(new LoggingEvent(logger, LogLevel.WARNING, globalContext, true),
-            throwableFactory);
+    public ExceptionLoggingEvent throwableAtWarning() {
+        return new ExceptionLoggingEvent(new LoggingEvent(logger, LogLevel.WARNING, globalContext, true));
     }
 }

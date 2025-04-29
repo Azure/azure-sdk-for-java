@@ -13,17 +13,13 @@ import static io.clientcore.core.annotations.MetadataProperties.FLUENT;
 /**
  * This class is used to create a logging event for exception with contextual
  * information that's consistently populated in exception and log message.
- *
- * @param <T> The type of the exception to be logged.
  */
 @Metadata(properties = FLUENT)
-public class ExceptionLoggingEvent<T extends Throwable> {
+public class ExceptionLoggingEvent {
     private final LoggingEvent log;
-    private final BiFunction<String, Throwable, T> throwableFactory;
 
-    ExceptionLoggingEvent(LoggingEvent log, BiFunction<String, Throwable, T> throwableFactory) {
+    ExceptionLoggingEvent(LoggingEvent log) {
         this.log = log;
-        this.throwableFactory = throwableFactory;
     }
 
     /**
@@ -36,7 +32,7 @@ public class ExceptionLoggingEvent<T extends Throwable> {
      *
      * @see LoggingEvent#addKeyValue(String, String)
      */
-    public ExceptionLoggingEvent<T> addKeyValue(String key, String value) {
+    public ExceptionLoggingEvent addKeyValue(String key, String value) {
         log.addKeyValue(key, value);
 
         return this;
@@ -51,7 +47,7 @@ public class ExceptionLoggingEvent<T extends Throwable> {
      * @return The updated {@link ExceptionLoggingEvent} object.
      * @see LoggingEvent#addKeyValue(String, boolean)
      */
-    public ExceptionLoggingEvent<T> addKeyValue(String key, boolean value) {
+    public ExceptionLoggingEvent addKeyValue(String key, boolean value) {
         log.addKeyValue(key, value);
         return this;
     }
@@ -64,7 +60,7 @@ public class ExceptionLoggingEvent<T extends Throwable> {
      * @return The updated {@link ExceptionLoggingEvent} object.
      * @see LoggingEvent#addKeyValue(String, long)
      */
-    public ExceptionLoggingEvent<T> addKeyValue(String key, long value) {
+    public ExceptionLoggingEvent addKeyValue(String key, long value) {
         log.addKeyValue(key, value);
         return this;
     }
@@ -77,7 +73,7 @@ public class ExceptionLoggingEvent<T extends Throwable> {
      * @return The updated {@link ExceptionLoggingEvent} object.
      * @see LoggingEvent#setInstrumentationContext
      */
-    public ExceptionLoggingEvent<T> setInstrumentationContext(InstrumentationContext context) {
+    public ExceptionLoggingEvent setInstrumentationContext(InstrumentationContext context) {
         log.setInstrumentationContext(context);
         return this;
     }
@@ -87,9 +83,12 @@ public class ExceptionLoggingEvent<T extends Throwable> {
      * The full exception message is enriched with the context of the log event.
      *
      * @param shortMessage The short message to log.
+     * @param throwableFactory Factory method to create the exception using message augmented with additional context
+     *                         and the cause of the exception.
+     * @param <T> The type of the exception to be created.
      * @return The created exception.
      */
-    public T log(String shortMessage) {
+    public <T extends Throwable> T log(String shortMessage, BiFunction<String, Throwable, T> throwableFactory) {
         return logImpl(shortMessage,
             throwableFactory.apply(log.getExceptionMessageWithContext(shortMessage, null), null));
     }
@@ -99,9 +98,12 @@ public class ExceptionLoggingEvent<T extends Throwable> {
      * The full exception message is enriched with the context of the log event.
      *
      * @param cause The cause of the exception.
+     * @param throwableFactory Factory method to create the exception using message augmented with additional context
+     *                         and the cause of the exception.
+     * @param <T> The type of the exception to be created.
      * @return The created exception.
      */
-    public T log(Throwable cause) {
+    public <T extends Throwable> T log(Throwable cause, BiFunction<String, Throwable, T> throwableFactory) {
         return logImpl(null, throwableFactory.apply(log.getExceptionMessageWithContext(null, cause), cause));
     }
 
@@ -111,14 +113,19 @@ public class ExceptionLoggingEvent<T extends Throwable> {
      *
      * @param shortMessage The short message to log.
      * @param cause The cause of the exception.
+     * @param throwableFactory Factory method to create the exception using message augmented with additional context
+     *                         and the cause of the exception.
+     * @param <T> The type of the exception to be created.
      * @return The created exception.
      */
-    public T log(String shortMessage, Throwable cause) {
+    public <T extends Throwable> T log(String shortMessage, Throwable cause,
+        BiFunction<String, Throwable, T> throwableFactory) {
         return logImpl(shortMessage,
             throwableFactory.apply(log.getExceptionMessageWithContext(shortMessage, cause), cause));
     }
 
-    private T logImpl(String shortMessage, T exception) {
+    private <T extends Throwable> T logImpl(String shortMessage, T exception) {
+        // not recording full exception message on logs since it contains context
         log.recordExceptionDetails(exception, null);
         log.log(shortMessage);
         return exception;

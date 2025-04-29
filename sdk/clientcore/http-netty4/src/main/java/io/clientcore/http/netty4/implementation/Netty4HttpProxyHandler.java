@@ -167,7 +167,7 @@ public final class Netty4HttpProxyHandler extends ProxyHandler {
     protected boolean handleResponse(ChannelHandlerContext ctx, Object o) throws ProxyConnectException {
         if (o instanceof HttpResponse) {
             if (status != null) {
-                throw LOGGER.throwableAtWarning(RuntimeException::new).log("Received too many responses for a request");
+                throw LOGGER.throwableAtWarning().log("Received too many responses for a request", RuntimeException::new);
             }
 
             HttpResponse response = (HttpResponse) o;

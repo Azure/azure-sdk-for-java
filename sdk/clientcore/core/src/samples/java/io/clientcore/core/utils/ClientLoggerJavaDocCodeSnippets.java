@@ -169,9 +169,9 @@ public class ClientLoggerJavaDocCodeSnippets {
         String url = "foo";
         try {
             // BEGIN: io.clientcore.core.instrumentation.logging.clientlogger.throwableaterror.message
-            throw logger.throwableAtError(IllegalArgumentException::new)
+            throw logger.throwableAtError()
                 .addKeyValue("url", url)
-                .log("Invalid URL");
+                .log("Invalid URL", IllegalArgumentException::new);
             // END: io.clientcore.core.instrumentation.logging.clientlogger.throwableaterror.message
         } catch (IllegalArgumentException e) {
             // Handle exception
@@ -183,9 +183,9 @@ public class ClientLoggerJavaDocCodeSnippets {
         try {
             connect("xyz.com");
         } catch (Exception e) {
-            throw logger.throwableAtError(CoreException::from)
+            throw logger.throwableAtError()
                 .addKeyValue("requestId", requestId)
-                .log(e);
+                .log(e, CoreException::from);
         }
         // END: io.clientcore.core.instrumentation.logging.clientlogger.throwableaterror.cause
     }

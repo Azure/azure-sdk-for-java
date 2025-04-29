@@ -66,10 +66,11 @@ public final class ETag {
         boolean startsWithQuote = eTag.charAt(0) == '"';
         boolean startsWithWeakETagPrefix = eTag.startsWith(WEAK_ETAG_PREFIX_QUOTE);
         if (!endsWithQuote || (!startsWithQuote && !startsWithWeakETagPrefix)) {
-            throw LOGGER.throwableAtError(IllegalArgumentException::new)
+            throw LOGGER.throwableAtError()
                 .addKeyValue("eTag", eTag)
                 .log(
-                    "The ETag is invalid, it should be null, '*', be wrapped in quotes, or be wrapped in quotes prefixed by W/");
+                    "The ETag is invalid, it should be null, '*', be wrapped in quotes, or be wrapped in quotes prefixed by W/",
+                    IllegalArgumentException::new);
         }
 
         return new ETag(eTag);

@@ -57,9 +57,9 @@ public final class CompositeSerializer {
             }
         }
 
-        throw LOGGER.throwableAtError(UnsupportedOperationException::new)
+        throw LOGGER.throwableAtError()
             .addKeyValue("format", format.name())
-            .log("Format is not supported by any serializer.");
+            .log("Format is not supported by any serializer.", UnsupportedOperationException::new);
     }
 
     /**
@@ -80,9 +80,9 @@ public final class CompositeSerializer {
             }
         }
 
-        throw LOGGER.throwableAtError(UnsupportedOperationException::new)
+        throw LOGGER.throwableAtError()
             .addKeyValue("format", format.name())
-            .log("Format is not supported by any serializer.");
+            .log("Format is not supported by any serializer.", UnsupportedOperationException::new);
     }
 
     /**
@@ -101,9 +101,9 @@ public final class CompositeSerializer {
             }
         }
 
-        throw LOGGER.throwableAtError(UnsupportedOperationException::new)
+        throw LOGGER.throwableAtError()
             .addKeyValue("format", format.name())
-            .log("Format is not supported by any serializer.");
+            .log("Format is not supported by any serializer.", UnsupportedOperationException::new);
     }
 
     /**
@@ -123,9 +123,9 @@ public final class CompositeSerializer {
             }
         }
 
-        throw LOGGER.throwableAtError(UnsupportedOperationException::new)
+        throw LOGGER.throwableAtError()
             .addKeyValue("format", format.name())
-            .log("Format is not supported by any serializer.");
+            .log("Format is not supported by any serializer.", UnsupportedOperationException::new);
     }
 
     /**
@@ -142,8 +142,8 @@ public final class CompositeSerializer {
             }
         }
 
-        throw LOGGER.throwableAtError(UnsupportedOperationException::new)
+        throw LOGGER.throwableAtError()
             .addKeyValue("format", format.name())
-            .log("Format is not supported by any serializer.");
+            .log("Format is not supported by any serializer.", UnsupportedOperationException::new);
     }
 }

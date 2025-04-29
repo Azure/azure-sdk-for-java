@@ -120,10 +120,10 @@ public class OTelInstrumentation implements Instrumentation {
         String host, int port) {
         Object explicitOTel = applicationOptions == null ? null : applicationOptions.getTelemetryProvider();
         if (explicitOTel != null && !OTEL_CLASS.isInstance(explicitOTel)) {
-            throw LOGGER.throwableAtError(IllegalArgumentException::new)
+            throw LOGGER.throwableAtError()
                 .addKeyValue("providerType", explicitOTel.getClass().getCanonicalName())
                 .addKeyValue("expectedType", OTEL_CLASS.getCanonicalName())
-                .log("Unexpected telemetry provider type.");
+                .log("Unexpected telemetry provider type.", IllegalArgumentException::new);
         }
 
         Object otelInstance = explicitOTel != null ? explicitOTel : GET_GLOBAL_OTEL_INVOKER.invoke();
