@@ -44,6 +44,7 @@ import com.azure.cosmos.util.CosmosPagedIterable;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import net.bytebuddy.asm.MemberSubstitution;
 import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
@@ -1085,7 +1086,7 @@ public class CosmosItemTest extends TestSuiteBase {
                 // generate an invalid session token large enough to cause an error in Gateway
                 // due to header being too long
                 .setSessionToken(StringUtils.repeat("SomeManualInvalidSessionToken", 2000))
-                .setConsistencyLevel(ConsistencyLevel.EVENTUAL),
+                .setReadConsistencyStrategy(ReadConsistencyStrategy.EVENTUAL),
             ObjectNode.class);
 
         logger.info("REQUEST DIAGNOSTICS: {}", readResponse1.getDiagnostics().toString());

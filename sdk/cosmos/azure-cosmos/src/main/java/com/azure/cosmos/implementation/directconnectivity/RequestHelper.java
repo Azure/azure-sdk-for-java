@@ -13,44 +13,98 @@ import com.azure.cosmos.implementation.RMResources;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Strings;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
+
 public class RequestHelper {
     public static ReadConsistencyStrategy getReadConsistencyStrategyToUse(
         GatewayServiceConfigurationReader serviceConfigReader,
         RxDocumentServiceRequest request) {
 
-        ReadConsistencyStrategy requestLevelReadConsistencyStrategy = ReadConsistencyStrategy.DEFAULT;
-        if (request != null
-            && request.requestContext != null
+        checkNotNull(serviceConfigReader, "Argument 'serviceConfigReader' must not be null.");
+        checkNotNull(request, "Argument 'request' must not be null.");
+
+        ReadConsistencyStrategy requestLevelReadConsistencyStrategy = null;
+        if (request.requestContext != null
             && request.requestContext.readConsistencyStrategy != null) {
 
             requestLevelReadConsistencyStrategy = request.requestContext.readConsistencyStrategy;
         }
 
-        if (requestLevelReadConsistencyStrategy != ReadConsistencyStrategy.DEFAULT)
+        return getReadConsistencyStrategyToUse(
+            request.getHeaders(),
+            requestLevelReadConsistencyStrategy,
+            serviceConfigReader.getDefaultConsistencyLevel());
+    }
+
+    public static ReadConsistencyStrategy getReadConsistencyStrategyToUse(
+        Map<String, String> headers,
+        ReadConsistencyStrategy requestLevelReadConsistencyStrategy,
+        ConsistencyLevel defaultConsistencySnapshot) {
+
+        if (requestLevelReadConsistencyStrategy == null
+            || requestLevelReadConsistencyStrategy == ReadConsistencyStrategy.DEFAULT) {
+
+            String requestReadConsistencyStrategyHeaderValue =
+                headers.get(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY);
+
+            if (!Strings.isNullOrEmpty(requestReadConsistencyStrategyHeaderValue)) {
+                requestLevelReadConsistencyStrategy =
+                    ImplementationBridgeHelpers
+                        .ReadConsistencyStrategyHelper
+                        .getReadConsistencyStrategyAccessor()
+                        .createFromServiceSerializedFormat(requestReadConsistencyStrategyHeaderValue);
+
+                if (requestLevelReadConsistencyStrategy == null) {
+                    throw new BadRequestException(
+                        String.format(
+                            RMResources.InvalidHeaderValue,
+                            requestReadConsistencyStrategyHeaderValue,
+                            HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY));
+                }
+
+                if (!validateReadConsistencyStrategy(defaultConsistencySnapshot, requestLevelReadConsistencyStrategy)) {
+                    throw new BadRequestException(
+                        String.format(
+                            RMResources.ReadConsistencyStrategyGlobalStrongOnlyAllowedForGlobalStrongAccount,
+                            requestReadConsistencyStrategyHeaderValue,
+                            HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
+                            ConsistencyLevel.STRONG,
+                            defaultConsistencySnapshot));
+                }
+            }
+        } else {
+            headers.put(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY, requestLevelReadConsistencyStrategy.toString());
+        }
+
+        if (requestLevelReadConsistencyStrategy != null
+            && requestLevelReadConsistencyStrategy != ReadConsistencyStrategy.DEFAULT)
         {
             // Update the consistency level header - this is needed to ensure
             // service telemetry / Kusto have appropriate data
             switch (requestLevelReadConsistencyStrategy) {
                 case EVENTUAL:
-                    request.getHeaders().put(
+                    headers.put(
                         HttpConstants.HttpHeaders.CONSISTENCY_LEVEL,
                         ConsistencyLevel.EVENTUAL.toString());
                     break;
 
                 case SESSION:
-                    request.getHeaders().put(
+                    headers.put(
                         HttpConstants.HttpHeaders.CONSISTENCY_LEVEL,
                         ConsistencyLevel.SESSION.toString());
                     break;
 
                 case LATEST_COMMITTED:
-                    request.getHeaders().put(
+                    headers.put(
                         HttpConstants.HttpHeaders.CONSISTENCY_LEVEL,
                         ConsistencyLevel.BOUNDED_STALENESS.toString());
                     break;
 
                 case GLOBAL_STRONG:
-                    request.getHeaders().put(
+                    headers.put(
                         HttpConstants.HttpHeaders.CONSISTENCY_LEVEL,
                         ConsistencyLevel.STRONG.toString());
                     break;
@@ -63,41 +117,9 @@ public class RequestHelper {
             return requestLevelReadConsistencyStrategy;
         }
 
-        ConsistencyLevel defaultConsistencySnapshot = serviceConfigReader.getDefaultConsistencyLevel();
-        String requestReadConsistencyStrategyHeaderValue =
-            request.getHeaders().get(HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY);
-
-        if (!Strings.isNullOrEmpty(requestReadConsistencyStrategyHeaderValue)) {
-            ReadConsistencyStrategy requestReadConsistencyStrategy =
-                ImplementationBridgeHelpers
-                    .ReadConsistencyStrategyHelper
-                    .getReadConsistencyStrategyAccessor()
-                    .createFromServiceSerializedFormat(requestReadConsistencyStrategyHeaderValue);
-
-            if (requestReadConsistencyStrategy == null) {
-                throw new BadRequestException(
-                    String.format(
-                        RMResources.InvalidHeaderValue,
-                        requestReadConsistencyStrategyHeaderValue,
-                        HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY));
-            }
-
-            if (!validateReadConsistencyStrategy(defaultConsistencySnapshot, requestLevelReadConsistencyStrategy)) {
-                throw new BadRequestException(
-                    String.format(
-                        RMResources.ReadConsistencyStrategyGlobalStrongOnlyAllowedForGlobalStrongAccount,
-                        requestReadConsistencyStrategyHeaderValue,
-                        HttpConstants.HttpHeaders.READ_CONSISTENCY_STRATEGY,
-                        ConsistencyLevel.STRONG,
-                        defaultConsistencySnapshot));
-            }
-
-            return requestReadConsistencyStrategy;
-        }
-
         ConsistencyLevel consistencyLevelToUse = defaultConsistencySnapshot;
         String requestConsistencyLevelHeaderValue =
-            request.getHeaders().get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
+            headers.get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
 
         if (!Strings.isNullOrEmpty(requestConsistencyLevelHeaderValue)) {
             ConsistencyLevel requestConsistencyLevel = BridgeInternal.fromServiceSerializedFormat(requestConsistencyLevelHeaderValue);

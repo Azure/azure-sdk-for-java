@@ -405,6 +405,76 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
 
     userConfig = Map(
       "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.consistencyStrategy" -> "DEFAULT",
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.DEFAULT
+
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "true",
+      "spark.cosmos.read.consistencyStrategy" -> "DEFAULT",
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.EVENTUAL
+
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.consistencyStrategy" -> "DEFault",
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.DEFAULT
+
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "true",
+      "spark.cosmos.read.consistencyStrategy" -> "DEFault",
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.EVENTUAL
+
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "true",
+      "spark.cosmos.read.consistencyStrategy" -> "LatestCommitted",
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.LATEST_COMMITTED
+
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+      "spark.cosmos.read.consistencyStrategy" -> "LatestCommitted",
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.LATEST_COMMITTED
+
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "true",
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.EVENTUAL
+
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.DEFAULT
+
+    userConfig = Map(
+      "spark.cosmos.read.consistencyStrategy" -> "LatestCommitted",
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.LATEST_COMMITTED
+
+    userConfig = Map(
+      "spark.cosmos.read.consistencyStrategy" -> "Default",
+    )
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.EVENTUAL
+
+    userConfig = Map()
+    config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.EVENTUAL
+
+    userConfig = Map(
+      "spark.cosmos.read.forceEventualConsistency" -> "false",
       "spark.cosmos.read.schemaConversionMode" -> "Strict",
       "spark.cosmos.read.maxItemCount" -> "1000",
       "spark.cosmos.read.maxIntegratedCacheStalenessInMS" -> "1000",

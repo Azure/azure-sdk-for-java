@@ -60,6 +60,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
     private static final Properties prop = new Properties();
     private static final String E2E_TIMEOUT = "timeout.seconds";
     private static final String CONSISTENCY_LEVEL = "consistency.level";
+    private static final String READ_CONSISTENCY_STRATEGY = "readConsistencyStrategy";
     private static final String CONTENT_RESPONSE_ON_WRITE = "contentResponseOnWriteEnabled";
     private static final String NON_IDEMPOTENT_WRITE_RETRIES = "nonIdempotentWriteRetriesEnabled";
     private static final String BYPASS_CACHE = "dedicatedGatewayOptions.bypassCache";
@@ -76,8 +77,8 @@ public class OperationPoliciesTest extends TestSuiteBase {
     private static final String MAX_PREFETCH_PAGE_COUNT = "maxPrefetchPageCount";
     private static final String QUERY_NAME = "queryName";
     private static final String KEYWORD_IDENTIFIERS = "keywordIdentifiers";
-    private static final String[] optionLabels = {E2E_TIMEOUT, CONSISTENCY_LEVEL, CONTENT_RESPONSE_ON_WRITE, NON_IDEMPOTENT_WRITE_RETRIES, BYPASS_CACHE, THROUGHPUT_CONTROL_GROUP_NAME, REQUEST_CHARGE_THRESHOLD, SCAN_IN_QUERY, EXCLUDE_REGIONS, MAX_DEGREE_OF_PARALLELISM, MAX_BUFFERED_ITEM_COUNT, RESPONSE_CONTINUATION_TOKEN_LIMIT_KB, MAX_ITEM_COUNT, QUERY_METRICS, INDEX_METRICS, MAX_PREFETCH_PAGE_COUNT, QUERY_NAME, KEYWORD_IDENTIFIERS};
-    private static final String[] initialOptions = {"20", "Session", "true", "false", "false", "default", "2000", "false", "East US 2", "2", "100", "200", "30", "false", "false", "10", "QueryName", "59409493805"};
+    private static final String[] optionLabels = {E2E_TIMEOUT, CONSISTENCY_LEVEL, CONTENT_RESPONSE_ON_WRITE, NON_IDEMPOTENT_WRITE_RETRIES, BYPASS_CACHE, THROUGHPUT_CONTROL_GROUP_NAME, REQUEST_CHARGE_THRESHOLD, SCAN_IN_QUERY, EXCLUDE_REGIONS, MAX_DEGREE_OF_PARALLELISM, MAX_BUFFERED_ITEM_COUNT, RESPONSE_CONTINUATION_TOKEN_LIMIT_KB, MAX_ITEM_COUNT, QUERY_METRICS, INDEX_METRICS, MAX_PREFETCH_PAGE_COUNT, QUERY_NAME, KEYWORD_IDENTIFIERS, READ_CONSISTENCY_STRATEGY};
+    private static final String[] initialOptions = {"20", "Session", "true", "false", "false", "default", "2000", "false", "East US 2", "2", "100", "200", "30", "false", "false", "10", "QueryName", "59409493805", "Default"};
 
     @Factory(dataProvider = "clientBuildersWithApplyPolicies")
     public OperationPoliciesTest(CosmosClientBuilder clientBuilder) {
@@ -97,6 +98,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
                     new ThresholdBasedAvailabilityStrategy()))
                 .setDiagnosticsThresholds(new CosmosDiagnosticsThresholds().setRequestChargeThreshold(Float.parseFloat(prop.getProperty(REQUEST_CHARGE_THRESHOLD))))
                 .setConsistencyLevel(ConsistencyLevel.fromServiceSerializedFormat(prop.getProperty(CONSISTENCY_LEVEL)))
+                .setReadConsistencyStrategy(ReadConsistencyStrategy.fromServiceSerializedFormat(prop.getProperty(READ_CONSISTENCY_STRATEGY)))
                 .setContentResponseOnWriteEnabled(Boolean.parseBoolean(prop.getProperty(CONTENT_RESPONSE_ON_WRITE)))
                 .setNonIdempotentWriteRetriesEnabled(Boolean.parseBoolean(prop.getProperty(NON_IDEMPOTENT_WRITE_RETRIES)))
                 .setDedicatedGatewayRequestOptions(new DedicatedGatewayRequestOptions()
@@ -128,6 +130,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
                 .setMaxPrefetchPageCount(Integer.parseInt(prop.getProperty(MAX_PREFETCH_PAGE_COUNT)))
                 .setQueryName(prop.getProperty(QUERY_NAME))
                 .setConsistencyLevel(ConsistencyLevel.fromServiceSerializedFormat(prop.getProperty(CONSISTENCY_LEVEL)))
+                .setReadConsistencyStrategy(ReadConsistencyStrategy.fromServiceSerializedFormat(prop.getProperty(READ_CONSISTENCY_STRATEGY)))
                 .setKeywordIdentifiers(new HashSet<>(Arrays.asList(prop.getProperty(KEYWORD_IDENTIFIERS).split(","))));
         }
     }
@@ -146,7 +149,8 @@ public class OperationPoliciesTest extends TestSuiteBase {
                     .setQueryMetricsEnabled(Boolean.parseBoolean(prop.getProperty(QUERY_METRICS)))
                     .setIndexMetricsEnabled(Boolean.parseBoolean(prop.getProperty(INDEX_METRICS)))
                     .setKeywordIdentifiers(new HashSet<>(Arrays.asList(prop.getProperty(KEYWORD_IDENTIFIERS).split(","))))
-                    .setConsistencyLevel(ConsistencyLevel.fromServiceSerializedFormat(prop.getProperty(CONSISTENCY_LEVEL)));
+                    .setConsistencyLevel(ConsistencyLevel.fromServiceSerializedFormat(prop.getProperty(CONSISTENCY_LEVEL)))
+                    .setReadConsistencyStrategy(ReadConsistencyStrategy.fromServiceSerializedFormat(prop.getProperty(READ_CONSISTENCY_STRATEGY)));
         }
     }
 
@@ -236,8 +240,8 @@ public class OperationPoliciesTest extends TestSuiteBase {
     @DataProvider(name = "changedOptions")
     private String[][] createChangedOptions() {
         return new String[][] {
-            { "8", "ConsistentPrefix", "true", "false", "true", "defaultChanged", "1000", "true", "West US 2", "4", "200", "400", "100", "false", "true", "20", "QueryNameChanged", "112" },
-            { "4", "Eventual", "false", "true", "true", "defaultChanged", "1000", "true", "West US 2", "4", "200", "400", "100", "true", "false", "20", "QueryNameChanged", "221" },
+            { "8", "ConsistentPrefix", "true", "false", "true", "defaultChanged", "1000", "true", "West US 2", "4", "200", "400", "100", "false", "true", "20", "QueryNameChanged", "112", "LatestCommitted" },
+            { "4", "Eventual", "false", "true", "true", "defaultChanged", "1000", "true", "West US 2", "4", "200", "400", "100", "true", "false", "20", "QueryNameChanged", "221", "LatestCommitted" },
             initialOptions
         };
     }
@@ -676,6 +680,7 @@ public class OperationPoliciesTest extends TestSuiteBase {
 
        if (doesRequestLevelConsistencyOverrideMatter) {
            assertThat(requestOptions.getConsistencyLevel().toString().toUpperCase(Locale.ROOT)).isEqualTo(options[1].toUpperCase(Locale.ROOT));
+           assertThat(requestOptions.getReadConsistencyStrategy().toString().toUpperCase(Locale.ROOT)).isEqualTo(options[18].toUpperCase(Locale.ROOT));
        }
 
        assertThat(requestOptions.isContentResponseOnWriteEnabled()).isEqualTo(Boolean.parseBoolean(options[2]));
