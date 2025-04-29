@@ -29,7 +29,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class LiveManagedIdentityTests {
-    final private static ClientLogger LOGGER = new ClientLogger(LiveManagedIdentityTests.class);
+    private static final ClientLogger LOGGER = new ClientLogger(LiveManagedIdentityTests.class);
 
     @Test
     @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE")
