@@ -7,8 +7,8 @@ package com.azure.resourcemanager.recoveryservicesbackup.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager;
 import com.azure.resourcemanager.recoveryservicesbackup.models.ResourceGuardProxyBaseResource;
@@ -22,27 +22,27 @@ public final class ResourceGuardProxiesGetMockTests {
     @Test
     public void testGet() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"resourceGuardResourceId\":\"vcjwqwoqsratj\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"ybspijhfrzg\",\"defaultResourceRequest\":\"kagvwukhs\"},{\"vaultCriticalOperation\":\"mm\",\"defaultResourceRequest\":\"fmz\"},{\"vaultCriticalOperation\":\"ilz\",\"defaultResourceRequest\":\"nijmriprlkdne\"}],\"lastUpdatedTime\":\"tlrcxivcbkutpu\",\"description\":\"twjfluxynbp\"},\"eTag\":\"l\",\"location\":\"ywauyqnjckhm\",\"tags\":{\"qggljkybs\":\"jshgouarhwvix\"},\"id\":\"rcl\",\"name\":\"vtzqnrbctbhp\",\"type\":\"hxpcvrdnyeita\"}]}";
+            = "{\"value\":[{\"properties\":{\"resourceGuardResourceId\":\"ftedzuubjtvgjsx\",\"resourceGuardOperationDetails\":[{\"vaultCriticalOperation\":\"jvavdpwwo\",\"defaultResourceRequest\":\"d\"}],\"lastUpdatedTime\":\"titsf\",\"description\":\"fwanm\"},\"eTag\":\"scauwazcgwdfr\",\"location\":\"wgybj\",\"tags\":{\"cvgllixdg\":\"ok\",\"xprwpxs\":\"yfgwewqkj\"},\"id\":\"ohutxlcsk\",\"name\":\"tezuug\",\"type\":\"gzlf\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ResourceGuardProxyBaseResource> response
-            = manager.resourceGuardProxies().get("ihweeb", "ph", com.azure.core.util.Context.NONE);
+            = manager.resourceGuardProxies().get("m", "qgnnbz", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ywauyqnjckhm", response.iterator().next().location());
-        Assertions.assertEquals("jshgouarhwvix", response.iterator().next().tags().get("qggljkybs"));
-        Assertions.assertEquals("vcjwqwoqsratj", response.iterator().next().properties().resourceGuardResourceId());
-        Assertions.assertEquals("ybspijhfrzg",
+        Assertions.assertEquals("wgybj", response.iterator().next().location());
+        Assertions.assertEquals("ok", response.iterator().next().tags().get("cvgllixdg"));
+        Assertions.assertEquals("ftedzuubjtvgjsx", response.iterator().next().properties().resourceGuardResourceId());
+        Assertions.assertEquals("jvavdpwwo",
             response.iterator().next().properties().resourceGuardOperationDetails().get(0).vaultCriticalOperation());
-        Assertions.assertEquals("kagvwukhs",
+        Assertions.assertEquals("d",
             response.iterator().next().properties().resourceGuardOperationDetails().get(0).defaultResourceRequest());
-        Assertions.assertEquals("tlrcxivcbkutpu", response.iterator().next().properties().lastUpdatedTime());
-        Assertions.assertEquals("twjfluxynbp", response.iterator().next().properties().description());
-        Assertions.assertEquals("l", response.iterator().next().etag());
+        Assertions.assertEquals("titsf", response.iterator().next().properties().lastUpdatedTime());
+        Assertions.assertEquals("fwanm", response.iterator().next().properties().description());
+        Assertions.assertEquals("scauwazcgwdfr", response.iterator().next().etag());
     }
 }

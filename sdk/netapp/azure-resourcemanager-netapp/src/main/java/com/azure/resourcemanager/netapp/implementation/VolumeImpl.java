@@ -704,11 +704,6 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
         return this;
     }
 
-    public VolumeImpl withIsRestoring(Boolean isRestoring) {
-        this.innerModel().withIsRestoring(isRestoring);
-        return this;
-    }
-
     public VolumeImpl withSnapshotDirectoryVisible(Boolean snapshotDirectoryVisible) {
         if (isInCreateMode()) {
             this.innerModel().withSnapshotDirectoryVisible(snapshotDirectoryVisible);

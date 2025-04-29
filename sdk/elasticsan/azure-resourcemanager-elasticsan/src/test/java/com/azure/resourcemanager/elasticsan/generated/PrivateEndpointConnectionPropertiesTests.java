@@ -16,7 +16,7 @@ public final class PrivateEndpointConnectionPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateEndpointConnectionProperties model = BinaryData.fromString(
-            "{\"provisioningState\":\"Succeeded\",\"privateEndpoint\":{\"id\":\"yyvxyqjpkcattpn\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"cczsq\",\"actionsRequired\":\"hvmdajvnysounq\"},\"groupIds\":[\"noae\"]}")
+            "{\"provisioningState\":\"Canceled\",\"privateEndpoint\":{\"id\":\"yyvxyqjpkcattpn\"},\"privateLinkServiceConnectionState\":{\"status\":\"Pending\",\"description\":\"cczsq\",\"actionsRequired\":\"hvmdajvnysounq\"},\"groupIds\":[\"noae\"]}")
             .toObject(PrivateEndpointConnectionProperties.class);
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.PENDING,
             model.privateLinkServiceConnectionState().status());

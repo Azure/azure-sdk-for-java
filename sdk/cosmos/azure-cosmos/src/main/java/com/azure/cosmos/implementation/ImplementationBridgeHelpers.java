@@ -159,6 +159,10 @@ public class ImplementationBridgeHelpers {
             void setRegionScopedSessionCapturingEnabled(CosmosClientBuilder builder, boolean isRegionScopedSessionCapturingEnabled);
 
             boolean getRegionScopedSessionCapturingEnabled(CosmosClientBuilder builder);
+
+            void setPerPartitionAutomaticFailoverEnabled(CosmosClientBuilder builder, boolean isPerPartitionAutomaticFailoverEnabled);
+
+            boolean getPerPartitionAutomaticFailoverEnabled(CosmosClientBuilder builder);
         }
     }
 
@@ -1094,6 +1098,10 @@ public class ImplementationBridgeHelpers {
             <T> FeedResponse<T> createFeedResponse(RxDocumentServiceResponse response,
                                                    CosmosItemSerializer itemSerializer,
                                                    Class<T> cls);
+
+            <T> FeedResponse<T> createNonServiceFeedResponse(List<T> items,
+                                                   boolean isChangeFeed,
+                                                   boolean isNoChanges);
 
             <T> FeedResponse<T> createChangeFeedResponse(RxDocumentServiceResponse response,
                                                    CosmosItemSerializer itemSerializer,

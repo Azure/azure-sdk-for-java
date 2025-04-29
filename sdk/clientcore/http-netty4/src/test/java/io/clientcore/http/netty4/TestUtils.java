@@ -2,9 +2,15 @@
 // Licensed under the MIT License.
 package io.clientcore.http.netty4;
 
+import io.clientcore.http.netty4.mocking.MockChannel;
+import io.netty.channel.Channel;
+import io.netty.channel.DefaultEventLoop;
+import io.netty.channel.EventLoop;
 import org.junit.jupiter.api.Assertions;
 
 import java.util.Arrays;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BiConsumer;
 
 public class TestUtils {
     /**
@@ -23,5 +29,43 @@ public class TestUtils {
         if (!Arrays.equals(expected, actual)) {
             Assertions.assertArrayEquals(expected, actual);
         }
+    }
+
+    /**
+     * Creates a {@link Channel} that is able to mock {@link Channel#read()} operations.
+     *
+     * @param readHandler A {@link BiConsumer} that takes the current read count and the channel and mocks reading
+     * operations.
+     * @return A {@link Channel}.
+     */
+    public static Channel createChannelWithReadHandling(BiConsumer<Integer, Channel> readHandler) {
+        EventLoop eventLoop = new DefaultEventLoop() {
+            @Override
+            public boolean inEventLoop(Thread thread) {
+                return true;
+            }
+        };
+
+        AtomicInteger readCount = new AtomicInteger();
+        Channel channel = new MockChannel() {
+            @Override
+            public Channel read() {
+                int count = readCount.getAndIncrement();
+                readHandler.accept(count, this);
+                return this;
+            }
+
+            @Override
+            public boolean isActive() {
+                return true;
+            }
+        };
+
+        try {
+            eventLoop.register(channel).sync();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        return channel;
     }
 }

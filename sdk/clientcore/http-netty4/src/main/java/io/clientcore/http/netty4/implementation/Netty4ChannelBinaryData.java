@@ -3,6 +3,7 @@
 package io.clientcore.http.netty4.implementation;
 
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.json.JsonWriter;
@@ -12,9 +13,12 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.UncheckedIOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.concurrent.CountDownLatch;
@@ -33,6 +37,7 @@ final class Netty4ChannelBinaryData extends BinaryData {
     // Non-final to allow nulling out after use.
     private ByteArrayOutputStream eagerContent;
 
+    private volatile boolean channelDone;
     private volatile byte[] bytes;
 
     Netty4ChannelBinaryData(ByteArrayOutputStream eagerContent, Channel channel, Long length) {
@@ -49,15 +54,18 @@ final class Netty4ChannelBinaryData extends BinaryData {
 
         if (bytes == null) {
             CountDownLatch latch = new CountDownLatch(1);
-            channel.pipeline().addLast(new Netty4EagerConsumeNetworkResponseHandler(latch, buf -> {
+            channel.pipeline().addLast(new Netty4EagerConsumeChannelHandler(latch, buf -> {
                 try {
                     buf.readBytes(eagerContent, buf.readableBytes());
                 } catch (IOException ex) {
+                    // This exception thrown here will eventually close the Channel, resulting in the latch being
+                    // counted down.
                     throw new UncheckedIOException(ex);
                 }
             }));
 
             awaitLatch(latch);
+            channelDone = true;
             bytes = eagerContent.toByteArray();
             eagerContent = null;
         }
@@ -71,22 +79,67 @@ final class Netty4ChannelBinaryData extends BinaryData {
     }
 
     @Override
-    public <T> T toObject(Type type, ObjectSerializer serializer) throws IOException {
-        return serializer.deserializeFromBytes(toBytes(), type);
+    public <T> T toObject(Type type, ObjectSerializer serializer) {
+        try {
+            return serializer.deserializeFromBytes(toBytes(), type);
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(CoreException.from(e));
+        }
     }
 
     @Override
     public InputStream toStream() {
-        // TODO (alzimmer): This needs to change to a deferred InputStream that pulls content from the Channel when
-        //  needed. This is just a starting point.
-        return new ByteArrayInputStream(toBytes());
+        if (bytes == null) {
+            return new Netty4ChannelInputStream(eagerContent, channel);
+        } else {
+            return new ByteArrayInputStream(bytes);
+        }
     }
 
     @Override
-    public void writeTo(JsonWriter jsonWriter) throws IOException {
+    public void writeTo(JsonWriter jsonWriter) {
         Objects.requireNonNull(jsonWriter, "'jsonWriter' cannot be null");
 
-        jsonWriter.writeBinary(toBytes());
+        try {
+            jsonWriter.writeBinary(toBytes());
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(CoreException.from(e));
+        }
+    }
+
+    @Override
+    public void writeTo(OutputStream outputStream) {
+        try {
+            if (bytes == null) {
+                // Channel hasn't been read yet, don't buffer it, just write it to the OutputStream as it's being read.
+                if (eagerContent.size() > 0) {
+                    outputStream.write(eagerContent.toByteArray());
+                }
+
+                CountDownLatch latch = new CountDownLatch(1);
+                channel.pipeline().addLast(new Netty4EagerConsumeChannelHandler(latch, buf -> {
+                    try {
+                        buf.readBytes(outputStream, buf.readableBytes());
+                    } catch (IOException ex) {
+                        throw new UncheckedIOException(ex);
+                    }
+                }));
+
+                awaitLatch(latch);
+                channelDone = true;
+                eagerContent = null;
+            } else {
+                // Already converted the Channel to a byte[], use it.
+                outputStream.write(bytes);
+            }
+        } catch (IOException ex) {
+            throw LOGGER.logThrowableAsError(CoreException.from(ex));
+        }
+    }
+
+    @Override
+    public void writeTo(WritableByteChannel byteChannel) {
+        writeTo(Channels.newOutputStream(byteChannel));
     }
 
     @Override
@@ -110,7 +163,10 @@ final class Netty4ChannelBinaryData extends BinaryData {
     }
 
     @Override
-    public void close() throws IOException {
-        channel.close();
+    public void close() {
+        eagerContent = null;
+        if (!channelDone) {
+            channel.close();
+        }
     }
 }

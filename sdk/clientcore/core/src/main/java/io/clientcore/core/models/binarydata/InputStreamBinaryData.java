@@ -9,6 +9,7 @@ import io.clientcore.core.implementation.AccessibleByteArrayOutputStream;
 import io.clientcore.core.implementation.utils.ImplUtils;
 import io.clientcore.core.implementation.utils.IterableOfByteBuffersInputStream;
 import io.clientcore.core.implementation.utils.StreamUtil;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.serialization.json.JsonWriter;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.ObjectSerializer;
@@ -16,7 +17,6 @@ import io.clientcore.core.serialization.ObjectSerializer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UncheckedIOException;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.channels.WritableByteChannel;
@@ -87,8 +87,12 @@ public final class InputStreamBinaryData extends BinaryData {
     }
 
     @Override
-    public <T> T toObject(Type type, ObjectSerializer serializer) throws IOException {
-        return serializer.deserializeFromBytes(toBytes(), type);
+    public <T> T toObject(Type type, ObjectSerializer serializer) {
+        try {
+            return serializer.deserializeFromBytes(toBytes(), type);
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(CoreException.from(e));
+        }
     }
 
     @Override
@@ -102,54 +106,68 @@ public final class InputStreamBinaryData extends BinaryData {
     }
 
     @Override
-    public void writeTo(OutputStream outputStream) throws IOException {
+    public void writeTo(OutputStream outputStream) {
         InputStream inputStream = content.get();
-        if (bufferedContent != null) {
-            // InputStream has been buffered, access the buffered elements directly to reduce memory copying.
-            for (ByteBuffer bb : bufferedContent) {
-                ImplUtils.writeByteBufferToStream(bb, outputStream);
+
+        try {
+            if (bufferedContent != null) {
+                // InputStream has been buffered, access the buffered elements directly to reduce memory copying.
+                for (ByteBuffer bb : bufferedContent) {
+                    ImplUtils.writeByteBufferToStream(bb, outputStream);
+                }
+            } else {
+                // Otherwise use a generic write to.
+                // More optimizations can be done here based on the type of InputStream but this is the initial
+                // implementation, so it has been kept simple.
+                byte[] buffer = new byte[8192];
+                int read;
+                while ((read = inputStream.read(buffer)) != -1) {
+                    outputStream.write(buffer, 0, read);
+                }
             }
-        } else {
-            // Otherwise use a generic write to.
-            // More optimizations can be done here based on the type of InputStream but this is the initial
-            // implementation, so it has been kept simple.
-            byte[] buffer = new byte[8192];
-            int read;
-            while ((read = inputStream.read(buffer)) != -1) {
-                outputStream.write(buffer, 0, read);
-            }
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(CoreException.from(e));
         }
     }
 
     @Override
-    public void writeTo(WritableByteChannel channel) throws IOException {
+    public void writeTo(WritableByteChannel channel) {
         InputStream inputStream = content.get();
-        if (bufferedContent != null) {
-            // InputStream has been buffered, access the buffered elements directly to reduce memory copying.
-            for (ByteBuffer bb : bufferedContent) {
-                bb = bb.duplicate();
-                while (bb.hasRemaining()) {
-                    channel.write(bb);
+
+        try {
+            if (bufferedContent != null) {
+                // InputStream has been buffered, access the buffered elements directly to reduce memory copying.
+                for (ByteBuffer bb : bufferedContent) {
+                    bb = bb.duplicate();
+                    while (bb.hasRemaining()) {
+                        channel.write(bb);
+                    }
+                }
+            } else {
+                // Otherwise use a generic write to.
+                byte[] buffer = new byte[8192];
+                int read;
+                while ((read = inputStream.read(buffer)) != -1) {
+                    ByteBuffer bb = ByteBuffer.wrap(buffer, 0, read);
+                    while (bb.hasRemaining()) {
+                        channel.write(bb);
+                    }
                 }
             }
-        } else {
-            // Otherwise use a generic write to.
-            byte[] buffer = new byte[8192];
-            int read;
-            while ((read = inputStream.read(buffer)) != -1) {
-                ByteBuffer bb = ByteBuffer.wrap(buffer, 0, read);
-                while (bb.hasRemaining()) {
-                    channel.write(bb);
-                }
-            }
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(CoreException.from(e));
         }
     }
 
     @Override
-    public void writeTo(JsonWriter jsonWriter) throws IOException {
+    public void writeTo(JsonWriter jsonWriter) {
         Objects.requireNonNull(jsonWriter, "'jsonWriter' cannot be null");
 
-        jsonWriter.writeBinary(toBytes());
+        try {
+            jsonWriter.writeBinary(toBytes());
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(CoreException.from(e));
+        }
     }
 
     @Override
@@ -184,7 +202,7 @@ public final class InputStreamBinaryData extends BinaryData {
             stream.reset();
             return stream;
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+            throw LOGGER.logThrowableAsError(CoreException.from(e));
         }
     }
 
@@ -196,7 +214,7 @@ public final class InputStreamBinaryData extends BinaryData {
             return new InputStreamBinaryData(() -> new IterableOfByteBuffersInputStream(byteBuffers), length,
                 byteBuffers);
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+            throw LOGGER.logThrowableAsError(CoreException.from(e));
         }
     }
 
@@ -211,12 +229,16 @@ public final class InputStreamBinaryData extends BinaryData {
             }
             return dataOutputBuffer.toByteArrayUnsafe();
         } catch (IOException ex) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(ex));
+            throw LOGGER.logThrowableAsError(CoreException.from(ex));
         }
     }
 
     @Override
-    public void close() throws IOException {
-        content.get().close();
+    public void close() {
+        try {
+            content.get().close();
+        } catch (IOException e) {
+            throw LOGGER.logThrowableAsError(CoreException.from(e));
+        }
     }
 }

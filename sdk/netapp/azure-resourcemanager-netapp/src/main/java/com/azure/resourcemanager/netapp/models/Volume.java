@@ -650,13 +650,12 @@ public interface Volume {
             DefinitionStages.WithServiceLevel, DefinitionStages.WithExportPolicy, DefinitionStages.WithProtocolTypes,
             DefinitionStages.WithSnapshotId, DefinitionStages.WithDeleteBaseSnapshot, DefinitionStages.WithBackupId,
             DefinitionStages.WithNetworkFeatures, DefinitionStages.WithVolumeType, DefinitionStages.WithDataProtection,
-            DefinitionStages.WithIsRestoring, DefinitionStages.WithSnapshotDirectoryVisible,
-            DefinitionStages.WithKerberosEnabled, DefinitionStages.WithSecurityStyle,
-            DefinitionStages.WithSmbEncryption, DefinitionStages.WithSmbAccessBasedEnumeration,
-            DefinitionStages.WithSmbNonBrowsable, DefinitionStages.WithSmbContinuouslyAvailable,
-            DefinitionStages.WithThroughputMibps, DefinitionStages.WithEncryptionKeySource,
-            DefinitionStages.WithKeyVaultPrivateEndpointResourceId, DefinitionStages.WithLdapEnabled,
-            DefinitionStages.WithCoolAccess, DefinitionStages.WithCoolnessPeriod,
+            DefinitionStages.WithSnapshotDirectoryVisible, DefinitionStages.WithKerberosEnabled,
+            DefinitionStages.WithSecurityStyle, DefinitionStages.WithSmbEncryption,
+            DefinitionStages.WithSmbAccessBasedEnumeration, DefinitionStages.WithSmbNonBrowsable,
+            DefinitionStages.WithSmbContinuouslyAvailable, DefinitionStages.WithThroughputMibps,
+            DefinitionStages.WithEncryptionKeySource, DefinitionStages.WithKeyVaultPrivateEndpointResourceId,
+            DefinitionStages.WithLdapEnabled, DefinitionStages.WithCoolAccess, DefinitionStages.WithCoolnessPeriod,
             DefinitionStages.WithCoolAccessRetrievalPolicy, DefinitionStages.WithCoolAccessTieringPolicy,
             DefinitionStages.WithUnixPermissions, DefinitionStages.WithAvsDataStore,
             DefinitionStages.WithIsDefaultQuotaEnabled, DefinitionStages.WithDefaultUserQuotaInKiBs,
@@ -829,19 +828,6 @@ public interface Volume {
              * @return the next definition stage.
              */
             WithCreate withDataProtection(VolumePropertiesDataProtection dataProtection);
-        }
-
-        /**
-         * The stage of the Volume definition allowing to specify isRestoring.
-         */
-        interface WithIsRestoring {
-            /**
-             * Specifies the isRestoring property: Restoring.
-             * 
-             * @param isRestoring Restoring.
-             * @return the next definition stage.
-             */
-            WithCreate withIsRestoring(Boolean isRestoring);
         }
 
         /**

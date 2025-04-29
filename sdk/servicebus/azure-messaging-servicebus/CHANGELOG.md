@@ -10,6 +10,12 @@
 
 ### Other Changes
 
+## 7.17.11 (2025-04-15)
+
+### Bugs Fixed
+
+- Added retry for single message send and schedule cases. ([44920](https://github.com/Azure/azure-sdk-for-java/pull/44920))
+
 ## 7.17.10 (2025-03-18)
 
 ### Bugs Fixed

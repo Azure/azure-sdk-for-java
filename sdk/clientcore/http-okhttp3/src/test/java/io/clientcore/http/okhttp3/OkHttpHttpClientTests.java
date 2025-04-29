@@ -10,6 +10,7 @@ import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.shared.InsecureTrustManager;
 import io.clientcore.core.shared.LocalTestServer;
@@ -38,6 +39,7 @@ import java.util.concurrent.TimeUnit;
 
 import static io.clientcore.http.okhttp3.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertLinesMatch;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -99,12 +101,12 @@ public class OkHttpHttpClientTests {
     }
 
     @Test
-    public void testFlowableResponseShortBodyAsByteArrayAsync() throws IOException {
+    public void testFlowableResponseShortBodyAsByteArrayAsync() {
         checkBodyReceived(SHORT_BODY, "/short");
     }
 
     @Test
-    public void testFlowableResponseLongBodyAsByteArrayAsync() throws IOException {
+    public void testFlowableResponseLongBodyAsByteArrayAsync() {
         checkBodyReceived(LONG_BODY, "/long");
     }
 
@@ -113,7 +115,8 @@ public class OkHttpHttpClientTests {
         HttpClient client = new OkHttpHttpClientProvider().getSharedInstance();
         HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(server, "/connectionClose"));
 
-        assertThrows(IOException.class, () -> client.send(request).getValue().toBytes());
+        CoreException exception = assertThrows(CoreException.class, () -> client.send(request).getValue().toBytes());
+        assertInstanceOf(IOException.class, exception.getCause());
     }
 
     @Test
@@ -121,7 +124,7 @@ public class OkHttpHttpClientTests {
         int numRequests = 100; // 100 = 1GB of data read
         HttpClient client = new OkHttpHttpClientProvider().getSharedInstance();
 
-        ForkJoinPool pool = new ForkJoinPool();
+        ForkJoinPool pool = new ForkJoinPool((int) Math.ceil(Runtime.getRuntime().availableProcessors() / 2.0));
         List<Callable<Void>> requests = new ArrayList<>(numRequests);
 
         for (int i = 0; i < numRequests; i++) {
@@ -142,7 +145,7 @@ public class OkHttpHttpClientTests {
     }
 
     @Test
-    public void validateHeadersReturnAsIs() throws IOException {
+    public void validateHeadersReturnAsIs() {
         HttpClient client = new OkHttpHttpClientProvider().getSharedInstance();
         HttpHeaderName singleValueHeaderName = HttpHeaderName.fromString("singleValue");
         final String singleValueHeaderValue = "value";
@@ -172,7 +175,7 @@ public class OkHttpHttpClientTests {
     }
 
     @Test
-    public void testCustomSslSocketFactory() throws IOException, GeneralSecurityException {
+    public void testCustomSslSocketFactory() throws GeneralSecurityException {
         SSLContext sslContext = SSLContext.getInstance("TLSv1.2", Conscrypt.newProvider());
 
         // Initialize the SSL context with a trust manager that trusts all certificates.
@@ -217,7 +220,7 @@ public class OkHttpHttpClientTests {
         return longBody;
     }
 
-    private static void checkBodyReceived(byte[] expectedBody, String path) throws IOException {
+    private static void checkBodyReceived(byte[] expectedBody, String path) {
         HttpClient client = new OkHttpHttpClientBuilder().build();
         try (Response<BinaryData> response = doRequest(client, path)) {
             byte[] bytes = response.getValue().toBytes();
@@ -226,7 +229,7 @@ public class OkHttpHttpClientTests {
         }
     }
 
-    private static Response<BinaryData> doRequest(HttpClient client, String path) throws IOException {
+    private static Response<BinaryData> doRequest(HttpClient client, String path) {
         HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri(server, path));
 
         return client.send(request);

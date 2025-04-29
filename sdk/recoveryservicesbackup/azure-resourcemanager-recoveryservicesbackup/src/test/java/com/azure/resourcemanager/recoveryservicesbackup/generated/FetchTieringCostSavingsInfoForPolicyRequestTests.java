@@ -13,22 +13,22 @@ public final class FetchTieringCostSavingsInfoForPolicyRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FetchTieringCostSavingsInfoForPolicyRequest model = BinaryData.fromString(
-            "{\"objectType\":\"FetchTieringCostSavingsInfoForPolicyRequest\",\"policyName\":\"qtyltcoqcujp\",\"sourceTierType\":\"HardenedRP\",\"targetTierType\":\"Invalid\"}")
+            "{\"objectType\":\"FetchTieringCostSavingsInfoForPolicyRequest\",\"policyName\":\"nzcpdltkr\",\"sourceTierType\":\"ArchivedRP\",\"targetTierType\":\"InstantRP\"}")
             .toObject(FetchTieringCostSavingsInfoForPolicyRequest.class);
-        Assertions.assertEquals(RecoveryPointTierType.HARDENED_RP, model.sourceTierType());
-        Assertions.assertEquals(RecoveryPointTierType.INVALID, model.targetTierType());
-        Assertions.assertEquals("qtyltcoqcujp", model.policyName());
+        Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.sourceTierType());
+        Assertions.assertEquals(RecoveryPointTierType.INSTANT_RP, model.targetTierType());
+        Assertions.assertEquals("nzcpdltkr", model.policyName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         FetchTieringCostSavingsInfoForPolicyRequest model
-            = new FetchTieringCostSavingsInfoForPolicyRequest().withSourceTierType(RecoveryPointTierType.HARDENED_RP)
-                .withTargetTierType(RecoveryPointTierType.INVALID)
-                .withPolicyName("qtyltcoqcujp");
+            = new FetchTieringCostSavingsInfoForPolicyRequest().withSourceTierType(RecoveryPointTierType.ARCHIVED_RP)
+                .withTargetTierType(RecoveryPointTierType.INSTANT_RP)
+                .withPolicyName("nzcpdltkr");
         model = BinaryData.fromObject(model).toObject(FetchTieringCostSavingsInfoForPolicyRequest.class);
-        Assertions.assertEquals(RecoveryPointTierType.HARDENED_RP, model.sourceTierType());
-        Assertions.assertEquals(RecoveryPointTierType.INVALID, model.targetTierType());
-        Assertions.assertEquals("qtyltcoqcujp", model.policyName());
+        Assertions.assertEquals(RecoveryPointTierType.ARCHIVED_RP, model.sourceTierType());
+        Assertions.assertEquals(RecoveryPointTierType.INSTANT_RP, model.targetTierType());
+        Assertions.assertEquals("nzcpdltkr", model.policyName());
     }
 }

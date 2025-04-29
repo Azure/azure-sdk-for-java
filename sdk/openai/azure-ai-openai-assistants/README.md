@@ -1,5 +1,10 @@
 # Azure OpenAI: OpenAI Assistants client library for Java
 
+> [!IMPORTANT]
+> This client library won't receive updates in its current form.
+> To use newer OpenAI features, please use the official [OpenAI Java library][openai_java]
+> For Azure specific functionality, we are providing migration guides in azure-ai-openai-stainless.
+
 The Azure OpenAI Assistants client library for Java is an adaptation of OpenAI's REST APIs that provides an idiomatic interface
 and rich integration with the rest of the Azure SDK ecosystem. It will connect to Azure OpenAI resources *or* to the
 non-Azure OpenAI inference endpoint, making it a great choice for even non-Azure OpenAI development.
@@ -354,4 +359,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 [azure_subscription]: https://azure.microsoft.com/free/
 [azure_identity]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/identity/azure-identity
 [function_tool_call_full_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai-assistants/src/samples/java/com/azure/ai/openai/assistants/FunctionToolCallSample.java
-
+[openai_java]: https://github.com/openai/openai-java

@@ -4,6 +4,7 @@
 
 <suppressions>
   <suppress files="io.clientcore.core.implementation.utils.InternalContext.java" checks="JavadocMethodCheck" />
+  <suppress files="io.clientcore.core.http.models.RequestContext.java" checks="MethodNameCheck" />
   <suppress files="io.clientcore.core.implementation.instrumentation.DefaultLogger.java" checks="MissingJavadocMethodCheck" />
   <suppress files="io.clientcore.core.implementation.instrumentation.Slf4jLoggerShim.java" checks="MissingJavadocMethodCheck" />
   <suppress files="io.clientcore.core.implementation.utils.ImplUtils.java" checks="MissingJavadocMethodCheck" />
@@ -24,5 +25,4 @@
   <suppress files="io.clientcore.core.serialization.json.JsonWriter.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="io.clientcore.core.serialization.json.implementation.StringBuilderWriter.java" checks="com.azure.tools.checkstyle.checks.ThrowFromClientLoggerCheck" />
   <suppress files="io.clientcore.core.serialization.json.implementation.JsonUtils.java" checks="com.azure.tools.checkstyle.checks.UseCaughtExceptionCauseCheck" />
-  <suppress files="io.clientcore.core.http.models.RequestContext.java" checks="MethodName" />
 </suppressions>

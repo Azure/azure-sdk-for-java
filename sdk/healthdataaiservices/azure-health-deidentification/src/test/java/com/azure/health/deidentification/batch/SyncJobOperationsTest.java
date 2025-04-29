@@ -141,7 +141,7 @@ class SyncJobOperationsTest extends BatchOperationTestBase {
         while (iterator.hasNext()) {
             DeidentificationDocumentDetails currentReport = iterator.next();
             assertEquals(OperationStatus.SUCCEEDED, currentReport.getStatus());
-            assertTrue(currentReport.getOutput().getLocation().contains(OUTPUT_FOLDER));
+            assertTrue(currentReport.getOutputLocation().getLocation().contains(OUTPUT_FOLDER));
             assertEquals(36, currentReport.getId().length());
             results++;
         }

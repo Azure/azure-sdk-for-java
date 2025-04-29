@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class OSVersionWrapperTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OSVersionWrapper model = BinaryData.fromString("{\"version\":\"wjh\",\"servicePack\":\"biwetpo\"}")
+        OSVersionWrapper model = BinaryData.fromString("{\"version\":\"rzmq\",\"servicePack\":\"cycijoclxiut\"}")
             .toObject(OSVersionWrapper.class);
-        Assertions.assertEquals("wjh", model.version());
-        Assertions.assertEquals("biwetpo", model.servicePack());
+        Assertions.assertEquals("rzmq", model.version());
+        Assertions.assertEquals("cycijoclxiut", model.servicePack());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OSVersionWrapper model = new OSVersionWrapper().withVersion("wjh").withServicePack("biwetpo");
+        OSVersionWrapper model = new OSVersionWrapper().withVersion("rzmq").withServicePack("cycijoclxiut");
         model = BinaryData.fromObject(model).toObject(OSVersionWrapper.class);
-        Assertions.assertEquals("wjh", model.version());
-        Assertions.assertEquals("biwetpo", model.servicePack());
+        Assertions.assertEquals("rzmq", model.version());
+        Assertions.assertEquals("cycijoclxiut", model.servicePack());
     }
 }

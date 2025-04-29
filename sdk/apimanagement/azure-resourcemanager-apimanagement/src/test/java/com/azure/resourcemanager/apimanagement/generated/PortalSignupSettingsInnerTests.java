@@ -13,23 +13,23 @@ public final class PortalSignupSettingsInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PortalSignupSettingsInner model = BinaryData.fromString(
-            "{\"properties\":{\"enabled\":false,\"termsOfService\":{\"text\":\"wnhkgq\",\"enabled\":false,\"consentRequired\":false}},\"id\":\"stcivrak\",\"name\":\"rrynjcwmhly\",\"type\":\"gnukxrkemjpe\"}")
+            "{\"properties\":{\"enabled\":false,\"termsOfService\":{\"text\":\"o\",\"enabled\":true,\"consentRequired\":false}},\"id\":\"neaoovtyjzti\",\"name\":\"fwjlof\",\"type\":\"ekfsrm\"}")
             .toObject(PortalSignupSettingsInner.class);
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("wnhkgq", model.termsOfService().text());
-        Assertions.assertEquals(false, model.termsOfService().enabled());
-        Assertions.assertEquals(false, model.termsOfService().consentRequired());
+        Assertions.assertFalse(model.enabled());
+        Assertions.assertEquals("o", model.termsOfService().text());
+        Assertions.assertTrue(model.termsOfService().enabled());
+        Assertions.assertFalse(model.termsOfService().consentRequired());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PortalSignupSettingsInner model = new PortalSignupSettingsInner().withEnabled(false)
             .withTermsOfService(
-                new TermsOfServiceProperties().withText("wnhkgq").withEnabled(false).withConsentRequired(false));
+                new TermsOfServiceProperties().withText("o").withEnabled(true).withConsentRequired(false));
         model = BinaryData.fromObject(model).toObject(PortalSignupSettingsInner.class);
-        Assertions.assertEquals(false, model.enabled());
-        Assertions.assertEquals("wnhkgq", model.termsOfService().text());
-        Assertions.assertEquals(false, model.termsOfService().enabled());
-        Assertions.assertEquals(false, model.termsOfService().consentRequired());
+        Assertions.assertFalse(model.enabled());
+        Assertions.assertEquals("o", model.termsOfService().text());
+        Assertions.assertTrue(model.termsOfService().enabled());
+        Assertions.assertFalse(model.termsOfService().consentRequired());
     }
 }

@@ -10,9 +10,9 @@ import com.azure.resourcemanager.networkcloud.models.AvailableUpgrade;
 public final class AvailableUpgradeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AvailableUpgrade model = BinaryData
-            .fromString("{\"availabilityLifecycle\":\"GenerallyAvailable\",\"version\":\"ohgwxrtfudxepxg\"}")
-            .toObject(AvailableUpgrade.class);
+        AvailableUpgrade model
+            = BinaryData.fromString("{\"availabilityLifecycle\":\"GenerallyAvailable\",\"version\":\"iohgwxrtfud\"}")
+                .toObject(AvailableUpgrade.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -18,8 +18,6 @@ import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.utils.SharedExecutorService;
 
-import java.io.IOException;
-import java.io.UncheckedIOException;
 import java.lang.reflect.Type;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -69,11 +67,7 @@ public final class PollingUtils {
         if (typeReference instanceof Class<?> && BinaryData.class.isAssignableFrom((Class<?>) typeReference)) {
             return (T) binaryData.toReplayableBinaryData();
         } else {
-            try {
-                return binaryData.toObject(typeReference, serializer);
-            } catch (IOException e) {
-                throw new UncheckedIOException(e);
-            }
+            return binaryData.toObject(typeReference, serializer);
         }
     }
 

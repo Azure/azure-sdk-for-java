@@ -12,21 +12,21 @@ public final class IssueAttachmentContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         IssueAttachmentContractInner model = BinaryData.fromString(
-            "{\"properties\":{\"title\":\"fkak\",\"contentFormat\":\"qfrkemyildudxj\",\"content\":\"sco\"},\"id\":\"vfdjkpdxp\",\"name\":\"lkksnmgzvyfi\",\"type\":\"dkz\"}")
+            "{\"properties\":{\"title\":\"idftujwjjufwbe\",\"contentFormat\":\"rkuorh\",\"content\":\"ssruqnmdvhazcvj\"},\"id\":\"tiq\",\"name\":\"wbqerzwxiytxtd\",\"type\":\"ukvlb\"}")
             .toObject(IssueAttachmentContractInner.class);
-        Assertions.assertEquals("fkak", model.title());
-        Assertions.assertEquals("qfrkemyildudxj", model.contentFormat());
-        Assertions.assertEquals("sco", model.content());
+        Assertions.assertEquals("idftujwjjufwbe", model.title());
+        Assertions.assertEquals("rkuorh", model.contentFormat());
+        Assertions.assertEquals("ssruqnmdvhazcvj", model.content());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IssueAttachmentContractInner model = new IssueAttachmentContractInner().withTitle("fkak")
-            .withContentFormat("qfrkemyildudxj")
-            .withContent("sco");
+        IssueAttachmentContractInner model = new IssueAttachmentContractInner().withTitle("idftujwjjufwbe")
+            .withContentFormat("rkuorh")
+            .withContent("ssruqnmdvhazcvj");
         model = BinaryData.fromObject(model).toObject(IssueAttachmentContractInner.class);
-        Assertions.assertEquals("fkak", model.title());
-        Assertions.assertEquals("qfrkemyildudxj", model.contentFormat());
-        Assertions.assertEquals("sco", model.content());
+        Assertions.assertEquals("idftujwjjufwbe", model.title());
+        Assertions.assertEquals("rkuorh", model.contentFormat());
+        Assertions.assertEquals("ssruqnmdvhazcvj", model.content());
     }
 }
