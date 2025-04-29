@@ -252,6 +252,34 @@ public class ClientLoggerTests {
     }
 
     /**
+     * Tests logging Throwable with disabled stack trace
+     */
+    @Test
+    public void logExceptionWithDisabledStackTrace() {
+        ClientLogger logger = setupLogLevelAndGetLogger(LogLevel.VERBOSE);
+
+        String shortMessage = "connection dropped";
+        RuntimeException exception = logger.throwableAtWarning()
+            .addKeyValue("connectionId", "foo")
+            .addKeyValue("linkName", 1)
+            .log(shortMessage, ExceptionWithDisabledStackTrace::new);
+
+        assertEquals("connection dropped; {\"connectionId\":\"foo\",\"linkName\":1}", exception.getMessage());
+
+        Map<String, Object> expectedMessage = new HashMap<>();
+        expectedMessage.put("message", shortMessage);
+        expectedMessage.put("connectionId", "foo");
+        expectedMessage.put("linkName", 1);
+        expectedMessage.put("exception.type", exception.getClass().getCanonicalName());
+        expectedMessage.put("exception.stacktrace", stackTraceToString(exception));
+
+        String logValues = byteArraySteamToString(logCaptureStream);
+
+        assertTrue(logValues.contains(shortMessage));
+        assertMessage(expectedMessage, logValues, LogLevel.VERBOSE, LogLevel.ERROR);
+    }
+
+    /**
      * Tests logging Throwable with context and cause
      */
     @Test
@@ -1235,6 +1263,12 @@ public class ClientLoggerTests {
             return reader.readMap(JsonReader::readUntyped);
         } catch (IOException e) {
             throw new UncheckedIOException(e);
+        }
+    }
+
+    static class ExceptionWithDisabledStackTrace extends RuntimeException {
+        ExceptionWithDisabledStackTrace(String message, Throwable cause) {
+            super(message, cause, true, false);
         }
     }
 }

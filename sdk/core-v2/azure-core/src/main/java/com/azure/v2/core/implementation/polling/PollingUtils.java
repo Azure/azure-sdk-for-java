@@ -226,8 +226,8 @@ public final class PollingUtils {
     public static void validateTimeout(Duration timeout, ClientLogger logger) {
         Objects.requireNonNull(timeout, "'timeout' cannot be null.");
         if (timeout.isNegative() || timeout.isZero()) {
-            throw logger.throwableAtWarning(IllegalArgumentException::new)
-                .log("Negative or zero value for timeout is not allowed.");
+            throw logger.throwableAtWarning()
+                .log("Negative or zero value for timeout is not allowed.", IllegalArgumentException::new);
         }
     }
 
@@ -243,8 +243,8 @@ public final class PollingUtils {
     public static Duration validatePollInterval(Duration pollInterval, ClientLogger logger) {
         Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
         if (pollInterval.isNegative() || pollInterval.isZero()) {
-            throw logger.throwableAtWarning(IllegalArgumentException::new)
-                .log("Negative or zero value for pollInterval is not allowed.");
+            throw logger.throwableAtWarning()
+                .log("Negative or zero value for pollInterval is not allowed.", IllegalArgumentException::new);
         }
         return pollInterval;
     }
@@ -263,9 +263,9 @@ public final class PollingUtils {
             URI uri = new URI(path);
             if (!uri.isAbsolute()) {
                 if (CoreUtils.isNullOrEmpty(endpoint)) {
-                    throw logger.throwableAtWarning(IllegalArgumentException::new)
-                        .log(
-                            "Relative path requires endpoint to be non-null and non-empty to create an absolute path.");
+                    throw logger.throwableAtWarning()
+                        .log("Relative path requires endpoint to be non-null and non-empty to create an absolute path.",
+                            IllegalArgumentException::new);
                 }
 
                 if (endpoint.endsWith(FORWARD_SLASH) && path.startsWith(FORWARD_SLASH)) {
@@ -277,7 +277,7 @@ public final class PollingUtils {
                 }
             }
         } catch (URISyntaxException ex) {
-            throw logger.throwableAtWarning(IllegalArgumentException::new).log("'path' must be a valid URI.", ex);
+            throw logger.throwableAtWarning().log("'path' must be a valid URI.", ex, IllegalArgumentException::new);
         }
         return path;
     }

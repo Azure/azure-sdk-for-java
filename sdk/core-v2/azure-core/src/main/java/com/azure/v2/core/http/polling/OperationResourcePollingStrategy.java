@@ -159,13 +159,14 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
                 PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType), retryAfter);
         }
 
-        throw LOGGER.throwableAtError((message, cause) -> new HttpResponseException(message, response, cause))
+        throw LOGGER.throwableAtError()
             .addKeyValue("http.response.status_code", response.getStatusCode())
             .addKeyValue("http.response.body.content", serializeResponse(response.getValue(), serializer).toString())
             .addKeyValue("operationLocationHeaderName", operationLocationHeaderName.getValue())
             .addKeyValue("operationLocationHeaderValue",
                 operationLocationHeader == null ? null : operationLocationHeader.getValue())
-            .log("Operation failed or cancelled");
+            .log("Operation failed or cancelled",
+                (message, cause) -> new HttpResponseException(message, response, cause));
     }
 
     @Override

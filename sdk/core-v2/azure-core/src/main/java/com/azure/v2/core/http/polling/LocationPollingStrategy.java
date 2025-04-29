@@ -141,11 +141,11 @@ public class LocationPollingStrategy<T, U> implements PollingStrategy<T, U> {
                 PollingUtils.convertResponse(response.getValue(), serializer, pollResponseType), retryAfter);
         }
 
-        throw LOGGER.throwableAtError((message, cause) -> new HttpResponseException(message, response, cause))
+        throw LOGGER.throwableAtError()
             .addKeyValue("http.response.status_code", response.getStatusCode())
             .addKeyValue("http.response.header.location", locationHeader == null ? null : locationHeader.getValue())
             .addKeyValue("http.response.body.content", serializeResponse(response.getValue(), serializer).toString())
-            .log("Operation failed or cancelled");
+            .log("Operation failed or cancelled", (message, __) -> new HttpResponseException(message, response, null));
     }
 
     @Override
