@@ -46,7 +46,7 @@ public class SyncProxyTaskGroupTests {
 
         // Invocation of group should invoke all the tasks
         //
-        group.invoke(group.newInvocationContext());
+        group.invoke(group.newInvocationContext().withSyncTaskExecutor(Runnable::run));
 
         Assertions.assertEquals(0, groupItems.size());
 
@@ -162,7 +162,7 @@ public class SyncProxyTaskGroupTests {
 
         // Invocation of group-1 should not invoke group-2
         //
-        group1.invoke(group1.newInvocationContext());
+        group1.invoke(group1.newInvocationContext().withSyncTaskExecutor(Runnable::run));
 
         Assertions.assertEquals(0, group1Items.size());
 
@@ -278,7 +278,7 @@ public class SyncProxyTaskGroupTests {
 
         // Invocation of group-2 should invoke group-2 and group-1
         //
-        group2.invoke(group2.newInvocationContext());
+        group2.invoke(group2.newInvocationContext().withSyncTaskExecutor(Runnable::run));
 
         Assertions.assertEquals(0, group1Items.size());
         Assertions.assertEquals(0, group2Items.size());
@@ -419,7 +419,7 @@ public class SyncProxyTaskGroupTests {
 
         // Invocation of group-1 should run group-1 and it's "post run" dependent group-2
         //
-        group1.invoke(group1.newInvocationContext());
+        group1.invoke(group1.newInvocationContext().withSyncTaskExecutor(Runnable::run));
 
         Assertions.assertEquals(0, group1Items.size());
 
@@ -563,7 +563,7 @@ public class SyncProxyTaskGroupTests {
 
         // Invocation of group-2 should run group-2 and group-1
         //
-        group2.invoke(group2.newInvocationContext());
+        group2.invoke(group2.newInvocationContext().withSyncTaskExecutor(Runnable::run));
 
         Assertions.assertEquals(0, group2Items.size());
 
@@ -720,7 +720,7 @@ public class SyncProxyTaskGroupTests {
          *            |             |
          *            |-----------> B ----> A
          */
-        itiC.taskGroup().invoke(itiC.taskGroup().newInvocationContext());
+        itiC.taskGroup().invoke(itiC.taskGroup().newInvocationContext().withSyncTaskExecutor(Runnable::run));
 
         down.await();
 
@@ -819,7 +819,7 @@ public class SyncProxyTaskGroupTests {
          */
 
         seen.clear();
-        itiF.taskGroup().invoke(itiC.taskGroup().newInvocationContext());
+        itiF.taskGroup().invoke(itiC.taskGroup().newInvocationContext().withSyncTaskExecutor(Runnable::run));
 
         monitor.await();
 
