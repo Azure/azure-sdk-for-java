@@ -14,6 +14,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Allocation {
 
+    /**
+     * Creates a new instance of the Allocation class.
+     */
+    public Allocation() {
+    }
+
     @JsonProperty("default_when_enabled")
     private String defaultWhenEnabled;
 
@@ -29,15 +35,19 @@ public class Allocation {
     private String seed;
 
     /**
-     * @return the defaultWhenEnabled
+     * Gets the variant to use when the feature flag is enabled and no specific allocation matches.
+     *
+     * @return the default variant when the feature flag is enabled
      */
     public String getDefaultWhenEnabled() {
         return defaultWhenEnabled;
     }
 
     /**
-     * @param defaultWhenEnabled the defaultWhenEnabled to set
-     * @return Allocation
+     * Sets the variant to use when the feature flag is enabled and no specific allocation matches.
+     *
+     * @param defaultWhenEnabled the default variant when enabled
+     * @return the updated Allocation object
      */
     public Allocation setDefaultWhenEnabled(String defaultWhenEnabled) {
         this.defaultWhenEnabled = defaultWhenEnabled;
@@ -45,15 +55,19 @@ public class Allocation {
     }
 
     /**
-     * @return the defaultWhenDisabled
+     * Gets the variant to use when the feature flag is disabled and no specific allocation matches.
+     *
+     * @return the default variant when the feature flag is disabled
      */
     public String getDefaultWhenDisabled() {
         return defaultWhenDisabled;
     }
 
     /**
-     * @param defaultWhenDisabled the defaultWhenDisabled to set
-     * @return Allocation
+     * Sets the variant to use when the feature flag is disabled and no specific allocation matches.
+     *
+     * @param defaultWhenDisabled the default variant when disabled
+     * @return the updated Allocation object
      */
     public Allocation setDefaultWhenDisabled(String defaultWhenDisabled) {
         this.defaultWhenDisabled = defaultWhenDisabled;
@@ -61,15 +75,19 @@ public class Allocation {
     }
 
     /**
-     * @return the users
+     * Gets the list of user-specific allocations for the feature flag.
+     *
+     * @return the list of user allocations
      */
     public List<UserAllocation> getUser() {
         return user;
     }
 
     /**
-     * @param user the users to set
-     * @return Allocation
+     * Sets the list of user-specific allocations for the feature flag.
+     *
+     * @param user the list of user allocations
+     * @return the updated Allocation object
      */
     public Allocation setUser(List<UserAllocation> user) {
         this.user = user;
@@ -77,15 +95,19 @@ public class Allocation {
     }
 
     /**
-     * @return the groups
+     * Gets the list of group-specific allocations for the feature flag.
+     *
+     * @return the list of group allocations
      */
     public List<GroupAllocation> getGroup() {
         return group;
     }
 
     /**
-     * @param group the groups to set
-     * @return Allocation
+     * Sets the list of group-specific allocations for the feature flag.
+     *
+     * @param group the list of group allocations
+     * @return the updated Allocation object
      */
     public Allocation setGroups(List<GroupAllocation> group) {
         this.group = group;
@@ -93,15 +115,19 @@ public class Allocation {
     }
 
     /**
-     * @return the percentile
+     * Gets the list of percentile-based allocations for the feature flag.
+     *
+     * @return the list of percentile allocations
      */
     public List<PercentileAllocation> getPercentile() {
         return percentile;
     }
 
     /**
-     * @param percentile the percentile to set
-     * @return Allocation
+     * Sets the list of percentile-based allocations for the feature flag.
+     *
+     * @param percentile the list of percentile allocations
+     * @return the updated Allocation object
      */
     public Allocation setPercentile(List<PercentileAllocation> percentile) {
         this.percentile = percentile;
@@ -109,15 +135,19 @@ public class Allocation {
     }
 
     /**
-     * @return the seed
+     * Gets the seed value used for randomization in allocation calculations.
+     *
+     * @return the seed value for allocation
      */
     public String getSeed() {
         return seed;
     }
 
     /**
-     * @param seed the seed to set
-     * @return Allocation
+     * Sets the seed value used for randomization in allocation calculations.
+     *
+     * @param seed the seed value for allocation
+     * @return the updated Allocation object
      */
     public Allocation setSeed(String seed) {
         this.seed = seed;
