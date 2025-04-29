@@ -4,12 +4,33 @@ import com.azure.openrewrite.util.ConfiguredParserJavaTemplateBuilder;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.Recipe;
 import org.openrewrite.java.JavaIsoVisitor;
-import org.openrewrite.java.JavaParser;
 import org.openrewrite.java.JavaTemplate;
 import org.openrewrite.java.MethodMatcher;
 import org.openrewrite.java.tree.J;
 import org.openrewrite.java.tree.Space;
 
+/**
+ * A custom OpenRewrite recipe to migrate the use of AccessToken.
+ *
+ * <p>This recipe performs the following transformations:</p>
+ * <ul>
+ *   <li>Replaces the constructor of AccessToken with a new constructor that uses AccessTokenType instead of String.</li>
+ *   <li>Replaces the getTokenType() method invocation with getTokenType().value().</li>
+ *   <li>Replaces the getDurationUntilExpiration() method invocation with a Duration calculation using OffsetDateTime.now() and getExpiresAt().</li>
+ * </ul>
+ *
+ * <p>Example transformations:</p>
+ * <pre>
+ * Before: new AccessToken(String, OffsetDateTime, OffsetDateTime, String)
+ * After: new AccessToken(String, OffsetDateTime, OffsetDateTime, AccessTokenType.fromString(String))
+ *
+ * Before: com.azure.core.credential.AccessToken getTokenType()
+ * After: io.clientcore.core.credentials.oauth.AccessTokenType getTokenType().value()
+ *
+ * Before: com.azure.core.credential.AccessToken getDurationUntilExpiration()
+ * After: io.clientcore.core.credentials.oauth.AccessTokenType Duration.between(OffsetDateTime.now(), accessToken1.getExpiresAt())
+ * </pre>
+ */
 public class AccessTokenCustomRecipe extends Recipe {
 
     @Override

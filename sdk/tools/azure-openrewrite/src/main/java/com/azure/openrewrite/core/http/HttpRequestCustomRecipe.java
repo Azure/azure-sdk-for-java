@@ -3,18 +3,33 @@ package com.azure.openrewrite.core.http;
 import com.azure.openrewrite.util.ConfiguredParserJavaTemplateBuilder;
 import org.openrewrite.ExecutionContext;
 import org.openrewrite.Recipe;
-import org.openrewrite.java.JavaIsoVisitor;
 import org.openrewrite.java.JavaParser;
 import org.openrewrite.java.JavaTemplate;
 import org.openrewrite.java.JavaVisitor;
 import org.openrewrite.java.MethodMatcher;
-import org.openrewrite.java.tree.*;
+import org.openrewrite.java.tree.J;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
+/**
+ * A custom OpenRewrite recipe to migrate the use of HttpRequest.
+ *
+ * <p>This recipe performs the following transformations:</p>
+ * <ul>
+ *   <li>Replaces the HttpRequest constructor with a fluent API.</li>
+ *   <li>Replaces the HttpRequest methods with clientcore HttpRequest methods.</li>
+ * </ul>
+ *
+ * <p>Example transformations:</p>
+ * <pre>
+ * Before: com.azure.core.http.HttpRequest <constructor>(com.azure.core.http.HttpMethod, java.lang.String)
+ * After: io.clientcore.core.http.models.HttpRequest <constructor>().setMethod(io.clientcore.core.http.models.HttpMethod).setUri(java.lang.String)
+ *
+ * Before: com.azure.core.http.HttpRequest setBody(java.lang.String)
+ * After: io.clientcore.core.http.models.HttpRequest setBody(io.clientcore.core.models.binarydata.BinaryData)
+ *
+ * Before: com.azure.core.http.HttpRequest getUrl()
+ * After: io.clientcore.core.http.models.HttpRequest getUri().toURL()
+ * </pre>
+ */
 public class HttpRequestCustomRecipe extends Recipe {
     @Override
     public String getDisplayName() {
@@ -33,20 +48,14 @@ public class HttpRequestCustomRecipe extends Recipe {
         return new JavaVisitor<ExecutionContext>() {
             MethodMatcher methodMatcher;
             JavaTemplate replacementTemplate;
-            private ConfiguredParserJavaTemplateBuilder configuredParserJavaTemplateBuilder = new ConfiguredParserJavaTemplateBuilder(
-                JavaParser.fromJavaVersion()
-                    .classpath("azure-core", "core")
-            );
-
-            private final JavaTemplate template = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder("new HttpRequest()\n.setMethod(#{any()})\n.setUri(#{any()})")
-                .contextSensitive()
-                .build();
+            private ConfiguredParserJavaTemplateBuilder configuredParserJavaTemplateBuilder = ConfiguredParserJavaTemplateBuilder.defaultBuilder();
 
             @Override
             public J visitNewClass(J.NewClass newClass, ExecutionContext ctx) {
-                // replace HttpRequest constructor with fluent API
-                // Before: com.azure.core.http.HttpRequest <constructor>(com.azure.core.http.HttpMethod, java.lang.String)
-                // After: io.clientcore.core.http.models.HttpRequest <constructor>().setMethod(io.clientcore.core.http.models.HttpMethod).setUri(java.lang.String)
+                /*
+                Before: com.azure.core.http.HttpRequest <constructor>(com.azure.core.http.HttpMethod, java.lang.String)
+                fter: io.clientcore.core.http.models.HttpRequest <constructor>().setMethod(io.clientcore.core.http.models.HttpMethod).setUri(java.lang.String)
+                */
                 J n = super.visitNewClass(newClass, ctx);
 
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest <constructor>(com.azure.core.http.HttpMethod, java.lang.String)");
@@ -54,7 +63,7 @@ public class HttpRequestCustomRecipe extends Recipe {
                     replacementTemplate = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder("new HttpRequest()\n.setMethod(#{any(io.clientcore.core.http.models.HttpMethod)})\n.setUri(#{any(java.lang.String)})")
                         .imports("io.clientcore.core.http.models.HttpMethod")
                         .build();
-                    n = replacementTemplate.apply(updateCursor(n), newClass.getCoordinates().replace(), newClass.getArguments().get(0), newClass.getArguments().get(1));
+                    n = replacementTemplate.apply(updateCursor(n), newClass.getCoordinates().replace(), newClass.getArguments().toArray());
                     maybeAddImport("io.clientcore.core.http.models.HttpMethod");
                     Recipe formatter = new org.openrewrite.java.format.TabsAndIndents();
                     doAfterVisit(formatter.getVisitor());
@@ -64,13 +73,13 @@ public class HttpRequestCustomRecipe extends Recipe {
                 /*
                 Before: com.azure.core.http.HttpRequest <constructor>(com.azure.core.httpHttpMethod, java.net.URL)
                 After: io.clientcore.core.http.models.HttpRequest <constructor>().setMethod(HttpMethod).setUri(java.net.URL.toUri())
-                 */
+                 */                
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest <constructor>(com.azure.core.http.HttpMethod, java.net.URL)");
                 if (methodMatcher.matches((J.NewClass) n)) {
                     replacementTemplate = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder("new HttpRequest()\n.setMethod(#{any(io.clientcore.core.http.models.HttpMethod)})\n.setUri(#{any(java.net.URL)}.toURI())")
                         .imports("io.clientcore.core.http.models.HttpMethod")
                         .build();
-                    n = replacementTemplate.apply(updateCursor(n), newClass.getCoordinates().replace(), newClass.getArguments().get(0), newClass.getArguments().get(1));
+                    n = replacementTemplate.apply(updateCursor(n), newClass.getCoordinates().replace(), newClass.getArguments().toArray());
                     maybeAddImport("io.clientcore.core.http.models.HttpMethod");
                     Recipe formatter = new org.openrewrite.java.format.TabsAndIndents();
                     doAfterVisit(formatter.getVisitor());
@@ -80,13 +89,13 @@ public class HttpRequestCustomRecipe extends Recipe {
                 /*
                 Before: com.azure.core.http.HttpRequest <constructor>(com.azure.core.http.HttpMethod, java.net.URI, io.clientcore.core.http.models.HttpHeaders)
                 After: io.clientcore.core.http.models.HttpRequest <constructor>().setMethod(io.clientcore.core.http.models.HttpMethod).setUri(java.net.URI).setHeaders(io.clientcore.core.http.models.HttpHeaders)
-                 */
+                 */                
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest <constructor>(com.azure.core.http.HttpMethod, java.net.URL, com.azure.core.http.HttpHeaders)");
                 if (methodMatcher.matches((J.NewClass) n)) {
                     replacementTemplate = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder("new HttpRequest()\n.setMethod(#{any(io.clientcore.core.http.models.HttpMethod)})\n.setUri(#{any(java.net.URL)}.toURI())\n.setHeaders(#{any(io.clientcore.core.http.models.HttpHeaders)})")
                         .imports("io.clientcore.core.http.models.HttpMethod")
                         .build();
-                    n = replacementTemplate.apply(updateCursor(n), newClass.getCoordinates().replace(), newClass.getArguments().get(0), newClass.getArguments().get(1), newClass.getArguments().get(2));
+                    n = replacementTemplate.apply(updateCursor(n), newClass.getCoordinates().replace(), newClass.getArguments().toArray());
                     maybeAddImport("io.clientcore.core.http.models.HttpMethod");
                     Recipe formatter = new org.openrewrite.java.format.TabsAndIndents();
                     doAfterVisit(formatter.getVisitor());
@@ -102,7 +111,7 @@ public class HttpRequestCustomRecipe extends Recipe {
                     replacementTemplate = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder("new HttpRequest()\n.setMethod(#{any(io.clientcore.core.http.models.HttpMethod)})\n.setUri(#{any(java.net.URL)}.toURI())\n.setHeaders(#{any(io.clientcore.core.http.models.HttpHeaders)})\n.setBody(#{any(io.clientcore.core.models.binarydata.BinaryData)})")
                         .imports("io.clientcore.core.http.models.HttpMethod", "io.clientcore.core.models.binarydata.BinaryData")
                         .build();
-                    n = replacementTemplate.apply(updateCursor(n), newClass.getCoordinates().replace(), newClass.getArguments().get(0), newClass.getArguments().get(1), newClass.getArguments().get(2), newClass.getArguments().get(3));
+                    n = replacementTemplate.apply(updateCursor(n), newClass.getCoordinates().replace(), newClass.getArguments().toArray());
                     maybeAddImport("io.clientcore.core.http.models.HttpMethod");
                     maybeAddImport("io.clientcore.core.models.binarydata.BinaryData");
                     Recipe formatter = new org.openrewrite.java.format.TabsAndIndents();
@@ -119,11 +128,10 @@ public class HttpRequestCustomRecipe extends Recipe {
                 MethodMatcher methodMatcher;
                 JavaTemplate replacementTemplate;
                 J n = super.visitMethodInvocation(methodInvocation, ctx);
-                // replace core HttpRequest methods with clientcore HttpRequest methods
-
-
-                // Before: com.azure.core.http.HttpRequest setBody(java.lang.String)
-                // After: io.clientcore.core.http.models.HttpRequest setBody(io.clientcore.core.models.binarydata.BinaryData)
+                /*           
+                Before: com.azure.core.http.HttpRequest setBody(java.lang.String)
+                After: io.clientcore.core.http.models.HttpRequest setBody(io.clientcore.core.models.binarydata.BinaryData)  
+                */              
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest setBody(java.lang.String)");
                 if (methodMatcher.matches((J.MethodInvocation) n)) {
                     replacementTemplate = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder("setBody(BinaryData.fromString(#{any(java.lang.String)}))")
@@ -133,7 +141,7 @@ public class HttpRequestCustomRecipe extends Recipe {
                         )
                         .imports("io.clientcore.core.models.binarydata.BinaryData")
                         .build();
-                    n = replacementTemplate.apply(updateCursor(n), methodInvocation.getCoordinates().replaceMethod(), methodInvocation.getArguments().get(0));
+                    n = replacementTemplate.apply(updateCursor(n), methodInvocation.getCoordinates().replaceMethod(), methodInvocation.getArguments().toArray());
                     maybeAddImport("io.clientcore.core.models.binarydata.BinaryData");
                     return n;
                 }
@@ -147,7 +155,7 @@ public class HttpRequestCustomRecipe extends Recipe {
                     replacementTemplate = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder("setUri(#{any(java.net.URL)}.toURI())")
                         .imports("java.net.URI")
                         .build();
-                    n = replacementTemplate.apply(updateCursor(n), methodInvocation.getCoordinates().replaceMethod(), methodInvocation.getArguments().get(0));
+                    n = replacementTemplate.apply(updateCursor(n), methodInvocation.getCoordinates().replaceMethod(), methodInvocation.getArguments().toArray());
                     maybeAddImport("java.net.URI");
                     return n;
                 }
@@ -210,7 +218,7 @@ public class HttpRequestCustomRecipe extends Recipe {
                     replacementTemplate = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder("setBody(BinaryData.fromBytes(#{anyArray(byte)})")
                         .imports("io.clientcore.core.models.binarydata.BinaryData")
                         .build();
-                    n = replacementTemplate.apply(updateCursor(n), ((J.MethodInvocation) n).getCoordinates().replaceMethod(), ((J.MethodInvocation) n).getArguments().get(0));
+                    n = replacementTemplate.apply(updateCursor(n), ((J.MethodInvocation) n).getCoordinates().replaceMethod(), ((J.MethodInvocation) n).getArguments().toArray());
                     maybeAddImport("io.clientcore.core.models.binarydata.BinaryData");
                     return n;
                 }
