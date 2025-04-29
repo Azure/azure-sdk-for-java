@@ -17,7 +17,7 @@ import java.util.Arrays;
 public final class ReplicationRecoveryPlansUnplannedFailoverSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationRecoveryPlans_UnplannedFailover.json
      */
     /**
@@ -28,7 +28,7 @@ public final class ReplicationRecoveryPlansUnplannedFailoverSamples {
     public static void executeUnplannedFailoverOfTheRecoveryPlan(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager.replicationRecoveryPlans()
-            .unplannedFailover("vault1", "resourceGroupPS1", "RPtest1",
+            .unplannedFailover("resourceGroupPS1", "vault1", "RPtest1",
                 new RecoveryPlanUnplannedFailoverInput()
                     .withProperties(new RecoveryPlanUnplannedFailoverInputProperties()
                         .withFailoverDirection(PossibleOperationsDirections.PRIMARY_TO_RECOVERY)

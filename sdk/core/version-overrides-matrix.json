@@ -1,7 +1,7 @@
 {
   "matrix": {
     "Agent": {
-      "ubuntu-20.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
+      "ubuntu-22.04": { "OSVmImage": "env:LINUXVMIMAGE", "Pool": "env:LINUXPOOL" }
     },
     "TestConfig": {
       "version_override": {
@@ -19,12 +19,13 @@
       }
     },
     "VersionOverride": [
-        "jackson_2.10",
-        "jackson_2.12",
-        "jackson_2.15",
-        "jackson_2.18",
-        "reactor_2020",
-        "reactor_2024"
+      "jackson_2.10",
+      "jackson_2.12",
+      "jackson_2.15",
+      "jackson_2.18",
+      "reactor_2020",
+      "reactor_2024",
+      "reactor_2025"
     ]
   }
 }

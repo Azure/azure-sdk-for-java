@@ -14,21 +14,21 @@ public final class ValidationThresholdTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ValidationThreshold model = BinaryData
-            .fromString("{\"grouping\":\"PerRack\",\"type\":\"PercentSuccess\",\"value\":1125965714665499028}")
+            .fromString("{\"grouping\":\"PerCluster\",\"type\":\"CountSuccess\",\"value\":1237347078053939435}")
             .toObject(ValidationThreshold.class);
-        Assertions.assertEquals(ValidationThresholdGrouping.PER_RACK, model.grouping());
-        Assertions.assertEquals(ValidationThresholdType.PERCENT_SUCCESS, model.type());
-        Assertions.assertEquals(1125965714665499028L, model.value());
+        Assertions.assertEquals(ValidationThresholdGrouping.PER_CLUSTER, model.grouping());
+        Assertions.assertEquals(ValidationThresholdType.COUNT_SUCCESS, model.type());
+        Assertions.assertEquals(1237347078053939435L, model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ValidationThreshold model = new ValidationThreshold().withGrouping(ValidationThresholdGrouping.PER_RACK)
-            .withType(ValidationThresholdType.PERCENT_SUCCESS)
-            .withValue(1125965714665499028L);
+        ValidationThreshold model = new ValidationThreshold().withGrouping(ValidationThresholdGrouping.PER_CLUSTER)
+            .withType(ValidationThresholdType.COUNT_SUCCESS)
+            .withValue(1237347078053939435L);
         model = BinaryData.fromObject(model).toObject(ValidationThreshold.class);
-        Assertions.assertEquals(ValidationThresholdGrouping.PER_RACK, model.grouping());
-        Assertions.assertEquals(ValidationThresholdType.PERCENT_SUCCESS, model.type());
-        Assertions.assertEquals(1125965714665499028L, model.value());
+        Assertions.assertEquals(ValidationThresholdGrouping.PER_CLUSTER, model.grouping());
+        Assertions.assertEquals(ValidationThresholdType.COUNT_SUCCESS, model.type());
+        Assertions.assertEquals(1237347078053939435L, model.value());
     }
 }

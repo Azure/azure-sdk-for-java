@@ -28,6 +28,11 @@ public final class FacetResult implements JsonSerializable<FacetResult> {
     private Long count;
 
     /*
+     * The resulting total sum for the facet when a sum metric is requested.
+     */
+    private Double sum;
+
+    /*
      * The nested facet query results for the search operation, organized as a collection of buckets for each faceted
      * field; null if the query did not contain any nested facets.
      */
@@ -52,6 +57,15 @@ public final class FacetResult implements JsonSerializable<FacetResult> {
      */
     public Long getCount() {
         return this.count;
+    }
+
+    /**
+     * Get the sum property: The resulting total sum for the facet when a sum metric is requested.
+     * 
+     * @return the sum value.
+     */
+    public Double getSum() {
+        return this.sum;
     }
 
     /**
@@ -118,6 +132,8 @@ public final class FacetResult implements JsonSerializable<FacetResult> {
 
                 if ("count".equals(fieldName)) {
                     deserializedFacetResult.count = reader.getNullable(JsonReader::getLong);
+                } else if ("sum".equals(fieldName)) {
+                    deserializedFacetResult.sum = reader.getNullable(JsonReader::getDouble);
                 } else if ("@search.facets".equals(fieldName)) {
                     Map<String, List<FacetResult>> facets
                         = reader.readMap(reader1 -> reader1.readArray(reader2 -> FacetResult.fromJson(reader2)));

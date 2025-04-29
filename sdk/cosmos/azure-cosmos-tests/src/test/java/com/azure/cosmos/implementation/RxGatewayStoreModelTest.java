@@ -5,7 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.implementation.circuitBreaker.GlobalPartitionEndpointManagerForCircuitBreaker;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker;
 import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.azure.cosmos.implementation.http.HttpClient;
@@ -125,7 +125,6 @@ public class RxGatewayStoreModelTest {
         QueryCompatibilityMode queryCompatibilityMode = QueryCompatibilityMode.Default;
         UserAgentContainer userAgentContainer = new UserAgentContainer();
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
-        GlobalPartitionEndpointManagerForCircuitBreaker globalPartitionEndpointManager = Mockito.mock(GlobalPartitionEndpointManagerForCircuitBreaker.class);
 
         RegionalRoutingContext regionalRoutingContext = new RegionalRoutingContext(new URI("https://localhost"));
         Mockito.doReturn(regionalRoutingContext)
@@ -180,10 +179,11 @@ public class RxGatewayStoreModelTest {
         Mockito.doReturn(sdkGlobalSessionToken).when(sessionContainer).resolveGlobalSessionToken(any());
 
         GlobalEndpointManager globalEndpointManager = Mockito.mock(GlobalEndpointManager.class);
+
         URI locationEndpointToRoute = new URI("https://localhost");
         RegionalRoutingContext regionalRoutingContext = new RegionalRoutingContext(locationEndpointToRoute);
 
-        Mockito.doReturn(new RegionalRoutingContext(new URI("https://localhost")))
+        Mockito.doReturn(regionalRoutingContext)
             .when(globalEndpointManager).resolveServiceEndpoint(any());
 
         HttpClient httpClient = Mockito.mock(HttpClient.class);
@@ -205,7 +205,6 @@ public class RxGatewayStoreModelTest {
             apiType);
         storeModel.setGatewayServiceConfigurationReader(gatewayServiceConfigurationReader);
 
-        httpClient = ReflectionUtils.getHttpClient(storeModel);
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
             clientContext,
             operationType,

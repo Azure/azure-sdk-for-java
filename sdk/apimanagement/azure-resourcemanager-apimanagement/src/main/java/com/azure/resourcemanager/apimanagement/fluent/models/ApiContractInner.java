@@ -234,6 +234,15 @@ public final class ApiContractInner extends ProxyResource {
     }
 
     /**
+     * Get the provisioningState property: The provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
      * Get the description property: Description of the API. May include HTML formatting tags.
      * 
      * @return the description value.

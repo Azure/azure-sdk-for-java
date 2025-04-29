@@ -12,16 +12,16 @@ public final class StorageClassificationMappingPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         StorageClassificationMappingProperties model
-            = BinaryData.fromString("{\"targetStorageClassificationId\":\"flbqvgaq\"}")
+            = BinaryData.fromString("{\"targetStorageClassificationId\":\"tdhgbjkvrelj\"}")
                 .toObject(StorageClassificationMappingProperties.class);
-        Assertions.assertEquals("flbqvgaq", model.targetStorageClassificationId());
+        Assertions.assertEquals("tdhgbjkvrelj", model.targetStorageClassificationId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         StorageClassificationMappingProperties model
-            = new StorageClassificationMappingProperties().withTargetStorageClassificationId("flbqvgaq");
+            = new StorageClassificationMappingProperties().withTargetStorageClassificationId("tdhgbjkvrelj");
         model = BinaryData.fromObject(model).toObject(StorageClassificationMappingProperties.class);
-        Assertions.assertEquals("flbqvgaq", model.targetStorageClassificationId());
+        Assertions.assertEquals("tdhgbjkvrelj", model.targetStorageClassificationId());
     }
 }

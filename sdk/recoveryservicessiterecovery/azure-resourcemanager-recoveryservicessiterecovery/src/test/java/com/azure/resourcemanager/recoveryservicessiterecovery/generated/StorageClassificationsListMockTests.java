@@ -7,8 +7,8 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.StorageClassification;
@@ -22,19 +22,19 @@ public final class StorageClassificationsListMockTests {
     @Test
     public void testList() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"friendlyName\":\"qavouymkde\"},\"location\":\"xlvzpfdka\",\"id\":\"gbiwpgopqlktthb\",\"name\":\"rrmtrxgjmpdvrjz\",\"type\":\"awpewajccsdjuzm\"}]}";
+            = "{\"value\":[{\"properties\":{\"friendlyName\":\"myhxnpdggllyduyu\"},\"location\":\"m\",\"id\":\"ucxvzvwl\",\"name\":\"djnstzeurdo\",\"type\":\"k\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         SiteRecoveryManager manager = SiteRecoveryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<StorageClassification> response = manager.storageClassifications()
-            .list("zsuspaywvslq", "ronzeafkxfmuwdb", com.azure.core.util.Context.NONE);
+        PagedIterable<StorageClassification> response
+            = manager.storageClassifications().list("vypmwdz", "jpcroxpp", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("qavouymkde", response.iterator().next().properties().friendlyName());
-        Assertions.assertEquals("xlvzpfdka", response.iterator().next().location());
+        Assertions.assertEquals("myhxnpdggllyduyu", response.iterator().next().properties().friendlyName());
+        Assertions.assertEquals("m", response.iterator().next().location());
     }
 }

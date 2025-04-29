@@ -297,9 +297,9 @@ public class GlobalEndPointManagerTest {
         Object locationInfo = locationInfoField.get(locationCache);
 
         Class<?> DatabaseAccountLocationsInfoClass = Class.forName("com.azure.cosmos.implementation.routing.LocationCache$DatabaseAccountLocationsInfo");
-        Field availableWriteEndpointByLocationField = DatabaseAccountLocationsInfoClass.getDeclaredField("availableWriteEndpointsByLocation");
+        Field availableWriteEndpointByLocationField = DatabaseAccountLocationsInfoClass.getDeclaredField("availableWriteRegionalRoutingContextsByRegionName");
         availableWriteEndpointByLocationField.setAccessible(true);
-        Field availableReadEndpointByLocationField = DatabaseAccountLocationsInfoClass.getDeclaredField("availableReadEndpointsByLocation");
+        Field availableReadEndpointByLocationField = DatabaseAccountLocationsInfoClass.getDeclaredField("availableReadRegionalRoutingContextsByRegionName");
         availableReadEndpointByLocationField.setAccessible(true);
 
         @SuppressWarnings("unchecked")
@@ -313,7 +313,7 @@ public class GlobalEndPointManagerTest {
         Object locationInfo = locationInfoField.get(locationCache);
 
         Class<?> DatabaseAccountLocationsInfoClass = Class.forName("com.azure.cosmos.implementation.routing.LocationCache$DatabaseAccountLocationsInfo");
-        Field availableReadEndpointByLocationField = DatabaseAccountLocationsInfoClass.getDeclaredField("availableReadEndpointsByLocation");
+        Field availableReadEndpointByLocationField = DatabaseAccountLocationsInfoClass.getDeclaredField("availableReadRegionalRoutingContextsByRegionName");
         availableReadEndpointByLocationField.setAccessible(true);
 
         @SuppressWarnings("unchecked")

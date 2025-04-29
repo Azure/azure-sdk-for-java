@@ -90,6 +90,7 @@ public class RxDocumentServiceRequest implements Cloneable {
     private volatile boolean nonIdempotentWriteRetriesEnabled = false;
 
     private volatile boolean hasFeedRangeFilteringBeenApplied = false;
+    public boolean isPerPartitionAutomaticFailoverEnabledAndWriteRequest;
 
     private final AtomicReference<HttpTransportSerializer> httpTransportSerializer = new AtomicReference<>(null);
 
@@ -1054,6 +1055,7 @@ public class RxDocumentServiceRequest implements Cloneable {
         rxDocumentServiceRequest.isFeed = this.isFeed;
         rxDocumentServiceRequest.resourceId = this.resourceId;
         rxDocumentServiceRequest.hasFeedRangeFilteringBeenApplied = this.hasFeedRangeFilteringBeenApplied;
+        rxDocumentServiceRequest.isPerPartitionAutomaticFailoverEnabledAndWriteRequest = this.isPerPartitionAutomaticFailoverEnabledAndWriteRequest;
         return rxDocumentServiceRequest;
     }
 
@@ -1185,9 +1187,11 @@ public class RxDocumentServiceRequest implements Cloneable {
         this.effectivePartitionKey = effectivePartitionKey;
     }
 
-    public void setThinclientHeaders(String operationType, String resourceType) {
+    public void setThinclientHeaders(String operationType, String resourceType, String globalDatabaseAccountName, String resourceId) {
         this.headers.put(HttpConstants.HttpHeaders.THINCLIENT_PROXY_OPERATION_TYPE, operationType);
         this.headers.put(HttpConstants.HttpHeaders.THINCLIENT_PROXY_RESOURCE_TYPE, resourceType);
+        this.headers.put(HttpConstants.HttpHeaders.GLOBAL_DATABASE_ACCOUNT_NAME, globalDatabaseAccountName);
+        this.headers.put(WFConstants.BackendHeaders.COLLECTION_RID, resourceId);
     }
 
     public RxDocumentServiceRequest setHttpTransportSerializer(HttpTransportSerializer transportSerializer) {

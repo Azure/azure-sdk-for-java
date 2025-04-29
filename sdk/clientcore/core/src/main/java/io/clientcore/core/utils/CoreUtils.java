@@ -4,7 +4,11 @@ package io.clientcore.core.utils;
 
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
+import io.clientcore.core.http.models.Response;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
+import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.serialization.ObjectSerializer;
 import io.clientcore.core.serialization.SerializationFormat;
 import java.io.IOException;
 import java.io.InputStream;
@@ -502,6 +506,34 @@ public final class CoreUtils {
         }
 
         return null;
+    }
+
+    /**
+     * Decodes the body of an {@link Response} into the type returned by the called API.
+     * @param data The BinaryData to decode.
+     * @param serializer The serializer to use.
+     * @param returnType The type of the ParameterizedType return value.
+     * @return The decoded value.
+     * @throws CoreException If the deserialization fails.
+     */
+    public static Object decodeNetworkResponse(BinaryData data, ObjectSerializer serializer,
+        ParameterizedType returnType) {
+        if (data == null) {
+            return null;
+        }
+        try {
+            if (List.class.isAssignableFrom((Class<?>) returnType.getRawType())) {
+                return serializer.deserializeFromBytes(data.toBytes(), returnType);
+            }
+            Type token = returnType.getRawType();
+            if (Response.class.isAssignableFrom((Class<?>) token)) {
+                token = returnType.getActualTypeArguments()[0];
+            }
+            return serializer.deserializeFromBytes(data.toBytes(), token);
+        } catch (IOException e) {
+            CoreException coreException = CoreException.from(e);
+            throw LOGGER.logThrowableAsError(CoreException.from(coreException));
+        }
     }
 
     private CoreUtils() {

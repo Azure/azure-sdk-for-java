@@ -25,18 +25,6 @@ public final class DeidentificationDocumentDetails implements JsonSerializable<D
     private String id;
 
     /*
-     * Location for the input.
-     */
-    @Generated
-    private final DeidentificationDocumentLocation input;
-
-    /*
-     * Location for the output.
-     */
-    @Generated
-    private DeidentificationDocumentLocation output;
-
-    /*
      * Status of the document.
      */
     @Generated
@@ -56,26 +44,6 @@ public final class DeidentificationDocumentDetails implements JsonSerializable<D
     @Generated
     public String getId() {
         return this.id;
-    }
-
-    /**
-     * Get the input property: Location for the input.
-     *
-     * @return the input value.
-     */
-    @Generated
-    public DeidentificationDocumentLocation getInput() {
-        return this.input;
-    }
-
-    /**
-     * Get the output property: Location for the output.
-     *
-     * @return the output value.
-     */
-    @Generated
-    public DeidentificationDocumentLocation getOutput() {
-        return this.output;
     }
 
     /**
@@ -105,9 +73,9 @@ public final class DeidentificationDocumentDetails implements JsonSerializable<D
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeJsonField("input", this.input);
+        jsonWriter.writeJsonField("input", this.inputLocation);
         jsonWriter.writeStringField("status", this.status == null ? null : this.status.toString());
-        jsonWriter.writeJsonField("output", this.output);
+        jsonWriter.writeJsonField("output", this.outputLocation);
         jsonWriter.writeJsonField("error", this.error);
         return jsonWriter.writeEndObject();
     }
@@ -125,9 +93,9 @@ public final class DeidentificationDocumentDetails implements JsonSerializable<D
     public static DeidentificationDocumentDetails fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
             String id = null;
-            DeidentificationDocumentLocation input = null;
+            DeidentificationDocumentLocation inputLocation = null;
             OperationStatus status = null;
-            DeidentificationDocumentLocation output = null;
+            DeidentificationDocumentLocation outputLocation = null;
             ResponseError error = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
@@ -135,11 +103,11 @@ public final class DeidentificationDocumentDetails implements JsonSerializable<D
                 if ("id".equals(fieldName)) {
                     id = reader.getString();
                 } else if ("input".equals(fieldName)) {
-                    input = DeidentificationDocumentLocation.fromJson(reader);
+                    inputLocation = DeidentificationDocumentLocation.fromJson(reader);
                 } else if ("status".equals(fieldName)) {
                     status = OperationStatus.fromString(reader.getString());
                 } else if ("output".equals(fieldName)) {
-                    output = DeidentificationDocumentLocation.fromJson(reader);
+                    outputLocation = DeidentificationDocumentLocation.fromJson(reader);
                 } else if ("error".equals(fieldName)) {
                     error = ResponseError.fromJson(reader);
                 } else {
@@ -147,9 +115,9 @@ public final class DeidentificationDocumentDetails implements JsonSerializable<D
                 }
             }
             DeidentificationDocumentDetails deserializedDeidentificationDocumentDetails
-                = new DeidentificationDocumentDetails(input, status);
+                = new DeidentificationDocumentDetails(inputLocation, status);
             deserializedDeidentificationDocumentDetails.id = id;
-            deserializedDeidentificationDocumentDetails.output = output;
+            deserializedDeidentificationDocumentDetails.outputLocation = outputLocation;
             deserializedDeidentificationDocumentDetails.error = error;
             return deserializedDeidentificationDocumentDetails;
         });
@@ -158,12 +126,44 @@ public final class DeidentificationDocumentDetails implements JsonSerializable<D
     /**
      * Creates an instance of DeidentificationDocumentDetails class.
      *
-     * @param input the input value to set.
+     * @param inputLocation the inputLocation value to set.
      * @param status the status value to set.
      */
     @Generated
-    private DeidentificationDocumentDetails(DeidentificationDocumentLocation input, OperationStatus status) {
-        this.input = input;
+    private DeidentificationDocumentDetails(DeidentificationDocumentLocation inputLocation, OperationStatus status) {
+        this.inputLocation = inputLocation;
         this.status = status;
+    }
+
+    /*
+     * Location for the input.
+     */
+    @Generated
+    private final DeidentificationDocumentLocation inputLocation;
+
+    /*
+     * Location for the output.
+     */
+    @Generated
+    private DeidentificationDocumentLocation outputLocation;
+
+    /**
+     * Get the inputLocation property: Location for the input.
+     *
+     * @return the inputLocation value.
+     */
+    @Generated
+    public DeidentificationDocumentLocation getInputLocation() {
+        return this.inputLocation;
+    }
+
+    /**
+     * Get the outputLocation property: Location for the output.
+     *
+     * @return the outputLocation value.
+     */
+    @Generated
+    public DeidentificationDocumentLocation getOutputLocation() {
+        return this.outputLocation;
     }
 }

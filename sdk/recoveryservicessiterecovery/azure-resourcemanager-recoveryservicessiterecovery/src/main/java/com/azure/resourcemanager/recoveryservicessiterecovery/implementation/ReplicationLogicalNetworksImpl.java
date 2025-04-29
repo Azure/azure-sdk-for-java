@@ -27,24 +27,24 @@ public final class ReplicationLogicalNetworksImpl implements ReplicationLogicalN
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<LogicalNetwork> listByReplicationFabrics(String resourceName, String resourceGroupName,
+    public PagedIterable<LogicalNetwork> listByReplicationFabrics(String resourceGroupName, String resourceName,
         String fabricName) {
         PagedIterable<LogicalNetworkInner> inner
-            = this.serviceClient().listByReplicationFabrics(resourceName, resourceGroupName, fabricName);
+            = this.serviceClient().listByReplicationFabrics(resourceGroupName, resourceName, fabricName);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new LogicalNetworkImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<LogicalNetwork> listByReplicationFabrics(String resourceName, String resourceGroupName,
+    public PagedIterable<LogicalNetwork> listByReplicationFabrics(String resourceGroupName, String resourceName,
         String fabricName, Context context) {
         PagedIterable<LogicalNetworkInner> inner
-            = this.serviceClient().listByReplicationFabrics(resourceName, resourceGroupName, fabricName, context);
+            = this.serviceClient().listByReplicationFabrics(resourceGroupName, resourceName, fabricName, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new LogicalNetworkImpl(inner1, this.manager()));
     }
 
-    public Response<LogicalNetwork> getWithResponse(String resourceName, String resourceGroupName, String fabricName,
+    public Response<LogicalNetwork> getWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String logicalNetworkName, Context context) {
         Response<LogicalNetworkInner> inner = this.serviceClient()
-            .getWithResponse(resourceName, resourceGroupName, fabricName, logicalNetworkName, context);
+            .getWithResponse(resourceGroupName, resourceName, fabricName, logicalNetworkName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new LogicalNetworkImpl(inner.getValue(), this.manager()));
@@ -53,10 +53,10 @@ public final class ReplicationLogicalNetworksImpl implements ReplicationLogicalN
         }
     }
 
-    public LogicalNetwork get(String resourceName, String resourceGroupName, String fabricName,
+    public LogicalNetwork get(String resourceGroupName, String resourceName, String fabricName,
         String logicalNetworkName) {
         LogicalNetworkInner inner
-            = this.serviceClient().get(resourceName, resourceGroupName, fabricName, logicalNetworkName);
+            = this.serviceClient().get(resourceGroupName, resourceName, fabricName, logicalNetworkName);
         if (inner != null) {
             return new LogicalNetworkImpl(inner, this.manager());
         } else {

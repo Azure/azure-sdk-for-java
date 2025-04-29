@@ -7,8 +7,8 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ProtectionContainer;
@@ -22,24 +22,24 @@ public final class ReplicationProtectionContainersListByRepMockTests {
     @Test
     public void testListByReplicationFabrics() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"fabricFriendlyName\":\"zcfyzq\",\"friendlyName\":\"qregfurdpagknx\",\"fabricType\":\"ovrgih\",\"protectedItemCount\":474739358,\"pairingStatus\":\"fewvqk\",\"role\":\"jcgeipqxxsdyaf\",\"fabricSpecificDetails\":{\"instanceType\":\"dsmmabh\"}},\"location\":\"lejqzhpvhxp\",\"id\":\"adj\",\"name\":\"eullgfyog\",\"type\":\"qscjpvqerqxk\"}]}";
+            = "{\"value\":[{\"properties\":{\"fabricFriendlyName\":\"ebp\",\"friendlyName\":\"ciyoypoedk\",\"fabricType\":\"w\",\"protectedItemCount\":1944334644,\"pairingStatus\":\"ybqeigxuyx\",\"role\":\"te\",\"fabricSpecificDetails\":{\"instanceType\":\"hznfff\"}},\"location\":\"cgnaqsrmrfq\",\"id\":\"erkrgsdcob\",\"name\":\"mgqlwyqznbbyzpo\",\"type\":\"zfutgpbygbnb\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         SiteRecoveryManager manager = SiteRecoveryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<ProtectionContainer> response = manager.replicationProtectionContainers()
-            .listByReplicationFabrics("sazdjmofsvpz", "gnywxu", "mlfjymgw", com.azure.core.util.Context.NONE);
+            .listByReplicationFabrics("vqhgphgxuwu", "gcyqruvumry", "dnqivahfcqw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("zcfyzq", response.iterator().next().properties().fabricFriendlyName());
-        Assertions.assertEquals("qregfurdpagknx", response.iterator().next().properties().friendlyName());
-        Assertions.assertEquals("ovrgih", response.iterator().next().properties().fabricType());
-        Assertions.assertEquals(474739358, response.iterator().next().properties().protectedItemCount());
-        Assertions.assertEquals("fewvqk", response.iterator().next().properties().pairingStatus());
-        Assertions.assertEquals("jcgeipqxxsdyaf", response.iterator().next().properties().role());
-        Assertions.assertEquals("lejqzhpvhxp", response.iterator().next().location());
+        Assertions.assertEquals("ebp", response.iterator().next().properties().fabricFriendlyName());
+        Assertions.assertEquals("ciyoypoedk", response.iterator().next().properties().friendlyName());
+        Assertions.assertEquals("w", response.iterator().next().properties().fabricType());
+        Assertions.assertEquals(1944334644, response.iterator().next().properties().protectedItemCount());
+        Assertions.assertEquals("ybqeigxuyx", response.iterator().next().properties().pairingStatus());
+        Assertions.assertEquals("te", response.iterator().next().properties().role());
+        Assertions.assertEquals("cgnaqsrmrfq", response.iterator().next().location());
     }
 }

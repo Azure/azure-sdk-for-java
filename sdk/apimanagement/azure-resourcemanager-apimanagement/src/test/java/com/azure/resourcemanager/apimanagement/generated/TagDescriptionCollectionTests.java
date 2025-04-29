@@ -14,51 +14,34 @@ public final class TagDescriptionCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TagDescriptionCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"tagId\":\"tb\",\"displayName\":\"exreu\",\"description\":\"owtljvfw\",\"externalDocsUrl\":\"eagk\",\"externalDocsDescription\":\"xv\"},\"id\":\"qtvbczsu\",\"name\":\"mdgglmepjpfs\",\"type\":\"ykgsangpszng\"},{\"properties\":{\"tagId\":\"g\",\"displayName\":\"kvec\",\"description\":\"jcngoadyed\",\"externalDocsUrl\":\"rgjfoknubnoi\",\"externalDocsDescription\":\"kpztrgd\"},\"id\":\"x\",\"name\":\"coqra\",\"type\":\"wugyx\"},{\"properties\":{\"tagId\":\"tweialwvskbuhzac\",\"displayName\":\"ty\",\"description\":\"co\",\"externalDocsUrl\":\"ujpdsxzak\",\"externalDocsDescription\":\"jkmvbi\"},\"id\":\"tjo\",\"name\":\"qcvov\",\"type\":\"uf\"},{\"properties\":{\"tagId\":\"jmlbemyejiriux\",\"displayName\":\"thor\",\"description\":\"dawlpjfelqerpp\",\"externalDocsUrl\":\"bgqnz\",\"externalDocsDescription\":\"h\"},\"id\":\"ilialwcjgc\",\"name\":\"bbcccgz\",\"type\":\"raoxnyuff\"}],\"count\":9173171906821807545,\"nextLink\":\"tipwcxbyubhiqd\"}")
+            "{\"value\":[{\"properties\":{\"tagId\":\"guqigijiitns\",\"displayName\":\"lz\",\"description\":\"sygrijwa\",\"externalDocsUrl\":\"fanraybfu\",\"externalDocsDescription\":\"frojsydgr\"},\"id\":\"ydkygywezskieca\",\"name\":\"ygzmxieqvdsmak\",\"type\":\"ixqcahyhxalybxaw\"}],\"count\":7522784857273296474,\"nextLink\":\"dtblxpk\"}")
             .toObject(TagDescriptionCollection.class);
-        Assertions.assertEquals("tb", model.value().get(0).tagId());
-        Assertions.assertEquals("exreu", model.value().get(0).displayName());
-        Assertions.assertEquals("owtljvfw", model.value().get(0).description());
-        Assertions.assertEquals("eagk", model.value().get(0).externalDocsUrl());
-        Assertions.assertEquals("xv", model.value().get(0).externalDocsDescription());
-        Assertions.assertEquals(9173171906821807545L, model.count());
-        Assertions.assertEquals("tipwcxbyubhiqd", model.nextLink());
+        Assertions.assertEquals("guqigijiitns", model.value().get(0).tagId());
+        Assertions.assertEquals("lz", model.value().get(0).displayName());
+        Assertions.assertEquals("sygrijwa", model.value().get(0).description());
+        Assertions.assertEquals("fanraybfu", model.value().get(0).externalDocsUrl());
+        Assertions.assertEquals("frojsydgr", model.value().get(0).externalDocsDescription());
+        Assertions.assertEquals(7522784857273296474L, model.count());
+        Assertions.assertEquals("dtblxpk", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TagDescriptionCollection model
-            = new TagDescriptionCollection()
-                .withValue(Arrays.asList(
-                    new TagDescriptionContractInner().withTagId("tb")
-                        .withDisplayName("exreu")
-                        .withDescription("owtljvfw")
-                        .withExternalDocsUrl("eagk")
-                        .withExternalDocsDescription("xv"),
-                    new TagDescriptionContractInner().withTagId("g")
-                        .withDisplayName("kvec")
-                        .withDescription("jcngoadyed")
-                        .withExternalDocsUrl("rgjfoknubnoi")
-                        .withExternalDocsDescription("kpztrgd"),
-                    new TagDescriptionContractInner().withTagId("tweialwvskbuhzac")
-                        .withDisplayName("ty")
-                        .withDescription("co")
-                        .withExternalDocsUrl("ujpdsxzak")
-                        .withExternalDocsDescription("jkmvbi"),
-                    new TagDescriptionContractInner().withTagId("jmlbemyejiriux")
-                        .withDisplayName("thor")
-                        .withDescription("dawlpjfelqerpp")
-                        .withExternalDocsUrl("bgqnz")
-                        .withExternalDocsDescription("h")))
-                .withCount(9173171906821807545L)
-                .withNextLink("tipwcxbyubhiqd");
+        TagDescriptionCollection model = new TagDescriptionCollection()
+            .withValue(Arrays.asList(new TagDescriptionContractInner().withTagId("guqigijiitns")
+                .withDisplayName("lz")
+                .withDescription("sygrijwa")
+                .withExternalDocsUrl("fanraybfu")
+                .withExternalDocsDescription("frojsydgr")))
+            .withCount(7522784857273296474L)
+            .withNextLink("dtblxpk");
         model = BinaryData.fromObject(model).toObject(TagDescriptionCollection.class);
-        Assertions.assertEquals("tb", model.value().get(0).tagId());
-        Assertions.assertEquals("exreu", model.value().get(0).displayName());
-        Assertions.assertEquals("owtljvfw", model.value().get(0).description());
-        Assertions.assertEquals("eagk", model.value().get(0).externalDocsUrl());
-        Assertions.assertEquals("xv", model.value().get(0).externalDocsDescription());
-        Assertions.assertEquals(9173171906821807545L, model.count());
-        Assertions.assertEquals("tipwcxbyubhiqd", model.nextLink());
+        Assertions.assertEquals("guqigijiitns", model.value().get(0).tagId());
+        Assertions.assertEquals("lz", model.value().get(0).displayName());
+        Assertions.assertEquals("sygrijwa", model.value().get(0).description());
+        Assertions.assertEquals("fanraybfu", model.value().get(0).externalDocsUrl());
+        Assertions.assertEquals("frojsydgr", model.value().get(0).externalDocsDescription());
+        Assertions.assertEquals(7522784857273296474L, model.count());
+        Assertions.assertEquals("dtblxpk", model.nextLink());
     }
 }

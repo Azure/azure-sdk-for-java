@@ -12,27 +12,27 @@ public final class A2APolicyDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         A2APolicyDetails model = BinaryData.fromString(
-            "{\"instanceType\":\"A2A\",\"recoveryPointThresholdInMinutes\":1604436828,\"recoveryPointHistory\":1284284541,\"appConsistentFrequencyInMinutes\":409182858,\"multiVmSyncStatus\":\"qi\",\"crashConsistentFrequencyInMinutes\":1105579119}")
+            "{\"instanceType\":\"A2A\",\"recoveryPointThresholdInMinutes\":1356535722,\"recoveryPointHistory\":657916435,\"appConsistentFrequencyInMinutes\":1339031940,\"multiVmSyncStatus\":\"evhdlmydid\",\"crashConsistentFrequencyInMinutes\":1455894662}")
             .toObject(A2APolicyDetails.class);
-        Assertions.assertEquals(1604436828, model.recoveryPointThresholdInMinutes());
-        Assertions.assertEquals(1284284541, model.recoveryPointHistory());
-        Assertions.assertEquals(409182858, model.appConsistentFrequencyInMinutes());
-        Assertions.assertEquals("qi", model.multiVmSyncStatus());
-        Assertions.assertEquals(1105579119, model.crashConsistentFrequencyInMinutes());
+        Assertions.assertEquals(1356535722, model.recoveryPointThresholdInMinutes());
+        Assertions.assertEquals(657916435, model.recoveryPointHistory());
+        Assertions.assertEquals(1339031940, model.appConsistentFrequencyInMinutes());
+        Assertions.assertEquals("evhdlmydid", model.multiVmSyncStatus());
+        Assertions.assertEquals(1455894662, model.crashConsistentFrequencyInMinutes());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        A2APolicyDetails model = new A2APolicyDetails().withRecoveryPointThresholdInMinutes(1604436828)
-            .withRecoveryPointHistory(1284284541)
-            .withAppConsistentFrequencyInMinutes(409182858)
-            .withMultiVmSyncStatus("qi")
-            .withCrashConsistentFrequencyInMinutes(1105579119);
+        A2APolicyDetails model = new A2APolicyDetails().withRecoveryPointThresholdInMinutes(1356535722)
+            .withRecoveryPointHistory(657916435)
+            .withAppConsistentFrequencyInMinutes(1339031940)
+            .withMultiVmSyncStatus("evhdlmydid")
+            .withCrashConsistentFrequencyInMinutes(1455894662);
         model = BinaryData.fromObject(model).toObject(A2APolicyDetails.class);
-        Assertions.assertEquals(1604436828, model.recoveryPointThresholdInMinutes());
-        Assertions.assertEquals(1284284541, model.recoveryPointHistory());
-        Assertions.assertEquals(409182858, model.appConsistentFrequencyInMinutes());
-        Assertions.assertEquals("qi", model.multiVmSyncStatus());
-        Assertions.assertEquals(1105579119, model.crashConsistentFrequencyInMinutes());
+        Assertions.assertEquals(1356535722, model.recoveryPointThresholdInMinutes());
+        Assertions.assertEquals(657916435, model.recoveryPointHistory());
+        Assertions.assertEquals(1339031940, model.appConsistentFrequencyInMinutes());
+        Assertions.assertEquals("evhdlmydid", model.multiVmSyncStatus());
+        Assertions.assertEquals(1455894662, model.crashConsistentFrequencyInMinutes());
     }
 }

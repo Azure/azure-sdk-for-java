@@ -18,10 +18,12 @@ import com.azure.search.documents.implementation.converters.AnalyzeRequestConver
 import com.azure.search.documents.implementation.util.MappingUtils;
 import com.azure.search.documents.implementation.util.Utility;
 import com.azure.search.documents.indexes.implementation.SearchServiceClientImpl;
+import com.azure.search.documents.indexes.implementation.models.ErrorResponseException;
 import com.azure.search.documents.indexes.implementation.models.ListSynonymMapsResult;
 import com.azure.search.documents.indexes.models.AnalyzeTextOptions;
 import com.azure.search.documents.indexes.models.AnalyzedTokenInfo;
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
+import com.azure.search.documents.indexes.models.IndexStatisticsSummary;
 import com.azure.search.documents.indexes.models.LexicalAnalyzerName;
 import com.azure.search.documents.indexes.models.LexicalTokenizerName;
 import com.azure.search.documents.indexes.models.SearchField;
@@ -1265,14 +1267,44 @@ public final class SearchIndexClient {
     }
 
     /**
-     * Convenience method to convert a {@link Class Class's} {@link Field Fields} and {@link Method Methods} into {@link
-     * SearchField SearchFields} to help aid the creation of a {@link SearchField} which represents the {@link Class}.
+     * Retrieves a summary of statistics for all indexes in the search service.
      *
-     * @param model The model {@link Class} that will have {@link SearchField SearchFields} generated from its
-     * structure.
-     * @param options Configuration used to determine generation of the {@link SearchField SearchFields}.
-     * @return A list {@link SearchField SearchFields} which represent the model {@link Class}.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a request to retrieve stats summary of all indexes as paginated response with
+     * {@link PagedIterable}.
      */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<IndexStatisticsSummary> getIndexStatsSummary() {
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexStatsSummary(null), LOGGER);
+    }
+
+    /**
+     * Retrieves a summary of statistics for all indexes in the search service.
+     *
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return response from a request to retrieve stats summary of all indexes as paginated response with
+     * {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<IndexStatisticsSummary> getIndexStatsSummary(Context context) {
+        return Utility.executeRestCallWithExceptionHandling(() -> restClient.getIndexStatsSummary(null, context),
+            LOGGER);
+    }
+
+    /**
+    * Convenience method to convert a {@link Class Class's} {@link Field Fields} and {@link Method Methods} into {@link
+    * SearchField SearchFields} to help aid the creation of a {@link SearchField} which represents the {@link Class}.
+    *
+    * @param model The model {@link Class} that will have {@link SearchField SearchFields} generated from its
+    * structure.
+    * @param options Configuration used to determine generation of the {@link SearchField SearchFields}.
+    * @return A list {@link SearchField SearchFields} which represent the model {@link Class}.
+    */
     public static List<SearchField> buildSearchFields(Class<?> model, FieldBuilderOptions options) {
         return SearchIndexAsyncClient.buildSearchFields(model, options);
     }

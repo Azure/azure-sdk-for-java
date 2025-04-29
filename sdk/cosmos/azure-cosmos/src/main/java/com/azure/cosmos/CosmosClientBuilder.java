@@ -19,6 +19,7 @@ import com.azure.cosmos.implementation.apachecommons.collections.list.Unmodifiab
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.time.StopWatch;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PartitionLevelCircuitBreakerConfig;
 import com.azure.cosmos.implementation.routing.LocationHelper;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
@@ -37,6 +38,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper;
@@ -147,7 +149,10 @@ public class CosmosClientBuilder implements
     private final List<CosmosOperationPolicy> requestPolicies;
     private CosmosItemSerializer defaultCustomSerializer;
     private boolean isRegionScopedSessionCapturingEnabled = false;
+    private boolean isPerPartitionAutomaticFailoverEnabled = false;
     private boolean serverCertValidationDisabled = false;
+
+    private Function<CosmosAsyncContainer, CosmosAsyncContainer> containerFactory = null;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -170,6 +175,28 @@ public class CosmosClientBuilder implements
 
     CosmosClientMetadataCachesSnapshot metadataCaches() {
         return this.state;
+    }
+
+    /**
+     * Gets the container creation interceptor.
+     * @return the function that should be invoked to allow wrapping containers - or null if no interceptor is defined.
+     */
+    Function<CosmosAsyncContainer, CosmosAsyncContainer> containerCreationInterceptor() {
+        return this.containerFactory;
+    }
+
+    /**
+     * Sets a function that allows intercepting container creation - for example to wrap the original
+     * CosmosAsyncContainer in an extended custom class to add diagnostics, custom validations or behavior.
+     * @param factory - the factory method allowing to wrap the original container in a custom class.
+     * @return current {@link CosmosClientBuilder}
+     */
+    public CosmosClientBuilder containerCreationInterceptor(
+        Function<CosmosAsyncContainer, CosmosAsyncContainer> factory) {
+
+        this.containerFactory = factory;
+
+        return this;
     }
 
     /**
@@ -222,6 +249,29 @@ public class CosmosClientBuilder implements
      * */
     boolean isRegionScopedSessionCapturingEnabled() {
         return this.isRegionScopedSessionCapturingEnabled;
+    }
+
+    /**
+     * The {@code perPartitionAutomaticFailoverEnabled} flag is a way for the {@link CosmosClient} or {@link CosmosAsyncClient}
+     * instance to opt in into failing over a specific physical partition(s) in the write region for single-write accounts as
+     * opposed to the write region as a whole.
+     * <p>
+     * IMPORTANT: {@link perPartitionAutomaticFailoverEnabled()} is a package-private method used in tests and benchmarking scenarios.
+     *
+     * @param isPerPartitionAutomaticFailoverEnabled A boolean flag to indicate whether PPAF is enabled.
+     * */
+    CosmosClientBuilder perPartitionAutomaticFailoverEnabled(boolean isPerPartitionAutomaticFailoverEnabled) {
+        this.isPerPartitionAutomaticFailoverEnabled = isPerPartitionAutomaticFailoverEnabled;
+        return this;
+    }
+
+    /**
+     * Gets whether PPAF is enabled.
+     *
+     * @return isPerPartitionAutomaticFailoverEnabled
+     * */
+    boolean isPerPartitionAutomaticFailoverEnabled() {
+        return this.isPerPartitionAutomaticFailoverEnabled;
     }
 
     /**
@@ -865,6 +915,25 @@ public class CosmosClientBuilder implements
         }
     }
 
+    void resetIsPerPartitionAutomaticFailoverEnabledAndEnforcePerPartitionCircuitBreakerIfNeeded() {
+        String isPerPartitionAutomaticFailoverEnabledAsStr
+            = Configs.isPerPartitionAutomaticFailoverEnabled();
+
+        if (!StringUtils.isEmpty(isPerPartitionAutomaticFailoverEnabledAsStr)) {
+            this.isPerPartitionAutomaticFailoverEnabled = Boolean.parseBoolean(isPerPartitionAutomaticFailoverEnabledAsStr);
+        }
+
+        if (this.isPerPartitionAutomaticFailoverEnabled) {
+
+            PartitionLevelCircuitBreakerConfig partitionLevelCircuitBreakerConfig = Configs.getPartitionLevelCircuitBreakerConfig();
+
+            if (partitionLevelCircuitBreakerConfig != null && !partitionLevelCircuitBreakerConfig.isPartitionLevelCircuitBreakerEnabled()) {
+                logger.info("As Per-Partition Automatic Failover is enabled, Per-Partition Circuit Breaker is enabled too by default!");
+                System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", "{\"isPartitionLevelCircuitBreakerEnabled\": true}");
+            }
+        }
+    }
+
     /**
      * Sets the {@link CosmosContainerProactiveInitConfig} which enable warming up of caches and connections
      * associated with containers obtained from {@link CosmosContainerProactiveInitConfig#getCosmosContainerIdentities()} to replicas
@@ -1155,6 +1224,8 @@ public class CosmosClientBuilder implements
         }
 
         this.resetSessionCapturingType();
+        this.resetIsPerPartitionAutomaticFailoverEnabledAndEnforcePerPartitionCircuitBreakerIfNeeded();
+
         validateConfig();
         buildConnectionPolicy();
         CosmosAsyncClient cosmosAsyncClient = new CosmosAsyncClient(this);
@@ -1195,6 +1266,8 @@ public class CosmosClientBuilder implements
         }
 
         this.resetSessionCapturingType();
+        this.resetIsPerPartitionAutomaticFailoverEnabledAndEnforcePerPartitionCircuitBreakerIfNeeded();
+
         validateConfig();
         buildConnectionPolicy();
         CosmosClient cosmosClient = new CosmosClient(this);
@@ -1417,6 +1490,16 @@ public class CosmosClientBuilder implements
                 @Override
                 public boolean getRegionScopedSessionCapturingEnabled(CosmosClientBuilder builder) {
                     return builder.isRegionScopedSessionCapturingEnabled();
+                }
+
+                @Override
+                public void setPerPartitionAutomaticFailoverEnabled(CosmosClientBuilder builder, boolean isPerPartitionAutomaticFailoverEnabled) {
+                    builder.perPartitionAutomaticFailoverEnabled(isPerPartitionAutomaticFailoverEnabled);
+                }
+
+                @Override
+                public boolean getPerPartitionAutomaticFailoverEnabled(CosmosClientBuilder builder) {
+                    return builder.isPerPartitionAutomaticFailoverEnabled();
                 }
             });
     }

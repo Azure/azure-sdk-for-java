@@ -11,15 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class RecipientEmailContractPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecipientEmailContractProperties model
-            = BinaryData.fromString("{\"email\":\"ibmg\"}").toObject(RecipientEmailContractProperties.class);
-        Assertions.assertEquals("ibmg", model.email());
+        RecipientEmailContractProperties model = BinaryData.fromString("{\"email\":\"kucddwnhczbutouc\"}")
+            .toObject(RecipientEmailContractProperties.class);
+        Assertions.assertEquals("kucddwnhczbutouc", model.email());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecipientEmailContractProperties model = new RecipientEmailContractProperties().withEmail("ibmg");
+        RecipientEmailContractProperties model = new RecipientEmailContractProperties().withEmail("kucddwnhczbutouc");
         model = BinaryData.fromObject(model).toObject(RecipientEmailContractProperties.class);
-        Assertions.assertEquals("ibmg", model.email());
+        Assertions.assertEquals("kucddwnhczbutouc", model.email());
     }
 }

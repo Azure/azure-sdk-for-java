@@ -12,14 +12,14 @@ public final class WikiDocumentationContractTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         WikiDocumentationContract model
-            = BinaryData.fromString("{\"documentationId\":\"cjbctviv\"}").toObject(WikiDocumentationContract.class);
-        Assertions.assertEquals("cjbctviv", model.documentationId());
+            = BinaryData.fromString("{\"documentationId\":\"sik\"}").toObject(WikiDocumentationContract.class);
+        Assertions.assertEquals("sik", model.documentationId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WikiDocumentationContract model = new WikiDocumentationContract().withDocumentationId("cjbctviv");
+        WikiDocumentationContract model = new WikiDocumentationContract().withDocumentationId("sik");
         model = BinaryData.fromObject(model).toObject(WikiDocumentationContract.class);
-        Assertions.assertEquals("cjbctviv", model.documentationId());
+        Assertions.assertEquals("sik", model.documentationId());
     }
 }
