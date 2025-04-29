@@ -6,8 +6,8 @@ package com.azure.resourcemanager.networkcloud.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.networkcloud.NetworkCloudManager;
 import com.azure.resourcemanager.networkcloud.models.ExtendedLocation;
@@ -24,35 +24,36 @@ public final class RacksCreateOrUpdateMockTests {
     @Test
     public void testCreateOrUpdate() throws Exception {
         String responseStr
-            = "{\"extendedLocation\":{\"name\":\"pwolgisubxb\",\"type\":\"eogfgfiijrykwl\"},\"properties\":{\"availabilityZone\":\"fksxqce\",\"clusterId\":\"fpxgnmqvz\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"q\",\"provisioningState\":\"Succeeded\",\"rackLocation\":\"ossscyva\",\"rackSerialNumber\":\"fppuacvfye\",\"rackSkuId\":\"w\"},\"location\":\"fxtjdhsoym\",\"tags\":{\"ehdpboujstkfvvds\":\"tyqft\"},\"id\":\"xcdedsu\",\"name\":\"nygnxcgjtfrnquk\",\"type\":\"rf\"}";
+            = "{\"extendedLocation\":{\"name\":\"qww\",\"type\":\"wjyofgwhnkbtl\"},\"properties\":{\"availabilityZone\":\"ljssm\",\"clusterId\":\"sn\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"wolgisubxbt\",\"provisioningState\":\"Succeeded\",\"rackLocation\":\"fgfiij\",\"rackSerialNumber\":\"ykwlefksxqceazf\",\"rackSkuId\":\"xgnmqvzvluyq\"},\"location\":\"ios\",\"tags\":{\"acvfyeowps\":\"yvaifpp\",\"jdhsoy\":\"x\",\"pboujs\":\"hpvtyqftteh\",\"suenyg\":\"kfvvdshxcde\"},\"id\":\"xcgjtf\",\"name\":\"nquktrfnslnlrxs\",\"type\":\"ylt\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetworkCloudManager manager = NetworkCloudManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Rack response = manager.racks()
-            .define("ptpqayamkn")
-            .withRegion("xdhilz")
-            .withExistingResourceGroup("yfejyvdwtf")
-            .withExtendedLocation(new ExtendedLocation().withName("fgybmxs").withType("xocuullojkpoyhgw"))
-            .withAvailabilityZone("djuxdbdljzgd")
-            .withRackLocation("jnqogdxwbsfpyx")
-            .withRackSerialNumber("tjlflecomi")
-            .withRackSkuId("xojjl")
-            .withTags(mapOf("ovribq", "zqjmueza", "qww", "otokhtvwtaznk"))
+            .define("kebhuhkslgw")
+            .withRegion("yhgww")
+            .withExistingResourceGroup("xunrswgkpjhboy")
+            .withExtendedLocation(new ExtendedLocation().withName("okhu").withType("o"))
+            .withAvailabilityZone("jy")
+            .withRackLocation("tfxptpqayamkncfg")
+            .withRackSerialNumber("bmxsnxoc")
+            .withRackSkuId("ullojk")
+            .withTags(
+                mapOf("bsgzl", "xdbdljzgdyrcvu", "x", "qhbjnqogdxwbsfpy", "ecominxojjluxxd", "jlf", "dzzqjmu", "ilz"))
             .create();
 
-        Assertions.assertEquals("fxtjdhsoym", response.location());
-        Assertions.assertEquals("tyqft", response.tags().get("ehdpboujstkfvvds"));
-        Assertions.assertEquals("pwolgisubxb", response.extendedLocation().name());
-        Assertions.assertEquals("eogfgfiijrykwl", response.extendedLocation().type());
-        Assertions.assertEquals("fksxqce", response.availabilityZone());
-        Assertions.assertEquals("ossscyva", response.rackLocation());
-        Assertions.assertEquals("fppuacvfye", response.rackSerialNumber());
-        Assertions.assertEquals("w", response.rackSkuId());
+        Assertions.assertEquals("ios", response.location());
+        Assertions.assertEquals("yvaifpp", response.tags().get("acvfyeowps"));
+        Assertions.assertEquals("qww", response.extendedLocation().name());
+        Assertions.assertEquals("wjyofgwhnkbtl", response.extendedLocation().type());
+        Assertions.assertEquals("ljssm", response.availabilityZone());
+        Assertions.assertEquals("fgfiij", response.rackLocation());
+        Assertions.assertEquals("ykwlefksxqceazf", response.rackSerialNumber());
+        Assertions.assertEquals("xgnmqvzvluyq", response.rackSkuId());
     }
 
     // Use "Map.of" if available

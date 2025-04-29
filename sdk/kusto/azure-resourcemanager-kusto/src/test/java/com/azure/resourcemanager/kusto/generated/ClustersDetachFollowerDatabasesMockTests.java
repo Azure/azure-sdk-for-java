@@ -29,8 +29,10 @@ public final class ClustersDetachFollowerDatabasesMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.clusters()
-            .detachFollowerDatabases("lpagzrcx", "a", new FollowerDatabaseDefinitionInner().withClusterResourceId("lc")
-                .withAttachedDatabaseConfigurationName("xwmdboxd"), com.azure.core.util.Context.NONE);
+            .detachFollowerDatabases("rtffyaqitmh", "eioqaqhvse",
+                new FollowerDatabaseDefinitionInner().withClusterResourceId("fuqyrxpdlcgqlsi")
+                    .withAttachedDatabaseConfigurationName("mjqfrddgamquhio"),
+                com.azure.core.util.Context.NONE);
 
     }
 }

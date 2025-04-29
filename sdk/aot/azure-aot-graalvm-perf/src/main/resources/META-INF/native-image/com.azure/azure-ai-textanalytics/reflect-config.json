@@ -1,8 +1,0 @@
-[
-  {
-    "name": "com.azure.ai.textanalytics.perf.DetectLanguageTest",
-    "allDeclaredConstructors": true,
-    "allDeclaredMethods": true,
-    "allDeclaredFields": true
-  }
-]

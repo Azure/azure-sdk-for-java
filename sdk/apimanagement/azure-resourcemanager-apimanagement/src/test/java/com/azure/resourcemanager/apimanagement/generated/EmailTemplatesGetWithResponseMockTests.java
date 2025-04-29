@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.EmailTemplateContract;
@@ -22,26 +22,26 @@ public final class EmailTemplatesGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"subject\":\"cfunlakgixhqjqh\",\"body\":\"qwbbxiwtwfgo\",\"title\":\"alvemn\",\"description\":\"ugabkyydsyweoh\",\"isDefault\":true,\"parameters\":[{\"name\":\"onvbftswc\",\"title\":\"pnseptvdticca\",\"description\":\"gzwkopxdkbtwoqh\"}]},\"id\":\"ppwxnikfz\",\"name\":\"xxfnduv\",\"type\":\"zjnnuwwv\"}";
+            = "{\"properties\":{\"subject\":\"fz\",\"body\":\"qmbinpxmiwt\",\"title\":\"ifpvrdukcdnzo\",\"description\":\"abux\",\"isDefault\":false,\"parameters\":[{\"name\":\"shramqsug\",\"title\":\"glmadfzto\",\"description\":\"vqlauuag\"},{\"name\":\"yfmcerfxfeiq\",\"title\":\"s\",\"description\":\"zwjipssvnon\"},{\"name\":\"cqcjozzjku\",\"title\":\"dqqbt\",\"description\":\"vocu\"},{\"name\":\"llbpwarhwettohgp\",\"title\":\"xyvtkzbhizxp\",\"description\":\"dd\"}]},\"id\":\"wnfhmjusuqnku\",\"name\":\"hvlxudheka\",\"type\":\"nirmidtvhjc\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         EmailTemplateContract response = manager.emailTemplates()
-            .getWithResponse("goce", "tlyspjymwicc", TemplateName.REJECT_DEVELOPER_NOTIFICATION_MESSAGE,
+            .getWithResponse("xzjkpifpucvbd", "zwbsk", TemplateName.NEW_ISSUE_NOTIFICATION_MESSAGE,
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("cfunlakgixhqjqh", response.subject());
-        Assertions.assertEquals("qwbbxiwtwfgo", response.body());
-        Assertions.assertEquals("alvemn", response.title());
-        Assertions.assertEquals("ugabkyydsyweoh", response.description());
-        Assertions.assertEquals("onvbftswc", response.parameters().get(0).name());
-        Assertions.assertEquals("pnseptvdticca", response.parameters().get(0).title());
-        Assertions.assertEquals("gzwkopxdkbtwoqh", response.parameters().get(0).description());
+        Assertions.assertEquals("fz", response.subject());
+        Assertions.assertEquals("qmbinpxmiwt", response.body());
+        Assertions.assertEquals("ifpvrdukcdnzo", response.title());
+        Assertions.assertEquals("abux", response.description());
+        Assertions.assertEquals("shramqsug", response.parameters().get(0).name());
+        Assertions.assertEquals("glmadfzto", response.parameters().get(0).title());
+        Assertions.assertEquals("vqlauuag", response.parameters().get(0).description());
     }
 }

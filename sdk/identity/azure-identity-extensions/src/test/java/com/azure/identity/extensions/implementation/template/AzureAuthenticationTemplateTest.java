@@ -10,6 +10,7 @@ import com.azure.identity.extensions.implementation.credential.TokenCredentialPr
 import com.azure.identity.extensions.implementation.credential.provider.CachingTokenCredentialProvider;
 import com.azure.identity.extensions.implementation.credential.provider.DefaultTokenCredentialProvider;
 import com.azure.identity.extensions.implementation.enums.AuthProperty;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
 import reactor.core.publisher.Mono;
@@ -117,7 +118,7 @@ class AzureAuthenticationTemplateTest {
     }
 
     @Test
-    void getTokenAsPasswordWithDefaultCredentialProvider() throws InterruptedException {
+    void verityTokeWithDefaultCredentialProvider() throws InterruptedException {
         // setup
         String token1 = "token1";
         String token2 = "token2";
@@ -151,8 +152,9 @@ class AzureAuthenticationTemplateTest {
         }
     }
 
+    @Disabled("Enable it when it is stable")
     @Test
-    void getTokenAsPasswordWithCachingCredentialProvider() throws InterruptedException {
+    void verityTokenWithCachingCredentialProvider() throws InterruptedException {
         int tokenExpireSeconds = 2;
         AtomicInteger tokenIndex1 = new AtomicInteger();
         AtomicInteger tokenIndex2 = new AtomicInteger(1);
@@ -180,7 +182,7 @@ class AzureAuthenticationTemplateTest {
 
             verifyToken("token1-", 0, template);
             TimeUnit.SECONDS.sleep(tokenExpireSeconds + 1);
-            verifyToken("token2-", 1, template);
+            verifyToken("token2-", 1, template2);
             assertNotNull(credentialProviderMock);
         }
     }

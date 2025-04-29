@@ -12,16 +12,16 @@ public final class ScaleProfileCapacityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScaleProfileCapacity model
-            = BinaryData.fromString("{\"min\":1016147904,\"max\":269303909}").toObject(ScaleProfileCapacity.class);
-        Assertions.assertEquals(1016147904, model.min());
-        Assertions.assertEquals(269303909, model.max());
+            = BinaryData.fromString("{\"min\":1520620796,\"max\":14767496}").toObject(ScaleProfileCapacity.class);
+        Assertions.assertEquals(1520620796, model.min());
+        Assertions.assertEquals(14767496, model.max());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScaleProfileCapacity model = new ScaleProfileCapacity().withMin(1016147904).withMax(269303909);
+        ScaleProfileCapacity model = new ScaleProfileCapacity().withMin(1520620796).withMax(14767496);
         model = BinaryData.fromObject(model).toObject(ScaleProfileCapacity.class);
-        Assertions.assertEquals(1016147904, model.min());
-        Assertions.assertEquals(269303909, model.max());
+        Assertions.assertEquals(1520620796, model.min());
+        Assertions.assertEquals(14767496, model.max());
     }
 }

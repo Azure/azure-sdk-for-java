@@ -15,27 +15,27 @@ public final class VolumeInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VolumeInner model = BinaryData.fromString(
-            "{\"extendedLocation\":{\"name\":\"zzjgehkfki\",\"type\":\"rtixokff\"},\"properties\":{\"attachedTo\":[\"nljqepqwhixmons\",\"shiy\",\"gvelfc\",\"du\"],\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"rds\",\"provisioningState\":\"Canceled\",\"serialNumber\":\"o\",\"sizeMiB\":6517518115426729228},\"location\":\"stmninwjizcilng\",\"tags\":{\"jjtbxqmuluxlxqz\":\"h\",\"cucrwnamikze\":\"nersb\",\"fuhok\":\"rqbsmswziq\"},\"id\":\"ruswhv\",\"name\":\"czznvfbycjsxj\",\"type\":\"wix\"}")
+            "{\"extendedLocation\":{\"name\":\"xylrjvmtygjbmz\",\"type\":\"ospspshckf\"},\"properties\":{\"attachedTo\":[\"pms\",\"bpssdfp\",\"yogtieyujtvczkcn\",\"xrx\"],\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"d\",\"provisioningState\":\"Accepted\",\"serialNumber\":\"nkvxlxpaglqi\",\"sizeMiB\":4471822545913660490},\"location\":\"cvkhpzvuqdfl\",\"tags\":{\"bcpzgpxtivh\":\"iypfp\",\"qjxgpnrhgovfgp\":\"knidib\",\"zvuporqzdfuydz\":\"kqmhhaowjr\"},\"id\":\"kfvxcnq\",\"name\":\"xqpswok\",\"type\":\"vkhlggdhbemz\"}")
             .toObject(VolumeInner.class);
-        Assertions.assertEquals("stmninwjizcilng", model.location());
-        Assertions.assertEquals("h", model.tags().get("jjtbxqmuluxlxqz"));
-        Assertions.assertEquals("zzjgehkfki", model.extendedLocation().name());
-        Assertions.assertEquals("rtixokff", model.extendedLocation().type());
-        Assertions.assertEquals(6517518115426729228L, model.sizeMiB());
+        Assertions.assertEquals("cvkhpzvuqdfl", model.location());
+        Assertions.assertEquals("iypfp", model.tags().get("bcpzgpxtivh"));
+        Assertions.assertEquals("xylrjvmtygjbmz", model.extendedLocation().name());
+        Assertions.assertEquals("ospspshckf", model.extendedLocation().type());
+        Assertions.assertEquals(4471822545913660490L, model.sizeMiB());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeInner model = new VolumeInner().withLocation("stmninwjizcilng")
-            .withTags(mapOf("jjtbxqmuluxlxqz", "h", "cucrwnamikze", "nersb", "fuhok", "rqbsmswziq"))
-            .withExtendedLocation(new ExtendedLocation().withName("zzjgehkfki").withType("rtixokff"))
-            .withSizeMiB(6517518115426729228L);
+        VolumeInner model = new VolumeInner().withLocation("cvkhpzvuqdfl")
+            .withTags(mapOf("bcpzgpxtivh", "iypfp", "qjxgpnrhgovfgp", "knidib", "zvuporqzdfuydz", "kqmhhaowjr"))
+            .withExtendedLocation(new ExtendedLocation().withName("xylrjvmtygjbmz").withType("ospspshckf"))
+            .withSizeMiB(4471822545913660490L);
         model = BinaryData.fromObject(model).toObject(VolumeInner.class);
-        Assertions.assertEquals("stmninwjizcilng", model.location());
-        Assertions.assertEquals("h", model.tags().get("jjtbxqmuluxlxqz"));
-        Assertions.assertEquals("zzjgehkfki", model.extendedLocation().name());
-        Assertions.assertEquals("rtixokff", model.extendedLocation().type());
-        Assertions.assertEquals(6517518115426729228L, model.sizeMiB());
+        Assertions.assertEquals("cvkhpzvuqdfl", model.location());
+        Assertions.assertEquals("iypfp", model.tags().get("bcpzgpxtivh"));
+        Assertions.assertEquals("xylrjvmtygjbmz", model.extendedLocation().name());
+        Assertions.assertEquals("ospspshckf", model.extendedLocation().type());
+        Assertions.assertEquals(4471822545913660490L, model.sizeMiB());
     }
 
     // Use "Map.of" if available

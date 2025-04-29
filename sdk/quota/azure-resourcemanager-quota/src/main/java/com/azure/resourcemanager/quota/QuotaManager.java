@@ -22,17 +22,16 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.quota.fluent.AzureQuotaExtensionApi;
 import com.azure.resourcemanager.quota.implementation.AzureQuotaExtensionApiBuilder;
 import com.azure.resourcemanager.quota.implementation.GroupQuotaLimitsImpl;
 import com.azure.resourcemanager.quota.implementation.GroupQuotaLimitsRequestsImpl;
-import com.azure.resourcemanager.quota.implementation.GroupQuotaLocationSettingsImpl;
 import com.azure.resourcemanager.quota.implementation.GroupQuotaSubscriptionAllocationRequestsImpl;
 import com.azure.resourcemanager.quota.implementation.GroupQuotaSubscriptionAllocationsImpl;
 import com.azure.resourcemanager.quota.implementation.GroupQuotaSubscriptionRequestsImpl;
 import com.azure.resourcemanager.quota.implementation.GroupQuotaSubscriptionsImpl;
-import com.azure.resourcemanager.quota.implementation.GroupQuotaUsagesImpl;
 import com.azure.resourcemanager.quota.implementation.GroupQuotasImpl;
 import com.azure.resourcemanager.quota.implementation.QuotaOperationsImpl;
 import com.azure.resourcemanager.quota.implementation.QuotaRequestStatusImpl;
@@ -40,12 +39,10 @@ import com.azure.resourcemanager.quota.implementation.QuotasImpl;
 import com.azure.resourcemanager.quota.implementation.UsagesImpl;
 import com.azure.resourcemanager.quota.models.GroupQuotaLimits;
 import com.azure.resourcemanager.quota.models.GroupQuotaLimitsRequests;
-import com.azure.resourcemanager.quota.models.GroupQuotaLocationSettings;
 import com.azure.resourcemanager.quota.models.GroupQuotaSubscriptionAllocationRequests;
 import com.azure.resourcemanager.quota.models.GroupQuotaSubscriptionAllocations;
 import com.azure.resourcemanager.quota.models.GroupQuotaSubscriptionRequests;
 import com.azure.resourcemanager.quota.models.GroupQuotaSubscriptions;
-import com.azure.resourcemanager.quota.models.GroupQuotaUsages;
 import com.azure.resourcemanager.quota.models.GroupQuotas;
 import com.azure.resourcemanager.quota.models.QuotaOperations;
 import com.azure.resourcemanager.quota.models.QuotaRequestStatus;
@@ -55,6 +52,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -69,17 +67,13 @@ public final class QuotaManager {
 
     private GroupQuotaSubscriptionRequests groupQuotaSubscriptionRequests;
 
-    private GroupQuotaLimits groupQuotaLimits;
-
     private GroupQuotaLimitsRequests groupQuotaLimitsRequests;
 
-    private GroupQuotaSubscriptionAllocations groupQuotaSubscriptionAllocations;
+    private GroupQuotaLimits groupQuotaLimits;
 
     private GroupQuotaSubscriptionAllocationRequests groupQuotaSubscriptionAllocationRequests;
 
-    private GroupQuotaUsages groupQuotaUsages;
-
-    private GroupQuotaLocationSettings groupQuotaLocationSettings;
+    private GroupQuotaSubscriptionAllocations groupQuotaSubscriptionAllocations;
 
     private Usages usages;
 
@@ -141,6 +135,9 @@ public final class QuotaManager {
      */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
+        private static final String SDK_VERSION = "version";
+        private static final Map<String, String> PROPERTIES
+            = CoreUtils.getProperties("azure-resourcemanager-quota.properties");
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
@@ -248,12 +245,14 @@ public final class QuotaManager {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
+            String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+
             StringBuilder userAgentBuilder = new StringBuilder();
             userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.quota")
                 .append("/")
-                .append("1.1.0-beta.2");
+                .append(clientVersion);
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -338,18 +337,6 @@ public final class QuotaManager {
     }
 
     /**
-     * Gets the resource collection API of GroupQuotaLimits.
-     * 
-     * @return Resource collection API of GroupQuotaLimits.
-     */
-    public GroupQuotaLimits groupQuotaLimits() {
-        if (this.groupQuotaLimits == null) {
-            this.groupQuotaLimits = new GroupQuotaLimitsImpl(clientObject.getGroupQuotaLimits(), this);
-        }
-        return groupQuotaLimits;
-    }
-
-    /**
      * Gets the resource collection API of GroupQuotaLimitsRequests.
      * 
      * @return Resource collection API of GroupQuotaLimitsRequests.
@@ -363,16 +350,15 @@ public final class QuotaManager {
     }
 
     /**
-     * Gets the resource collection API of GroupQuotaSubscriptionAllocations.
+     * Gets the resource collection API of GroupQuotaLimits.
      * 
-     * @return Resource collection API of GroupQuotaSubscriptionAllocations.
+     * @return Resource collection API of GroupQuotaLimits.
      */
-    public GroupQuotaSubscriptionAllocations groupQuotaSubscriptionAllocations() {
-        if (this.groupQuotaSubscriptionAllocations == null) {
-            this.groupQuotaSubscriptionAllocations
-                = new GroupQuotaSubscriptionAllocationsImpl(clientObject.getGroupQuotaSubscriptionAllocations(), this);
+    public GroupQuotaLimits groupQuotaLimits() {
+        if (this.groupQuotaLimits == null) {
+            this.groupQuotaLimits = new GroupQuotaLimitsImpl(clientObject.getGroupQuotaLimits(), this);
         }
-        return groupQuotaSubscriptionAllocations;
+        return groupQuotaLimits;
     }
 
     /**
@@ -389,28 +375,16 @@ public final class QuotaManager {
     }
 
     /**
-     * Gets the resource collection API of GroupQuotaUsages.
+     * Gets the resource collection API of GroupQuotaSubscriptionAllocations.
      * 
-     * @return Resource collection API of GroupQuotaUsages.
+     * @return Resource collection API of GroupQuotaSubscriptionAllocations.
      */
-    public GroupQuotaUsages groupQuotaUsages() {
-        if (this.groupQuotaUsages == null) {
-            this.groupQuotaUsages = new GroupQuotaUsagesImpl(clientObject.getGroupQuotaUsages(), this);
+    public GroupQuotaSubscriptionAllocations groupQuotaSubscriptionAllocations() {
+        if (this.groupQuotaSubscriptionAllocations == null) {
+            this.groupQuotaSubscriptionAllocations
+                = new GroupQuotaSubscriptionAllocationsImpl(clientObject.getGroupQuotaSubscriptionAllocations(), this);
         }
-        return groupQuotaUsages;
-    }
-
-    /**
-     * Gets the resource collection API of GroupQuotaLocationSettings.
-     * 
-     * @return Resource collection API of GroupQuotaLocationSettings.
-     */
-    public GroupQuotaLocationSettings groupQuotaLocationSettings() {
-        if (this.groupQuotaLocationSettings == null) {
-            this.groupQuotaLocationSettings
-                = new GroupQuotaLocationSettingsImpl(clientObject.getGroupQuotaLocationSettings(), this);
-        }
-        return groupQuotaLocationSettings;
+        return groupQuotaSubscriptionAllocations;
     }
 
     /**

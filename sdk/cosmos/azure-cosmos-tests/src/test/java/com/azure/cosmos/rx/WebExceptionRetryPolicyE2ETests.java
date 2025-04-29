@@ -125,7 +125,7 @@ public class WebExceptionRetryPolicyE2ETests extends TestSuiteBase {
         FaultInjectionRule serverGoneRule = new FaultInjectionRuleBuilder("serverGoneRule")
             .condition(
                 new FaultInjectionConditionBuilder()
-                    .operationType(FaultInjectionOperationType.READ_ITEM)
+                    .operationType(FaultInjectionOperationType.CREATE_ITEM)
                     .build())
             .result(
                 FaultInjectionResultBuilders.getResultBuilder(FaultInjectionServerErrorType.GONE)
@@ -140,7 +140,7 @@ public class WebExceptionRetryPolicyE2ETests extends TestSuiteBase {
                 Arrays.asList(addressRefreshDelayRule, serverGoneRule)).block();
         try {
             cosmosAsyncContainer
-                .readItem(newItem.getId(), new PartitionKey(newItem.getId()), TestItem.class)
+                .createItem(newItem)
                 .block();
             fail("addressRefreshHttpTimeout() should fail due to addressRefresh timeout");
         } catch (CosmosException e) {

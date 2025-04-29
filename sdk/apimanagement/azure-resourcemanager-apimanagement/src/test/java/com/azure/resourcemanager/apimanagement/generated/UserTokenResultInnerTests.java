@@ -12,14 +12,14 @@ public final class UserTokenResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         UserTokenResultInner model
-            = BinaryData.fromString("{\"value\":\"hrjqfyaytvslyek\"}").toObject(UserTokenResultInner.class);
-        Assertions.assertEquals("hrjqfyaytvslyek", model.value());
+            = BinaryData.fromString("{\"value\":\"qcowscuyfql\"}").toObject(UserTokenResultInner.class);
+        Assertions.assertEquals("qcowscuyfql", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UserTokenResultInner model = new UserTokenResultInner().withValue("hrjqfyaytvslyek");
+        UserTokenResultInner model = new UserTokenResultInner().withValue("qcowscuyfql");
         model = BinaryData.fromObject(model).toObject(UserTokenResultInner.class);
-        Assertions.assertEquals("hrjqfyaytvslyek", model.value());
+        Assertions.assertEquals("qcowscuyfql", model.value());
     }
 }

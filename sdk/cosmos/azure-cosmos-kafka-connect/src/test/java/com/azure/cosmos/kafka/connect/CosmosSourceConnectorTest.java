@@ -20,6 +20,7 @@ import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
 import com.azure.cosmos.implementation.feedranges.FeedRangeContinuation;
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
+import com.azure.cosmos.kafka.connect.implementation.CosmosAadAuthConfig;
 import com.azure.cosmos.kafka.connect.implementation.CosmosAuthType;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosUtils;
@@ -624,6 +625,30 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
     }
 
     @Test(groups = { "unit" })
+    public void sourceConfigWithAuthEndpointOverride() {
+        String tenantId = "tenantId";
+        String clientId = "clientId";
+        String clientSecret = "clientSecret";
+        String authEndpoint = "https://login.example.com/";
+
+        Map<String, String> sourceConfigMap = this.getValidSourceConfig();
+        sourceConfigMap.put("azure.cosmos.auth.type", CosmosAuthType.SERVICE_PRINCIPAL.getName());
+        sourceConfigMap.put("azure.cosmos.account.tenantId", tenantId);
+        sourceConfigMap.put("azure.cosmos.auth.aad.clientId", clientId);
+        sourceConfigMap.put("azure.cosmos.auth.aad.clientSecret", clientSecret);
+        sourceConfigMap.put("azure.cosmos.auth.aad.authEndpointOverride", authEndpoint);
+
+        CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConfigMap);
+        assertThat(sourceConfig.getAccountConfig()).isNotNull();
+        assertThat(sourceConfig.getAccountConfig().getCosmosAuthConfig()).isInstanceOf(CosmosAadAuthConfig.class);
+        CosmosAadAuthConfig cosmosAadAuthConfig = (CosmosAadAuthConfig) sourceConfig.getAccountConfig().getCosmosAuthConfig();
+        assertThat(cosmosAadAuthConfig.getTenantId()).isEqualTo(tenantId);
+        assertThat(cosmosAadAuthConfig.getClientId()).isEqualTo(clientId);
+        assertThat(cosmosAadAuthConfig.getClientSecret()).isEqualTo(clientSecret);
+        assertThat(cosmosAadAuthConfig.getAuthEndpoint()).isEqualTo(authEndpoint);
+    }
+
+    @Test(groups = { "unit" })
     public void sourceConfigWithThroughputControl() {
         String throughputControlGroupName = "test";
         int targetThroughput= 6;
@@ -993,6 +1018,7 @@ public class CosmosSourceConnectorTest extends KafkaCosmosTestSuiteBase {
             new KafkaCosmosConfigEntry<String>("azure.cosmos.account.key", Strings.Emtpy, true, true),
             new KafkaCosmosConfigEntry<String>("azure.cosmos.auth.aad.clientId", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<String>("azure.cosmos.auth.aad.clientSecret", Strings.Emtpy, true, true),
+            new KafkaCosmosConfigEntry<String>("azure.cosmos.auth.aad.authEndpointOverride", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<Boolean>("azure.cosmos.mode.gateway", false, true),
             new KafkaCosmosConfigEntry<String>("azure.cosmos.preferredRegionList", Strings.Emtpy, true),
             new KafkaCosmosConfigEntry<String>("azure.cosmos.application.name", Strings.Emtpy, true),

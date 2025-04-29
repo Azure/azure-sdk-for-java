@@ -56,6 +56,20 @@ public interface Backup {
     OffsetDateTime creationDate();
 
     /**
+     * Gets the snapshotCreationDate property: The snapshot creation date of the backup.
+     * 
+     * @return the snapshotCreationDate value.
+     */
+    OffsetDateTime snapshotCreationDate();
+
+    /**
+     * Gets the completionDate property: The completion date of the backup.
+     * 
+     * @return the completionDate value.
+     */
+    OffsetDateTime completionDate();
+
+    /**
      * Gets the provisioningState property: Azure lifecycle management.
      * 
      * @return the provisioningState value.

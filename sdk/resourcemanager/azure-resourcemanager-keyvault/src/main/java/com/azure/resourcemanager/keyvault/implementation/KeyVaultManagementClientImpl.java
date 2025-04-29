@@ -8,8 +8,8 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.serializer.SerializerAdapter;
-import com.azure.resourcemanager.keyvault.fluent.KeysClient;
 import com.azure.resourcemanager.keyvault.fluent.KeyVaultManagementClient;
+import com.azure.resourcemanager.keyvault.fluent.KeysClient;
 import com.azure.resourcemanager.keyvault.fluent.ManagedHsmKeysClient;
 import com.azure.resourcemanager.keyvault.fluent.ManagedHsmsClient;
 import com.azure.resourcemanager.keyvault.fluent.MhsmPrivateEndpointConnectionsClient;
@@ -287,7 +287,7 @@ public final class KeyVaultManagementClientImpl extends AzureServiceClient imple
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-07-01";
+        this.apiVersion = "2024-11-01";
         this.keys = new KeysClientImpl(this);
         this.managedHsmKeys = new ManagedHsmKeysClientImpl(this);
         this.vaults = new VaultsClientImpl(this);

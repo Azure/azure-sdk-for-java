@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.routing.Range;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -75,7 +74,7 @@ public class PartitionKeyRange extends Resource {
     }
 
     public PartitionKeyRange setMinInclusive(String minInclusive) {
-        this.set("minInclusive", minInclusive, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set("minInclusive", minInclusive);
         return this;
     }
 
@@ -84,7 +83,7 @@ public class PartitionKeyRange extends Resource {
     }
 
     public PartitionKeyRange setMaxExclusive(String maxExclusive) {
-        this.set("maxExclusive", maxExclusive, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set("maxExclusive", maxExclusive);
         return this;
     }
 
@@ -115,7 +114,7 @@ public class PartitionKeyRange extends Resource {
     }
 
     public void setParents(List<String> parents) {
-        this.set(Constants.Properties.PARENTS, parents, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(Constants.Properties.PARENTS, parents);
     }
 
     /**

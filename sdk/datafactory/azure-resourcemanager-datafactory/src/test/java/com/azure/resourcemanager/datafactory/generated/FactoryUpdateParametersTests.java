@@ -17,7 +17,7 @@ public final class FactoryUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         FactoryUpdateParameters model = BinaryData.fromString(
-            "{\"tags\":{\"bldngkpoc\":\"kouknvudwtiu\",\"npiucgygevqznty\":\"pazyxoegukg\"},\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"b08cd623-dce9-4dbd-aa8f-5d12b6dd3164\",\"tenantId\":\"6abb9869-8693-4fa2-a0f8-ca0839cfe7a3\",\"userAssignedIdentities\":{\"r\":\"datac\",\"dpydn\":\"dataj\",\"sjttgzfbish\":\"datayhxdeoejzicwi\",\"jdeyeamdpha\":\"databkh\"}},\"properties\":{\"publicNetworkAccess\":\"Disabled\"}}")
+            "{\"tags\":{\"bldngkpoc\":\"kouknvudwtiu\",\"npiucgygevqznty\":\"pazyxoegukg\"},\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"5a31ec13-8b8c-49ad-bf2a-4cde5ba2002e\",\"tenantId\":\"9449e731-5b63-4fdc-8d91-3189a9a14242\",\"userAssignedIdentities\":{\"r\":\"datac\",\"dpydn\":\"dataj\",\"sjttgzfbish\":\"datayhxdeoejzicwi\",\"jdeyeamdpha\":\"databkh\"}},\"properties\":{\"publicNetworkAccess\":\"Disabled\"}}")
             .toObject(FactoryUpdateParameters.class);
         Assertions.assertEquals("kouknvudwtiu", model.tags().get("bldngkpoc"));
         Assertions.assertEquals(FactoryIdentityType.SYSTEM_ASSIGNED, model.identity().type());

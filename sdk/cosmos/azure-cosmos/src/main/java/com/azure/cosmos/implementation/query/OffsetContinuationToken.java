@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.implementation.query;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -57,7 +56,7 @@ public final class OffsetContinuationToken extends JsonSerializable {
     }
 
     private void setSourceToken(String sourceToken) {
-        this.set(TOKEN_PROPERTY_NAME, sourceToken, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(TOKEN_PROPERTY_NAME, sourceToken);
     }
 
     public int getOffset() {
@@ -65,7 +64,7 @@ public final class OffsetContinuationToken extends JsonSerializable {
     }
 
     private void setOffset(int offset) {
-        this.set(OFFSET_PROPERTY_NAME, offset, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        this.set(OFFSET_PROPERTY_NAME, offset);
     }
 
     @Override

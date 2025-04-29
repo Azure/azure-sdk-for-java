@@ -91,6 +91,10 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
         return this.innerModel().clusterId();
     }
 
+    public ExtendedLocation consoleExtendedLocation() {
+        return this.innerModel().consoleExtendedLocation();
+    }
+
     public long cpuCores() {
         return this.innerModel().cpuCores();
     }
@@ -368,6 +372,11 @@ public final class VirtualMachineImpl implements VirtualMachine, VirtualMachine.
 
     public VirtualMachineImpl withBootMethod(VirtualMachineBootMethod bootMethod) {
         this.innerModel().withBootMethod(bootMethod);
+        return this;
+    }
+
+    public VirtualMachineImpl withConsoleExtendedLocation(ExtendedLocation consoleExtendedLocation) {
+        this.innerModel().withConsoleExtendedLocation(consoleExtendedLocation);
         return this;
     }
 

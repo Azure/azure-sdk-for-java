@@ -11,7 +11,7 @@ public final class PrivateEndpointPropertyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateEndpointProperty model
-            = BinaryData.fromString("{\"id\":\"xbnjbiksq\"}").toObject(PrivateEndpointProperty.class);
+            = BinaryData.fromString("{\"id\":\"jitcjczdzevn\"}").toObject(PrivateEndpointProperty.class);
     }
 
     @org.junit.jupiter.api.Test

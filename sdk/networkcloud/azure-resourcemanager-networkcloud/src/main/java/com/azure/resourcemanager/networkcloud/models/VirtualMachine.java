@@ -109,6 +109,13 @@ public interface VirtualMachine {
     String clusterId();
 
     /**
+     * Gets the consoleExtendedLocation property: The extended location to use for creation of a VM console resource.
+     * 
+     * @return the consoleExtendedLocation value.
+     */
+    ExtendedLocation consoleExtendedLocation();
+
+    /**
      * Gets the cpuCores property: The number of CPU cores in the virtual machine.
      * 
      * @return the cpuCores value.
@@ -428,9 +435,10 @@ public interface VirtualMachine {
          * resource to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithBootMethod,
-            DefinitionStages.WithIsolateEmulatorThread, DefinitionStages.WithNetworkAttachments,
-            DefinitionStages.WithNetworkData, DefinitionStages.WithPlacementHints, DefinitionStages.WithSshPublicKeys,
-            DefinitionStages.WithUserData, DefinitionStages.WithVirtioInterface, DefinitionStages.WithVmDeviceModel,
+            DefinitionStages.WithConsoleExtendedLocation, DefinitionStages.WithIsolateEmulatorThread,
+            DefinitionStages.WithNetworkAttachments, DefinitionStages.WithNetworkData,
+            DefinitionStages.WithPlacementHints, DefinitionStages.WithSshPublicKeys, DefinitionStages.WithUserData,
+            DefinitionStages.WithVirtioInterface, DefinitionStages.WithVmDeviceModel,
             DefinitionStages.WithVmImageRepositoryCredentials {
             /**
              * Executes the create request.
@@ -472,6 +480,20 @@ public interface VirtualMachine {
              * @return the next definition stage.
              */
             WithCreate withBootMethod(VirtualMachineBootMethod bootMethod);
+        }
+
+        /**
+         * The stage of the VirtualMachine definition allowing to specify consoleExtendedLocation.
+         */
+        interface WithConsoleExtendedLocation {
+            /**
+             * Specifies the consoleExtendedLocation property: The extended location to use for creation of a VM console
+             * resource..
+             * 
+             * @param consoleExtendedLocation The extended location to use for creation of a VM console resource.
+             * @return the next definition stage.
+             */
+            WithCreate withConsoleExtendedLocation(ExtendedLocation consoleExtendedLocation);
         }
 
         /**

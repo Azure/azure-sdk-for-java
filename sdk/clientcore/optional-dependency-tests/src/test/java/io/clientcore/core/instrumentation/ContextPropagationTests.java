@@ -32,8 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ContextPropagationTests {
-    private static final LibraryInstrumentationOptions DEFAULT_LIB_OPTIONS
-        = new LibraryInstrumentationOptions("test-library");
+    private static final SdkInstrumentationOptions DEFAULT_LIB_OPTIONS = new SdkInstrumentationOptions("test-library");
     private static final TraceContextGetter<Map<String, String>> GETTER
         = new TraceContextGetter<Map<String, String>>() {
             @Override
@@ -49,7 +48,7 @@ public class ContextPropagationTests {
 
     private InMemorySpanExporter exporter;
     private SdkTracerProvider tracerProvider;
-    private InstrumentationOptions<OpenTelemetry> otelOptions;
+    private InstrumentationOptions otelOptions;
     private Tracer tracer;
     private TraceContextPropagator contextPropagator;
     private Instrumentation instrumentation;
@@ -60,7 +59,7 @@ public class ContextPropagationTests {
         tracerProvider = SdkTracerProvider.builder().addSpanProcessor(SimpleSpanProcessor.create(exporter)).build();
 
         OpenTelemetry openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
-        otelOptions = new InstrumentationOptions<OpenTelemetry>().setProvider(openTelemetry);
+        otelOptions = new InstrumentationOptions().setTelemetryProvider(openTelemetry);
         instrumentation = Instrumentation.create(otelOptions, DEFAULT_LIB_OPTIONS);
         tracer = instrumentation.getTracer();
         contextPropagator = instrumentation.getW3CTraceContextPropagator();

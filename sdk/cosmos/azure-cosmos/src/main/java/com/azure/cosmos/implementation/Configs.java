@@ -3,7 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
-import com.azure.cosmos.implementation.circuitBreaker.PartitionLevelCircuitBreakerConfig;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PartitionLevelCircuitBreakerConfig;
 import com.azure.cosmos.implementation.directconnectivity.Protocol;
 import io.netty.handler.ssl.ApplicationProtocolConfig;
 import io.netty.handler.ssl.ApplicationProtocolNames;
@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.net.ssl.SSLException;
+import java.net.URI;
 import java.time.Duration;
 import java.util.Locale;
 
@@ -44,6 +45,12 @@ public class Configs {
 
     private static final String UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS = "COSMOS.UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS";
     private static final String GLOBAL_ENDPOINT_MANAGER_INITIALIZATION_TIME_IN_SECONDS = "COSMOS.GLOBAL_ENDPOINT_MANAGER_MAX_INIT_TIME_IN_SECONDS";
+    private static final String DEFAULT_THINCLIENT_ENDPOINT = "";
+    private static final String THINCLIENT_ENDPOINT = "COSMOS.THINCLIENT_ENDPOINT";
+    private static final String THINCLIENT_ENDPOINT_VARIABLE = "COSMOS_THINCLIENT_ENDPOINT";
+    private static final boolean DEFAULT_THINCLIENT_ENABLED = false;
+    private static final String THINCLIENT_ENABLED = "COSMOS.THINCLIENT_ENABLED";
+    private static final String THINCLIENT_ENABLED_VARIABLE = "COSMOS_THINCLIENT_ENABLED";
 
     private static final String MAX_HTTP_BODY_LENGTH_IN_BYTES = "COSMOS.MAX_HTTP_BODY_LENGTH_IN_BYTES";
     private static final String MAX_HTTP_INITIAL_LINE_LENGTH_IN_BYTES = "COSMOS.MAX_HTTP_INITIAL_LINE_LENGTH_IN_BYTES";
@@ -55,6 +62,14 @@ public class Configs {
     public static final int DEFAULT_HTTP_DEFAULT_CONNECTION_POOL_SIZE = 1000;
     public static final String HTTP_DEFAULT_CONNECTION_POOL_SIZE = "COSMOS.DEFAULT_HTTP_CONNECTION_POOL_SIZE";
     public static final String HTTP_DEFAULT_CONNECTION_POOL_SIZE_VARIABLE = "COSMOS_DEFAULT_HTTP_CONNECTION_POOL_SIZE";
+
+    public static final String HTTP_PENDING_ACQUIRE_MAX_COUNT = "COSMOS.HTTP_PENDING_ACQUIRE_MAX_COUNT";
+    public static final String HTTP_PENDING_ACQUIRE_MAX_COUNT_VARIABLE = "COSMOS_HTTP_PENDING_ACQUIRE_MAX_COUNT";
+
+    public static final String ITEM_SERIALIZATION_INCLUSION_MODE = "COSMOS.ITEM_SERIALIZATION_INCLUSION_MODE";
+    public static final String ITEM_SERIALIZATION_INCLUSION_MODE_VARIABLE = "COSMOS_ITEM_SERIALIZATION_INCLUSION_MODE";
+
+    public static final String DEFAULT_ITEM_SERIALIZATION_INCLUSION_MODE = "Always";
 
     public static final boolean DEFAULT_E2E_FOR_NON_POINT_DISABLED_DEFAULT = false;
     public static final String DEFAULT_E2E_FOR_NON_POINT_DISABLED = "COSMOS.E2E_FOR_NON_POINT_DISABLED";
@@ -273,6 +288,22 @@ public class Configs {
     private static final boolean DEFAULT_PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN = false;
     private static final String PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN = "COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN";
 
+    private static final String DEFAULT_IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED = "";
+    private static final String IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED = "COSMOS.IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED";
+    private static final String IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED_VARIABLE = "COSMOS_IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED";
+
+    private static final boolean DEFAULT_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED = true;
+    private static final String IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED = "COSMOS.IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED";
+    private static final String IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED_VARIABLE = "COSMOS_IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED";
+
+    private static final int DEFAULT_E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF = 10;
+    private static final String E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF = "COSMOS.E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF";
+    private static final String E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF_VARIABLE = "COSMOS_E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF";
+
+    private static final int DEFAULT_E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF = 60;
+    private static final String E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF = "COSMOS.E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF";
+    private static final String E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF_VARIABLE = "COSMOS_E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF";
+
     private static final String COSMOS_DISABLE_IMDS_ACCESS = "COSMOS.DISABLE_IMDS_ACCESS";
     private static final String COSMOS_DISABLE_IMDS_ACCESS_VARIABLE = "COSMOS_DISABLE_IMDS_ACCESS";
     private static final boolean COSMOS_DISABLE_IMDS_ACCESS_DEFAULT = false;
@@ -405,6 +436,34 @@ public class Configs {
         return getJVMConfigAsInt(GLOBAL_ENDPOINT_MANAGER_INITIALIZATION_TIME_IN_SECONDS, DEFAULT_GLOBAL_ENDPOINT_MANAGER_INITIALIZATION_TIME_IN_SECONDS);
     }
 
+    public URI getThinclientEndpoint() {
+        String valueFromSystemProperty = System.getProperty(THINCLIENT_ENDPOINT);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return URI.create(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(THINCLIENT_ENDPOINT_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return URI.create(valueFromEnvVariable);
+        }
+
+        return URI.create(DEFAULT_THINCLIENT_ENDPOINT);
+    }
+
+    public static boolean isThinClientEnabled() {
+        String valueFromSystemProperty = System.getProperty(THINCLIENT_ENABLED);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Boolean.parseBoolean(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(THINCLIENT_ENABLED_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return Boolean.parseBoolean(valueFromEnvVariable);
+        }
+
+        return DEFAULT_THINCLIENT_ENABLED;
+    }
+
     public int getUnavailableLocationsExpirationTimeInSeconds() {
         return getJVMConfigAsInt(UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS, DEFAULT_UNAVAILABLE_LOCATIONS_EXPIRATION_TIME_IN_SECONDS);
     }
@@ -480,6 +539,51 @@ public class Configs {
         return DEFAULT_HTTP_DEFAULT_CONNECTION_POOL_SIZE;
     }
 
+    public static Integer getPendingAcquireMaxCount() {
+        String valueFromSystemProperty = System.getProperty(HTTP_PENDING_ACQUIRE_MAX_COUNT);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return Integer.parseInt(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(HTTP_PENDING_ACQUIRE_MAX_COUNT_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return Integer.parseInt(valueFromEnvVariable);
+        }
+
+        return null;
+    }
+
+    private static String validateSerializationInclusionMode(String serializationInclusionMode) {
+        if (!Strings.isNullOrEmpty(serializationInclusionMode)) {
+            if ("Always".equalsIgnoreCase(serializationInclusionMode)
+                || "NonNull".equalsIgnoreCase(serializationInclusionMode)
+                || "NonEmpty".equalsIgnoreCase(serializationInclusionMode)
+                || "NonDefault".equalsIgnoreCase(serializationInclusionMode)) {
+
+                return serializationInclusionMode;
+            }
+        }
+
+        throw new IllegalArgumentException(
+            "Invalid serialization inclusion mode '"
+                + serializationInclusionMode != null ? serializationInclusionMode : "null"
+                + "'.");
+    }
+
+    public static String getItemSerializationInclusionMode() {
+        String valueFromSystemProperty = System.getProperty(ITEM_SERIALIZATION_INCLUSION_MODE);
+        if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
+            return validateSerializationInclusionMode(valueFromSystemProperty);
+        }
+
+        String valueFromEnvVariable = System.getenv(ITEM_SERIALIZATION_INCLUSION_MODE_VARIABLE);
+        if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
+            return validateSerializationInclusionMode(valueFromEnvVariable);
+        }
+
+        return DEFAULT_ITEM_SERIALIZATION_INCLUSION_MODE;
+    }
+
     public static boolean isDefaultE2ETimeoutDisabledForNonPointOperations() {
         String valueFromSystemProperty = System.getProperty(DEFAULT_E2E_FOR_NON_POINT_DISABLED);
         if (valueFromSystemProperty != null && !valueFromSystemProperty.isEmpty()) {
@@ -502,7 +606,7 @@ public class Configs {
 
         String valueFromEnvVariable = System.getenv(PREVENT_INVALID_ID_CHARS_VARIABLE);
         if (valueFromEnvVariable != null && !valueFromEnvVariable.isEmpty()) {
-            return!Boolean.parseBoolean(valueFromEnvVariable);
+            return !Boolean.parseBoolean(valueFromEnvVariable);
         }
 
         return DEFAULT_PREVENT_INVALID_ID_CHARS;
@@ -808,6 +912,47 @@ public class Configs {
                     String.valueOf(DEFAULT_PARTITION_LEVEL_CIRCUIT_BREAKER_DEFAULT_CONFIG_OPT_IN)));
 
         return Boolean.parseBoolean(shouldOptInDefaultPartitionLevelCircuitBreakerConfig);
+    }
+
+    public static String isPerPartitionAutomaticFailoverEnabled() {
+        return System.getProperty(
+            IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED,
+            firstNonNull(
+                emptyToNull(System.getenv().get(IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED_VARIABLE)),
+                DEFAULT_IS_PER_PARTITION_AUTOMATIC_FAILOVER_ENABLED));
+    }
+
+    public static boolean isSessionTokenFalseProgressMergeEnabled() {
+        String isSessionTokenFalseProgressMergeDisabledAsString =
+            System.getProperty(
+                IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED,
+                firstNonNull(
+                    emptyToNull(System.getenv().get(IS_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED_VARIABLE)),
+                    String.valueOf(DEFAULT_SESSION_TOKEN_FALSE_PROGRESS_MERGE_ENABLED)));
+
+        return Boolean.parseBoolean(isSessionTokenFalseProgressMergeDisabledAsString);
+    }
+
+    public static int getAllowedE2ETimeoutHitCountForPPAF() {
+        String allowedE2ETimeoutHitCountForPPAF =
+            System.getProperty(
+                E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF,
+                firstNonNull(
+                    emptyToNull(System.getenv().get(E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF_VARIABLE)),
+                    String.valueOf(DEFAULT_E2E_TIMEOUT_ERROR_HIT_THRESHOLD_FOR_PPAF)));
+
+        return Integer.parseInt(allowedE2ETimeoutHitCountForPPAF);
+    }
+
+    public static int getAllowedTimeWindowForE2ETimeoutHitCountTrackingInSecsForPPAF() {
+        String timeWindowForE2ETimeoutHitCountTrackingInSecsForPPAF =
+            System.getProperty(
+                E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF,
+                firstNonNull(
+                    emptyToNull(System.getenv().get(E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF_VARIABLE)),
+                    String.valueOf(DEFAULT_E2E_TIMEOUT_ERROR_HIT_TIME_WINDOW_IN_SECONDS_FOR_PPAF)));
+
+        return Integer.parseInt(timeWindowForE2ETimeoutHitCountTrackingInSecsForPPAF);
     }
 
     public static CosmosMicrometerMetricsConfig getMetricsConfig() {

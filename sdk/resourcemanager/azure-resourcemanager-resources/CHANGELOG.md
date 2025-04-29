@@ -1,6 +1,6 @@
 # Release History
 
-## 2.47.0-beta.1 (Unreleased)
+## 2.51.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,40 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.50.0 (2025-04-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.49.0 (2025-03-28)
+
+### Breaking Changes
+
+- `managementGroupId` is moved to the 1st parameter in APIs in `PolicyDefinitionsClient`.
+
+### Other Changes
+
+- Updated `api-version` of policy to `2023-04-01`.
+
+## 2.48.0 (2025-02-28)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of resources to `2024-11-01`.
+
+## 2.47.0 (2025-01-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.46.0 (2024-12-23)
 

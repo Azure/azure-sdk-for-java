@@ -109,11 +109,11 @@ public interface NetAppAccount {
     String nfsV4IdDomain();
 
     /**
-     * Gets the isMultiAdEnabled property: This will have true value only if account is Multiple AD enabled.
+     * Gets the multiAdStatus property: MultiAD Status for the account.
      * 
-     * @return the isMultiAdEnabled value.
+     * @return the multiAdStatus value.
      */
-    Boolean isMultiAdEnabled();
+    MultiAdStatus multiAdStatus();
 
     /**
      * Gets the region of the resource.
@@ -458,8 +458,9 @@ public interface NetAppAccount {
      * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of getKeyVaultStatus with information about how volumes under NetApp account are encrypted.
      */
-    void getChangeKeyVaultInformation();
+    GetKeyVaultStatusResponse getChangeKeyVaultInformation();
 
     /**
      * Get information about how volumes under NetApp account are encrypted.
@@ -472,8 +473,9 @@ public interface NetAppAccount {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of getKeyVaultStatus with information about how volumes under NetApp account are encrypted.
      */
-    void getChangeKeyVaultInformation(Context context);
+    GetKeyVaultStatusResponse getChangeKeyVaultInformation(Context context);
 
     /**
      * Change Key Vault/Managed HSM that is used for encryption of volumes under NetApp account.

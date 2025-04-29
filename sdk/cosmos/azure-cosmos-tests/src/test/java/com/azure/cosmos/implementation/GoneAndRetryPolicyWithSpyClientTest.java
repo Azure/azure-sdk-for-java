@@ -3,7 +3,6 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
@@ -444,8 +443,8 @@ public class GoneAndRetryPolicyWithSpyClientTest extends TestSuiteBase {
     private Document getDocumentDefinition() {
         Document doc = new Document();
         doc.setId(UUID.randomUUID().toString());
-        doc.set(PARTITION_KEY_FIELD_NAME, UUID.randomUUID().toString(), CosmosItemSerializer.DEFAULT_SERIALIZER);
-        doc.set("name", "Hafez", CosmosItemSerializer.DEFAULT_SERIALIZER);
+        doc.set(PARTITION_KEY_FIELD_NAME, UUID.randomUUID().toString());
+        doc.set("name", "Hafez");
         return doc;
     }
 }

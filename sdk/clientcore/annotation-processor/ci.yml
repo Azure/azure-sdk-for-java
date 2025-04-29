@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/clientcore/annotation-processor/
+    exclude:
+      - sdk/clientcore/annotation-processor/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/clientcore/annotation-processor/
+    exclude:
+      - sdk/clientcore/annotation-processor/pom.xml
+
+parameters:
+- name: release_clientcoreannotationprocessor
+  displayName: 'annotation-processor'
+  type: boolean
+  default: true
+
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: clientcore/annotation-processor
+    Artifacts:
+      - name: annotation-processor
+        groupId: io.clientcore
+        safeName: annotationprocessor
+        skipPublishDocMs: true
+        releaseInBatch: ${{ parameters.release_clientcoreannotationprocessor }}
+    AdditionalModules:
+      - name: annotation-processor-test
+        groupId: io.clientcore

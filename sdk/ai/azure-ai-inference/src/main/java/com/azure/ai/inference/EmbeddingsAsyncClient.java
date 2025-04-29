@@ -83,6 +83,7 @@ public final class EmbeddingsAsyncClient {
      * <pre>
      * {@code
      * {
+     *     id: String (Required)
      *     data (Required): [
      *          (Required){
      *             embedding: BinaryData (Required)
@@ -98,7 +99,7 @@ public final class EmbeddingsAsyncClient {
      * }
      * </pre>
      *
-     * @param embedRequest The embedRequest parameter.
+     * @param body request options to pass to the endpoint using embeddings path.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -111,8 +112,8 @@ public final class EmbeddingsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BinaryData>> embedWithResponse(BinaryData embedRequest, RequestOptions requestOptions) {
-        return this.serviceClient.embedWithResponseAsync(embedRequest, requestOptions);
+    Mono<Response<BinaryData>> embedWithResponse(BinaryData body, RequestOptions requestOptions) {
+        return this.serviceClient.embedWithResponseAsync(body, requestOptions);
     }
 
     /**
@@ -124,7 +125,7 @@ public final class EmbeddingsAsyncClient {
      * {@code
      * {
      *     model_name: String (Required)
-     *     model_type: String(embeddings/image_generation/text_generation/image_embeddings/audio_generation/chat) (Required)
+     *     model_type: String(embeddings/image_generation/text_generation/image_embeddings/audio_generation/chat_completion) (Required)
      *     model_provider_name: String (Required)
      * }
      * }

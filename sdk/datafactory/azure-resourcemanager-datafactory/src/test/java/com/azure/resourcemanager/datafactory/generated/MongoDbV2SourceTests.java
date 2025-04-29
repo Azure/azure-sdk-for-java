@@ -14,25 +14,25 @@ public final class MongoDbV2SourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         MongoDbV2Source model = BinaryData.fromString(
-            "{\"type\":\"MongoDbV2Source\",\"filter\":\"datadexnicq\",\"cursorMethods\":{\"project\":\"dataqttfqgdoowgqooip\",\"sort\":\"datasvsnedhkj\",\"skip\":\"datafvetwfreqvfl\",\"limit\":\"datatjuuikqzdcwqal\",\"\":{\"olkw\":\"dataiytpjisci\",\"lnodrfc\":\"datapvlsljutawg\",\"yxduxhopy\":\"dataehlopipvpeaeyj\",\"embvfa\":\"datavcbm\"}},\"batchSize\":\"dataxjoa\",\"queryTimeout\":\"dataxmumfbkaxzrycvac\",\"additionalColumns\":\"datazjysyphxeoqm\",\"sourceRetryCount\":\"datahikcei\",\"sourceRetryWait\":\"datavosb\",\"maxConcurrentConnections\":\"datawrbqooxvprq\",\"disableMetricsCollection\":\"dataqh\",\"\":{\"kif\":\"datapqrtnkngjnhxufoc\",\"tped\":\"dataj\",\"qqoz\":\"datahfpfsesiywcrejtp\",\"mfjktd\":\"dataesbpqw\"}}")
+            "{\"type\":\"MongoDbV2Source\",\"filter\":\"datasnmxvsrvkzvxlez\",\"cursorMethods\":{\"project\":\"dataybxehjkqog\",\"sort\":\"datafl\",\"skip\":\"dataspghfv\",\"limit\":\"dataijmyqosrsfaoc\",\"\":{\"dpyohnmru\":\"datarr\",\"eywbhxhawkwcf\":\"datavlwhtfscoups\"}},\"batchSize\":\"dataqexd\",\"queryTimeout\":\"datacvkwwjjotfun\",\"additionalColumns\":\"datauejxvrwalekqedof\",\"sourceRetryCount\":\"databxmlai\",\"sourceRetryWait\":\"datavhlpfjibblm\",\"maxConcurrentConnections\":\"datavzdaycmene\",\"disableMetricsCollection\":\"datayzlslvgqle\",\"\":{\"t\":\"datawbbellcjd\",\"dpmy\":\"datacvddfmflwfxdkp\"}}")
             .toObject(MongoDbV2Source.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MongoDbV2Source model = new MongoDbV2Source().withSourceRetryCount("datahikcei")
-            .withSourceRetryWait("datavosb")
-            .withMaxConcurrentConnections("datawrbqooxvprq")
-            .withDisableMetricsCollection("dataqh")
-            .withFilter("datadexnicq")
-            .withCursorMethods(new MongoDbCursorMethodsProperties().withProject("dataqttfqgdoowgqooip")
-                .withSort("datasvsnedhkj")
-                .withSkip("datafvetwfreqvfl")
-                .withLimit("datatjuuikqzdcwqal")
+        MongoDbV2Source model = new MongoDbV2Source().withSourceRetryCount("databxmlai")
+            .withSourceRetryWait("datavhlpfjibblm")
+            .withMaxConcurrentConnections("datavzdaycmene")
+            .withDisableMetricsCollection("datayzlslvgqle")
+            .withFilter("datasnmxvsrvkzvxlez")
+            .withCursorMethods(new MongoDbCursorMethodsProperties().withProject("dataybxehjkqog")
+                .withSort("datafl")
+                .withSkip("dataspghfv")
+                .withLimit("dataijmyqosrsfaoc")
                 .withAdditionalProperties(mapOf()))
-            .withBatchSize("dataxjoa")
-            .withQueryTimeout("dataxmumfbkaxzrycvac")
-            .withAdditionalColumns("datazjysyphxeoqm");
+            .withBatchSize("dataqexd")
+            .withQueryTimeout("datacvkwwjjotfun")
+            .withAdditionalColumns("datauejxvrwalekqedof");
         model = BinaryData.fromObject(model).toObject(MongoDbV2Source.class);
     }
 

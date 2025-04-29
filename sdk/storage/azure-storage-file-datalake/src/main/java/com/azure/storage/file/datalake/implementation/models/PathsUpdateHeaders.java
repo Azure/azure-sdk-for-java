@@ -36,6 +36,11 @@ public final class PathsUpdateHeaders {
     private String xMsProperties;
 
     /*
+     * The x-ms-structured-body property.
+     */
+    private String xMsStructuredBody;
+
+    /*
      * The x-ms-continuation property.
      */
     private String xMsContinuation;
@@ -99,6 +104,8 @@ public final class PathsUpdateHeaders {
 
     private static final HttpHeaderName X_MS_PROPERTIES = HttpHeaderName.fromString("x-ms-properties");
 
+    private static final HttpHeaderName X_MS_STRUCTURED_BODY = HttpHeaderName.fromString("x-ms-structured-body");
+
     private static final HttpHeaderName X_MS_CONTINUATION = HttpHeaderName.fromString("x-ms-continuation");
 
     // HttpHeaders containing the raw property values.
@@ -115,6 +122,7 @@ public final class PathsUpdateHeaders {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
         this.xMsProperties = rawHeaders.getValue(X_MS_PROPERTIES);
+        this.xMsStructuredBody = rawHeaders.getValue(X_MS_STRUCTURED_BODY);
         this.xMsContinuation = rawHeaders.getValue(X_MS_CONTINUATION);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {
@@ -219,6 +227,26 @@ public final class PathsUpdateHeaders {
      */
     public PathsUpdateHeaders setXMsProperties(String xMsProperties) {
         this.xMsProperties = xMsProperties;
+        return this;
+    }
+
+    /**
+     * Get the xMsStructuredBody property: The x-ms-structured-body property.
+     * 
+     * @return the xMsStructuredBody value.
+     */
+    public String getXMsStructuredBody() {
+        return this.xMsStructuredBody;
+    }
+
+    /**
+     * Set the xMsStructuredBody property: The x-ms-structured-body property.
+     * 
+     * @param xMsStructuredBody the xMsStructuredBody value to set.
+     * @return the PathsUpdateHeaders object itself.
+     */
+    public PathsUpdateHeaders setXMsStructuredBody(String xMsStructuredBody) {
+        this.xMsStructuredBody = xMsStructuredBody;
         return this;
     }
 

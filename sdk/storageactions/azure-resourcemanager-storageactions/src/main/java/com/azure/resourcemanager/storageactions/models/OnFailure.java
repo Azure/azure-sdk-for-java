@@ -4,48 +4,43 @@
 
 package com.azure.resourcemanager.storageactions.models;
 
+import com.azure.core.util.ExpandableStringEnum;
+import java.util.Collection;
+
 /**
  * Action to be taken when the operation fails for a object.
  */
-public enum OnFailure {
+public final class OnFailure extends ExpandableStringEnum<OnFailure> {
     /**
-     * Enum value break.
+     * Static value break for OnFailure.
      */
-    BREAK("break");
+    public static final OnFailure BREAK = fromString("break");
 
     /**
-     * The actual serialized value for a OnFailure instance.
-     */
-    private final String value;
-
-    OnFailure(String value) {
-        this.value = value;
-    }
-
-    /**
-     * Parses a serialized value to a OnFailure instance.
+     * Creates a new instance of OnFailure value.
      * 
-     * @param value the serialized value to parse.
-     * @return the parsed OnFailure object, or null if unable to parse.
+     * @deprecated Use the {@link #fromString(String)} factory method.
      */
-    public static OnFailure fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        OnFailure[] items = OnFailure.values();
-        for (OnFailure item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    @Deprecated
+    public OnFailure() {
     }
 
     /**
-     * {@inheritDoc}
+     * Creates or finds a OnFailure from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding OnFailure.
      */
-    @Override
-    public String toString() {
-        return this.value;
+    public static OnFailure fromString(String name) {
+        return fromString(name, OnFailure.class);
+    }
+
+    /**
+     * Gets known OnFailure values.
+     * 
+     * @return known OnFailure values.
+     */
+    public static Collection<OnFailure> values() {
+        return values(OnFailure.class);
     }
 }

@@ -51,7 +51,7 @@ public final class MagentoObjectDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private GenericDatasetTypeProperties innerTypeProperties() {
+    GenericDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

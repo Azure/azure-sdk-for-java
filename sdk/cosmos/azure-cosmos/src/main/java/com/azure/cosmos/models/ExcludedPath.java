@@ -3,7 +3,6 @@
 
 package com.azure.cosmos.models;
 
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -53,8 +52,8 @@ public final class ExcludedPath {
     public ExcludedPath setPath(String path) {
         this.jsonSerializable.set(
             Constants.Properties.PATH,
-            path,
-            CosmosItemSerializer.DEFAULT_SERIALIZER);
+            path
+        );
         return this;
     }
 

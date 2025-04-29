@@ -112,6 +112,46 @@ public final class InMageRcmEnableProtectionInput extends EnableProtectionProvid
      */
     private String multiVmGroupName;
 
+    /*
+     * The SQL Server license type.
+     */
+    private SqlServerLicenseType sqlServerLicenseType;
+
+    /*
+     * The license type for Linux VM's.
+     */
+    private LinuxLicenseType linuxLicenseType;
+
+    /*
+     * The target VM tags.
+     */
+    private List<UserCreatedResourceTag> targetVmTags;
+
+    /*
+     * The tags for the seed managed disks.
+     */
+    private List<UserCreatedResourceTag> seedManagedDiskTags;
+
+    /*
+     * The tags for the target managed disks.
+     */
+    private List<UserCreatedResourceTag> targetManagedDiskTags;
+
+    /*
+     * The tags for the target NICs.
+     */
+    private List<UserCreatedResourceTag> targetNicTags;
+
+    /*
+     * The OS name selected by user.
+     */
+    private String userSelectedOSName;
+
+    /*
+     * The target VM security profile.
+     */
+    private SecurityProfileProperties targetVmSecurityProfile;
+
     /**
      * Creates an instance of InMageRcmEnableProtectionInput class.
      */
@@ -490,6 +530,168 @@ public final class InMageRcmEnableProtectionInput extends EnableProtectionProvid
     }
 
     /**
+     * Get the sqlServerLicenseType property: The SQL Server license type.
+     * 
+     * @return the sqlServerLicenseType value.
+     */
+    public SqlServerLicenseType sqlServerLicenseType() {
+        return this.sqlServerLicenseType;
+    }
+
+    /**
+     * Set the sqlServerLicenseType property: The SQL Server license type.
+     * 
+     * @param sqlServerLicenseType the sqlServerLicenseType value to set.
+     * @return the InMageRcmEnableProtectionInput object itself.
+     */
+    public InMageRcmEnableProtectionInput withSqlServerLicenseType(SqlServerLicenseType sqlServerLicenseType) {
+        this.sqlServerLicenseType = sqlServerLicenseType;
+        return this;
+    }
+
+    /**
+     * Get the linuxLicenseType property: The license type for Linux VM's.
+     * 
+     * @return the linuxLicenseType value.
+     */
+    public LinuxLicenseType linuxLicenseType() {
+        return this.linuxLicenseType;
+    }
+
+    /**
+     * Set the linuxLicenseType property: The license type for Linux VM's.
+     * 
+     * @param linuxLicenseType the linuxLicenseType value to set.
+     * @return the InMageRcmEnableProtectionInput object itself.
+     */
+    public InMageRcmEnableProtectionInput withLinuxLicenseType(LinuxLicenseType linuxLicenseType) {
+        this.linuxLicenseType = linuxLicenseType;
+        return this;
+    }
+
+    /**
+     * Get the targetVmTags property: The target VM tags.
+     * 
+     * @return the targetVmTags value.
+     */
+    public List<UserCreatedResourceTag> targetVmTags() {
+        return this.targetVmTags;
+    }
+
+    /**
+     * Set the targetVmTags property: The target VM tags.
+     * 
+     * @param targetVmTags the targetVmTags value to set.
+     * @return the InMageRcmEnableProtectionInput object itself.
+     */
+    public InMageRcmEnableProtectionInput withTargetVmTags(List<UserCreatedResourceTag> targetVmTags) {
+        this.targetVmTags = targetVmTags;
+        return this;
+    }
+
+    /**
+     * Get the seedManagedDiskTags property: The tags for the seed managed disks.
+     * 
+     * @return the seedManagedDiskTags value.
+     */
+    public List<UserCreatedResourceTag> seedManagedDiskTags() {
+        return this.seedManagedDiskTags;
+    }
+
+    /**
+     * Set the seedManagedDiskTags property: The tags for the seed managed disks.
+     * 
+     * @param seedManagedDiskTags the seedManagedDiskTags value to set.
+     * @return the InMageRcmEnableProtectionInput object itself.
+     */
+    public InMageRcmEnableProtectionInput withSeedManagedDiskTags(List<UserCreatedResourceTag> seedManagedDiskTags) {
+        this.seedManagedDiskTags = seedManagedDiskTags;
+        return this;
+    }
+
+    /**
+     * Get the targetManagedDiskTags property: The tags for the target managed disks.
+     * 
+     * @return the targetManagedDiskTags value.
+     */
+    public List<UserCreatedResourceTag> targetManagedDiskTags() {
+        return this.targetManagedDiskTags;
+    }
+
+    /**
+     * Set the targetManagedDiskTags property: The tags for the target managed disks.
+     * 
+     * @param targetManagedDiskTags the targetManagedDiskTags value to set.
+     * @return the InMageRcmEnableProtectionInput object itself.
+     */
+    public InMageRcmEnableProtectionInput
+        withTargetManagedDiskTags(List<UserCreatedResourceTag> targetManagedDiskTags) {
+        this.targetManagedDiskTags = targetManagedDiskTags;
+        return this;
+    }
+
+    /**
+     * Get the targetNicTags property: The tags for the target NICs.
+     * 
+     * @return the targetNicTags value.
+     */
+    public List<UserCreatedResourceTag> targetNicTags() {
+        return this.targetNicTags;
+    }
+
+    /**
+     * Set the targetNicTags property: The tags for the target NICs.
+     * 
+     * @param targetNicTags the targetNicTags value to set.
+     * @return the InMageRcmEnableProtectionInput object itself.
+     */
+    public InMageRcmEnableProtectionInput withTargetNicTags(List<UserCreatedResourceTag> targetNicTags) {
+        this.targetNicTags = targetNicTags;
+        return this;
+    }
+
+    /**
+     * Get the userSelectedOSName property: The OS name selected by user.
+     * 
+     * @return the userSelectedOSName value.
+     */
+    public String userSelectedOSName() {
+        return this.userSelectedOSName;
+    }
+
+    /**
+     * Set the userSelectedOSName property: The OS name selected by user.
+     * 
+     * @param userSelectedOSName the userSelectedOSName value to set.
+     * @return the InMageRcmEnableProtectionInput object itself.
+     */
+    public InMageRcmEnableProtectionInput withUserSelectedOSName(String userSelectedOSName) {
+        this.userSelectedOSName = userSelectedOSName;
+        return this;
+    }
+
+    /**
+     * Get the targetVmSecurityProfile property: The target VM security profile.
+     * 
+     * @return the targetVmSecurityProfile value.
+     */
+    public SecurityProfileProperties targetVmSecurityProfile() {
+        return this.targetVmSecurityProfile;
+    }
+
+    /**
+     * Set the targetVmSecurityProfile property: The target VM security profile.
+     * 
+     * @param targetVmSecurityProfile the targetVmSecurityProfile value to set.
+     * @return the InMageRcmEnableProtectionInput object itself.
+     */
+    public InMageRcmEnableProtectionInput
+        withTargetVmSecurityProfile(SecurityProfileProperties targetVmSecurityProfile) {
+        this.targetVmSecurityProfile = targetVmSecurityProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -516,6 +718,21 @@ public final class InMageRcmEnableProtectionInput extends EnableProtectionProvid
             throw LOGGER.atError()
                 .log(new IllegalArgumentException(
                     "Missing required property processServerId in model InMageRcmEnableProtectionInput"));
+        }
+        if (targetVmTags() != null) {
+            targetVmTags().forEach(e -> e.validate());
+        }
+        if (seedManagedDiskTags() != null) {
+            seedManagedDiskTags().forEach(e -> e.validate());
+        }
+        if (targetManagedDiskTags() != null) {
+            targetManagedDiskTags().forEach(e -> e.validate());
+        }
+        if (targetNicTags() != null) {
+            targetNicTags().forEach(e -> e.validate());
+        }
+        if (targetVmSecurityProfile() != null) {
+            targetVmSecurityProfile().validate();
         }
     }
 
@@ -548,6 +765,18 @@ public final class InMageRcmEnableProtectionInput extends EnableProtectionProvid
             this.targetBootDiagnosticsStorageAccountId);
         jsonWriter.writeStringField("runAsAccountId", this.runAsAccountId);
         jsonWriter.writeStringField("multiVmGroupName", this.multiVmGroupName);
+        jsonWriter.writeStringField("sqlServerLicenseType",
+            this.sqlServerLicenseType == null ? null : this.sqlServerLicenseType.toString());
+        jsonWriter.writeStringField("linuxLicenseType",
+            this.linuxLicenseType == null ? null : this.linuxLicenseType.toString());
+        jsonWriter.writeArrayField("targetVmTags", this.targetVmTags, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("seedManagedDiskTags", this.seedManagedDiskTags,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("targetManagedDiskTags", this.targetManagedDiskTags,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("targetNicTags", this.targetNicTags, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("userSelectedOSName", this.userSelectedOSName);
+        jsonWriter.writeJsonField("targetVmSecurityProfile", this.targetVmSecurityProfile);
         return jsonWriter.writeEndObject();
     }
 
@@ -610,6 +839,33 @@ public final class InMageRcmEnableProtectionInput extends EnableProtectionProvid
                     deserializedInMageRcmEnableProtectionInput.runAsAccountId = reader.getString();
                 } else if ("multiVmGroupName".equals(fieldName)) {
                     deserializedInMageRcmEnableProtectionInput.multiVmGroupName = reader.getString();
+                } else if ("sqlServerLicenseType".equals(fieldName)) {
+                    deserializedInMageRcmEnableProtectionInput.sqlServerLicenseType
+                        = SqlServerLicenseType.fromString(reader.getString());
+                } else if ("linuxLicenseType".equals(fieldName)) {
+                    deserializedInMageRcmEnableProtectionInput.linuxLicenseType
+                        = LinuxLicenseType.fromString(reader.getString());
+                } else if ("targetVmTags".equals(fieldName)) {
+                    List<UserCreatedResourceTag> targetVmTags
+                        = reader.readArray(reader1 -> UserCreatedResourceTag.fromJson(reader1));
+                    deserializedInMageRcmEnableProtectionInput.targetVmTags = targetVmTags;
+                } else if ("seedManagedDiskTags".equals(fieldName)) {
+                    List<UserCreatedResourceTag> seedManagedDiskTags
+                        = reader.readArray(reader1 -> UserCreatedResourceTag.fromJson(reader1));
+                    deserializedInMageRcmEnableProtectionInput.seedManagedDiskTags = seedManagedDiskTags;
+                } else if ("targetManagedDiskTags".equals(fieldName)) {
+                    List<UserCreatedResourceTag> targetManagedDiskTags
+                        = reader.readArray(reader1 -> UserCreatedResourceTag.fromJson(reader1));
+                    deserializedInMageRcmEnableProtectionInput.targetManagedDiskTags = targetManagedDiskTags;
+                } else if ("targetNicTags".equals(fieldName)) {
+                    List<UserCreatedResourceTag> targetNicTags
+                        = reader.readArray(reader1 -> UserCreatedResourceTag.fromJson(reader1));
+                    deserializedInMageRcmEnableProtectionInput.targetNicTags = targetNicTags;
+                } else if ("userSelectedOSName".equals(fieldName)) {
+                    deserializedInMageRcmEnableProtectionInput.userSelectedOSName = reader.getString();
+                } else if ("targetVmSecurityProfile".equals(fieldName)) {
+                    deserializedInMageRcmEnableProtectionInput.targetVmSecurityProfile
+                        = SecurityProfileProperties.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

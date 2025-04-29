@@ -24,7 +24,7 @@ public final class ClustersListLanguageExtensionsMockTests {
     @Test
     public void testListLanguageExtensions() throws Exception {
         String responseStr
-            = "{\"value\":[{\"languageExtensionName\":\"R\",\"languageExtensionImageName\":\"Python3_6_5\",\"languageExtensionCustomImageName\":\"iojlvfhrb\"}]}";
+            = "{\"value\":[{\"languageExtensionName\":\"PYTHON\",\"languageExtensionImageName\":\"Python3_10_8_DL\",\"languageExtensionCustomImageName\":\"wdofdbxiqx\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,11 +34,11 @@ public final class ClustersListLanguageExtensionsMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<LanguageExtension> response
-            = manager.clusters().listLanguageExtensions("sbostzel", "dlat", com.azure.core.util.Context.NONE);
+            = manager.clusters().listLanguageExtensions("nzoibgsxgnx", "yqo", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals(LanguageExtensionName.R, response.iterator().next().languageExtensionName());
-        Assertions.assertEquals(LanguageExtensionImageName.PYTHON3_6_5,
+        Assertions.assertEquals(LanguageExtensionName.PYTHON, response.iterator().next().languageExtensionName());
+        Assertions.assertEquals(LanguageExtensionImageName.PYTHON3_10_8_DL,
             response.iterator().next().languageExtensionImageName());
-        Assertions.assertEquals("iojlvfhrb", response.iterator().next().languageExtensionCustomImageName());
+        Assertions.assertEquals("wdofdbxiqx", response.iterator().next().languageExtensionCustomImageName());
     }
 }

@@ -10,7 +10,7 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 public final class ReplicationProtectionIntentsListSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationProtectionIntents_List.json
      */
     /**
@@ -21,6 +21,6 @@ public final class ReplicationProtectionIntentsListSamples {
     public static void getsTheListOfReplicationProtectionIntentObjects(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager.replicationProtectionIntents()
-            .list("2007vttp", "resourceGroupPS1", null, null, com.azure.core.util.Context.NONE);
+            .list("resourceGroupPS1", "2007vttp", null, null, com.azure.core.util.Context.NONE);
     }
 }

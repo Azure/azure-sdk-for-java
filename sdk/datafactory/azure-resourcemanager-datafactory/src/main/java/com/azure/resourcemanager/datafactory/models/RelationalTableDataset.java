@@ -51,7 +51,7 @@ public final class RelationalTableDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private RelationalTableDatasetTypeProperties innerTypeProperties() {
+    RelationalTableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

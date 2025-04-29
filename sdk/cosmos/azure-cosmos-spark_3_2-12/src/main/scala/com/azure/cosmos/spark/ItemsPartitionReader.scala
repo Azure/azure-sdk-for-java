@@ -239,6 +239,11 @@ private case class ItemsPartitionReader
       queryOptions.setDedicatedGatewayRequestOptions(readConfig.dedicatedGatewayRequestOptions)
       queryOptions.setCosmosEndToEndOperationLatencyPolicyConfig(endToEndTimeoutPolicy)
 
+      if (readConfig.responseContinuationTokenLimitInKb.isDefined) {
+        queryOptions.setResponseContinuationTokenLimitInKb(
+          readConfig.responseContinuationTokenLimitInKb.get)
+      }
+
       ImplementationBridgeHelpers
         .CosmosQueryRequestOptionsHelper
         .getCosmosQueryRequestOptionsAccessor

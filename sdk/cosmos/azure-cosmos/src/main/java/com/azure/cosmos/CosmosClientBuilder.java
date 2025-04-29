@@ -13,14 +13,13 @@ import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.ConnectionPolicy;
 import com.azure.cosmos.implementation.CosmosClientMetadataCachesSnapshot;
 import com.azure.cosmos.implementation.DiagnosticsProvider;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.WriteRetryPolicy;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.apachecommons.lang.time.StopWatch;
-import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.implementation.guava25.base.Preconditions;
+import com.azure.cosmos.implementation.perPartitionCircuitBreaker.PartitionLevelCircuitBreakerConfig;
 import com.azure.cosmos.implementation.routing.LocationHelper;
 import com.azure.cosmos.models.CosmosAuthorizationTokenResolver;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
@@ -39,6 +38,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 import static com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientBuilderHelper;
@@ -142,7 +142,6 @@ public class CosmosClientBuilder implements
     private WriteRetryPolicy writeRetryPolicy = WriteRetryPolicy.DISABLED;
     private CosmosClientTelemetryConfig clientTelemetryConfig;
     private ApiType apiType = null;
-    private Boolean clientTelemetryEnabledOverride = null;
     private CosmosContainerProactiveInitConfig proactiveContainerInitConfig;
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
     private SessionRetryOptions sessionRetryOptions;
@@ -150,7 +149,10 @@ public class CosmosClientBuilder implements
     private final List<CosmosOperationPolicy> requestPolicies;
     private CosmosItemSerializer defaultCustomSerializer;
     private boolean isRegionScopedSessionCapturingEnabled = false;
+    private boolean isPerPartitionAutomaticFailoverEnabled = false;
     private boolean serverCertValidationDisabled = false;
+
+    private Function<CosmosAsyncContainer, CosmosAsyncContainer> containerFactory = null;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -173,6 +175,28 @@ public class CosmosClientBuilder implements
 
     CosmosClientMetadataCachesSnapshot metadataCaches() {
         return this.state;
+    }
+
+    /**
+     * Gets the container creation interceptor.
+     * @return the function that should be invoked to allow wrapping containers - or null if no interceptor is defined.
+     */
+    Function<CosmosAsyncContainer, CosmosAsyncContainer> containerCreationInterceptor() {
+        return this.containerFactory;
+    }
+
+    /**
+     * Sets a function that allows intercepting container creation - for example to wrap the original
+     * CosmosAsyncContainer in an extended custom class to add diagnostics, custom validations or behavior.
+     * @param factory - the factory method allowing to wrap the original container in a custom class.
+     * @return current {@link CosmosClientBuilder}
+     */
+    public CosmosClientBuilder containerCreationInterceptor(
+        Function<CosmosAsyncContainer, CosmosAsyncContainer> factory) {
+
+        this.containerFactory = factory;
+
+        return this;
     }
 
     /**
@@ -225,6 +249,29 @@ public class CosmosClientBuilder implements
      * */
     boolean isRegionScopedSessionCapturingEnabled() {
         return this.isRegionScopedSessionCapturingEnabled;
+    }
+
+    /**
+     * The {@code perPartitionAutomaticFailoverEnabled} flag is a way for the {@link CosmosClient} or {@link CosmosAsyncClient}
+     * instance to opt in into failing over a specific physical partition(s) in the write region for single-write accounts as
+     * opposed to the write region as a whole.
+     * <p>
+     * IMPORTANT: {@link perPartitionAutomaticFailoverEnabled()} is a package-private method used in tests and benchmarking scenarios.
+     *
+     * @param isPerPartitionAutomaticFailoverEnabled A boolean flag to indicate whether PPAF is enabled.
+     * */
+    CosmosClientBuilder perPartitionAutomaticFailoverEnabled(boolean isPerPartitionAutomaticFailoverEnabled) {
+        this.isPerPartitionAutomaticFailoverEnabled = isPerPartitionAutomaticFailoverEnabled;
+        return this;
+    }
+
+    /**
+     * Gets whether PPAF is enabled.
+     *
+     * @return isPerPartitionAutomaticFailoverEnabled
+     * */
+    boolean isPerPartitionAutomaticFailoverEnabled() {
+        return this.isPerPartitionAutomaticFailoverEnabled;
     }
 
     /**
@@ -747,13 +794,16 @@ public class CosmosClientBuilder implements
      * database operations aggregation statistics, system information like cpu/memory
      * and send it to cosmos monitoring service, which will be helpful during debugging.
      *<p>
-     * DEFAULT value is false indicating this is opt in feature, by default no telemetry collection.
+     * DEFAULT value is false indicating this is opt-in feature, by default no telemetry collection.
+     *
+     * @deprecated is is not possible to send the telemetry to the service. But client-side telemetry can be
+     * enabled via {@link CosmosClientBuilder#clientTelemetryConfig}.
      *
      * @param clientTelemetryEnabled flag to enable client telemetry.
      * @return current CosmosClientBuilder
      */
+    @Deprecated()
     public CosmosClientBuilder clientTelemetryEnabled(boolean clientTelemetryEnabled) {
-        this.clientTelemetryEnabledOverride = clientTelemetryEnabled;
         return this;
     }
 
@@ -861,6 +911,25 @@ public class CosmosClientBuilder implements
             } else {
                 logger.info("Session capturing type is set to {} which is not a known session capturing type.", sessionCapturingType);
                 this.isRegionScopedSessionCapturingEnabled = false;
+            }
+        }
+    }
+
+    void resetIsPerPartitionAutomaticFailoverEnabledAndEnforcePerPartitionCircuitBreakerIfNeeded() {
+        String isPerPartitionAutomaticFailoverEnabledAsStr
+            = Configs.isPerPartitionAutomaticFailoverEnabled();
+
+        if (!StringUtils.isEmpty(isPerPartitionAutomaticFailoverEnabledAsStr)) {
+            this.isPerPartitionAutomaticFailoverEnabled = Boolean.parseBoolean(isPerPartitionAutomaticFailoverEnabledAsStr);
+        }
+
+        if (this.isPerPartitionAutomaticFailoverEnabled) {
+
+            PartitionLevelCircuitBreakerConfig partitionLevelCircuitBreakerConfig = Configs.getPartitionLevelCircuitBreakerConfig();
+
+            if (partitionLevelCircuitBreakerConfig != null && !partitionLevelCircuitBreakerConfig.isPartitionLevelCircuitBreakerEnabled()) {
+                logger.info("As Per-Partition Automatic Failover is enabled, Per-Partition Circuit Breaker is enabled too by default!");
+                System.setProperty("COSMOS.PARTITION_LEVEL_CIRCUIT_BREAKER_CONFIG", "{\"isPartitionLevelCircuitBreakerEnabled\": true}");
             }
         }
     }
@@ -1078,28 +1147,6 @@ public class CosmosClientBuilder implements
     }
 
     /**
-     * Gets the flag to enabled client telemetry.
-     *
-     * @return flag to enable client telemetry.
-     */
-    boolean isClientTelemetryEnabled() {
-        Boolean explicitlySetInConfig = ImplementationBridgeHelpers
-            .CosmosClientTelemetryConfigHelper
-            .getCosmosClientTelemetryConfigAccessor()
-            .isSendClientTelemetryToServiceEnabled(this.clientTelemetryConfig);
-
-        if (this.clientTelemetryEnabledOverride != null) {
-            return this.clientTelemetryEnabledOverride;
-        }
-
-        if (explicitlySetInConfig != null) {
-            return explicitlySetInConfig;
-        }
-
-        return ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED;
-    }
-
-    /**
      * Gets whether to allow for reads to go to multiple regions configured on an account of Azure Cosmos DB service.
      * <p>
      * DEFAULT value is true.
@@ -1131,14 +1178,6 @@ public class CosmosClientBuilder implements
     public CosmosClientBuilder clientTelemetryConfig(CosmosClientTelemetryConfig telemetryConfig) {
         ifThrowIllegalArgException(telemetryConfig == null,
             "Parameter 'telemetryConfig' must not be null.");
-
-        Boolean explicitValueFromConfig = ImplementationBridgeHelpers
-            .CosmosClientTelemetryConfigHelper
-            .getCosmosClientTelemetryConfigAccessor()
-            .isSendClientTelemetryToServiceEnabled(telemetryConfig);
-        if (explicitValueFromConfig != null) {
-            this.clientTelemetryEnabledOverride = null;
-        }
 
         this.clientTelemetryConfig = telemetryConfig;
 
@@ -1185,6 +1224,8 @@ public class CosmosClientBuilder implements
         }
 
         this.resetSessionCapturingType();
+        this.resetIsPerPartitionAutomaticFailoverEnabledAndEnforcePerPartitionCircuitBreakerIfNeeded();
+
         validateConfig();
         buildConnectionPolicy();
         CosmosAsyncClient cosmosAsyncClient = new CosmosAsyncClient(this);
@@ -1225,6 +1266,8 @@ public class CosmosClientBuilder implements
         }
 
         this.resetSessionCapturingType();
+        this.resetIsPerPartitionAutomaticFailoverEnabledAndEnforcePerPartitionCircuitBreakerIfNeeded();
+
         validateConfig();
         buildConnectionPolicy();
         CosmosClient cosmosClient = new CosmosClient(this);
@@ -1370,12 +1413,12 @@ public class CosmosClientBuilder implements
             logger.warn("Cosmos Client with (Correlation) ID [{}] started up in [{}] ms with the following " +
                     "configuration: serviceEndpoint [{}], preferredRegions [{}], excludedRegions [{}], connectionPolicy [{}], " +
                     "consistencyLevel [{}], contentResponseOnWriteEnabled [{}], sessionCapturingOverride [{}], " +
-                    "connectionSharingAcrossClients [{}], clientTelemetryEnabled [{}], proactiveContainerInit [{}], " +
+                    "connectionSharingAcrossClients [{}], proactiveContainerInit [{}], " +
                     "diagnostics [{}], tracing [{}], nativeTransport [{}] fastClientOpen [{}] isRegionScopedSessionCapturingEnabled [{}]",
                 client.getContextClient().getClientCorrelationId(), time, getEndpoint(), getPreferredRegions(), getExcludedRegions(),
                 getConnectionPolicy(), getConsistencyLevel(), isContentResponseOnWriteEnabled(),
                 isSessionCapturingOverrideEnabled(), isConnectionSharingAcrossClientsEnabled(),
-                isClientTelemetryEnabled(), getProactiveContainerInitConfig(), diagnosticsCfg,
+                getProactiveContainerInitConfig(), diagnosticsCfg,
                 tracingCfg, io.netty.channel.epoll.Epoll.isAvailable(),
                 io.netty.channel.epoll.Epoll.isTcpFastOpenClientSideAvailable(), isRegionScopedSessionCapturingEnabled());
         }
@@ -1447,6 +1490,16 @@ public class CosmosClientBuilder implements
                 @Override
                 public boolean getRegionScopedSessionCapturingEnabled(CosmosClientBuilder builder) {
                     return builder.isRegionScopedSessionCapturingEnabled();
+                }
+
+                @Override
+                public void setPerPartitionAutomaticFailoverEnabled(CosmosClientBuilder builder, boolean isPerPartitionAutomaticFailoverEnabled) {
+                    builder.perPartitionAutomaticFailoverEnabled(isPerPartitionAutomaticFailoverEnabled);
+                }
+
+                @Override
+                public boolean getPerPartitionAutomaticFailoverEnabled(CosmosClientBuilder builder) {
+                    return builder.isPerPartitionAutomaticFailoverEnabled();
                 }
             });
     }

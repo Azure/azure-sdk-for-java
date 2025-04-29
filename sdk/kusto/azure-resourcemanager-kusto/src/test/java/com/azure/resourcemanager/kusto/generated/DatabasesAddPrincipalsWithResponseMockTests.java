@@ -26,7 +26,7 @@ public final class DatabasesAddPrincipalsWithResponseMockTests {
     @Test
     public void testAddPrincipalsWithResponse() throws Exception {
         String responseStr
-            = "{\"value\":[{\"role\":\"User\",\"name\":\"iibakcl\",\"type\":\"User\",\"fqn\":\"fr\",\"email\":\"ousxauzlwvsgmw\",\"appId\":\"qf\",\"tenantName\":\"zvuxm\"},{\"role\":\"Admin\",\"name\":\"jsvthnwpzteko\",\"type\":\"User\",\"fqn\":\"ibiattg\",\"email\":\"ucfotangcf\",\"appId\":\"ykzcugswvxwl\",\"tenantName\":\"qwm\"},{\"role\":\"User\",\"name\":\"xnjmxm\",\"type\":\"App\",\"fqn\":\"udtc\",\"email\":\"lxynpdkvgf\",\"appId\":\"uiyjib\",\"tenantName\":\"phdu\"},{\"role\":\"Admin\",\"name\":\"eiknpgo\",\"type\":\"User\",\"fqn\":\"iuqhibtozipqwj\",\"email\":\"mur\",\"appId\":\"x\",\"tenantName\":\"wpktvqylkmqpzoyh\"}]}";
+            = "{\"value\":[{\"role\":\"Ingestor\",\"name\":\"tjxtxr\",\"type\":\"Group\",\"fqn\":\"tjvidt\",\"email\":\"epu\",\"appId\":\"vyjtcvu\",\"tenantName\":\"asiz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -36,22 +36,22 @@ public final class DatabasesAddPrincipalsWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DatabasePrincipalListResult response = manager.databases()
-            .addPrincipalsWithResponse("ao", "jrmzvupor", "zdfuydzvkfvxcnqm",
+            .addPrincipalsWithResponse("fypococtfjgti", "rjvzuyt", "rmlmuowo",
                 new DatabasePrincipalListRequest()
-                    .withValue(Arrays.asList(new DatabasePrincipalInner().withRole(DatabasePrincipalRole.INGESTOR)
-                        .withName("wokmvkhlggd")
+                    .withValue(Arrays.asList(new DatabasePrincipalInner().withRole(DatabasePrincipalRole.ADMIN)
+                        .withName("iropionszon")
                         .withType(DatabasePrincipalType.APP)
-                        .withFqn("mzqkz")
-                        .withEmail("uwiwtglxxhljfpg")
-                        .withAppId("crmnzhrgmqgjs"))),
+                        .withFqn("gajinnixjawrtmj")
+                        .withEmail("myccx")
+                        .withAppId("hcoxov"))),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(DatabasePrincipalRole.USER, response.value().get(0).role());
-        Assertions.assertEquals("iibakcl", response.value().get(0).name());
-        Assertions.assertEquals(DatabasePrincipalType.USER, response.value().get(0).type());
-        Assertions.assertEquals("fr", response.value().get(0).fqn());
-        Assertions.assertEquals("ousxauzlwvsgmw", response.value().get(0).email());
-        Assertions.assertEquals("qf", response.value().get(0).appId());
+        Assertions.assertEquals(DatabasePrincipalRole.INGESTOR, response.value().get(0).role());
+        Assertions.assertEquals("tjxtxr", response.value().get(0).name());
+        Assertions.assertEquals(DatabasePrincipalType.GROUP, response.value().get(0).type());
+        Assertions.assertEquals("tjvidt", response.value().get(0).fqn());
+        Assertions.assertEquals("epu", response.value().get(0).email());
+        Assertions.assertEquals("vyjtcvu", response.value().get(0).appId());
     }
 }

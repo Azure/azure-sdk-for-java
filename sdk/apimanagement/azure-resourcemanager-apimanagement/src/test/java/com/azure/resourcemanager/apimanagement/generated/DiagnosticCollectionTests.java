@@ -24,69 +24,145 @@ public final class DiagnosticCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DiagnosticCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"alwaysLog\":\"allErrors\",\"loggerId\":\"gbrt\",\"sampling\":{\"samplingType\":\"fixed\",\"percentage\":93.37595227963747},\"frontend\":{\"request\":{\"headers\":[\"ajlfnthiqfyu\",\"t\"],\"body\":{},\"dataMasking\":{}},\"response\":{\"headers\":[\"vnwsw\"],\"body\":{},\"dataMasking\":{}}},\"backend\":{\"request\":{\"headers\":[\"wwgzwxjlmecvog\",\"gzyvnee\"],\"body\":{},\"dataMasking\":{}},\"response\":{\"headers\":[\"tmoqqtlffhzb\",\"rkjjjavfqnvhnq\",\"ewdogiyetesy\",\"vidbztjhqtfb\"],\"body\":{},\"dataMasking\":{}}},\"logClientIp\":false,\"httpCorrelationProtocol\":\"None\",\"verbosity\":\"verbose\",\"operationNameFormat\":\"Url\",\"metrics\":true},\"id\":\"hpsprkzyaupiac\",\"name\":\"xnafbw\",\"type\":\"ro\"}],\"count\":2370793182601058410,\"nextLink\":\"vmaonurjt\"}")
+            "{\"value\":[{\"properties\":{\"alwaysLog\":\"allErrors\",\"loggerId\":\"h\",\"sampling\":{\"samplingType\":\"fixed\",\"percentage\":17.46236630127298},\"frontend\":{\"request\":{\"headers\":[\"liuhqawmoaiancz\"],\"body\":{},\"dataMasking\":{}},\"response\":{\"headers\":[\"slblxydkxrxvvb\",\"iwkgfbqljnq\"],\"body\":{},\"dataMasking\":{}}},\"backend\":{\"request\":{\"headers\":[\"okulehurqlrqf\"],\"body\":{},\"dataMasking\":{}},\"response\":{\"headers\":[\"rkphyjdxr\",\"vjuqdbrxmrgchb\",\"pxkiyf\",\"j\"],\"body\":{},\"dataMasking\":{}}},\"logClientIp\":true,\"httpCorrelationProtocol\":\"Legacy\",\"verbosity\":\"information\",\"operationNameFormat\":\"Url\",\"metrics\":true},\"id\":\"ioycbl\",\"name\":\"vpmclujyxkyxlz\",\"type\":\"sjgkzzltafh\"},{\"properties\":{\"alwaysLog\":\"allErrors\",\"loggerId\":\"ovwmbjlzqsczpgvd\",\"sampling\":{\"samplingType\":\"fixed\",\"percentage\":3.7982920672587017},\"frontend\":{\"request\":{\"headers\":[\"tptnuwjtk\",\"chgcgqyh\"],\"body\":{},\"dataMasking\":{}},\"response\":{\"headers\":[\"rhvyeld\"],\"body\":{},\"dataMasking\":{}}},\"backend\":{\"request\":{\"headers\":[\"iswskuk\",\"tasbvw\",\"spkxkdt\",\"fkndl\"],\"body\":{},\"dataMasking\":{}},\"response\":{\"headers\":[\"vgmmbugtyw\",\"tmqa\",\"kueatgroeshoy\"],\"body\":{},\"dataMasking\":{}}},\"logClientIp\":false,\"httpCorrelationProtocol\":\"Legacy\",\"verbosity\":\"error\",\"operationNameFormat\":\"Name\",\"metrics\":true},\"id\":\"tehqpuvjmvq\",\"name\":\"tdwckygr\",\"type\":\"ejnndljdju\"},{\"properties\":{\"alwaysLog\":\"allErrors\",\"loggerId\":\"req\",\"sampling\":{\"samplingType\":\"fixed\",\"percentage\":84.16858798530139},\"frontend\":{\"request\":{\"headers\":[\"gplwr\",\"shwddkvbxgk\"],\"body\":{},\"dataMasking\":{}},\"response\":{\"headers\":[\"ptdacarvvl\"],\"body\":{},\"dataMasking\":{}}},\"backend\":{\"request\":{\"headers\":[\"oiwenazerohzrsq\"],\"body\":{},\"dataMasking\":{}},\"response\":{\"headers\":[\"nwqapfgsdpcvess\",\"zhhkuuipldqqc\"],\"body\":{},\"dataMasking\":{}}},\"logClientIp\":true,\"httpCorrelationProtocol\":\"W3C\",\"verbosity\":\"verbose\",\"operationNameFormat\":\"Name\",\"metrics\":true},\"id\":\"qyv\",\"name\":\"eh\",\"type\":\"a\"},{\"properties\":{\"alwaysLog\":\"allErrors\",\"loggerId\":\"zzy\",\"sampling\":{\"samplingType\":\"fixed\",\"percentage\":49.332247501595084},\"frontend\":{\"request\":{\"headers\":[\"ryvei\",\"ipsk\",\"yzatvfuzkaft\",\"vvruxwi\"],\"body\":{},\"dataMasking\":{}},\"response\":{\"headers\":[\"qdsmjtg\"],\"body\":{},\"dataMasking\":{}}},\"backend\":{\"request\":{\"headers\":[\"ileplk\",\"smk\",\"hwtbbaedorvvm\",\"floygbdgwumg\"],\"body\":{},\"dataMasking\":{}},\"response\":{\"headers\":[\"abgdexj\",\"d\",\"jsaqwotmmwllcols\",\"sxap\"],\"body\":{},\"dataMasking\":{}}},\"logClientIp\":true,\"httpCorrelationProtocol\":\"None\",\"verbosity\":\"error\",\"operationNameFormat\":\"Name\",\"metrics\":false},\"id\":\"jnhvlqjbekpeeks\",\"name\":\"bksdqhjvyklxesl\",\"type\":\"hhus\"}],\"count\":2362487514839193210,\"nextLink\":\"mavnw\"}")
             .toObject(DiagnosticCollection.class);
         Assertions.assertEquals(AlwaysLog.ALL_ERRORS, model.value().get(0).alwaysLog());
-        Assertions.assertEquals("gbrt", model.value().get(0).loggerId());
+        Assertions.assertEquals("h", model.value().get(0).loggerId());
         Assertions.assertEquals(SamplingType.FIXED, model.value().get(0).sampling().samplingType());
-        Assertions.assertEquals(93.37595227963747D, model.value().get(0).sampling().percentage());
-        Assertions.assertEquals("ajlfnthiqfyu", model.value().get(0).frontend().request().headers().get(0));
-        Assertions.assertEquals("vnwsw", model.value().get(0).frontend().response().headers().get(0));
-        Assertions.assertEquals("wwgzwxjlmecvog", model.value().get(0).backend().request().headers().get(0));
-        Assertions.assertEquals("tmoqqtlffhzb", model.value().get(0).backend().response().headers().get(0));
-        Assertions.assertEquals(false, model.value().get(0).logClientIp());
-        Assertions.assertEquals(HttpCorrelationProtocol.NONE, model.value().get(0).httpCorrelationProtocol());
-        Assertions.assertEquals(Verbosity.VERBOSE, model.value().get(0).verbosity());
+        Assertions.assertEquals(17.46236630127298D, model.value().get(0).sampling().percentage());
+        Assertions.assertEquals("liuhqawmoaiancz", model.value().get(0).frontend().request().headers().get(0));
+        Assertions.assertEquals("slblxydkxrxvvb", model.value().get(0).frontend().response().headers().get(0));
+        Assertions.assertEquals("okulehurqlrqf", model.value().get(0).backend().request().headers().get(0));
+        Assertions.assertEquals("rkphyjdxr", model.value().get(0).backend().response().headers().get(0));
+        Assertions.assertTrue(model.value().get(0).logClientIp());
+        Assertions.assertEquals(HttpCorrelationProtocol.LEGACY, model.value().get(0).httpCorrelationProtocol());
+        Assertions.assertEquals(Verbosity.INFORMATION, model.value().get(0).verbosity());
         Assertions.assertEquals(OperationNameFormat.URL, model.value().get(0).operationNameFormat());
-        Assertions.assertEquals(true, model.value().get(0).metrics());
-        Assertions.assertEquals(2370793182601058410L, model.count());
-        Assertions.assertEquals("vmaonurjt", model.nextLink());
+        Assertions.assertTrue(model.value().get(0).metrics());
+        Assertions.assertEquals(2362487514839193210L, model.count());
+        Assertions.assertEquals("mavnw", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiagnosticCollection model = new DiagnosticCollection()
-            .withValue(Arrays.asList(new DiagnosticContractInner().withAlwaysLog(AlwaysLog.ALL_ERRORS)
-                .withLoggerId("gbrt")
+        DiagnosticCollection model = new DiagnosticCollection().withValue(Arrays.asList(
+            new DiagnosticContractInner().withAlwaysLog(AlwaysLog.ALL_ERRORS)
+                .withLoggerId("h")
                 .withSampling(
-                    new SamplingSettings().withSamplingType(SamplingType.FIXED).withPercentage(93.37595227963747D))
+                    new SamplingSettings().withSamplingType(SamplingType.FIXED).withPercentage(17.46236630127298D))
                 .withFrontend(new PipelineDiagnosticSettings()
-                    .withRequest(new HttpMessageDiagnostic().withHeaders(Arrays.asList("ajlfnthiqfyu", "t"))
+                    .withRequest(new HttpMessageDiagnostic().withHeaders(Arrays.asList("liuhqawmoaiancz"))
                         .withBody(new BodyDiagnosticSettings())
                         .withDataMasking(new DataMasking()))
-                    .withResponse(new HttpMessageDiagnostic().withHeaders(Arrays.asList("vnwsw"))
-                        .withBody(new BodyDiagnosticSettings())
-                        .withDataMasking(new DataMasking())))
+                    .withResponse(
+                        new HttpMessageDiagnostic().withHeaders(Arrays.asList("slblxydkxrxvvb", "iwkgfbqljnq"))
+                            .withBody(new BodyDiagnosticSettings())
+                            .withDataMasking(new DataMasking())))
                 .withBackend(new PipelineDiagnosticSettings()
-                    .withRequest(new HttpMessageDiagnostic().withHeaders(Arrays.asList("wwgzwxjlmecvog", "gzyvnee"))
+                    .withRequest(new HttpMessageDiagnostic().withHeaders(Arrays.asList("okulehurqlrqf"))
                         .withBody(new BodyDiagnosticSettings())
                         .withDataMasking(new DataMasking()))
                     .withResponse(new HttpMessageDiagnostic()
-                        .withHeaders(Arrays.asList("tmoqqtlffhzb", "rkjjjavfqnvhnq", "ewdogiyetesy", "vidbztjhqtfb"))
+                        .withHeaders(Arrays.asList("rkphyjdxr", "vjuqdbrxmrgchb", "pxkiyf", "j"))
                         .withBody(new BodyDiagnosticSettings())
                         .withDataMasking(new DataMasking())))
-                .withLogClientIp(false)
-                .withHttpCorrelationProtocol(HttpCorrelationProtocol.NONE)
-                .withVerbosity(Verbosity.VERBOSE)
+                .withLogClientIp(true)
+                .withHttpCorrelationProtocol(HttpCorrelationProtocol.LEGACY)
+                .withVerbosity(Verbosity.INFORMATION)
                 .withOperationNameFormat(OperationNameFormat.URL)
-                .withMetrics(true)))
-            .withCount(2370793182601058410L)
-            .withNextLink("vmaonurjt");
+                .withMetrics(true),
+            new DiagnosticContractInner().withAlwaysLog(AlwaysLog.ALL_ERRORS)
+                .withLoggerId("ovwmbjlzqsczpgvd")
+                .withSampling(
+                    new SamplingSettings().withSamplingType(SamplingType.FIXED).withPercentage(3.7982920672587017D))
+                .withFrontend(new PipelineDiagnosticSettings()
+                    .withRequest(new HttpMessageDiagnostic().withHeaders(Arrays.asList("tptnuwjtk", "chgcgqyh"))
+                        .withBody(new BodyDiagnosticSettings())
+                        .withDataMasking(new DataMasking()))
+                    .withResponse(new HttpMessageDiagnostic().withHeaders(Arrays.asList("rhvyeld"))
+                        .withBody(new BodyDiagnosticSettings())
+                        .withDataMasking(new DataMasking())))
+                .withBackend(new PipelineDiagnosticSettings()
+                    .withRequest(
+                        new HttpMessageDiagnostic().withHeaders(Arrays.asList("iswskuk", "tasbvw", "spkxkdt", "fkndl"))
+                            .withBody(new BodyDiagnosticSettings())
+                            .withDataMasking(new DataMasking()))
+                    .withResponse(
+                        new HttpMessageDiagnostic().withHeaders(Arrays.asList("vgmmbugtyw", "tmqa", "kueatgroeshoy"))
+                            .withBody(new BodyDiagnosticSettings())
+                            .withDataMasking(new DataMasking())))
+                .withLogClientIp(false)
+                .withHttpCorrelationProtocol(HttpCorrelationProtocol.LEGACY)
+                .withVerbosity(Verbosity.ERROR)
+                .withOperationNameFormat(OperationNameFormat.NAME)
+                .withMetrics(true),
+            new DiagnosticContractInner().withAlwaysLog(AlwaysLog.ALL_ERRORS)
+                .withLoggerId("req")
+                .withSampling(
+                    new SamplingSettings().withSamplingType(SamplingType.FIXED).withPercentage(84.16858798530139D))
+                .withFrontend(new PipelineDiagnosticSettings()
+                    .withRequest(new HttpMessageDiagnostic().withHeaders(Arrays.asList("gplwr", "shwddkvbxgk"))
+                        .withBody(new BodyDiagnosticSettings())
+                        .withDataMasking(new DataMasking()))
+                    .withResponse(new HttpMessageDiagnostic().withHeaders(Arrays.asList("ptdacarvvl"))
+                        .withBody(new BodyDiagnosticSettings())
+                        .withDataMasking(new DataMasking())))
+                .withBackend(new PipelineDiagnosticSettings()
+                    .withRequest(new HttpMessageDiagnostic().withHeaders(Arrays.asList("oiwenazerohzrsq"))
+                        .withBody(new BodyDiagnosticSettings())
+                        .withDataMasking(new DataMasking()))
+                    .withResponse(
+                        new HttpMessageDiagnostic().withHeaders(Arrays.asList("nwqapfgsdpcvess", "zhhkuuipldqqc"))
+                            .withBody(new BodyDiagnosticSettings())
+                            .withDataMasking(new DataMasking())))
+                .withLogClientIp(true)
+                .withHttpCorrelationProtocol(HttpCorrelationProtocol.W3C)
+                .withVerbosity(Verbosity.VERBOSE)
+                .withOperationNameFormat(OperationNameFormat.NAME)
+                .withMetrics(true),
+            new DiagnosticContractInner().withAlwaysLog(AlwaysLog.ALL_ERRORS)
+                .withLoggerId("zzy")
+                .withSampling(
+                    new SamplingSettings().withSamplingType(SamplingType.FIXED).withPercentage(49.332247501595084D))
+                .withFrontend(new PipelineDiagnosticSettings()
+                    .withRequest(new HttpMessageDiagnostic()
+                        .withHeaders(Arrays.asList("ryvei", "ipsk", "yzatvfuzkaft", "vvruxwi"))
+                        .withBody(new BodyDiagnosticSettings())
+                        .withDataMasking(new DataMasking()))
+                    .withResponse(new HttpMessageDiagnostic().withHeaders(Arrays.asList("qdsmjtg"))
+                        .withBody(new BodyDiagnosticSettings())
+                        .withDataMasking(new DataMasking())))
+                .withBackend(new PipelineDiagnosticSettings()
+                    .withRequest(new HttpMessageDiagnostic()
+                        .withHeaders(Arrays.asList("ileplk", "smk", "hwtbbaedorvvm", "floygbdgwumg"))
+                        .withBody(new BodyDiagnosticSettings())
+                        .withDataMasking(new DataMasking()))
+                    .withResponse(new HttpMessageDiagnostic()
+                        .withHeaders(Arrays.asList("abgdexj", "d", "jsaqwotmmwllcols", "sxap"))
+                        .withBody(new BodyDiagnosticSettings())
+                        .withDataMasking(new DataMasking())))
+                .withLogClientIp(true)
+                .withHttpCorrelationProtocol(HttpCorrelationProtocol.NONE)
+                .withVerbosity(Verbosity.ERROR)
+                .withOperationNameFormat(OperationNameFormat.NAME)
+                .withMetrics(false)))
+            .withCount(2362487514839193210L)
+            .withNextLink("mavnw");
         model = BinaryData.fromObject(model).toObject(DiagnosticCollection.class);
         Assertions.assertEquals(AlwaysLog.ALL_ERRORS, model.value().get(0).alwaysLog());
-        Assertions.assertEquals("gbrt", model.value().get(0).loggerId());
+        Assertions.assertEquals("h", model.value().get(0).loggerId());
         Assertions.assertEquals(SamplingType.FIXED, model.value().get(0).sampling().samplingType());
-        Assertions.assertEquals(93.37595227963747D, model.value().get(0).sampling().percentage());
-        Assertions.assertEquals("ajlfnthiqfyu", model.value().get(0).frontend().request().headers().get(0));
-        Assertions.assertEquals("vnwsw", model.value().get(0).frontend().response().headers().get(0));
-        Assertions.assertEquals("wwgzwxjlmecvog", model.value().get(0).backend().request().headers().get(0));
-        Assertions.assertEquals("tmoqqtlffhzb", model.value().get(0).backend().response().headers().get(0));
-        Assertions.assertEquals(false, model.value().get(0).logClientIp());
-        Assertions.assertEquals(HttpCorrelationProtocol.NONE, model.value().get(0).httpCorrelationProtocol());
-        Assertions.assertEquals(Verbosity.VERBOSE, model.value().get(0).verbosity());
+        Assertions.assertEquals(17.46236630127298D, model.value().get(0).sampling().percentage());
+        Assertions.assertEquals("liuhqawmoaiancz", model.value().get(0).frontend().request().headers().get(0));
+        Assertions.assertEquals("slblxydkxrxvvb", model.value().get(0).frontend().response().headers().get(0));
+        Assertions.assertEquals("okulehurqlrqf", model.value().get(0).backend().request().headers().get(0));
+        Assertions.assertEquals("rkphyjdxr", model.value().get(0).backend().response().headers().get(0));
+        Assertions.assertTrue(model.value().get(0).logClientIp());
+        Assertions.assertEquals(HttpCorrelationProtocol.LEGACY, model.value().get(0).httpCorrelationProtocol());
+        Assertions.assertEquals(Verbosity.INFORMATION, model.value().get(0).verbosity());
         Assertions.assertEquals(OperationNameFormat.URL, model.value().get(0).operationNameFormat());
-        Assertions.assertEquals(true, model.value().get(0).metrics());
-        Assertions.assertEquals(2370793182601058410L, model.count());
-        Assertions.assertEquals("vmaonurjt", model.nextLink());
+        Assertions.assertTrue(model.value().get(0).metrics());
+        Assertions.assertEquals(2362487514839193210L, model.count());
+        Assertions.assertEquals("mavnw", model.nextLink());
     }
 }

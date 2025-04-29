@@ -15,7 +15,7 @@ import java.util.Map;
 public final class AuthorizationCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateAuthorizationAADAuthCode.json
      */
     /**
@@ -35,7 +35,7 @@ public final class AuthorizationCreateOrUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateAuthorizationAADClientCred.json
      */
     /**
@@ -50,8 +50,7 @@ public final class AuthorizationCreateOrUpdateSamples {
             .withExistingAuthorizationProvider("rg1", "apimService1", "aadwithclientcred")
             .withAuthorizationType(AuthorizationType.OAUTH2)
             .withOAuth2GrantType(OAuth2GrantType.AUTHORIZATION_CODE)
-            .withParameters(
-                mapOf("clientId", "53790925-fdd3-4b80-bc7a-4c3aaf25801d", "clientSecret", "fakeTokenPlaceholder"))
+            .withParameters(mapOf("clientId", "clientsecretid", "clientSecret", "fakeTokenPlaceholder"))
             .create();
     }
 

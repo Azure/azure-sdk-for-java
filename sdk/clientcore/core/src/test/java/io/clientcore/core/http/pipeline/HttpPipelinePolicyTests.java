@@ -3,13 +3,12 @@
 
 package io.clientcore.core.http.pipeline;
 
-import io.clientcore.core.http.NoOpHttpClient;
 import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
-import io.clientcore.core.http.models.HttpResponse;
 import io.clientcore.core.http.models.Response;
+import io.clientcore.core.models.binarydata.BinaryData;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -24,9 +23,12 @@ public class HttpPipelinePolicyTests {
         SyncPolicy policy2 = new SyncPolicy();
 
         HttpPipeline pipeline
-            = new HttpPipelineBuilder().httpClient(new NoOpHttpClient()).policies(policy1, policy2).build();
+            = new HttpPipelineBuilder().httpClient(request -> new Response<>(request, 200, new HttpHeaders(), null))
+                .addPolicy(policy1)
+                .addPolicy(policy2)
+                .build();
 
-        pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")).close();
+        pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/")).close();
 
         assertEquals(1, policy1.syncCalls.get());
         assertEquals(1, policy2.syncCalls.get());
@@ -36,11 +38,12 @@ public class HttpPipelinePolicyTests {
     public void defaultImplementationShouldCallRightStack() throws IOException {
         DefaultImplementationSyncPolicy policyWithDefaultSyncImplementation = new DefaultImplementationSyncPolicy();
 
-        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient())
-            .policies(policyWithDefaultSyncImplementation)
-            .build();
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().httpClient(request -> new Response<>(request, 200, new HttpHeaders(), null))
+                .addPolicy(policyWithDefaultSyncImplementation)
+                .build();
 
-        pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")).close();
+        pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/")).close();
 
         assertEquals(1, policyWithDefaultSyncImplementation.syncCalls.get());
         assertEquals(1, policyWithDefaultSyncImplementation.syncCalls.get());
@@ -52,7 +55,7 @@ public class HttpPipelinePolicyTests {
     @Test
     public void doesNotThrowThatThreadIsNonBlocking() throws IOException {
         SyncPolicy policy1 = new SyncPolicy();
-        HttpPipelinePolicy badPolicy1 = (httpRequest, next) -> {
+        HttpPipelinePolicy badPolicy1 = (ignored, next) -> {
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e) {
@@ -62,7 +65,7 @@ public class HttpPipelinePolicyTests {
             return next.process();
         };
 
-        HttpPipelinePolicy badPolicy2 = (httpRequest, next) -> {
+        HttpPipelinePolicy badPolicy2 = (ignored, next) -> {
             try {
                 Thread.sleep(10);
             } catch (InterruptedException e) {
@@ -78,20 +81,23 @@ public class HttpPipelinePolicyTests {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-            return new HttpResponse<>(request, 200, new HttpHeaders(), null);
+            return new Response<>(request, 200, new HttpHeaders(), null);
         };
 
-        HttpPipeline pipeline
-            = new HttpPipelineBuilder().httpClient(badClient).policies(policy1, badPolicy1, badPolicy2).build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(badClient)
+            .addPolicy(policy1)
+            .addPolicy(badPolicy1)
+            .addPolicy(badPolicy2)
+            .build();
 
-        pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/")).close();
+        pipeline.send(new HttpRequest().setMethod(HttpMethod.GET).setUri("http://localhost/")).close();
     }
 
     private static class SyncPolicy implements HttpPipelinePolicy {
         final AtomicInteger syncCalls = new AtomicInteger();
 
         @Override
-        public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+        public Response<BinaryData> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
             syncCalls.incrementAndGet();
 
             return next.process();
@@ -102,7 +108,7 @@ public class HttpPipelinePolicyTests {
         final AtomicInteger syncCalls = new AtomicInteger();
 
         @Override
-        public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+        public Response<BinaryData> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
             syncCalls.incrementAndGet();
 
             return next.process();

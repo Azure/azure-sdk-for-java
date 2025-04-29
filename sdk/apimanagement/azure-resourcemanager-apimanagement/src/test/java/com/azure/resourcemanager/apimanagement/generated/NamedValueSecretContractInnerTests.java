@@ -12,14 +12,14 @@ public final class NamedValueSecretContractInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NamedValueSecretContractInner model
-            = BinaryData.fromString("{\"value\":\"dstrkzxsgtz\"}").toObject(NamedValueSecretContractInner.class);
-        Assertions.assertEquals("dstrkzxsgtz", model.value());
+            = BinaryData.fromString("{\"value\":\"asmcolmugpyvaos\"}").toObject(NamedValueSecretContractInner.class);
+        Assertions.assertEquals("asmcolmugpyvaos", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NamedValueSecretContractInner model = new NamedValueSecretContractInner().withValue("dstrkzxsgtz");
+        NamedValueSecretContractInner model = new NamedValueSecretContractInner().withValue("asmcolmugpyvaos");
         model = BinaryData.fromObject(model).toObject(NamedValueSecretContractInner.class);
-        Assertions.assertEquals("dstrkzxsgtz", model.value());
+        Assertions.assertEquals("asmcolmugpyvaos", model.value());
     }
 }

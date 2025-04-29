@@ -22,6 +22,7 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.fluent.NetAppManagementClient;
 import com.azure.resourcemanager.netapp.implementation.AccountsImpl;
@@ -34,6 +35,7 @@ import com.azure.resourcemanager.netapp.implementation.BackupsUnderVolumesImpl;
 import com.azure.resourcemanager.netapp.implementation.NetAppManagementClientBuilder;
 import com.azure.resourcemanager.netapp.implementation.NetAppResourceQuotaLimitsImpl;
 import com.azure.resourcemanager.netapp.implementation.NetAppResourceRegionInfosImpl;
+import com.azure.resourcemanager.netapp.implementation.NetAppResourceUsagesImpl;
 import com.azure.resourcemanager.netapp.implementation.NetAppResourcesImpl;
 import com.azure.resourcemanager.netapp.implementation.OperationsImpl;
 import com.azure.resourcemanager.netapp.implementation.PoolsImpl;
@@ -52,6 +54,7 @@ import com.azure.resourcemanager.netapp.models.BackupsUnderBackupVaults;
 import com.azure.resourcemanager.netapp.models.BackupsUnderVolumes;
 import com.azure.resourcemanager.netapp.models.NetAppResourceQuotaLimits;
 import com.azure.resourcemanager.netapp.models.NetAppResourceRegionInfos;
+import com.azure.resourcemanager.netapp.models.NetAppResourceUsages;
 import com.azure.resourcemanager.netapp.models.NetAppResources;
 import com.azure.resourcemanager.netapp.models.Operations;
 import com.azure.resourcemanager.netapp.models.Pools;
@@ -65,6 +68,7 @@ import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -76,6 +80,8 @@ public final class NetAppFilesManager {
     private Operations operations;
 
     private NetAppResources netAppResources;
+
+    private NetAppResourceUsages netAppResourceUsages;
 
     private NetAppResourceQuotaLimits netAppResourceQuotaLimits;
 
@@ -161,6 +167,9 @@ public final class NetAppFilesManager {
      */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
+        private static final String SDK_VERSION = "version";
+        private static final Map<String, String> PROPERTIES
+            = CoreUtils.getProperties("azure-resourcemanager-netapp.properties");
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
@@ -268,12 +277,14 @@ public final class NetAppFilesManager {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
+            String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+
             StringBuilder userAgentBuilder = new StringBuilder();
             userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.netapp")
                 .append("/")
-                .append("1.6.0-beta.1");
+                .append(clientVersion);
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -341,6 +352,18 @@ public final class NetAppFilesManager {
             this.netAppResources = new NetAppResourcesImpl(clientObject.getNetAppResources(), this);
         }
         return netAppResources;
+    }
+
+    /**
+     * Gets the resource collection API of NetAppResourceUsages.
+     * 
+     * @return Resource collection API of NetAppResourceUsages.
+     */
+    public NetAppResourceUsages netAppResourceUsages() {
+        if (this.netAppResourceUsages == null) {
+            this.netAppResourceUsages = new NetAppResourceUsagesImpl(clientObject.getNetAppResourceUsages(), this);
+        }
+        return netAppResourceUsages;
     }
 
     /**

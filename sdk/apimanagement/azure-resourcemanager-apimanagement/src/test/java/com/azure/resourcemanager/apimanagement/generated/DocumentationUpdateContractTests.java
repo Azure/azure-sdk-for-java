@@ -12,17 +12,18 @@ public final class DocumentationUpdateContractTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DocumentationUpdateContract model
-            = BinaryData.fromString("{\"properties\":{\"title\":\"imtcvvf\",\"content\":\"dytzf\"}}")
+            = BinaryData.fromString("{\"properties\":{\"title\":\"ampqcrzgeuq\",\"content\":\"piatwfaujegqd\"}}")
                 .toObject(DocumentationUpdateContract.class);
-        Assertions.assertEquals("imtcvvf", model.title());
-        Assertions.assertEquals("dytzf", model.content());
+        Assertions.assertEquals("ampqcrzgeuq", model.title());
+        Assertions.assertEquals("piatwfaujegqd", model.content());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DocumentationUpdateContract model = new DocumentationUpdateContract().withTitle("imtcvvf").withContent("dytzf");
+        DocumentationUpdateContract model
+            = new DocumentationUpdateContract().withTitle("ampqcrzgeuq").withContent("piatwfaujegqd");
         model = BinaryData.fromObject(model).toObject(DocumentationUpdateContract.class);
-        Assertions.assertEquals("imtcvvf", model.title());
-        Assertions.assertEquals("dytzf", model.content());
+        Assertions.assertEquals("ampqcrzgeuq", model.title());
+        Assertions.assertEquals("piatwfaujegqd", model.content());
     }
 }

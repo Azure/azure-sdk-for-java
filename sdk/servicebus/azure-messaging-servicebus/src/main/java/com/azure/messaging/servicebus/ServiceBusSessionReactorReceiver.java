@@ -11,9 +11,7 @@ import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.message.Message;
 import reactor.core.Disposable;
 import reactor.core.Disposables;
-import reactor.core.publisher.DirectProcessor;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.FluxSink;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 
@@ -29,10 +27,8 @@ final class ServiceBusSessionReactorReceiver implements AmqpReceiveLink {
     private final String sessionId;
     private final AmqpReceiveLink sessionLink;
     private final boolean hasIdleTimeout;
-    private final Sinks.Empty<Void> idleTimeoutSink = Sinks.empty();
-    // TODO (anu|connie|liudmila); Discuss DirectProcessor is deprecated.
-    private final DirectProcessor<Boolean> idleTimerProcessor = DirectProcessor.create();
-    private final FluxSink<Boolean> idleTimerSink = idleTimerProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
+    private final Sinks.Many<Boolean> nextItemIdleTimeoutSink = Sinks.many().multicast().onBackpressureBuffer();
+    private final Sinks.Empty<Void> terminateEndpointStatesSink = Sinks.empty();
     private final Disposable.Composite disposables = Disposables.composite();
 
     ServiceBusSessionReactorReceiver(ClientLogger logger, ServiceBusTracer tracer,
@@ -43,11 +39,12 @@ final class ServiceBusSessionReactorReceiver implements AmqpReceiveLink {
         this.hasIdleTimeout = sessionIdleTimeout != null;
         if (hasIdleTimeout) {
             this.disposables
-                .add(Flux.switchOnNext(idleTimerProcessor.map(__ -> Mono.delay(sessionIdleTimeout))).subscribe(v -> {
-                    withLinkInfo(logger.atInfo()).addKeyValue("timeout", sessionIdleTimeout)
-                        .log("Did not a receive message within timeout.");
-                    idleTimeoutSink.emitEmpty(Sinks.EmitFailureHandler.FAIL_FAST);
-                }));
+                .add(Flux.switchOnNext(nextItemIdleTimeoutSink.asFlux().map(__ -> Mono.delay(sessionIdleTimeout)))
+                    .subscribe(v -> {
+                        withLinkInfo(logger.atInfo()).addKeyValue("timeout", sessionIdleTimeout)
+                            .log("Did not a receive message within timeout.");
+                        terminateEndpointStatesSink.emitEmpty(Sinks.EmitFailureHandler.FAIL_FAST);
+                    }));
         }
         this.disposables.add(session.beginLockRenew(tracer, maxSessionLockRenew));
     }
@@ -80,7 +77,7 @@ final class ServiceBusSessionReactorReceiver implements AmqpReceiveLink {
     public Flux<AmqpEndpointState> getEndpointStates() {
         final Flux<AmqpEndpointState> endpointStates;
         if (hasIdleTimeout) {
-            endpointStates = sessionLink.getEndpointStates().takeUntilOther(idleTimeoutSink.asMono());
+            endpointStates = sessionLink.getEndpointStates().takeUntilOther(terminateEndpointStatesSink.asMono());
         } else {
             endpointStates = sessionLink.getEndpointStates();
         }
@@ -93,8 +90,13 @@ final class ServiceBusSessionReactorReceiver implements AmqpReceiveLink {
     @Override
     public Flux<Message> receive() {
         if (hasIdleTimeout) {
-            return sessionLink.receive().doOnNext(m -> {
-                idleTimerSink.next(true);
+            final Mono<Void> beginIdleTimer = Mono.defer(() -> {
+                nextItemIdleTimeoutSink.emitNext(true, Sinks.EmitFailureHandler.FAIL_FAST);
+                return Mono.empty();
+            });
+            final Flux<Message> messages = sessionLink.receive();
+            return beginIdleTimer.thenMany(messages).doOnNext(m -> {
+                nextItemIdleTimeoutSink.emitNext(true, Sinks.EmitFailureHandler.FAIL_FAST);
             });
         } else {
             return sessionLink.receive();

@@ -12,16 +12,16 @@ public final class InMageAzureV2RecoveryPointDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageAzureV2RecoveryPointDetails model
-            = BinaryData.fromString("{\"instanceType\":\"InMageAzureV2\",\"isMultiVmSyncPoint\":\"ihqlcoqks\"}")
+            = BinaryData.fromString("{\"instanceType\":\"InMageAzureV2\",\"isMultiVmSyncPoint\":\"repwpwfkcaux\"}")
                 .toObject(InMageAzureV2RecoveryPointDetails.class);
-        Assertions.assertEquals("ihqlcoqks", model.isMultiVmSyncPoint());
+        Assertions.assertEquals("repwpwfkcaux", model.isMultiVmSyncPoint());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         InMageAzureV2RecoveryPointDetails model
-            = new InMageAzureV2RecoveryPointDetails().withIsMultiVmSyncPoint("ihqlcoqks");
+            = new InMageAzureV2RecoveryPointDetails().withIsMultiVmSyncPoint("repwpwfkcaux");
         model = BinaryData.fromObject(model).toObject(InMageAzureV2RecoveryPointDetails.class);
-        Assertions.assertEquals("ihqlcoqks", model.isMultiVmSyncPoint());
+        Assertions.assertEquals("repwpwfkcaux", model.isMultiVmSyncPoint());
     }
 }

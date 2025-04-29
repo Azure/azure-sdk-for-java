@@ -15,6 +15,8 @@ trigger:
       - sdk/identity/azure-identity-perf/pom.xml
       - sdk/identity/azure-identity-broker/pom.xml
       - sdk/identity/azure-identity-extensions/
+      - sdk/identity/ci.v2.yml
+      - sdk/identity/azure-identity-v2/
 
 pr:
   branches:
@@ -32,6 +34,8 @@ pr:
       - sdk/identity/azure-identity-perf/pom.xml
       - sdk/identity/azure-identity-broker/pom.xml
       - sdk/identity/azure-identity-extensions/
+      - sdk/identity/ci.v2.yml
+      - sdk/identity/azure-identity-v2/
 
 parameters:
 - name: release_dependsonlivetests
@@ -90,7 +94,6 @@ extends:
           Location: 'westus2'
           CalledFromClient: true
           ServiceDirectory: identity
-          SupportedClouds: 'Public,UsGov,China'
           EnvVars:
             AZ_OIDC_TOKEN: $(ARM_OIDC_TOKEN)
             AZURE_IDENTITY_MULTI_TENANT_CLIENT_SECRET: $(AZURE-IDENTITY-MULTI-TENANT-CLIENT-SECRET)

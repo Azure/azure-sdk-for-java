@@ -28,7 +28,7 @@ public final class DatabasePrincipalAssignmentsDeleteMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.databasePrincipalAssignments()
-            .delete("gvgovpbbttefjo", "nssqyzqed", "kdfrdbiqmrjgeihf", "lg", com.azure.core.util.Context.NONE);
+            .delete("ac", "u", "vxnqmhrpqpd", "wmkoisq", com.azure.core.util.Context.NONE);
 
     }
 }

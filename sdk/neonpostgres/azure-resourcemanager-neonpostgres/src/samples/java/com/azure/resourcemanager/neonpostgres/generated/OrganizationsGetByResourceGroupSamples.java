@@ -9,14 +9,14 @@ package com.azure.resourcemanager.neonpostgres.generated;
  */
 public final class OrganizationsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: 2024-08-01-preview/Organizations_Get_MaximumSet_Gen.json
+     * x-ms-original-file: 2025-03-01/Organizations_Get_MaximumSet_Gen.json
      */
     /**
-     * Sample code: Organizations_Get.
+     * Sample code: Organizations_Get_MaximumSet.
      * 
      * @param manager Entry point to NeonPostgresManager.
      */
-    public static void organizationsGet(com.azure.resourcemanager.neonpostgres.NeonPostgresManager manager) {
-        manager.organizations().getByResourceGroupWithResponse("rgneon", "5", com.azure.core.util.Context.NONE);
+    public static void organizationsGetMaximumSet(com.azure.resourcemanager.neonpostgres.NeonPostgresManager manager) {
+        manager.organizations().getByResourceGroupWithResponse("rgneon", "test-org", com.azure.core.util.Context.NONE);
     }
 }

@@ -22,33 +22,25 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.deviceregistry.fluent.DeviceRegistryManagementClient;
 import com.azure.resourcemanager.deviceregistry.implementation.AssetEndpointProfilesImpl;
 import com.azure.resourcemanager.deviceregistry.implementation.AssetsImpl;
 import com.azure.resourcemanager.deviceregistry.implementation.BillingContainersImpl;
 import com.azure.resourcemanager.deviceregistry.implementation.DeviceRegistryManagementClientBuilder;
-import com.azure.resourcemanager.deviceregistry.implementation.DiscoveredAssetEndpointProfilesImpl;
-import com.azure.resourcemanager.deviceregistry.implementation.DiscoveredAssetsImpl;
 import com.azure.resourcemanager.deviceregistry.implementation.OperationStatusImpl;
 import com.azure.resourcemanager.deviceregistry.implementation.OperationsImpl;
-import com.azure.resourcemanager.deviceregistry.implementation.SchemaRegistriesImpl;
-import com.azure.resourcemanager.deviceregistry.implementation.SchemaVersionsImpl;
-import com.azure.resourcemanager.deviceregistry.implementation.SchemasImpl;
 import com.azure.resourcemanager.deviceregistry.models.AssetEndpointProfiles;
 import com.azure.resourcemanager.deviceregistry.models.Assets;
 import com.azure.resourcemanager.deviceregistry.models.BillingContainers;
-import com.azure.resourcemanager.deviceregistry.models.DiscoveredAssetEndpointProfiles;
-import com.azure.resourcemanager.deviceregistry.models.DiscoveredAssets;
 import com.azure.resourcemanager.deviceregistry.models.OperationStatus;
 import com.azure.resourcemanager.deviceregistry.models.Operations;
-import com.azure.resourcemanager.deviceregistry.models.SchemaRegistries;
-import com.azure.resourcemanager.deviceregistry.models.SchemaVersions;
-import com.azure.resourcemanager.deviceregistry.models.Schemas;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -66,16 +58,6 @@ public final class DeviceRegistryManager {
     private AssetEndpointProfiles assetEndpointProfiles;
 
     private BillingContainers billingContainers;
-
-    private DiscoveredAssets discoveredAssets;
-
-    private DiscoveredAssetEndpointProfiles discoveredAssetEndpointProfiles;
-
-    private SchemaRegistries schemaRegistries;
-
-    private Schemas schemas;
-
-    private SchemaVersions schemaVersions;
 
     private final DeviceRegistryManagementClient clientObject;
 
@@ -129,6 +111,9 @@ public final class DeviceRegistryManager {
      */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
+        private static final String SDK_VERSION = "version";
+        private static final Map<String, String> PROPERTIES
+            = CoreUtils.getProperties("azure-resourcemanager-deviceregistry.properties");
 
         private HttpClient httpClient;
         private HttpLogOptions httpLogOptions;
@@ -236,12 +221,14 @@ public final class DeviceRegistryManager {
             Objects.requireNonNull(credential, "'credential' cannot be null.");
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
+            String clientVersion = PROPERTIES.getOrDefault(SDK_VERSION, "UnknownVersion");
+
             StringBuilder userAgentBuilder = new StringBuilder();
             userAgentBuilder.append("azsdk-java")
                 .append("-")
                 .append("com.azure.resourcemanager.deviceregistry")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append(clientVersion);
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder.append(" (")
                     .append(Configuration.getGlobalConfiguration().get("java.version"))
@@ -345,67 +332,6 @@ public final class DeviceRegistryManager {
             this.billingContainers = new BillingContainersImpl(clientObject.getBillingContainers(), this);
         }
         return billingContainers;
-    }
-
-    /**
-     * Gets the resource collection API of DiscoveredAssets. It manages DiscoveredAsset.
-     * 
-     * @return Resource collection API of DiscoveredAssets.
-     */
-    public DiscoveredAssets discoveredAssets() {
-        if (this.discoveredAssets == null) {
-            this.discoveredAssets = new DiscoveredAssetsImpl(clientObject.getDiscoveredAssets(), this);
-        }
-        return discoveredAssets;
-    }
-
-    /**
-     * Gets the resource collection API of DiscoveredAssetEndpointProfiles. It manages DiscoveredAssetEndpointProfile.
-     * 
-     * @return Resource collection API of DiscoveredAssetEndpointProfiles.
-     */
-    public DiscoveredAssetEndpointProfiles discoveredAssetEndpointProfiles() {
-        if (this.discoveredAssetEndpointProfiles == null) {
-            this.discoveredAssetEndpointProfiles
-                = new DiscoveredAssetEndpointProfilesImpl(clientObject.getDiscoveredAssetEndpointProfiles(), this);
-        }
-        return discoveredAssetEndpointProfiles;
-    }
-
-    /**
-     * Gets the resource collection API of SchemaRegistries. It manages SchemaRegistry.
-     * 
-     * @return Resource collection API of SchemaRegistries.
-     */
-    public SchemaRegistries schemaRegistries() {
-        if (this.schemaRegistries == null) {
-            this.schemaRegistries = new SchemaRegistriesImpl(clientObject.getSchemaRegistries(), this);
-        }
-        return schemaRegistries;
-    }
-
-    /**
-     * Gets the resource collection API of Schemas. It manages Schema.
-     * 
-     * @return Resource collection API of Schemas.
-     */
-    public Schemas schemas() {
-        if (this.schemas == null) {
-            this.schemas = new SchemasImpl(clientObject.getSchemas(), this);
-        }
-        return schemas;
-    }
-
-    /**
-     * Gets the resource collection API of SchemaVersions. It manages SchemaVersion.
-     * 
-     * @return Resource collection API of SchemaVersions.
-     */
-    public SchemaVersions schemaVersions() {
-        if (this.schemaVersions == null) {
-            this.schemaVersions = new SchemaVersionsImpl(clientObject.getSchemaVersions(), this);
-        }
-        return schemaVersions;
     }
 
     /**

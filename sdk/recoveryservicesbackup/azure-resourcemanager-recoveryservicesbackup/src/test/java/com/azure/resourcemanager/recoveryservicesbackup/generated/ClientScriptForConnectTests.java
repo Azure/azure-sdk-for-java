@@ -12,27 +12,27 @@ public final class ClientScriptForConnectTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ClientScriptForConnect model = BinaryData.fromString(
-            "{\"scriptContent\":\"qkkyihztgeqmg\",\"scriptExtension\":\"gwldo\",\"osType\":\"hillce\",\"url\":\"ehuwaoa\",\"scriptNameSuffix\":\"h\"}")
+            "{\"scriptContent\":\"ogewij\",\"scriptExtension\":\"rhbguzozkyewnfn\",\"osType\":\"hhqosmffjku\",\"url\":\"cyar\",\"scriptNameSuffix\":\"oohguabzoghkt\"}")
             .toObject(ClientScriptForConnect.class);
-        Assertions.assertEquals("qkkyihztgeqmg", model.scriptContent());
-        Assertions.assertEquals("gwldo", model.scriptExtension());
-        Assertions.assertEquals("hillce", model.osType());
-        Assertions.assertEquals("ehuwaoa", model.url());
-        Assertions.assertEquals("h", model.scriptNameSuffix());
+        Assertions.assertEquals("ogewij", model.scriptContent());
+        Assertions.assertEquals("rhbguzozkyewnfn", model.scriptExtension());
+        Assertions.assertEquals("hhqosmffjku", model.osType());
+        Assertions.assertEquals("cyar", model.url());
+        Assertions.assertEquals("oohguabzoghkt", model.scriptNameSuffix());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ClientScriptForConnect model = new ClientScriptForConnect().withScriptContent("qkkyihztgeqmg")
-            .withScriptExtension("gwldo")
-            .withOsType("hillce")
-            .withUrl("ehuwaoa")
-            .withScriptNameSuffix("h");
+        ClientScriptForConnect model = new ClientScriptForConnect().withScriptContent("ogewij")
+            .withScriptExtension("rhbguzozkyewnfn")
+            .withOsType("hhqosmffjku")
+            .withUrl("cyar")
+            .withScriptNameSuffix("oohguabzoghkt");
         model = BinaryData.fromObject(model).toObject(ClientScriptForConnect.class);
-        Assertions.assertEquals("qkkyihztgeqmg", model.scriptContent());
-        Assertions.assertEquals("gwldo", model.scriptExtension());
-        Assertions.assertEquals("hillce", model.osType());
-        Assertions.assertEquals("ehuwaoa", model.url());
-        Assertions.assertEquals("h", model.scriptNameSuffix());
+        Assertions.assertEquals("ogewij", model.scriptContent());
+        Assertions.assertEquals("rhbguzozkyewnfn", model.scriptExtension());
+        Assertions.assertEquals("hhqosmffjku", model.osType());
+        Assertions.assertEquals("cyar", model.url());
+        Assertions.assertEquals("oohguabzoghkt", model.scriptNameSuffix());
     }
 }

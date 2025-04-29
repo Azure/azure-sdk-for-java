@@ -6,8 +6,8 @@ package com.azure.resourcemanager.networkcloud.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.networkcloud.NetworkCloudManager;
 import com.azure.resourcemanager.networkcloud.models.ClusterMetricsConfiguration;
@@ -21,24 +21,24 @@ public final class MetricsConfigurationsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"extendedLocation\":{\"name\":\"mlhxdfbklcii\",\"type\":\"hgjsysmvxo\"},\"properties\":{\"collectionInterval\":8084012969495195501,\"detailedStatus\":\"Applied\",\"detailedStatusMessage\":\"zsifcuvbdujgcwx\",\"disabledMetrics\":[\"bbwjtrdxrizagb\",\"giarksykpgdqxw\",\"b\"],\"enabledMetrics\":[\"iqrxhaclcdosq\",\"ptjq\",\"kifmmainw\",\"edxkpbqwuntob\"],\"provisioningState\":\"Succeeded\"},\"location\":\"zz\",\"tags\":{\"gjwdab\":\"gvydjufbnklblaxp\",\"ytlbtlqhopxouvm\":\"lfdxaglz\",\"fmy\":\"siflikyypzkgxf\"},\"id\":\"qsdb\",\"name\":\"oksz\",\"type\":\"nm\"}";
+            = "{\"extendedLocation\":{\"name\":\"f\",\"type\":\"zsifcuvbdujgcwx\"},\"properties\":{\"collectionInterval\":1219254206667481816,\"detailedStatus\":\"Applied\",\"detailedStatusMessage\":\"jtrdxr\",\"disabledMetrics\":[\"gbbgiarksykp\",\"dqxwabzrwiqrxhac\"],\"enabledMetrics\":[\"osqkptjqgk\",\"fmmainwhedxkpbq\",\"unt\"],\"provisioningState\":\"Accepted\"},\"location\":\"z\",\"tags\":{\"laxp\":\"elwgvydjufbnkl\",\"lfdxaglz\":\"gjwdab\",\"siflikyypzkgxf\":\"ytlbtlqhopxouvm\",\"qsdb\":\"fmy\"},\"id\":\"oksz\",\"name\":\"nm\",\"type\":\"wgpterdiuw\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetworkCloudManager manager = NetworkCloudManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ClusterMetricsConfiguration response = manager.metricsConfigurations()
-            .getWithResponse("fpjbqggwe", "iwdhdmncgbfzu", "cstu", com.azure.core.util.Context.NONE)
+            .getWithResponse("lhxd", "bkl", "iichgjsysmvxodgw", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("zz", response.location());
-        Assertions.assertEquals("gvydjufbnklblaxp", response.tags().get("gjwdab"));
-        Assertions.assertEquals("mlhxdfbklcii", response.extendedLocation().name());
-        Assertions.assertEquals("hgjsysmvxo", response.extendedLocation().type());
-        Assertions.assertEquals(8084012969495195501L, response.collectionInterval());
-        Assertions.assertEquals("iqrxhaclcdosq", response.enabledMetrics().get(0));
+        Assertions.assertEquals("z", response.location());
+        Assertions.assertEquals("elwgvydjufbnkl", response.tags().get("laxp"));
+        Assertions.assertEquals("f", response.extendedLocation().name());
+        Assertions.assertEquals("zsifcuvbdujgcwx", response.extendedLocation().type());
+        Assertions.assertEquals(1219254206667481816L, response.collectionInterval());
+        Assertions.assertEquals("osqkptjqgk", response.enabledMetrics().get(0));
     }
 }

@@ -63,5 +63,3 @@ extends:
     AdditionalModules:
       - name: perf-test-core
         groupId: com.azure
-      - name: azure-aot-graalvm-perf
-        groupId: com.azure

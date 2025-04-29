@@ -14,13 +14,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
 import org.springframework.core.env.Environment;
 import org.springframework.kafka.core.KafkaTemplate;
 
@@ -36,7 +36,6 @@ import org.springframework.kafka.core.KafkaTemplate;
 @ConditionalOnClass(KafkaTemplate.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.eventhubs.kafka.enabled", havingValue = "true", matchIfMissing = true)
 @AutoConfigureAfter({ AzureEventHubsAutoConfiguration.class, AzureEventHubsResourceManagerAutoConfiguration.class })
-@Import(KafkaPropertiesConfiguration.class)
 public class AzureEventHubsKafkaAutoConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureEventHubsKafkaAutoConfiguration.class);
@@ -55,5 +54,11 @@ public class AzureEventHubsKafkaAutoConfiguration {
         }
 
         return new StaticConnectionStringProvider<>(AzureServiceType.EVENT_HUBS, connectionString);
+    }
+
+    @Bean
+    @ConditionalOnBean(value = AzureServiceType.EventHubs.class, parameterizedContainer = ServiceConnectionStringProvider.class)
+    static KafkaPropertiesBeanPostProcessor kafkaPropertiesBeanPostProcessor() {
+        return new KafkaPropertiesBeanPostProcessor();
     }
 }

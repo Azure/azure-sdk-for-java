@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
 public final class ApiIssueCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateApiIssue.json
      */
     /**
@@ -29,7 +29,7 @@ public final class ApiIssueCreateOrUpdateSamples {
             .withTitle("New API issue")
             .withDescription("New API issue description")
             .withUserId(
-                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/1")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.ApiManagement/service/apimService1/users/1")
             .withCreatedDate(OffsetDateTime.parse("2018-02-01T22:21:20.467Z"))
             .withState(State.OPEN)
             .create();

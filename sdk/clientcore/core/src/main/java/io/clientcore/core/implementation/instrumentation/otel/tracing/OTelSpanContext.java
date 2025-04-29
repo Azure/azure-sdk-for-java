@@ -5,6 +5,7 @@ package io.clientcore.core.implementation.instrumentation.otel.tracing;
 
 import io.clientcore.core.implementation.ReflectiveInvoker;
 import io.clientcore.core.implementation.instrumentation.otel.FallbackInvoker;
+import io.clientcore.core.implementation.instrumentation.otel.OTelContext;
 import io.clientcore.core.implementation.instrumentation.otel.OTelInitializer;
 import io.clientcore.core.instrumentation.InstrumentationContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
@@ -197,7 +198,12 @@ public class OTelSpanContext implements InstrumentationContext {
         return Span.noop();
     }
 
-    Object getOtelContext() {
+    /**
+     * Gets the OpenTelemetry context.
+     *
+     * @return The OpenTelemetry context.
+     */
+    public Object getOtelContext() {
         return otelContext;
     }
 
@@ -205,7 +211,13 @@ public class OTelSpanContext implements InstrumentationContext {
         return otelSpanContext;
     }
 
-    static Object toOTelSpanContext(InstrumentationContext context) {
+    /**
+     * Converts the given {@link InstrumentationContext} to an OpenTelemetry {@code SpanContext}.
+     *
+     * @param context The {@link InstrumentationContext} to convert.
+     * @return The OpenTelemetry {@code SpanContext}.
+     */
+    public static Object toOTelSpanContext(InstrumentationContext context) {
         if (context instanceof OTelSpanContext) {
             return ((OTelSpanContext) context).otelSpanContext;
         }

@@ -6,8 +6,8 @@ package com.azure.resourcemanager.quota.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.quota.QuotaManager;
 import com.azure.resourcemanager.quota.models.GroupQuotaSubscriptionRequestStatus;
@@ -21,21 +21,21 @@ public final class GroupQuotaSubscriptionRequestsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"subscriptionId\":\"bpybsrfbjf\",\"requestSubmitTime\":\"2021-07-05T13:20:17Z\",\"provisioningState\":\"Invalid\"},\"id\":\"t\",\"name\":\"tpvjzbexilzznfqq\",\"type\":\"vwpm\"}";
+            = "{\"properties\":{\"subscriptionId\":\"xwyjsflhhc\",\"requestSubmitTime\":\"2021-07-31T18:32:18Z\",\"provisioningState\":\"Canceled\"},\"id\":\"xisxyawjoyaqcsl\",\"name\":\"jpkiidzyexznelix\",\"type\":\"nr\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         QuotaManager manager = QuotaManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         GroupQuotaSubscriptionRequestStatus response = manager.groupQuotaSubscriptionRequests()
-            .getWithResponse("rruvwbhsq", "sub", "gjb", com.azure.core.util.Context.NONE)
+            .getWithResponse("uusdttouwa", "oekqvk", "lns", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("bpybsrfbjf", response.properties().subscriptionId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-07-05T13:20:17Z"),
+        Assertions.assertEquals("xwyjsflhhc", response.properties().subscriptionId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-07-31T18:32:18Z"),
             response.properties().requestSubmitTime());
     }
 }

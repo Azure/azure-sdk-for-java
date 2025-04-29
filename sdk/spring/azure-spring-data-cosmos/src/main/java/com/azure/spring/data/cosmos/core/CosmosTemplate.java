@@ -12,12 +12,14 @@ import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosContainerResponse;
 import com.azure.cosmos.models.CosmosDatabaseResponse;
+import com.azure.cosmos.models.CosmosItemIdentity;
 import com.azure.cosmos.models.CosmosItemOperation;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.CosmosReadManyRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.PartitionKeyDefinition;
@@ -856,13 +858,40 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         Assert.notNull(ids, "Id list should not be null");
         Assert.notNull(domainType, "domainType should not be null.");
         Assert.hasText(containerName, "container should not be null, empty or only whitespaces");
-        final List<Object> idList = new ArrayList<>();
-        for (ID id : ids) {
-            idList.add(CosmosUtils.getStringIDValue(id));
+
+        CosmosEntityInformation<?, ?> cosmosEntityInformation = CosmosEntityInformation.getInstance(domainType);
+        String containerPartitionKey = cosmosEntityInformation.getPartitionKeyFieldName();
+        if ("id".equals(containerPartitionKey) && ids.iterator().next() != null) {
+            List<CosmosItemIdentity> idList = new ArrayList<>();
+            for (ID id : ids) {
+                idList.add(new CosmosItemIdentity(new PartitionKey(id), String.valueOf(id)));
+            }
+
+            final CosmosReadManyRequestOptions cosmosReadManyRequestOptions = new CosmosReadManyRequestOptions();
+            containerName = getContainerNameOverride(containerName);
+            cosmosReadManyRequestOptions.setQueryMetricsEnabled(this.queryMetricsEnabled);
+            cosmosReadManyRequestOptions.setIndexMetricsEnabled(this.indexMetricsEnabled);
+            cosmosReadManyRequestOptions.setResponseContinuationTokenLimitInKb(this.responseContinuationTokenLimitInKb);
+
+            return this.getCosmosAsyncClient()
+                .getDatabase(this.getDatabaseName())
+                .getContainer(containerName)
+                .readMany(idList, cosmosReadManyRequestOptions, domainType)
+                .publishOn(CosmosSchedulers.SPRING_DATA_COSMOS_PARALLEL)
+                .onErrorResume(throwable ->
+                    CosmosExceptionUtils.exceptionHandler("Failed to find items", throwable,
+                        this.responseDiagnosticsProcessor))
+                .block().getResults();
+        } else {
+            final List<Object> idList = new ArrayList<>();
+            for (ID id : ids) {
+                idList.add(CosmosUtils.getStringIDValue(id));
+            }
+            final CosmosQuery query = new CosmosQuery(Criteria.getInstance(CriteriaType.IN, "id",
+                Collections.singletonList(idList), Part.IgnoreCaseType.NEVER));
+            return find(query, domainType, containerName);
         }
-        final CosmosQuery query = new CosmosQuery(Criteria.getInstance(CriteriaType.IN, "id",
-            Collections.singletonList(idList), Part.IgnoreCaseType.NEVER));
-        return find(query, domainType, containerName);
+
     }
 
     /**
@@ -1136,7 +1165,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     }
 
     @Override
-    public <T> long sum(SqlQuerySpec querySpec, String containerName) {
+    public long sum(SqlQuerySpec querySpec, String containerName) {
         return this.numeric(querySpec, containerName);
     }
 

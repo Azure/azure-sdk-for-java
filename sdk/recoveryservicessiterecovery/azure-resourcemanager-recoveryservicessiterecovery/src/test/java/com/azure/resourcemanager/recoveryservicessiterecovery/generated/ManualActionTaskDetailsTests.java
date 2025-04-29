@@ -12,21 +12,20 @@ public final class ManualActionTaskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ManualActionTaskDetails model = BinaryData.fromString(
-            "{\"instanceType\":\"ManualActionTaskDetails\",\"name\":\"fajfreprfvmki\",\"instructions\":\"teyrqshi\",\"observation\":\"cejo\"}")
+            "{\"instanceType\":\"ManualActionTaskDetails\",\"name\":\"aahlfr\",\"instructions\":\"klpmvz\",\"observation\":\"reszyaqgom\"}")
             .toObject(ManualActionTaskDetails.class);
-        Assertions.assertEquals("fajfreprfvmki", model.name());
-        Assertions.assertEquals("teyrqshi", model.instructions());
-        Assertions.assertEquals("cejo", model.observation());
+        Assertions.assertEquals("aahlfr", model.name());
+        Assertions.assertEquals("klpmvz", model.instructions());
+        Assertions.assertEquals("reszyaqgom", model.observation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManualActionTaskDetails model = new ManualActionTaskDetails().withName("fajfreprfvmki")
-            .withInstructions("teyrqshi")
-            .withObservation("cejo");
+        ManualActionTaskDetails model
+            = new ManualActionTaskDetails().withName("aahlfr").withInstructions("klpmvz").withObservation("reszyaqgom");
         model = BinaryData.fromObject(model).toObject(ManualActionTaskDetails.class);
-        Assertions.assertEquals("fajfreprfvmki", model.name());
-        Assertions.assertEquals("teyrqshi", model.instructions());
-        Assertions.assertEquals("cejo", model.observation());
+        Assertions.assertEquals("aahlfr", model.name());
+        Assertions.assertEquals("klpmvz", model.instructions());
+        Assertions.assertEquals("reszyaqgom", model.observation());
     }
 }

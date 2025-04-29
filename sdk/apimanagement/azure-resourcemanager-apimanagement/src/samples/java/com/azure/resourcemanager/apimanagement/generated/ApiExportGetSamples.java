@@ -13,7 +13,7 @@ import com.azure.resourcemanager.apimanagement.models.ExportFormat;
 public final class ApiExportGetSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetApiExportInOpenApi2dot0.json
      */
     /**
@@ -30,7 +30,7 @@ public final class ApiExportGetSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementGetApiExportInOpenApi3dot0.json
      */
     /**

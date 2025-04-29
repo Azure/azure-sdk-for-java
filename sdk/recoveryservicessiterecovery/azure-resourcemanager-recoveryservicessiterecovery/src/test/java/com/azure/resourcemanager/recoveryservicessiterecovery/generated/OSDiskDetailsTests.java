@@ -11,21 +11,20 @@ import org.junit.jupiter.api.Assertions;
 public final class OSDiskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OSDiskDetails model = BinaryData
-            .fromString("{\"osVhdId\":\"hrjqfyaytvslyek\",\"osType\":\"niuarlcjiwgsxfai\",\"vhdName\":\"wd\"}")
-            .toObject(OSDiskDetails.class);
-        Assertions.assertEquals("hrjqfyaytvslyek", model.osVhdId());
-        Assertions.assertEquals("niuarlcjiwgsxfai", model.osType());
-        Assertions.assertEquals("wd", model.vhdName());
+        OSDiskDetails model
+            = BinaryData.fromString("{\"osVhdId\":\"rgwlc\",\"osType\":\"hbamyqsok\",\"vhdName\":\"pugzjwdi\"}")
+                .toObject(OSDiskDetails.class);
+        Assertions.assertEquals("rgwlc", model.osVhdId());
+        Assertions.assertEquals("hbamyqsok", model.osType());
+        Assertions.assertEquals("pugzjwdi", model.vhdName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OSDiskDetails model
-            = new OSDiskDetails().withOsVhdId("hrjqfyaytvslyek").withOsType("niuarlcjiwgsxfai").withVhdName("wd");
+        OSDiskDetails model = new OSDiskDetails().withOsVhdId("rgwlc").withOsType("hbamyqsok").withVhdName("pugzjwdi");
         model = BinaryData.fromObject(model).toObject(OSDiskDetails.class);
-        Assertions.assertEquals("hrjqfyaytvslyek", model.osVhdId());
-        Assertions.assertEquals("niuarlcjiwgsxfai", model.osType());
-        Assertions.assertEquals("wd", model.vhdName());
+        Assertions.assertEquals("rgwlc", model.osVhdId());
+        Assertions.assertEquals("hbamyqsok", model.osType());
+        Assertions.assertEquals("pugzjwdi", model.vhdName());
     }
 }

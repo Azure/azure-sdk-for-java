@@ -17,6 +17,7 @@ import com.azure.resourcemanager.containerservice.models.AgentPoolUpgradeSetting
 import com.azure.resourcemanager.containerservice.models.AgentPoolWindowsProfile;
 import com.azure.resourcemanager.containerservice.models.CreationData;
 import com.azure.resourcemanager.containerservice.models.GpuInstanceProfile;
+import com.azure.resourcemanager.containerservice.models.GpuProfile;
 import com.azure.resourcemanager.containerservice.models.KubeletConfig;
 import com.azure.resourcemanager.containerservice.models.KubeletDiskType;
 import com.azure.resourcemanager.containerservice.models.LinuxOSConfig;
@@ -80,6 +81,13 @@ public class ManagedClusterAgentPoolProfileProperties
      * Determines the type of workload a node can run.
      */
     private WorkloadRuntime workloadRuntime;
+
+    /*
+     * A base64-encoded string which will be written to /etc/motd after decoding. This allows customization of the
+     * message of the day for Linux nodes. It must not be specified for Windows nodes. It must be a static string (i.e.,
+     * will be printed raw and not be executed as a script).
+     */
+    private String messageOfTheDay;
 
     /*
      * If this is not specified, a VNET and subnet will be generated and used. If no podSubnetID is specified, this
@@ -310,6 +318,11 @@ public class ManagedClusterAgentPoolProfileProperties
      */
     private AgentPoolSecurityProfile securityProfile;
 
+    /*
+     * GPU settings for the Agent Pool.
+     */
+    private GpuProfile gpuProfile;
+
     /**
      * Creates an instance of ManagedClusterAgentPoolProfileProperties class.
      */
@@ -473,6 +486,30 @@ public class ManagedClusterAgentPoolProfileProperties
      */
     public ManagedClusterAgentPoolProfileProperties withWorkloadRuntime(WorkloadRuntime workloadRuntime) {
         this.workloadRuntime = workloadRuntime;
+        return this;
+    }
+
+    /**
+     * Get the messageOfTheDay property: A base64-encoded string which will be written to /etc/motd after decoding. This
+     * allows customization of the message of the day for Linux nodes. It must not be specified for Windows nodes. It
+     * must be a static string (i.e., will be printed raw and not be executed as a script).
+     * 
+     * @return the messageOfTheDay value.
+     */
+    public String messageOfTheDay() {
+        return this.messageOfTheDay;
+    }
+
+    /**
+     * Set the messageOfTheDay property: A base64-encoded string which will be written to /etc/motd after decoding. This
+     * allows customization of the message of the day for Linux nodes. It must not be specified for Windows nodes. It
+     * must be a static string (i.e., will be printed raw and not be executed as a script).
+     * 
+     * @param messageOfTheDay the messageOfTheDay value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withMessageOfTheDay(String messageOfTheDay) {
+        this.messageOfTheDay = messageOfTheDay;
         return this;
     }
 
@@ -1342,6 +1379,26 @@ public class ManagedClusterAgentPoolProfileProperties
     }
 
     /**
+     * Get the gpuProfile property: GPU settings for the Agent Pool.
+     * 
+     * @return the gpuProfile value.
+     */
+    public GpuProfile gpuProfile() {
+        return this.gpuProfile;
+    }
+
+    /**
+     * Set the gpuProfile property: GPU settings for the Agent Pool.
+     * 
+     * @param gpuProfile the gpuProfile value to set.
+     * @return the ManagedClusterAgentPoolProfileProperties object itself.
+     */
+    public ManagedClusterAgentPoolProfileProperties withGpuProfile(GpuProfile gpuProfile) {
+        this.gpuProfile = gpuProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -1371,6 +1428,9 @@ public class ManagedClusterAgentPoolProfileProperties
         if (securityProfile() != null) {
             securityProfile().validate();
         }
+        if (gpuProfile() != null) {
+            gpuProfile().validate();
+        }
     }
 
     /**
@@ -1387,6 +1447,7 @@ public class ManagedClusterAgentPoolProfileProperties
             this.kubeletDiskType == null ? null : this.kubeletDiskType.toString());
         jsonWriter.writeStringField("workloadRuntime",
             this.workloadRuntime == null ? null : this.workloadRuntime.toString());
+        jsonWriter.writeStringField("messageOfTheDay", this.messageOfTheDay);
         jsonWriter.writeStringField("vnetSubnetID", this.vnetSubnetId);
         jsonWriter.writeStringField("podSubnetID", this.podSubnetId);
         jsonWriter.writeNumberField("maxPods", this.maxPods);
@@ -1427,6 +1488,7 @@ public class ManagedClusterAgentPoolProfileProperties
         jsonWriter.writeJsonField("networkProfile", this.networkProfile);
         jsonWriter.writeJsonField("windowsProfile", this.windowsProfile);
         jsonWriter.writeJsonField("securityProfile", this.securityProfile);
+        jsonWriter.writeJsonField("gpuProfile", this.gpuProfile);
         return jsonWriter.writeEndObject();
     }
 
@@ -1464,6 +1526,8 @@ public class ManagedClusterAgentPoolProfileProperties
                 } else if ("workloadRuntime".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.workloadRuntime
                         = WorkloadRuntime.fromString(reader.getString());
+                } else if ("messageOfTheDay".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfileProperties.messageOfTheDay = reader.getString();
                 } else if ("vnetSubnetID".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.vnetSubnetId = reader.getString();
                 } else if ("podSubnetID".equals(fieldName)) {
@@ -1567,6 +1631,8 @@ public class ManagedClusterAgentPoolProfileProperties
                 } else if ("securityProfile".equals(fieldName)) {
                     deserializedManagedClusterAgentPoolProfileProperties.securityProfile
                         = AgentPoolSecurityProfile.fromJson(reader);
+                } else if ("gpuProfile".equals(fieldName)) {
+                    deserializedManagedClusterAgentPoolProfileProperties.gpuProfile = GpuProfile.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

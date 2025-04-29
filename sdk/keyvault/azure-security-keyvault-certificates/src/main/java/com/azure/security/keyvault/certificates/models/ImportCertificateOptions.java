@@ -12,7 +12,6 @@ import java.util.Objects;
  * Represents the configuration used to import a certificate in the key vault.
  */
 public final class ImportCertificateOptions {
-
     /**
      * The file location of the certificate.
      */
@@ -24,8 +23,7 @@ public final class ImportCertificateOptions {
     private final String name;
 
     /**
-     * If the private key in base64EncodedCertificate is encrypted, the
-     * password used for encryption.
+     * If the private key in base64EncodedCertificate is encrypted, the password used for encryption.
      */
     private String password;
 
@@ -45,9 +43,16 @@ public final class ImportCertificateOptions {
     private Map<String, String> tags;
 
     /**
-     * Creates instance of CertificateImportOptions.
+     * Determines whether the order of the certificates in the certificate chain is to be preserved.
+     */
+    private Boolean certificateOrderPreserved;
+
+    /**
+     * Creates instance of {@link  ImportCertificateOptions}.
+     *
      * @param name The name of the key.
-     * @param certificate The PFX or PEM formatted value of the certificate containing both the x509 certificates and the private key.
+     * @param certificate The PFX or PEM formatted value of the certificate containing both the x509 certificates and
+     * the private key.
      */
     public ImportCertificateOptions(String name, byte[] certificate) {
         Objects.requireNonNull(certificate, "The certificate parameter cannot be null.");
@@ -56,9 +61,10 @@ public final class ImportCertificateOptions {
     }
 
     /**
-     * Set the enabled status.
+     * Set a value indicating whether the certificate is enabled.
+     *
      * @param enabled The enabled status to set.
-     * @return the CertificateImportOptions itself
+     * @return The updated {@link ImportCertificateOptions} object.
      */
     public ImportCertificateOptions setEnabled(Boolean enabled) {
         this.enabled = enabled;
@@ -66,9 +72,9 @@ public final class ImportCertificateOptions {
     }
 
     /**
-     * Get the enabled status.
+     * Get a value indicating whether the certificate is enabled.
      *
-     * @return the enabled status
+     * @return The enabled status.
      */
     public Boolean isEnabled() {
         return this.enabled;
@@ -76,7 +82,8 @@ public final class ImportCertificateOptions {
 
     /**
      * Get the management policy for the certificate.
-     * @return the management policy
+     *
+     * @return The management policy.
      */
     public CertificatePolicy getPolicy() {
         return this.policy;
@@ -84,8 +91,9 @@ public final class ImportCertificateOptions {
 
     /**
      * Set the management policy for the certificate.
+     *
      * @param policy the management policy for the certificate
-     * @return the updated CertificateImportOptions itself
+     * @return The updated {@link ImportCertificateOptions} object.
      */
     public ImportCertificateOptions setPolicy(CertificatePolicy policy) {
         this.policy = policy;
@@ -93,9 +101,10 @@ public final class ImportCertificateOptions {
     }
 
     /**
-     * Set the application specific maetadata.
+     * Set the application specific metadata.
+     *
      * @param tags The metadata to set.
-     * @return the updated CertificateImportOptions itself
+     * @return The updated {@link ImportCertificateOptions} object.
      */
     public ImportCertificateOptions setTags(Map<String, String> tags) {
         this.tags = tags;
@@ -105,7 +114,7 @@ public final class ImportCertificateOptions {
     /**
      * Get the tags associated with the secret.
      *
-     * @return the value of the tags.
+     * @return The value of the tags.
      */
     public Map<String, String> getTags() {
         return this.tags;
@@ -113,8 +122,9 @@ public final class ImportCertificateOptions {
 
     /**
      * Set the password for encrypting the certificate, if its encrypted.
+     *
      * @param password The password used to encrypt the certificate.
-     * @return the updated CertificateImportOptions itself
+     * @return The updated {@link ImportCertificateOptions} object.
      */
     public ImportCertificateOptions setPassword(String password) {
         this.password = password;
@@ -123,7 +133,7 @@ public final class ImportCertificateOptions {
 
     /**
      * Get the password for encrypting the certificate, if its encrypted.
-     * @return the password
+     * @return The password.
      */
     public String getPassword() {
         return this.password;
@@ -131,7 +141,8 @@ public final class ImportCertificateOptions {
 
     /**
      * Get the name of the certificate.
-     * @return the name of the certificate.
+     *
+     * @return The name of the certificate.
      */
     public String getName() {
         return this.name;
@@ -139,9 +150,31 @@ public final class ImportCertificateOptions {
 
     /**
      * Get the value of the certificate.
-     * @return the value of the certificate.
+     *
+     * @return The value of the certificate.
      */
     public byte[] getCertificate() {
         return CoreUtils.clone(this.certificate);
+    }
+
+    /**
+     * Set a value indicating whether the order of the certificates in the certificate chain is preserved.
+     *
+     * @param certificateOrderPreserved The certificate order preserved status to set.
+     * @return The updated {@link ImportCertificateOptions} object.
+     */
+    public ImportCertificateOptions setCertificateOrderPreserved(Boolean certificateOrderPreserved) {
+        this.certificateOrderPreserved = certificateOrderPreserved;
+
+        return this;
+    }
+
+    /**
+     * Get a value indicating whether the order of the certificates in the certificate chain is preserved.
+     *
+     * @return The certificate order preserved status.
+     */
+    public Boolean isCertificateOrderPreserved() {
+        return this.certificateOrderPreserved;
     }
 }

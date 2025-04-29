@@ -32,10 +32,16 @@
 # ######## Core Libraries ########
 
 # PRLabel: %Azure.Core
-/sdk/core/                                           @alzimmermsft @srnagar @anuchandy @lmolkova @vcolin7 @mssfang @jonathangiles @billwert
+/sdk/core/                                           @alzimmermsft @samvaity @srnagar @anuchandy @lmolkova @vcolin7 @mssfang @jonathangiles @billwert
 
 # ServiceLabel: %Azure.Core
-# AzureSdkOwners:                                    @alzimmermsft
+# AzureSdkOwners:                                    @alzimmermsft @samvaity
+
+# PRLabel: %Azure.Core.V2
+/sdk/core-v2/                                         @alzimmermsft @samvaity @srnagar @anuchandy @lmolkova @vcolin7 @mssfang @jonathangiles @billwert
+
+# ServiceLabel: %Azure.Core.V2
+# AzureSdkOwners:                                    @alzimmermsft @samvaity
 
 # PRLabel: %Azure.Core.AMQP
 /sdk/core/azure-core-amqp/                           @anuchandy @conniey @lmolkova
@@ -48,7 +54,7 @@
 
 # ServiceLabel: %OpenTelemetry
 # AzureSdkOwners:                                    @lmolkova
-# ServiceOwners:                                     @cijothomas @reyang @rajkumar-rangaraj @TimothyMothra @vishweshbankwar @ramthi
+# ServiceOwners:                                     @trask @ramthi @jeanbisutti @harsimar @rajkumar-rangaraj @TimothyMothra @xiang17
 
 # PRLabel: %Azure.Core
 /sdk/parents/                                        @alzimmermsft @srnagar @jonathangiles @samvaity
@@ -116,9 +122,6 @@
 # ServiceLabel: %ARO
 # ServiceOwners:                                     @mjudeikis @jim-minter @julienstroheker @amanohar
 
-# PRLabel: %graalvm
-/sdk/aot/                                            @srnagar @jonathangiles
-
 # ServiceLabel: %graalvm
 # AzureSdkOwners:                                    @srnagar
 
@@ -157,9 +160,6 @@
 
 # ServiceLabel: %Batch
 # ServiceOwners:                                     @mksuni @bgklein @mscurrell @cRui861 @paterasMSFT @gingi @dpwatrous
-
-# ServiceLabel: %BatchAI
-# ServiceOwners:                                     @matthchr
 
 # ServiceLabel: %Billing
 # ServiceOwners:                                     @cabbpt
@@ -268,13 +268,13 @@
 /sdk/communication/azure-communication-callingserver/  @minwoolee-msft
 
 # PRLabel: %Communication - Call Automation
-/sdk/communication/azure-communication-callautomation/ @juntuchen-msft @cochi2
+/sdk/communication/azure-communication-callautomation/ @juntuchen-msft @minwoolee-msft @fhaghbin-msft
 
 # PRLabel: %Communication - Chat
 /sdk/communication/azure-communication-chat/           @ankitarorabit @minnieliu @Azure/azure-sdk-communication-code-reviewers
 
 # PRLabel: %Communication - Email
-/sdk/communication/azure-communication-email/          @yogeshmo
+/sdk/communication/azure-communication-email/          @kagbakpem @Azure/azure-sdk-write-communication
 
 # PRLabel: %Communication - Identity
 /sdk/communication/azure-communication-identity/       @Azure/acs-identity-sdk @AikoBB @maximrytych-ms @mjafferi-msft
@@ -283,7 +283,7 @@
 /sdk/communication/azure-communication-common/         @Azure/acs-identity-sdk @AikoBB @maximrytych-ms @mjafferi-msft
 
 # PRLabel: %Communication - Phone Numbers
-/sdk/communication/azure-communication-phonenumbers/   @miguhern @whisper6284 @RoyHerrod @danielav7
+/sdk/communication/azure-communication-phonenumbers/   @Arazan @whisper6284 @danielortega-msft @sofiar-msft
 
 # PRLabel: %Communication - SMS
 /sdk/communication/azure-communication-sms/            @DimaKolomiiets @gfeitosa-msft @besh2014 @phermanov-msft @ilyapaliakou-msft
@@ -459,12 +459,9 @@
 # PRLabel: %Event Hubs
 /sdk/eventhubs/microsoft-azure-eventhubs-eph/        @sjkwak
 
-# PRLabel: %Event Hubs
-/sdk/eventhubs/microsoft-azure-eventhubs-extensions/ @sjkwak
-
 # ServiceLabel: %Health Deidentification
 # PRLabel: %Health Deidentification
-/sdk/healthdataaiservices/                           @GrahamMThomas @alexathomases @billwert
+/sdk/healthdataaiservices/                           @GrahamMThomas @alexathomases @billwert @Azure/healthdatadeidentification
 
 # PRLabel: %Event Hubs
 /sdk/eventhubs/microsoft-azure-eventhubs/            @sjkwak
@@ -536,7 +533,7 @@
 # ServiceOwners:                                     @minamnmik
 
 # ServiceLabel: %Maps
-/sdk/maps/                                           @dubiety
+/sdk/maps/                                           @dubiety @andykao1213
 
 # ServiceLabel: %Managed Identity
 # ServiceOwners:                                     @varunkch
@@ -590,11 +587,11 @@
 # ServiceLabel: %MySQL
 # ServiceOwners:                                     @ambhatna @savjani
 
-# PRLabel:  %OpenTelemetry
+# PRLabel:  %Monitor - Autoconfigure
 /sdk/monitor/azure-monitor-opentelemetry-exporter/   @trask @ramthi @heyams @jeanbisutti @harsimar
 
-# PRLabel:  %OpenTelemetry
-/sdk/monitor/azure-monitor-opentelemetry-autoconfigure/   @trask @ramthi @heyams @jeanbisutti @harsimar
+# PRLabel:  %Monitor - Autoconfigure
+/sdk/monitor/azure-monitor-opentelemetry-autoconfigure/   @trask @ramthi @heyams @jeanbisutti @harsimar @rajkumar-rangaraj @TimothyMothra @xiang17
 
 # ServiceLabel: %Network
 # ServiceOwners:                                     @aznetsuppgithub
@@ -661,6 +658,9 @@
 
 # PRLabel: %OpenAI
 /sdk/openai/azure-ai-openai-realtime/              @brandom-msft @jpalvarezl @mssfang
+
+# PRLabel: %OpenAI
+/sdk/openai/azure-ai-openai-stainless/             @brandom-msft @jpalvarezl @mssfang
 
 # ServiceLabel: %Operational Insights
 # ServiceOwners:                                     @AzmonLogA
@@ -780,10 +780,10 @@
 # ServiceOwners:                                     @azureSQLGitHub
 
 # PRLabel: %Storage
-/sdk/storage/                                        @ibrahimrabab @seanmcc-msft @ibrandes @kyleknap @alzimmermsft
+/sdk/storage/                                        @seanmcc-msft @ibrandes @kyleknap @alzimmermsft @gunjansingh-msft
 
 # ServiceLabel:  %Storage
-# AzureSdkOwners:                                    @ibrahimrabab @seanmcc-msft @ibrandes @kyleknap
+# AzureSdkOwners:                                    @seanmcc-msft @ibrandes @kyleknap @gunjansingh-msft
 # ServiceOwners:                                     @xgithubtriage
 
 # ServiceLabel:  %Storsimple
@@ -852,13 +852,13 @@
 /sdk/spring-experimental/                            @rujche @netyyyy @saragluna @moarychan
 
 # PRLabel:  %Monitor - Spring
-/sdk/spring/spring-cloud-azure-starter-monitor       @jeanbisutti @trask @ramthi @heyams @harsimar @rujche @netyyyy @saragluna @moarychan
+/sdk/spring/spring-cloud-azure-starter-monitor       @jeanbisutti @trask @ramthi @heyams @harsimar @rujche @netyyyy @saragluna @moarychan @rajkumar-rangaraj @TimothyMothra @xiang17
 
 # PRLabel:  %Monitor - Spring
-/sdk/spring/spring-cloud-azure-starter-monitor-test  @jeanbisutti @trask @ramthi @heyams @harsimar @rujche @netyyyy @saragluna @moarychan
+/sdk/spring/spring-cloud-azure-starter-monitor-test  @jeanbisutti @trask @ramthi @heyams @harsimar @rujche @netyyyy @saragluna @moarychan @rajkumar-rangaraj @TimothyMothra @xiang17
 
 # ServiceLabel:  %Monitor - Spring
-# AzureSdkOwners:                                    @jeanbisutti @trask @ramthi @heyams @harsimar
+# AzureSdkOwners:                                    @jeanbisutti @trask @ramthi @heyams @harsimar @rajkumar-rangaraj @TimothyMothra @xiang17
 
 # PRLabel: %azure-spring
 /sdk/spring/spring-cloud-azure-appconfiguration-config*/        @mrm9084 @rujche @netyyyy @saragluna @moarychan

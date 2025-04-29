@@ -6,8 +6,8 @@ package com.azure.resourcemanager.applicationinsights.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.applicationinsights.ApplicationInsightsManager;
 import com.azure.resourcemanager.applicationinsights.models.ApplicationInsightsComponentAnalyticsItem;
@@ -24,25 +24,25 @@ public final class AnalyticsItemsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"Id\":\"syrq\",\"Name\":\"jqhden\",\"Content\":\"ulkpakd\",\"Version\":\"fmjnnawtqa\",\"Scope\":\"user\",\"Type\":\"function\",\"TimeCreated\":\"p\",\"TimeModified\":\"qoweyirdhl\",\"Properties\":{\"functionAlias\":\"gwflq\"}}";
+            = "{\"Id\":\"ihebwtsw\",\"Name\":\"uwfmduragegizvc\",\"Content\":\"elisdjub\",\"Version\":\"bqigkx\",\"Scope\":\"user\",\"Type\":\"recent\",\"TimeCreated\":\"akgacyrcmjdm\",\"TimeModified\":\"of\",\"Properties\":{\"functionAlias\":\"uhrylniofr\"}}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApplicationInsightsManager manager = ApplicationInsightsManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ApplicationInsightsComponentAnalyticsItem response = manager.analyticsItems()
-            .getWithResponse("qtobaxkjeyt", "nlb", ItemScopePath.MYANALYTICS_ITEMS, "kwr", "snkq",
+            .getWithResponse("fdbxiqxeiiqbim", "tmwwi", ItemScopePath.ANALYTICS_ITEMS, "ehfqpofvwbc", "lembnkbwvqvxkdi",
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("syrq", response.id());
-        Assertions.assertEquals("jqhden", response.name());
-        Assertions.assertEquals("ulkpakd", response.content());
+        Assertions.assertEquals("ihebwtsw", response.id());
+        Assertions.assertEquals("uwfmduragegizvc", response.name());
+        Assertions.assertEquals("elisdjub", response.content());
         Assertions.assertEquals(ItemScope.USER, response.scope());
-        Assertions.assertEquals(ItemType.FUNCTION, response.type());
-        Assertions.assertEquals("gwflq", response.properties().functionAlias());
+        Assertions.assertEquals(ItemType.RECENT, response.type());
+        Assertions.assertEquals("uhrylniofr", response.properties().functionAlias());
     }
 }

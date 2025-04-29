@@ -60,7 +60,7 @@ Add the following Maven dependency:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-mixedreality-remoterendering</artifactId>
-    <version>1.1.20</version>
+    <version>1.1.36</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -278,15 +278,6 @@ You can get information about your conversions using the `listConversions` metho
 This method may return conversions which have yet to start, conversions which are running and conversions which have finished.
 In this example, we just list the output URLs of successful conversions started in the last day.
 
-```java readme-sample-listConversions
-for (AssetConversion conversion : client.listConversions()) {
-    if ((conversion.getStatus() == AssetConversionStatus.SUCCEEDED)
-        && (conversion.getCreationTime().isAfter(OffsetDateTime.now().minusDays(1)))) {
-        logger.info("Output Asset URL: {}", conversion.getOutputAssetUrl());
-    }
-}
-```
-
 ### Create a rendering session
 
 We assume that a RemoteRenderingClient has been constructed as described in the [Authenticate the Client](#authenticate-the-client) section.
@@ -403,4 +394,4 @@ For more information see the [Code of Conduct FAQ](https://opensource.microsoft.
 [troubleshoot]: https://learn.microsoft.com/azure/remote-rendering/resources/troubleshoot
 [api_reference_doc]: https://learn.microsoft.com/rest/api/mixedreality/
 
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fmixedreality%2Fazure-mixedreality-remoterendering%2FREADME.png)
+

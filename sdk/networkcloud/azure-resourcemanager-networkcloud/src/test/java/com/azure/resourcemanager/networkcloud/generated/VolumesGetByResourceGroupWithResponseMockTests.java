@@ -6,8 +6,8 @@ package com.azure.resourcemanager.networkcloud.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.networkcloud.NetworkCloudManager;
 import com.azure.resourcemanager.networkcloud.models.Volume;
@@ -21,23 +21,23 @@ public final class VolumesGetByResourceGroupWithResponseMockTests {
     @Test
     public void testGetByResourceGroupWithResponse() throws Exception {
         String responseStr
-            = "{\"extendedLocation\":{\"name\":\"tlepowavvqxua\",\"type\":\"g\"},\"properties\":{\"attachedTo\":[\"ulynkgfcfd\",\"uws\",\"kxx\"],\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"uulriqbyokvj\",\"provisioningState\":\"Provisioning\",\"serialNumber\":\"x\",\"sizeMiB\":1914561130405499807},\"location\":\"lttfyhc\",\"tags\":{\"fpbpgnrholhujbfw\":\"suoardnagttp\",\"whdmcvhtbbz\":\"iplkysolsyjprxs\",\"ihotjecohmxv\":\"hfvhuwzbxpcqz\",\"xwieexuyade\":\"lrrskap\"},\"id\":\"ltfokyksyim\",\"name\":\"ccgrvkcxzznn\",\"type\":\"i\"}";
+            = "{\"extendedLocation\":{\"name\":\"bxwie\",\"type\":\"xuy\"},\"properties\":{\"attachedTo\":[\"r\",\"tfo\",\"yksyimyccgrvkcx\"],\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"uiferse\",\"provisioningState\":\"Failed\",\"serialNumber\":\"rkjguwrjmwvvbt\",\"sizeMiB\":3201866822697573280},\"location\":\"ximwgxqldeko\",\"tags\":{\"h\":\"xieqfky\",\"pbyynvskpajbm\":\"wvjaq\",\"ccwkqmtx\":\"eumexmjbxc\"},\"id\":\"p\",\"name\":\"qis\",\"type\":\"rpilgftrqrejdaah\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetworkCloudManager manager = NetworkCloudManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         Volume response = manager.volumes()
-            .getByResourceGroupWithResponse("ucbdaom", "wiinjdllw", com.azure.core.util.Context.NONE)
+            .getByResourceGroupWithResponse("zgihotje", "ohmxvvlrrska", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("lttfyhc", response.location());
-        Assertions.assertEquals("suoardnagttp", response.tags().get("fpbpgnrholhujbfw"));
-        Assertions.assertEquals("tlepowavvqxua", response.extendedLocation().name());
-        Assertions.assertEquals("g", response.extendedLocation().type());
-        Assertions.assertEquals(1914561130405499807L, response.sizeMiB());
+        Assertions.assertEquals("ximwgxqldeko", response.location());
+        Assertions.assertEquals("xieqfky", response.tags().get("h"));
+        Assertions.assertEquals("bxwie", response.extendedLocation().name());
+        Assertions.assertEquals("xuy", response.extendedLocation().type());
+        Assertions.assertEquals(3201866822697573280L, response.sizeMiB());
     }
 }

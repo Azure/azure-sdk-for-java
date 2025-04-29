@@ -131,16 +131,6 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
 
         Assertions.assertNotNull(kubernetesCluster.tags().get("tag1"));
 
-        // stop
-        kubernetesCluster.stop();
-        kubernetesCluster.refresh();
-        Assertions.assertEquals(Code.STOPPED, kubernetesCluster.powerState().code());
-
-        // start
-        kubernetesCluster.start();
-        kubernetesCluster.refresh();
-        Assertions.assertEquals(Code.RUNNING, kubernetesCluster.powerState().code());
-
         Map<String, String> nodeLables = new HashMap<>(2);
         nodeLables.put("environment", "dev");
         nodeLables.put("app.1", "spring");
@@ -196,6 +186,15 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         Assertions.assertEquals("value2", kubernetesCluster.tags().get("tag2"));
         Assertions.assertFalse(kubernetesCluster.tags().containsKey("tag1"));
 
+        // stop
+        kubernetesCluster.stop();
+        kubernetesCluster.refresh();
+        Assertions.assertEquals(Code.STOPPED, kubernetesCluster.powerState().code());
+
+        // start
+        kubernetesCluster.start();
+        kubernetesCluster.refresh();
+        Assertions.assertEquals(Code.RUNNING, kubernetesCluster.powerState().code());
         // preview feature
         //        // stop agent pool
         //        agentPool.stop();

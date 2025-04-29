@@ -24,7 +24,7 @@ public final class DatabasesCheckNameAvailabilityWithResponseMockTests {
     @Test
     public void testCheckNameAvailabilityWithResponse() throws Exception {
         String responseStr
-            = "{\"nameAvailable\":true,\"name\":\"jxlyyzglgouwtlm\",\"message\":\"yuojqtobaxk\",\"reason\":\"AlreadyExists\"}";
+            = "{\"nameAvailable\":false,\"name\":\"haowj\",\"message\":\"zvuporqzdfuydz\",\"reason\":\"AlreadyExists\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -34,15 +34,15 @@ public final class DatabasesCheckNameAvailabilityWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CheckNameResult response = manager.databases()
-            .checkNameAvailabilityWithResponse("tgfebwln", "mhyreeudz",
-                new CheckNameRequest().withName("av")
+            .checkNameAvailabilityWithResponse("bcpzgpxtivh", "knidib",
+                new CheckNameRequest().withName("qjxgpnrhgovfgp")
                     .withType(Type.MICROSOFT_KUSTO_CLUSTERS_ATTACHED_DATABASE_CONFIGURATIONS),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals(true, response.nameAvailable());
-        Assertions.assertEquals("jxlyyzglgouwtlm", response.name());
-        Assertions.assertEquals("yuojqtobaxk", response.message());
+        Assertions.assertEquals(false, response.nameAvailable());
+        Assertions.assertEquals("haowj", response.name());
+        Assertions.assertEquals("zvuporqzdfuydz", response.message());
         Assertions.assertEquals(Reason.ALREADY_EXISTS, response.reason());
     }
 }

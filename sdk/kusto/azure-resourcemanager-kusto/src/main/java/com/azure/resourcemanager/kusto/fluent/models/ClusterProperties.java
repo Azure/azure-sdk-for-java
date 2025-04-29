@@ -22,6 +22,7 @@ import com.azure.resourcemanager.kusto.models.PublicNetworkAccess;
 import com.azure.resourcemanager.kusto.models.State;
 import com.azure.resourcemanager.kusto.models.TrustedExternalTenant;
 import com.azure.resourcemanager.kusto.models.VirtualNetworkConfiguration;
+import com.azure.resourcemanager.kusto.models.ZoneStatus;
 import java.io.IOException;
 import java.util.List;
 
@@ -139,6 +140,11 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
     private List<String> allowedFqdnList;
 
     /*
+     * List of callout policies for egress from Cluster.
+     */
+    private List<CalloutPolicyInner> calloutPolicies;
+
+    /*
      * Indicates what public IP type to create - IPv4 (default), or DualStack (both IPv4 and IPv6)
      */
     private PublicIpType publicIpType;
@@ -157,6 +163,11 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
      * Properties of the peer cluster involved in a migration to/from this cluster.
      */
     private MigrationClusterProperties migrationCluster;
+
+    /*
+     * Indicates whether the cluster is zonal or non-zonal.
+     */
+    private ZoneStatus zoneStatus;
 
     /**
      * Creates an instance of ClusterProperties class.
@@ -536,6 +547,26 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
     }
 
     /**
+     * Get the calloutPolicies property: List of callout policies for egress from Cluster.
+     * 
+     * @return the calloutPolicies value.
+     */
+    public List<CalloutPolicyInner> calloutPolicies() {
+        return this.calloutPolicies;
+    }
+
+    /**
+     * Set the calloutPolicies property: List of callout policies for egress from Cluster.
+     * 
+     * @param calloutPolicies the calloutPolicies value to set.
+     * @return the ClusterProperties object itself.
+     */
+    public ClusterProperties withCalloutPolicies(List<CalloutPolicyInner> calloutPolicies) {
+        this.calloutPolicies = calloutPolicies;
+        return this;
+    }
+
+    /**
      * Get the publicIpType property: Indicates what public IP type to create - IPv4 (default), or DualStack (both IPv4
      * and IPv6).
      * 
@@ -596,6 +627,15 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
     }
 
     /**
+     * Get the zoneStatus property: Indicates whether the cluster is zonal or non-zonal.
+     * 
+     * @return the zoneStatus value.
+     */
+    public ZoneStatus zoneStatus() {
+        return this.zoneStatus;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -618,6 +658,9 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
         }
         if (acceptedAudiences() != null) {
             acceptedAudiences().forEach(e -> e.validate());
+        }
+        if (calloutPolicies() != null) {
+            calloutPolicies().forEach(e -> e.validate());
         }
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
@@ -655,6 +698,8 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
             this.restrictOutboundNetworkAccess == null ? null : this.restrictOutboundNetworkAccess.toString());
         jsonWriter.writeArrayField("allowedFqdnList", this.allowedFqdnList,
             (writer, element) -> writer.writeString(element));
+        jsonWriter.writeArrayField("calloutPolicies", this.calloutPolicies,
+            (writer, element) -> writer.writeJson(element));
         jsonWriter.writeStringField("publicIPType", this.publicIpType == null ? null : this.publicIpType.toString());
         jsonWriter.writeStringField("virtualClusterGraduationProperties", this.virtualClusterGraduationProperties);
         return jsonWriter.writeEndObject();
@@ -726,6 +771,10 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
                 } else if ("allowedFqdnList".equals(fieldName)) {
                     List<String> allowedFqdnList = reader.readArray(reader1 -> reader1.getString());
                     deserializedClusterProperties.allowedFqdnList = allowedFqdnList;
+                } else if ("calloutPolicies".equals(fieldName)) {
+                    List<CalloutPolicyInner> calloutPolicies
+                        = reader.readArray(reader1 -> CalloutPolicyInner.fromJson(reader1));
+                    deserializedClusterProperties.calloutPolicies = calloutPolicies;
                 } else if ("publicIPType".equals(fieldName)) {
                     deserializedClusterProperties.publicIpType = PublicIpType.fromString(reader.getString());
                 } else if ("virtualClusterGraduationProperties".equals(fieldName)) {
@@ -736,6 +785,8 @@ public final class ClusterProperties implements JsonSerializable<ClusterProperti
                     deserializedClusterProperties.privateEndpointConnections = privateEndpointConnections;
                 } else if ("migrationCluster".equals(fieldName)) {
                     deserializedClusterProperties.migrationCluster = MigrationClusterProperties.fromJson(reader);
+                } else if ("zoneStatus".equals(fieldName)) {
+                    deserializedClusterProperties.zoneStatus = ZoneStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

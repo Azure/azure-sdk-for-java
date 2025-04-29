@@ -16,25 +16,25 @@ public final class CurrentUsagesBaseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CurrentUsagesBaseInner model = BinaryData.fromString(
-            "{\"properties\":{\"usages\":{\"value\":206207279,\"usagesType\":\"Combined\"},\"unit\":\"hrk\",\"name\":{\"value\":\"wwzjuqkhrsajiwku\",\"localizedValue\":\"oskg\"},\"resourceType\":\"auu\",\"quotaPeriod\":\"jmvxie\",\"isQuotaApplicable\":false,\"properties\":\"dataidyjrrfbyaosvexc\"},\"id\":\"onpc\",\"name\":\"hocohslkev\",\"type\":\"eggzfb\"}")
+            "{\"properties\":{\"usages\":{\"value\":1709538743,\"usagesType\":\"Combined\"},\"unit\":\"pfhyhl\",\"name\":{\"value\":\"mopjmc\",\"localizedValue\":\"tuo\"},\"resourceType\":\"hfuiuaodsfc\",\"quotaPeriod\":\"vxodpu\",\"isQuotaApplicable\":true,\"properties\":\"datazydagfuaxbezyiuo\"},\"id\":\"ktwh\",\"name\":\"dxwzywqsmbsurexi\",\"type\":\"o\"}")
             .toObject(CurrentUsagesBaseInner.class);
-        Assertions.assertEquals(206207279, model.properties().usages().value());
+        Assertions.assertEquals(1709538743, model.properties().usages().value());
         Assertions.assertEquals(UsagesTypes.COMBINED, model.properties().usages().usagesType());
-        Assertions.assertEquals("wwzjuqkhrsajiwku", model.properties().name().value());
-        Assertions.assertEquals("auu", model.properties().resourceType());
+        Assertions.assertEquals("mopjmc", model.properties().name().value());
+        Assertions.assertEquals("hfuiuaodsfc", model.properties().resourceType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CurrentUsagesBaseInner model = new CurrentUsagesBaseInner().withProperties(new UsagesProperties()
-            .withUsages(new UsagesObject().withValue(206207279).withUsagesType(UsagesTypes.COMBINED))
-            .withName(new ResourceName().withValue("wwzjuqkhrsajiwku"))
-            .withResourceType("auu")
-            .withProperties("dataidyjrrfbyaosvexc"));
+            .withUsages(new UsagesObject().withValue(1709538743).withUsagesType(UsagesTypes.COMBINED))
+            .withName(new ResourceName().withValue("mopjmc"))
+            .withResourceType("hfuiuaodsfc")
+            .withProperties("datazydagfuaxbezyiuo"));
         model = BinaryData.fromObject(model).toObject(CurrentUsagesBaseInner.class);
-        Assertions.assertEquals(206207279, model.properties().usages().value());
+        Assertions.assertEquals(1709538743, model.properties().usages().value());
         Assertions.assertEquals(UsagesTypes.COMBINED, model.properties().usages().usagesType());
-        Assertions.assertEquals("wwzjuqkhrsajiwku", model.properties().name().value());
-        Assertions.assertEquals("auu", model.properties().resourceType());
+        Assertions.assertEquals("mopjmc", model.properties().name().value());
+        Assertions.assertEquals("hfuiuaodsfc", model.properties().resourceType());
     }
 }

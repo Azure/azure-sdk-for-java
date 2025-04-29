@@ -20,7 +20,7 @@ import java.util.Map;
 public final class ApiManagementServiceUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateServiceDisableTls10.json
      */
     /**
@@ -41,7 +41,7 @@ public final class ApiManagementServiceUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateServiceToNewVnetAndAZs.json
      */
     /**
@@ -58,23 +58,23 @@ public final class ApiManagementServiceUpdateSamples {
             .withSku(new ApiManagementServiceSkuProperties().withName(SkuType.PREMIUM).withCapacity(3))
             .withZones(Arrays.asList("1", "2", "3"))
             .withPublicIpAddressId(
-                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/publicip-apim-japan-east")
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/publicip-apim-japan-east")
             .withVirtualNetworkConfiguration(new VirtualNetworkConfiguration().withSubnetResourceId(
-                "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet-apim-japaneast/subnets/apim2"))
+                "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/vnet-apim-japaneast/subnets/apim2"))
             .withAdditionalLocations(Arrays.asList(new AdditionalLocation().withLocation("Australia East")
                 .withSku(new ApiManagementServiceSkuProperties().withName(SkuType.PREMIUM).withCapacity(3))
                 .withZones(Arrays.asList("1", "2", "3"))
                 .withPublicIpAddressId(
-                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/apim-australia-east-publicip")
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/publicIPAddresses/apim-australia-east-publicip")
                 .withVirtualNetworkConfiguration(new VirtualNetworkConfiguration().withSubnetResourceId(
-                    "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/apimaeavnet/subnets/default"))))
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworks/apimaeavnet/subnets/default"))))
             .withVirtualNetworkType(VirtualNetworkType.EXTERNAL)
             .apply();
     }
 
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementUpdateServicePublisherDetails.json
      */
     /**
