@@ -59,10 +59,9 @@ public class HttpRequestCustomRecipe extends Recipe {
 
             @Override
             public J visitNewClass(J.NewClass newClass, ExecutionContext ctx) {
-                /*
-                Before: com.azure.core.http.HttpRequest <constructor>(com.azure.core.http.HttpMethod, java.lang.String)
-                fter: io.clientcore.core.http.models.HttpRequest <constructor>().setMethod(io.clientcore.core.http.models.HttpMethod).setUri(java.lang.String)
-                */
+                
+                // Before: com.azure.core.http.HttpRequest <constructor>(com.azure.core.http.HttpMethod, java.lang.String)
+                // After: io.clientcore.core.http.models.HttpRequest <constructor>().setMethod(io.clientcore.core.http.models.HttpMethod).setUri(java.lang.String)
                 J n = super.visitNewClass(newClass, ctx);
 
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest <constructor>(com.azure.core.http.HttpMethod, java.lang.String)");
@@ -77,10 +76,8 @@ public class HttpRequestCustomRecipe extends Recipe {
                     return n;
                 }
 
-                /*
-                Before: com.azure.core.http.HttpRequest <constructor>(com.azure.core.httpHttpMethod, java.net.URL)
-                After: io.clientcore.core.http.models.HttpRequest <constructor>().setMethod(HttpMethod).setUri(java.net.URL.toUri())
-                 */                
+                // Before: com.azure.core.http.HttpRequest <constructor>(com.azure.core.httpHttpMethod, java.net.URL)
+                // After: io.clientcore.core.http.models.HttpRequest <constructor>().setMethod(HttpMethod).setUri(java.net.URL.toUri())
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest <constructor>(com.azure.core.http.HttpMethod, java.net.URL)");
                 if (methodMatcher.matches((J.NewClass) n)) {
                     replacementTemplate = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder("new HttpRequest()\n.setMethod(#{any(io.clientcore.core.http.models.HttpMethod)})\n.setUri(#{any(java.net.URL)}.toURI())")
@@ -93,10 +90,8 @@ public class HttpRequestCustomRecipe extends Recipe {
                     return n;
                 }
 
-                /*
-                Before: com.azure.core.http.HttpRequest <constructor>(com.azure.core.http.HttpMethod, java.net.URI, io.clientcore.core.http.models.HttpHeaders)
-                After: io.clientcore.core.http.models.HttpRequest <constructor>().setMethod(io.clientcore.core.http.models.HttpMethod).setUri(java.net.URI).setHeaders(io.clientcore.core.http.models.HttpHeaders)
-                 */                
+                // Before: com.azure.core.http.HttpRequest <constructor>(com.azure.core.http.HttpMethod, java.net.URI, io.clientcore.core.http.models.HttpHeaders)
+                // After: io.clientcore.core.http.models.HttpRequest <constructor>().setMethod(io.clientcore.core.http.models.HttpMethod).setUri(java.net.URI).setHeaders(io.clientcore.core.http.models.HttpHeaders)
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest <constructor>(com.azure.core.http.HttpMethod, java.net.URL, com.azure.core.http.HttpHeaders)");
                 if (methodMatcher.matches((J.NewClass) n)) {
                     replacementTemplate = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder("new HttpRequest()\n.setMethod(#{any(io.clientcore.core.http.models.HttpMethod)})\n.setUri(#{any(java.net.URL)}.toURI())\n.setHeaders(#{any(io.clientcore.core.http.models.HttpHeaders)})")
@@ -109,10 +104,8 @@ public class HttpRequestCustomRecipe extends Recipe {
                     return n;
                 }
 
-                /*
-                Before: com.azure.core.http.HttpRequest <constructor>(com.azure.core.http.HttpMethod, java.net.URI, com.azure.core.http.HttpHeaders, com.azure.core.util.BinaryData)
-                After: io.clientcore.core.http.models.HttpRequest <constructor>().setMethod(io.clientcore.core.http.models.HttpMethod).setUri(java.net.URI).setHeaders(io.clientcore.core.http.models.HttpHeaders).setBody(io.clientcore.core.models.binarydata.BinaryData)
-                 */
+                // Before: com.azure.core.http.HttpRequest <constructor>(com.azure.core.http.HttpMethod, java.net.URI, com.azure.core.http.HttpHeaders, com.azure.core.util.BinaryData)
+                // After: io.clientcore.core.http.models.HttpRequest <constructor>().setMethod(io.clientcore.core.http.models.HttpMethod).setUri(java.net.URI).setHeaders(io.clientcore.core.http.models.HttpHeaders).setBody(io.clientcore.core.models.binarydata.BinaryData)
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest <constructor>(com.azure.core.http.HttpMethod, java.net.URL, com.azure.core.http.HttpHeaders, com.azure.core.util.BinaryData)");
                 if (methodMatcher.matches((J.NewClass) n)) {
                     replacementTemplate = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder("new HttpRequest()\n.setMethod(#{any(io.clientcore.core.http.models.HttpMethod)})\n.setUri(#{any(java.net.URL)}.toURI())\n.setHeaders(#{any(io.clientcore.core.http.models.HttpHeaders)})\n.setBody(#{any(io.clientcore.core.models.binarydata.BinaryData)})")
@@ -135,10 +128,8 @@ public class HttpRequestCustomRecipe extends Recipe {
                 MethodMatcher methodMatcher;
                 JavaTemplate replacementTemplate;
                 J n = super.visitMethodInvocation(methodInvocation, ctx);
-                /*           
-                Before: com.azure.core.http.HttpRequest setBody(java.lang.String)
-                After: io.clientcore.core.http.models.HttpRequest setBody(io.clientcore.core.models.binarydata.BinaryData)  
-                */              
+                // Before: com.azure.core.http.HttpRequest setBody(java.lang.String)
+                // After: io.clientcore.core.http.models.HttpRequest setBody(io.clientcore.core.models.binarydata.BinaryData)
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest setBody(java.lang.String)");
                 if (methodMatcher.matches((J.MethodInvocation) n)) {
                     replacementTemplate = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder("setBody(BinaryData.fromString(#{any(java.lang.String)}))")
@@ -153,10 +144,8 @@ public class HttpRequestCustomRecipe extends Recipe {
                     return n;
                 }
 
-                /*
-                Before: com.azure.core.http.HttpRequest setUrl
-                After: io.clientcore.core.http.models.HttpRequest setUri(java.net.URL.toURI())
-                 */
+                // Before: com.azure.core.http.HttpRequest setUrl
+                // After: io.clientcore.core.http.models.HttpRequest setUri(java.net.URL.toURI())
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest setUrl(java.net.URL)");
                 if (methodMatcher.matches((J.MethodInvocation) n, false)) {
                     replacementTemplate = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder("setUri(#{any(java.net.URL)}.toURI())")
@@ -167,10 +156,8 @@ public class HttpRequestCustomRecipe extends Recipe {
                     return n;
                 }
 
-                /*
-                Before: com.azure.core.http.HttpRequest getUrl
-                After: io.clientcore.core.http.models.HttpRequest getUri().toURL()
-                 */
+                // Before: com.azure.core.http.HttpRequest getUrl
+                // After: io.clientcore.core.http.models.HttpRequest getUri().toURL()
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest getUrl()");
                 if (methodMatcher.matches((J.MethodInvocation) n, false)) {
                     replacementTemplate = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder(String.format("%s.getUri().toURL()", ((J.MethodInvocation) n).getSelect().toString()))
@@ -181,10 +168,8 @@ public class HttpRequestCustomRecipe extends Recipe {
                     return n;
                 }
 
-                /*
-                Before: com.azure.core.http.HttpRequest setHeader(java.lang.String, java.lang.String)
-                After: io.clientcore.core.http.models.HttpRequest  setHeaders(getHeaders().set(io.clientcore.core.http.models.HttpHeaderName, java.lang.String))
-                 */
+                // Before: com.azure.core.http.HttpRequest setHeader(java.lang.String, java.lang.String)
+                // After: io.clientcore.core.http.models.HttpRequest  setHeaders(getHeaders().set(io.clientcore.core.http.models.HttpHeaderName, java.lang.String))
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest setHeader(..)");
                 if (methodMatcher.matches((J.MethodInvocation) n, false)) {
                     J variableIdentifier = ((J.MethodInvocation) n).getSelect();
@@ -204,10 +189,8 @@ public class HttpRequestCustomRecipe extends Recipe {
                     return n;
                 }
 
-                /*
-                Before: com.azure.core.http.HttpRequest getBodyAsBinaryData()
-                After: io.clientcore.core.http.models.HttpRequest getBody()
-                 */
+                // Before: com.azure.core.http.HttpRequest getBodyAsBinaryData()
+                // After: io.clientcore.core.http.models.HttpRequest getBody()
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest getBodyAsBinaryData()");
                 if (methodMatcher.matches((J.MethodInvocation) n, false)) {
                     replacementTemplate = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder("getBody()")
@@ -216,10 +199,8 @@ public class HttpRequestCustomRecipe extends Recipe {
                     return n;
                 }
 
-                /*
-                Before: com.azure.core.http.HttpRequest setBody(byte[])
-                After: io.clientcore.core.http.models.HttpRequest setBody(io.clientcore.core.models.binarydata.BinaryData)
-                 */
+                // Before: com.azure.core.http.HttpRequest setBody(byte[])
+                // After: io.clientcore.core.http.models.HttpRequest setBody(io.clientcore.core.models.binarydata.BinaryData)
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest setBody(byte[])");
                 if (methodMatcher.matches((J.MethodInvocation) n, false)) {
                     replacementTemplate = configuredParserJavaTemplateBuilder.getJavaTemplateBuilder("setBody(BinaryData.fromBytes(#{anyArray(byte)})")
@@ -230,10 +211,8 @@ public class HttpRequestCustomRecipe extends Recipe {
                     return n;
                 }
 
-                /*
-                Before: com.azure.core.http.HttpRequest copy()
-                After: io.clientcore.core.http.models.HttpRequest setMethod(io.clientcore.core.http.models.HttpMethod).setUri(java.net.URL.toURI()).setHeaders(io.clientcore.core.http.models.HttpHeaders).setBody(io.clientcore.core.models.binarydata.BinaryData)
-                 */
+                // Before: com.azure.core.http.HttpRequest copy()
+                // After: io.clientcore.core.http.models.HttpRequest setMethod(io.clientcore.core.http.models.HttpMethod).setUri(java.net.URL.toURI()).setHeaders(io.clientcore.core.http.models.HttpHeaders).setBody(io.clientcore.core.models.binarydata.BinaryData)
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpRequest copy()");
                 if (methodMatcher.matches((J.MethodInvocation) n, false)) {
                     J variableIdentifier = ((J.MethodInvocation) n).getSelect();

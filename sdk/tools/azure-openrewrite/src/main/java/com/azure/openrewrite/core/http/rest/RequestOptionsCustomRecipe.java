@@ -31,6 +31,7 @@ public class RequestOptionsCustomRecipe extends Recipe {
     public RequestOptionsCustomRecipe() {
         super();
     }
+    
     @Override
     public String getDisplayName() {
         return "";

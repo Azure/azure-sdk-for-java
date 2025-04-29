@@ -64,17 +64,13 @@ public class HttpResponseCustomRecipe extends Recipe {
 
                 // Migrate azure-core HttpResponse method calls to clientcore Response method calls
 
-                /*
-                Before: int getStatusCode()
-                After: int getStatusCode()
-                 */
+                // Before: int getStatusCode()
+                // After: int getStatusCode()
 
                 // no change needed
 
-                /*
-                Before: String getHeaderValue(java.lang.String)
-                After: String getHeaders().getValue(io.clientcore.core.http.models.HttpHeaderName)
-                 */
+                // Before: String getHeaderValue(java.lang.String)
+                // After: String getHeaders().getValue(io.clientcore.core.http.models.HttpHeaderName)
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpResponse getHeaderValue(java.lang.String)");
                 if (methodMatcher.matches(method, false)) {
                     replacementTemplate = templateBuilder.getJavaTemplateBuilder(String.format("%s.getHeaders().getValue(HttpHeaderName.fromString(#{any(java.lang.String)}))", method.getSelect().toString()))
@@ -84,10 +80,8 @@ public class HttpResponseCustomRecipe extends Recipe {
 
                 }
 
-                /*
-                Before: java.lang.String getHeaderValue(com.azure.core.http.HttpHeaderName)
-                After: String getHeaders().getValue(io.clientcore.core.http.models.HttpHeaderName)
-                 */
+                // Before: java.lang.String getHeaderValue(com.azure.core.http.HttpHeaderName)
+                // After: String getHeaders().getValue(io.clientcore.core.http.models.HttpHeaderName)
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpResponse getHeaderValue(io.clientcore.core.http.models.HttpHeaderName)");
                 if (methodMatcher.matches(method, false)) {
                     replacementTemplate = templateBuilder.getJavaTemplateBuilder(String.format("%s.getHeaders().getValue(#{any(io.clientcore.core.http.models.HttpHeaderName)})", method.getSelect().toString()))
@@ -97,10 +91,8 @@ public class HttpResponseCustomRecipe extends Recipe {
                 }
 
 
-                /*
-                Before: String getHeaderValue(java.lang.String)
-                After: String getHeaders().getValue(io.clientcore.core.http.models.HttpHeaderName)
-                 */
+                // Before: String getHeaderValue(java.lang.String)
+                // After: String getHeaders().getValue(io.clientcore.core.http.models.HttpHeaderName)
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpResponse getHeaderValue(java.lang.String)");
                 if (methodMatcher.matches(method, false)) {
                     replacementTemplate = templateBuilder.getJavaTemplateBuilder("getHeaders().getValue(io.clientcore.core.http.models.HttpHeaderName.fromString(#{any(java.lang.String)}))")
@@ -109,10 +101,8 @@ public class HttpResponseCustomRecipe extends Recipe {
                     return replacementTemplate.apply(updateCursor(method), method.getCoordinates().replaceMethod(), method.getArguments().toArray());
                 }
 
-                /*
-                Before: java.lang.String getHeaderValue(com.azure.core.http.HttpHeaderName)
-                After: String getHeaders().getValue(io.clientcore.core.http.models.HttpHeaderName)
-                 */
+                // Before: java.lang.String getHeaderValue(com.azure.core.http.HttpHeaderName)
+                // After: String getHeaders().getValue(io.clientcore.core.http.models.HttpHeaderName)
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpResponse getHeaderValue(com.azure.core.http.HttpHeaderName)");
                 if (methodMatcher.matches(method, false)) {
                     replacementTemplate = templateBuilder.getJavaTemplateBuilder("getHeaders().getValue(#{any(com.azure.core.http.HttpHeaderName)})")
@@ -121,10 +111,8 @@ public class HttpResponseCustomRecipe extends Recipe {
                     return replacementTemplate.apply(updateCursor(method), method.getCoordinates().replaceMethod(), method.getArguments().toArray());
                 }
 
-                /*
-                Before: BinaryData getBodyAsBinaryData()
-                After: BinaryData BinaryData.fromObject(getValue())
-                 */
+                // Before: BinaryData getBodyAsBinaryData()
+                // After: BinaryData BinaryData.fromObject(getValue())
                 methodMatcher = new MethodMatcher("com.azure.core.http.HttpResponse getBodyAsBinaryData()");
                 if (methodMatcher.matches(method, false)) {
                     replacementTemplate = templateBuilder.getJavaTemplateBuilder(String.format("BinaryData.fromObject(%s.getValue())", method.getSelect().toString()))
