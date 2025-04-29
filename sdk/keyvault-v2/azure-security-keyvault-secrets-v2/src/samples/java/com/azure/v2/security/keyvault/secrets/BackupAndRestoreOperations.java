@@ -22,7 +22,7 @@ import java.time.OffsetDateTime;
  */
 public class BackupAndRestoreOperations {
     /**
-     * Authenticates with the key vault and shows how to backup and restore secrets in the key vault.
+     * Authenticates with the key vault and shows how to back up and restore secrets in the key vault.
      *
      * @param args Unused. Arguments to the program.
      * @throws IllegalArgumentException when invalid key vault endpoint is passed.
