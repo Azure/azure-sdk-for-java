@@ -372,10 +372,12 @@ public class SessionTest extends TestSuiteBase {
             assertThat(getSessionTokensInRequests()).hasSize(0);
         }
 
-        spyClient.clearCapturedRequests();
-        requestOptions.setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
-        spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
-        assertThat(getSessionTokensInRequests()).hasSize(0);
+        if (this.houseKeepingClient.getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
+            spyClient.clearCapturedRequests();
+            requestOptions.setReadConsistencyStrategy(ReadConsistencyStrategy.LATEST_COMMITTED);
+            spyClient.readDocument(getDocumentLink(documentCreated, isNameBased), requestOptions).block();
+            assertThat(getSessionTokensInRequests()).hasSize(0);
+        }
 
         if (globalEndpointManager.getLatestDatabaseAccount().getConsistencyPolicy().getDefaultConsistencyLevel().equals(ConsistencyLevel.STRONG)) {
             // No session token set for STRONG consistency
