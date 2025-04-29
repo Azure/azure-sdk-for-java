@@ -4,13 +4,12 @@
 package com.azure.communication.phonenumbers.models;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * The parameters for the create or update reservation operation.
  */
 public class CreateOrUpdateReservationOptions {
-    private UUID reservationId;
+    private String reservationId;
     private List<AvailablePhoneNumber> phoneNumbersToAdd;
     private List<String> phoneNumbersToRemove;
 
@@ -21,7 +20,7 @@ public class CreateOrUpdateReservationOptions {
      * @param phoneNumbersToAdd The list of phone numbers to add to the reservation.
      * @param phoneNumbersToRemove The list of phone numbers to remove from the reservation.
      */
-    public CreateOrUpdateReservationOptions(UUID reservationId, List<AvailablePhoneNumber> phoneNumbersToAdd,
+    public CreateOrUpdateReservationOptions(String reservationId, List<AvailablePhoneNumber> phoneNumbersToAdd,
         List<String> phoneNumbersToRemove) {
         this.reservationId = reservationId;
         this.phoneNumbersToAdd = phoneNumbersToAdd;
@@ -33,7 +32,7 @@ public class CreateOrUpdateReservationOptions {
      * 
      * @return the reservationId value.
      */
-    public UUID getReservationId() {
+    public String getReservationId() {
         return reservationId;
     }
 
@@ -43,7 +42,7 @@ public class CreateOrUpdateReservationOptions {
      * @param reservationId the reservationId value to set.
      * @return the CreateOrUpdateReservationOptions itself.
      */
-    public CreateOrUpdateReservationOptions setReservationId(UUID reservationId) {
+    public CreateOrUpdateReservationOptions setReservationId(String reservationId) {
         this.reservationId = reservationId;
         return this;
     }

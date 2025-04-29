@@ -158,9 +158,9 @@ public final class PhoneNumbersClient {
      * @throws NullPointerException if {@code reservationId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PhoneNumbersReservation getReservation(UUID reservationId) {
+    public PhoneNumbersReservation getReservation(String reservationId) {
         Objects.requireNonNull(reservationId, "'reservationId' cannot be null.");
-        return client.getReservation(reservationId);
+        return client.getReservation(UUID.fromString(reservationId));
     }
 
     /**
@@ -551,7 +551,7 @@ public final class PhoneNumbersClient {
      * @throws NullPointerException if {@code searchId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PhoneNumberOperation, PurchaseReservationResult> beginReservationPurchase(UUID reservationId) {
+    public SyncPoller<PhoneNumberOperation, PurchaseReservationResult> beginReservationPurchase(String reservationId) {
         return asyncClient.beginPurchaseReservation(reservationId).getSyncPoller();
     }
 
@@ -570,7 +570,7 @@ public final class PhoneNumbersClient {
      * @throws NullPointerException if {@code searchId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PhoneNumberOperation, PurchaseReservationResult> beginReservationPurchase(UUID reservationId,
+    public SyncPoller<PhoneNumberOperation, PurchaseReservationResult> beginReservationPurchase(String reservationId,
         Boolean agreeToNotResell) {
         return asyncClient.beginPurchaseReservation(reservationId, agreeToNotResell).getSyncPoller();
     }
@@ -590,7 +590,7 @@ public final class PhoneNumbersClient {
      * @throws NullPointerException if {@code searchId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PhoneNumberOperation, PurchaseReservationResult> beginReservationPurchase(UUID reservationId,
+    public SyncPoller<PhoneNumberOperation, PurchaseReservationResult> beginReservationPurchase(String reservationId,
         Context context) {
         return asyncClient.beginPurchaseReservation(reservationId, false, context).getSyncPoller();
     }
@@ -611,7 +611,7 @@ public final class PhoneNumbersClient {
      * @throws NullPointerException if {@code searchId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PhoneNumberOperation, PurchaseReservationResult> beginReservationPurchase(UUID reservationId,
+    public SyncPoller<PhoneNumberOperation, PurchaseReservationResult> beginReservationPurchase(String reservationId,
         Boolean agreeToNotResell, Context context) {
         return asyncClient.beginPurchaseReservation(reservationId, agreeToNotResell, context).getSyncPoller();
     }
@@ -1047,11 +1047,12 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PhoneNumbersReservation createOrUpdateReservation(CreateOrUpdateReservationOptions request) {
-        UUID reservationId = request.getReservationId() != null ? request.getReservationId() : UUID.randomUUID();
+        String reservationId
+            = request.getReservationId() != null ? request.getReservationId() : UUID.randomUUID().toString();
 
         Map<String, AvailablePhoneNumber> phoneNumbersMap = updatePhoneNumbersMap(new HashMap<>(), request);
         PhoneNumbersReservation reservation = new PhoneNumbersReservation().setPhoneNumbers(phoneNumbersMap);
-        return client.createOrUpdateReservation(reservationId, reservation);
+        return client.createOrUpdateReservation(UUID.fromString(reservationId), reservation);
     }
 
     /**
@@ -1080,10 +1081,11 @@ public final class PhoneNumbersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PhoneNumbersReservation> createOrUpdateReservation(CreateOrUpdateReservationOptions request,
         Context context) {
-        UUID reservationId = request.getReservationId() != null ? request.getReservationId() : UUID.randomUUID();
+        String reservationId
+            = request.getReservationId() != null ? request.getReservationId() : UUID.randomUUID().toString();
         Map<String, AvailablePhoneNumber> phoneNumbersMap = updatePhoneNumbersMap(new HashMap<>(), request);
         PhoneNumbersReservation reservation = new PhoneNumbersReservation().setPhoneNumbers(phoneNumbersMap);
-        return client.createOrUpdateReservationWithResponse(reservationId, reservation, context);
+        return client.createOrUpdateReservationWithResponse(UUID.fromString(reservationId), reservation, context);
     }
 
     /**
@@ -1095,8 +1097,8 @@ public final class PhoneNumbersClient {
      * @param reservationId The id of the reservation that's going to be deleted.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void deleteReservation(UUID reservationId) {
-        client.deleteReservation(reservationId);
+    public void deleteReservation(String reservationId) {
+        client.deleteReservation(UUID.fromString(reservationId));
     }
 
     /**
@@ -1110,8 +1112,8 @@ public final class PhoneNumbersClient {
      * @return a {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteReservationWithResponse(UUID reservationId, Context context) {
-        return client.deleteReservationWithResponse(reservationId, context);
+    public Response<Void> deleteReservationWithResponse(String reservationId, Context context) {
+        return client.deleteReservationWithResponse(UUID.fromString(reservationId), context);
     }
 
     private static Map<String, AvailablePhoneNumber> createPhoneNumbersMap(

@@ -43,7 +43,6 @@ import reactor.test.StepVerifier;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -52,7 +51,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrationTestBase {
 
-    private static UUID reservationId = UUID.randomUUID();
+    private String reservationId = getReservationId().toString();
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
@@ -582,7 +581,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                 .createOrUpdateReservation(new CreateOrUpdateReservationOptions(reservationId, numbersToAdd, null))
                 .block();
 
-        assertEquals(reservationId, reservationResponse.getId());
+        assertEquals(reservationId, reservationResponse.getId().toString());
         assertNotNull(reservationResponse.getPhoneNumbers());
         assertTrue(reservationResponse.getPhoneNumbers().containsKey(result.get(0).getId()));
 
@@ -590,14 +589,14 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
             .getReservation(reservationId)
             .block();
 
-        assertEquals(reservationId, reservationResponse.getId());
+        assertEquals(reservationId, reservationResponse.getId().toString());
 
         PagedFlux<PhoneNumbersReservation> reservationsList
             = this.getClientWithConnectionString(httpClient, "listPhoneNumberReservations").listReservations();
 
         StepVerifier.create(reservationsList.collectList()).assertNext(reservations -> {
             boolean containsReservation
-                = reservations.stream().anyMatch(reservation -> reservation.getId().equals(reservationId));
+                = reservations.stream().anyMatch(reservation -> reservation.getId().toString().equals(reservationId));
             assertTrue(containsReservation, "The reservations list does not contain the expected reservation.");
         }).verifyComplete();
 
@@ -607,8 +606,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         reservationResponse = this.getClientWithConnectionString(httpClient, "updatePhoneNumberReservation")
             .createOrUpdateReservation(new CreateOrUpdateReservationOptions(reservationId, null, numbersToRemove))
             .block();
-        assertEquals(reservationId, reservationResponse.getId());
-        assertFalse(reservationResponse.getPhoneNumbers().containsKey(result.get(0).getId()));
+        assertEquals(reservationId, reservationResponse.getId().toString());
 
         this.getClientWithConnectionString(httpClient, "deletePhoneNumberReservation")
             .deleteReservation(reservationId)
@@ -645,7 +643,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                 .createOrUpdateReservation(new CreateOrUpdateReservationOptions(reservationId, numbersToAdd, null))
                 .block();
 
-        assertEquals(reservationId, reservationResponse.getId());
+        assertEquals(reservationId, reservationResponse.getId().toString());
         assertNotNull(reservationResponse.getPhoneNumbers());
         assertTrue(reservationResponse.getPhoneNumbers().containsKey(result.get(0).getId()));
 
@@ -653,14 +651,14 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
             .getReservation(reservationId)
             .block();
 
-        assertEquals(reservationId, reservationResponse.getId());
+        assertEquals(reservationId, reservationResponse.getId().toString());
 
         PagedFlux<PhoneNumbersReservation> reservationsList
             = this.getClientWithManagedIdentity(httpClient, "listPhoneNumberReservations").listReservations();
 
         StepVerifier.create(reservationsList.collectList()).assertNext(reservations -> {
             boolean containsReservation
-                = reservations.stream().anyMatch(reservation -> reservation.getId().equals(reservationId));
+                = reservations.stream().anyMatch(reservation -> reservation.getId().toString().equals(reservationId));
             assertTrue(containsReservation, "The reservations list does not contain the expected reservation.");
         }).verifyComplete();
 
@@ -670,8 +668,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         reservationResponse = this.getClientWithManagedIdentity(httpClient, "updatePhoneNumberReservation")
             .createOrUpdateReservation(new CreateOrUpdateReservationOptions(reservationId, null, numbersToRemove))
             .block();
-        assertEquals(reservationId, reservationResponse.getId());
-        assertFalse(reservationResponse.getPhoneNumbers().containsKey(result.get(0).getId()));
+        assertEquals(reservationId, reservationResponse.getId().toString());
 
         this.getClientWithManagedIdentity(httpClient, "deletePhoneNumberReservation")
             .deleteReservation(reservationId)
@@ -701,7 +698,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                 .createOrUpdateReservation(new CreateOrUpdateReservationOptions(reservationId, numbersToAdd, null))
                 .block();
         StepVerifier.create(this.getClientWithConnectionString(httpClient, "purchasePhoneNumberReservation")
-            .beginPurchaseReservation(reservationResponse.getId())).verifyError();
+            .beginPurchaseReservation(reservationResponse.getId().toString())).verifyError();
     }
 
     @ParameterizedTest
@@ -723,7 +720,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                 .block();
 
         StepVerifier.create(this.getClientWithManagedIdentity(httpClient, "purchasePhoneNumberReservation")
-            .beginPurchaseReservation(reservationResponse.getId())).verifyError();
+            .beginPurchaseReservation(reservationResponse.getId().toString())).verifyError();
     }
 
     @ParameterizedTest

@@ -187,9 +187,9 @@ public final class PhoneNumbersAsyncClient {
      * @throws NullPointerException if {@code reservationId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersReservation> getReservation(UUID reservationId) {
+    public Mono<PhoneNumbersReservation> getReservation(String reservationId) {
         Objects.requireNonNull(reservationId, "'reservationId' cannot be null.");
-        return client.getReservationAsync(reservationId);
+        return client.getReservationAsync(UUID.fromString(reservationId));
     }
 
     /**
@@ -576,7 +576,7 @@ public final class PhoneNumbersAsyncClient {
      * @return A {@link PollerFlux} object.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PhoneNumberOperation, PurchaseReservationResult> beginPurchaseReservation(UUID reservationId) {
+    public PollerFlux<PhoneNumberOperation, PurchaseReservationResult> beginPurchaseReservation(String reservationId) {
         return beginPurchaseReservation(reservationId, false, null);
     }
 
@@ -595,17 +595,18 @@ public final class PhoneNumbersAsyncClient {
      * @return A {@link PollerFlux} object.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<PhoneNumberOperation, PurchaseReservationResult> beginPurchaseReservation(UUID reservationId,
+    public PollerFlux<PhoneNumberOperation, PurchaseReservationResult> beginPurchaseReservation(String reservationId,
         Boolean agreeToNotResell) {
         return beginPurchaseReservation(reservationId, agreeToNotResell, null);
     }
 
-    PollerFlux<PhoneNumberOperation, PurchaseReservationResult> beginPurchaseReservation(UUID reservationId,
+    PollerFlux<PhoneNumberOperation, PurchaseReservationResult> beginPurchaseReservation(String reservationId,
         Boolean agreeToNotResell, Context context) {
         try {
             Objects.requireNonNull(reservationId, "'reservationId' cannot be null.");
             return new PollerFlux<>(defaultPollInterval,
-                purchaseReservationInitOperation(reservationId, agreeToNotResell, context), pollOperation(),
+                purchaseReservationInitOperation(UUID.fromString(reservationId), agreeToNotResell, context),
+                pollOperation(),
                 (pollingContext, firstResponse) -> Mono
                     .error(logger.logExceptionAsError(new RuntimeException("Cancellation is not supported"))),
                 (pollingContext) -> Mono.just(new PurchaseReservationResult()));
@@ -967,11 +968,12 @@ public final class PhoneNumbersAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PhoneNumbersReservation> createOrUpdateReservation(CreateOrUpdateReservationOptions request) {
-        UUID reservationId = request.getReservationId() != null ? request.getReservationId() : UUID.randomUUID();
+        String reservationId
+            = request.getReservationId() != null ? request.getReservationId() : UUID.randomUUID().toString();
 
         Map<String, AvailablePhoneNumber> phoneNumbersMap = updatePhoneNumbersMap(new HashMap<>(), request);
         PhoneNumbersReservation reservation = new PhoneNumbersReservation().setPhoneNumbers(phoneNumbersMap);
-        return client.createOrUpdateReservationAsync(reservationId, reservation);
+        return client.createOrUpdateReservationAsync(UUID.fromString(reservationId), reservation);
     }
 
     /**
@@ -984,8 +986,8 @@ public final class PhoneNumbersAsyncClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteReservation(UUID reservationId) {
-        return client.deleteReservationAsync(reservationId);
+    public Mono<Void> deleteReservation(String reservationId) {
+        return client.deleteReservationAsync(UUID.fromString(reservationId));
     }
 
     private Mono<PhoneNumberOperation> getOperation(String operationId) {

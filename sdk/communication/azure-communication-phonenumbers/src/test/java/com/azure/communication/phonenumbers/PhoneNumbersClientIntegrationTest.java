@@ -56,7 +56,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTestBase {
 
-    private UUID reservationId = getReservationId();
+    private String reservationId = getReservationId().toString();
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
@@ -560,20 +560,20 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PhoneNumbersReservation reservationResponse
             = this.getClientWithConnectionString(httpClient, "updatePhoneNumberReservation")
                 .createOrUpdateReservation(new CreateOrUpdateReservationOptions(reservationId, numbersToAdd, null));
-        assertEquals(reservationId, reservationResponse.getId());
+        assertEquals(reservationId, reservationResponse.getId().toString());
         assertNotNull(reservationResponse.getPhoneNumbers());
         assertTrue(reservationResponse.getPhoneNumbers().containsKey(result.get(0).getId()));
 
         reservationResponse
             = this.getClientWithConnectionString(httpClient, "getPhoneNumberReservation").getReservation(reservationId);
 
-        assertEquals(reservationId, reservationResponse.getId());
+        assertEquals(reservationId, reservationResponse.getId().toString());
 
         PagedIterable<PhoneNumbersReservation> reservationsList
             = this.getClientWithConnectionString(httpClient, "listPhoneNumberReservations").listReservations(null);
 
         boolean containsReservation
-            = reservationsList.stream().anyMatch(reservation -> reservation.getId().equals(reservationId));
+            = reservationsList.stream().anyMatch(reservation -> reservation.getId().toString().equals(reservationId));
         assertTrue(containsReservation, "The reservations list does not contain the expected reservation.");
 
         List<String> numbersToRemove = new ArrayList<>();
@@ -581,7 +581,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
         reservationResponse = this.getClientWithConnectionString(httpClient, "updatePhoneNumberReservation")
             .createOrUpdateReservation(new CreateOrUpdateReservationOptions(reservationId, null, numbersToRemove));
-        assertEquals(reservationId, reservationResponse.getId());
+        assertEquals(reservationId, reservationResponse.getId().toString());
         assertFalse(reservationResponse.getPhoneNumbers().containsKey(result.get(0).getId()));
 
         this.getClientWithConnectionString(httpClient, "deletePhoneNumberReservation").deleteReservation(reservationId);
@@ -610,20 +610,20 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
             = this.getClientWithConnectionString(httpClient, "updatePhoneNumberReservation")
                 .createOrUpdateReservation(new CreateOrUpdateReservationOptions(reservationId, numbersToAdd, null));
 
-        assertEquals(reservationId, reservationResponse.getId());
+        assertEquals(reservationId, reservationResponse.getId().toString());
         assertNotNull(reservationResponse.getPhoneNumbers());
         assertTrue(reservationResponse.getPhoneNumbers().containsKey(result.get(0).getId()));
 
         reservationResponse
             = this.getClientWithManagedIdentity(httpClient, "getPhoneNumberReservation").getReservation(reservationId);
 
-        assertEquals(reservationId, reservationResponse.getId());
+        assertEquals(reservationId, reservationResponse.getId().toString());
 
         PagedIterable<PhoneNumbersReservation> reservationsList
             = this.getClientWithManagedIdentity(httpClient, "listPhoneNumberReservations").listReservations(null);
 
         boolean containsReservation
-            = reservationsList.stream().anyMatch(reservation -> reservation.getId().equals(reservationId));
+            = reservationsList.stream().anyMatch(reservation -> reservation.getId().toString().equals(reservationId));
         assertTrue(containsReservation, "The reservations list does not contain the expected reservation.");
 
         List<String> numbersToRemove = new ArrayList<>();
@@ -631,7 +631,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
         reservationResponse = this.getClientWithManagedIdentity(httpClient, "updatePhoneNumberReservation")
             .createOrUpdateReservation(new CreateOrUpdateReservationOptions(reservationId, null, numbersToRemove));
-        assertEquals(reservationId, reservationResponse.getId());
+        assertEquals(reservationId, reservationResponse.getId().toString());
         assertFalse(reservationResponse.getPhoneNumbers().containsKey(result.get(0).getId()));
 
         this.getClientWithManagedIdentity(httpClient, "deletePhoneNumberReservation").deleteReservation(reservationId);
@@ -659,7 +659,8 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PhoneNumbersReservation reservationResponse
             = this.getClientWithManagedIdentity(httpClient, "updatePhoneNumberReservation")
                 .createOrUpdateReservation(new CreateOrUpdateReservationOptions(reservationId, numbersToAdd, null));
-        assertThrows(RuntimeException.class, () -> client.beginReservationPurchase(reservationResponse.getId()),
+        assertThrows(RuntimeException.class,
+            () -> client.beginReservationPurchase(reservationResponse.getId().toString()),
             "Missing agreement to not resell.");
     }
 
@@ -682,7 +683,8 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
             = this.getClientWithManagedIdentity(httpClient, "updatePhoneNumberReservation")
                 .createOrUpdateReservation(new CreateOrUpdateReservationOptions(reservationId, numbersToAdd, null));
 
-        assertThrows(RuntimeException.class, () -> client.beginReservationPurchase(reservationResponse.getId()),
+        assertThrows(RuntimeException.class,
+            () -> client.beginReservationPurchase(reservationResponse.getId().toString()),
             "Missing agreement to not resell.");
     }
 
