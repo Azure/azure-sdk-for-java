@@ -46,15 +46,16 @@ public class ConsistencyReaderTest {
     public Object[][] deduceReadModeArgProvider() {
         return new Object[][]{
                 // account consistency, request consistency, expected readmode, expected consistency to use, whether use session
-                {  ConsistencyLevel.STRONG, null, ReadMode.Strong, ConsistencyLevel.STRONG, false},
-                {  ConsistencyLevel.STRONG, ConsistencyLevel.EVENTUAL, ReadMode.Any, ConsistencyLevel.EVENTUAL, false},
-                {  ConsistencyLevel.STRONG, ConsistencyLevel.SESSION, ReadMode.Any, ConsistencyLevel.SESSION, true},
-                {  ConsistencyLevel.SESSION, ConsistencyLevel.EVENTUAL, ReadMode.Any, ConsistencyLevel.EVENTUAL, false},
-                {  ConsistencyLevel.SESSION, ConsistencyLevel.SESSION, ReadMode.Any, ConsistencyLevel.SESSION, true},
-                {  ConsistencyLevel.SESSION, ConsistencyLevel.EVENTUAL, ReadMode.Any, ConsistencyLevel.EVENTUAL, false},
-                {  ConsistencyLevel.SESSION, null, ReadMode.Any, ConsistencyLevel.SESSION, true},
-                {  ConsistencyLevel.EVENTUAL, ConsistencyLevel.EVENTUAL, ReadMode.Any, ConsistencyLevel.EVENTUAL, false},
-                {  ConsistencyLevel.EVENTUAL, null, ReadMode.Any, ConsistencyLevel.EVENTUAL, false},
+                {  ConsistencyLevel.STRONG, null, ReadMode.Strong, ReadConsistencyStrategy.GLOBAL_STRONG, false},
+                {  ConsistencyLevel.STRONG, ConsistencyLevel.BOUNDED_STALENESS, ReadMode.BoundedStaleness, ReadConsistencyStrategy.LATEST_COMMITTED, false},
+                {  ConsistencyLevel.STRONG, ConsistencyLevel.EVENTUAL, ReadMode.Any, ReadConsistencyStrategy.EVENTUAL, false},
+                {  ConsistencyLevel.STRONG, ConsistencyLevel.SESSION, ReadMode.Any, ReadConsistencyStrategy.SESSION, true},
+                {  ConsistencyLevel.SESSION, ConsistencyLevel.EVENTUAL, ReadMode.Any, ReadConsistencyStrategy.EVENTUAL, false},
+                {  ConsistencyLevel.SESSION, ConsistencyLevel.SESSION, ReadMode.Any, ReadConsistencyStrategy.SESSION, true},
+                {  ConsistencyLevel.SESSION, ConsistencyLevel.EVENTUAL, ReadMode.Any, ReadConsistencyStrategy.EVENTUAL, false},
+                {  ConsistencyLevel.SESSION, null, ReadMode.Any, ReadConsistencyStrategy.SESSION, true},
+                {  ConsistencyLevel.EVENTUAL, ConsistencyLevel.EVENTUAL, ReadMode.Any, ReadConsistencyStrategy.EVENTUAL, false},
+                {  ConsistencyLevel.EVENTUAL, null, ReadMode.Any, ReadConsistencyStrategy.EVENTUAL, false},
         };
     }
 
