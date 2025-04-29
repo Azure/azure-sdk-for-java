@@ -1,6 +1,6 @@
 # Release History
 
-## 7.18.0-beta.1 (Unreleased)
+## 7.18.0-beta.2 (Unreleased)
 
 ### Features Added
 
