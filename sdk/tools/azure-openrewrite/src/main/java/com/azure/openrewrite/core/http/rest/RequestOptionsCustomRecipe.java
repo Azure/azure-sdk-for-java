@@ -24,6 +24,13 @@ import com.azure.openrewrite.util.ConfiguredParserJavaTemplateBuilder;
  * </pre>
  */
 public class RequestOptionsCustomRecipe extends Recipe {
+
+    /**
+     * Default constructor for {@link RequestOptionsCustomRecipe}.
+     */
+    public RequestOptionsCustomRecipe() {
+        super();
+    }
     @Override
     public String getDisplayName() {
         return "";

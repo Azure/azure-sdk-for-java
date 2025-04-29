@@ -31,6 +31,13 @@ import org.openrewrite.java.tree.J;
  * </pre>
  */
 public class HttpRequestCustomRecipe extends Recipe {
+
+    /**
+     * Default constructor for {@link HttpRequestCustomRecipe}.
+     */
+    public HttpRequestCustomRecipe() {
+        super();
+    }
     @Override
     public String getDisplayName() {
         return "HttpRequest Custom Recipe";

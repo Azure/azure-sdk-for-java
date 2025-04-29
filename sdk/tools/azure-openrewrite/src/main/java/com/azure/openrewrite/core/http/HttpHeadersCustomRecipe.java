@@ -28,6 +28,13 @@ import com.azure.openrewrite.util.ConfiguredParserJavaTemplateBuilder;
  * </pre>
  */
 public class HttpHeadersCustomRecipe extends Recipe {
+
+    /**
+     * Default constructor for {@link HttpHeadersCustomRecipe}.
+     */
+    public HttpHeadersCustomRecipe() {
+        super();
+    }
     @Override
     public String getDisplayName() {
         return "HttpRequestHeaderCustomRecipe";

@@ -34,6 +34,13 @@ import com.azure.openrewrite.util.ConfiguredParserJavaTemplateBuilder;
  */
 public class HttpResponseCustomRecipe extends Recipe {
 
+    /**
+     * Default constructor for {@link HttpResponseCustomRecipe}.
+     */
+    public HttpResponseCustomRecipe() {
+        super();
+    }
+
     @Override
     public @NlsRewrite.DisplayName String getDisplayName() {
         return "HttpResponseCustomRecipe";

@@ -33,6 +33,13 @@ import org.openrewrite.java.tree.Space;
  */
 public class AccessTokenCustomRecipe extends Recipe {
 
+    /**
+     * Default constructor for {@link AccessTokenCustomRecipe}.
+     */
+    public AccessTokenCustomRecipe() {
+        super();
+    }
+
     @Override
     public String getDisplayName() {
         return "AccessToken Custom Recipe";
