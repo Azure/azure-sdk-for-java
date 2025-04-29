@@ -30,6 +30,7 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import org.testng.SkipException;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -292,6 +293,14 @@ public class OperationPoliciesTest extends TestSuiteBase {
 
     @Test(groups = { "fast" }, dataProvider = "changedOptions", timeOut = TIMEOUT)
     public void readItem(String[] changedOptions) throws Exception {
+
+        if (changedOptions[18] == "LatestCommitted"
+            && this.client.getConnectionPolicy().getConnectionMode() == ConnectionMode.GATEWAY) {
+
+            throw new SkipException(
+                "Gateway does not support bounded staleness with account-level consistency session and lower.");
+        }
+
         InternalObjectNode item = getDocumentDefinition(UUID.randomUUID().toString());
         container.createItem(item).block();
 
