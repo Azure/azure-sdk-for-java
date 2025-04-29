@@ -147,6 +147,7 @@ public class AnnotationProcessor extends AbstractProcessor {
         templateInput.addImport(HttpRequest.class.getName());
         templateInput.addImport(Response.class.getName());
         templateInput.addImport(Void.class.getName());
+        templateInput.addImport(UriEscapers.class.getTypeName());
     }
 
     private HttpRequestContext createHttpRequestContext(ExecutableElement requestMethod, TemplateInput templateInput) {

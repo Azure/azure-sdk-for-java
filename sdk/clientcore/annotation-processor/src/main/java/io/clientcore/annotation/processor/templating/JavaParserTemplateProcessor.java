@@ -403,6 +403,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         });
 
         // Append query parameters to the URL
+        body.tryAddImportToParentCompilationUnit(CoreUtils.class);
         body.addStatement("String newUrl = CoreUtils.appendQueryParams(url, queryParamMap);");
         body.addStatement("if (newUrl != null) { url = newUrl; }");
     }
