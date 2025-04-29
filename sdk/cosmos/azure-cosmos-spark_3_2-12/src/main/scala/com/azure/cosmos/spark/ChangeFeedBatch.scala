@@ -39,7 +39,7 @@ private class ChangeFeedBatch
 
     val clientConfiguration = CosmosClientConfiguration.apply(
       config,
-      readConfig.forceEventualConsistency,
+      readConfig.readConsistencyStrategy,
       sparkEnvironmentInfo)
     val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
     val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(config)

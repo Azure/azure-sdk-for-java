@@ -166,6 +166,7 @@ public class BarrierRequestHelperTest {
                 null,
                 null,
                 null,
+                null,
                 new Configs(),
                 null,
                 null,

@@ -53,7 +53,7 @@ private case class ChangeFeedPartitionReader
   private val clientCacheItem = CosmosClientCache(
     CosmosClientConfiguration(
       config,
-      readConfig.forceEventualConsistency,
+      readConfig.readConsistencyStrategy,
       sparkEnvironmentInfo),
     Some(cosmosClientStateHandles.value.cosmosClientMetadataCaches),
     s"ChangeFeedPartitionReader(partition $partition)")

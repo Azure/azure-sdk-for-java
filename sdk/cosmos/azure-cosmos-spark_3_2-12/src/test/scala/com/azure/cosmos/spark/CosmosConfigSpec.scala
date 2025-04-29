@@ -3,6 +3,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.core.management.AzureEnvironment
+import com.azure.cosmos.ReadConsistencyStrategy
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants
 import com.azure.cosmos.models.CosmosContainerIdentity
@@ -391,7 +392,7 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
 
     var config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
 
-    config.forceEventualConsistency shouldBe false
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.DEFAULT
     config.responseContinuationTokenLimitInKb shouldBe None
     config.schemaConversionMode shouldBe SchemaConversionModes.Strict
     config.customQuery shouldBe empty
@@ -414,7 +415,7 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
 
     config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
 
-    config.forceEventualConsistency shouldBe false
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.DEFAULT
     config.schemaConversionMode shouldBe SchemaConversionModes.Strict
     config.customQuery shouldBe empty
     config.maxItemCount shouldBe 1000
@@ -434,7 +435,7 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
 
     config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
 
-    config.forceEventualConsistency shouldBe false
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.DEFAULT
     config.schemaConversionMode shouldBe SchemaConversionModes.Strict
     config.customQuery shouldBe empty
     config.maxItemCount shouldBe 1001
@@ -449,7 +450,7 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
 
     config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
 
-    config.forceEventualConsistency shouldBe false
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.DEFAULT
     config.schemaConversionMode shouldBe SchemaConversionModes.Strict
     config.customQuery shouldBe empty
     config.maxItemCount shouldBe 1001
@@ -464,7 +465,7 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
 
     config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
 
-    config.forceEventualConsistency shouldBe false
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.DEFAULT
     config.schemaConversionMode shouldBe SchemaConversionModes.Strict
     config.customQuery shouldBe empty
     config.maxItemCount shouldBe 1001
@@ -479,7 +480,7 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
 
     config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
 
-    config.forceEventualConsistency shouldBe false
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.DEFAULT
     config.schemaConversionMode shouldBe SchemaConversionModes.Strict
     config.customQuery shouldBe empty
     config.maxItemCount shouldBe 1001
@@ -498,7 +499,7 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
 
     val config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
 
-    config.forceEventualConsistency shouldBe false
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.DEFAULT
     config.schemaConversionMode shouldBe SchemaConversionModes.Strict
     config.customQuery.isDefined shouldBe true
     config.customQuery.get.queryText shouldBe queryText
@@ -521,7 +522,7 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
 
     val config = CosmosReadConfig.parseCosmosReadConfig(Map.empty[String, String])
 
-    config.forceEventualConsistency shouldBe true
+    config.readConsistencyStrategy shouldBe ReadConsistencyStrategy.EVENTUAL
     config.schemaConversionMode shouldBe SchemaConversionModes.Relaxed
   }
 

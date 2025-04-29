@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.ReadConsistencyStrategy;
 import com.azure.cosmos.SessionRetryOptions;
 import com.azure.cosmos.implementation.NotFoundException;
 import com.azure.cosmos.implementation.RequestRateTooLargeException;
@@ -59,7 +60,7 @@ public class ConsistencyReaderTest {
 
     @Test(groups = "unit", dataProvider = "deduceReadModeArgProvider")
     public void deduceReadMode(ConsistencyLevel accountConsistencyLevel, ConsistencyLevel requestConsistency, ReadMode expectedReadMode,
-                               ConsistencyLevel expectedConsistencyToUse, boolean expectedToUseSession) {
+                               ReadConsistencyStrategy expectedConsistencyToUse, boolean expectedToUseSession) {
         AddressSelector addressSelector = Mockito.mock(AddressSelector.class);
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
         TransportClient transportClient = Mockito.mock(TransportClient.class);
@@ -82,13 +83,13 @@ public class ConsistencyReaderTest {
             request.getHeaders().put(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL, requestConsistency.toString());
         }
 
-        ValueHolder<ConsistencyLevel> consistencyLevel = ValueHolder.initialize(null);
+        ValueHolder<ReadConsistencyStrategy> readConsistencyStrategy = ValueHolder.initialize(null);
         ValueHolder<Boolean> useSession = ValueHolder.initialize(null);
 
-        ReadMode readMode = consistencyReader.deduceReadMode(request, consistencyLevel, useSession);
+        ReadMode readMode = consistencyReader.deduceReadMode(request, readConsistencyStrategy, useSession);
 
         assertThat(readMode).isEqualTo(expectedReadMode);
-        assertThat(consistencyLevel.v).isEqualTo(expectedConsistencyToUse);
+        assertThat(readConsistencyStrategy.v).isEqualTo(expectedConsistencyToUse);
         assertThat(useSession.v).isEqualTo(expectedToUseSession);
     }
 
