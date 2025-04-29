@@ -38,21 +38,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
      * security settings like secure boot and vTPM used while creating the virtual machine.
      */
     @Generated
-    private final UefiSettings uefiSettings;
-
-    /**
-     * Creates an instance of SecurityProfile class.
-     *
-     * @param encryptionAtHost the encryptionAtHost value to set.
-     * @param securityType the securityType value to set.
-     * @param uefiSettings the uefiSettings value to set.
-     */
-    @Generated
-    public SecurityProfile(boolean encryptionAtHost, SecurityTypes securityType, UefiSettings uefiSettings) {
-        this.encryptionAtHost = encryptionAtHost;
-        this.securityType = securityType;
-        this.uefiSettings = uefiSettings;
-    }
+    private final BatchUefiSettings uefiSettings;
 
     /**
      * Get the encryptionAtHost property: This property can be used by user in the request to enable or disable the Host
@@ -86,7 +72,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
      * @return the uefiSettings value.
      */
     @Generated
-    public UefiSettings getUefiSettings() {
+    public BatchUefiSettings getUefiSettings() {
         return this.uefiSettings;
     }
 
@@ -117,7 +103,7 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
         return jsonReader.readObject(reader -> {
             boolean encryptionAtHost = false;
             SecurityTypes securityType = null;
-            UefiSettings uefiSettings = null;
+            BatchUefiSettings uefiSettings = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
@@ -126,12 +112,26 @@ public final class SecurityProfile implements JsonSerializable<SecurityProfile> 
                 } else if ("securityType".equals(fieldName)) {
                     securityType = SecurityTypes.fromString(reader.getString());
                 } else if ("uefiSettings".equals(fieldName)) {
-                    uefiSettings = UefiSettings.fromJson(reader);
+                    uefiSettings = BatchUefiSettings.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }
             }
             return new SecurityProfile(encryptionAtHost, securityType, uefiSettings);
         });
+    }
+
+    /**
+     * Creates an instance of SecurityProfile class.
+     *
+     * @param encryptionAtHost the encryptionAtHost value to set.
+     * @param securityType the securityType value to set.
+     * @param uefiSettings the uefiSettings value to set.
+     */
+    @Generated
+    public SecurityProfile(boolean encryptionAtHost, SecurityTypes securityType, BatchUefiSettings uefiSettings) {
+        this.encryptionAtHost = encryptionAtHost;
+        this.securityType = securityType;
+        this.uefiSettings = uefiSettings;
     }
 }
