@@ -86,7 +86,7 @@ public class HttpResponseCustomRecipe extends Recipe {
                     replacementTemplate = templateBuilder.getJavaTemplateBuilder(String.format("%s.getHeaders().getValue(#{any(io.clientcore.core.http.models.HttpHeaderName)})", method.getSelect().toString()))
                             .imports("io.clientcore.core.http.models.HttpHeaderName")
                             .build();
-                    return replacementTemplate.apply(updateCursor(method), method.getCoordinates().replace(), method.getArguments().get(0));
+                    return replacementTemplate.apply(updateCursor(method), method.getCoordinates().replace(), method.getArguments().toArray());
                 }
 
 
@@ -99,7 +99,7 @@ public class HttpResponseCustomRecipe extends Recipe {
                     replacementTemplate = templateBuilder.getJavaTemplateBuilder("getHeaders().getValue(io.clientcore.core.http.models.HttpHeaderName.fromString(#{any(java.lang.String)}))")
                             .imports("io.clientcore.core.http.models.HttpHeaderName")
                             .build();
-                    return replacementTemplate.apply(updateCursor(method), method.getCoordinates().replaceMethod(), method.getArguments().get(0));
+                    return replacementTemplate.apply(updateCursor(method), method.getCoordinates().replaceMethod(), method.getArguments().toArray());
                 }
 
                 /*
@@ -111,7 +111,7 @@ public class HttpResponseCustomRecipe extends Recipe {
                     replacementTemplate = templateBuilder.getJavaTemplateBuilder("getHeaders().getValue(#{any(com.azure.core.http.HttpHeaderName)})")
                             .imports("io.clientcore.core.http.models.HttpHeaderName")
                             .build();
-                    return replacementTemplate.apply(updateCursor(method), method.getCoordinates().replaceMethod(), method.getArguments().get(0));
+                    return replacementTemplate.apply(updateCursor(method), method.getCoordinates().replaceMethod(), method.getArguments().toArray());
                 }
 
                 /*

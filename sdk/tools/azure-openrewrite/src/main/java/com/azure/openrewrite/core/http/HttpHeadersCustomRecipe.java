@@ -95,7 +95,7 @@ public class HttpHeadersCustomRecipe extends Recipe {
 
                 // before: com.azure.core.http.HttpHeaders HttpHeaders setAll(java.util.Map<java.lang.String, java.util.List<java.lang.String>>)
                 // after: io.clientcore.core.http.models.HttpHeaders HttpHeaders setAll(io.clientcore.core.http.models.HttpHeaders)
-                methodMatcher = new MethodMatcher("com.azure.core.http.HttpHeaders setAll(java.util.Map<java.lang.String, java.util.List<java.lang.String>>)");
+                methodMatcher = new MethodMatcher("com.azure.core.http.HttpHeaders setAll(java.util.Map)");
                 if (methodMatcher.matches(method, true)) {
                     replacementTemplate = templateBuilder.getJavaTemplateBuilder("setAll(#{any(io.clientcore.core.http.models.HttpHeaders)})")
                         .imports("io.clientcore.core.http.models.HttpHeaders")

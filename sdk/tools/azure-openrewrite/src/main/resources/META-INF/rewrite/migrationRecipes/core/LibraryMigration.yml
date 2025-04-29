@@ -1,0 +1,21 @@
+# Copyright (c) Microsoft Corporation. All rights reserved.
+# Licensed under the MIT License.
+# --------------------------------------------------------------------
+# Migration Recipes for Azure-Core Library
+# --------------------------------------------------------------------
+type: specs.openrewrite.org/v1beta/recipe
+name: azure.openrewrite.migration.core
+displayName: Migrate from azure-core to next generation stack
+description: This recipe migrates the Azure Storage Core library to the next generation stack.
+recipeList:
+
+  - azure.openrewrite.migration.azure.core.cryptography
+  - azure.openrewrite.migration.azure.core.credential
+  - azure.openrewrite.migration.azure.core.exception
+  - azure.openrewrite.migration.azure.core.http.policy
+  - azure.openrewrite.migration.azure.core.http.rest
+  - azure.openrewrite.migration.azure.core.http
+  - azure.openrewrite.migration.azure.core.models
+  - azure.openrewrite.migration.azure.core.util
+  - azure.openrewrite.migration.azure.core.clients.traits
+

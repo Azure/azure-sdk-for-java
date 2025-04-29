@@ -53,11 +53,6 @@ recipeList:
   # HttpClient
   # --------------------------------------------------------------------
 
-  - org.openrewrite.java.SimplifyMethodChain:
-      methodPatternChain: [ 'com.azure.core.http.HttpClient send(..)', 'reactor.core.publisher.Mono block()' ]
-      newMethodName: sendSync
-      matchOverrides: false
-
   - org.openrewrite.java.ChangeMethodName:
       methodPattern: com.azure.core.http.HttpClient#createDefault()
       newMethodName: getSharedInstance
