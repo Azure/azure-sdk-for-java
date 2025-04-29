@@ -47,7 +47,7 @@ public final class NetworkConfiguration implements JsonSerializable<NetworkConfi
      * The Public IPAddress configuration for Compute Nodes in the Batch Pool.
      */
     @Generated
-    private PublicIpAddressConfiguration publicIpAddressConfiguration;
+    private BatchPublicIpAddressConfiguration publicIpAddressConfiguration;
 
     /*
      * Whether this pool should enable accelerated networking. Accelerated networking enables single root I/O
@@ -143,22 +143,8 @@ public final class NetworkConfiguration implements JsonSerializable<NetworkConfi
      * @return the publicIpAddressConfiguration value.
      */
     @Generated
-    public PublicIpAddressConfiguration getPublicIpAddressConfiguration() {
+    public BatchPublicIpAddressConfiguration getPublicIpAddressConfiguration() {
         return this.publicIpAddressConfiguration;
-    }
-
-    /**
-     * Set the publicIpAddressConfiguration property: The Public IPAddress configuration for Compute Nodes in the Batch
-     * Pool.
-     *
-     * @param publicIpAddressConfiguration the publicIpAddressConfiguration value to set.
-     * @return the NetworkConfiguration object itself.
-     */
-    @Generated
-    public NetworkConfiguration
-        setPublicIpAddressConfiguration(PublicIpAddressConfiguration publicIpAddressConfiguration) {
-        this.publicIpAddressConfiguration = publicIpAddressConfiguration;
-        return this;
     }
 
     /**
@@ -230,7 +216,7 @@ public final class NetworkConfiguration implements JsonSerializable<NetworkConfi
                         = BatchPoolEndpointConfiguration.fromJson(reader);
                 } else if ("publicIPAddressConfiguration".equals(fieldName)) {
                     deserializedNetworkConfiguration.publicIpAddressConfiguration
-                        = PublicIpAddressConfiguration.fromJson(reader);
+                        = BatchPublicIpAddressConfiguration.fromJson(reader);
                 } else if ("enableAcceleratedNetworking".equals(fieldName)) {
                     deserializedNetworkConfiguration.enableAcceleratedNetworking
                         = reader.getNullable(JsonReader::getBoolean);
@@ -267,6 +253,20 @@ public final class NetworkConfiguration implements JsonSerializable<NetworkConfi
     @Generated
     public NetworkConfiguration setDynamicVnetAssignmentScope(DynamicVNetAssignmentScope dynamicVnetAssignmentScope) {
         this.dynamicVnetAssignmentScope = dynamicVnetAssignmentScope;
+        return this;
+    }
+
+    /**
+     * Set the publicIpAddressConfiguration property: The Public IPAddress configuration for Compute Nodes in the Batch
+     * Pool.
+     *
+     * @param publicIpAddressConfiguration the publicIpAddressConfiguration value to set.
+     * @return the NetworkConfiguration object itself.
+     */
+    @Generated
+    public NetworkConfiguration
+        setPublicIpAddressConfiguration(BatchPublicIpAddressConfiguration publicIpAddressConfiguration) {
+        this.publicIpAddressConfiguration = publicIpAddressConfiguration;
         return this;
     }
 }
