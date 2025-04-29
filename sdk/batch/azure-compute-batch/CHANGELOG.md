@@ -6,6 +6,8 @@
 
 ### Breaking Changes
 
+- Return type of API `getCertificate` in `BatchClient` changed to `BatchCertificate`.
+
 ### Bugs Fixed
 
 ### Other Changes
