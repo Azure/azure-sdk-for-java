@@ -42,7 +42,7 @@ public class RadiologyInsightsQualityMeasureTest extends RadiologyInsightsClient
         setInferenceType(RadiologyInsightsInferenceType.QUALITY_MEASURE);
         setOrderCode("CTCHWO");
         setOrderDescription("CT CHEST WO CONTRAST");
-        setQualityMeasureOptions(new QualityMeasureType[]{ QualityMeasureType.MIPS364});
+        setQualityMeasureOptions(new QualityMeasureType[] { QualityMeasureType.MIPS364 });
 
         try {
             testRadiologyInsightsWithResponse(request -> {
@@ -70,7 +70,7 @@ public class RadiologyInsightsQualityMeasureTest extends RadiologyInsightsClient
                     "Expected QualityMeasureComplianceType is performanceMet");
 
                 List<String> qualityCriteriaList = qualityMeasureInference.getQualityCriteria();
-                assertEquals("FOLLOW-UP RECOMMENDATION", qualityCriteriaList.get(0),
+                assertEquals("APPROPRIATE FOLLOW-UP RECOMMENDATION", qualityCriteriaList.get(0),
                     "Expected QualityCriteria is FOLLOW-UP RECOMMENDATION");
             });
 

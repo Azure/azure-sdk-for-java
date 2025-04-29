@@ -25,13 +25,11 @@ public class RadiologyInsightsScoringAndAssessmentsTest extends RadiologyInsight
     @Test
     public void test() {
         String documentContent = "Exam: US THYROID\r\n" + "\r\n"
-            + "Clinical History: Thyroid nodules. 76 year old patient.\r\n" + "\r\n"
-            + "Comparison: none.\r\n"
-            + "\r\n" + "FINDINGS: \r\n" + "\r\n"
-            + "Right lobe: 4.8 x 1.6 x 1.4 cm\r\n"
-            + "\r\n" + "Left Lobe: 4.1 x 1.3 x 1.3 cm\r\n" + "\r\n"
-            + "Isthmus: 4 mm\r\n" + "\r\n"
-            + "There are multiple cystic and partly cystic sub-5 mm nodules noted within the right lobe (TIRADS 2).\r\n" + "\r\n"
+            + "Clinical History: Thyroid nodules. 76 year old patient.\r\n" + "\r\n" + "Comparison: none.\r\n" + "\r\n"
+            + "FINDINGS: \r\n" + "\r\n" + "Right lobe: 4.8 x 1.6 x 1.4 cm\r\n" + "\r\n"
+            + "Left Lobe: 4.1 x 1.3 x 1.3 cm\r\n" + "\r\n" + "Isthmus: 4 mm\r\n" + "\r\n"
+            + "There are multiple cystic and partly cystic sub-5 mm nodules noted within the right lobe (TIRADS 2).\r\n"
+            + "\r\n"
             + "In the lower pole of the left lobe there is a 9 x 8 x 6 mm predominantly solid isoechoic nodule (TIRADS 3).\r\n"
             + "Impression:\r\n" + "\r\n"
             + "Multiple bilateral small cystic benign thyroid nodules. A low suspicion 9 mm left lobe thyroid nodule (TI-RADS 3) which, given its small size, does not warrant follow-up.";
@@ -57,11 +55,12 @@ public class RadiologyInsightsScoringAndAssessmentsTest extends RadiologyInsight
                     "Inference should be an instance of ScoringAndAssessmentInference");
 
                 ScoringAndAssessmentInference scoringAndAssessmentInference = (ScoringAndAssessmentInference) inference;
-                ScoringAndAssessmentCategoryType scoringAndAssessmentCategoryType = scoringAndAssessmentInference.getCategory();
+                ScoringAndAssessmentCategoryType scoringAndAssessmentCategoryType
+                    = scoringAndAssessmentInference.getCategory();
                 assertEquals("TI-RADS", scoringAndAssessmentCategoryType.getValue(),
                     "Expected ScoringAndAssessmentCategoryType is TI-RADS");
 
-                String scoringAndAssessmentCategoryDescription=scoringAndAssessmentInference.getCategoryDescription();
+                String scoringAndAssessmentCategoryDescription = scoringAndAssessmentInference.getCategoryDescription();
                 assertEquals("ACR THYROID IMAGING REPORTING AND DATA SYSTEM", scoringAndAssessmentCategoryDescription,
                     "Expected ScoringAndAssessmentCategoryDescription is ACR THYROID IMAGING REPORTING AND DATA SYSTEM");
 

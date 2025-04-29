@@ -49,7 +49,7 @@ public class RadiologyInsightsGuidanceTest extends RadiologyInsightsClientTestBa
 
                 RadiologyInsightsPatientResult patient = patients.get(0);
                 List<RadiologyInsightsInference> inferences = patient.getInferences();
-                assertEquals(1, inferences.size());
+                assertEquals(8, inferences.size());
 
                 RadiologyInsightsInference inference = inferences.get(0);
                 assertInstanceOf(GuidanceInference.class, inference,

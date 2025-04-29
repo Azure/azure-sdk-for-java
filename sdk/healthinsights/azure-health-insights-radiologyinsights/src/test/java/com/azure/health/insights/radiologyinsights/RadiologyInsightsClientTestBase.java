@@ -66,14 +66,12 @@ abstract class RadiologyInsightsClientTestBase extends TestProxyTestBase {
 
     RadiologyInsightsClientBuilder getClientBuilder() {
         String endpoint
-            = Configuration.getGlobalConfiguration().get("AZURE_HEALTHINSIGHTS_ENDPOINT", "https://localhost:8080/");
+            = Configuration.getGlobalConfiguration().get("AZURE_HEALTH_INSIGHTS_ENDPOINT", "https://localhost:8080/");
         TokenCredential credential = null;
         if (interceptorManager.isPlaybackMode()) {
             credential = new MockTokenCredential();
-        } else if (interceptorManager.isRecordMode()) {
-            credential = new DefaultAzureCredentialBuilder().build();
         } else {
-            credential = new AzurePowerShellCredentialBuilder().build();
+            credential = new DefaultAzureCredentialBuilder().build();
         }
         RadiologyInsightsClientBuilder builder
             = new RadiologyInsightsClientBuilder().endpoint(endpoint).credential(credential);
@@ -277,8 +275,8 @@ abstract class RadiologyInsightsClientTestBase extends TestProxyTestBase {
         this.orderDescription = orderDescription;
     }
 
-    public void setQualityMeasureOptions(QualityMeasureType [] qualityMeasureOptions) {
-        this.qualityMeasureOptions=new QualityMeasureOptions(Arrays.asList(qualityMeasureOptions));
+    public void setQualityMeasureOptions(QualityMeasureType[] qualityMeasureOptions) {
+        this.qualityMeasureOptions = new QualityMeasureOptions(Arrays.asList(qualityMeasureOptions));
     }
 
 }
