@@ -860,6 +860,68 @@ private static void displayFinding(FindingInference findingInference) {
     }
 }
 ```
+### Get Quality Measure Inference information
+
+Display information about the quality measure. See [SampleQualityMeasureInferenceAsync.java][ri_async_sample_qualitymeasure] for the complete code.
+
+```java com.azure.health.insights.radiologyinsights.displayresults.qualitymeasure
+private static void displayQualityMeasureInference(RadiologyInsightsInferenceResult radiologyInsightsResult) {
+        List<RadiologyInsightsPatientResult> patientResults = radiologyInsightsResult.getPatientResults();
+        for (RadiologyInsightsPatientResult patientResult : patientResults) {
+            List<RadiologyInsightsInference> inferences = patientResult.getInferences();
+            for (RadiologyInsightsInference inference : inferences) {
+                if (inference instanceof QualityMeasureInference) {
+                    QualityMeasureInference qualityMeasureInference = (QualityMeasureInference) inference;
+                    System.out.println("Quality Measure Inference found");
+                    // Extract qualityMeasureDenominator
+                    String qualityMeasureDenominator = qualityMeasureInference.getQualityMeasureDenominator();
+                    System.out.println("QualityMeasureDenominator: " + qualityMeasureDenominator);
+                    // Extract qualityMeasureComplianceType
+                    QualityMeasureComplianceType qualityMeasureComplianceType = qualityMeasureInference.getComplianceType();
+                    System.out.println("QualityMeasureComplianceType: " + qualityMeasureComplianceType.getValue());
+                    // Extract Quality Criteria
+                    List<String> qualityCriteriaList = qualityMeasureInference.getQualityCriteria();
+                    qualityCriteriaList.forEach(qualityCriteria -> System.out.println("QualityCriteria: " + qualityCriteria));
+                }
+            }
+        }
+    }
+```
+
+### Get Scoring And Assessment Inference information
+
+Display information about the scoring and assessment. See [SampleScoringAndAssessmentInferenceAsync.java][ri_async_sample_scoringandassessment] for the complete code.
+
+```java com.azure.health.insights.radiologyinsights.displayresults.scoringandassessment
+private static void displayScoringAndAssessmentInference(RadiologyInsightsInferenceResult radiologyInsightsResult) {
+        List<RadiologyInsightsPatientResult> patientResults = radiologyInsightsResult.getPatientResults();
+        for (RadiologyInsightsPatientResult patientResult : patientResults) {
+            List<RadiologyInsightsInference> inferences = patientResult.getInferences();
+            for (RadiologyInsightsInference inference : inferences) {
+                if (inference instanceof ScoringAndAssessmentInference) {
+                    ScoringAndAssessmentInference scoringAndAssessmentInference = (ScoringAndAssessmentInference) inference;
+                    System.out.println("Scoring and Assessment Inference found");
+                    // Extract scoringAndAssessmentCategory
+                    ScoringAndAssessmentCategoryType scoringAndAssessmentCategoryType = scoringAndAssessmentInference.getCategory();
+                    System.out.println("Scoring And Assessment Category: " + scoringAndAssessmentCategoryType.getValue());
+                    // Extract scoringAndAssessmentCategoryDescription
+                    String scoringAndAssessmentCategoryDescription = scoringAndAssessmentInference.getCategoryDescription();
+                    System.out.println("Scoring And Assessment Category Description: " + scoringAndAssessmentCategoryDescription);
+                    // Extract scoringAndAssessment singleValue
+                    if (scoringAndAssessmentInference.getSingleValue() != null) {
+                        System.out.println("Single Value: " + scoringAndAssessmentInference.getSingleValue());
+                    }
+                    // Extract scoringAndAssessment rangeValue
+                    if (scoringAndAssessmentInference.getRangeValue() != null) {
+                        System.out.println("Min Value: " + scoringAndAssessmentInference.getRangeValue().getMinimum());
+                        System.out.println("Max Value: " + scoringAndAssessmentInference.getRangeValue().getMaximum());
+                    }
+                }
+            }
+
+        }
+    }
+```
 
 ## Troubleshooting
 
@@ -898,6 +960,8 @@ For details on contributing to this repository, see the [contributing guide](htt
 [ri_async_sample_limitedorderdiscrepancy]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples/java/com/azure/health/insights/radiologyinsights/SampleLimitedOrderDiscrepancyInferenceAsync.java
 [ri_async_sample_radiologyprocedure]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples/java/com/azure/health/insights/radiologyinsights/SampleRadiologyProcedureInferenceAsync.java
 [ri_async_sample_sexmismatch]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples/java/com/azure/health/insights/radiologyinsights/SampleSexMismatchInferenceAsync.java
+[ri_async_sample_qualitymeasure]: https://github.com/koen-mertens/azure-sdk-for-java/blob/Scope2-RI-Updates/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples/java/com/azure/health/insights/radiologyinsights/SampleQualityMeasureInferenceAsync.java
+[ri_async_sample_scoringandassessment]: https://github.com/koen-mertens/azure-sdk-for-java/blob/Scope2-RI-Updates/sdk/healthinsights/azure-health-insights-radiologyinsights/src/samples/java/com/azure/health/insights/radiologyinsights/SampleScoringAndAssessmentInferenceAsync.java
 [product_documentation]: https://learn.microsoft.com/azure/azure-health-insights/radiology-insights/
 [radiology_insights_inferences]: https://learn.microsoft.com/azure/azure-health-insights/radiology-insights/inferences
 [azure_subscription]: https://azure.microsoft.com/free/

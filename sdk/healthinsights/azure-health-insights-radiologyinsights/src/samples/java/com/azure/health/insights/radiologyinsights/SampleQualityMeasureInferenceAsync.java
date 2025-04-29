@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.health.insights.radiologyinsights;
 
 import com.azure.core.util.Configuration;
@@ -244,7 +246,7 @@ public class SampleQualityMeasureInferenceAsync {
             RadiologyInsightsInferenceType.CRITICAL_RESULT, RadiologyInsightsInferenceType.FOLLOWUP_RECOMMENDATION,
             RadiologyInsightsInferenceType.FOLLOWUP_COMMUNICATION,
             RadiologyInsightsInferenceType.RADIOLOGY_PROCEDURE, RadiologyInsightsInferenceType.GUIDANCE,
-            RadiologyInsightsInferenceType.QUALITY_MEASURE,RadiologyInsightsInferenceType.SCORING_AND_ASSESSMENT));
+            RadiologyInsightsInferenceType.QUALITY_MEASURE, RadiologyInsightsInferenceType.SCORING_AND_ASSESSMENT));
         configuration.setLocale("en-US");
         configuration.setVerbose(false);
         configuration.setIncludeEvidence(true);
@@ -263,7 +265,7 @@ public class SampleQualityMeasureInferenceAsync {
         FollowupRecommendationOptions followupOptions = new FollowupRecommendationOptions();
         FindingOptions findingOptions = new FindingOptions();
         GuidanceOptions guidanceOptions = new GuidanceOptions(true);
-        QualityMeasureOptions qualityMeasureOptions = new QualityMeasureOptions(Arrays.asList(QualityMeasureType.MIPS364,QualityMeasureType.MIPS360,QualityMeasureType.MIPS436));
+        QualityMeasureOptions qualityMeasureOptions = new QualityMeasureOptions(Arrays.asList(QualityMeasureType.MIPS364, QualityMeasureType.MIPS360, QualityMeasureType.MIPS436));
         followupOptions.setIncludeRecommendationsWithNoSpecifiedModality(true);
         followupOptions.setIncludeRecommendationsInReferences(true);
         followupOptions.setProvideFocusedSentenceEvidence(true);
