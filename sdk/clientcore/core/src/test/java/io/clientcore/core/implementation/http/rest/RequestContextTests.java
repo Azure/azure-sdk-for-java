@@ -37,7 +37,9 @@ public class RequestContextTests {
         final HttpRequest request
             = new HttpRequest().setMethod(HttpMethod.POST).setUri(URI.create("http://request.uri"));
         RequestContext context = RequestContext.builder()
-            .addRequestCallback(request2 -> request2.getHeaders().add(new HttpHeader(X_MS_FOO, "bar")))
+            .addRequestCallback(request2 -> request2.getHeaders()
+                .add(new HttpHeader(X_MS_FOO, "bar"))
+                .set(HttpHeaderName.CONTENT_TYPE, "application/json"))
             .build();
 
         context.getRequestCallback().accept(request);

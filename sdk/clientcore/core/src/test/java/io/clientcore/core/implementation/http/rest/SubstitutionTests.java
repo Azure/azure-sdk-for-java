@@ -3,8 +3,6 @@
 
 package io.clientcore.core.implementation.http.rest;
 
-import io.clientcore.core.implementation.http.rest.QuerySubstitution;
-import io.clientcore.core.implementation.http.rest.Substitution;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
