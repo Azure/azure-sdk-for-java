@@ -23,7 +23,7 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
      * A reference to the Azure Virtual Machines Marketplace Image or the custom Virtual Machine Image to use.
      */
     @Generated
-    private final BatchImageReference imageReference;
+    private final BatchVmImageReference imageReference;
 
     /*
      * The SKU of the Batch Compute Node agent to be provisioned on Compute Nodes in the Pool. The Batch Compute Node
@@ -104,7 +104,7 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
      * Settings for the operating system disk of the Virtual Machine.
      */
     @Generated
-    private OSDisk osDisk;
+    private BatchOsDisk osDisk;
 
     /*
      * Specifies the security profile settings for the virtual machine or virtual machine scale set.
@@ -128,7 +128,7 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
      * @return the imageReference value.
      */
     @Generated
-    public BatchImageReference getImageReference() {
+    public BatchVmImageReference getImageReference() {
         return this.imageReference;
     }
 
@@ -337,20 +337,8 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
      * @return the osDisk value.
      */
     @Generated
-    public OSDisk getOsDisk() {
+    public BatchOsDisk getOsDisk() {
         return this.osDisk;
-    }
-
-    /**
-     * Set the osDisk property: Settings for the operating system disk of the Virtual Machine.
-     *
-     * @param osDisk the osDisk value to set.
-     * @return the VirtualMachineConfiguration object itself.
-     */
-    @Generated
-    public VirtualMachineConfiguration setOsDisk(OSDisk osDisk) {
-        this.osDisk = osDisk;
-        return this;
     }
 
     /**
@@ -439,7 +427,7 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
     @Generated
     public static VirtualMachineConfiguration fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            BatchImageReference imageReference = null;
+            BatchVmImageReference imageReference = null;
             String nodeAgentSkuId = null;
             WindowsConfiguration windowsConfiguration = null;
             List<DataDisk> dataDisks = null;
@@ -448,14 +436,14 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
             DiskEncryptionConfiguration diskEncryptionConfiguration = null;
             BatchNodePlacementConfiguration nodePlacementConfiguration = null;
             List<VMExtension> extensions = null;
-            OSDisk osDisk = null;
+            BatchOsDisk osDisk = null;
             SecurityProfile securityProfile = null;
             ServiceArtifactReference serviceArtifactReference = null;
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("imageReference".equals(fieldName)) {
-                    imageReference = BatchImageReference.fromJson(reader);
+                    imageReference = BatchVmImageReference.fromJson(reader);
                 } else if ("nodeAgentSKUId".equals(fieldName)) {
                     nodeAgentSkuId = reader.getString();
                 } else if ("windowsConfiguration".equals(fieldName)) {
@@ -473,7 +461,7 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
                 } else if ("extensions".equals(fieldName)) {
                     extensions = reader.readArray(reader1 -> VMExtension.fromJson(reader1));
                 } else if ("osDisk".equals(fieldName)) {
-                    osDisk = OSDisk.fromJson(reader);
+                    osDisk = BatchOsDisk.fromJson(reader);
                 } else if ("securityProfile".equals(fieldName)) {
                     securityProfile = SecurityProfile.fromJson(reader);
                 } else if ("serviceArtifactReference".equals(fieldName)) {
@@ -499,18 +487,6 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
     }
 
     /**
-     * Creates an instance of VirtualMachineConfiguration class.
-     *
-     * @param imageReference the imageReference value to set.
-     * @param nodeAgentSkuId the nodeAgentSkuId value to set.
-     */
-    @Generated
-    public VirtualMachineConfiguration(BatchImageReference imageReference, String nodeAgentSkuId) {
-        this.imageReference = imageReference;
-        this.nodeAgentSkuId = nodeAgentSkuId;
-    }
-
-    /**
      * Set the containerConfiguration property: The container configuration for the Pool. If specified, setup is
      * performed on each Compute Node in the Pool to allow Tasks to run in containers. All regular Tasks and Job manager
      * Tasks run on this Pool must specify the containerSettings property, and all other Tasks may specify it.
@@ -521,6 +497,30 @@ public final class VirtualMachineConfiguration implements JsonSerializable<Virtu
     @Generated
     public VirtualMachineConfiguration setContainerConfiguration(BatchContainerConfiguration containerConfiguration) {
         this.containerConfiguration = containerConfiguration;
+        return this;
+    }
+
+    /**
+     * Creates an instance of VirtualMachineConfiguration class.
+     *
+     * @param imageReference the imageReference value to set.
+     * @param nodeAgentSkuId the nodeAgentSkuId value to set.
+     */
+    @Generated
+    public VirtualMachineConfiguration(BatchVmImageReference imageReference, String nodeAgentSkuId) {
+        this.imageReference = imageReference;
+        this.nodeAgentSkuId = nodeAgentSkuId;
+    }
+
+    /**
+     * Set the osDisk property: Settings for the operating system disk of the Virtual Machine.
+     *
+     * @param osDisk the osDisk value to set.
+     * @return the VirtualMachineConfiguration object itself.
+     */
+    @Generated
+    public VirtualMachineConfiguration setOsDisk(BatchOsDisk osDisk) {
+        this.osDisk = osDisk;
         return this;
     }
 }
