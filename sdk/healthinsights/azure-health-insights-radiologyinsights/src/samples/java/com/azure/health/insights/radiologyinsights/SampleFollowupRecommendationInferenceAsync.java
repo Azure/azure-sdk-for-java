@@ -114,7 +114,6 @@ public class SampleFollowupRecommendationInferenceAsync {
                 if (completedResult.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
                     System.out.println("Completed poll response, status: " + completedResult.getStatus());
                     mono = completedResult.getFinalResult();
-                    displayFollowUpRecommendations(mono.block());
                 }
             }, error -> {
                 System.err.println(error.getMessage());
@@ -122,6 +121,7 @@ public class SampleFollowupRecommendationInferenceAsync {
             });
 
         latch.await();
+        displayFollowUpRecommendations(mono.block());
     }
 
     private static Mono<RadiologyInsightsInferenceResult> mono = null;

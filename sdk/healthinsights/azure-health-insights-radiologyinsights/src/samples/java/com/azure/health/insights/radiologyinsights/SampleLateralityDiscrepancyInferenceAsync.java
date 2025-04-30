@@ -95,7 +95,6 @@ public class SampleLateralityDiscrepancyInferenceAsync {
                 if (completedResult.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
                     System.out.println("Completed poll response, status: " + completedResult.getStatus());
                     mono = completedResult.getFinalResult();
-                    displayLateralityDiscrepancies(mono.block());
                 }
             }, error -> {
                 System.err.println(error.getMessage());
@@ -103,6 +102,7 @@ public class SampleLateralityDiscrepancyInferenceAsync {
             });
 
         latch.await();
+        displayLateralityDiscrepancies(mono.block());
     }
 
     private static Mono<RadiologyInsightsInferenceResult> mono = null;
