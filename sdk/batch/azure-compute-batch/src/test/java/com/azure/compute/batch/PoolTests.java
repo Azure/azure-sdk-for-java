@@ -93,7 +93,7 @@ public class PoolTests extends BatchClientTestBase {
         List<DataDisk> dataDisks = new ArrayList<DataDisk>();
         dataDisks.add(new DataDisk(lun, diskSizeGB));
 
-        BatchImageReference imgRef = new BatchImageReference().setPublisher("Canonical")
+        BatchVmImageReference imgRef = new BatchVmImageReference().setPublisher("Canonical")
             .setOffer("UbuntuServer")
             .setSku("18.04-LTS")
             .setVersion("latest");
@@ -140,7 +140,7 @@ public class PoolTests extends BatchClientTestBase {
 
         // Check if pool exists
         if (!poolExists(batchClient, poolId)) {
-            BatchImageReference imgRef = new BatchImageReference().setPublisher("Canonical")
+            BatchVmImageReference imgRef = new BatchVmImageReference().setPublisher("Canonical")
                 .setOffer("UbuntuServer")
                 .setSku("18.04-LTS")
                 .setVersion("latest");
@@ -149,9 +149,9 @@ public class PoolTests extends BatchClientTestBase {
                 = new VirtualMachineConfiguration(imgRef, "batch.node.ubuntu 18.04");
 
             NetworkConfiguration netConfig = createNetworkConfiguration();
-            List<InboundNatPool> inbounds = new ArrayList<>();
-            inbounds.add(new InboundNatPool("testinbound", InboundEndpointProtocol.TCP, 5000, 60000, 60040));
-            inbounds.add(new InboundNatPool("SSHRule", InboundEndpointProtocol.TCP, 22, 60100, 60140));
+            List<BatchInboundNatPool> inbounds = new ArrayList<>();
+            inbounds.add(new BatchInboundNatPool("testinbound", InboundEndpointProtocol.TCP, 5000, 60000, 60040));
+            inbounds.add(new BatchInboundNatPool("SSHRule", InboundEndpointProtocol.TCP, 22, 60100, 60140));
 
             BatchPoolEndpointConfiguration endpointConfig = new BatchPoolEndpointConfiguration(inbounds);
             netConfig.setEndpointConfiguration(endpointConfig);
@@ -321,13 +321,13 @@ public class PoolTests extends BatchClientTestBase {
 
         if (!poolExists(batchClient, poolId)) {
             // Define the image reference
-            BatchImageReference imageReference = new BatchImageReference().setPublisher("microsoftwindowsserver")
+            BatchVmImageReference imageReference = new BatchVmImageReference().setPublisher("microsoftwindowsserver")
                 .setOffer("windowsserver")
                 .setSku("2022-datacenter-smalldisk-g2");
 
             // Set the security profile for the Confidential VM
             SecurityProfile securityProfile = new SecurityProfile(true, SecurityTypes.CONFIDENTIAL_VM,
-                new UefiSettings().setSecureBootEnabled(true).setVTpmEnabled(true));
+                new BatchUefiSettings().setSecureBootEnabled(true).setVTpmEnabled(true));
 
             // Set the VM disk security profile
             VmDiskSecurityProfile diskSecurityProfile
@@ -336,7 +336,7 @@ public class PoolTests extends BatchClientTestBase {
             ManagedDisk managedDisk = new ManagedDisk().setSecurityProfile(diskSecurityProfile);
 
             // Set the OS disk configuration
-            OSDisk osDisk = new OSDisk().setManagedDisk(managedDisk);
+            BatchOsDisk osDisk = new BatchOsDisk().setManagedDisk(managedDisk);
 
             // Define the virtual machine configuration
             VirtualMachineConfiguration vmConfiguration
@@ -363,7 +363,7 @@ public class PoolTests extends BatchClientTestBase {
             Assertions.assertTrue(sp.getUefiSettings().isSecureBootEnabled());
             Assertions.assertTrue(sp.getUefiSettings().isVTpmEnabled());
 
-            OSDisk disk = pool.getVirtualMachineConfiguration().getOsDisk();
+            BatchOsDisk disk = pool.getVirtualMachineConfiguration().getOsDisk();
             Assertions.assertEquals(SecurityEncryptionTypes.VMGUEST_STATE_ONLY,
                 disk.getManagedDisk().getSecurityProfile().getSecurityEncryptionType());
         } finally {
@@ -388,7 +388,7 @@ public class PoolTests extends BatchClientTestBase {
 
         // Check if the pool exists, if not, create it
         if (!poolExists(batchClient, poolId)) {
-            BatchImageReference imgRef = new BatchImageReference().setPublisher("Canonical")
+            BatchVmImageReference imgRef = new BatchVmImageReference().setPublisher("Canonical")
                 .setOffer("UbuntuServer")
                 .setSku("18.04-LTS")
                 .setVersion("latest");
