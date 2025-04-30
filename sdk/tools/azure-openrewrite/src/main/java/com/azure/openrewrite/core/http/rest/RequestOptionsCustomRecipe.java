@@ -19,7 +19,7 @@ import com.azure.openrewrite.util.ConfiguredParserJavaTemplateBuilder;
  *
  * <p>Example transformation:</p>
  * <pre>
- * Before: com.azure.core.http.rest.RequestOptions <constructor>()
+ * Before: com.azure.core.http.rest.RequestOptions &lt;constructor&gt;()
  * After: io.clientcore.core.http.models.RequestContext.none()
  * </pre>
  */
@@ -31,7 +31,7 @@ public class RequestOptionsCustomRecipe extends Recipe {
     public RequestOptionsCustomRecipe() {
         super();
     }
-    
+
     @Override
     public String getDisplayName() {
         return "";
