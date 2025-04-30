@@ -249,8 +249,6 @@ public class BlobSasImplUtil {
                 userDelegationKey.getSignedObjectId());
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_TENANT_ID,
                 userDelegationKey.getSignedTenantId());
-            sb.append('\n');
-            sb.append('\n');
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_START,
                 formatQueryParameterDate(new TimeAndFormat(userDelegationKey.getSignedStart(), null)));
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_KEY_EXPIRY,
@@ -265,6 +263,8 @@ public class BlobSasImplUtil {
                 this.authorizedAadObjectId);
             tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_CORRELATION_ID, this.correlationId);
         }
+        sb.append('\n');
+        sb.append('\n');
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_RESOURCE, this.resource);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNED_PERMISSIONS, this.permissions);
         tryAppendQueryParameter(sb, Constants.UrlConstants.SAS_SIGNATURE, signature);
@@ -281,7 +281,7 @@ public class BlobSasImplUtil {
 
     /**
      * Ensures that the builder's properties are in a consistent state.
-
+     *
      * 1. If there is no version, use latest.
      * 2. If there is no identifier set, ensure expiryTime and permissions are set.
      * 3. Resource name is chosen by:
