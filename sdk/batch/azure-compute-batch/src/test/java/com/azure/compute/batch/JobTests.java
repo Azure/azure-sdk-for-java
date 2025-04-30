@@ -175,7 +175,7 @@ public class JobTests extends BatchClientTestBase {
         String jobId = getStringIdWithUserNamePrefix("-Job-canCRUDWithPoolNodeComm");
         BatchNodeCommunicationMode targetMode = BatchNodeCommunicationMode.SIMPLIFIED;
 
-        BatchImageReference imgRef = new BatchImageReference().setPublisher("Canonical")
+        BatchVmImageReference imgRef = new BatchVmImageReference().setPublisher("Canonical")
             .setOffer("UbuntuServer")
             .setSku("18.04-LTS")
             .setVersion("latest");
