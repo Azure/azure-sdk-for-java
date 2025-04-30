@@ -11,7 +11,6 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.policy.RedirectPolicy;
 import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.annotation.RecordWithoutRequestBody;
@@ -26,14 +25,12 @@ import com.azure.json.JsonProviders;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonWriter;
-import io.netty.handler.logging.LogLevel;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.api.condition.DisabledIfSystemProperty;
-import reactor.netty.transport.logging.AdvancedByteBufFormat;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -89,14 +86,6 @@ public class TestProxyTests extends TestProxyTestBase {
         server.close();
     }
 
-    @Override
-    protected void beforeTest() {
-        super.beforeTest();
-        reactor.netty.http.client.HttpClient client = reactor.netty.http.client.HttpClient.create().wiretap("reactor.netty.http.client.HttpClient", LogLevel.TRACE, AdvancedByteBufFormat.TEXTUAL);
-        wiretapClient = new NettyAsyncHttpClientBuilder(client).build();
-        interceptorManager.setHttpClient(wiretapClient);
-    }
-    
     private HttpClient getRecordHttpClient() {
         return wiretapClient;
     }
