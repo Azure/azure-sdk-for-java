@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0 (2025-04-08)
+## 1.0.0 (2025-04-29)
 
 This release is the first stable release of the Azure Compute Batch client library.
 
@@ -17,9 +17,6 @@ This release is the first stable release of the Azure Compute Batch client libra
   - On `BatchJobScheduleStatistics`, `getNumSucceededTasks()` is now `getSucceededTasksCount()`, `getNumFailedTasks()` is now `getFailedTasksCount()`, `getNumTaskRetries()` is now `getTaskRetriesCount()`, `getReadIOps()` is now `getReadIops()`, `getWriteIOps()` is now `getWriteIops()`, `getReadIOGiB()` is now `getReadIoGiB()`, and `getWriteIOGiB()` is now `getWriteIoGiB()`.
   - On `BatchClientParallelOptions`, `getMaxDegreeOfParallelism()` is now `getMaxConcurrency()`.
   - On the `BatchClient` (synchronous client), `getNodeFileProperties` and `getTaskFileProperties` now return `BatchFileProperties` instead of `FileResponseHeaderProperties`. On `BatchAsyncClient` (asynchronous methods), `getNodeFileProperties` and `getTaskFileProperties` now return `Mono<BatchFileProperties>` instead of `Mono<FileResponseHeaderProperties>`.
-  - `AccessScope` is now `BatchAccessScope`.
-  - `AffinityInfo` is now `BatchAffinityInfo`.
-  - `HttpHeader` is now `OutputFileUploadHeader`.
   - On `BatchCreateTaskCollectionResult`, `getValue()` is now `getValues()`.
   - On `BatchJob`, `getOnAllTasksComplete()` is now named `getAllTasksCompleteMode()`. `setOnAllTasksComplete` is now `setAllTasksCompleteMode`. `getStats()` is now named `getJobStatistics()`. `getOnTaskFailure()` is now `getTaskFailureMode()`.
   - On `BatchJobCreateContent`, `getOnAllTasksComplete()` is now named `getAllTasksCompleteMode()`. `setOnAllTasksComplete` is now `setTaskFailureMode`. `getOnTaskFailure()` is now `getTaskFailureMode()`.
@@ -40,11 +37,19 @@ This release is the first stable release of the Azure Compute Batch client libra
   - `BatchNodeRebootOption` is now `BatchNodeRebootKind`.
   - `ContainerConfiguration` is now `BatchContainerConfiguration`.
   - `ErrorCategory` is now `BatchErrorSourceCategory`.
-  - `ImageReference` is now `BatchImageReference`.
+  - `ImageReference` is now `BatchVmImageReference`.
   - `MetadataItem` is now `BatchMetadataItem`.
   - `OnAllBatchTasksComplete` is now `BatchAllTasksCompleteMode`.
   - `OnBatchTaskFailure` is now `BatchTaskFailureMode`.
   - `UserAssignedIdentity` is now `BatchUserAssignedIdentity`.
+  - `DiffDiskSettings` is now `BatchDiffDiskSettings`.
+  - `InboundNatPool` is now `BatchInboundNatPool`.
+  - `OSDisk` is now `BatchOsDisk`.
+  - `PublicIpAddressConfiguration` is now `BatchPublicIpAddressConfiguration`.
+  - `UefiSettings` is now `BatchUefiSettings`.
+  - `AccessScope` is now `BatchAccessScope`.
+  - `AffinityInfo` is now `BatchAffinityInfo`.
+  - `HttpHeader` is now `OutputFileUploadHeader`.
 
 - Changed the names of the optional parameters models:
   - `GetBatchApplicationOptions` is now `BatchApplicationGetOptions`.
