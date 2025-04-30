@@ -54,7 +54,7 @@ public final class AvailablePhoneNumber implements JsonSerializable<AvailablePho
     /*
      * Represents the status of the phone number. Possible values include: 'available', 'reserved', 'expired', 'error', 'purchased'.
      */
-    private AvailablePhoneNumberStatus status;
+    private PhoneNumberAvailabilityStatus status;
 
     /*
      * Indicates if do not resell agreement is required. If true, the phone number cannot be acquired unless the customer provides explicit agreement to not resell it.
@@ -185,7 +185,7 @@ public final class AvailablePhoneNumber implements JsonSerializable<AvailablePho
      * 
      * @return the status value.
      */
-    public AvailablePhoneNumberStatus getStatus() {
+    public PhoneNumberAvailabilityStatus getStatus() {
         return this.status;
     }
 
@@ -256,7 +256,8 @@ public final class AvailablePhoneNumber implements JsonSerializable<AvailablePho
                 } else if ("cost".equals(fieldName)) {
                     deserializedAvailablePhoneNumber.cost = PhoneNumberCost.fromJson(reader);
                 } else if ("status".equals(fieldName)) {
-                    deserializedAvailablePhoneNumber.status = AvailablePhoneNumberStatus.fromString(reader.getString());
+                    deserializedAvailablePhoneNumber.status
+                        = PhoneNumberAvailabilityStatus.fromString(reader.getString());
                 } else if ("isAgreementToNotResellRequired".equals(fieldName)) {
                     deserializedAvailablePhoneNumber.isAgreementToNotResellRequired
                         = reader.getNullable(JsonReader::getBoolean);
