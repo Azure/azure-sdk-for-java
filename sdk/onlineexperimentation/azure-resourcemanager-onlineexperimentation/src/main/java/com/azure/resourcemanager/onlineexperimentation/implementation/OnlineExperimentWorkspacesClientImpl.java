@@ -35,6 +35,7 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.onlineexperimentation.fluent.OnlineExperimentWorkspacesClient;
 import com.azure.resourcemanager.onlineexperimentation.fluent.models.OnlineExperimentWorkspaceInner;
 import com.azure.resourcemanager.onlineexperimentation.implementation.models.OnlineExperimentWorkspaceListResult;
+import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentWorkspacePatch;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -96,7 +97,7 @@ public final class OnlineExperimentWorkspacesClientImpl implements OnlineExperim
             @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @HeaderParam("Content-Type") String contentType, @HeaderParam("Accept") String accept,
-            @BodyParam("application/json") OnlineExperimentWorkspaceInner properties, Context context);
+            @BodyParam("application/json") OnlineExperimentWorkspacePatch properties, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.OnlineExperimentation/workspaces/{workspaceName}")
@@ -514,7 +515,7 @@ public final class OnlineExperimentWorkspacesClientImpl implements OnlineExperim
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String workspaceName,
-        OnlineExperimentWorkspaceInner properties) {
+        OnlineExperimentWorkspacePatch properties) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -559,7 +560,7 @@ public final class OnlineExperimentWorkspacesClientImpl implements OnlineExperim
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String workspaceName,
-        OnlineExperimentWorkspaceInner properties, Context context) {
+        OnlineExperimentWorkspacePatch properties, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
@@ -600,7 +601,7 @@ public final class OnlineExperimentWorkspacesClientImpl implements OnlineExperim
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OnlineExperimentWorkspaceInner>, OnlineExperimentWorkspaceInner>
-        beginUpdateAsync(String resourceGroupName, String workspaceName, OnlineExperimentWorkspaceInner properties) {
+        beginUpdateAsync(String resourceGroupName, String workspaceName, OnlineExperimentWorkspacePatch properties) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, workspaceName, properties);
         return this.client.<OnlineExperimentWorkspaceInner, OnlineExperimentWorkspaceInner>getLroResult(mono,
             this.client.getHttpPipeline(), OnlineExperimentWorkspaceInner.class, OnlineExperimentWorkspaceInner.class,
@@ -621,7 +622,7 @@ public final class OnlineExperimentWorkspacesClientImpl implements OnlineExperim
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<OnlineExperimentWorkspaceInner>, OnlineExperimentWorkspaceInner> beginUpdateAsync(
-        String resourceGroupName, String workspaceName, OnlineExperimentWorkspaceInner properties, Context context) {
+        String resourceGroupName, String workspaceName, OnlineExperimentWorkspacePatch properties, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
             = updateWithResponseAsync(resourceGroupName, workspaceName, properties, context);
@@ -643,7 +644,7 @@ public final class OnlineExperimentWorkspacesClientImpl implements OnlineExperim
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OnlineExperimentWorkspaceInner>, OnlineExperimentWorkspaceInner>
-        beginUpdate(String resourceGroupName, String workspaceName, OnlineExperimentWorkspaceInner properties) {
+        beginUpdate(String resourceGroupName, String workspaceName, OnlineExperimentWorkspacePatch properties) {
         return this.beginUpdateAsync(resourceGroupName, workspaceName, properties).getSyncPoller();
     }
 
@@ -661,7 +662,7 @@ public final class OnlineExperimentWorkspacesClientImpl implements OnlineExperim
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<OnlineExperimentWorkspaceInner>, OnlineExperimentWorkspaceInner> beginUpdate(
-        String resourceGroupName, String workspaceName, OnlineExperimentWorkspaceInner properties, Context context) {
+        String resourceGroupName, String workspaceName, OnlineExperimentWorkspacePatch properties, Context context) {
         return this.beginUpdateAsync(resourceGroupName, workspaceName, properties, context).getSyncPoller();
     }
 
@@ -678,7 +679,7 @@ public final class OnlineExperimentWorkspacesClientImpl implements OnlineExperim
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OnlineExperimentWorkspaceInner> updateAsync(String resourceGroupName, String workspaceName,
-        OnlineExperimentWorkspaceInner properties) {
+        OnlineExperimentWorkspacePatch properties) {
         return beginUpdateAsync(resourceGroupName, workspaceName, properties).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -697,7 +698,7 @@ public final class OnlineExperimentWorkspacesClientImpl implements OnlineExperim
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OnlineExperimentWorkspaceInner> updateAsync(String resourceGroupName, String workspaceName,
-        OnlineExperimentWorkspaceInner properties, Context context) {
+        OnlineExperimentWorkspacePatch properties, Context context) {
         return beginUpdateAsync(resourceGroupName, workspaceName, properties, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -715,7 +716,7 @@ public final class OnlineExperimentWorkspacesClientImpl implements OnlineExperim
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OnlineExperimentWorkspaceInner update(String resourceGroupName, String workspaceName,
-        OnlineExperimentWorkspaceInner properties) {
+        OnlineExperimentWorkspacePatch properties) {
         return updateAsync(resourceGroupName, workspaceName, properties).block();
     }
 
@@ -733,7 +734,7 @@ public final class OnlineExperimentWorkspacesClientImpl implements OnlineExperim
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public OnlineExperimentWorkspaceInner update(String resourceGroupName, String workspaceName,
-        OnlineExperimentWorkspaceInner properties, Context context) {
+        OnlineExperimentWorkspacePatch properties, Context context) {
         return updateAsync(resourceGroupName, workspaceName, properties, context).block();
     }
 
