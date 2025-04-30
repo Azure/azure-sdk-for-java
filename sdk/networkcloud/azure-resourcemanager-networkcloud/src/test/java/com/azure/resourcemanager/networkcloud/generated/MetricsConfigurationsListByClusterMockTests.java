@@ -22,7 +22,7 @@ public final class MetricsConfigurationsListByClusterMockTests {
     @Test
     public void testListByCluster() throws Exception {
         String responseStr
-            = "{\"value\":[{\"extendedLocation\":{\"name\":\"xej\",\"type\":\"wecy\"},\"properties\":{\"collectionInterval\":798943047394239126,\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"za\",\"disabledMetrics\":[\"inqbdnddbbozs\",\"vrmkjmyitrchwu\",\"lxeeiht\",\"mnoejhqlfmsib\"],\"enabledMetrics\":[\"rfgxkyd\",\"mypgfqvmty\"],\"provisioningState\":\"Canceled\"},\"location\":\"kxp\",\"tags\":{\"jlfxampqcrzgeuq\":\"ewp\",\"iatwfaujegqdtadr\":\"b\"},\"id\":\"kgd\",\"name\":\"hjkrukizyhgs\",\"type\":\"tnqsktx\"}]}";
+            = "{\"value\":[{\"extendedLocation\":{\"name\":\"vrmkjmyitrchwu\",\"type\":\"lxeeiht\"},\"properties\":{\"collectionInterval\":4923903554191964841,\"detailedStatus\":\"Processing\",\"detailedStatusMessage\":\"hqlfmsib\",\"disabledMetrics\":[\"rfgxkyd\",\"mypgfqvmty\"],\"enabledMetrics\":[\"a\",\"xpejpewpy\",\"lfxampqc\"],\"provisioningState\":\"Failed\"},\"location\":\"uqxbpiatwfauje\",\"tags\":{\"rukizyhgsqt\":\"tadrakgddhj\"},\"id\":\"qsktxqf\",\"name\":\"jbqggweeiwdhdm\",\"type\":\"cgbfzuscstun\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,14 +31,14 @@ public final class MetricsConfigurationsListByClusterMockTests {
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
-        PagedIterable<ClusterMetricsConfiguration> response
-            = manager.metricsConfigurations().listByCluster("odfcbjq", "wmtqsmoxsaz", com.azure.core.util.Context.NONE);
+        PagedIterable<ClusterMetricsConfiguration> response = manager.metricsConfigurations()
+            .listByCluster("nfyszzacz", "inqbdnddbbozs", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("kxp", response.iterator().next().location());
-        Assertions.assertEquals("ewp", response.iterator().next().tags().get("jlfxampqcrzgeuq"));
-        Assertions.assertEquals("xej", response.iterator().next().extendedLocation().name());
-        Assertions.assertEquals("wecy", response.iterator().next().extendedLocation().type());
-        Assertions.assertEquals(798943047394239126L, response.iterator().next().collectionInterval());
-        Assertions.assertEquals("rfgxkyd", response.iterator().next().enabledMetrics().get(0));
+        Assertions.assertEquals("uqxbpiatwfauje", response.iterator().next().location());
+        Assertions.assertEquals("tadrakgddhj", response.iterator().next().tags().get("rukizyhgsqt"));
+        Assertions.assertEquals("vrmkjmyitrchwu", response.iterator().next().extendedLocation().name());
+        Assertions.assertEquals("lxeeiht", response.iterator().next().extendedLocation().type());
+        Assertions.assertEquals(4923903554191964841L, response.iterator().next().collectionInterval());
+        Assertions.assertEquals("a", response.iterator().next().enabledMetrics().get(0));
     }
 }

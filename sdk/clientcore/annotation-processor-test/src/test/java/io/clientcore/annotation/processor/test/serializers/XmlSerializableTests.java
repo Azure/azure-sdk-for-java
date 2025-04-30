@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
- * Tests that {@link XmlSerializable} is supported by annotation-proessor.
+ * Tests that {@link XmlSerializable} is supported by annotation-processor.
  */
 public class XmlSerializableTests {
 
@@ -92,6 +92,6 @@ public class XmlSerializableTests {
             .build();
 
         SimpleXmlSerializableService simpleXmlSerializableServiceImpl = SimpleXmlSerializableService.getNewInstance(pipeline);
-        assertThrows(RuntimeException.class, simpleXmlSerializableServiceImpl::getInvalidXml);
+        assertThrows(RuntimeException.class, () -> simpleXmlSerializableServiceImpl.getInvalidXml(contentType));
     }
 }

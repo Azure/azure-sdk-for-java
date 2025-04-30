@@ -10,7 +10,7 @@ package com.azure.resourcemanager.apimanagement.generated;
 public final class CacheCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2022-08-01/examples/
+     * specification/apimanagement/resource-manager/Microsoft.ApiManagement/stable/2024-05-01/examples/
      * ApiManagementCreateCache.json
      */
     /**
@@ -26,7 +26,7 @@ public final class CacheCreateOrUpdateSamples {
             .withConnectionString("apim.redis.cache.windows.net:6380,password=xc,ssl=True,abortConnect=False")
             .withUseFromLocation("default")
             .withResourceId(
-                "https://management.azure.com/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Cache/redis/apimservice1")
+                "https://management.azure.com/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rg1/providers/Microsoft.Cache/redis/apimservice1")
             .create();
     }
 }

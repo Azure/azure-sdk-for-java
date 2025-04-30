@@ -51,7 +51,7 @@ public final class Office365Dataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private Office365DatasetTypeProperties innerTypeProperties() {
+    Office365DatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

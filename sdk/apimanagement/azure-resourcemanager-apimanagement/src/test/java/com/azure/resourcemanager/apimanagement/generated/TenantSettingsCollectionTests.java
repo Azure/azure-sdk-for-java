@@ -11,7 +11,7 @@ public final class TenantSettingsCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         TenantSettingsCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"settings\":{\"w\":\"bsfsgsae\",\"mrjctryldsxeb\":\"dfmhljqlxs\",\"hefr\":\"hsxrznmgsdaluyc\",\"uerbgpxebjl\":\"hs\"}},\"id\":\"dcaytujraxd\",\"name\":\"pryj\",\"type\":\"gtnse\"},{\"properties\":{\"settings\":{\"s\":\"ly\"}},\"id\":\"vyljurkeposehqq\",\"name\":\"lmpctwj\",\"type\":\"dsdlzmk\"},{\"properties\":{\"settings\":{\"teehk\":\"xx\"}},\"id\":\"owgomvvhxowp\",\"name\":\"bap\",\"type\":\"pxraqaw\"},{\"properties\":{\"settings\":{\"eylqlocvvujexayg\":\"p\",\"zpaslavxjfiuo\":\"xrkgjn\",\"jopackyhydv\":\"pieidzlvssqy\",\"izwgsoriobijeiyd\":\"kmfngpmillxgjs\"}},\"id\":\"euynh\",\"name\":\"okayrg\",\"type\":\"ybriop\"}],\"nextLink\":\"eoftnorwai\"}")
+            "{\"value\":[{\"properties\":{\"settings\":{\"zclo\":\"vtzrxzhclecwwtz\",\"pgidhzgyresgzsdt\":\"hy\",\"kvy\":\"wbyorjplbchych\"}},\"id\":\"fbqvumkxqj\",\"name\":\"iuepmaxfnzlpqmp\",\"type\":\"t\"},{\"properties\":{\"settings\":{\"rtux\":\"ulbl\"}},\"id\":\"prhfcaeo\",\"name\":\"ifq\",\"type\":\"ywjflobh\"},{\"properties\":{\"settings\":{\"gbmxldjmz\":\"omfecorkfro\",\"qfygpny\":\"zbjesylslur\",\"qscag\":\"gdz\",\"ss\":\"yvouprsytq\"}},\"id\":\"hmgw\",\"name\":\"nivrxpfduio\",\"type\":\"hgyqvpbfj\"},{\"properties\":{\"settings\":{\"bormvhvzielbp\":\"ucfzluczdquu\"}},\"id\":\"nqujywz\",\"name\":\"qyggmnwsvhb\",\"type\":\"gqiwy\"}],\"nextLink\":\"tobdrrpnre\"}")
             .toObject(TenantSettingsCollection.class);
     }
 

@@ -21,7 +21,7 @@ public final class TaskHubsListBySchedulerMockTests {
     @Test
     public void testListByScheduler() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Accepted\",\"dashboardUrl\":\"b\"},\"id\":\"hejjz\",\"name\":\"v\",\"type\":\"udgwdslfho\"}]}";
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"dashboardUrl\":\"eyyvxyqjpkcat\"},\"id\":\"ngj\",\"name\":\"rcczsqpjhvmd\",\"type\":\"jvnysounqe\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,7 +31,7 @@ public final class TaskHubsListBySchedulerMockTests {
                 new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<TaskHub> response
-            = manager.taskHubs().listByScheduler("umasxazjpq", "e", com.azure.core.util.Context.NONE);
+            = manager.taskHubs().listByScheduler("tehfiqscjeypvh", "zrkgqhcjrefovg", com.azure.core.util.Context.NONE);
 
     }
 }

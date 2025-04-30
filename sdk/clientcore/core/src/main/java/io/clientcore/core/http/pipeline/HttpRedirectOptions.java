@@ -35,7 +35,7 @@ public final class HttpRedirectOptions {
     public HttpRedirectOptions(int maxAttempts, HttpHeaderName locationHeader,
         EnumSet<HttpMethod> allowedRedirectHttpMethods) {
         if (maxAttempts < 0) {
-            throw LOGGER.atError().log(null, new IllegalArgumentException("Max attempts cannot be less than 0."));
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("Max attempts cannot be less than 0."));
         }
         this.maxAttempts = maxAttempts;
         this.allowedRedirectHttpMethods

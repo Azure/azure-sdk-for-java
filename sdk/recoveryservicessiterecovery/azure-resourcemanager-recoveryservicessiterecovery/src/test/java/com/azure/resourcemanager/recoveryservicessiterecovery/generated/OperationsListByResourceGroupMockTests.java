@@ -7,8 +7,8 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.OperationsDiscovery;
@@ -22,23 +22,23 @@ public final class OperationsListByResourceGroupMockTests {
     @Test
     public void testListByResourceGroup() throws Exception {
         String responseStr
-            = "{\"value\":[{\"name\":\"oojjfuktub\",\"display\":{\"provider\":\"nhgbtzvxxvsbc\",\"resource\":\"fkrfnkcni\",\"operation\":\"swxmfurqm\",\"description\":\"wwp\"},\"origin\":\"um\",\"properties\":\"dataahbqsvnkxm\"}]}";
+            = "{\"value\":[{\"name\":\"bnhi\",\"display\":{\"provider\":\"yzhrcqdfwbifnn\",\"resource\":\"sforsimtfcqmmyn\",\"operation\":\"pelpfijtezgxmpe\",\"description\":\"amadlerzi\"},\"origin\":\"ui\",\"properties\":\"dataz\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         SiteRecoveryManager manager = SiteRecoveryManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<OperationsDiscovery> response
-            = manager.operations().listByResourceGroup("flbrouszxacdwuko", com.azure.core.util.Context.NONE);
+            = manager.operations().listByResourceGroup("mahpuwku", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("oojjfuktub", response.iterator().next().name());
-        Assertions.assertEquals("nhgbtzvxxvsbc", response.iterator().next().display().provider());
-        Assertions.assertEquals("fkrfnkcni", response.iterator().next().display().resource());
-        Assertions.assertEquals("swxmfurqm", response.iterator().next().display().operation());
-        Assertions.assertEquals("wwp", response.iterator().next().display().description());
-        Assertions.assertEquals("um", response.iterator().next().origin());
+        Assertions.assertEquals("bnhi", response.iterator().next().name());
+        Assertions.assertEquals("yzhrcqdfwbifnn", response.iterator().next().display().provider());
+        Assertions.assertEquals("sforsimtfcqmmyn", response.iterator().next().display().resource());
+        Assertions.assertEquals("pelpfijtezgxmpe", response.iterator().next().display().operation());
+        Assertions.assertEquals("amadlerzi", response.iterator().next().display().description());
+        Assertions.assertEquals("ui", response.iterator().next().origin());
     }
 }

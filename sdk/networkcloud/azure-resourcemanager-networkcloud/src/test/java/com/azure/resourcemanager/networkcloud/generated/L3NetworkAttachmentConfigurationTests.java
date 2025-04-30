@@ -14,22 +14,22 @@ public final class L3NetworkAttachmentConfigurationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         L3NetworkAttachmentConfiguration model
-            = BinaryData.fromString("{\"ipamEnabled\":\"True\",\"networkId\":\"khly\",\"pluginType\":\"IPVLAN\"}")
+            = BinaryData.fromString("{\"ipamEnabled\":\"False\",\"networkId\":\"oadsuvar\",\"pluginType\":\"IPVLAN\"}")
                 .toObject(L3NetworkAttachmentConfiguration.class);
-        Assertions.assertEquals(L3NetworkConfigurationIpamEnabled.TRUE, model.ipamEnabled());
-        Assertions.assertEquals("khly", model.networkId());
+        Assertions.assertEquals(L3NetworkConfigurationIpamEnabled.FALSE, model.ipamEnabled());
+        Assertions.assertEquals("oadsuvar", model.networkId());
         Assertions.assertEquals(KubernetesPluginType.IPVLAN, model.pluginType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         L3NetworkAttachmentConfiguration model
-            = new L3NetworkAttachmentConfiguration().withIpamEnabled(L3NetworkConfigurationIpamEnabled.TRUE)
-                .withNetworkId("khly")
+            = new L3NetworkAttachmentConfiguration().withIpamEnabled(L3NetworkConfigurationIpamEnabled.FALSE)
+                .withNetworkId("oadsuvar")
                 .withPluginType(KubernetesPluginType.IPVLAN);
         model = BinaryData.fromObject(model).toObject(L3NetworkAttachmentConfiguration.class);
-        Assertions.assertEquals(L3NetworkConfigurationIpamEnabled.TRUE, model.ipamEnabled());
-        Assertions.assertEquals("khly", model.networkId());
+        Assertions.assertEquals(L3NetworkConfigurationIpamEnabled.FALSE, model.ipamEnabled());
+        Assertions.assertEquals("oadsuvar", model.networkId());
         Assertions.assertEquals(KubernetesPluginType.IPVLAN, model.pluginType());
     }
 }

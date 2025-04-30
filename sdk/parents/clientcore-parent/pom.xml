@@ -625,7 +625,7 @@
       <plugin>
         <groupId>org.revapi</groupId>
         <artifactId>revapi-maven-plugin</artifactId>
-        <version>0.15.0</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+        <version>0.15.1</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
         <executions>
           <execution>
             <goals>
@@ -911,6 +911,12 @@
               <!-- junit.jupiter.execution.parallel.mode.default controls parallelization. -->
               <!-- Use this to configure parallelization rather than junit.jupiter.execution.parallel.enabled. -->
               <junit.jupiter.execution.parallel.mode.default>${parallelizeTests}</junit.jupiter.execution.parallel.mode.default>
+              <!-- Logging properties if SLF4J simple is injected into a test run -->
+              <org.slf4j.simpleLogger.logFile>${project.build.directory}/${project.artifactId}-test.log</org.slf4j.simpleLogger.logFile>
+              <org.slf4j.simpleLogger.showDateTime>true</org.slf4j.simpleLogger.showDateTime>
+              <org.slf4j.simpleLogger.dateTimeFormat>dd MMM yyyy HH:mm:ss,SSS</org.slf4j.simpleLogger.dateTimeFormat>
+              <org.slf4j.simpleLogger.defaultLogLevel>debug</org.slf4j.simpleLogger.defaultLogLevel>
+              <org.slf4j.simpleLogger.log.io.clientcore>debug</org.slf4j.simpleLogger.log.io.clientcore>
             </systemPropertyVariables>
             <forkCount>1</forkCount>
             <testFailureIgnore>false</testFailureIgnore>
@@ -963,6 +969,12 @@
               <!-- junit.jupiter.execution.parallel.mode.default controls parallelization. -->
               <!-- Use this to configure parallelization rather than junit.jupiter.execution.parallel.enabled. -->
               <junit.jupiter.execution.parallel.mode.default>${parallelizeTests}</junit.jupiter.execution.parallel.mode.default>
+              <!-- Logging properties if SLF4J simple is injected into a test run -->
+              <org.slf4j.simpleLogger.logFile>${project.build.directory}/${project.artifactId}-test.log</org.slf4j.simpleLogger.logFile>
+              <org.slf4j.simpleLogger.showDateTime>true</org.slf4j.simpleLogger.showDateTime>
+              <org.slf4j.simpleLogger.dateTimeFormat>dd MMM yyyy HH:mm:ss,SSS</org.slf4j.simpleLogger.dateTimeFormat>
+              <org.slf4j.simpleLogger.defaultLogLevel>debug</org.slf4j.simpleLogger.defaultLogLevel>
+              <org.slf4j.simpleLogger.log.io.clientcore>debug</org.slf4j.simpleLogger.log.io.clientcore>
             </systemPropertyVariables>
             <forkCount>1</forkCount>
             <testFailureIgnore>false</testFailureIgnore>
@@ -993,7 +1005,7 @@
         <plugin>
           <groupId>org.revapi</groupId>
           <artifactId>revapi-maven-plugin</artifactId>
-          <version>0.15.0</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+          <version>0.15.1</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
           <configuration>
             <skip>${revapi.skip}</skip>
             <convertAnalysisConfigurationFiles>true</convertAnalysisConfigurationFiles>
@@ -1032,17 +1044,17 @@
             <dependency>
               <groupId>org.revapi</groupId>
               <artifactId>revapi-java</artifactId>
-              <version>0.28.1</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
+              <version>0.28.3</version> <!-- {x-version-update;org.revapi:revapi-java;external_dependency} -->
             </dependency>
             <dependency>
               <groupId>org.revapi</groupId>
               <artifactId>revapi-reporter-json</artifactId>
-              <version>0.5.0</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
+              <version>0.5.1</version> <!-- {x-version-update;org.revapi:revapi-reporter-json;external_dependency} -->
             </dependency>
             <dependency>
               <groupId>com.fasterxml.jackson.core</groupId>
               <artifactId>jackson-databind</artifactId>
-              <version>2.17.2</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
+              <version>2.18.3</version> <!-- {x-version-update;com.fasterxml.jackson.core:jackson-databind;external_dependency} -->
             </dependency>
           </dependencies>
         </plugin>
@@ -1146,7 +1158,7 @@
       <plugin>
         <groupId>org.revapi</groupId>
         <artifactId>revapi-maven-plugin</artifactId>
-        <version>0.15.0</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
+        <version>0.15.1</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
         <configuration>
           <checkDependencies>false</checkDependencies>
         </configuration>

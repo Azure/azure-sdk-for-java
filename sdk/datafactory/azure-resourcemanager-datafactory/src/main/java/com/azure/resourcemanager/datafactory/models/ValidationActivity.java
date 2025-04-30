@@ -51,7 +51,7 @@ public final class ValidationActivity extends ControlActivity {
      * 
      * @return the innerTypeProperties value.
      */
-    private ValidationActivityTypeProperties innerTypeProperties() {
+    ValidationActivityTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

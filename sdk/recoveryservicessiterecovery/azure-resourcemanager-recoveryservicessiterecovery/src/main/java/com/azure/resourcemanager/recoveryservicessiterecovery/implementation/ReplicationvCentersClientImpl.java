@@ -78,30 +78,28 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VCenterCollection>> listByReplicationFabrics(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
-            @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationvCenters/{vcenterName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VCenterInner>> get(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
-            @PathParam("vcenterName") String vcenterName, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName, @PathParam("vcenterName") String vcenterName,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationvCenters/{vcenterName}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
-            @PathParam("vcenterName") String vcenterName,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName, @PathParam("vcenterName") String vcenterName,
             @BodyParam("application/json") AddVCenterRequest addVCenterRequest, @HeaderParam("Accept") String accept,
             Context context);
 
@@ -110,20 +108,18 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
         @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
-            @PathParam("vcenterName") String vcenterName, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName, @PathParam("vcenterName") String vcenterName, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationvCenters/{vcenterName}")
         @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
-            @PathParam("vcenterName") String vcenterName,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("fabricName") String fabricName, @PathParam("vcenterName") String vcenterName,
             @BodyParam("application/json") UpdateVCenterRequest updateVCenterRequest,
             @HeaderParam("Accept") String accept, Context context);
 
@@ -132,9 +128,9 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<VCenterCollection>> list(@HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
@@ -157,8 +153,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * Lists the vCenter servers registered in a fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -166,18 +162,18 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return collection of vCenter details along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VCenterInner>> listByReplicationFabricsSinglePageAsync(String resourceName,
-        String resourceGroupName, String fabricName) {
+    private Mono<PagedResponse<VCenterInner>> listByReplicationFabricsSinglePageAsync(String resourceGroupName,
+        String resourceName, String fabricName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -190,7 +186,7 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
         return FluxUtil
             .withContext(
                 context -> service.listByReplicationFabrics(this.client.getEndpoint(), this.client.getApiVersion(),
-                    resourceName, resourceGroupName, this.client.getSubscriptionId(), fabricName, accept, context))
+                    resourceGroupName, resourceName, this.client.getSubscriptionId(), fabricName, accept, context))
             .<PagedResponse<VCenterInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -201,8 +197,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * Lists the vCenter servers registered in a fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -211,18 +207,18 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return collection of vCenter details along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VCenterInner>> listByReplicationFabricsSinglePageAsync(String resourceName,
-        String resourceGroupName, String fabricName, Context context) {
+    private Mono<PagedResponse<VCenterInner>> listByReplicationFabricsSinglePageAsync(String resourceGroupName,
+        String resourceName, String fabricName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -234,8 +230,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByReplicationFabrics(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), fabricName, accept, context)
+            .listByReplicationFabrics(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+                resourceName, this.client.getSubscriptionId(), fabricName, accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
     }
@@ -245,8 +241,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * Lists the vCenter servers registered in a fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -254,10 +250,10 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return collection of vCenter details as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VCenterInner> listByReplicationFabricsAsync(String resourceName, String resourceGroupName,
+    private PagedFlux<VCenterInner> listByReplicationFabricsAsync(String resourceGroupName, String resourceName,
         String fabricName) {
         return new PagedFlux<>(
-            () -> listByReplicationFabricsSinglePageAsync(resourceName, resourceGroupName, fabricName),
+            () -> listByReplicationFabricsSinglePageAsync(resourceGroupName, resourceName, fabricName),
             nextLink -> listByReplicationFabricsNextSinglePageAsync(nextLink));
     }
 
@@ -266,8 +262,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * Lists the vCenter servers registered in a fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -276,10 +272,10 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return collection of vCenter details as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VCenterInner> listByReplicationFabricsAsync(String resourceName, String resourceGroupName,
+    private PagedFlux<VCenterInner> listByReplicationFabricsAsync(String resourceGroupName, String resourceName,
         String fabricName, Context context) {
         return new PagedFlux<>(
-            () -> listByReplicationFabricsSinglePageAsync(resourceName, resourceGroupName, fabricName, context),
+            () -> listByReplicationFabricsSinglePageAsync(resourceGroupName, resourceName, fabricName, context),
             nextLink -> listByReplicationFabricsNextSinglePageAsync(nextLink, context));
     }
 
@@ -288,8 +284,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * Lists the vCenter servers registered in a fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -297,9 +293,9 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return collection of vCenter details as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VCenterInner> listByReplicationFabrics(String resourceName, String resourceGroupName,
+    public PagedIterable<VCenterInner> listByReplicationFabrics(String resourceGroupName, String resourceName,
         String fabricName) {
-        return new PagedIterable<>(listByReplicationFabricsAsync(resourceName, resourceGroupName, fabricName));
+        return new PagedIterable<>(listByReplicationFabricsAsync(resourceGroupName, resourceName, fabricName));
     }
 
     /**
@@ -307,8 +303,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * Lists the vCenter servers registered in a fabric.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -317,9 +313,9 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return collection of vCenter details as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VCenterInner> listByReplicationFabrics(String resourceName, String resourceGroupName,
+    public PagedIterable<VCenterInner> listByReplicationFabrics(String resourceGroupName, String resourceName,
         String fabricName, Context context) {
-        return new PagedIterable<>(listByReplicationFabricsAsync(resourceName, resourceGroupName, fabricName, context));
+        return new PagedIterable<>(listByReplicationFabricsAsync(resourceGroupName, resourceName, fabricName, context));
     }
 
     /**
@@ -327,8 +323,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * Gets the details of a registered vCenter server(Add vCenter server).
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -338,18 +334,18 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VCenterInner>> getWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<VCenterInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String vcenterName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -363,8 +359,9 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), fabricName, vcenterName, accept, context))
+            .withContext(
+                context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+                    resourceName, this.client.getSubscriptionId(), fabricName, vcenterName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -373,8 +370,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * Gets the details of a registered vCenter server(Add vCenter server).
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @param context The context to associate with this operation.
@@ -385,18 +382,18 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<VCenterInner>> getWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<VCenterInner>> getWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String vcenterName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -410,7 +407,7 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
             this.client.getSubscriptionId(), fabricName, vcenterName, accept, context);
     }
 
@@ -419,8 +416,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * Gets the details of a registered vCenter server(Add vCenter server).
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -429,9 +426,9 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return the details of a registered vCenter server(Add vCenter server) on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VCenterInner> getAsync(String resourceName, String resourceGroupName, String fabricName,
+    private Mono<VCenterInner> getAsync(String resourceGroupName, String resourceName, String fabricName,
         String vcenterName) {
-        return getWithResponseAsync(resourceName, resourceGroupName, fabricName, vcenterName)
+        return getWithResponseAsync(resourceGroupName, resourceName, fabricName, vcenterName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
@@ -440,8 +437,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * Gets the details of a registered vCenter server(Add vCenter server).
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @param context The context to associate with this operation.
@@ -451,9 +448,9 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return the details of a registered vCenter server(Add vCenter server) along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<VCenterInner> getWithResponse(String resourceName, String resourceGroupName, String fabricName,
+    public Response<VCenterInner> getWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String vcenterName, Context context) {
-        return getWithResponseAsync(resourceName, resourceGroupName, fabricName, vcenterName, context).block();
+        return getWithResponseAsync(resourceGroupName, resourceName, fabricName, vcenterName, context).block();
     }
 
     /**
@@ -461,8 +458,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * Gets the details of a registered vCenter server(Add vCenter server).
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -471,8 +468,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return the details of a registered vCenter server(Add vCenter server).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VCenterInner get(String resourceName, String resourceGroupName, String fabricName, String vcenterName) {
-        return getWithResponse(resourceName, resourceGroupName, fabricName, vcenterName, Context.NONE).getValue();
+    public VCenterInner get(String resourceGroupName, String resourceName, String fabricName, String vcenterName) {
+        return getWithResponse(resourceGroupName, resourceName, fabricName, vcenterName, Context.NONE).getValue();
     }
 
     /**
@@ -480,8 +477,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * The operation to create a vCenter object..
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @param addVCenterRequest The input to the add vCenter operation.
@@ -491,18 +488,18 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return vCenter definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String vcenterName, AddVCenterRequest addVCenterRequest) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -522,9 +519,9 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), fabricName, vcenterName, addVCenterRequest, accept,
-                context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), fabricName, vcenterName,
+                addVCenterRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -533,8 +530,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * The operation to create a vCenter object..
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @param addVCenterRequest The input to the add vCenter operation.
@@ -545,18 +542,18 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return vCenter definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String vcenterName, AddVCenterRequest addVCenterRequest, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -576,7 +573,7 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
             this.client.getSubscriptionId(), fabricName, vcenterName, addVCenterRequest, accept, context);
     }
 
@@ -585,8 +582,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * The operation to create a vCenter object..
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @param addVCenterRequest The input to the add vCenter operation.
@@ -596,10 +593,10 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return the {@link PollerFlux} for polling of vCenter definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<VCenterInner>, VCenterInner> beginCreateAsync(String resourceName,
-        String resourceGroupName, String fabricName, String vcenterName, AddVCenterRequest addVCenterRequest) {
+    private PollerFlux<PollResult<VCenterInner>, VCenterInner> beginCreateAsync(String resourceGroupName,
+        String resourceName, String fabricName, String vcenterName, AddVCenterRequest addVCenterRequest) {
         Mono<Response<Flux<ByteBuffer>>> mono
-            = createWithResponseAsync(resourceName, resourceGroupName, fabricName, vcenterName, addVCenterRequest);
+            = createWithResponseAsync(resourceGroupName, resourceName, fabricName, vcenterName, addVCenterRequest);
         return this.client.<VCenterInner, VCenterInner>getLroResult(mono, this.client.getHttpPipeline(),
             VCenterInner.class, VCenterInner.class, this.client.getContext());
     }
@@ -609,8 +606,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * The operation to create a vCenter object..
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @param addVCenterRequest The input to the add vCenter operation.
@@ -621,11 +618,11 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return the {@link PollerFlux} for polling of vCenter definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<VCenterInner>, VCenterInner> beginCreateAsync(String resourceName,
-        String resourceGroupName, String fabricName, String vcenterName, AddVCenterRequest addVCenterRequest,
+    private PollerFlux<PollResult<VCenterInner>, VCenterInner> beginCreateAsync(String resourceGroupName,
+        String resourceName, String fabricName, String vcenterName, AddVCenterRequest addVCenterRequest,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceName, resourceGroupName, fabricName,
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, resourceName, fabricName,
             vcenterName, addVCenterRequest, context);
         return this.client.<VCenterInner, VCenterInner>getLroResult(mono, this.client.getHttpPipeline(),
             VCenterInner.class, VCenterInner.class, context);
@@ -636,8 +633,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * The operation to create a vCenter object..
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @param addVCenterRequest The input to the add vCenter operation.
@@ -647,9 +644,9 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return the {@link SyncPoller} for polling of vCenter definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VCenterInner>, VCenterInner> beginCreate(String resourceName, String resourceGroupName,
+    public SyncPoller<PollResult<VCenterInner>, VCenterInner> beginCreate(String resourceGroupName, String resourceName,
         String fabricName, String vcenterName, AddVCenterRequest addVCenterRequest) {
-        return this.beginCreateAsync(resourceName, resourceGroupName, fabricName, vcenterName, addVCenterRequest)
+        return this.beginCreateAsync(resourceGroupName, resourceName, fabricName, vcenterName, addVCenterRequest)
             .getSyncPoller();
     }
 
@@ -658,8 +655,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * The operation to create a vCenter object..
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @param addVCenterRequest The input to the add vCenter operation.
@@ -670,10 +667,10 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return the {@link SyncPoller} for polling of vCenter definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VCenterInner>, VCenterInner> beginCreate(String resourceName, String resourceGroupName,
+    public SyncPoller<PollResult<VCenterInner>, VCenterInner> beginCreate(String resourceGroupName, String resourceName,
         String fabricName, String vcenterName, AddVCenterRequest addVCenterRequest, Context context) {
         return this
-            .beginCreateAsync(resourceName, resourceGroupName, fabricName, vcenterName, addVCenterRequest, context)
+            .beginCreateAsync(resourceGroupName, resourceName, fabricName, vcenterName, addVCenterRequest, context)
             .getSyncPoller();
     }
 
@@ -682,8 +679,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * The operation to create a vCenter object..
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @param addVCenterRequest The input to the add vCenter operation.
@@ -693,9 +690,9 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return vCenter definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VCenterInner> createAsync(String resourceName, String resourceGroupName, String fabricName,
+    private Mono<VCenterInner> createAsync(String resourceGroupName, String resourceName, String fabricName,
         String vcenterName, AddVCenterRequest addVCenterRequest) {
-        return beginCreateAsync(resourceName, resourceGroupName, fabricName, vcenterName, addVCenterRequest).last()
+        return beginCreateAsync(resourceGroupName, resourceName, fabricName, vcenterName, addVCenterRequest).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -704,8 +701,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * The operation to create a vCenter object..
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @param addVCenterRequest The input to the add vCenter operation.
@@ -716,9 +713,9 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return vCenter definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VCenterInner> createAsync(String resourceName, String resourceGroupName, String fabricName,
+    private Mono<VCenterInner> createAsync(String resourceGroupName, String resourceName, String fabricName,
         String vcenterName, AddVCenterRequest addVCenterRequest, Context context) {
-        return beginCreateAsync(resourceName, resourceGroupName, fabricName, vcenterName, addVCenterRequest, context)
+        return beginCreateAsync(resourceGroupName, resourceName, fabricName, vcenterName, addVCenterRequest, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -728,8 +725,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * The operation to create a vCenter object..
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @param addVCenterRequest The input to the add vCenter operation.
@@ -739,9 +736,9 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return vCenter definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VCenterInner create(String resourceName, String resourceGroupName, String fabricName, String vcenterName,
+    public VCenterInner create(String resourceGroupName, String resourceName, String fabricName, String vcenterName,
         AddVCenterRequest addVCenterRequest) {
-        return createAsync(resourceName, resourceGroupName, fabricName, vcenterName, addVCenterRequest).block();
+        return createAsync(resourceGroupName, resourceName, fabricName, vcenterName, addVCenterRequest).block();
     }
 
     /**
@@ -749,8 +746,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * The operation to create a vCenter object..
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @param addVCenterRequest The input to the add vCenter operation.
@@ -761,9 +758,9 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return vCenter definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VCenterInner create(String resourceName, String resourceGroupName, String fabricName, String vcenterName,
+    public VCenterInner create(String resourceGroupName, String resourceName, String fabricName, String vcenterName,
         AddVCenterRequest addVCenterRequest, Context context) {
-        return createAsync(resourceName, resourceGroupName, fabricName, vcenterName, addVCenterRequest, context)
+        return createAsync(resourceGroupName, resourceName, fabricName, vcenterName, addVCenterRequest, context)
             .block();
     }
 
@@ -772,8 +769,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * The operation to remove(unregister) a registered vCenter server from the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -782,18 +779,18 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String vcenterName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -806,8 +803,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
             return Mono.error(new IllegalArgumentException("Parameter vcenterName is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), fabricName, vcenterName, context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), fabricName, vcenterName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -816,8 +813,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * The operation to remove(unregister) a registered vCenter server from the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @param context The context to associate with this operation.
@@ -827,18 +824,18 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String vcenterName, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -851,7 +848,7 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
             return Mono.error(new IllegalArgumentException("Parameter vcenterName is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
             this.client.getSubscriptionId(), fabricName, vcenterName, context);
     }
 
@@ -860,8 +857,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * The operation to remove(unregister) a registered vCenter server from the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -870,10 +867,10 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceName, String resourceGroupName,
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName,
         String fabricName, String vcenterName) {
         Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceName, resourceGroupName, fabricName, vcenterName);
+            = deleteWithResponseAsync(resourceGroupName, resourceName, fabricName, vcenterName);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             this.client.getContext());
     }
@@ -883,8 +880,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * The operation to remove(unregister) a registered vCenter server from the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @param context The context to associate with this operation.
@@ -894,11 +891,11 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceName, String resourceGroupName,
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName,
         String fabricName, String vcenterName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono
-            = deleteWithResponseAsync(resourceName, resourceGroupName, fabricName, vcenterName, context);
+            = deleteWithResponseAsync(resourceGroupName, resourceName, fabricName, vcenterName, context);
         return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
             context);
     }
@@ -908,8 +905,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * The operation to remove(unregister) a registered vCenter server from the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -918,9 +915,9 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName,
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String fabricName, String vcenterName) {
-        return this.beginDeleteAsync(resourceName, resourceGroupName, fabricName, vcenterName).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, resourceName, fabricName, vcenterName).getSyncPoller();
     }
 
     /**
@@ -928,8 +925,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * The operation to remove(unregister) a registered vCenter server from the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @param context The context to associate with this operation.
@@ -939,9 +936,9 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName,
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName,
         String fabricName, String vcenterName, Context context) {
-        return this.beginDeleteAsync(resourceName, resourceGroupName, fabricName, vcenterName, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, resourceName, fabricName, vcenterName, context).getSyncPoller();
     }
 
     /**
@@ -949,8 +946,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * The operation to remove(unregister) a registered vCenter server from the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -959,9 +956,9 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceName, String resourceGroupName, String fabricName,
+    private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String fabricName,
         String vcenterName) {
-        return beginDeleteAsync(resourceName, resourceGroupName, fabricName, vcenterName).last()
+        return beginDeleteAsync(resourceGroupName, resourceName, fabricName, vcenterName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -970,8 +967,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * The operation to remove(unregister) a registered vCenter server from the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @param context The context to associate with this operation.
@@ -981,9 +978,9 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceName, String resourceGroupName, String fabricName, String vcenterName,
+    private Mono<Void> deleteAsync(String resourceGroupName, String resourceName, String fabricName, String vcenterName,
         Context context) {
-        return beginDeleteAsync(resourceName, resourceGroupName, fabricName, vcenterName, context).last()
+        return beginDeleteAsync(resourceGroupName, resourceName, fabricName, vcenterName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -992,8 +989,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * The operation to remove(unregister) a registered vCenter server from the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1001,8 +998,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceName, String resourceGroupName, String fabricName, String vcenterName) {
-        deleteAsync(resourceName, resourceGroupName, fabricName, vcenterName).block();
+    public void delete(String resourceGroupName, String resourceName, String fabricName, String vcenterName) {
+        deleteAsync(resourceGroupName, resourceName, fabricName, vcenterName).block();
     }
 
     /**
@@ -1010,8 +1007,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * The operation to remove(unregister) a registered vCenter server from the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @param context The context to associate with this operation.
@@ -1020,9 +1017,9 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceName, String resourceGroupName, String fabricName, String vcenterName,
+    public void delete(String resourceGroupName, String resourceName, String fabricName, String vcenterName,
         Context context) {
-        deleteAsync(resourceName, resourceGroupName, fabricName, vcenterName, context).block();
+        deleteAsync(resourceGroupName, resourceName, fabricName, vcenterName, context).block();
     }
 
     /**
@@ -1030,8 +1027,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * The operation to update a registered vCenter.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @param updateVCenterRequest The input to the update vCenter operation.
@@ -1041,18 +1038,18 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return vCenter definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String vcenterName, UpdateVCenterRequest updateVCenterRequest) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -1072,9 +1069,9 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), fabricName, vcenterName, updateVCenterRequest,
-                accept, context))
+            .withContext(context -> service.update(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), fabricName, vcenterName,
+                updateVCenterRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -1083,8 +1080,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * The operation to update a registered vCenter.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @param updateVCenterRequest The input to the update vCenter operation.
@@ -1095,18 +1092,18 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return vCenter definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceName, String resourceGroupName,
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String resourceName,
         String fabricName, String vcenterName, UpdateVCenterRequest updateVCenterRequest, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -1126,7 +1123,7 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+        return service.update(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
             this.client.getSubscriptionId(), fabricName, vcenterName, updateVCenterRequest, accept, context);
     }
 
@@ -1135,8 +1132,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * The operation to update a registered vCenter.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @param updateVCenterRequest The input to the update vCenter operation.
@@ -1146,10 +1143,10 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return the {@link PollerFlux} for polling of vCenter definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<VCenterInner>, VCenterInner> beginUpdateAsync(String resourceName,
-        String resourceGroupName, String fabricName, String vcenterName, UpdateVCenterRequest updateVCenterRequest) {
+    private PollerFlux<PollResult<VCenterInner>, VCenterInner> beginUpdateAsync(String resourceGroupName,
+        String resourceName, String fabricName, String vcenterName, UpdateVCenterRequest updateVCenterRequest) {
         Mono<Response<Flux<ByteBuffer>>> mono
-            = updateWithResponseAsync(resourceName, resourceGroupName, fabricName, vcenterName, updateVCenterRequest);
+            = updateWithResponseAsync(resourceGroupName, resourceName, fabricName, vcenterName, updateVCenterRequest);
         return this.client.<VCenterInner, VCenterInner>getLroResult(mono, this.client.getHttpPipeline(),
             VCenterInner.class, VCenterInner.class, this.client.getContext());
     }
@@ -1159,8 +1156,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * The operation to update a registered vCenter.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @param updateVCenterRequest The input to the update vCenter operation.
@@ -1171,11 +1168,11 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return the {@link PollerFlux} for polling of vCenter definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<VCenterInner>, VCenterInner> beginUpdateAsync(String resourceName,
-        String resourceGroupName, String fabricName, String vcenterName, UpdateVCenterRequest updateVCenterRequest,
+    private PollerFlux<PollResult<VCenterInner>, VCenterInner> beginUpdateAsync(String resourceGroupName,
+        String resourceName, String fabricName, String vcenterName, UpdateVCenterRequest updateVCenterRequest,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceName, resourceGroupName, fabricName,
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, resourceName, fabricName,
             vcenterName, updateVCenterRequest, context);
         return this.client.<VCenterInner, VCenterInner>getLroResult(mono, this.client.getHttpPipeline(),
             VCenterInner.class, VCenterInner.class, context);
@@ -1186,8 +1183,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * The operation to update a registered vCenter.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @param updateVCenterRequest The input to the update vCenter operation.
@@ -1197,9 +1194,9 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return the {@link SyncPoller} for polling of vCenter definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VCenterInner>, VCenterInner> beginUpdate(String resourceName, String resourceGroupName,
+    public SyncPoller<PollResult<VCenterInner>, VCenterInner> beginUpdate(String resourceGroupName, String resourceName,
         String fabricName, String vcenterName, UpdateVCenterRequest updateVCenterRequest) {
-        return this.beginUpdateAsync(resourceName, resourceGroupName, fabricName, vcenterName, updateVCenterRequest)
+        return this.beginUpdateAsync(resourceGroupName, resourceName, fabricName, vcenterName, updateVCenterRequest)
             .getSyncPoller();
     }
 
@@ -1208,8 +1205,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * The operation to update a registered vCenter.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @param updateVCenterRequest The input to the update vCenter operation.
@@ -1220,10 +1217,10 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return the {@link SyncPoller} for polling of vCenter definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<VCenterInner>, VCenterInner> beginUpdate(String resourceName, String resourceGroupName,
+    public SyncPoller<PollResult<VCenterInner>, VCenterInner> beginUpdate(String resourceGroupName, String resourceName,
         String fabricName, String vcenterName, UpdateVCenterRequest updateVCenterRequest, Context context) {
         return this
-            .beginUpdateAsync(resourceName, resourceGroupName, fabricName, vcenterName, updateVCenterRequest, context)
+            .beginUpdateAsync(resourceGroupName, resourceName, fabricName, vcenterName, updateVCenterRequest, context)
             .getSyncPoller();
     }
 
@@ -1232,8 +1229,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * The operation to update a registered vCenter.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @param updateVCenterRequest The input to the update vCenter operation.
@@ -1243,9 +1240,9 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return vCenter definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VCenterInner> updateAsync(String resourceName, String resourceGroupName, String fabricName,
+    private Mono<VCenterInner> updateAsync(String resourceGroupName, String resourceName, String fabricName,
         String vcenterName, UpdateVCenterRequest updateVCenterRequest) {
-        return beginUpdateAsync(resourceName, resourceGroupName, fabricName, vcenterName, updateVCenterRequest).last()
+        return beginUpdateAsync(resourceGroupName, resourceName, fabricName, vcenterName, updateVCenterRequest).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
@@ -1254,8 +1251,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * The operation to update a registered vCenter.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @param updateVCenterRequest The input to the update vCenter operation.
@@ -1266,9 +1263,9 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return vCenter definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<VCenterInner> updateAsync(String resourceName, String resourceGroupName, String fabricName,
+    private Mono<VCenterInner> updateAsync(String resourceGroupName, String resourceName, String fabricName,
         String vcenterName, UpdateVCenterRequest updateVCenterRequest, Context context) {
-        return beginUpdateAsync(resourceName, resourceGroupName, fabricName, vcenterName, updateVCenterRequest, context)
+        return beginUpdateAsync(resourceGroupName, resourceName, fabricName, vcenterName, updateVCenterRequest, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
@@ -1278,8 +1275,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * The operation to update a registered vCenter.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @param updateVCenterRequest The input to the update vCenter operation.
@@ -1289,9 +1286,9 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return vCenter definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VCenterInner update(String resourceName, String resourceGroupName, String fabricName, String vcenterName,
+    public VCenterInner update(String resourceGroupName, String resourceName, String fabricName, String vcenterName,
         UpdateVCenterRequest updateVCenterRequest) {
-        return updateAsync(resourceName, resourceGroupName, fabricName, vcenterName, updateVCenterRequest).block();
+        return updateAsync(resourceGroupName, resourceName, fabricName, vcenterName, updateVCenterRequest).block();
     }
 
     /**
@@ -1299,8 +1296,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * The operation to update a registered vCenter.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param fabricName Fabric name.
      * @param vcenterName vcenter name.
      * @param updateVCenterRequest The input to the update vCenter operation.
@@ -1311,9 +1308,9 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return vCenter definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public VCenterInner update(String resourceName, String resourceGroupName, String fabricName, String vcenterName,
+    public VCenterInner update(String resourceGroupName, String resourceName, String fabricName, String vcenterName,
         UpdateVCenterRequest updateVCenterRequest, Context context) {
-        return updateAsync(resourceName, resourceGroupName, fabricName, vcenterName, updateVCenterRequest, context)
+        return updateAsync(resourceGroupName, resourceName, fabricName, vcenterName, updateVCenterRequest, context)
             .block();
     }
 
@@ -1322,25 +1319,25 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * Lists the vCenter servers registered in the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of vCenter details along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VCenterInner>> listSinglePageAsync(String resourceName, String resourceGroupName) {
+    private Mono<PagedResponse<VCenterInner>> listSinglePageAsync(String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -1348,8 +1345,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
-                resourceGroupName, this.client.getSubscriptionId(), accept, context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, resourceName, this.client.getSubscriptionId(), accept, context))
             .<PagedResponse<VCenterInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
                 res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
@@ -1360,8 +1357,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * Lists the vCenter servers registered in the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1369,18 +1366,18 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return collection of vCenter details along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<VCenterInner>> listSinglePageAsync(String resourceName, String resourceGroupName,
+    private Mono<PagedResponse<VCenterInner>> listSinglePageAsync(String resourceGroupName, String resourceName,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono.error(
                 new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
-        if (resourceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
-        }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
             return Mono.error(new IllegalArgumentException(
@@ -1389,7 +1386,7 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName, resourceName,
                 this.client.getSubscriptionId(), accept, context)
             .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
                 res.getValue().value(), res.getValue().nextLink(), null));
@@ -1400,16 +1397,16 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * Lists the vCenter servers registered in the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of vCenter details as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VCenterInner> listAsync(String resourceName, String resourceGroupName) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceName, resourceGroupName),
+    private PagedFlux<VCenterInner> listAsync(String resourceGroupName, String resourceName) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName),
             nextLink -> listNextSinglePageAsync(nextLink));
     }
 
@@ -1418,8 +1415,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * Lists the vCenter servers registered in the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1427,8 +1424,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return collection of vCenter details as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<VCenterInner> listAsync(String resourceName, String resourceGroupName, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceName, resourceGroupName, context),
+    private PagedFlux<VCenterInner> listAsync(String resourceGroupName, String resourceName, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, resourceName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
@@ -1437,16 +1434,16 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * Lists the vCenter servers registered in the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of vCenter details as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VCenterInner> list(String resourceName, String resourceGroupName) {
-        return new PagedIterable<>(listAsync(resourceName, resourceGroupName));
+    public PagedIterable<VCenterInner> list(String resourceGroupName, String resourceName) {
+        return new PagedIterable<>(listAsync(resourceGroupName, resourceName));
     }
 
     /**
@@ -1454,8 +1451,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * 
      * Lists the vCenter servers registered in the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1463,8 +1460,8 @@ public final class ReplicationvCentersClientImpl implements ReplicationvCentersC
      * @return collection of vCenter details as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<VCenterInner> list(String resourceName, String resourceGroupName, Context context) {
-        return new PagedIterable<>(listAsync(resourceName, resourceGroupName, context));
+    public PagedIterable<VCenterInner> list(String resourceGroupName, String resourceName, Context context) {
+        return new PagedIterable<>(listAsync(resourceGroupName, resourceName, context));
     }
 
     /**

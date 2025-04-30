@@ -14,9 +14,9 @@ public final class ResourceSkuResultsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ResourceSkuResults model = BinaryData.fromString(
-            "{\"value\":[{\"resourceType\":\"iwje\",\"sku\":{\"name\":\"Isolated\"},\"capacity\":{\"minimum\":1019146417,\"maximum\":1419017791,\"default\":226250487,\"scaleType\":\"automatic\"}},{\"resourceType\":\"mlcfnzhmhsurl\",\"sku\":{\"name\":\"Premium\"},\"capacity\":{\"minimum\":185321577,\"maximum\":1745325763,\"default\":1250245788,\"scaleType\":\"manual\"}},{\"resourceType\":\"lawiubmomsgvvjhv\",\"sku\":{\"name\":\"Isolated\"},\"capacity\":{\"minimum\":1667709774,\"maximum\":1989869720,\"default\":1439742842,\"scaleType\":\"manual\"}}],\"nextLink\":\"kdflqionswa\"}")
+            "{\"value\":[{\"resourceType\":\"zacfpztgazw\",\"sku\":{\"name\":\"Standard\"},\"capacity\":{\"minimum\":1895854844,\"maximum\":1491703644,\"default\":1908513392,\"scaleType\":\"automatic\"}},{\"resourceType\":\"pgkqzkcyzmffngdy\",\"sku\":{\"name\":\"BasicV2\"},\"capacity\":{\"minimum\":1846854403,\"maximum\":1535919637,\"default\":774405310,\"scaleType\":\"none\"}},{\"resourceType\":\"goiutgw\",\"sku\":{\"name\":\"Developer\"},\"capacity\":{\"minimum\":762074487,\"maximum\":1496206598,\"default\":339890226,\"scaleType\":\"manual\"}}],\"nextLink\":\"cihn\"}")
             .toObject(ResourceSkuResults.class);
-        Assertions.assertEquals("kdflqionswa", model.nextLink());
+        Assertions.assertEquals("cihn", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
@@ -24,8 +24,8 @@ public final class ResourceSkuResultsTests {
         ResourceSkuResults model = new ResourceSkuResults()
             .withValue(
                 Arrays.asList(new ResourceSkuResultInner(), new ResourceSkuResultInner(), new ResourceSkuResultInner()))
-            .withNextLink("kdflqionswa");
+            .withNextLink("cihn");
         model = BinaryData.fromObject(model).toObject(ResourceSkuResults.class);
-        Assertions.assertEquals("kdflqionswa", model.nextLink());
+        Assertions.assertEquals("cihn", model.nextLink());
     }
 }

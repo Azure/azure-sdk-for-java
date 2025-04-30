@@ -65,9 +65,9 @@ public final class MigrationItemImpl implements MigrationItem, MigrationItem.Def
         return this.serviceManager;
     }
 
-    private String resourceName;
-
     private String resourceGroupName;
+
+    private String resourceName;
 
     private String fabricName;
 
@@ -79,10 +79,10 @@ public final class MigrationItemImpl implements MigrationItem, MigrationItem.Def
 
     private UpdateMigrationItemInput updateInput;
 
-    public MigrationItemImpl withExistingReplicationProtectionContainer(String resourceName, String resourceGroupName,
+    public MigrationItemImpl withExistingReplicationProtectionContainer(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName) {
-        this.resourceName = resourceName;
         this.resourceGroupName = resourceGroupName;
+        this.resourceName = resourceName;
         this.fabricName = fabricName;
         this.protectionContainerName = protectionContainerName;
         return this;
@@ -91,7 +91,7 @@ public final class MigrationItemImpl implements MigrationItem, MigrationItem.Def
     public MigrationItem create() {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationMigrationItems()
-            .create(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+            .create(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
                 createInput, Context.NONE);
         return this;
     }
@@ -99,7 +99,7 @@ public final class MigrationItemImpl implements MigrationItem, MigrationItem.Def
     public MigrationItem create(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationMigrationItems()
-            .create(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+            .create(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
                 createInput, context);
         return this;
     }
@@ -120,7 +120,7 @@ public final class MigrationItemImpl implements MigrationItem, MigrationItem.Def
     public MigrationItem apply() {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationMigrationItems()
-            .update(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+            .update(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
                 updateInput, Context.NONE);
         return this;
     }
@@ -128,7 +128,7 @@ public final class MigrationItemImpl implements MigrationItem, MigrationItem.Def
     public MigrationItem apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationMigrationItems()
-            .update(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+            .update(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
                 updateInput, context);
         return this;
     }
@@ -137,8 +137,8 @@ public final class MigrationItemImpl implements MigrationItem, MigrationItem.Def
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "vaults");
         this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "vaults");
         this.fabricName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "replicationFabrics");
         this.protectionContainerName
             = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "replicationProtectionContainers");
@@ -149,7 +149,7 @@ public final class MigrationItemImpl implements MigrationItem, MigrationItem.Def
     public MigrationItem refresh() {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationMigrationItems()
-            .getWithResponse(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+            .getWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
                 Context.NONE)
             .getValue();
         return this;
@@ -158,7 +158,7 @@ public final class MigrationItemImpl implements MigrationItem, MigrationItem.Def
     public MigrationItem refresh(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getReplicationMigrationItems()
-            .getWithResponse(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+            .getWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
                 context)
             .getValue();
         return this;
@@ -166,72 +166,72 @@ public final class MigrationItemImpl implements MigrationItem, MigrationItem.Def
 
     public MigrationItem migrate(MigrateInput migrateInput) {
         return serviceManager.replicationMigrationItems()
-            .migrate(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+            .migrate(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
                 migrateInput);
     }
 
     public MigrationItem migrate(MigrateInput migrateInput, Context context) {
         return serviceManager.replicationMigrationItems()
-            .migrate(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+            .migrate(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
                 migrateInput, context);
     }
 
     public MigrationItem pauseReplication(PauseReplicationInput pauseReplicationInput) {
         return serviceManager.replicationMigrationItems()
-            .pauseReplication(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+            .pauseReplication(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
                 pauseReplicationInput);
     }
 
     public MigrationItem pauseReplication(PauseReplicationInput pauseReplicationInput, Context context) {
         return serviceManager.replicationMigrationItems()
-            .pauseReplication(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+            .pauseReplication(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
                 pauseReplicationInput, context);
     }
 
     public MigrationItem resumeReplication(ResumeReplicationInput resumeReplicationInput) {
         return serviceManager.replicationMigrationItems()
-            .resumeReplication(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+            .resumeReplication(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
                 resumeReplicationInput);
     }
 
     public MigrationItem resumeReplication(ResumeReplicationInput resumeReplicationInput, Context context) {
         return serviceManager.replicationMigrationItems()
-            .resumeReplication(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+            .resumeReplication(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
                 resumeReplicationInput, context);
     }
 
     public MigrationItem resync(ResyncInput input) {
         return serviceManager.replicationMigrationItems()
-            .resync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName, input);
+            .resync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName, input);
     }
 
     public MigrationItem resync(ResyncInput input, Context context) {
         return serviceManager.replicationMigrationItems()
-            .resync(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName, input,
+            .resync(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName, input,
                 context);
     }
 
     public MigrationItem testMigrate(TestMigrateInput testMigrateInput) {
         return serviceManager.replicationMigrationItems()
-            .testMigrate(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+            .testMigrate(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
                 testMigrateInput);
     }
 
     public MigrationItem testMigrate(TestMigrateInput testMigrateInput, Context context) {
         return serviceManager.replicationMigrationItems()
-            .testMigrate(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+            .testMigrate(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
                 testMigrateInput, context);
     }
 
     public MigrationItem testMigrateCleanup(TestMigrateCleanupInput testMigrateCleanupInput) {
         return serviceManager.replicationMigrationItems()
-            .testMigrateCleanup(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+            .testMigrateCleanup(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
                 testMigrateCleanupInput);
     }
 
     public MigrationItem testMigrateCleanup(TestMigrateCleanupInput testMigrateCleanupInput, Context context) {
         return serviceManager.replicationMigrationItems()
-            .testMigrateCleanup(resourceName, resourceGroupName, fabricName, protectionContainerName, migrationItemName,
+            .testMigrateCleanup(resourceGroupName, resourceName, fabricName, protectionContainerName, migrationItemName,
                 testMigrateCleanupInput, context);
     }
 

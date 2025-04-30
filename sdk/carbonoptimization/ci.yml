@@ -1,0 +1,46 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/carbonoptimization/ci.yml
+      - sdk/carbonoptimization/azure-resourcemanager-carbonoptimization/
+    exclude:
+      - sdk/carbonoptimization/pom.xml
+      - sdk/carbonoptimization/azure-resourcemanager-carbonoptimization/pom.xml
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/carbonoptimization/ci.yml
+      - sdk/carbonoptimization/azure-resourcemanager-carbonoptimization/
+    exclude:
+      - sdk/carbonoptimization/pom.xml
+      - sdk/carbonoptimization/azure-resourcemanager-carbonoptimization/pom.xml
+
+parameters:
+  - name: release_azureresourcemanagercarbonoptimization
+    displayName: azure-resourcemanager-carbonoptimization
+    type: boolean
+    default: false
+
+extends:
+  template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: carbonoptimization
+    Artifacts:
+      - name: azure-resourcemanager-carbonoptimization
+        groupId: com.azure.resourcemanager
+        safeName: azureresourcemanagercarbonoptimization
+        releaseInBatch: ${{ parameters.release_azureresourcemanagercarbonoptimization }}

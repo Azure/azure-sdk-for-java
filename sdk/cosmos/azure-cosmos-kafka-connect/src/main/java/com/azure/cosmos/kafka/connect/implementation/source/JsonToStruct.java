@@ -3,7 +3,9 @@
 
 package com.azure.cosmos.kafka.connect.implementation.source;
 
+import com.azure.cosmos.implementation.Utils;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.type.MapType;
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.data.SchemaAndValue;
 import org.apache.kafka.connect.data.SchemaBuilder;
@@ -13,10 +15,12 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static java.lang.String.format;
 import static org.apache.kafka.connect.data.Values.convertToByte;
 import static org.apache.kafka.connect.data.Values.convertToDouble;
@@ -26,8 +30,23 @@ import static org.apache.kafka.connect.data.Values.convertToLong;
 import static org.apache.kafka.connect.data.Values.convertToShort;
 
 public class JsonToStruct {
+    public static final MapType JACKSON_MAP_TYPE = Utils
+        .getSimpleObjectMapper()
+        .getTypeFactory()
+        .constructMapType(LinkedHashMap.class, String.class, Object.class);
+
     private static final Logger LOGGER = LoggerFactory.getLogger(JsonToStruct.class);
     private static final String SCHEMA_NAME_TEMPLATE = "inferred_name_%s";
+
+    public static SchemaAndValue recordToUnifiedSchema(final String entityType, final String jsonValue) {
+        checkNotNull(entityType, "Argument 'entityType' should not be null");
+
+        Struct struct = new Struct(UnifiedMetadataSchemaConstants.SCHEMA)
+            .put(UnifiedMetadataSchemaConstants.ENTITY_TYPE_NAME, entityType)
+            .put(UnifiedMetadataSchemaConstants.JSON_VALUE_NAME, jsonValue);
+
+        return new SchemaAndValue(UnifiedMetadataSchemaConstants.SCHEMA, struct);
+    }
 
     public static SchemaAndValue recordToSchemaAndValue(final JsonNode node) {
         Schema nodeSchema = inferSchema(node);

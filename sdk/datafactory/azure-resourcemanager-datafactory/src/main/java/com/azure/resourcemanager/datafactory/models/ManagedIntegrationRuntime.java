@@ -69,7 +69,7 @@ public final class ManagedIntegrationRuntime extends IntegrationRuntime {
      * 
      * @return the innerTypeProperties value.
      */
-    private ManagedIntegrationRuntimeTypeProperties innerTypeProperties() {
+    ManagedIntegrationRuntimeTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

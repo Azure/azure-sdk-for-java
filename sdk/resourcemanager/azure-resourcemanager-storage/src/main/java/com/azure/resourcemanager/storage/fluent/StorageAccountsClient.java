@@ -823,7 +823,7 @@ public interface StorageAccountsClient extends InnerSupportsGet<StorageAccountIn
      * only available while the primary and secondary endpoints are available. The primary use case of a Planned
      * Failover is disaster recovery testing drills. This type of failover is invoked by setting FailoverType parameter
      * to 'Planned'. Learn more about the failover options here-
-     * https://learn.microsoft.com/en-us/azure/storage/common/storage-disaster-recovery-guidance.
+     * https://learn.microsoft.com/azure/storage/common/storage-disaster-recovery-guidance.
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
@@ -848,7 +848,7 @@ public interface StorageAccountsClient extends InnerSupportsGet<StorageAccountIn
      * only available while the primary and secondary endpoints are available. The primary use case of a Planned
      * Failover is disaster recovery testing drills. This type of failover is invoked by setting FailoverType parameter
      * to 'Planned'. Learn more about the failover options here-
-     * https://learn.microsoft.com/en-us/azure/storage/common/storage-disaster-recovery-guidance.
+     * https://learn.microsoft.com/azure/storage/common/storage-disaster-recovery-guidance.
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
@@ -873,7 +873,7 @@ public interface StorageAccountsClient extends InnerSupportsGet<StorageAccountIn
      * only available while the primary and secondary endpoints are available. The primary use case of a Planned
      * Failover is disaster recovery testing drills. This type of failover is invoked by setting FailoverType parameter
      * to 'Planned'. Learn more about the failover options here-
-     * https://learn.microsoft.com/en-us/azure/storage/common/storage-disaster-recovery-guidance.
+     * https://learn.microsoft.com/azure/storage/common/storage-disaster-recovery-guidance.
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
@@ -896,7 +896,7 @@ public interface StorageAccountsClient extends InnerSupportsGet<StorageAccountIn
      * only available while the primary and secondary endpoints are available. The primary use case of a Planned
      * Failover is disaster recovery testing drills. This type of failover is invoked by setting FailoverType parameter
      * to 'Planned'. Learn more about the failover options here-
-     * https://learn.microsoft.com/en-us/azure/storage/common/storage-disaster-recovery-guidance.
+     * https://learn.microsoft.com/azure/storage/common/storage-disaster-recovery-guidance.
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
@@ -919,7 +919,7 @@ public interface StorageAccountsClient extends InnerSupportsGet<StorageAccountIn
      * only available while the primary and secondary endpoints are available. The primary use case of a Planned
      * Failover is disaster recovery testing drills. This type of failover is invoked by setting FailoverType parameter
      * to 'Planned'. Learn more about the failover options here-
-     * https://learn.microsoft.com/en-us/azure/storage/common/storage-disaster-recovery-guidance.
+     * https://learn.microsoft.com/azure/storage/common/storage-disaster-recovery-guidance.
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
@@ -945,7 +945,7 @@ public interface StorageAccountsClient extends InnerSupportsGet<StorageAccountIn
      * only available while the primary and secondary endpoints are available. The primary use case of a Planned
      * Failover is disaster recovery testing drills. This type of failover is invoked by setting FailoverType parameter
      * to 'Planned'. Learn more about the failover options here-
-     * https://learn.microsoft.com/en-us/azure/storage/common/storage-disaster-recovery-guidance.
+     * https://learn.microsoft.com/azure/storage/common/storage-disaster-recovery-guidance.
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
@@ -969,7 +969,7 @@ public interface StorageAccountsClient extends InnerSupportsGet<StorageAccountIn
      * only available while the primary and secondary endpoints are available. The primary use case of a Planned
      * Failover is disaster recovery testing drills. This type of failover is invoked by setting FailoverType parameter
      * to 'Planned'. Learn more about the failover options here-
-     * https://learn.microsoft.com/en-us/azure/storage/common/storage-disaster-recovery-guidance.
+     * https://learn.microsoft.com/azure/storage/common/storage-disaster-recovery-guidance.
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
@@ -992,7 +992,7 @@ public interface StorageAccountsClient extends InnerSupportsGet<StorageAccountIn
      * only available while the primary and secondary endpoints are available. The primary use case of a Planned
      * Failover is disaster recovery testing drills. This type of failover is invoked by setting FailoverType parameter
      * to 'Planned'. Learn more about the failover options here-
-     * https://learn.microsoft.com/en-us/azure/storage/common/storage-disaster-recovery-guidance.
+     * https://learn.microsoft.com/azure/storage/common/storage-disaster-recovery-guidance.
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.
@@ -1014,7 +1014,7 @@ public interface StorageAccountsClient extends InnerSupportsGet<StorageAccountIn
      * only available while the primary and secondary endpoints are available. The primary use case of a Planned
      * Failover is disaster recovery testing drills. This type of failover is invoked by setting FailoverType parameter
      * to 'Planned'. Learn more about the failover options here-
-     * https://learn.microsoft.com/en-us/azure/storage/common/storage-disaster-recovery-guidance.
+     * https://learn.microsoft.com/azure/storage/common/storage-disaster-recovery-guidance.
      * 
      * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
      * insensitive.

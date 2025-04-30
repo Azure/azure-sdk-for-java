@@ -51,7 +51,7 @@ public final class AzureSqlMITableDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private AzureSqlMITableDatasetTypeProperties innerTypeProperties() {
+    AzureSqlMITableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

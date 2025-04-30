@@ -37,7 +37,7 @@
     "com.azure.health.deidentification.models.DeidentificationJobSummary": "HealthDataAIServices.DeidServices.DeidentificationJobSummary",
     "com.azure.health.deidentification.models.DeidentificationOperationType": "HealthDataAIServices.DeidServices.DeidentificationOperationType",
     "com.azure.health.deidentification.models.DeidentificationResult": "HealthDataAIServices.DeidServices.DeidentificationResult",
-    "com.azure.health.deidentification.models.OperationState": "Azure.Core.Foundations.OperationState",
+    "com.azure.health.deidentification.models.OperationStatus": "Azure.Core.Foundations.OperationState",
     "com.azure.health.deidentification.models.PhiCategory": "HealthDataAIServices.DeidServices.PhiCategory",
     "com.azure.health.deidentification.models.PhiEntity": "HealthDataAIServices.DeidServices.PhiEntity",
     "com.azure.health.deidentification.models.PhiTaggerResult": "HealthDataAIServices.DeidServices.PhiTaggerResult",

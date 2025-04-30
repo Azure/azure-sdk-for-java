@@ -4,6 +4,7 @@
 
 package com.azure.resourcemanager.elasticsan.generated;
 
+import com.azure.resourcemanager.elasticsan.models.ManagedByInfo;
 import com.azure.resourcemanager.elasticsan.models.Volume;
 
 /**
@@ -12,7 +13,7 @@ import com.azure.resourcemanager.elasticsan.models.Volume;
 public final class VolumesUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2024-06-01-preview/examples/
+     * specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2024-07-01-preview/examples/
      * Volumes_Update_MinimumSet_Gen.json
      */
     /**
@@ -30,7 +31,7 @@ public final class VolumesUpdateSamples {
 
     /*
      * x-ms-original-file:
-     * specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2024-06-01-preview/examples/
+     * specification/elasticsan/resource-manager/Microsoft.ElasticSan/preview/2024-07-01-preview/examples/
      * Volumes_Update_MaximumSet_Gen.json
      */
     /**
@@ -43,6 +44,9 @@ public final class VolumesUpdateSamples {
             .getWithResponse("resourcegroupname", "elasticsanname", "volumegroupname", "volumename",
                 com.azure.core.util.Context.NONE)
             .getValue();
-        resource.update().withSizeGiB(11L).apply();
+        resource.update()
+            .withSizeGiB(7L)
+            .withManagedBy(new ManagedByInfo().withResourceId("pclpkrpkpmvcsegcubrakcoodrubo"))
+            .apply();
     }
 }

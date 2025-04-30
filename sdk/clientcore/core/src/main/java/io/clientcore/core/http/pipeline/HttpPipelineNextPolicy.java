@@ -7,19 +7,14 @@ import io.clientcore.core.annotations.Metadata;
 import io.clientcore.core.annotations.MetadataProperties;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.implementation.http.HttpPipelineCallState;
-import io.clientcore.core.instrumentation.logging.ClientLogger;
+import io.clientcore.core.models.CoreException;
 import io.clientcore.core.models.binarydata.BinaryData;
-
-import java.io.IOException;
-import java.io.UncheckedIOException;
 
 /**
  * A type that invokes next policy in the pipeline.
  */
 @Metadata(properties = MetadataProperties.IMMUTABLE)
 public class HttpPipelineNextPolicy {
-    private static final ClientLogger LOGGER = new ClientLogger(HttpPipelineNextPolicy.class);
-
     private final HttpPipelineCallState state;
 
     /**
@@ -35,19 +30,13 @@ public class HttpPipelineNextPolicy {
      * Invokes the next {@link HttpPipelinePolicy}.
      *
      * @return The response.
-     * @throws UncheckedIOException If an error occurs when sending the request or receiving the response.
+     * @throws CoreException If an error occurs when sending the request or receiving the response.
      */
     public Response<BinaryData> process() {
         HttpPipelinePolicy nextPolicy = state.getNextPolicy();
 
         if (nextPolicy == null) {
-            try {
-                return this.state.getPipeline().getHttpClient().send(this.state.getHttpRequest());
-            } catch (IOException e) {
-                // TODO (alzimmer): Having 'process' throw an IOException forces HttpPipelinePolicy and HttpPipeline to
-                //  also throw IOException. Is this something we'd want?
-                throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-            }
+            return this.state.getPipeline().getHttpClient().send(this.state.getHttpRequest());
         } else {
             return nextPolicy.process(this.state.getHttpRequest(), this);
         }

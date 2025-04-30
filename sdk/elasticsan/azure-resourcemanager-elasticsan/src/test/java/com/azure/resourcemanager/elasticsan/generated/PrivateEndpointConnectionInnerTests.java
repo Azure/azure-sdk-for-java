@@ -16,7 +16,7 @@ public final class PrivateEndpointConnectionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PrivateEndpointConnectionInner model = BinaryData.fromString(
-            "{\"properties\":{\"provisioningState\":\"Invalid\",\"privateEndpoint\":{\"id\":\"gujjugwdkcglh\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"jdyggdtji\",\"actionsRequired\":\"b\"},\"groupIds\":[\"fqweykhmene\",\"fyexfwhy\",\"cibvyvdcsitynn\",\"amdecte\"]},\"id\":\"iqscjeypv\",\"name\":\"ezrkgqhcjrefo\",\"type\":\"gm\"}")
+            "{\"properties\":{\"provisioningState\":\"Pending\",\"privateEndpoint\":{\"id\":\"gujjugwdkcglh\"},\"privateLinkServiceConnectionState\":{\"status\":\"Approved\",\"description\":\"jdyggdtji\",\"actionsRequired\":\"b\"},\"groupIds\":[\"fqweykhmene\",\"fyexfwhy\",\"cibvyvdcsitynn\",\"amdecte\"]},\"id\":\"iqscjeypv\",\"name\":\"ezrkgqhcjrefo\",\"type\":\"gm\"}")
             .toObject(PrivateEndpointConnectionInner.class);
         Assertions.assertEquals(PrivateEndpointServiceConnectionStatus.APPROVED,
             model.privateLinkServiceConnectionState().status());

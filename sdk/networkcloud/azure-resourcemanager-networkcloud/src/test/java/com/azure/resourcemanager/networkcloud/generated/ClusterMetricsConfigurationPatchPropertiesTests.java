@@ -12,20 +12,20 @@ import org.junit.jupiter.api.Assertions;
 public final class ClusterMetricsConfigurationPatchPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ClusterMetricsConfigurationPatchProperties model
-            = BinaryData.fromString("{\"collectionInterval\":7248546755237746462,\"enabledMetrics\":[\"giblkujrllf\"]}")
-                .toObject(ClusterMetricsConfigurationPatchProperties.class);
-        Assertions.assertEquals(7248546755237746462L, model.collectionInterval());
-        Assertions.assertEquals("giblkujrllf", model.enabledMetrics().get(0));
+        ClusterMetricsConfigurationPatchProperties model = BinaryData.fromString(
+            "{\"collectionInterval\":2469312855053205064,\"enabledMetrics\":[\"smlzzhzdtxetlgy\",\"lhqvlnnpxybafi\"]}")
+            .toObject(ClusterMetricsConfigurationPatchProperties.class);
+        Assertions.assertEquals(2469312855053205064L, model.collectionInterval());
+        Assertions.assertEquals("smlzzhzdtxetlgy", model.enabledMetrics().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ClusterMetricsConfigurationPatchProperties model
-            = new ClusterMetricsConfigurationPatchProperties().withCollectionInterval(7248546755237746462L)
-                .withEnabledMetrics(Arrays.asList("giblkujrllf"));
+            = new ClusterMetricsConfigurationPatchProperties().withCollectionInterval(2469312855053205064L)
+                .withEnabledMetrics(Arrays.asList("smlzzhzdtxetlgy", "lhqvlnnpxybafi"));
         model = BinaryData.fromObject(model).toObject(ClusterMetricsConfigurationPatchProperties.class);
-        Assertions.assertEquals(7248546755237746462L, model.collectionInterval());
-        Assertions.assertEquals("giblkujrllf", model.enabledMetrics().get(0));
+        Assertions.assertEquals(2469312855053205064L, model.collectionInterval());
+        Assertions.assertEquals("smlzzhzdtxetlgy", model.enabledMetrics().get(0));
     }
 }

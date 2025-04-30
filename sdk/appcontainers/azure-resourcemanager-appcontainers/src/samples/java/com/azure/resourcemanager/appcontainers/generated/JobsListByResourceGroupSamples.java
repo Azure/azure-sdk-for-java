@@ -10,8 +10,7 @@ package com.azure.resourcemanager.appcontainers.generated;
 public final class JobsListByResourceGroupSamples {
     /*
      * x-ms-original-file:
-     * specification/app/resource-manager/Microsoft.App/preview/2024-08-02-preview/examples/Jobs_ListByResourceGroup.
-     * json
+     * specification/app/resource-manager/Microsoft.App/stable/2025-01-01/examples/Jobs_ListByResourceGroup.json
      */
     /**
      * Sample code: List Container Apps Jobs by resource group.

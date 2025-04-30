@@ -188,6 +188,8 @@ public class AzureWorkloadPointInTimeRecoveryPoint extends AzureWorkloadRecovery
                 // Use the discriminator value to determine which subtype should be deserialized.
                 if ("AzureWorkloadSAPHanaPointInTimeRecoveryPoint".equals(discriminatorValue)) {
                     return AzureWorkloadSapHanaPointInTimeRecoveryPoint.fromJson(readerToUse.reset());
+                } else if ("AzureWorkloadSAPAsePointInTimeRecoveryPoint".equals(discriminatorValue)) {
+                    return AzureWorkloadSapAsePointInTimeRecoveryPoint.fromJson(readerToUse.reset());
                 } else {
                     return fromJsonKnownDiscriminator(readerToUse.reset());
                 }

@@ -14,67 +14,69 @@ public final class AddRecoveryServicesProviderInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AddRecoveryServicesProviderInput model = BinaryData.fromString(
-            "{\"properties\":{\"machineName\":\"xg\",\"machineId\":\"oyxcdyuib\",\"biosId\":\"fdn\",\"authenticationIdentityInput\":{\"tenantId\":\"zydvfvf\",\"applicationId\":\"jnaeois\",\"objectId\":\"vhmgorffukis\",\"audience\":\"vwmzhwplefaxvxil\",\"aadAuthority\":\"btgn\"},\"resourceAccessIdentityInput\":{\"tenantId\":\"nzeyqxtjj\",\"applicationId\":\"zqlqhyc\",\"objectId\":\"vodggxdbee\",\"audience\":\"mieknlraria\",\"aadAuthority\":\"wiuagydwqf\"},\"dataPlaneAuthenticationIdentityInput\":{\"tenantId\":\"lyr\",\"applicationId\":\"giagtcojo\",\"objectId\":\"qwogfnzjvus\",\"audience\":\"zldmozuxy\",\"aadAuthority\":\"fsbtkad\"}}}")
+            "{\"properties\":{\"machineName\":\"tkgdojbmxva\",\"machineId\":\"efdeesve\",\"biosId\":\"ijpxtx\",\"authenticationIdentityInput\":{\"tenantId\":\"uwprtujwsawd\",\"applicationId\":\"jibabxvititvtze\",\"objectId\":\"xavo\",\"audience\":\"tfgle\",\"aadAuthority\":\"dmdqb\"},\"resourceAccessIdentityInput\":{\"tenantId\":\"pypqtgsfj\",\"applicationId\":\"cbslhhx\",\"objectId\":\"db\",\"audience\":\"vodhtn\",\"aadAuthority\":\"irudh\"},\"dataPlaneAuthenticationIdentityInput\":{\"tenantId\":\"mes\",\"applicationId\":\"kdlpa\",\"objectId\":\"zrcxfailcfxwmdbo\",\"audience\":\"dfgsftufqobrj\",\"aadAuthority\":\"nac\"}}}")
             .toObject(AddRecoveryServicesProviderInput.class);
-        Assertions.assertEquals("xg", model.properties().machineName());
-        Assertions.assertEquals("oyxcdyuib", model.properties().machineId());
-        Assertions.assertEquals("fdn", model.properties().biosId());
-        Assertions.assertEquals("zydvfvf", model.properties().authenticationIdentityInput().tenantId());
-        Assertions.assertEquals("jnaeois", model.properties().authenticationIdentityInput().applicationId());
-        Assertions.assertEquals("vhmgorffukis", model.properties().authenticationIdentityInput().objectId());
-        Assertions.assertEquals("vwmzhwplefaxvxil", model.properties().authenticationIdentityInput().audience());
-        Assertions.assertEquals("btgn", model.properties().authenticationIdentityInput().aadAuthority());
-        Assertions.assertEquals("nzeyqxtjj", model.properties().resourceAccessIdentityInput().tenantId());
-        Assertions.assertEquals("zqlqhyc", model.properties().resourceAccessIdentityInput().applicationId());
-        Assertions.assertEquals("vodggxdbee", model.properties().resourceAccessIdentityInput().objectId());
-        Assertions.assertEquals("mieknlraria", model.properties().resourceAccessIdentityInput().audience());
-        Assertions.assertEquals("wiuagydwqf", model.properties().resourceAccessIdentityInput().aadAuthority());
-        Assertions.assertEquals("lyr", model.properties().dataPlaneAuthenticationIdentityInput().tenantId());
-        Assertions.assertEquals("giagtcojo", model.properties().dataPlaneAuthenticationIdentityInput().applicationId());
-        Assertions.assertEquals("qwogfnzjvus", model.properties().dataPlaneAuthenticationIdentityInput().objectId());
-        Assertions.assertEquals("zldmozuxy", model.properties().dataPlaneAuthenticationIdentityInput().audience());
-        Assertions.assertEquals("fsbtkad", model.properties().dataPlaneAuthenticationIdentityInput().aadAuthority());
+        Assertions.assertEquals("tkgdojbmxva", model.properties().machineName());
+        Assertions.assertEquals("efdeesve", model.properties().machineId());
+        Assertions.assertEquals("ijpxtx", model.properties().biosId());
+        Assertions.assertEquals("uwprtujwsawd", model.properties().authenticationIdentityInput().tenantId());
+        Assertions.assertEquals("jibabxvititvtze", model.properties().authenticationIdentityInput().applicationId());
+        Assertions.assertEquals("xavo", model.properties().authenticationIdentityInput().objectId());
+        Assertions.assertEquals("tfgle", model.properties().authenticationIdentityInput().audience());
+        Assertions.assertEquals("dmdqb", model.properties().authenticationIdentityInput().aadAuthority());
+        Assertions.assertEquals("pypqtgsfj", model.properties().resourceAccessIdentityInput().tenantId());
+        Assertions.assertEquals("cbslhhx", model.properties().resourceAccessIdentityInput().applicationId());
+        Assertions.assertEquals("db", model.properties().resourceAccessIdentityInput().objectId());
+        Assertions.assertEquals("vodhtn", model.properties().resourceAccessIdentityInput().audience());
+        Assertions.assertEquals("irudh", model.properties().resourceAccessIdentityInput().aadAuthority());
+        Assertions.assertEquals("mes", model.properties().dataPlaneAuthenticationIdentityInput().tenantId());
+        Assertions.assertEquals("kdlpa", model.properties().dataPlaneAuthenticationIdentityInput().applicationId());
+        Assertions.assertEquals("zrcxfailcfxwmdbo",
+            model.properties().dataPlaneAuthenticationIdentityInput().objectId());
+        Assertions.assertEquals("dfgsftufqobrj", model.properties().dataPlaneAuthenticationIdentityInput().audience());
+        Assertions.assertEquals("nac", model.properties().dataPlaneAuthenticationIdentityInput().aadAuthority());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AddRecoveryServicesProviderInput model = new AddRecoveryServicesProviderInput()
-            .withProperties(new AddRecoveryServicesProviderInputProperties().withMachineName("xg")
-                .withMachineId("oyxcdyuib")
-                .withBiosId("fdn")
-                .withAuthenticationIdentityInput(new IdentityProviderInput().withTenantId("zydvfvf")
-                    .withApplicationId("jnaeois")
-                    .withObjectId("vhmgorffukis")
-                    .withAudience("vwmzhwplefaxvxil")
-                    .withAadAuthority("btgn"))
-                .withResourceAccessIdentityInput(new IdentityProviderInput().withTenantId("nzeyqxtjj")
-                    .withApplicationId("zqlqhyc")
-                    .withObjectId("vodggxdbee")
-                    .withAudience("mieknlraria")
-                    .withAadAuthority("wiuagydwqf"))
-                .withDataPlaneAuthenticationIdentityInput(new IdentityProviderInput().withTenantId("lyr")
-                    .withApplicationId("giagtcojo")
-                    .withObjectId("qwogfnzjvus")
-                    .withAudience("zldmozuxy")
-                    .withAadAuthority("fsbtkad")));
+            .withProperties(new AddRecoveryServicesProviderInputProperties().withMachineName("tkgdojbmxva")
+                .withMachineId("efdeesve")
+                .withBiosId("ijpxtx")
+                .withAuthenticationIdentityInput(new IdentityProviderInput().withTenantId("uwprtujwsawd")
+                    .withApplicationId("jibabxvititvtze")
+                    .withObjectId("xavo")
+                    .withAudience("tfgle")
+                    .withAadAuthority("dmdqb"))
+                .withResourceAccessIdentityInput(new IdentityProviderInput().withTenantId("pypqtgsfj")
+                    .withApplicationId("cbslhhx")
+                    .withObjectId("db")
+                    .withAudience("vodhtn")
+                    .withAadAuthority("irudh"))
+                .withDataPlaneAuthenticationIdentityInput(new IdentityProviderInput().withTenantId("mes")
+                    .withApplicationId("kdlpa")
+                    .withObjectId("zrcxfailcfxwmdbo")
+                    .withAudience("dfgsftufqobrj")
+                    .withAadAuthority("nac")));
         model = BinaryData.fromObject(model).toObject(AddRecoveryServicesProviderInput.class);
-        Assertions.assertEquals("xg", model.properties().machineName());
-        Assertions.assertEquals("oyxcdyuib", model.properties().machineId());
-        Assertions.assertEquals("fdn", model.properties().biosId());
-        Assertions.assertEquals("zydvfvf", model.properties().authenticationIdentityInput().tenantId());
-        Assertions.assertEquals("jnaeois", model.properties().authenticationIdentityInput().applicationId());
-        Assertions.assertEquals("vhmgorffukis", model.properties().authenticationIdentityInput().objectId());
-        Assertions.assertEquals("vwmzhwplefaxvxil", model.properties().authenticationIdentityInput().audience());
-        Assertions.assertEquals("btgn", model.properties().authenticationIdentityInput().aadAuthority());
-        Assertions.assertEquals("nzeyqxtjj", model.properties().resourceAccessIdentityInput().tenantId());
-        Assertions.assertEquals("zqlqhyc", model.properties().resourceAccessIdentityInput().applicationId());
-        Assertions.assertEquals("vodggxdbee", model.properties().resourceAccessIdentityInput().objectId());
-        Assertions.assertEquals("mieknlraria", model.properties().resourceAccessIdentityInput().audience());
-        Assertions.assertEquals("wiuagydwqf", model.properties().resourceAccessIdentityInput().aadAuthority());
-        Assertions.assertEquals("lyr", model.properties().dataPlaneAuthenticationIdentityInput().tenantId());
-        Assertions.assertEquals("giagtcojo", model.properties().dataPlaneAuthenticationIdentityInput().applicationId());
-        Assertions.assertEquals("qwogfnzjvus", model.properties().dataPlaneAuthenticationIdentityInput().objectId());
-        Assertions.assertEquals("zldmozuxy", model.properties().dataPlaneAuthenticationIdentityInput().audience());
-        Assertions.assertEquals("fsbtkad", model.properties().dataPlaneAuthenticationIdentityInput().aadAuthority());
+        Assertions.assertEquals("tkgdojbmxva", model.properties().machineName());
+        Assertions.assertEquals("efdeesve", model.properties().machineId());
+        Assertions.assertEquals("ijpxtx", model.properties().biosId());
+        Assertions.assertEquals("uwprtujwsawd", model.properties().authenticationIdentityInput().tenantId());
+        Assertions.assertEquals("jibabxvititvtze", model.properties().authenticationIdentityInput().applicationId());
+        Assertions.assertEquals("xavo", model.properties().authenticationIdentityInput().objectId());
+        Assertions.assertEquals("tfgle", model.properties().authenticationIdentityInput().audience());
+        Assertions.assertEquals("dmdqb", model.properties().authenticationIdentityInput().aadAuthority());
+        Assertions.assertEquals("pypqtgsfj", model.properties().resourceAccessIdentityInput().tenantId());
+        Assertions.assertEquals("cbslhhx", model.properties().resourceAccessIdentityInput().applicationId());
+        Assertions.assertEquals("db", model.properties().resourceAccessIdentityInput().objectId());
+        Assertions.assertEquals("vodhtn", model.properties().resourceAccessIdentityInput().audience());
+        Assertions.assertEquals("irudh", model.properties().resourceAccessIdentityInput().aadAuthority());
+        Assertions.assertEquals("mes", model.properties().dataPlaneAuthenticationIdentityInput().tenantId());
+        Assertions.assertEquals("kdlpa", model.properties().dataPlaneAuthenticationIdentityInput().applicationId());
+        Assertions.assertEquals("zrcxfailcfxwmdbo",
+            model.properties().dataPlaneAuthenticationIdentityInput().objectId());
+        Assertions.assertEquals("dfgsftufqobrj", model.properties().dataPlaneAuthenticationIdentityInput().audience());
+        Assertions.assertEquals("nac", model.properties().dataPlaneAuthenticationIdentityInput().aadAuthority());
     }
 }

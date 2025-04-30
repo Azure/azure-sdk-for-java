@@ -30,7 +30,7 @@ import java.util.Map;
 public final class VirtualMachinesCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/stable/2024-07-01/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-10-01-preview/examples/
      * VirtualMachines_Create.json
      */
     /**

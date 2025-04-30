@@ -11,17 +11,17 @@ public final class AmazonRdsForOraclePartitionSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AmazonRdsForOraclePartitionSettings model = BinaryData.fromString(
-            "{\"partitionNames\":\"datajnsp\",\"partitionColumnName\":\"dataqo\",\"partitionUpperBound\":\"datautqt\",\"partitionLowerBound\":\"dataivvnmavfzjwdwwnx\"}")
+            "{\"partitionNames\":\"datahq\",\"partitionColumnName\":\"datazgzmonjqnienctw\",\"partitionUpperBound\":\"datamhfmognn\",\"partitionLowerBound\":\"datardllrqamfj\"}")
             .toObject(AmazonRdsForOraclePartitionSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         AmazonRdsForOraclePartitionSettings model
-            = new AmazonRdsForOraclePartitionSettings().withPartitionNames("datajnsp")
-                .withPartitionColumnName("dataqo")
-                .withPartitionUpperBound("datautqt")
-                .withPartitionLowerBound("dataivvnmavfzjwdwwnx");
+            = new AmazonRdsForOraclePartitionSettings().withPartitionNames("datahq")
+                .withPartitionColumnName("datazgzmonjqnienctw")
+                .withPartitionUpperBound("datamhfmognn")
+                .withPartitionLowerBound("datardllrqamfj");
         model = BinaryData.fromObject(model).toObject(AmazonRdsForOraclePartitionSettings.class);
     }
 }

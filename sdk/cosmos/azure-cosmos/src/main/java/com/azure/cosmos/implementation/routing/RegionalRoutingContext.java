@@ -13,14 +13,27 @@ public class RegionalRoutingContext {
     // when adding additional properties to this class
     private final URI gatewayRegionalEndpoint;
     private final String gatewayRegionalEndpointAsString;
+    private URI thinclientRegionalEndpoint;
+    private String thinclientRegionalEndpointAsString;
 
     public RegionalRoutingContext(URI gatewayRegionalEndpoint) {
         this.gatewayRegionalEndpoint = gatewayRegionalEndpoint;
         this.gatewayRegionalEndpointAsString = gatewayRegionalEndpoint.toString();
+        this.thinclientRegionalEndpoint = null;
+        thinclientRegionalEndpointAsString = null;
     }
 
     public URI getGatewayRegionalEndpoint() {
         return this.gatewayRegionalEndpoint;
+    }
+
+    public void setThinclientRegionalEndpoint(URI thinclientRegionalEndpoint) {
+        this.thinclientRegionalEndpoint = thinclientRegionalEndpoint;
+        this.thinclientRegionalEndpointAsString = thinclientRegionalEndpoint.toString();
+    }
+
+    public URI getThinclientRegionalEndpoint() {
+        return this.thinclientRegionalEndpoint;
     }
 
     @Override
@@ -28,11 +41,16 @@ public class RegionalRoutingContext {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RegionalRoutingContext that = (RegionalRoutingContext) o;
-        return this.gatewayRegionalEndpoint.equals(that.gatewayRegionalEndpoint);
+        if (this.thinclientRegionalEndpoint != null) {
+            return this.gatewayRegionalEndpoint.equals(that.gatewayRegionalEndpoint) &&
+                this.thinclientRegionalEndpoint.equals(that.thinclientRegionalEndpoint);
+        } else {
+            return this.gatewayRegionalEndpoint.equals(that.gatewayRegionalEndpoint);
+        }
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(this.gatewayRegionalEndpointAsString);
+        return Objects.hash(this.gatewayRegionalEndpointAsString, this.thinclientRegionalEndpointAsString);
     }
 }

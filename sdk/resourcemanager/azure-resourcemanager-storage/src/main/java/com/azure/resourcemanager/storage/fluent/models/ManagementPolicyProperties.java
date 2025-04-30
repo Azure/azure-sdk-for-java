@@ -27,7 +27,7 @@ public final class ManagementPolicyProperties implements JsonSerializable<Manage
 
     /*
      * The Storage Account ManagementPolicy, in JSON format. See more details in:
-     * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
+     * https://learn.microsoft.com/azure/storage/blobs/lifecycle-management-overview.
      */
     private ManagementPolicySchema policy;
 
@@ -48,7 +48,7 @@ public final class ManagementPolicyProperties implements JsonSerializable<Manage
 
     /**
      * Get the policy property: The Storage Account ManagementPolicy, in JSON format. See more details in:
-     * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
+     * https://learn.microsoft.com/azure/storage/blobs/lifecycle-management-overview.
      * 
      * @return the policy value.
      */
@@ -58,7 +58,7 @@ public final class ManagementPolicyProperties implements JsonSerializable<Manage
 
     /**
      * Set the policy property: The Storage Account ManagementPolicy, in JSON format. See more details in:
-     * https://docs.microsoft.com/en-us/azure/storage/common/storage-lifecycle-managment-concepts.
+     * https://learn.microsoft.com/azure/storage/blobs/lifecycle-management-overview.
      * 
      * @param policy the policy value to set.
      * @return the ManagementPolicyProperties object itself.
