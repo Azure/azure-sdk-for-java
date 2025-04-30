@@ -38,7 +38,7 @@ import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
 import com.azure.communication.phonenumbers.models.PhoneNumbersBrowseResult;
-import com.azure.communication.phonenumbers.models.BrowseAvailableNumbersRequest;
+import com.azure.communication.phonenumbers.models.BrowsePhoneNumbersOptions;
 import com.azure.communication.phonenumbers.models.CreateOrUpdateReservationOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumbersReservation;
 import com.azure.communication.phonenumbers.models.PurchasePhoneNumbersResult;
@@ -199,14 +199,13 @@ public final class PhoneNumbersAsyncClient {
      * Retrieves the reservation with the given ID, including all of the phone numbers associated with it.
      * 
      * @param reservationId The id of the reservation.
-     * @param context The context to associate with this operation.
      * @return represents a reservation for phone numbers on successful completion of {@link PhoneNumbersReservation}.
      * @throws NullPointerException if {@code reservationId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PhoneNumbersReservation>> getReservationWithResponse(String reservationId, Context context) {
+    public Mono<Response<PhoneNumbersReservation>> getReservationWithResponse(String reservationId) {
         Objects.requireNonNull(reservationId, "'reservationId' cannot be null.");
-        return client.getReservationWithResponseAsync(UUID.fromString(reservationId), context);
+        return client.getReservationWithResponseAsync(UUID.fromString(reservationId));
     }
 
     /**
@@ -251,8 +250,7 @@ public final class PhoneNumbersAsyncClient {
      * @return the result of a phone number browse operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<PhoneNumbersBrowseResult>
-        browseAvailableNumbers(BrowseAvailableNumbersRequest phoneNumbersBrowseRequest) {
+    public Mono<PhoneNumbersBrowseResult> browseAvailableNumbers(BrowsePhoneNumbersOptions phoneNumbersBrowseRequest) {
         Objects.requireNonNull(phoneNumbersBrowseRequest.getCountryCode(), "'countryCode' cannot be null.");
         return client.browseAvailableNumbersAsync(phoneNumbersBrowseRequest.getCountryCode(),
             mapBrowseRequest(phoneNumbersBrowseRequest));
@@ -266,12 +264,11 @@ public final class PhoneNumbersAsyncClient {
      * randomized, repeating the same request will not guarantee the same results.
      * 
      * @param phoneNumbersBrowseRequest An object defining the criteria to browse for available phone numbers.
-     * @param context The context to associate with this operation.
      * @return the result of a phone number browse operation on successful completion of {@link PhoneNumbersBrowseResult}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PhoneNumbersBrowseResult>>
-        browseAvailableNumbersWithResponse(BrowseAvailableNumbersRequest phoneNumbersBrowseRequest, Context context) {
+        browseAvailableNumbersWithResponse(BrowsePhoneNumbersOptions phoneNumbersBrowseRequest) {
         Objects.requireNonNull(phoneNumbersBrowseRequest.getCountryCode(), "'countryCode' cannot be null.");
         return client.browseAvailableNumbersWithResponseAsync(phoneNumbersBrowseRequest.getCountryCode(),
             mapBrowseRequest(phoneNumbersBrowseRequest));
@@ -1018,18 +1015,17 @@ public final class PhoneNumbersAsyncClient {
      * time. Partial success is possible, in which case the response will have a 207 status code.
      * 
      * @param request The request object containing the reservation ID and the phone numbers to add or remove.
-     * @param context Context during the request.
      * @return represents a reservation for phone numbers on successful completion of {@link PhoneNumbersReservation}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<PhoneNumbersReservation>>
-        createOrUpdateReservationWithResponse(CreateOrUpdateReservationOptions request, Context context) {
+        createOrUpdateReservationWithResponse(CreateOrUpdateReservationOptions request) {
         String reservationId
             = request.getReservationId() != null ? request.getReservationId() : UUID.randomUUID().toString();
 
         Map<String, AvailablePhoneNumber> phoneNumbersMap = updatePhoneNumbersMap(new HashMap<>(), request);
         PhoneNumbersReservation reservation = new PhoneNumbersReservation().setPhoneNumbers(phoneNumbersMap);
-        return client.createOrUpdateReservationWithResponseAsync(UUID.fromString(reservationId), reservation, context);
+        return client.createOrUpdateReservationWithResponseAsync(UUID.fromString(reservationId), reservation);
     }
 
     /**
@@ -1053,12 +1049,11 @@ public final class PhoneNumbersAsyncClient {
      * available for others to purchase. Only reservations with 'active' status can be deleted.
      * 
      * @param reservationId The id of the reservation that's going to be deleted.
-     * @param context Context during the request.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteReservationWithResponse(String reservationId, Context context) {
-        return client.deleteReservationWithResponseAsync(UUID.fromString(reservationId), context);
+    public Mono<Response<Void>> deleteReservationWithResponse(String reservationId) {
+        return client.deleteReservationWithResponseAsync(UUID.fromString(reservationId));
     }
 
     private Mono<PhoneNumberOperation> getOperation(String operationId) {
@@ -1105,7 +1100,7 @@ public final class PhoneNumbersAsyncClient {
         return phoneNumbersMap;
     }
 
-    private static PhoneNumbersBrowseRequest mapBrowseRequest(BrowseAvailableNumbersRequest phoneNumbersBrowseRequest) {
+    private static PhoneNumbersBrowseRequest mapBrowseRequest(BrowsePhoneNumbersOptions phoneNumbersBrowseRequest) {
         PhoneNumberBrowseCapabilitiesRequest capabilitiesRequest = new PhoneNumberBrowseCapabilitiesRequest();
         if (phoneNumbersBrowseRequest.getCapabilities() != null) {
             if (phoneNumbersBrowseRequest.getCapabilities().getCalling() != null) {

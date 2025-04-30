@@ -16,7 +16,7 @@ import java.util.List;
  * The parameters for the browse operation.
  */
 @Fluent
-public final class BrowseAvailableNumbersRequest implements JsonSerializable<BrowseAvailableNumbersRequest> {
+public final class BrowsePhoneNumbersOptions implements JsonSerializable<BrowsePhoneNumbersOptions> {
     /*
      * Represents the number type of the offering.
      */
@@ -45,7 +45,7 @@ public final class BrowseAvailableNumbersRequest implements JsonSerializable<Bro
     /**
      * Creates an instance of PhoneNumbersBrowseRequest class.
      */
-    public BrowseAvailableNumbersRequest() {
+    public BrowsePhoneNumbersOptions() {
     }
 
     /**
@@ -63,7 +63,7 @@ public final class BrowseAvailableNumbersRequest implements JsonSerializable<Bro
      * @param phoneNumberType the phoneNumberType value to set.
      * @return the PhoneNumbersBrowseRequest object itself.
      */
-    public BrowseAvailableNumbersRequest setPhoneNumberType(PhoneNumberType phoneNumberType) {
+    public BrowsePhoneNumbersOptions setPhoneNumberType(PhoneNumberType phoneNumberType) {
         this.phoneNumberType = phoneNumberType;
         return this;
     }
@@ -83,7 +83,7 @@ public final class BrowseAvailableNumbersRequest implements JsonSerializable<Bro
      * @param capabilities the capabilities value to set.
      * @return the PhoneNumbersBrowseRequest object itself.
      */
-    public BrowseAvailableNumbersRequest setCapabilities(PhoneNumberCapabilities capabilities) {
+    public BrowsePhoneNumbersOptions setCapabilities(PhoneNumberCapabilities capabilities) {
         this.capabilities = capabilities;
         return this;
     }
@@ -103,7 +103,7 @@ public final class BrowseAvailableNumbersRequest implements JsonSerializable<Bro
      * @param assignmentType the assignmentType value to set.
      * @return the PhoneNumbersBrowseRequest object itself.
      */
-    public BrowseAvailableNumbersRequest setAssignmentType(PhoneNumberAssignmentType assignmentType) {
+    public BrowsePhoneNumbersOptions setAssignmentType(PhoneNumberAssignmentType assignmentType) {
         this.assignmentType = assignmentType;
         return this;
     }
@@ -125,7 +125,7 @@ public final class BrowseAvailableNumbersRequest implements JsonSerializable<Bro
      * @param phoneNumberPrefixes the phoneNumberPrefixes value to set.
      * @return the PhoneNumbersBrowseRequest object itself.
      */
-    public BrowseAvailableNumbersRequest setPhoneNumberPrefixes(List<String> phoneNumberPrefixes) {
+    public BrowsePhoneNumbersOptions setPhoneNumberPrefixes(List<String> phoneNumberPrefixes) {
         this.phoneNumberPrefixes = phoneNumberPrefixes;
         return this;
     }
@@ -145,7 +145,7 @@ public final class BrowseAvailableNumbersRequest implements JsonSerializable<Bro
      * @param countryCode the countryCode value to set.
      * @return the PhoneNumbersBrowseRequest object itself.
      */
-    public BrowseAvailableNumbersRequest setCountryCode(String countryCode) {
+    public BrowsePhoneNumbersOptions setCountryCode(String countryCode) {
         this.countryCode = countryCode;
         return this;
     }
@@ -176,9 +176,9 @@ public final class BrowseAvailableNumbersRequest implements JsonSerializable<Bro
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the PhoneNumbersBrowseRequest.
      */
-    public static BrowseAvailableNumbersRequest fromJson(JsonReader jsonReader) throws IOException {
+    public static BrowsePhoneNumbersOptions fromJson(JsonReader jsonReader) throws IOException {
         return jsonReader.readObject(reader -> {
-            BrowseAvailableNumbersRequest deserializedPhoneNumbersBrowseRequest = new BrowseAvailableNumbersRequest();
+            BrowsePhoneNumbersOptions deserializedPhoneNumbersBrowseRequest = new BrowsePhoneNumbersOptions();
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();

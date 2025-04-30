@@ -23,7 +23,7 @@ import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
 import com.azure.communication.phonenumbers.models.PhoneNumbersBrowseResult;
-import com.azure.communication.phonenumbers.models.BrowseAvailableNumbersRequest;
+import com.azure.communication.phonenumbers.models.BrowsePhoneNumbersOptions;
 import com.azure.communication.phonenumbers.models.CreateOrUpdateReservationOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumbersReservation;
 import com.azure.communication.phonenumbers.models.PurchasePhoneNumbersResult;
@@ -501,7 +501,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void browseAvailablePhoneNumberSucceeds(HttpClient httpClient) {
-        BrowseAvailableNumbersRequest browseRequest = new BrowseAvailableNumbersRequest().setCountryCode("US")
+        BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions().setCountryCode("US")
             .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
             .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
             .setCapabilities(new PhoneNumberCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
@@ -518,7 +518,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void browseAvailablePhoneNumberWrongCountryCode(HttpClient httpClient) {
-        BrowseAvailableNumbersRequest browseRequest = new BrowseAvailableNumbersRequest().setCountryCode("INVALID")
+        BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions().setCountryCode("INVALID")
             .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
             .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
             .setCapabilities(new PhoneNumberCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
@@ -531,7 +531,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void browseAvailablePhoneNumberSucceedsWithAAD(HttpClient httpClient) {
-        BrowseAvailableNumbersRequest browseRequest = new BrowseAvailableNumbersRequest().setCountryCode("US")
+        BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions().setCountryCode("US")
             .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
             .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
             .setCapabilities(new PhoneNumberCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
@@ -548,7 +548,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void browseAvailablePhoneNumberWrongCountryCodeWithAAD(HttpClient httpClient) {
-        BrowseAvailableNumbersRequest browseRequest = new BrowseAvailableNumbersRequest().setCountryCode("IMVALID")
+        BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions().setCountryCode("IMVALID")
             .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
             .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
             .setCapabilities(new PhoneNumberCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
@@ -561,7 +561,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void updatePhoneNumbersReservation(HttpClient httpClient) {
-        BrowseAvailableNumbersRequest browseRequest = new BrowseAvailableNumbersRequest().setCountryCode("US")
+        BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions().setCountryCode("US")
             .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
             .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
             .setCapabilities(new PhoneNumberCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
@@ -623,7 +623,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void updatePhoneNumbersReservationWithAAD(HttpClient httpClient) {
-        BrowseAvailableNumbersRequest browseRequest = new BrowseAvailableNumbersRequest().setCountryCode("US")
+        BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions().setCountryCode("US")
             .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
             .setAssignmentType(PhoneNumberAssignmentType.APPLICATION)
             .setCapabilities(new PhoneNumberCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
@@ -685,7 +685,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void purchaseWithoutAgreementToNotResellFails(HttpClient httpClient) {
-        BrowseAvailableNumbersRequest browseRequest = new BrowseAvailableNumbersRequest().setCountryCode("FR")
+        BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions().setCountryCode("FR")
             .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
             .setAssignmentType(PhoneNumberAssignmentType.APPLICATION);
 
@@ -706,7 +706,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void purchaseWithoutAgreementToNotResellFailsWithAAD(HttpClient httpClient) {
-        BrowseAvailableNumbersRequest browseRequest = new BrowseAvailableNumbersRequest().setCountryCode("FR")
+        BrowsePhoneNumbersOptions browseRequest = new BrowsePhoneNumbersOptions().setCountryCode("FR")
             .setPhoneNumberType(PhoneNumberType.TOLL_FREE)
             .setAssignmentType(PhoneNumberAssignmentType.APPLICATION);
 

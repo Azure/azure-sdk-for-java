@@ -15,7 +15,7 @@ import com.azure.communication.phonenumbers.implementation.models.PhoneNumberBro
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersBrowseRequest;
 import com.azure.communication.phonenumbers.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.models.AvailablePhoneNumber;
-import com.azure.communication.phonenumbers.models.BrowseAvailableNumbersRequest;
+import com.azure.communication.phonenumbers.models.BrowsePhoneNumbersOptions;
 import com.azure.communication.phonenumbers.models.CreateOrUpdateReservationOptions;
 import com.azure.communication.phonenumbers.models.OperatorInformationOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
@@ -243,7 +243,7 @@ public final class PhoneNumbersClient {
      * @return the result of a phone number browse operation {@link PhoneNumbersBrowseResult}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PhoneNumbersBrowseResult browseAvailableNumbers(BrowseAvailableNumbersRequest phoneNumbersBrowseRequest) {
+    public PhoneNumbersBrowseResult browseAvailableNumbers(BrowsePhoneNumbersOptions phoneNumbersBrowseRequest) {
         Objects.requireNonNull(phoneNumbersBrowseRequest.getCountryCode(), "'countryCode' cannot be null.");
         return client.browseAvailableNumbers(phoneNumbersBrowseRequest.getCountryCode(),
             mapBrowseRequest(phoneNumbersBrowseRequest));
@@ -262,7 +262,7 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PhoneNumbersBrowseResult>
-        browseAvailableNumbersWithResponse(BrowseAvailableNumbersRequest phoneNumbersBrowseRequest, Context context) {
+        browseAvailableNumbersWithResponse(BrowsePhoneNumbersOptions phoneNumbersBrowseRequest, Context context) {
         Objects.requireNonNull(phoneNumbersBrowseRequest.getCountryCode(), "'countryCode' cannot be null.");
 
         return client.browseAvailableNumbersWithResponse(phoneNumbersBrowseRequest.getCountryCode(),
@@ -1127,7 +1127,7 @@ public final class PhoneNumbersClient {
         return phoneNumbersMap;
     }
 
-    private static PhoneNumbersBrowseRequest mapBrowseRequest(BrowseAvailableNumbersRequest phoneNumbersBrowseRequest) {
+    private static PhoneNumbersBrowseRequest mapBrowseRequest(BrowsePhoneNumbersOptions phoneNumbersBrowseRequest) {
         PhoneNumberBrowseCapabilitiesRequest capabilitiesRequest = new PhoneNumberBrowseCapabilitiesRequest();
         if (phoneNumbersBrowseRequest.getCapabilities() != null) {
             if (phoneNumbersBrowseRequest.getCapabilities().getCalling() != null) {
