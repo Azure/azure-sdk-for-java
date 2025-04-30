@@ -136,11 +136,11 @@ public class PhoneNumbersIntegrationTestBase extends TestProxyTestBase {
         return phoneNumber;
     }
 
-    protected UUID getReservationId() {
+    protected String getReservationId() {
         if (getTestMode() == TestMode.PLAYBACK) {
-            return UUID.fromString("11111111-1111-1111-1111-111111111111");
+            return "11111111-1111-1111-1111-111111111111";
         }
-        return UUID.randomUUID();
+        return UUID.randomUUID().toString();
     }
 
     private HttpPipelinePolicy getOverrideMSUserAgentPolicy() {

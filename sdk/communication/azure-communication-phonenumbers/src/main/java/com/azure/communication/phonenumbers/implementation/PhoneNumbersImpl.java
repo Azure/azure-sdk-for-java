@@ -14,7 +14,6 @@ import com.azure.communication.phonenumbers.implementation.models.PhoneNumberLoc
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberPurchaseRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberRawOperation;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersBrowseRequest;
-import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersBrowseResult;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberSearchRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersGetOperationResponse;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersPurchasePhoneNumbersResponse;
@@ -31,6 +30,7 @@ import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCountry;
 import com.azure.communication.phonenumbers.models.PhoneNumberLocality;
 import com.azure.communication.phonenumbers.models.PhoneNumberOffering;
+import com.azure.communication.phonenumbers.models.PhoneNumbersBrowseResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumbersReservation;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;

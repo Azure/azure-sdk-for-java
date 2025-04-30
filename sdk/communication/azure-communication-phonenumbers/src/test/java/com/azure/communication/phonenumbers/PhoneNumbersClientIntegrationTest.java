@@ -22,6 +22,7 @@ import com.azure.communication.phonenumbers.models.PhoneNumberOperationStatus;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
+import com.azure.communication.phonenumbers.models.PhoneNumbersBrowseResult;
 import com.azure.communication.phonenumbers.models.BrowseAvailableNumbersRequest;
 import com.azure.communication.phonenumbers.models.CreateOrUpdateReservationOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumbersReservation;
@@ -55,7 +56,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTestBase {
 
-    private String reservationId = getReservationId().toString();
+    private String reservationId = getReservationId();
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
@@ -489,10 +490,10 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
             .setCapabilities(new PhoneNumberCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
                 .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
-        List<AvailablePhoneNumber> result = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
+        PhoneNumbersBrowseResult result = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
             .browseAvailableNumbers(browseRequest);
-        assertEquals(PhoneNumberType.TOLL_FREE, result.get(0).getPhoneNumberType());
-        assertEquals(PhoneNumberAssignmentType.APPLICATION, result.get(0).getAssignmentType());
+        assertEquals(PhoneNumberType.TOLL_FREE, result.getPhoneNumbers().get(0).getPhoneNumberType());
+        assertEquals(PhoneNumberAssignmentType.APPLICATION, result.getPhoneNumbers().get(0).getAssignmentType());
     }
 
     @ParameterizedTest
@@ -506,7 +507,8 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
         PhoneNumbersClient client = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers");
 
-        assertThrows(RuntimeException.class, () -> client.browseAvailableNumbers(browseRequest).iterator().next(),
+        assertThrows(RuntimeException.class,
+            () -> client.browseAvailableNumbers(browseRequest).getPhoneNumbers().iterator().next(),
             "Unable to parse CountryCode");
     }
 
@@ -519,10 +521,10 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
             .setCapabilities(new PhoneNumberCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
                 .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
-        List<AvailablePhoneNumber> result = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers")
+        PhoneNumbersBrowseResult result = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers")
             .browseAvailableNumbers(browseRequest);
-        assertEquals(PhoneNumberType.TOLL_FREE, result.get(0).getPhoneNumberType());
-        assertEquals(PhoneNumberAssignmentType.APPLICATION, result.get(0).getAssignmentType());
+        assertEquals(PhoneNumberType.TOLL_FREE, result.getPhoneNumbers().get(0).getPhoneNumberType());
+        assertEquals(PhoneNumberAssignmentType.APPLICATION, result.getPhoneNumbers().get(0).getAssignmentType());
     }
 
     @ParameterizedTest
@@ -536,7 +538,8 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
         PhoneNumbersClient client = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers");
 
-        assertThrows(RuntimeException.class, () -> client.browseAvailableNumbers(browseRequest).iterator().next(),
+        assertThrows(RuntimeException.class,
+            () -> client.browseAvailableNumbers(browseRequest).getPhoneNumbers().iterator().next(),
             "Unable to parse CountryCode");
     }
 
@@ -549,19 +552,19 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
             .setCapabilities(new PhoneNumberCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
                 .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
-        List<AvailablePhoneNumber> result = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
+        PhoneNumbersBrowseResult result = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
             .browseAvailableNumbers(browseRequest);
 
         List<AvailablePhoneNumber> numbersToAdd = new ArrayList<>();
 
-        numbersToAdd.add(result.get(0));
+        numbersToAdd.add(result.getPhoneNumbers().get(0));
 
         PhoneNumbersReservation reservationResponse
             = this.getClientWithConnectionString(httpClient, "updatePhoneNumberReservation")
                 .createOrUpdateReservation(new CreateOrUpdateReservationOptions(reservationId, numbersToAdd, null));
         assertEquals(reservationId, reservationResponse.getId().toString());
         assertNotNull(reservationResponse.getPhoneNumbers());
-        assertTrue(reservationResponse.getPhoneNumbers().containsKey(result.get(0).getId()));
+        assertTrue(reservationResponse.getPhoneNumbers().containsKey(result.getPhoneNumbers().get(0).getId()));
 
         reservationResponse
             = this.getClientWithConnectionString(httpClient, "getPhoneNumberReservation").getReservation(reservationId);
@@ -576,12 +579,12 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         assertTrue(containsReservation, "The reservations list does not contain the expected reservation.");
 
         List<String> numbersToRemove = new ArrayList<>();
-        numbersToRemove.add(result.get(0).getId());
+        numbersToRemove.add(result.getPhoneNumbers().get(0).getId());
 
         reservationResponse = this.getClientWithConnectionString(httpClient, "updatePhoneNumberReservation")
             .createOrUpdateReservation(new CreateOrUpdateReservationOptions(reservationId, null, numbersToRemove));
         assertEquals(reservationId, reservationResponse.getId().toString());
-        assertFalse(reservationResponse.getPhoneNumbers().containsKey(result.get(0).getId()));
+        assertFalse(reservationResponse.getPhoneNumbers().containsKey(result.getPhoneNumbers().get(0).getId()));
 
         this.getClientWithConnectionString(httpClient, "deletePhoneNumberReservation").deleteReservation(reservationId);
 
@@ -599,11 +602,11 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
             .setCapabilities(new PhoneNumberCapabilities().setCalling(PhoneNumberCapabilityType.INBOUND_OUTBOUND)
                 .setSms(PhoneNumberCapabilityType.INBOUND_OUTBOUND));
 
-        List<AvailablePhoneNumber> result = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers")
+        PhoneNumbersBrowseResult result = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers")
             .browseAvailableNumbers(browseRequest);
 
         List<AvailablePhoneNumber> numbersToAdd = new ArrayList<>();
-        numbersToAdd.add(result.get(0));
+        numbersToAdd.add(result.getPhoneNumbers().get(0));
 
         PhoneNumbersReservation reservationResponse
             = this.getClientWithConnectionString(httpClient, "updatePhoneNumberReservation")
@@ -611,7 +614,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
         assertEquals(reservationId, reservationResponse.getId().toString());
         assertNotNull(reservationResponse.getPhoneNumbers());
-        assertTrue(reservationResponse.getPhoneNumbers().containsKey(result.get(0).getId()));
+        assertTrue(reservationResponse.getPhoneNumbers().containsKey(result.getPhoneNumbers().get(0).getId()));
 
         reservationResponse
             = this.getClientWithManagedIdentity(httpClient, "getPhoneNumberReservation").getReservation(reservationId);
@@ -626,12 +629,12 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         assertTrue(containsReservation, "The reservations list does not contain the expected reservation.");
 
         List<String> numbersToRemove = new ArrayList<>();
-        numbersToRemove.add(result.get(0).getId());
+        numbersToRemove.add(result.getPhoneNumbers().get(0).getId());
 
         reservationResponse = this.getClientWithManagedIdentity(httpClient, "updatePhoneNumberReservation")
             .createOrUpdateReservation(new CreateOrUpdateReservationOptions(reservationId, null, numbersToRemove));
         assertEquals(reservationId, reservationResponse.getId().toString());
-        assertFalse(reservationResponse.getPhoneNumbers().containsKey(result.get(0).getId()));
+        assertFalse(reservationResponse.getPhoneNumbers().containsKey(result.getPhoneNumbers().get(0).getId()));
 
         this.getClientWithManagedIdentity(httpClient, "deletePhoneNumberReservation").deleteReservation(reservationId);
 
@@ -649,11 +652,11 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
         PhoneNumbersClient client = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers");
 
-        List<AvailablePhoneNumber> result = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
+        PhoneNumbersBrowseResult result = this.getClientWithConnectionString(httpClient, "browseAvailableNumbers")
             .browseAvailableNumbers(browseRequest);
 
         List<AvailablePhoneNumber> numbersToAdd = new ArrayList<>();
-        numbersToAdd.add(result.get(0));
+        numbersToAdd.add(result.getPhoneNumbers().get(0));
 
         PhoneNumbersReservation reservationResponse
             = this.getClientWithManagedIdentity(httpClient, "updatePhoneNumberReservation")
@@ -672,11 +675,11 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
         PhoneNumbersClient client = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers");
 
-        List<AvailablePhoneNumber> result = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers")
+        PhoneNumbersBrowseResult result = this.getClientWithManagedIdentity(httpClient, "browseAvailableNumbers")
             .browseAvailableNumbers(browseRequest);
 
         List<AvailablePhoneNumber> numbersToAdd = new ArrayList<>();
-        numbersToAdd.add(result.get(0));
+        numbersToAdd.add(result.getPhoneNumbers().get(0));
 
         PhoneNumbersReservation reservationResponse
             = this.getClientWithManagedIdentity(httpClient, "updatePhoneNumberReservation")

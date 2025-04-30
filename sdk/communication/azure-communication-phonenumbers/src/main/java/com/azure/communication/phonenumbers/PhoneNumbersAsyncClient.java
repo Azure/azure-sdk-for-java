@@ -37,6 +37,7 @@ import com.azure.communication.phonenumbers.models.PhoneNumberOperationStatus;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
+import com.azure.communication.phonenumbers.models.PhoneNumbersBrowseResult;
 import com.azure.communication.phonenumbers.models.BrowseAvailableNumbersRequest;
 import com.azure.communication.phonenumbers.models.CreateOrUpdateReservationOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumbersReservation;
@@ -234,17 +235,11 @@ public final class PhoneNumbersAsyncClient {
      * @return the result of a phone number browse operation on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<AvailablePhoneNumber>>
+    public Mono<PhoneNumbersBrowseResult>
         browseAvailableNumbers(BrowseAvailableNumbersRequest phoneNumbersBrowseRequest) {
         Objects.requireNonNull(phoneNumbersBrowseRequest.getCountryCode(), "'countryCode' cannot be null.");
-        return client
-            .browseAvailableNumbersAsync(phoneNumbersBrowseRequest.getCountryCode(),
-                mapBrowseRequest(phoneNumbersBrowseRequest))
-            .map(response -> {
-                // Extract the list of AvailablePhoneNumber from the response
-                List<AvailablePhoneNumber> availablePhoneNumbers = response.getPhoneNumbers();
-                return availablePhoneNumbers;
-            });
+        return client.browseAvailableNumbersAsync(phoneNumbersBrowseRequest.getCountryCode(),
+            mapBrowseRequest(phoneNumbersBrowseRequest));
     }
 
     /**

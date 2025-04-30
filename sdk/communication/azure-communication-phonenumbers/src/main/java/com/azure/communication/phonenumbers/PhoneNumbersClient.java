@@ -12,7 +12,6 @@ import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClien
 import com.azure.communication.phonenumbers.implementation.PhoneNumbersImpl;
 import com.azure.communication.phonenumbers.implementation.models.OperatorInformationRequest;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumberBrowseCapabilitiesRequest;
-import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersBrowseResult;
 import com.azure.communication.phonenumbers.implementation.models.PhoneNumbersBrowseRequest;
 import com.azure.communication.phonenumbers.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.models.AvailablePhoneNumber;
@@ -29,6 +28,7 @@ import com.azure.communication.phonenumbers.models.PhoneNumberOperation;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchOptions;
 import com.azure.communication.phonenumbers.models.PhoneNumberSearchResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberType;
+import com.azure.communication.phonenumbers.models.PhoneNumbersBrowseResult;
 import com.azure.communication.phonenumbers.models.PhoneNumbersReservation;
 import com.azure.communication.phonenumbers.models.PurchasePhoneNumbersResult;
 import com.azure.communication.phonenumbers.models.PurchaseReservationResult;
@@ -244,12 +244,10 @@ public final class PhoneNumbersClient {
      * @return the result of a phone number browse operation {@link PhoneNumbersBrowseResult}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<AvailablePhoneNumber> browseAvailableNumbers(BrowseAvailableNumbersRequest phoneNumbersBrowseRequest) {
+    public PhoneNumbersBrowseResult browseAvailableNumbers(BrowseAvailableNumbersRequest phoneNumbersBrowseRequest) {
         Objects.requireNonNull(phoneNumbersBrowseRequest.getCountryCode(), "'countryCode' cannot be null.");
-        return client
-            .browseAvailableNumbers(phoneNumbersBrowseRequest.getCountryCode(),
-                mapBrowseRequest(phoneNumbersBrowseRequest))
-            .getPhoneNumbers();
+        return client.browseAvailableNumbers(phoneNumbersBrowseRequest.getCountryCode(),
+            mapBrowseRequest(phoneNumbersBrowseRequest));
     }
 
     /**
@@ -264,19 +262,12 @@ public final class PhoneNumbersClient {
      * @return the result of a phone number browse operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<AvailablePhoneNumber>>
+    public Response<PhoneNumbersBrowseResult>
         browseAvailableNumbersWithResponse(BrowseAvailableNumbersRequest phoneNumbersBrowseRequest, Context context) {
         Objects.requireNonNull(phoneNumbersBrowseRequest.getCountryCode(), "'countryCode' cannot be null.");
 
-        Response<PhoneNumbersBrowseResult> response = client.browseAvailableNumbersWithResponse(
-            phoneNumbersBrowseRequest.getCountryCode(), mapBrowseRequest(phoneNumbersBrowseRequest), context);
-
-        // Extract the list of AvailablePhoneNumber from the response body
-        List<AvailablePhoneNumber> availablePhoneNumbers = response.getValue().getPhoneNumbers();
-
-        // Return a new Response object with the transformed value
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
-            availablePhoneNumbers);
+        return client.browseAvailableNumbersWithResponse(phoneNumbersBrowseRequest.getCountryCode(),
+            mapBrowseRequest(phoneNumbersBrowseRequest), context);
     }
 
     /**
@@ -1079,8 +1070,8 @@ public final class PhoneNumbersClient {
      *         {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PhoneNumbersReservation> createOrUpdateReservationWithResponse(CreateOrUpdateReservationOptions request,
-        Context context) {
+    public Response<PhoneNumbersReservation>
+        createOrUpdateReservationWithResponse(CreateOrUpdateReservationOptions request, Context context) {
         String reservationId
             = request.getReservationId() != null ? request.getReservationId() : UUID.randomUUID().toString();
         Map<String, AvailablePhoneNumber> phoneNumbersMap = updatePhoneNumbersMap(new HashMap<>(), request);
