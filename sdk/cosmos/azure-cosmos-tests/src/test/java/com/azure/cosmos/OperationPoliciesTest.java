@@ -293,14 +293,6 @@ public class OperationPoliciesTest extends TestSuiteBase {
 
     @Test(groups = { "fast" }, dataProvider = "changedOptions", timeOut = TIMEOUT)
     public void readItem(String[] changedOptions) throws Exception {
-
-        if (changedOptions[18] == "LatestCommitted"
-            && this.client.getConnectionPolicy().getConnectionMode() == ConnectionMode.GATEWAY) {
-
-            throw new SkipException(
-                "Gateway does not support bounded staleness with account-level consistency session and lower.");
-        }
-
         InternalObjectNode item = getDocumentDefinition(UUID.randomUUID().toString());
         container.createItem(item).block();
 
@@ -689,7 +681,14 @@ public class OperationPoliciesTest extends TestSuiteBase {
 
        if (doesRequestLevelConsistencyOverrideMatter) {
            assertThat(requestOptions.getConsistencyLevel().toString().toUpperCase(Locale.ROOT)).isEqualTo(options[1].toUpperCase(Locale.ROOT));
-           assertThat(requestOptions.getReadConsistencyStrategy().toString().toUpperCase(Locale.ROOT)).isEqualTo(options[18].toUpperCase(Locale.ROOT));
+           String changedRequestConsistencyStrategy = options[18].toUpperCase(Locale.ROOT);
+           if (changedRequestConsistencyStrategy.equalsIgnoreCase(ReadConsistencyStrategy.LATEST_COMMITTED.toString())
+               && this.client.getConnectionPolicy().getConnectionMode() == ConnectionMode.GATEWAY) {
+
+               assertThat(requestOptions.getReadConsistencyStrategy().toString().toUpperCase(Locale.ROOT)).isEqualTo(ReadConsistencyStrategy.DEFAULT.toString().toUpperCase());
+           } else{
+               assertThat(requestOptions.getReadConsistencyStrategy().toString().toUpperCase(Locale.ROOT)).isEqualTo(changedRequestConsistencyStrategy);
+           }
        }
 
        assertThat(requestOptions.isContentResponseOnWriteEnabled()).isEqualTo(Boolean.parseBoolean(options[2]));
@@ -761,7 +760,12 @@ public class OperationPoliciesTest extends TestSuiteBase {
 
     private void changeProperties(String[] values) {
        for (int i = 0; i < values.length; i++) {
-           prop.setProperty(optionLabels[i], values[i]);
+           if (i != 18
+               || !("LatestCommitted".equalsIgnoreCase(values[18]))
+               || this.client.getConnectionPolicy().getConnectionMode() == ConnectionMode.DIRECT) {
+
+               prop.setProperty(optionLabels[i], values[i]);
+           }
        }
     }
 }
