@@ -4,7 +4,7 @@
 # Migration Recipes for azure.core.http.policy
 # --------------------------------------------------------------------
 type: specs.openrewrite.org/v1beta/recipe
-name: com.azure.openrewrite.migration.azure.core.http.policy
+name: com.azure.openrewrite.recipe.azure.core.http.policy
 displayName: Migrate from azure.core.http.policy to next generation stack
 description: This recipe migrates azure.core.http.policy package to the next generation stack.
 recipeList:

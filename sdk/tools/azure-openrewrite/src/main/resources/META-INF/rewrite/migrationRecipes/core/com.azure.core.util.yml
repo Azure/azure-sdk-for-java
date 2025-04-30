@@ -4,7 +4,7 @@
 # Migration Recipes for azure.core.util
 # --------------------------------------------------------------------
 type: specs.openrewrite.org/v1beta/recipe
-name: com.azure.openrewrite.migration.azure.core.util
+name: com.azure.openrewrite.recipe.azure.core.util
 displayName: Migrate from azure.core.util to next generation stack
 description: This recipe migrates azure.core.util package to the next generation stack.
 recipeList:

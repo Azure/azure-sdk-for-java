@@ -4,7 +4,7 @@
 # Migration Recipes for azure.core.models
 # --------------------------------------------------------------------
 type: specs.openrewrite.org/v1beta/recipe
-name: com.azure.openrewrite.migration.azure.core.models
+name: com.azure.openrewrite.recipe.azure.core.models
 displayName: Migrate from azure.core.models to next generation stack
 description: This recipe migrates azure.core.models package to the next generation stack.
 recipeList:

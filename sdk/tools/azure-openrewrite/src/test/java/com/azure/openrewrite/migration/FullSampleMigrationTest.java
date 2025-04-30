@@ -40,7 +40,7 @@ public class FullSampleMigrationTest implements RewriteTest {
 
     static final String GOLDEN_IMAGE = "v2";
     static final String ORIGINAL_IMAGE = "v1";
-    static final String RECIPE_NAME = "com.azure.openrewrite.migrateToVNext";
+    static final String RECIPE_NAME = "com.azure.openrewrite";
     static final String[] DISABLED_DIRS = {
         "src/test/resources/migrationExamples/azure-storage-blob/"
     };

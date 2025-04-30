@@ -4,7 +4,7 @@
 # Migration Recipes for azure.core.clients.traits
 # --------------------------------------------------------------------
 type: specs.openrewrite.org/v1beta/recipe
-name: com.azure.openrewrite.migration.azure.core.clients.traits
+name: com.azure.openrewrite.recipe.azure.core.clients.traits
 displayName: Migrate from azure.core.clients.traits to next generation stack
 description: This recipe migrates azure.core.clients.traits package to the next generation stack.
 recipeList:

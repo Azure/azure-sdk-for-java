@@ -4,7 +4,7 @@
 # Migration Recipes for azure.core.cryptography
 # --------------------------------------------------------------------
 type: specs.openrewrite.org/v1beta/recipe
-name: com.azure.openrewrite.migration.azure.core.cryptography
+name: com.azure.openrewrite.recipe.azure.core.cryptography
 displayName: Migrate from azure.core.cryptography to next generation stack
 description: This recipe migrates azure.core.cryptography package to the next generation stack.
 recipeList:

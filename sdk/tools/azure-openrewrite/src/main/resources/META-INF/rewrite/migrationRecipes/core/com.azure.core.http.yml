@@ -4,7 +4,7 @@
 # Migration Recipes for azure.core.http
 # --------------------------------------------------------------------
 type: specs.openrewrite.org/v1beta/recipe
-name: com.azure.openrewrite.migration.azure.core.http
+name: com.azure.openrewrite.recipe.azure.core.http
 displayName: Migrate from azure.core.http to next generation stack
 description: This recipe migrates the azure.core.http package to the next generation stack.
 recipeList:
