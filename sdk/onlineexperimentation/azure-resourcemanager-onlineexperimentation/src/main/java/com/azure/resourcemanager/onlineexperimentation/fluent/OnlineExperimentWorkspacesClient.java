@@ -12,6 +12,7 @@ import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.onlineexperimentation.fluent.models.OnlineExperimentWorkspaceInner;
+import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentWorkspacePatch;
 
 /**
  * An instance of this class provides access to all the operations defined in OnlineExperimentWorkspacesClient.
@@ -120,7 +121,7 @@ public interface OnlineExperimentWorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OnlineExperimentWorkspaceInner>, OnlineExperimentWorkspaceInner>
-        beginUpdate(String resourceGroupName, String workspaceName, OnlineExperimentWorkspaceInner properties);
+        beginUpdate(String resourceGroupName, String workspaceName, OnlineExperimentWorkspacePatch properties);
 
     /**
      * Patch an experiment workspace.
@@ -136,7 +137,7 @@ public interface OnlineExperimentWorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<OnlineExperimentWorkspaceInner>, OnlineExperimentWorkspaceInner> beginUpdate(
-        String resourceGroupName, String workspaceName, OnlineExperimentWorkspaceInner properties, Context context);
+        String resourceGroupName, String workspaceName, OnlineExperimentWorkspacePatch properties, Context context);
 
     /**
      * Patch an experiment workspace.
@@ -151,7 +152,7 @@ public interface OnlineExperimentWorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     OnlineExperimentWorkspaceInner update(String resourceGroupName, String workspaceName,
-        OnlineExperimentWorkspaceInner properties);
+        OnlineExperimentWorkspacePatch properties);
 
     /**
      * Patch an experiment workspace.
@@ -167,7 +168,7 @@ public interface OnlineExperimentWorkspacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     OnlineExperimentWorkspaceInner update(String resourceGroupName, String workspaceName,
-        OnlineExperimentWorkspaceInner properties, Context context);
+        OnlineExperimentWorkspacePatch properties, Context context);
 
     /**
      * Deletes an experiment workspace.

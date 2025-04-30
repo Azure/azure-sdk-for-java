@@ -10,7 +10,7 @@ import com.azure.resourcemanager.onlineexperimentation.models.KeyEncryptionKeyId
 import com.azure.resourcemanager.onlineexperimentation.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.onlineexperimentation.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentWorkspace;
-import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentWorkspaceProperties;
+import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentWorkspacePatchProperties;
 import com.azure.resourcemanager.onlineexperimentation.models.ResourceEncryptionConfiguration;
 import com.azure.resourcemanager.onlineexperimentation.models.UserAssignedIdentity;
 import java.util.HashMap;
@@ -59,7 +59,13 @@ public final class OnlineExperimentWorkspacesUpdateSamples {
             .getValue();
         resource.update()
             .withTags(mapOf("newKey", "fakeTokenPlaceholder"))
-            .withProperties(new OnlineExperimentWorkspaceProperties().withLogAnalyticsWorkspaceResourceId(
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
+                .withUserAssignedIdentities(mapOf(
+                    "/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1",
+                    new UserAssignedIdentity(),
+                    "/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id2",
+                    new UserAssignedIdentity())))
+            .withProperties(new OnlineExperimentWorkspacePatchProperties().withLogAnalyticsWorkspaceResourceId(
                 "/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.OperationalInsights/workspaces/log9871")
                 .withLogsExporterStorageAccountResourceId(
                     "/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/res9871/providers/Microsoft.Storage/storageAccounts/sto9871")
@@ -69,12 +75,6 @@ public final class OnlineExperimentWorkspacesUpdateSamples {
                         .withUserAssignedIdentityResourceId(
                             "/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1"))
                         .withKeyEncryptionKeyUrl("fakeTokenPlaceholder"))))
-            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.USER_ASSIGNED)
-                .withUserAssignedIdentities(mapOf(
-                    "/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1",
-                    new UserAssignedIdentity(),
-                    "/subscriptions/fa5fc227-a624-475e-b696-cdd604c735bc/resourceGroups/eu2cgroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id2",
-                    new UserAssignedIdentity())))
             .apply();
     }
 

@@ -10,6 +10,8 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.onlineexperimentation.fluent.models.OnlineExperimentWorkspaceInner;
 import com.azure.resourcemanager.onlineexperimentation.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentWorkspace;
+import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentWorkspacePatch;
+import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentWorkspacePatchProperties;
 import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentWorkspaceProperties;
 import com.azure.resourcemanager.onlineexperimentation.models.OnlineExperimentationWorkspaceSku;
 import java.util.Collections;
@@ -86,6 +88,8 @@ public final class OnlineExperimentWorkspaceImpl
 
     private String workspaceName;
 
+    private OnlineExperimentWorkspacePatch updateProperties;
+
     public OnlineExperimentWorkspaceImpl withExistingResourceGroup(String resourceGroupName) {
         this.resourceGroupName = resourceGroupName;
         return this;
@@ -113,20 +117,21 @@ public final class OnlineExperimentWorkspaceImpl
     }
 
     public OnlineExperimentWorkspaceImpl update() {
+        this.updateProperties = new OnlineExperimentWorkspacePatch();
         return this;
     }
 
     public OnlineExperimentWorkspace apply() {
         this.innerObject = serviceManager.serviceClient()
             .getOnlineExperimentWorkspaces()
-            .update(resourceGroupName, workspaceName, this.innerModel(), Context.NONE);
+            .update(resourceGroupName, workspaceName, updateProperties, Context.NONE);
         return this;
     }
 
     public OnlineExperimentWorkspace apply(Context context) {
         this.innerObject = serviceManager.serviceClient()
             .getOnlineExperimentWorkspaces()
-            .update(resourceGroupName, workspaceName, this.innerModel(), context);
+            .update(resourceGroupName, workspaceName, updateProperties, context);
         return this;
     }
 
@@ -165,8 +170,13 @@ public final class OnlineExperimentWorkspaceImpl
     }
 
     public OnlineExperimentWorkspaceImpl withTags(Map<String, String> tags) {
-        this.innerModel().withTags(tags);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withTags(tags);
+            return this;
+        } else {
+            this.updateProperties.withTags(tags);
+            return this;
+        }
     }
 
     public OnlineExperimentWorkspaceImpl withProperties(OnlineExperimentWorkspaceProperties properties) {
@@ -175,12 +185,31 @@ public final class OnlineExperimentWorkspaceImpl
     }
 
     public OnlineExperimentWorkspaceImpl withIdentity(ManagedServiceIdentity identity) {
-        this.innerModel().withIdentity(identity);
-        return this;
+        if (isInCreateMode()) {
+            this.innerModel().withIdentity(identity);
+            return this;
+        } else {
+            this.updateProperties.withIdentity(identity);
+            return this;
+        }
     }
 
     public OnlineExperimentWorkspaceImpl withSku(OnlineExperimentationWorkspaceSku sku) {
-        this.innerModel().withSku(sku);
+        if (isInCreateMode()) {
+            this.innerModel().withSku(sku);
+            return this;
+        } else {
+            this.updateProperties.withSku(sku);
+            return this;
+        }
+    }
+
+    public OnlineExperimentWorkspaceImpl withProperties(OnlineExperimentWorkspacePatchProperties properties) {
+        this.updateProperties.withProperties(properties);
         return this;
+    }
+
+    private boolean isInCreateMode() {
+        return this.innerModel().id() == null;
     }
 }
