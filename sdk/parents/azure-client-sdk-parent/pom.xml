@@ -929,6 +929,15 @@
               <org.slf4j.simpleLogger.dateTimeFormat>dd MMM yyyy HH:mm:ss,SSS</org.slf4j.simpleLogger.dateTimeFormat>
               <org.slf4j.simpleLogger.defaultLogLevel>info</org.slf4j.simpleLogger.defaultLogLevel>
               <org.slf4j.simpleLogger.log.com.azure>debug</org.slf4j.simpleLogger.log.com.azure>
+              <!-- Enable full wiretap -->
+              <reactor.netty.http.client.accessLogAllowedHeaderNames>*</reactor.netty.http.client.accessLogAllowedHeaderNames>
+              <reactor.netty.http.server.accessLogAllowedHeaderNames>*</reactor.netty.http.server.accessLogAllowedHeaderNames>
+
+              <!-- Set simplelogger to TRACE for deep logging -->
+              <org.slf4j.simpleLogger.log.reactor.netty>TRACE</org.slf4j.simpleLogger.log.reactor.netty>
+              <org.slf4j.simpleLogger.log.reactor.netty.transport>TRACE</org.slf4j.simpleLogger.log.reactor.netty.transport>
+              <org.slf4j.simpleLogger.log.reactor.netty.channel>TRACE</org.slf4j.simpleLogger.log.reactor.netty.channel>
+              <org.slf4j.simpleLogger.log.reactor.netty.http.client.HttpClient>TRACE</org.slf4j.simpleLogger.log.reactor.netty.http.client.HttpClient>
             </systemPropertyVariables>
             <forkCount>1</forkCount>
             <testFailureIgnore>false</testFailureIgnore>
