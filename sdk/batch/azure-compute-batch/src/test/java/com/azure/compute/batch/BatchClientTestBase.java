@@ -5,7 +5,6 @@
 package com.azure.compute.batch;
 
 import com.azure.compute.batch.models.AllocationState;
-import com.azure.compute.batch.models.BatchImageReference;
 import com.azure.compute.batch.models.BatchPool;
 import com.azure.compute.batch.models.BatchPoolCreateContent;
 import com.azure.compute.batch.models.BatchTask;
@@ -13,6 +12,7 @@ import com.azure.compute.batch.models.BatchTaskState;
 import com.azure.compute.batch.models.ElevationLevel;
 import com.azure.compute.batch.models.LinuxUserConfiguration;
 import com.azure.compute.batch.models.BatchTasksListOptions;
+import com.azure.compute.batch.models.BatchVmImageReference;
 import com.azure.compute.batch.models.NetworkConfiguration;
 import com.azure.compute.batch.models.UserAccount;
 import com.azure.compute.batch.models.VirtualMachineConfiguration;
@@ -155,7 +155,7 @@ class BatchClientTestBase extends TestProxyTestBase {
         // Check if pool exists
         if (!poolExists(batchClient, poolId)) {
             // Use IaaS VM with Ubuntu
-            BatchImageReference imgRef = new BatchImageReference().setPublisher("Canonical")
+            BatchVmImageReference imgRef = new BatchVmImageReference().setPublisher("Canonical")
                 .setOffer("UbuntuServer")
                 .setSku("18.04-LTS")
                 .setVersion("latest");
