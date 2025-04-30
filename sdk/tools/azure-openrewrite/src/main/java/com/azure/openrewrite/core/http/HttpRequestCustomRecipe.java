@@ -20,8 +20,8 @@ import org.openrewrite.java.tree.J;
  *
  * <p>Example transformations:</p>
  * <pre>
- * Before: com.azure.core.http.HttpRequest <constructor>(com.azure.core.http.HttpMethod, java.lang.String)
- * After: io.clientcore.core.http.models.HttpRequest <constructor>().setMethod(io.clientcore.core.http.models.HttpMethod).setUri(java.lang.String)
+ * Before: com.azure.core.http.HttpRequest &lt;constructor&gt;(com.azure.core.http.HttpMethod, java.lang.String)
+ * After: io.clientcore.core.http.models.HttpRequest &lt;constructor&gt;().setMethod(io.clientcore.core.http.models.HttpMethod).setUri(java.lang.String)
  *
  * Before: com.azure.core.http.HttpRequest setBody(java.lang.String)
  * After: io.clientcore.core.http.models.HttpRequest setBody(io.clientcore.core.models.binarydata.BinaryData)
