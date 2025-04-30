@@ -2,13 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.compute.batch;
 
-import com.azure.compute.batch.models.BatchImageReference;
 import com.azure.compute.batch.models.BatchMetadataItem;
 import com.azure.compute.batch.models.BatchNodeCommunicationMode;
 import com.azure.compute.batch.models.BatchPool;
 import com.azure.compute.batch.models.BatchPoolCreateContent;
 import com.azure.compute.batch.models.BatchPoolReplaceContent;
 import com.azure.compute.batch.models.BatchPoolUpdateContent;
+import com.azure.compute.batch.models.BatchVmImageReference;
 import com.azure.compute.batch.models.VirtualMachineConfiguration;
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.http.HttpHeader;
@@ -46,7 +46,7 @@ public class SharedKeyTests extends BatchClientTestBase {
             /*
              * Creating Pool
              * */
-            BatchImageReference imgRef = new BatchImageReference().setPublisher("Canonical")
+            BatchVmImageReference imgRef = new BatchVmImageReference().setPublisher("Canonical")
                 .setOffer("UbuntuServer")
                 .setSku("18.04-LTS")
                 .setVersion("latest");
