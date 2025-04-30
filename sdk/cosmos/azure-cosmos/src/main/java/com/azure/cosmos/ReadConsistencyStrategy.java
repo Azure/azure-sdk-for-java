@@ -40,7 +40,8 @@ public enum ReadConsistencyStrategy {
     SESSION("Session"),
 
     /**
-     * Will do a quorum read – followed by GLSN barrier requests if needed in whatever region used for reads.
+     * Will read the latest committed version from the region in preferred order (which means the read region might
+     * have stale data) but this read strategy will return the latest committed version of that region
      */
     LATEST_COMMITTED("LatestCommitted"),
 
