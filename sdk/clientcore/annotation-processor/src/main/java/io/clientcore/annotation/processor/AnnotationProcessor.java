@@ -23,6 +23,8 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.utils.UriEscapers;
 import io.clientcore.core.models.binarydata.BinaryData;
+import io.clientcore.core.utils.CoreUtils;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -152,6 +154,7 @@ public class AnnotationProcessor extends AbstractProcessor {
 
     private HttpRequestContext createHttpRequestContext(ExecutableElement requestMethod, TemplateInput templateInput) {
         HttpRequestContext method = new HttpRequestContext();
+        method.setTemplateHasHost(!CoreUtils.isNullOrEmpty(templateInput.getHost()));
         method.setHost(templateInput.getHost());
         method.setMethodName(requestMethod.getSimpleName().toString());
         method.setIsConvenience(requestMethod.isDefault());
@@ -207,7 +210,7 @@ public class AnnotationProcessor extends AbstractProcessor {
             // Add parameter details to method context
             String shortParamName = templateInput.addImport(param.asType());
             method.addParameter(new HttpRequestContext.MethodParameter(param.asType(), shortParamName,
-                param.getSimpleName().toString()));
+                param.getSimpleName().toString(), param));
         }
         // Needed in PathBuilder
         templateInput.addImport(UriEscapers.class.getSimpleName());
