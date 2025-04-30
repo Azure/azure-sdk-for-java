@@ -22,6 +22,7 @@ import io.clientcore.annotation.processor.test.implementation.TestInterfaceClien
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
+import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.serialization.SerializationFormat;
 import io.clientcore.core.utils.CoreUtils;
 import java.util.LinkedHashMap;
@@ -29,7 +30,6 @@ import io.clientcore.core.utils.Base64Uri;
 import java.lang.reflect.ParameterizedType;
 import java.util.stream.Collectors;
 import java.util.Arrays;
-import io.clientcore.core.http.models.HttpHeader;
 
 /**
  * Initializes a new instance of the TestInterfaceClientServiceImpl type.
@@ -65,7 +65,12 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         String requestUri = uri + "/" + "my/uri/path";
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.POST).setUri(requestUri);
-        httpRequest.getHeaders().add(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentLength)).add(HttpHeaderName.CONTENT_TYPE, contentType);
+        if (contentLength != null) {
+            httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentLength)));
+        }
+        if (contentType != null) {
+            httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.CONTENT_TYPE, contentType));
+        }
         if (request != null) {
             httpRequest.setBody(BinaryData.fromBytes(request.array()));
         }
@@ -86,7 +91,12 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         String requestUri = uri + "/" + "my/uri/path";
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.POST).setUri(requestUri);
-        httpRequest.getHeaders().add(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentLength)).add(HttpHeaderName.CONTENT_TYPE, contentType);
+        if (contentLength != null) {
+            httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentLength)));
+        }
+        if (contentType != null) {
+            httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.CONTENT_TYPE, contentType));
+        }
         if (data != null) {
             BinaryData binaryData = data;
             if (binaryData.getLength() != null) {
@@ -149,7 +159,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         uri = CoreUtils.appendQueryParams(uri, queryParamMap);
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
-        httpRequest.getHeaders().add(HttpHeaderName.fromString("Sync-Token"), syncToken);
+        if (syncToken != null) {
+            httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.fromString("Sync-Token"), syncToken));
+        }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
@@ -535,7 +547,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         String requestUri = uri + "/" + "anything";
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(requestUri);
-        httpRequest.getHeaders().add(HttpHeaderName.fromString("a"), a).add(HttpHeaderName.fromString("b"), String.valueOf(b));
+        if (a != null) {
+            httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.fromString("a"), a));
+        }
+        httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.fromString("b"), String.valueOf(b)));
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
@@ -673,7 +688,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         String requestUri = uri + "/" + "put";
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri(requestUri);
-        httpRequest.getHeaders().add(HttpHeaderName.CONTENT_TYPE, "application/json");
+        httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.CONTENT_TYPE, "application/json"));
         httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/json");
         if (body != null) {
             httpRequest.setBody(BinaryData.fromBytes(body));
@@ -700,7 +715,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         String requestUri = uri + "/" + "put";
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri(requestUri);
-        httpRequest.getHeaders().add(HttpHeaderName.CONTENT_TYPE, "application/json; charset=utf-8");
+        httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.CONTENT_TYPE, "application/json; charset=utf-8"));
         httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/octet-stream");
         if (body != null) {
             httpRequest.setBody(BinaryData.fromString(body));
@@ -727,7 +742,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         String requestUri = uri + "/" + "put";
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri(requestUri);
-        httpRequest.getHeaders().add(HttpHeaderName.CONTENT_TYPE, "application/octet-stream");
+        httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.CONTENT_TYPE, "application/octet-stream"));
         httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/octet-stream");
         if (body != null) {
             httpRequest.setBody(BinaryData.fromString(body));
@@ -758,7 +773,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         String requestUri = uri + "/" + "put";
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri(requestUri);
-        httpRequest.getHeaders().add(HttpHeaderName.CONTENT_TYPE, "application/octet-stream");
+        httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.CONTENT_TYPE, "application/octet-stream"));
         httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/octet-stream");
         if (body != null) {
             httpRequest.setBody(BinaryData.fromBytes(body));
@@ -1263,7 +1278,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         String uri = host + "/" + "put";
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri(uri);
-        httpRequest.getHeaders().add(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentLength));
+        httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentLength)));
         httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "text/plain");
         if (content != null) {
             BinaryData binaryData = content;
@@ -1298,7 +1313,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         String requestUri = uri + "/" + "put";
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri(requestUri);
-        httpRequest.getHeaders().add(HttpHeaderName.fromString("ABC"), String.valueOf(headerCollection));
+        if (headerCollection != null) {
+            httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.fromString("ABC"), String.valueOf(headerCollection)));
+        }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         Object result = null;
@@ -1454,7 +1471,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         String requestUri = uri + "/" + "put";
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri(requestUri);
-        httpRequest.getHeaders().add(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentLength));
+        httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.CONTENT_LENGTH, String.valueOf(contentLength)));
         httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/octet-stream");
         if (body != null) {
             httpRequest.setBody(BinaryData.fromBytes(body.array()));
@@ -1736,7 +1753,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         String requestUri = uri + "/" + "anything";
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(requestUri);
-        httpRequest.getHeaders().add(HttpHeaderName.fromString("MyHeader"), "MyHeaderValue").add(new HttpHeader(HttpHeaderName.fromString("MyOtherHeader"), Arrays.asList("My", "Header", "Value")));
+        httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.fromString("MyHeader"), "MyHeaderValue"));
+        httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.fromString("MyOtherHeader"), Arrays.asList("My", "Header", "Value")));
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();

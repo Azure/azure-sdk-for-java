@@ -16,6 +16,7 @@ import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
 import io.clientcore.core.serialization.SerializationFormat;
 import io.clientcore.core.utils.CoreUtils;
+import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.utils.Base64Uri;
 import java.lang.reflect.ParameterizedType;
 
@@ -103,7 +104,9 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         String uri = "http://localhost/getXml";
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
-        httpRequest.getHeaders().add(HttpHeaderName.CONTENT_TYPE, contentType);
+        if (contentType != null) {
+            httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.CONTENT_TYPE, contentType));
+        }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
@@ -131,7 +134,9 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         String uri = "http://localhost/getInvalidXml";
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
-        httpRequest.getHeaders().add(HttpHeaderName.CONTENT_TYPE, contentType);
+        if (contentType != null) {
+            httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.CONTENT_TYPE, contentType));
+        }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();

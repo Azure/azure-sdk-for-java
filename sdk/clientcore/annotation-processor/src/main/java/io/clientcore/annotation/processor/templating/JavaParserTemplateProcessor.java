@@ -18,6 +18,7 @@ import com.github.javaparser.ast.expr.Name;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.annotation.processor.models.TemplateInput;
@@ -453,80 +454,76 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
             return;
         }
 
-        // Start building the header chain for the HttpRequest.
-        StringBuilder httpRequestBuilder = new StringBuilder("httpRequest.getHeaders()");
-
         for (Map.Entry<String, List<String>> header : method.getHeaders().entrySet()) {
             String headerKey = header.getKey();
             List<String> headerValues = header.getValue();
 
-            body.tryAddImportToParentCompilationUnit(HttpHeaderName.class);
+            // Start building the header addition for the HttpRequest.
+            StringBuilder addHeader = new StringBuilder();
 
+            if (headerValues.isEmpty()) {
+                // If headerValues is empty, skip adding this header.
+                continue;
+            }
+
+            body.tryAddImportToParentCompilationUnit(HttpHeaderName.class);
+            body.tryAddImportToParentCompilationUnit(HttpHeader.class);
+
+            String ifCheck = null;
+            String valueExpression;
             // Handle multiple header values (e.g., for repeated headers).
             if (headerValues.size() > 1) {
-                body.tryAddImportToParentCompilationUnit(HttpHeader.class);
                 body.tryAddImportToParentCompilationUnit(Arrays.class);
 
                 // For multiple values, always treat as static and apply quoting logic.
-                String valueExpression
-                    = "Arrays.asList(" + CodeGenUtils.toJavaArrayInitializer(headerValues, true) + ")";
-
-                String constantName
-                    = LOWERCASE_HEADER_TO_HTTPHEADENAME_CONSTANT.get(headerKey.toLowerCase(Locale.ROOT));
-                if (constantName != null) {
-                    httpRequestBuilder.append(".add(new HttpHeader(HttpHeaderName.")
-                        .append(constantName)
-                        .append(", ")
-                        .append(valueExpression)
-                        .append("))");
-                } else {
-                    httpRequestBuilder.append(".add(new HttpHeader(HttpHeaderName.fromString(\"")
-                        .append(headerKey)
-                        .append("\"), ")
-                        .append(valueExpression)
-                        .append("))");
-                }
-            } else if (headerValues.size() == 1) {
+                valueExpression = "Arrays.asList(" + CodeGenUtils.toJavaArrayInitializer(headerValues, true) + ")";
+            } else {
                 String value = headerValues.get(0);
                 // Determine if the header value is a String type (for dynamic headers).
                 // This is used to avoid quoting parameter-based (dynamic) header values.
                 Optional<HttpRequestContext.MethodParameter> paramOpt
                     = method.getParameters().stream().filter(p -> p.getName().equals(value)).findFirst();
-                String valueExpression;
                 if (paramOpt.isPresent()) {
                     String paramType = paramOpt.get().getShortTypeName();
                     if ("String".equals(paramType)) {
                         // Dynamic header: use parameter name directly.
+                        ifCheck = value + " != null";
                         valueExpression = value;
                     } else {
+                        if (!paramOpt.get().getTypeMirror().getKind().isPrimitive()) {
+                            ifCheck = value + " != null";
+                        }
                         valueExpression = "String.valueOf(" + value + ")";
                     }
                 } else {
                     // Static header: apply quoting logic.
                     valueExpression = CodeGenUtils.quoteHeaderValue(value);
                 }
-
-                String constantName
-                    = LOWERCASE_HEADER_TO_HTTPHEADENAME_CONSTANT.get(headerKey.toLowerCase(Locale.ROOT));
-                if (constantName != null) {
-                    httpRequestBuilder.append(".add(HttpHeaderName.")
-                        .append(constantName)
-                        .append(", ")
-                        .append(valueExpression)
-                        .append(")");
-                } else {
-                    httpRequestBuilder.append(".add(HttpHeaderName.fromString(\"")
-                        .append(headerKey)
-                        .append("\"), ")
-                        .append(valueExpression)
-                        .append(")");
-                }
             }
-            // If headerValues is empty, skip adding this header.
-        }
 
-        // Finalize the header chain and add it as a statement to the method body.
-        body.addStatement(StaticJavaParser.parseStatement(httpRequestBuilder + ";"));
+            String constantName = LOWERCASE_HEADER_TO_HTTPHEADENAME_CONSTANT.get(headerKey.toLowerCase(Locale.ROOT));
+            if (constantName != null) {
+                addHeader.append("httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.")
+                    .append(constantName)
+                    .append(", ")
+                    .append(valueExpression)
+                    .append("));");
+            } else {
+                addHeader.append("httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.fromString(\"")
+                    .append(headerKey)
+                    .append("\"), ")
+                    .append(valueExpression)
+                    .append("));");
+            }
+
+            Statement addHeaderStatement = StaticJavaParser.parseStatement(addHeader.toString());
+            if (ifCheck != null) {
+                addHeaderStatement = new IfStmt().setCondition(StaticJavaParser.parseExpression(ifCheck))
+                    .setThenStmt(new BlockStmt().addStatement(addHeaderStatement));
+            }
+
+            body.addStatement(addHeaderStatement);
+        }
     }
 
     private void finalizeHttpRequest(BlockStmt body, TypeMirror returnTypeName, HttpRequestContext method,
