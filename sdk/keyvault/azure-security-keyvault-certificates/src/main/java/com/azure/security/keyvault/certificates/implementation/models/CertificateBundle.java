@@ -74,6 +74,13 @@ public final class CertificateBundle implements JsonSerializable<CertificateBund
     @Generated
     private Map<String, String> tags;
 
+    /*
+     * Specifies whether the certificate chain preserves its original order. The default value is false, which sets the
+     * leaf certificate at index 0.
+     */
+    @Generated
+    private Boolean preserveCertOrder;
+
     /**
      * Creates an instance of CertificateBundle class.
      */
@@ -176,6 +183,17 @@ public final class CertificateBundle implements JsonSerializable<CertificateBund
     }
 
     /**
+     * Get the preserveCertOrder property: Specifies whether the certificate chain preserves its original order. The
+     * default value is false, which sets the leaf certificate at index 0.
+     *
+     * @return the preserveCertOrder value.
+     */
+    @Generated
+    public Boolean isPreserveCertOrder() {
+        return this.preserveCertOrder;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -186,6 +204,7 @@ public final class CertificateBundle implements JsonSerializable<CertificateBund
         jsonWriter.writeStringField("contentType", this.contentType);
         jsonWriter.writeJsonField("attributes", this.attributes);
         jsonWriter.writeMapField("tags", this.tags, (writer, element) -> writer.writeString(element));
+        jsonWriter.writeBooleanField("preserveCertOrder", this.preserveCertOrder);
         return jsonWriter.writeEndObject();
     }
 
@@ -224,6 +243,8 @@ public final class CertificateBundle implements JsonSerializable<CertificateBund
                 } else if ("tags".equals(fieldName)) {
                     Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
                     deserializedCertificateBundle.tags = tags;
+                } else if ("preserveCertOrder".equals(fieldName)) {
+                    deserializedCertificateBundle.preserveCertOrder = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

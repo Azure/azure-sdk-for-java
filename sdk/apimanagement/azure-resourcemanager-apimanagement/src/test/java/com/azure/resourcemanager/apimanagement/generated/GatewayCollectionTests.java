@@ -12,15 +12,15 @@ public final class GatewayCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GatewayCollection model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"locationData\":{\"name\":\"zboimyfpqdo\",\"city\":\"ppnwyytfvpctfji\",\"district\":\"ff\",\"countryOrRegion\":\"kuhznwhvuldbk\"},\"description\":\"jjkj\"},\"id\":\"gawgazmxjqi\",\"name\":\"h\",\"type\":\"jjsbcmlzaahzbhur\"},{\"properties\":{\"locationData\":{\"name\":\"kolirhh\",\"city\":\"jusuzgfjzc\",\"district\":\"axoialahfxwccokd\",\"countryOrRegion\":\"ukmkczynu\"},\"description\":\"oq\"},\"id\":\"qshavlj\",\"name\":\"k\",\"type\":\"yrqolnthbbnkgz\"},{\"properties\":{\"locationData\":{\"name\":\"drnzkjthf\",\"city\":\"yjncjm\",\"district\":\"uyfjbpfiddhlrufz\",\"countryOrRegion\":\"yjmqrf\"},\"description\":\"ocuselqk\"},\"id\":\"sazrhxuddqmdtff\",\"name\":\"sjmrkkhm\",\"type\":\"dmdlgyqixokw\"}],\"count\":5561137804644228905,\"nextLink\":\"vagnqfqqdlcvmyo\"}")
+            "{\"value\":[{\"properties\":{\"locationData\":{\"name\":\"rlmcsky\",\"city\":\"fuofixcnpcfykkp\",\"district\":\"cpawmp\",\"countryOrRegion\":\"rdpwrpc\"},\"description\":\"cfj\"},\"id\":\"wzlgzawkgy\",\"name\":\"peyamnnidmdiaw\",\"type\":\"zxkzrntmkct\"},{\"properties\":{\"locationData\":{\"name\":\"osgwqpsqazihqo\",\"city\":\"qgcnbhcbmjk\",\"district\":\"ibniynts\",\"countryOrRegion\":\"mfmeftvhkmoo\"},\"description\":\"rh\"},\"id\":\"kbwg\",\"name\":\"jgrulcfogxhcxnwj\",\"type\":\"pfdzxcouzfwofw\"},{\"properties\":{\"locationData\":{\"name\":\"kzkdtzxsoednlwg\",\"city\":\"hezomucmqgisnion\",\"district\":\"bzdrdpuenxkgt\",\"countryOrRegion\":\"lmtrlxcznnhz\"},\"description\":\"nbmxlx\"},\"id\":\"wtyg\",\"name\":\"qzusitoq\",\"type\":\"ahfsgb\"}],\"count\":8407416627042967895,\"nextLink\":\"esrfwsszvlcwli\"}")
             .toObject(GatewayCollection.class);
-        Assertions.assertEquals(5561137804644228905L, model.count());
+        Assertions.assertEquals(8407416627042967895L, model.count());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GatewayCollection model = new GatewayCollection().withCount(5561137804644228905L);
+        GatewayCollection model = new GatewayCollection().withCount(8407416627042967895L);
         model = BinaryData.fromObject(model).toObject(GatewayCollection.class);
-        Assertions.assertEquals(5561137804644228905L, model.count());
+        Assertions.assertEquals(8407416627042967895L, model.count());
     }
 }

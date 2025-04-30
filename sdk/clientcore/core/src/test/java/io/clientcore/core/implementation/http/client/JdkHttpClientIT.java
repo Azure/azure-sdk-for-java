@@ -169,7 +169,7 @@ public class JdkHttpClientIT {
         int numRequests = 100; // 100 = 1GB of data read
         HttpClient client = new JdkHttpClientBuilder().build();
 
-        ForkJoinPool pool = new ForkJoinPool();
+        ForkJoinPool pool = new ForkJoinPool((int) Math.ceil(Runtime.getRuntime().availableProcessors() / 2.0));
         List<Callable<Void>> requests = new ArrayList<>(numRequests);
         for (int i = 0; i < numRequests; i++) {
             requests.add(() -> {

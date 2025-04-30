@@ -4,13 +4,18 @@
 package io.clientcore.core.utils;
 
 import io.clientcore.core.http.models.HttpHeaderName;
+import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.models.binarydata.BinaryData;
 
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.util.AbstractMap;
 import java.util.Base64;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import static io.clientcore.core.utils.AuthUtils.BASIC;
 
@@ -37,33 +42,61 @@ public class BasicChallengeHandler implements ChallengeHandler {
     @Override
     public void handleChallenge(HttpRequest request, Response<BinaryData> response, boolean isProxy) {
         if (canHandle(response, isProxy)) {
-            synchronized (request.getHeaders()) {
-                HttpHeaderName headerName = isProxy ? HttpHeaderName.PROXY_AUTHORIZATION : HttpHeaderName.AUTHORIZATION;
-                // Check if the appropriate Authorization header is already present
-                if (request.getHeaders().getValue(headerName) == null) {
-                    request.getHeaders().add(headerName, authHeader);
-                }
-            }
+            HttpHeaderName headerName = isProxy ? HttpHeaderName.PROXY_AUTHORIZATION : HttpHeaderName.AUTHORIZATION;
+            request.getHeaders().set(headerName, authHeader);
         }
     }
 
     @Override
     public boolean canHandle(Response<BinaryData> response, boolean isProxy) {
-        if (response.getHeaders() != null) {
-            HttpHeaderName authHeaderName
-                = isProxy ? HttpHeaderName.PROXY_AUTHENTICATE : HttpHeaderName.WWW_AUTHENTICATE;
-            String authHeader = response.getHeaders().getValue(authHeaderName);
+        HttpHeaders responseHeaders = response.getHeaders();
+        if (responseHeaders == null) {
+            return false;
+        }
 
-            if (authHeader != null) {
-                // Parse the authenticate header into AuthenticateChallenges, then check if any use scheme 'Basic'.
-                List<AuthenticateChallenge> challenges = AuthUtils.parseAuthenticateHeader(authHeader);
-                for (AuthenticateChallenge challenge : challenges) {
-                    if (BASIC.equalsIgnoreCase(challenge.getScheme())) {
-                        return true;
-                    }
+        HttpHeaderName authHeaderName = isProxy ? HttpHeaderName.PROXY_AUTHENTICATE : HttpHeaderName.WWW_AUTHENTICATE;
+        List<String> authenticateHeaders = responseHeaders.getValues(authHeaderName);
+        if (CoreUtils.isNullOrEmpty(authenticateHeaders)) {
+            return false;
+        }
+
+        for (String authenticateHeader : authenticateHeaders) {
+            for (AuthenticateChallenge challenge : AuthUtils.parseAuthenticateHeader(authenticateHeader)) {
+                if (canHandle(challenge)) {
+                    return true;
                 }
             }
         }
+
         return false;
+    }
+
+    @Override
+    public Map.Entry<String, AuthenticateChallenge> handleChallenge(String method, URI uri,
+        List<AuthenticateChallenge> challenges) {
+        Objects.requireNonNull(challenges, "Cannot use a null 'challenges' to handle challenges.");
+        for (AuthenticateChallenge challenge : challenges) {
+            if (canHandle(challenge)) {
+                return new AbstractMap.SimpleImmutableEntry<>(authHeader, challenge);
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public boolean canHandle(List<AuthenticateChallenge> challenges) {
+        Objects.requireNonNull(challenges, "Cannot use a null 'challenges' to determine if it can be handled.");
+        for (AuthenticateChallenge challenge : challenges) {
+            if (canHandle(challenge)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private static boolean canHandle(AuthenticateChallenge challenge) {
+        return challenge != null && BASIC.equalsIgnoreCase(challenge.getScheme());
     }
 }

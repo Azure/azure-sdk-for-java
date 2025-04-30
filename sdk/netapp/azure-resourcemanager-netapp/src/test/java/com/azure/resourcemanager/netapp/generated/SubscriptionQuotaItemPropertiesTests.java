@@ -10,7 +10,7 @@ import com.azure.resourcemanager.netapp.fluent.models.SubscriptionQuotaItemPrope
 public final class SubscriptionQuotaItemPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SubscriptionQuotaItemProperties model = BinaryData.fromString("{\"current\":278176639,\"default\":599264802}")
+        SubscriptionQuotaItemProperties model = BinaryData.fromString("{\"current\":1378529430,\"default\":863677105}")
             .toObject(SubscriptionQuotaItemProperties.class);
     }
 

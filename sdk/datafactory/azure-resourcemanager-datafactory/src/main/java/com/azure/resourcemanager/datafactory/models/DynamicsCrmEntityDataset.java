@@ -51,7 +51,7 @@ public final class DynamicsCrmEntityDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private DynamicsCrmEntityDatasetTypeProperties innerTypeProperties() {
+    DynamicsCrmEntityDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

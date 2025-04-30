@@ -12,6 +12,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.appcontainers.models.ContainerType;
 import com.azure.resourcemanager.appcontainers.models.CustomContainerTemplate;
 import com.azure.resourcemanager.appcontainers.models.DynamicPoolConfiguration;
+import com.azure.resourcemanager.appcontainers.models.ManagedIdentitySetting;
 import com.azure.resourcemanager.appcontainers.models.PoolManagementType;
 import com.azure.resourcemanager.appcontainers.models.ScaleConfiguration;
 import com.azure.resourcemanager.appcontainers.models.SessionNetworkConfiguration;
@@ -79,6 +80,11 @@ public final class SessionPoolProperties implements JsonSerializable<SessionPool
      * Provisioning state of the session pool.
      */
     private SessionPoolProvisioningState provisioningState;
+
+    /*
+     * Optional settings for a Managed Identity that is assigned to the Session pool.
+     */
+    private List<ManagedIdentitySetting> managedIdentitySettings;
 
     /**
      * Creates an instance of SessionPoolProperties class.
@@ -277,6 +283,28 @@ public final class SessionPoolProperties implements JsonSerializable<SessionPool
     }
 
     /**
+     * Get the managedIdentitySettings property: Optional settings for a Managed Identity that is assigned to the
+     * Session pool.
+     * 
+     * @return the managedIdentitySettings value.
+     */
+    public List<ManagedIdentitySetting> managedIdentitySettings() {
+        return this.managedIdentitySettings;
+    }
+
+    /**
+     * Set the managedIdentitySettings property: Optional settings for a Managed Identity that is assigned to the
+     * Session pool.
+     * 
+     * @param managedIdentitySettings the managedIdentitySettings value to set.
+     * @return the SessionPoolProperties object itself.
+     */
+    public SessionPoolProperties withManagedIdentitySettings(List<ManagedIdentitySetting> managedIdentitySettings) {
+        this.managedIdentitySettings = managedIdentitySettings;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -297,6 +325,9 @@ public final class SessionPoolProperties implements JsonSerializable<SessionPool
         if (sessionNetworkConfiguration() != null) {
             sessionNetworkConfiguration().validate();
         }
+        if (managedIdentitySettings() != null) {
+            managedIdentitySettings().forEach(e -> e.validate());
+        }
     }
 
     /**
@@ -314,6 +345,8 @@ public final class SessionPoolProperties implements JsonSerializable<SessionPool
         jsonWriter.writeJsonField("dynamicPoolConfiguration", this.dynamicPoolConfiguration);
         jsonWriter.writeJsonField("customContainerTemplate", this.customContainerTemplate);
         jsonWriter.writeJsonField("sessionNetworkConfiguration", this.sessionNetworkConfiguration);
+        jsonWriter.writeArrayField("managedIdentitySettings", this.managedIdentitySettings,
+            (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
@@ -360,6 +393,10 @@ public final class SessionPoolProperties implements JsonSerializable<SessionPool
                 } else if ("provisioningState".equals(fieldName)) {
                     deserializedSessionPoolProperties.provisioningState
                         = SessionPoolProvisioningState.fromString(reader.getString());
+                } else if ("managedIdentitySettings".equals(fieldName)) {
+                    List<ManagedIdentitySetting> managedIdentitySettings
+                        = reader.readArray(reader1 -> ManagedIdentitySetting.fromJson(reader1));
+                    deserializedSessionPoolProperties.managedIdentitySettings = managedIdentitySettings;
                 } else {
                     reader.skipChildren();
                 }

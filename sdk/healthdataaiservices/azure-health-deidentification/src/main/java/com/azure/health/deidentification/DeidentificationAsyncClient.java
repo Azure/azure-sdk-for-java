@@ -101,7 +101,7 @@ public final class DeidentificationAsyncClient {
      * }
      * </pre>
      *
-     * @param name The name of a job.
+     * @param jobName The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -113,8 +113,8 @@ public final class DeidentificationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getJobWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.getJobWithResponseAsync(name, requestOptions);
+    public Mono<Response<BinaryData>> getJobWithResponse(String jobName, RequestOptions requestOptions) {
+        return this.serviceClient.getJobWithResponseAsync(jobName, requestOptions);
     }
 
     /**
@@ -221,7 +221,7 @@ public final class DeidentificationAsyncClient {
      * }
      * </pre>
      *
-     * @param name The name of a job.
+     * @param jobName The name of a job.
      * @param resource The resource instance.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -232,9 +232,9 @@ public final class DeidentificationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<BinaryData, BinaryData> beginDeidentifyDocuments(String name, BinaryData resource,
+    public PollerFlux<BinaryData, BinaryData> beginDeidentifyDocuments(String jobName, BinaryData resource,
         RequestOptions requestOptions) {
-        return this.serviceClient.beginDeidentifyDocumentsAsync(name, resource, requestOptions);
+        return this.serviceClient.beginDeidentifyDocumentsAsync(jobName, resource, requestOptions);
     }
 
     /**
@@ -425,7 +425,7 @@ public final class DeidentificationAsyncClient {
      * }
      * </pre>
      *
-     * @param name The name of a job.
+     * @param jobName The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -436,8 +436,8 @@ public final class DeidentificationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> cancelJobWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.cancelJobWithResponseAsync(name, requestOptions);
+    public Mono<Response<BinaryData>> cancelJobWithResponse(String jobName, RequestOptions requestOptions) {
+        return this.serviceClient.cancelJobWithResponseAsync(jobName, requestOptions);
     }
 
     /**
@@ -445,7 +445,7 @@ public final class DeidentificationAsyncClient {
      *
      * Removes the record of the job from the service. Does not delete any documents.
      *
-     * @param name The name of a job.
+     * @param jobName The name of a job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -455,8 +455,8 @@ public final class DeidentificationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteJobWithResponse(String name, RequestOptions requestOptions) {
-        return this.serviceClient.deleteJobWithResponseAsync(name, requestOptions);
+    public Mono<Response<Void>> deleteJobWithResponse(String jobName, RequestOptions requestOptions) {
+        return this.serviceClient.deleteJobWithResponseAsync(jobName, requestOptions);
     }
 
     /**
@@ -523,7 +523,7 @@ public final class DeidentificationAsyncClient {
      *
      * Resource read operation template.
      *
-     * @param name The name of a job.
+     * @param jobName The name of a job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -536,10 +536,10 @@ public final class DeidentificationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeidentificationJob> getJob(String name) {
+    public Mono<DeidentificationJob> getJob(String jobName) {
         // Generated convenience method for getJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getJobWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+        return getJobWithResponse(jobName, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(DeidentificationJob.class));
     }
 
@@ -548,7 +548,7 @@ public final class DeidentificationAsyncClient {
      *
      * Long-running resource create or replace operation template.
      *
-     * @param name The name of a job.
+     * @param jobName The name of a job.
      * @param resource The resource instance.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -560,11 +560,11 @@ public final class DeidentificationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<DeidentificationJob, DeidentificationJob> beginDeidentifyDocuments(String name,
+    public PollerFlux<DeidentificationJob, DeidentificationJob> beginDeidentifyDocuments(String jobName,
         DeidentificationJob resource) {
         // Generated convenience method for beginDeidentifyDocumentsWithModel
         RequestOptions requestOptions = new RequestOptions();
-        return serviceClient.beginDeidentifyDocumentsWithModelAsync(name, BinaryData.fromObject(resource),
+        return serviceClient.beginDeidentifyDocumentsWithModelAsync(jobName, BinaryData.fromObject(resource),
             requestOptions);
     }
 
@@ -582,7 +582,6 @@ public final class DeidentificationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DeidentificationJob items as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DeidentificationJob> listJobs(String continuationToken) {
         // Generated convenience method for listJobs
@@ -644,7 +643,7 @@ public final class DeidentificationAsyncClient {
      *
      * Resource list operation template.
      *
-     * @param name The name of a job.
+     * @param jobName The name of a job.
      * @param continuationToken Token to continue a previous query.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -654,7 +653,6 @@ public final class DeidentificationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return paged collection of DeidentificationDocumentDetails items as paginated response with {@link PagedFlux}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DeidentificationDocumentDetails> listJobDocuments(String jobName, String continuationToken) {
         // Generated convenience method for listJobDocuments
@@ -721,7 +719,7 @@ public final class DeidentificationAsyncClient {
      *
      * If the job is already complete, this will have no effect.
      *
-     * @param name The name of a job.
+     * @param jobName The name of a job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -732,10 +730,10 @@ public final class DeidentificationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DeidentificationJob> cancelJob(String name) {
+    public Mono<DeidentificationJob> cancelJob(String jobName) {
         // Generated convenience method for cancelJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return cancelJobWithResponse(name, requestOptions).flatMap(FluxUtil::toMono)
+        return cancelJobWithResponse(jobName, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(DeidentificationJob.class));
     }
 
@@ -744,7 +742,7 @@ public final class DeidentificationAsyncClient {
      *
      * Removes the record of the job from the service. Does not delete any documents.
      *
-     * @param name The name of a job.
+     * @param jobName The name of a job.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -755,10 +753,10 @@ public final class DeidentificationAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteJob(String name) {
+    public Mono<Void> deleteJob(String jobName) {
         // Generated convenience method for deleteJobWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return deleteJobWithResponse(name, requestOptions).flatMap(FluxUtil::toMono);
+        return deleteJobWithResponse(jobName, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**

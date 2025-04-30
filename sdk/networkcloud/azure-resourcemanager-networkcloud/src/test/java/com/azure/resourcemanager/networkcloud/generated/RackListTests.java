@@ -17,54 +17,58 @@ public final class RackListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         RackList model = BinaryData.fromString(
-            "{\"nextLink\":\"hzdsqtzbsrgnow\",\"value\":[{\"extendedLocation\":{\"name\":\"fgmvecactxmwo\",\"type\":\"e\"},\"properties\":{\"availabilityZone\":\"owcluqo\",\"clusterId\":\"kqvgqouw\",\"detailedStatus\":\"Available\",\"detailedStatusMessage\":\"pjwyiv\",\"provisioningState\":\"Failed\",\"rackLocation\":\"f\",\"rackSerialNumber\":\"cvhrfsp\",\"rackSkuId\":\"uagrttikteusqc\"},\"location\":\"vyklxuby\",\"tags\":{\"bgq\":\"fmmfblcqcu\"},\"id\":\"brta\",\"name\":\"metttwgd\",\"type\":\"lqxihhrmooiz\"},{\"extendedLocation\":{\"name\":\"seypxiutcxapz\",\"type\":\"y\"},\"properties\":{\"availabilityZone\":\"petogebjox\",\"clusterId\":\"hvnh\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"q\",\"provisioningState\":\"Accepted\",\"rackLocation\":\"zjcjbtr\",\"rackSerialNumber\":\"aehvvibrxjjstoq\",\"rackSkuId\":\"eitpkxztmo\"},\"location\":\"klf\",\"tags\":{\"yhohujswtwkozzwc\":\"gfcwqmpimaqxzhem\",\"wpfaj\":\"lkb\"},\"id\":\"jwltlwtjjgu\",\"name\":\"talhsnvkcdmxzr\",\"type\":\"oaimlnw\"},{\"extendedLocation\":{\"name\":\"aaomylweazu\",\"type\":\"cse\"},\"properties\":{\"availabilityZone\":\"hwwn\",\"clusterId\":\"hlf\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"ch\",\"provisioningState\":\"Provisioning\",\"rackLocation\":\"fb\",\"rackSerialNumber\":\"usnfepgfewet\",\"rackSkuId\":\"l\"},\"location\":\"gncxykxhdj\",\"tags\":{\"rxvxcjzh\":\"mmbcxfhbcp\",\"qscjavftjuh\":\"izxfpxt\"},\"id\":\"qaz\",\"name\":\"mtggu\",\"type\":\"pijrajcivmmghf\"}]}")
+            "{\"nextLink\":\"eg\",\"value\":[{\"extendedLocation\":{\"name\":\"lzxwhcansy\",\"type\":\"oyqhlwig\"},\"properties\":{\"availabilityZone\":\"ivbkbxgomfaj\",\"clusterId\":\"asqvd\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"guxak\",\"provisioningState\":\"Failed\",\"rackLocation\":\"zhzbezkgimsi\",\"rackSerialNumber\":\"xasicddyvvjskg\",\"rackSkuId\":\"mocwa\"},\"location\":\"qgatjeaahhvjhhn\",\"tags\":{\"yxvxevblbjed\":\"ybbjjidjksyx\",\"smjbnkppxyn\":\"ljlageuaulxu\"},\"id\":\"nlsvxeiz\",\"name\":\"gwklnsr\",\"type\":\"ffeycx\"},{\"extendedLocation\":{\"name\":\"ktp\",\"type\":\"ymerteeammxq\"},\"properties\":{\"availabilityZone\":\"ekkkzd\",\"clusterId\":\"tkgdojbmxva\",\"detailedStatus\":\"Error\",\"detailedStatusMessage\":\"de\",\"provisioningState\":\"Canceled\",\"rackLocation\":\"ecuijpxtxs\",\"rackSerialNumber\":\"wprtu\",\"rackSkuId\":\"wsawddjibabxvi\"},\"location\":\"tvtzeexavoxtfg\",\"tags\":{\"pypqtgsfj\":\"dmdqb\"},\"id\":\"cbslhhx\",\"name\":\"db\",\"type\":\"vodhtn\"},{\"extendedLocation\":{\"name\":\"irudh\",\"type\":\"m\"},\"properties\":{\"availabilityZone\":\"es\",\"clusterId\":\"dlpagzrcxfail\",\"detailedStatus\":\"Provisioning\",\"detailedStatusMessage\":\"m\",\"provisioningState\":\"Canceled\",\"rackLocation\":\"xdfgsftufqobr\",\"rackSerialNumber\":\"lnacgcc\",\"rackSkuId\":\"knh\"},\"location\":\"izvy\",\"tags\":{\"aaeranokqgukk\":\"zvulj\",\"oylaxxul\":\"qnvb\"},\"id\":\"disdosfjbjsvgj\",\"name\":\"whryvycytdcl\",\"type\":\"gc\"}]}")
             .toObject(RackList.class);
-        Assertions.assertEquals("hzdsqtzbsrgnow", model.nextLink());
-        Assertions.assertEquals("vyklxuby", model.value().get(0).location());
-        Assertions.assertEquals("fmmfblcqcu", model.value().get(0).tags().get("bgq"));
-        Assertions.assertEquals("fgmvecactxmwo", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals("e", model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("owcluqo", model.value().get(0).availabilityZone());
-        Assertions.assertEquals("f", model.value().get(0).rackLocation());
-        Assertions.assertEquals("cvhrfsp", model.value().get(0).rackSerialNumber());
-        Assertions.assertEquals("uagrttikteusqc", model.value().get(0).rackSkuId());
+        Assertions.assertEquals("eg", model.nextLink());
+        Assertions.assertEquals("qgatjeaahhvjhhn", model.value().get(0).location());
+        Assertions.assertEquals("ybbjjidjksyx", model.value().get(0).tags().get("yxvxevblbjed"));
+        Assertions.assertEquals("lzxwhcansy", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("oyqhlwig", model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals("ivbkbxgomfaj", model.value().get(0).availabilityZone());
+        Assertions.assertEquals("zhzbezkgimsi", model.value().get(0).rackLocation());
+        Assertions.assertEquals("xasicddyvvjskg", model.value().get(0).rackSerialNumber());
+        Assertions.assertEquals("mocwa", model.value().get(0).rackSkuId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RackList model = new RackList().withNextLink("hzdsqtzbsrgnow")
-            .withValue(Arrays.asList(
-                new RackInner().withLocation("vyklxuby")
-                    .withTags(mapOf("bgq", "fmmfblcqcu"))
-                    .withExtendedLocation(new ExtendedLocation().withName("fgmvecactxmwo").withType("e"))
-                    .withAvailabilityZone("owcluqo")
-                    .withRackLocation("f")
-                    .withRackSerialNumber("cvhrfsp")
-                    .withRackSkuId("uagrttikteusqc"),
-                new RackInner().withLocation("klf")
-                    .withTags(mapOf("yhohujswtwkozzwc", "gfcwqmpimaqxzhem", "wpfaj", "lkb"))
-                    .withExtendedLocation(new ExtendedLocation().withName("seypxiutcxapz").withType("y"))
-                    .withAvailabilityZone("petogebjox")
-                    .withRackLocation("zjcjbtr")
-                    .withRackSerialNumber("aehvvibrxjjstoq")
-                    .withRackSkuId("eitpkxztmo"),
-                new RackInner().withLocation("gncxykxhdj")
-                    .withTags(mapOf("rxvxcjzh", "mmbcxfhbcp", "qscjavftjuh", "izxfpxt"))
-                    .withExtendedLocation(new ExtendedLocation().withName("aaomylweazu").withType("cse"))
-                    .withAvailabilityZone("hwwn")
-                    .withRackLocation("fb")
-                    .withRackSerialNumber("usnfepgfewet")
-                    .withRackSkuId("l")));
+        RackList model
+            = new RackList().withNextLink("eg")
+                .withValue(
+                    Arrays
+                        .asList(
+                            new RackInner().withLocation("qgatjeaahhvjhhn")
+                                .withTags(mapOf("yxvxevblbjed", "ybbjjidjksyx", "smjbnkppxyn", "ljlageuaulxu"))
+                                .withExtendedLocation(
+                                    new ExtendedLocation().withName("lzxwhcansy").withType("oyqhlwig"))
+                                .withAvailabilityZone("ivbkbxgomfaj")
+                                .withRackLocation("zhzbezkgimsi")
+                                .withRackSerialNumber("xasicddyvvjskg")
+                                .withRackSkuId("mocwa"),
+                            new RackInner().withLocation("tvtzeexavoxtfg")
+                                .withTags(mapOf("pypqtgsfj", "dmdqb"))
+                                .withExtendedLocation(new ExtendedLocation().withName("ktp").withType("ymerteeammxq"))
+                                .withAvailabilityZone("ekkkzd")
+                                .withRackLocation("ecuijpxtxs")
+                                .withRackSerialNumber("wprtu")
+                                .withRackSkuId("wsawddjibabxvi"),
+                            new RackInner().withLocation("izvy")
+                                .withTags(mapOf("aaeranokqgukk", "zvulj", "oylaxxul", "qnvb"))
+                                .withExtendedLocation(new ExtendedLocation().withName("irudh").withType("m"))
+                                .withAvailabilityZone("es")
+                                .withRackLocation("xdfgsftufqobr")
+                                .withRackSerialNumber("lnacgcc")
+                                .withRackSkuId("knh")));
         model = BinaryData.fromObject(model).toObject(RackList.class);
-        Assertions.assertEquals("hzdsqtzbsrgnow", model.nextLink());
-        Assertions.assertEquals("vyklxuby", model.value().get(0).location());
-        Assertions.assertEquals("fmmfblcqcu", model.value().get(0).tags().get("bgq"));
-        Assertions.assertEquals("fgmvecactxmwo", model.value().get(0).extendedLocation().name());
-        Assertions.assertEquals("e", model.value().get(0).extendedLocation().type());
-        Assertions.assertEquals("owcluqo", model.value().get(0).availabilityZone());
-        Assertions.assertEquals("f", model.value().get(0).rackLocation());
-        Assertions.assertEquals("cvhrfsp", model.value().get(0).rackSerialNumber());
-        Assertions.assertEquals("uagrttikteusqc", model.value().get(0).rackSkuId());
+        Assertions.assertEquals("eg", model.nextLink());
+        Assertions.assertEquals("qgatjeaahhvjhhn", model.value().get(0).location());
+        Assertions.assertEquals("ybbjjidjksyx", model.value().get(0).tags().get("yxvxevblbjed"));
+        Assertions.assertEquals("lzxwhcansy", model.value().get(0).extendedLocation().name());
+        Assertions.assertEquals("oyqhlwig", model.value().get(0).extendedLocation().type());
+        Assertions.assertEquals("ivbkbxgomfaj", model.value().get(0).availabilityZone());
+        Assertions.assertEquals("zhzbezkgimsi", model.value().get(0).rackLocation());
+        Assertions.assertEquals("xasicddyvvjskg", model.value().get(0).rackSerialNumber());
+        Assertions.assertEquals("mocwa", model.value().get(0).rackSkuId());
     }
 
     // Use "Map.of" if available

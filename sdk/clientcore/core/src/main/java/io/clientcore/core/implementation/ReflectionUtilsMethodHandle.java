@@ -62,8 +62,9 @@ final class ReflectionUtilsMethodHandle implements ReflectionUtilsApi {
                 throw (Error) throwable;
             } else {
                 LOGGER.atInfo()
+                    .setThrowable(throwable)
                     .log("Unable to create MethodHandles to use Java 9+ MethodHandles.privateLookupIn. Will "
-                        + "attempt to fallback to using the package-private constructor.", throwable);
+                        + "attempt to fallback to using the package-private constructor.");
             }
         }
 

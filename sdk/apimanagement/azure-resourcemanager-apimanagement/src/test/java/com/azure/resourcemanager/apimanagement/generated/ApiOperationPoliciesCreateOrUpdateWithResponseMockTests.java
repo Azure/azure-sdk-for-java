@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.PolicyContentFormat;
@@ -23,24 +23,24 @@ public final class ApiOperationPoliciesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"value\":\"xoqgvbzpggpw\",\"format\":\"xml\"},\"id\":\"obqajejir\",\"name\":\"a\",\"type\":\"rvkgpogplbjuvl\"}";
+            = "{\"properties\":{\"value\":\"l\",\"format\":\"rawxml\"},\"id\":\"bhuqczouanbfulvc\",\"name\":\"glxoqwbztilqb\",\"type\":\"bwbgwzhbhfljey\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PolicyContract response = manager.apiOperationPolicies()
             .define(PolicyIdName.POLICY)
-            .withExistingOperation("zyyopoaytwwgwqub", "tbvufrkwjiemim", "tnpowewjs", "reeedddrftfquul")
-            .withValue("hsiige")
-            .withFormat(PolicyContentFormat.RAWXML_LINK)
-            .withIfMatch("dqw")
+            .withExistingOperation("fajynihtibufg", "qzhluctblfehbg", "gy", "hrcmeq")
+            .withValue("dumh")
+            .withFormat(PolicyContentFormat.RAWXML)
+            .withIfMatch("uvgzacrzhns")
             .create();
 
-        Assertions.assertEquals("xoqgvbzpggpw", response.value());
-        Assertions.assertEquals(PolicyContentFormat.XML, response.format());
+        Assertions.assertEquals("l", response.value());
+        Assertions.assertEquals(PolicyContentFormat.RAWXML, response.format());
     }
 }

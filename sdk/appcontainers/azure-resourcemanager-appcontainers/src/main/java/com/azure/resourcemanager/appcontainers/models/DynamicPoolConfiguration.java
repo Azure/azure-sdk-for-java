@@ -17,14 +17,9 @@ import java.io.IOException;
 @Fluent
 public final class DynamicPoolConfiguration implements JsonSerializable<DynamicPoolConfiguration> {
     /*
-     * The execution type of the session pool.
+     * The lifecycle configuration of a session in the dynamic session pool
      */
-    private ExecutionType executionType;
-
-    /*
-     * The cooldown period of a session in seconds.
-     */
-    private Integer cooldownPeriodInSeconds;
+    private LifecycleConfiguration lifecycleConfiguration;
 
     /**
      * Creates an instance of DynamicPoolConfiguration class.
@@ -33,42 +28,22 @@ public final class DynamicPoolConfiguration implements JsonSerializable<DynamicP
     }
 
     /**
-     * Get the executionType property: The execution type of the session pool.
+     * Get the lifecycleConfiguration property: The lifecycle configuration of a session in the dynamic session pool.
      * 
-     * @return the executionType value.
+     * @return the lifecycleConfiguration value.
      */
-    public ExecutionType executionType() {
-        return this.executionType;
+    public LifecycleConfiguration lifecycleConfiguration() {
+        return this.lifecycleConfiguration;
     }
 
     /**
-     * Set the executionType property: The execution type of the session pool.
+     * Set the lifecycleConfiguration property: The lifecycle configuration of a session in the dynamic session pool.
      * 
-     * @param executionType the executionType value to set.
+     * @param lifecycleConfiguration the lifecycleConfiguration value to set.
      * @return the DynamicPoolConfiguration object itself.
      */
-    public DynamicPoolConfiguration withExecutionType(ExecutionType executionType) {
-        this.executionType = executionType;
-        return this;
-    }
-
-    /**
-     * Get the cooldownPeriodInSeconds property: The cooldown period of a session in seconds.
-     * 
-     * @return the cooldownPeriodInSeconds value.
-     */
-    public Integer cooldownPeriodInSeconds() {
-        return this.cooldownPeriodInSeconds;
-    }
-
-    /**
-     * Set the cooldownPeriodInSeconds property: The cooldown period of a session in seconds.
-     * 
-     * @param cooldownPeriodInSeconds the cooldownPeriodInSeconds value to set.
-     * @return the DynamicPoolConfiguration object itself.
-     */
-    public DynamicPoolConfiguration withCooldownPeriodInSeconds(Integer cooldownPeriodInSeconds) {
-        this.cooldownPeriodInSeconds = cooldownPeriodInSeconds;
+    public DynamicPoolConfiguration withLifecycleConfiguration(LifecycleConfiguration lifecycleConfiguration) {
+        this.lifecycleConfiguration = lifecycleConfiguration;
         return this;
     }
 
@@ -78,6 +53,9 @@ public final class DynamicPoolConfiguration implements JsonSerializable<DynamicP
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (lifecycleConfiguration() != null) {
+            lifecycleConfiguration().validate();
+        }
     }
 
     /**
@@ -86,8 +64,7 @@ public final class DynamicPoolConfiguration implements JsonSerializable<DynamicP
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("executionType", this.executionType == null ? null : this.executionType.toString());
-        jsonWriter.writeNumberField("cooldownPeriodInSeconds", this.cooldownPeriodInSeconds);
+        jsonWriter.writeJsonField("lifecycleConfiguration", this.lifecycleConfiguration);
         return jsonWriter.writeEndObject();
     }
 
@@ -106,11 +83,9 @@ public final class DynamicPoolConfiguration implements JsonSerializable<DynamicP
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("executionType".equals(fieldName)) {
-                    deserializedDynamicPoolConfiguration.executionType = ExecutionType.fromString(reader.getString());
-                } else if ("cooldownPeriodInSeconds".equals(fieldName)) {
-                    deserializedDynamicPoolConfiguration.cooldownPeriodInSeconds
-                        = reader.getNullable(JsonReader::getInt);
+                if ("lifecycleConfiguration".equals(fieldName)) {
+                    deserializedDynamicPoolConfiguration.lifecycleConfiguration
+                        = LifecycleConfiguration.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

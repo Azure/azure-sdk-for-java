@@ -9,6 +9,8 @@ import com.azure.cosmos.implementation.query.IndexProperty;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.List;
+
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 /**
@@ -22,6 +24,8 @@ public final class CosmosVectorIndexSpec {
     private Integer quantizationSizeInBytes;
     @JsonInclude(JsonInclude.Include.NON_NULL)
     private Integer indexingSearchListSize;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    private List<String> vectorIndexShardKeys;
     private final JsonSerializable jsonSerializable;
 
     /**
@@ -147,6 +151,38 @@ public final class CosmosVectorIndexSpec {
         return this;
     }
 
+    /**
+     * Gets the vector indexing shard keys
+     *
+     * @return vectorIndexShardKeys the list of string containing the shard keys used for partitioning the
+     * vector indexes. This applies to index types diskANN and quantizedFlat. The maximum allowed size for
+     * this array is currently limited to 1 - that is, there is only one allowed path.
+     */
+    public List<String> getVectorIndexShardKeys() {
+        if (this.vectorIndexShardKeys == null) {
+            this.vectorIndexShardKeys = this.jsonSerializable.getList(Constants.Properties.VECTOR_INDEX_SHARD_KEYS, String.class);
+        }
+        return this.vectorIndexShardKeys;
+    }
+
+    /**
+     * Sets the vector indexing shard keys
+     *
+     * @param vectorIndexShardKeys vectorIndexShardKeys the list of string containing the shard keys used for partitioning the
+     *                            vector indexes. This applies to index types diskANN and quantizedFlat. The maximum allowed size for
+     *                            this array is currently limited to 1 - that is, there is only one allowed path.
+     * @return CosmosVectorIndexSpec
+     */
+    public CosmosVectorIndexSpec setVectorIndexShardKeys(List<String> vectorIndexShardKeys) {
+        if (validateIndexType(IndexProperty.VECTOR_INDEX_SHARD_KEYS) && vectorIndexShardKeys != null) {
+            this.vectorIndexShardKeys = vectorIndexShardKeys;
+            this.jsonSerializable.set(Constants.Properties.VECTOR_INDEX_SHARD_KEYS, this.vectorIndexShardKeys);
+        } else {
+            this.vectorIndexShardKeys = null;
+        }
+        return this;
+    }
+
     void populatePropertyBag() {
         this.jsonSerializable.populatePropertyBag();
     }
@@ -157,7 +193,7 @@ public final class CosmosVectorIndexSpec {
 
     private Boolean validateIndexType(IndexProperty indexProperty) {
         String vectorIndexType = this.jsonSerializable.getString(Constants.Properties.VECTOR_INDEX_TYPE);
-        if (indexProperty.equals(IndexProperty.QUANTIZATION_SIZE_IN_BYTES)) {
+        if (indexProperty.equals(IndexProperty.QUANTIZATION_SIZE_IN_BYTES) || (indexProperty.equals(IndexProperty.VECTOR_INDEX_SHARD_KEYS))) {
             return vectorIndexType.equals(CosmosVectorIndexType.QUANTIZED_FLAT.toString()) ||
                 vectorIndexType.equals(CosmosVectorIndexType.DISK_ANN.toString());
         }

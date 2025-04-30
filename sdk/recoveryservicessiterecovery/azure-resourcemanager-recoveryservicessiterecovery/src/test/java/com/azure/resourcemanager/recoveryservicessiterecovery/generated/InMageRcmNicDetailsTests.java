@@ -13,36 +13,39 @@ public final class InMageRcmNicDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageRcmNicDetails model = BinaryData.fromString(
-            "{\"nicId\":\"tadopgfzdg\",\"isPrimaryNic\":\"c\",\"isSelectedForFailover\":\"rsvloy\",\"sourceIPAddress\":\"igqkzjuqwqa\",\"sourceIPAddressType\":\"Dynamic\",\"sourceNetworkId\":\"x\",\"sourceSubnetName\":\"xhyoip\",\"targetIPAddress\":\"dbgsosc\",\"targetIPAddressType\":\"Static\",\"targetSubnetName\":\"zfvbennmfkbpj\",\"testSubnetName\":\"tekwwnthropm\",\"testIPAddress\":\"d\",\"testIPAddressType\":\"Dynamic\"}")
+            "{\"nicId\":\"haahntofelfhpfi\",\"isPrimaryNic\":\"skkzdfivsujybsr\",\"isSelectedForFailover\":\"zmrgtxdhmfppinmg\",\"sourceIPAddress\":\"esmkwtzgf\",\"sourceIPAddressType\":\"Dynamic\",\"sourceNetworkId\":\"hxerxlobkdbtq\",\"sourceSubnetName\":\"mmniiqyholhjnskb\",\"targetIPAddress\":\"icnq\",\"targetIPAddressType\":\"Dynamic\",\"targetSubnetName\":\"m\",\"testSubnetName\":\"blxk\",\"testIPAddress\":\"qgvxrktjcjigcw\",\"testIPAddressType\":\"Static\",\"targetNicName\":\"nbqx\"}")
             .toObject(InMageRcmNicDetails.class);
-        Assertions.assertEquals("c", model.isPrimaryNic());
-        Assertions.assertEquals("rsvloy", model.isSelectedForFailover());
-        Assertions.assertEquals("dbgsosc", model.targetIpAddress());
-        Assertions.assertEquals(EthernetAddressType.STATIC, model.targetIpAddressType());
-        Assertions.assertEquals("zfvbennmfkbpj", model.targetSubnetName());
-        Assertions.assertEquals("tekwwnthropm", model.testSubnetName());
-        Assertions.assertEquals("d", model.testIpAddress());
-        Assertions.assertEquals(EthernetAddressType.DYNAMIC, model.testIpAddressType());
+        Assertions.assertEquals("skkzdfivsujybsr", model.isPrimaryNic());
+        Assertions.assertEquals("zmrgtxdhmfppinmg", model.isSelectedForFailover());
+        Assertions.assertEquals("icnq", model.targetIpAddress());
+        Assertions.assertEquals(EthernetAddressType.DYNAMIC, model.targetIpAddressType());
+        Assertions.assertEquals("m", model.targetSubnetName());
+        Assertions.assertEquals("blxk", model.testSubnetName());
+        Assertions.assertEquals("qgvxrktjcjigcw", model.testIpAddress());
+        Assertions.assertEquals(EthernetAddressType.STATIC, model.testIpAddressType());
+        Assertions.assertEquals("nbqx", model.targetNicName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageRcmNicDetails model = new InMageRcmNicDetails().withIsPrimaryNic("c")
-            .withIsSelectedForFailover("rsvloy")
-            .withTargetIpAddress("dbgsosc")
-            .withTargetIpAddressType(EthernetAddressType.STATIC)
-            .withTargetSubnetName("zfvbennmfkbpj")
-            .withTestSubnetName("tekwwnthropm")
-            .withTestIpAddress("d")
-            .withTestIpAddressType(EthernetAddressType.DYNAMIC);
+        InMageRcmNicDetails model = new InMageRcmNicDetails().withIsPrimaryNic("skkzdfivsujybsr")
+            .withIsSelectedForFailover("zmrgtxdhmfppinmg")
+            .withTargetIpAddress("icnq")
+            .withTargetIpAddressType(EthernetAddressType.DYNAMIC)
+            .withTargetSubnetName("m")
+            .withTestSubnetName("blxk")
+            .withTestIpAddress("qgvxrktjcjigcw")
+            .withTestIpAddressType(EthernetAddressType.STATIC)
+            .withTargetNicName("nbqx");
         model = BinaryData.fromObject(model).toObject(InMageRcmNicDetails.class);
-        Assertions.assertEquals("c", model.isPrimaryNic());
-        Assertions.assertEquals("rsvloy", model.isSelectedForFailover());
-        Assertions.assertEquals("dbgsosc", model.targetIpAddress());
-        Assertions.assertEquals(EthernetAddressType.STATIC, model.targetIpAddressType());
-        Assertions.assertEquals("zfvbennmfkbpj", model.targetSubnetName());
-        Assertions.assertEquals("tekwwnthropm", model.testSubnetName());
-        Assertions.assertEquals("d", model.testIpAddress());
-        Assertions.assertEquals(EthernetAddressType.DYNAMIC, model.testIpAddressType());
+        Assertions.assertEquals("skkzdfivsujybsr", model.isPrimaryNic());
+        Assertions.assertEquals("zmrgtxdhmfppinmg", model.isSelectedForFailover());
+        Assertions.assertEquals("icnq", model.targetIpAddress());
+        Assertions.assertEquals(EthernetAddressType.DYNAMIC, model.targetIpAddressType());
+        Assertions.assertEquals("m", model.targetSubnetName());
+        Assertions.assertEquals("blxk", model.testSubnetName());
+        Assertions.assertEquals("qgvxrktjcjigcw", model.testIpAddress());
+        Assertions.assertEquals(EthernetAddressType.STATIC, model.testIpAddressType());
+        Assertions.assertEquals("nbqx", model.targetNicName());
     }
 }

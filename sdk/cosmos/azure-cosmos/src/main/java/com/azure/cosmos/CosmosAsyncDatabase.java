@@ -815,7 +815,16 @@ public class CosmosAsyncDatabase {
      * @return Cosmos Container
      */
     public CosmosAsyncContainer getContainer(String id) {
-        return new CosmosAsyncContainer(id, this);
+        CosmosAsyncContainer asyncContainer = this
+            .client
+            .getContainerCreationInterceptor()
+            .apply(new CosmosAsyncContainer(id, this));
+
+        if (asyncContainer == null) {
+            throw new IllegalStateException(
+                "The implementation of the custom container creation interceptor must not return null.");
+        }
+        return asyncContainer;
     }
 
     /**

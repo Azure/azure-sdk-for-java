@@ -19,6 +19,11 @@ import java.io.IOException;
 @Fluent
 public final class SearchIndexerCache implements JsonSerializable<SearchIndexerCache> {
     /*
+     * A guid for the SearchIndexerCache.
+     */
+    private String id;
+
+    /*
      * The connection string to the storage account where the cache data will be persisted.
      */
     private String storageConnectionString;
@@ -40,6 +45,26 @@ public final class SearchIndexerCache implements JsonSerializable<SearchIndexerC
      * Creates an instance of SearchIndexerCache class.
      */
     public SearchIndexerCache() {
+    }
+
+    /**
+     * Get the id property: A guid for the SearchIndexerCache.
+     * 
+     * @return the id value.
+     */
+    public String getId() {
+        return this.id;
+    }
+
+    /**
+     * Set the id property: A guid for the SearchIndexerCache.
+     * 
+     * @param id the id value to set.
+     * @return the SearchIndexerCache object itself.
+     */
+    public SearchIndexerCache setId(String id) {
+        this.id = id;
+        return this;
     }
 
     /**
@@ -116,6 +141,7 @@ public final class SearchIndexerCache implements JsonSerializable<SearchIndexerC
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("id", this.id);
         jsonWriter.writeStringField("storageConnectionString", this.storageConnectionString);
         jsonWriter.writeBooleanField("enableReprocessing", this.enableReprocessing);
         jsonWriter.writeJsonField("identity", this.identity);
@@ -137,7 +163,9 @@ public final class SearchIndexerCache implements JsonSerializable<SearchIndexerC
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("storageConnectionString".equals(fieldName)) {
+                if ("id".equals(fieldName)) {
+                    deserializedSearchIndexerCache.id = reader.getString();
+                } else if ("storageConnectionString".equals(fieldName)) {
                     deserializedSearchIndexerCache.storageConnectionString = reader.getString();
                 } else if ("enableReprocessing".equals(fieldName)) {
                     deserializedSearchIndexerCache.enableReprocessing = reader.getNullable(JsonReader::getBoolean);

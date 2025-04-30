@@ -17,54 +17,67 @@ public final class NetworkStatusContractByLocationInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NetworkStatusContractByLocationInner model = BinaryData.fromString(
-            "{\"location\":\"vlrdsmovpi\",\"networkStatus\":{\"dnsServers\":[\"dnox\",\"xn\",\"qaqotnn\"],\"connectivityStatus\":[{\"name\":\"olousdvrg\",\"status\":\"success\",\"error\":\"m\",\"lastUpdated\":\"2021-04-09T03:39:28Z\",\"lastStatusChange\":\"2021-03-27T11:50:58Z\",\"resourceType\":\"jdrpizfulgycts\",\"isOptional\":true},{\"name\":\"tqgkujd\",\"status\":\"failure\",\"error\":\"xrqwo\",\"lastUpdated\":\"2021-03-21T10:31:02Z\",\"lastStatusChange\":\"2021-01-29T18:30:42Z\",\"resourceType\":\"btigapdyarikeejd\",\"isOptional\":true}]}}")
+            "{\"location\":\"l\",\"networkStatus\":{\"dnsServers\":[\"x\",\"ygz\",\"tyevjhu\"],\"connectivityStatus\":[{\"name\":\"obguqisqsqk\",\"status\":\"initializing\",\"error\":\"ioyj\",\"lastUpdated\":\"2021-05-05T23:15:25Z\",\"lastStatusChange\":\"2021-06-23T16:49:17Z\",\"resourceType\":\"lviqcpszpmc\",\"isOptional\":true},{\"name\":\"dv\",\"status\":\"failure\",\"error\":\"vxyrxd\",\"lastUpdated\":\"2021-05-26T19:14:47Z\",\"lastStatusChange\":\"2021-02-10T13:03:56Z\",\"resourceType\":\"qojbxao\",\"isOptional\":false},{\"name\":\"gbzxmbtplefoioy\",\"status\":\"success\",\"error\":\"xznvgvdt\",\"lastUpdated\":\"2021-06-25T22:21:04Z\",\"lastStatusChange\":\"2021-01-11T14:05:40Z\",\"resourceType\":\"vdawsxmrszbk\",\"isOptional\":true},{\"name\":\"mxlpnerxrz\",\"status\":\"initializing\",\"error\":\"lcurzaqmnbx\",\"lastUpdated\":\"2021-01-01T19:34:40Z\",\"lastStatusChange\":\"2021-03-29T07:54:30Z\",\"resourceType\":\"htdbjmbnvynfao\",\"isOptional\":true}]}}")
             .toObject(NetworkStatusContractByLocationInner.class);
-        Assertions.assertEquals("vlrdsmovpi", model.location());
-        Assertions.assertEquals("dnox", model.networkStatus().dnsServers().get(0));
-        Assertions.assertEquals("olousdvrg", model.networkStatus().connectivityStatus().get(0).name());
-        Assertions.assertEquals(ConnectivityStatusType.SUCCESS,
+        Assertions.assertEquals("l", model.location());
+        Assertions.assertEquals("x", model.networkStatus().dnsServers().get(0));
+        Assertions.assertEquals("obguqisqsqk", model.networkStatus().connectivityStatus().get(0).name());
+        Assertions.assertEquals(ConnectivityStatusType.INITIALIZING,
             model.networkStatus().connectivityStatus().get(0).status());
-        Assertions.assertEquals("m", model.networkStatus().connectivityStatus().get(0).error());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-09T03:39:28Z"),
+        Assertions.assertEquals("ioyj", model.networkStatus().connectivityStatus().get(0).error());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-05T23:15:25Z"),
             model.networkStatus().connectivityStatus().get(0).lastUpdated());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-27T11:50:58Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-23T16:49:17Z"),
             model.networkStatus().connectivityStatus().get(0).lastStatusChange());
-        Assertions.assertEquals("jdrpizfulgycts", model.networkStatus().connectivityStatus().get(0).resourceType());
-        Assertions.assertEquals(true, model.networkStatus().connectivityStatus().get(0).isOptional());
+        Assertions.assertEquals("lviqcpszpmc", model.networkStatus().connectivityStatus().get(0).resourceType());
+        Assertions.assertTrue(model.networkStatus().connectivityStatus().get(0).isOptional());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkStatusContractByLocationInner model = new NetworkStatusContractByLocationInner()
-            .withLocation("vlrdsmovpi")
-            .withNetworkStatus(new NetworkStatusContractInner().withDnsServers(Arrays.asList("dnox", "xn", "qaqotnn"))
+        NetworkStatusContractByLocationInner model = new NetworkStatusContractByLocationInner().withLocation("l")
+            .withNetworkStatus(new NetworkStatusContractInner().withDnsServers(Arrays.asList("x", "ygz", "tyevjhu"))
                 .withConnectivityStatus(Arrays.asList(
-                    new ConnectivityStatusContract().withName("olousdvrg")
-                        .withStatus(ConnectivityStatusType.SUCCESS)
-                        .withError("m")
-                        .withLastUpdated(OffsetDateTime.parse("2021-04-09T03:39:28Z"))
-                        .withLastStatusChange(OffsetDateTime.parse("2021-03-27T11:50:58Z"))
-                        .withResourceType("jdrpizfulgycts")
+                    new ConnectivityStatusContract().withName("obguqisqsqk")
+                        .withStatus(ConnectivityStatusType.INITIALIZING)
+                        .withError("ioyj")
+                        .withLastUpdated(OffsetDateTime.parse("2021-05-05T23:15:25Z"))
+                        .withLastStatusChange(OffsetDateTime.parse("2021-06-23T16:49:17Z"))
+                        .withResourceType("lviqcpszpmc")
                         .withIsOptional(true),
-                    new ConnectivityStatusContract().withName("tqgkujd")
+                    new ConnectivityStatusContract().withName("dv")
                         .withStatus(ConnectivityStatusType.FAILURE)
-                        .withError("xrqwo")
-                        .withLastUpdated(OffsetDateTime.parse("2021-03-21T10:31:02Z"))
-                        .withLastStatusChange(OffsetDateTime.parse("2021-01-29T18:30:42Z"))
-                        .withResourceType("btigapdyarikeejd")
+                        .withError("vxyrxd")
+                        .withLastUpdated(OffsetDateTime.parse("2021-05-26T19:14:47Z"))
+                        .withLastStatusChange(OffsetDateTime.parse("2021-02-10T13:03:56Z"))
+                        .withResourceType("qojbxao")
+                        .withIsOptional(false),
+                    new ConnectivityStatusContract().withName("gbzxmbtplefoioy")
+                        .withStatus(ConnectivityStatusType.SUCCESS)
+                        .withError("xznvgvdt")
+                        .withLastUpdated(OffsetDateTime.parse("2021-06-25T22:21:04Z"))
+                        .withLastStatusChange(OffsetDateTime.parse("2021-01-11T14:05:40Z"))
+                        .withResourceType("vdawsxmrszbk")
+                        .withIsOptional(true),
+                    new ConnectivityStatusContract().withName("mxlpnerxrz")
+                        .withStatus(ConnectivityStatusType.INITIALIZING)
+                        .withError("lcurzaqmnbx")
+                        .withLastUpdated(OffsetDateTime.parse("2021-01-01T19:34:40Z"))
+                        .withLastStatusChange(OffsetDateTime.parse("2021-03-29T07:54:30Z"))
+                        .withResourceType("htdbjmbnvynfao")
                         .withIsOptional(true))));
         model = BinaryData.fromObject(model).toObject(NetworkStatusContractByLocationInner.class);
-        Assertions.assertEquals("vlrdsmovpi", model.location());
-        Assertions.assertEquals("dnox", model.networkStatus().dnsServers().get(0));
-        Assertions.assertEquals("olousdvrg", model.networkStatus().connectivityStatus().get(0).name());
-        Assertions.assertEquals(ConnectivityStatusType.SUCCESS,
+        Assertions.assertEquals("l", model.location());
+        Assertions.assertEquals("x", model.networkStatus().dnsServers().get(0));
+        Assertions.assertEquals("obguqisqsqk", model.networkStatus().connectivityStatus().get(0).name());
+        Assertions.assertEquals(ConnectivityStatusType.INITIALIZING,
             model.networkStatus().connectivityStatus().get(0).status());
-        Assertions.assertEquals("m", model.networkStatus().connectivityStatus().get(0).error());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-04-09T03:39:28Z"),
+        Assertions.assertEquals("ioyj", model.networkStatus().connectivityStatus().get(0).error());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-05T23:15:25Z"),
             model.networkStatus().connectivityStatus().get(0).lastUpdated());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-03-27T11:50:58Z"),
+        Assertions.assertEquals(OffsetDateTime.parse("2021-06-23T16:49:17Z"),
             model.networkStatus().connectivityStatus().get(0).lastStatusChange());
-        Assertions.assertEquals("jdrpizfulgycts", model.networkStatus().connectivityStatus().get(0).resourceType());
-        Assertions.assertEquals(true, model.networkStatus().connectivityStatus().get(0).isOptional());
+        Assertions.assertEquals("lviqcpszpmc", model.networkStatus().connectivityStatus().get(0).resourceType());
+        Assertions.assertTrue(model.networkStatus().connectivityStatus().get(0).isOptional());
     }
 }

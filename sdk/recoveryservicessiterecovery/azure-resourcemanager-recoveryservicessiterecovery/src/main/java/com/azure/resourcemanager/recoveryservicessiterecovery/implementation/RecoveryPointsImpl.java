@@ -27,26 +27,26 @@ public final class RecoveryPointsImpl implements RecoveryPoints {
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<RecoveryPoint> listByReplicationProtectedItems(String resourceName, String resourceGroupName,
+    public PagedIterable<RecoveryPoint> listByReplicationProtectedItems(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName) {
         PagedIterable<RecoveryPointInner> inner = this.serviceClient()
-            .listByReplicationProtectedItems(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .listByReplicationProtectedItems(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new RecoveryPointImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<RecoveryPoint> listByReplicationProtectedItems(String resourceName, String resourceGroupName,
+    public PagedIterable<RecoveryPoint> listByReplicationProtectedItems(String resourceGroupName, String resourceName,
         String fabricName, String protectionContainerName, String replicatedProtectedItemName, Context context) {
         PagedIterable<RecoveryPointInner> inner = this.serviceClient()
-            .listByReplicationProtectedItems(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .listByReplicationProtectedItems(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, context);
         return ResourceManagerUtils.mapPage(inner, inner1 -> new RecoveryPointImpl(inner1, this.manager()));
     }
 
-    public Response<RecoveryPoint> getWithResponse(String resourceName, String resourceGroupName, String fabricName,
+    public Response<RecoveryPoint> getWithResponse(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, String recoveryPointName, Context context) {
         Response<RecoveryPointInner> inner = this.serviceClient()
-            .getWithResponse(resourceName, resourceGroupName, fabricName, protectionContainerName,
+            .getWithResponse(resourceGroupName, resourceName, fabricName, protectionContainerName,
                 replicatedProtectedItemName, recoveryPointName, context);
         if (inner != null) {
             return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
@@ -56,10 +56,10 @@ public final class RecoveryPointsImpl implements RecoveryPoints {
         }
     }
 
-    public RecoveryPoint get(String resourceName, String resourceGroupName, String fabricName,
+    public RecoveryPoint get(String resourceGroupName, String resourceName, String fabricName,
         String protectionContainerName, String replicatedProtectedItemName, String recoveryPointName) {
         RecoveryPointInner inner = this.serviceClient()
-            .get(resourceName, resourceGroupName, fabricName, protectionContainerName, replicatedProtectedItemName,
+            .get(resourceGroupName, resourceName, fabricName, protectionContainerName, replicatedProtectedItemName,
                 recoveryPointName);
         if (inner != null) {
             return new RecoveryPointImpl(inner, this.manager());

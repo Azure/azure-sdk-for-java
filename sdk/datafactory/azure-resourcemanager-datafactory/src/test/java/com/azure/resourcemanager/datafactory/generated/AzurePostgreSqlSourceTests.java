@@ -11,19 +11,19 @@ public final class AzurePostgreSqlSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzurePostgreSqlSource model = BinaryData.fromString(
-            "{\"type\":\"AzurePostgreSqlSource\",\"query\":\"dataxllfwxdou\",\"queryTimeout\":\"datazpaqjahjxgedtmzh\",\"additionalColumns\":\"datahktywtac\",\"sourceRetryCount\":\"datakie\",\"sourceRetryWait\":\"dataqrfassiiil\",\"maxConcurrentConnections\":\"datargahscay\",\"disableMetricsCollection\":\"datagc\",\"\":{\"vqopxun\":\"dataieqonsbukznxd\"}}")
+            "{\"type\":\"AzurePostgreSqlSource\",\"query\":\"datamhookefdgfexakct\",\"queryTimeout\":\"datapszdn\",\"additionalColumns\":\"datao\",\"sourceRetryCount\":\"dataqxmdievkmrso\",\"sourceRetryWait\":\"datayiheheimuqqmd\",\"maxConcurrentConnections\":\"datawxfmrm\",\"disableMetricsCollection\":\"dataf\",\"\":{\"xdldhhkdeviwp\":\"dataypmthfvszlaf\",\"nu\":\"datahfxvl\"}}")
             .toObject(AzurePostgreSqlSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzurePostgreSqlSource model = new AzurePostgreSqlSource().withSourceRetryCount("datakie")
-            .withSourceRetryWait("dataqrfassiiil")
-            .withMaxConcurrentConnections("datargahscay")
-            .withDisableMetricsCollection("datagc")
-            .withQueryTimeout("datazpaqjahjxgedtmzh")
-            .withAdditionalColumns("datahktywtac")
-            .withQuery("dataxllfwxdou");
+        AzurePostgreSqlSource model = new AzurePostgreSqlSource().withSourceRetryCount("dataqxmdievkmrso")
+            .withSourceRetryWait("datayiheheimuqqmd")
+            .withMaxConcurrentConnections("datawxfmrm")
+            .withDisableMetricsCollection("dataf")
+            .withQueryTimeout("datapszdn")
+            .withAdditionalColumns("datao")
+            .withQuery("datamhookefdgfexakct");
         model = BinaryData.fromObject(model).toObject(AzurePostgreSqlSource.class);
     }
 }

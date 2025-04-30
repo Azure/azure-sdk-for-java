@@ -35,6 +35,11 @@ public final class NamedValueContractProperties extends NamedValueEntityBasePara
      */
     private KeyVaultContractProperties keyVault;
 
+    /*
+     * The provisioning state
+     */
+    private String provisioningState;
+
     /**
      * Creates an instance of NamedValueContractProperties class.
      */
@@ -105,6 +110,15 @@ public final class NamedValueContractProperties extends NamedValueEntityBasePara
     public NamedValueContractProperties withKeyVault(KeyVaultContractProperties keyVault) {
         this.keyVault = keyVault;
         return this;
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state.
+     * 
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.provisioningState;
     }
 
     /**
@@ -185,6 +199,8 @@ public final class NamedValueContractProperties extends NamedValueEntityBasePara
                     deserializedNamedValueContractProperties.value = reader.getString();
                 } else if ("keyVault".equals(fieldName)) {
                     deserializedNamedValueContractProperties.keyVault = KeyVaultContractProperties.fromJson(reader);
+                } else if ("provisioningState".equals(fieldName)) {
+                    deserializedNamedValueContractProperties.provisioningState = reader.getString();
                 } else {
                     reader.skipChildren();
                 }

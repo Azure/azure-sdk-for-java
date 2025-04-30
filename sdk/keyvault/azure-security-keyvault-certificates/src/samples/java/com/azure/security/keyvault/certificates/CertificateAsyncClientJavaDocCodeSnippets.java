@@ -146,6 +146,18 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
      */
     public void createCertificateCodeSnippets() {
         CertificateAsyncClient certificateAsyncClient = getCertificateAsyncClient();
+
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy
+        CertificatePolicy certPolicy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12");
+        certificateAsyncClient.beginCreateCertificate("certificateName", certPolicy)
+            .subscribe(pollResponse -> {
+                System.out.println("---------------------------------------------------------------------------------");
+                System.out.println(pollResponse.getStatus());
+                System.out.println(pollResponse.getValue().getStatus());
+                System.out.println(pollResponse.getValue().getStatusDetails());
+            });
+        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy
+
         // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map
         CertificatePolicy policy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12");
         Map<String, String> tags = new HashMap<>();
@@ -159,16 +171,18 @@ public final class CertificateAsyncClientJavaDocCodeSnippets {
             });
         // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map
 
-        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy
-        CertificatePolicy certPolicy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12");
-        certificateAsyncClient.beginCreateCertificate("certificateName", certPolicy)
+        // BEGIN: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map-Boolean
+        CertificatePolicy certificatePolicy = new CertificatePolicy("Self", "CN=SelfSignedJavaPkcs12");
+        Map<String, String> certTags = new HashMap<>();
+        tags.put("foo", "bar");
+        certificateAsyncClient.beginCreateCertificate("certificateName", certificatePolicy, true, certTags, true)
             .subscribe(pollResponse -> {
                 System.out.println("---------------------------------------------------------------------------------");
                 System.out.println(pollResponse.getStatus());
                 System.out.println(pollResponse.getValue().getStatus());
                 System.out.println(pollResponse.getValue().getStatusDetails());
             });
-        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy
+        // END: com.azure.security.keyvault.certificates.CertificateAsyncClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map-Boolean
     }
 
     /**

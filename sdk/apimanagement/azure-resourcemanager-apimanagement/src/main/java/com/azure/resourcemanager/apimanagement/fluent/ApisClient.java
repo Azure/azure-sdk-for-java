@@ -7,7 +7,6 @@ package com.azure.resourcemanager.apimanagement.fluent;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
@@ -244,16 +243,34 @@ public interface ApisClient {
      * revision has ;rev=n as a suffix where n is the revision number.
      * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
      * request or it should be * for unconditional update.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName, String apiId,
+        String ifMatch);
+
+    /**
+     * Deletes the specified API of the API Management service instance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
+     * revision has ;rev=n as a suffix where n is the revision number.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     * request or it should be * for unconditional update.
      * @param deleteRevisions Delete all revisions of the Api.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link Response}.
+     * @return the {@link SyncPoller} for polling of long-running operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String serviceName, String apiId, String ifMatch,
-        Boolean deleteRevisions, Context context);
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceName, String apiId,
+        String ifMatch, Boolean deleteRevisions, Context context);
 
     /**
      * Deletes the specified API of the API Management service instance.
@@ -270,6 +287,25 @@ public interface ApisClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     void delete(String resourceGroupName, String serviceName, String apiId, String ifMatch);
+
+    /**
+     * Deletes the specified API of the API Management service instance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param serviceName The name of the API Management service.
+     * @param apiId API revision identifier. Must be unique in the current API Management service instance. Non-current
+     * revision has ;rev=n as a suffix where n is the revision number.
+     * @param ifMatch ETag of the Entity. ETag should match the current entity state from the header response of the GET
+     * request or it should be * for unconditional update.
+     * @param deleteRevisions Delete all revisions of the Api.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void delete(String resourceGroupName, String serviceName, String apiId, String ifMatch, Boolean deleteRevisions,
+        Context context);
 
     /**
      * Lists a collection of apis associated with tags.

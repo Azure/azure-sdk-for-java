@@ -91,18 +91,6 @@ public final class PhiCategory extends ExpandableStringEnum<PhiCategory> {
     public static final PhiCategory HOSPITAL = fromString("Hospital");
 
     /**
-     * Id Number, eg. passport number.
-     */
-    @Generated
-    public static final PhiCategory IDNUM = fromString("IDNum");
-
-    /**
-     * IP Address.
-     */
-    @Generated
-    public static final PhiCategory IPADDRESS = fromString("IPAddress");
-
-    /**
      * License, eg. Driver's license or medical license.
      */
     @Generated
@@ -216,4 +204,16 @@ public final class PhiCategory extends ExpandableStringEnum<PhiCategory> {
     public static Collection<PhiCategory> values() {
         return values(PhiCategory.class);
     }
+
+    /**
+     * Id Number, eg. passport number.
+     */
+    @Generated
+    public static final PhiCategory ID_NUM = fromString("IDNum");
+
+    /**
+     * IP Address.
+     */
+    @Generated
+    public static final PhiCategory IP_ADDRESS = fromString("IPAddress");
 }

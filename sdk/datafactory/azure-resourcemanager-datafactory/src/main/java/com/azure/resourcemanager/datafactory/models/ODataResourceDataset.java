@@ -51,7 +51,7 @@ public final class ODataResourceDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private ODataResourceDatasetTypeProperties innerTypeProperties() {
+    ODataResourceDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

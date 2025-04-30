@@ -13,17 +13,17 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.SerializationFormat;
+import io.clientcore.core.utils.Base64Uri;
 import io.clientcore.core.utils.CoreUtils;
-
+import java.io.InputStream;
+import java.lang.reflect.ParameterizedType;
+import java.util.List;
+import java.util.stream.Collectors;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.ArrayType;
 import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UncheckedIOException;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Utility class to generate response body mode assignment and response handling based on the response body mode.
@@ -36,7 +36,7 @@ public final class ResponseHandler {
      * @param body the method builder to append generated code.
      * @param returnType the return type of the method.
      * @param method whether request options are used.
-     * @param serializationFormatSet indicates if serialization format is set.
+     * @param serializationFormatSet indicates if a serialization format is set.
      */
     public static void generateResponseHandling(BlockStmt body, TypeMirror returnType, HttpRequestContext method,
         boolean serializationFormatSet) {
@@ -73,7 +73,7 @@ public final class ResponseHandler {
         HttpRequestContext method, boolean serializationFormatSet) {
 
         String typeCast = determineTypeCast(returnType, entityType, method, body);
-
+        body.tryAddImportToParentCompilationUnit(Base64Uri.class);
         body.addStatement("Object result = " + determineResultExpression(entityType, method));
 
         if (returnType instanceof DeclaredType) {
@@ -109,21 +109,27 @@ public final class ResponseHandler {
 
             if (!declaredType.getTypeArguments().isEmpty()) {
                 TypeMirror firstGenericType = declaredType.getTypeArguments().get(0);
-                DeclaredType genericDeclaredType = (DeclaredType) firstGenericType;
-                TypeElement genericTypeElement = (TypeElement) genericDeclaredType.asElement();
-                body.findCompilationUnit()
-                    .ifPresent(
-                        compilationUnit -> compilationUnit.addImport(genericTypeElement.getQualifiedName().toString()));
-                if (genericTypeElement.getQualifiedName().contentEquals(List.class.getCanonicalName())) {
-                    String typeArgs = genericDeclaredType.getTypeArguments()
-                        .stream()
-                        .map(arg -> ((DeclaredType) arg).asElement().getSimpleName().toString())
-                        .collect(Collectors.joining(", "));
+                if (firstGenericType.getKind() == TypeKind.ARRAY) {
+                    ArrayType arrayType = (ArrayType) firstGenericType;
+                    String componentTypeName = arrayType.getComponentType().toString();
+                    return componentTypeName + "[]";
+                } else if (firstGenericType instanceof DeclaredType) {
+                    DeclaredType genericDeclaredType = (DeclaredType) firstGenericType;
+                    TypeElement genericTypeElement = (TypeElement) genericDeclaredType.asElement();
+                    body.findCompilationUnit()
+                        .ifPresent(compilationUnit -> compilationUnit
+                            .addImport(genericTypeElement.getQualifiedName().toString()));
+                    if (genericTypeElement.getQualifiedName().contentEquals(List.class.getCanonicalName())) {
+                        String typeArgs = genericDeclaredType.getTypeArguments()
+                            .stream()
+                            .map(arg -> ((DeclaredType) arg).asElement().getSimpleName().toString())
+                            .collect(Collectors.joining(", "));
 
-                    return ((DeclaredType) firstGenericType).asElement().getSimpleName().toString() + "<" + typeArgs
-                        + ">";
-                } else {
-                    return genericTypeElement.getSimpleName().toString();
+                        return ((DeclaredType) firstGenericType).asElement().getSimpleName().toString() + "<" + typeArgs
+                            + ">";
+                    } else {
+                        return genericTypeElement.getSimpleName().toString();
+                    }
                 }
             }
             return typeElement.getSimpleName().toString();
@@ -135,11 +141,10 @@ public final class ResponseHandler {
         if (method.getHttpMethod() == HttpMethod.HEAD && isBooleanType(entityType)) {
             return "(responseStatusCode / 100) == 2;";
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, byte[].class)) {
-            // TODO: Add support for Base64Uri
-            // if (returnValueWireType == Base64Uri.class) {
-            // responseBodyBytes = new Base64Uri(responseBodyBytes).decodedBytes();
-            // }
-            return "responseBody != null ? responseBody.toBytes() : null;";
+            return "    byte[] responseBodyBytes = responseBody != null ? responseBody.toBytes() : null;\n"
+                + "    responseBodyBytes = responseBodyBytes != null ? new Base64Uri(responseBodyBytes).decodedBytes() : null;\n"
+                + "    return (responseBodyBytes != null && responseBodyBytes.length == 0) ? null : responseBodyBytes;"
+                + "\n";
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, InputStream.class)) {
             return "responseBody.toStream();";
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, BinaryData.class)) {
@@ -157,11 +162,16 @@ public final class ResponseHandler {
         boolean serializationFormatSet) {
         TypeElement typeElement = (TypeElement) returnType.asElement();
         body.tryAddImportToParentCompilationUnit(CoreUtils.class);
+        body.tryAddImportToParentCompilationUnit(ParameterizedType.class);
 
         if (!returnType.getTypeArguments().isEmpty()) {
             TypeMirror firstGenericType = returnType.getTypeArguments().get(0);
-
-            if (firstGenericType instanceof DeclaredType) {
+            if (firstGenericType.getKind() == TypeKind.ARRAY) {
+                ArrayType arrayType = (ArrayType) firstGenericType;
+                String componentTypeName = arrayType.getComponentType().toString();
+                body.addStatement("ParameterizedType returnType = CoreUtils.createParameterizedType("
+                    + typeElement.getSimpleName() + ".class," + componentTypeName + "[].class);");
+            } else if (firstGenericType instanceof DeclaredType) {
                 DeclaredType genericDeclaredType = (DeclaredType) firstGenericType;
                 TypeElement genericTypeElement = (TypeElement) genericDeclaredType.asElement();
 
@@ -201,9 +211,9 @@ public final class ResponseHandler {
 
     private static void addSerializationFormatResponseBodyStatements(BlockStmt body) {
         body.addStatement("if (jsonSerializer.supportsFormat(serializationFormat)) { "
-            + "    result = decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType); "
+            + "    result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType); "
             + "} else if (xmlSerializer.supportsFormat(serializationFormat)) { "
-            + "    result = decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType); "
+            + "    result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType); "
             + "} else { " + "    throw new RuntimeException(new UnsupportedOperationException("
             + "        \"None of the provided serializers support the format: \" + serializationFormat + \".\")); "
             + "}");
@@ -261,10 +271,7 @@ public final class ResponseHandler {
     }
 
     private static void closeResponse(BlockStmt body) {
-        body.tryAddImportToParentCompilationUnit(IOException.class);
-        body.tryAddImportToParentCompilationUnit(UncheckedIOException.class);
-        body.addStatement(StaticJavaParser.parseStatement("try { networkResponse.close(); } catch (IOException e) { "
-            + "throw LOGGER.logThrowableAsError(new UncheckedIOException(e)); }"));
+        body.addStatement(StaticJavaParser.parseStatement("networkResponse.close();"));
     }
 
     /**

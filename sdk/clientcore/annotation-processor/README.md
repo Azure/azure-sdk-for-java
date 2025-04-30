@@ -120,12 +120,7 @@ The client-core annotation processor for introducing compile-time code generatio
               throw new RuntimeException("Unexpected response code: " + responseCode);
           }
        
-          try {
-              networkResponse.close();
-          } catch (IOException e) {
-              throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-          }
-
+          networkResponse.close();
           return networkResponse;
       }
    }
