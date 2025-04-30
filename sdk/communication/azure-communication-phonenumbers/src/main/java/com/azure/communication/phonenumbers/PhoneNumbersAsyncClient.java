@@ -1053,6 +1053,7 @@ public final class PhoneNumbersAsyncClient {
      * available for others to purchase. Only reservations with 'active' status can be deleted.
      * 
      * @param reservationId The id of the reservation that's going to be deleted.
+     * @param context Context during the request.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
