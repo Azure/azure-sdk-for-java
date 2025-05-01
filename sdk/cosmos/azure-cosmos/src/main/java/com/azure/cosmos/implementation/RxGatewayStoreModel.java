@@ -378,6 +378,10 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                                                                       RxDocumentServiceRequest request,
                                                                       HttpRequest httpRequest) {
 
+        if (request.getResourceType() == ResourceType.PartitionKeyRange) {
+            logger.info("PartitionKeyRange request");
+        }
+
         return httpResponseMono.flatMap(httpResponse -> {
 
             // header key/value pairs

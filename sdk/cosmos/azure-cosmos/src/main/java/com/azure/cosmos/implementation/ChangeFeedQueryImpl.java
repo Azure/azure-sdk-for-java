@@ -221,9 +221,19 @@ class ChangeFeedQueryImpl<T> {
         if (
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(request)
                 || globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverApplicable(request)) {
+
+            CosmosDiagnosticsContext cosmosDiagnosticsContextForInternalStateCaptureForCollection
+                = Utils.generateDiagnosticsContextForInternalStateCapture(
+                request.getDiagnosticsClientContext(),
+                ResourceType.DocumentCollection,
+                ConsistencyLevel.STRONG,
+                ConnectionMode.GATEWAY,
+                OperationType.Read,
+                changeFeedRequestOptionsAccessor.getImpl(this.options));
+
             return Mono.just(request)
                 .flatMap(req -> client.populateHeadersAsync(req, RequestVerb.GET))
-                .flatMap(req -> client.getCollectionCache().resolveCollectionAsync(null, req)
+                .flatMap(req -> client.getCollectionCache().resolveCollectionAsync(null, req, cosmosDiagnosticsContextForInternalStateCaptureForCollection)
                     .flatMap(documentCollectionValueHolder -> {
 
                         checkNotNull(documentCollectionValueHolder, "Argument 'documentCollectionValueHolder' cannot be null!");

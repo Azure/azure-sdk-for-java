@@ -57,18 +57,9 @@ public abstract class RxCollectionCache {
      * @return an instance of Single&lt;DocumentCollection&gt;
      */
     public Mono<Utils.ValueHolder<DocumentCollection>> resolveCollectionAsync(
-        MetadataDiagnosticsContext metaDataDiagnosticsContext, RxDocumentServiceRequest request) {
+        MetadataDiagnosticsContext metaDataDiagnosticsContext, RxDocumentServiceRequest request, CosmosDiagnosticsContext cosmosDiagnosticsContextForInternalStateCapture) {
         //  Mono Void to represent only terminal events specifically complete and error
         Mono<Void> init = null;
-
-        CosmosDiagnosticsContext cosmosDiagnosticsContextForInternalStateCapture
-            = Utils.generateDiagnosticsContextForInternalStateCapture(
-            request.getDiagnosticsClientContext(),
-            ResourceType.PartitionKeyRange,
-            ConsistencyLevel.STRONG,
-            ConnectionMode.GATEWAY,
-            OperationType.Read,
-            null);
 
         if (request.getIsNameBased()) {
             if (request.isForceNameCacheRefresh()) {

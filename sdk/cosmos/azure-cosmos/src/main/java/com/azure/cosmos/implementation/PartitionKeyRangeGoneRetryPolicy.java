@@ -74,9 +74,20 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
             if (this.requestOptionProperties != null) {
                 request.properties = this.requestOptionProperties;
             }
+
+            CosmosDiagnosticsContext cosmosDiagnosticsContextForInternalStateCaptureForCollection
+                = Utils.generateDiagnosticsContextForInternalStateCapture(
+                clientException,
+                ResourceType.PartitionKeyRange,
+                ConsistencyLevel.STRONG,
+                ConnectionMode.GATEWAY,
+                OperationType.Read,
+                null);
+
             Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(
                 BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics),
-                request);
+                request,
+                cosmosDiagnosticsContextForInternalStateCaptureForCollection);
 
             return collectionObs.flatMap(collectionValueHolder -> {
 

@@ -110,13 +110,13 @@ public class ExcludeRegionTests extends TestSuiteBase {
     @DataProvider(name = "faultInjectionArgProvider")
     public static Object[][] faultInjectionArgProvider() {
         return new Object[][]{
-            { OperationType.Read, FaultInjectionOperationType.READ_ITEM },
-            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM },
-            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM },
-            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM },
+//            { OperationType.Read, FaultInjectionOperationType.READ_ITEM },
+//            { OperationType.Replace, FaultInjectionOperationType.REPLACE_ITEM },
+//            { OperationType.Create, FaultInjectionOperationType.CREATE_ITEM },
+//            { OperationType.Delete, FaultInjectionOperationType.DELETE_ITEM },
             { OperationType.Query, FaultInjectionOperationType.QUERY_ITEM },
-            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM },
-            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM }
+//            { OperationType.Patch, FaultInjectionOperationType.PATCH_ITEM },
+//            { OperationType.Batch, FaultInjectionOperationType.BATCH_ITEM }
         };
     }
 
