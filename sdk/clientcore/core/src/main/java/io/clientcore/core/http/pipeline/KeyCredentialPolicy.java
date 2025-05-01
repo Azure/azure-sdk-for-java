@@ -76,6 +76,10 @@ public class KeyCredentialPolicy extends HttpCredentialPolicy {
 
     @Override
     public Response<BinaryData> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+        if (!"https".equals(httpRequest.getUri().getScheme())) {
+            throw LOGGER.logThrowableAsError(
+                new IllegalStateException("Key credentials require HTTPS to prevent leaking the key."));
+        }
         setCredential(httpRequest.getHeaders());
         return next.process();
     }

@@ -68,7 +68,7 @@ public class OAuthBearerTokenAuthenticationPolicy extends HttpCredentialPolicy {
     public Response<BinaryData> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         if (!"https".equals(httpRequest.getUri().getScheme())) {
             throw LOGGER.logThrowableAsError(
-                new RuntimeException("Token credentials require a URL using the HTTPS protocol scheme"));
+                new IllegalStateException("Token credentials require a URL using the HTTPS protocol scheme"));
         }
 
         HttpPipelineNextPolicy nextPolicy = next.copy();
