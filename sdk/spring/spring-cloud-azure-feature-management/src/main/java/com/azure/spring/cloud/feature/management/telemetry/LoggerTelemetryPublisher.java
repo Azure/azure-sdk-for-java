@@ -21,6 +21,8 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
 import com.azure.spring.cloud.feature.management.models.EvaluationEvent;
+import com.azure.spring.cloud.feature.management.models.Feature;
+import com.azure.spring.cloud.feature.management.models.PercentileAllocation;
 import com.azure.spring.cloud.feature.management.models.Variant;
 import com.azure.spring.cloud.feature.management.models.VariantAssignmentReason;
 
@@ -49,30 +51,44 @@ public class LoggerTelemetryPublisher implements TelemetryPublisher {
             return;
         }
 
-        Map<String, String> eventProperties = new HashMap<>();
-
-        eventProperties.put(REASON, evaluationEvent.getReason().getType());
-
-        eventProperties.put(FEATURE_NAME, evaluationEvent.getFeature().getId());
-        eventProperties.put(ENABLED, String.valueOf(evaluationEvent.isEnabled()));
-        eventProperties.put(VERSION, EVALUATION_EVENT_VERSION);
+        Feature feature = evaluationEvent.getFeature();
 
         Variant variant = evaluationEvent.getVariant();
+
+        Map<String, String> eventProperties = new HashMap<>(Map.of(
+                FEATURE_NAME, feature.getId(),
+                ENABLED, String.valueOf(evaluationEvent.isEnabled()),
+                REASON, evaluationEvent.getReason().getType(),
+                VERSION, EVALUATION_EVENT_VERSION));
+
         if (variant != null) {
             eventProperties.put(VARIANT, variant.getName());
         }
-
+        
         if (evaluationEvent.getReason() == VariantAssignmentReason.DEFAULT_WHEN_ENABLED) {
+            // Calculate the amount of unallocated variant percentage. This is therefore the amount allocated to the default when enabled variant.
             eventProperties.put(VARIANT_ASSIGNMENT_PERCENTAGE, "100");
-        } else if (evaluationEvent.getReason() == VariantAssignmentReason.PERCENTILE) {
-            Double allocationPercentage = evaluationEvent.getFeature().getAllocation().getPercentile().stream()
-                    .filter(percentile -> percentile.getVariant().equals(variant != null ? variant.getName() : ""))
-                    .map(allocation -> allocation.getTo() - allocation.getFrom())
-                    .reduce((a, b) -> a + b)
-                    .orElse(null);
+            if (feature.getAllocation() != null && feature.getAllocation().getPercentile() != null) {
+                double allocationPercentage = 0.0;
+                for (PercentileAllocation allocation : feature.getAllocation().getPercentile()) {
+                    if (allocation.getTo() != null && allocation.getFrom() != null) {
+                        allocationPercentage += allocation.getTo() - allocation.getFrom();
+                    }
+                }
 
-            if (allocationPercentage != null) {
-                eventProperties.put(VARIANT_ASSIGNMENT_PERCENTAGE, String.valueOf(allocationPercentage));
+                eventProperties.put(VARIANT_ASSIGNMENT_PERCENTAGE, String.valueOf(100 - allocationPercentage));
+            }
+        } else if (evaluationEvent.getReason() == VariantAssignmentReason.PERCENTILE) {
+            if (feature.getAllocation() != null && feature.getAllocation().getPercentile() != null) {
+                eventProperties.put(VARIANT_ASSIGNMENT_PERCENTAGE, String.valueOf(feature.getAllocation().getPercentile().stream()
+                    // Filter out null values and calculate the sum of the allocation percentages
+                    // for the specific variant.
+                    .filter(percentile -> percentile.getVariant() != null && variant != null && 
+                            percentile.getVariant().equals(variant.getName()))
+                    .filter(allocation -> allocation.getTo() != null && allocation.getFrom() != null)
+                    // Calculate the percentage of the variant allocation.
+                    .mapToDouble(allocation -> allocation.getTo() - allocation.getFrom())
+                    .sum()));
             }
         }
 

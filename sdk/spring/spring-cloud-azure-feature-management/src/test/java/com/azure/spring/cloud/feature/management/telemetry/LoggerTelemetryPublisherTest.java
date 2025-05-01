@@ -222,6 +222,6 @@ public class LoggerTelemetryPublisherTest {
         assertEquals(EVALUATION_EVENT_VERSION, mdcMap.get(VERSION));
         assertEquals(EVENT_NAME, mdcMap.get(APPLICATION_INSIGHTS_CUSTOM_EVENT_KEY));
         assertEquals("fake-variant", mdcMap.get(VARIANT));
-        assertEquals(null, mdcMap.get(VARIANT_ASSIGNMENT_PERCENTAGE));
+        assertEquals("0.0", mdcMap.get(VARIANT_ASSIGNMENT_PERCENTAGE));
     }
 }
