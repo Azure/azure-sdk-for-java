@@ -11,19 +11,19 @@ public final class AzureMySqlSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureMySqlSink model = BinaryData.fromString(
-            "{\"type\":\"AzureMySqlSink\",\"preCopyScript\":\"datavijdr\",\"writeBatchSize\":\"datayqvhz\",\"writeBatchTimeout\":\"datayvhrenozl\",\"sinkRetryCount\":\"dataqfghlosho\",\"sinkRetryWait\":\"datakpcmtsbandesalv\",\"maxConcurrentConnections\":\"datawrljmlo\",\"disableMetricsCollection\":\"datatzvtfyqe\",\"\":{\"xhcygfg\":\"databsyni\",\"aosttbwap\":\"datamdbazggr\"}}")
+            "{\"type\":\"AzureMySqlSink\",\"preCopyScript\":\"datamyycnnwajxv\",\"writeBatchSize\":\"dataidlwmewrgu\",\"writeBatchTimeout\":\"dataugpkunvygupgnnvm\",\"sinkRetryCount\":\"datazqmxwwmekms\",\"sinkRetryWait\":\"datafjbefszfrxfy\",\"maxConcurrentConnections\":\"dataypxcqmdeecd\",\"disableMetricsCollection\":\"datajsizyhp\",\"\":{\"kqtfyuy\":\"datakgrtwhmadhismw\",\"tzgew\":\"dataybshchxuea\",\"fsewusqupkrr\":\"dataqwibtkrhcgbzr\"}}")
             .toObject(AzureMySqlSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureMySqlSink model = new AzureMySqlSink().withWriteBatchSize("datayqvhz")
-            .withWriteBatchTimeout("datayvhrenozl")
-            .withSinkRetryCount("dataqfghlosho")
-            .withSinkRetryWait("datakpcmtsbandesalv")
-            .withMaxConcurrentConnections("datawrljmlo")
-            .withDisableMetricsCollection("datatzvtfyqe")
-            .withPreCopyScript("datavijdr");
+        AzureMySqlSink model = new AzureMySqlSink().withWriteBatchSize("dataidlwmewrgu")
+            .withWriteBatchTimeout("dataugpkunvygupgnnvm")
+            .withSinkRetryCount("datazqmxwwmekms")
+            .withSinkRetryWait("datafjbefszfrxfy")
+            .withMaxConcurrentConnections("dataypxcqmdeecd")
+            .withDisableMetricsCollection("datajsizyhp")
+            .withPreCopyScript("datamyycnnwajxv");
         model = BinaryData.fromObject(model).toObject(AzureMySqlSink.class);
     }
 }

@@ -13,6 +13,7 @@ import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.AccountEncryption;
 import com.azure.resourcemanager.netapp.models.ActiveDirectory;
 import com.azure.resourcemanager.netapp.models.ManagedServiceIdentity;
+import com.azure.resourcemanager.netapp.models.MultiAdStatus;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
@@ -249,12 +250,12 @@ public final class NetAppAccountInner extends Resource {
     }
 
     /**
-     * Get the isMultiAdEnabled property: This will have true value only if account is Multiple AD enabled.
+     * Get the multiAdStatus property: MultiAD Status for the account.
      * 
-     * @return the isMultiAdEnabled value.
+     * @return the multiAdStatus value.
      */
-    public Boolean isMultiAdEnabled() {
-        return this.innerProperties() == null ? null : this.innerProperties().isMultiAdEnabled();
+    public MultiAdStatus multiAdStatus() {
+        return this.innerProperties() == null ? null : this.innerProperties().multiAdStatus();
     }
 
     /**

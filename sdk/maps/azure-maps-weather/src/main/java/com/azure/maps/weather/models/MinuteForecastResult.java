@@ -23,7 +23,8 @@ public final class MinuteForecastResult implements JsonSerializable<MinuteForeca
     private MinuteForecastSummary summary;
 
     /*
-     * Summary information for each interval in the forecast. The Summaries breaks down each potential interval where precipitation starts and stops.
+     * Summary information for each interval in the forecast. The Summaries breaks down each potential interval where
+     * precipitation starts and stops.
      */
     private List<IntervalSummary> intervalSummaries;
 

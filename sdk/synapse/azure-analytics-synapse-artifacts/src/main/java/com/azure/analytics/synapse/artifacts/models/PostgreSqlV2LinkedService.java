@@ -44,6 +44,11 @@ public class PostgreSqlV2LinkedService extends LinkedService {
     private Object database;
 
     /*
+     * The authentication type to use. Type: string.
+     */
+    private Object authenticationType;
+
+    /*
      * SSL mode for connection. Type: integer. 0: disable, 1:allow, 2: prefer, 3: require, 4: verify-ca, 5: verify-full.
      * Type: integer.
      */
@@ -216,6 +221,26 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      */
     public PostgreSqlV2LinkedService setDatabase(Object database) {
         this.database = database;
+        return this;
+    }
+
+    /**
+     * Get the authenticationType property: The authentication type to use. Type: string.
+     * 
+     * @return the authenticationType value.
+     */
+    public Object getAuthenticationType() {
+        return this.authenticationType;
+    }
+
+    /**
+     * Set the authenticationType property: The authentication type to use. Type: string.
+     * 
+     * @param authenticationType the authenticationType value to set.
+     * @return the PostgreSqlV2LinkedService object itself.
+     */
+    public PostgreSqlV2LinkedService setAuthenticationType(Object authenticationType) {
+        this.authenticationType = authenticationType;
         return this;
     }
 
@@ -541,6 +566,15 @@ public class PostgreSqlV2LinkedService extends LinkedService {
      * {@inheritDoc}
      */
     @Override
+    public PostgreSqlV2LinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public PostgreSqlV2LinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
@@ -579,6 +613,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
@@ -588,6 +623,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
             || port != null
             || username != null
             || database != null
+            || authenticationType != null
             || sslMode != null
             || schema != null
             || pooling != null
@@ -608,6 +644,7 @@ public class PostgreSqlV2LinkedService extends LinkedService {
             jsonWriter.writeUntypedField("port", this.port);
             jsonWriter.writeUntypedField("username", this.username);
             jsonWriter.writeUntypedField("database", this.database);
+            jsonWriter.writeUntypedField("authenticationType", this.authenticationType);
             jsonWriter.writeUntypedField("sslMode", this.sslMode);
             jsonWriter.writeUntypedField("schema", this.schema);
             jsonWriter.writeUntypedField("pooling", this.pooling);
@@ -650,7 +687,9 @@ public class PostgreSqlV2LinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedPostgreSqlV2LinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedPostgreSqlV2LinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedPostgreSqlV2LinkedService.setDescription(reader.getString());
@@ -676,6 +715,8 @@ public class PostgreSqlV2LinkedService extends LinkedService {
                             deserializedPostgreSqlV2LinkedService.username = reader.readUntyped();
                         } else if ("database".equals(fieldName)) {
                             deserializedPostgreSqlV2LinkedService.database = reader.readUntyped();
+                        } else if ("authenticationType".equals(fieldName)) {
+                            deserializedPostgreSqlV2LinkedService.authenticationType = reader.readUntyped();
                         } else if ("sslMode".equals(fieldName)) {
                             deserializedPostgreSqlV2LinkedService.sslMode = reader.readUntyped();
                         } else if ("schema".equals(fieldName)) {

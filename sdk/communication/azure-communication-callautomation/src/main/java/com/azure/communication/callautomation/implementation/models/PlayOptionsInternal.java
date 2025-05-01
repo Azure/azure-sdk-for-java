@@ -26,6 +26,11 @@ public final class PlayOptionsInternal implements JsonSerializable<PlayOptionsIn
      */
     private Boolean interruptCallMediaOperation;
 
+    /*
+     * If set, hold audio will be interrupted, then this request will be played, and then the hold audio will be resumed.
+     */
+    private Boolean interruptHoldAudio;
+
     /**
      * Creates an instance of PlayOptionsInternal class.
      */
@@ -75,6 +80,28 @@ public final class PlayOptionsInternal implements JsonSerializable<PlayOptionsIn
     }
 
     /**
+     * Get the interruptHoldAudio property: If set, hold audio will be interrupted, then this request will be played,
+     * and then the hold audio will be resumed.
+     * 
+     * @return the interruptHoldAudio value.
+     */
+    public Boolean isInterruptHoldAudio() {
+        return this.interruptHoldAudio;
+    }
+
+    /**
+     * Set the interruptHoldAudio property: If set, hold audio will be interrupted, then this request will be played,
+     * and then the hold audio will be resumed.
+     * 
+     * @param interruptHoldAudio the interruptHoldAudio value to set.
+     * @return the PlayOptionsInternal object itself.
+     */
+    public PlayOptionsInternal setInterruptHoldAudio(Boolean interruptHoldAudio) {
+        this.interruptHoldAudio = interruptHoldAudio;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -82,6 +109,7 @@ public final class PlayOptionsInternal implements JsonSerializable<PlayOptionsIn
         jsonWriter.writeStartObject();
         jsonWriter.writeBooleanField("loop", this.loop);
         jsonWriter.writeBooleanField("interruptCallMediaOperation", this.interruptCallMediaOperation);
+        jsonWriter.writeBooleanField("interruptHoldAudio", this.interruptHoldAudio);
         return jsonWriter.writeEndObject();
     }
 
@@ -106,6 +134,8 @@ public final class PlayOptionsInternal implements JsonSerializable<PlayOptionsIn
                 } else if ("interruptCallMediaOperation".equals(fieldName)) {
                     deserializedPlayOptionsInternal.interruptCallMediaOperation
                         = reader.getNullable(JsonReader::getBoolean);
+                } else if ("interruptHoldAudio".equals(fieldName)) {
+                    deserializedPlayOptionsInternal.interruptHoldAudio = reader.getNullable(JsonReader::getBoolean);
                 } else {
                     reader.skipChildren();
                 }

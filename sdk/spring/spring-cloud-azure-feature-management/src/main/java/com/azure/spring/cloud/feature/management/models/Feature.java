@@ -11,26 +11,60 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * App Configuration Feature defines the feature name and a Map of FeatureFilterEvaluationContexts.
+ * This class represents a complete feature flag definition including its identity,
+ * description, enabled state, conditions for evaluation, variant allocation,
+ * and variant references for feature flags that support multiple variations.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Feature {
+
+    /**
+     * Creates a new instance of the Feature class.
+     */
+    public Feature() {
+    }
+
+    /**
+     * The unique identifier for this feature flag.
+     * This represents the name of the feature as stored in Azure App Configuration.
+     */
     @JsonProperty("id")
     private String id;
 
+    /**
+     * A human-readable description of the feature flag and its purpose.
+     * This provides context about what the feature flag controls.
+     */
     @JsonProperty("description")
     private String description;
 
+    /**
+     * The enabled state of the feature flag.
+     * When true, the feature is enabled by default, though conditions may still apply.
+     * When false, the feature is disabled by default.
+     */
     @JsonProperty("enabled")
     private boolean enabled;
 
+    /**
+     * The set of conditions that determine when this feature flag should be enabled.
+     * These conditions contain feature filters and their evaluation logic.
+     */
     @JsonProperty("conditions")
     @NonNull
     private Conditions conditions = new Conditions();
 
+    /**
+     * The allocation strategy for this feature flag when using variants.
+     * Determines how users or requests are assigned to specific variants.
+     */
     @JsonProperty("allocation")
     private Allocation allocation;
-
+    
+    /**
+     * The list of variant references that define the different variations
+     * of this feature flag when it supports multiple implementations.
+     */
     @JsonProperty("variants")
     private List<VariantReference> variants;
 
@@ -38,15 +72,19 @@ public class Feature {
     private Telemetry telemetry = new Telemetry();
 
     /**
-     * @return the id
+     * Gets the unique identifier of this feature flag.
+     * 
+     * @return the feature flag's identifier
      */
     public String getId() {
         return id;
     }
 
     /**
-     * @param id the id to set
-     * @return Feature
+     * Sets the unique identifier of this feature flag.
+     * 
+     * @param id the feature flag identifier to set
+     * @return the updated Feature instance for method chaining
      */
     public Feature setId(String id) {
         this.id = id;
@@ -54,15 +92,20 @@ public class Feature {
     }
 
     /**
-     * @return the enabled
+     * Determines whether this feature flag is enabled by default.
+     * Even when enabled, the flag may still be controlled by conditions and filters.
+     * 
+     * @return true if the feature flag is enabled, false otherwise
      */
     public boolean isEnabled() {
         return enabled;
     }
 
     /**
-     * @param enabled the enabled to set
-     * @return Feature
+     * Sets whether this feature flag is enabled by default.
+     * 
+     * @param enabled true to enable the feature flag, false to disable it
+     * @return the updated Feature instance for method chaining
      */
     public Feature setEnabled(boolean enabled) {
         this.enabled = enabled;
@@ -70,15 +113,20 @@ public class Feature {
     }
 
     /**
-     * @return the description
+     * Gets the human-readable description of this feature flag.
+     * 
+     * @return the description of the feature flag
      */
     public String getDescription() {
         return description;
     }
 
     /**
-     * @param description the description to set
-     * @return Feature
+     * Sets the human-readable description of this feature flag.
+     * This provides context about what the feature flag controls.
+     * 
+     * @param description the description to set for the feature flag
+     * @return the updated Feature instance for method chaining
      */
     public Feature setDescription(String description) {
         this.description = description;
@@ -86,15 +134,22 @@ public class Feature {
     }
 
     /**
-     * @return the conditions
+     * Gets the set of conditions that determine when this feature flag should be enabled.
+     * The conditions contain feature filters and their evaluation logic.
+     * 
+     * @return the conditions for feature flag evaluation
      */
     public Conditions getConditions() {
         return conditions;
     }
 
     /**
-     * @param conditions the conditions to set
-     * @return Feature
+     * Sets the conditions that determine when this feature flag should be enabled.
+     * These conditions define the feature filters and logic for evaluating 
+     * whether the feature should be enabled for a specific request.
+     * 
+     * @param conditions the conditions to set for feature flag evaluation
+     * @return the updated Feature instance for method chaining
      */
     public Feature setConditions(Conditions conditions) {
         this.conditions = conditions;
@@ -102,15 +157,23 @@ public class Feature {
     }
 
     /**
-     * @return the allocation
+     * Gets the allocation strategy for this feature flag when using variants.
+     * The allocation defines how users or requests are assigned to specific variants
+     * through mechanisms like user targeting, percentile rollout, or group assignment.
+     * 
+     * @return the allocation strategy for variant assignment
      */
     public Allocation getAllocation() {
         return allocation;
     }
 
     /**
-     * @param allocation the allocation to set
-     * @return Feature
+     * Sets the allocation strategy for this feature flag when using variants.
+     * The allocation controls how users or requests are assigned to specific
+     * variants through user targeting, percentile rollout, or group assignment.
+     * 
+     * @param allocation the allocation strategy to set for variant assignment
+     * @return the updated Feature instance for method chaining
      */
     public Feature setAllocation(Allocation allocation) {
         this.allocation = allocation;
@@ -118,15 +181,23 @@ public class Feature {
     }
 
     /**
-     * @return the variants
+     * Gets the list of variant references that define the different variations
+     * of this feature flag. These variants represent different implementations
+     * or configurations that can be assigned to users when the feature is enabled.
+     * 
+     * @return the list of variant references for this feature flag
      */
     public List<VariantReference> getVariants() {
         return variants;
     }
 
     /**
-     * @param variants the variants to set
-     * @return Feature
+     * Sets the list of variant references that define the different variations
+     * of this feature flag. These variants represent different implementations
+     * or configurations that can be dynamically assigned when the feature is enabled.
+     * 
+     * @param variants the list of variant references to set for this feature flag
+     * @return the updated Feature instance for method chaining
      */
     public Feature setVariants(List<VariantReference> variants) {
         this.variants = variants;

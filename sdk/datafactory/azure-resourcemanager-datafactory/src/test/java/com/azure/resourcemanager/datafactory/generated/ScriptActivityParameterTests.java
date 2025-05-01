@@ -14,23 +14,23 @@ public final class ScriptActivityParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ScriptActivityParameter model = BinaryData.fromString(
-            "{\"name\":\"dataanifcfr\",\"type\":\"Double\",\"value\":\"datasumgzebqbdewepo\",\"direction\":\"Output\",\"size\":487257197}")
+            "{\"name\":\"datapjz\",\"type\":\"Int64\",\"value\":\"datazjwugrjio\",\"direction\":\"Output\",\"size\":1553305797}")
             .toObject(ScriptActivityParameter.class);
-        Assertions.assertEquals(ScriptActivityParameterType.DOUBLE, model.type());
+        Assertions.assertEquals(ScriptActivityParameterType.INT64, model.type());
         Assertions.assertEquals(ScriptActivityParameterDirection.OUTPUT, model.direction());
-        Assertions.assertEquals(487257197, model.size());
+        Assertions.assertEquals(1553305797, model.size());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ScriptActivityParameter model = new ScriptActivityParameter().withName("dataanifcfr")
-            .withType(ScriptActivityParameterType.DOUBLE)
-            .withValue("datasumgzebqbdewepo")
+        ScriptActivityParameter model = new ScriptActivityParameter().withName("datapjz")
+            .withType(ScriptActivityParameterType.INT64)
+            .withValue("datazjwugrjio")
             .withDirection(ScriptActivityParameterDirection.OUTPUT)
-            .withSize(487257197);
+            .withSize(1553305797);
         model = BinaryData.fromObject(model).toObject(ScriptActivityParameter.class);
-        Assertions.assertEquals(ScriptActivityParameterType.DOUBLE, model.type());
+        Assertions.assertEquals(ScriptActivityParameterType.INT64, model.type());
         Assertions.assertEquals(ScriptActivityParameterDirection.OUTPUT, model.direction());
-        Assertions.assertEquals(487257197, model.size());
+        Assertions.assertEquals(1553305797, model.size());
     }
 }

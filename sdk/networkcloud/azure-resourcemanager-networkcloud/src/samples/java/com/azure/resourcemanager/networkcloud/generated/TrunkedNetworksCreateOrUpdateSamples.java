@@ -15,7 +15,7 @@ import java.util.Map;
 public final class TrunkedNetworksCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-10-01-preview/examples/
      * TrunkedNetworks_Create.json
      */
     /**

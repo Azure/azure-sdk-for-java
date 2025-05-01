@@ -68,13 +68,6 @@ public interface AzureQuotaExtensionApi {
     GroupQuotaSubscriptionRequestsClient getGroupQuotaSubscriptionRequests();
 
     /**
-     * Gets the GroupQuotaLimitsClient object to access its operations.
-     * 
-     * @return the GroupQuotaLimitsClient object.
-     */
-    GroupQuotaLimitsClient getGroupQuotaLimits();
-
-    /**
      * Gets the GroupQuotaLimitsRequestsClient object to access its operations.
      * 
      * @return the GroupQuotaLimitsRequestsClient object.
@@ -82,11 +75,11 @@ public interface AzureQuotaExtensionApi {
     GroupQuotaLimitsRequestsClient getGroupQuotaLimitsRequests();
 
     /**
-     * Gets the GroupQuotaSubscriptionAllocationsClient object to access its operations.
+     * Gets the GroupQuotaLimitsClient object to access its operations.
      * 
-     * @return the GroupQuotaSubscriptionAllocationsClient object.
+     * @return the GroupQuotaLimitsClient object.
      */
-    GroupQuotaSubscriptionAllocationsClient getGroupQuotaSubscriptionAllocations();
+    GroupQuotaLimitsClient getGroupQuotaLimits();
 
     /**
      * Gets the GroupQuotaSubscriptionAllocationRequestsClient object to access its operations.
@@ -96,18 +89,11 @@ public interface AzureQuotaExtensionApi {
     GroupQuotaSubscriptionAllocationRequestsClient getGroupQuotaSubscriptionAllocationRequests();
 
     /**
-     * Gets the GroupQuotaUsagesClient object to access its operations.
+     * Gets the GroupQuotaSubscriptionAllocationsClient object to access its operations.
      * 
-     * @return the GroupQuotaUsagesClient object.
+     * @return the GroupQuotaSubscriptionAllocationsClient object.
      */
-    GroupQuotaUsagesClient getGroupQuotaUsages();
-
-    /**
-     * Gets the GroupQuotaLocationSettingsClient object to access its operations.
-     * 
-     * @return the GroupQuotaLocationSettingsClient object.
-     */
-    GroupQuotaLocationSettingsClient getGroupQuotaLocationSettings();
+    GroupQuotaSubscriptionAllocationsClient getGroupQuotaSubscriptionAllocations();
 
     /**
      * Gets the UsagesClient object to access its operations.

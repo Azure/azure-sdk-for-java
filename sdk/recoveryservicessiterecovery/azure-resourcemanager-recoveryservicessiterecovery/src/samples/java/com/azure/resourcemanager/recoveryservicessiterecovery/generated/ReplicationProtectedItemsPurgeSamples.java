@@ -10,7 +10,7 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 public final class ReplicationProtectedItemsPurgeSamples {
     /*
      * x-ms-original-file:
-     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2025-01-01/examples
      * /ReplicationProtectedItems_Purge.json
      */
     /**
@@ -21,7 +21,7 @@ public final class ReplicationProtectedItemsPurgeSamples {
     public static void
         purgesProtection(com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
         manager.replicationProtectedItems()
-            .purge("vault1", "resourceGroupPS1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
+            .purge("resourceGroupPS1", "vault1", "cloud1", "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
                 "c0c14913-3d7a-48ea-9531-cc99e0e686e6", com.azure.core.util.Context.NONE);
     }
 }

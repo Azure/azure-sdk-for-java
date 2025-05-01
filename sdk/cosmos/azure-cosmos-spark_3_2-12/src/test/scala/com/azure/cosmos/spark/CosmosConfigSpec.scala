@@ -392,6 +392,7 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     var config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
 
     config.forceEventualConsistency shouldBe false
+    config.responseContinuationTokenLimitInKb shouldBe None
     config.schemaConversionMode shouldBe SchemaConversionModes.Strict
     config.customQuery shouldBe empty
     config.maxItemCount shouldBe 1000
@@ -407,7 +408,8 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
       "spark.cosmos.read.maxItemCount" -> "1000",
       "spark.cosmos.read.maxIntegratedCacheStalenessInMS" -> "1000",
       "spark.cosmos.read.runtimeFiltering.enabled" -> "false",
-      "spark.cosmos.read.readManyFiltering.enabled" -> "true"
+      "spark.cosmos.read.readManyFiltering.enabled" -> "true",
+      "spark.cosmos.read.responseContinuationTokenLimitInKb" -> "8"
     )
 
     config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
@@ -417,6 +419,7 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     config.customQuery shouldBe empty
     config.maxItemCount shouldBe 1000
     config.prefetchBufferSize shouldBe 8
+    config.responseContinuationTokenLimitInKb shouldBe Some(8)
     config.dedicatedGatewayRequestOptions.getMaxIntegratedCacheStaleness shouldBe Duration.ofMillis(1000)
     config.runtimeFilteringEnabled shouldBe false
     config.readManyFilteringConfig.readManyFilteringEnabled shouldBe true
@@ -470,7 +473,8 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     userConfig = Map(
       "spark.cosmos.read.forceEventualConsistency" -> "false",
       "spark.cosmos.read.schemaConversionMode" -> "Strict",
-      "spark.cosmos.read.maxItemCount" -> "1001"
+      "spark.cosmos.read.maxItemCount" -> "1001",
+      "spark.cosmos.read.responseContinuationTokenLimitInKb" -> "0"
     )
 
     config = CosmosReadConfig.parseCosmosReadConfig(userConfig)
@@ -480,6 +484,8 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     config.customQuery shouldBe empty
     config.maxItemCount shouldBe 1001
     config.prefetchBufferSize shouldBe 1
+    // forcing min value to be 1
+    config.responseContinuationTokenLimitInKb shouldBe Some(1)
   }
 
   it should "parse custom query option of read configuration" in {
@@ -558,7 +564,8 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     config.bulkEnabled shouldEqual true
     config.pointMaxConcurrency.isDefined shouldEqual false
     config.bulkMaxPendingOperations.isDefined shouldEqual false
-
+    config.maxInitialNoProgressIntervalInSeconds shouldEqual 180
+    config.maxRetryNoProgressIntervalInSeconds shouldEqual 45 * 60
   }
 
   it should "parse point write config" in {
@@ -591,6 +598,8 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
     config.maxRetryCount shouldEqual 8
     config.bulkEnabled shouldEqual true
     config.bulkMaxPendingOperations.get shouldEqual 12
+    config.maxInitialNoProgressIntervalInSeconds shouldEqual 180
+    config.maxRetryNoProgressIntervalInSeconds shouldEqual 45 * 60
   }
 
   it should "parse partitioning config with custom Strategy" in {
@@ -1336,6 +1345,25 @@ class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
           throw e
         }
     }
+  }
+
+  "CosmosWriteConfig" should "parse custom no-progress intervals for bulk write config" in {
+    val userConfig = Map(
+      "spark.cosmos.write.strategy" -> "ItemAppend",
+      "spark.cosmos.write.maxRetryCount" -> "9",
+      "spark.cosmos.write.bulk.maxPendingOperations" -> "13",
+      "spark.cosmos.write.flush.noProgress.maxIntervalInSeconds" -> "157",
+      "spark.cosmos.write.flush.noProgress.maxRetryIntervalInSeconds" -> "314"
+    )
+
+    val config = CosmosWriteConfig.parseWriteConfig(userConfig, StructType(Nil))
+
+    config.itemWriteStrategy shouldEqual ItemWriteStrategy.ItemAppend
+    config.maxRetryCount shouldEqual 9
+    config.bulkEnabled shouldEqual true
+    config.bulkMaxPendingOperations.get shouldEqual 13
+    config.maxInitialNoProgressIntervalInSeconds shouldEqual 157
+    config.maxRetryNoProgressIntervalInSeconds shouldEqual 314
   }
 
   private case class PatchColumnConfigParameterTest

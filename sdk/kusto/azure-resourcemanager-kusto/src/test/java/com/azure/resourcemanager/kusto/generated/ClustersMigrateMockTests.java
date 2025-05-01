@@ -29,7 +29,7 @@ public final class ClustersMigrateMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         manager.clusters()
-            .migrate("kgfmocwahpq", "atjeaahh", new ClusterMigrateRequest().withClusterResourceId("jhhn"),
+            .migrate("pypqtgsfj", "cbslhhx", new ClusterMigrateRequest().withClusterResourceId("db"),
                 com.azure.core.util.Context.NONE);
 
     }

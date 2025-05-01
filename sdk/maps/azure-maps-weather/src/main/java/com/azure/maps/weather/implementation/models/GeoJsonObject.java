@@ -17,7 +17,8 @@ import java.io.IOException;
 @Immutable
 public class GeoJsonObject implements JsonSerializable<GeoJsonObject> {
     /*
-     * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString, MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
+     * Specifies the `GeoJSON` type. Must be one of the nine valid GeoJSON object types - Point, MultiPoint, LineString,
+     * MultiLineString, Polygon, MultiPolygon, GeometryCollection, Feature and FeatureCollection.
      */
     private GeoJsonObjectType type;
 
@@ -25,7 +26,6 @@ public class GeoJsonObject implements JsonSerializable<GeoJsonObject> {
      * Creates an instance of GeoJsonObject class.
      */
     public GeoJsonObject() {
-        this.type = GeoJsonObjectType.fromString("GeoJsonObject");
     }
 
     /**

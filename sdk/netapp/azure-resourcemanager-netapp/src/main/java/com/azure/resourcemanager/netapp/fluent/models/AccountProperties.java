@@ -11,6 +11,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.resourcemanager.netapp.models.AccountEncryption;
 import com.azure.resourcemanager.netapp.models.ActiveDirectory;
+import com.azure.resourcemanager.netapp.models.MultiAdStatus;
 import java.io.IOException;
 import java.util.List;
 
@@ -46,9 +47,9 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     private String nfsV4IdDomain;
 
     /*
-     * This will have true value only if account is Multiple AD enabled.
+     * MultiAD Status for the account
      */
-    private Boolean isMultiAdEnabled;
+    private MultiAdStatus multiAdStatus;
 
     /**
      * Creates an instance of AccountProperties class.
@@ -138,12 +139,12 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
     }
 
     /**
-     * Get the isMultiAdEnabled property: This will have true value only if account is Multiple AD enabled.
+     * Get the multiAdStatus property: MultiAD Status for the account.
      * 
-     * @return the isMultiAdEnabled value.
+     * @return the multiAdStatus value.
      */
-    public Boolean isMultiAdEnabled() {
-        return this.isMultiAdEnabled;
+    public MultiAdStatus multiAdStatus() {
+        return this.multiAdStatus;
     }
 
     /**
@@ -200,8 +201,8 @@ public final class AccountProperties implements JsonSerializable<AccountProperti
                     deserializedAccountProperties.disableShowmount = reader.getNullable(JsonReader::getBoolean);
                 } else if ("nfsV4IDDomain".equals(fieldName)) {
                     deserializedAccountProperties.nfsV4IdDomain = reader.getString();
-                } else if ("isMultiAdEnabled".equals(fieldName)) {
-                    deserializedAccountProperties.isMultiAdEnabled = reader.getNullable(JsonReader::getBoolean);
+                } else if ("multiAdStatus".equals(fieldName)) {
+                    deserializedAccountProperties.multiAdStatus = MultiAdStatus.fromString(reader.getString());
                 } else {
                     reader.skipChildren();
                 }

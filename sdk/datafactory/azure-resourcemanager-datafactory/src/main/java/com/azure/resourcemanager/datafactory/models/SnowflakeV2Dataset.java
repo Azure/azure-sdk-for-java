@@ -51,7 +51,7 @@ public final class SnowflakeV2Dataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private SnowflakeDatasetTypeProperties innerTypeProperties() {
+    SnowflakeDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

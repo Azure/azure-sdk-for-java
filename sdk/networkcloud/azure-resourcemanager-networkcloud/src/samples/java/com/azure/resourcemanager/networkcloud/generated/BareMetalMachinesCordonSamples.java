@@ -13,7 +13,7 @@ import com.azure.resourcemanager.networkcloud.models.BareMetalMachineEvacuate;
 public final class BareMetalMachinesCordonSamples {
     /*
      * x-ms-original-file:
-     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-06-01-preview/examples/
+     * specification/networkcloud/resource-manager/Microsoft.NetworkCloud/preview/2024-10-01-preview/examples/
      * BareMetalMachines_Cordon.json
      */
     /**

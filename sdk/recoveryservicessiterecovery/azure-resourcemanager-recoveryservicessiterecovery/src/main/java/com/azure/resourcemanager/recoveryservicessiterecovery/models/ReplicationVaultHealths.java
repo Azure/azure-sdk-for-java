@@ -16,52 +16,52 @@ public interface ReplicationVaultHealths {
      * 
      * Gets the health details of the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the health details of the vault along with {@link Response}.
      */
-    Response<VaultHealthDetails> getWithResponse(String resourceName, String resourceGroupName, Context context);
+    Response<VaultHealthDetails> getWithResponse(String resourceGroupName, String resourceName, Context context);
 
     /**
      * Gets the health summary for the vault.
      * 
      * Gets the health details of the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the health details of the vault.
      */
-    VaultHealthDetails get(String resourceName, String resourceGroupName);
+    VaultHealthDetails get(String resourceGroupName, String resourceName);
 
     /**
      * Refreshes health summary of the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vault health details definition.
      */
-    VaultHealthDetails refresh(String resourceName, String resourceGroupName);
+    VaultHealthDetails refresh(String resourceGroupName, String resourceName);
 
     /**
      * Refreshes health summary of the vault.
      * 
-     * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName The name of the recovery services vault.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vault health details definition.
      */
-    VaultHealthDetails refresh(String resourceName, String resourceGroupName, Context context);
+    VaultHealthDetails refresh(String resourceGroupName, String resourceName, Context context);
 }

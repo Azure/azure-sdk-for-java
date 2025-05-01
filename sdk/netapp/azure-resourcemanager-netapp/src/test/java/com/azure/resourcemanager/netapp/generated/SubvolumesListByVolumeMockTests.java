@@ -7,8 +7,8 @@ package com.azure.resourcemanager.netapp.generated;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.netapp.NetAppFilesManager;
 import com.azure.resourcemanager.netapp.models.SubvolumeInfo;
@@ -22,20 +22,20 @@ public final class SubvolumesListByVolumeMockTests {
     @Test
     public void testListByVolume() throws Exception {
         String responseStr
-            = "{\"value\":[{\"properties\":{\"path\":\"ulbmoichdlp\",\"size\":1458552691352112238,\"parentPath\":\"nt\",\"provisioningState\":\"atzviqsowsaael\"},\"id\":\"ttcjuhplrvkmjc\",\"name\":\"mjvlgfgg\",\"type\":\"vkyylizrzbjpsf\"}]}";
+            = "{\"value\":[{\"properties\":{\"path\":\"qxypokkhminq\",\"size\":6418388718617598308,\"parentPath\":\"ngnbdxxew\",\"provisioningState\":\"invudbch\"},\"id\":\"dtvqe\",\"name\":\"rqctmxxdtdd\",\"type\":\"flhuytxzv\"}]}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         NetAppFilesManager manager = NetAppFilesManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         PagedIterable<SubvolumeInfo> response = manager.subvolumes()
-            .listByVolume("qotoihiqakydiwfb", "kwpzdqtvh", "spodaqax", "ipietgbe", com.azure.core.util.Context.NONE);
+            .listByVolume("kfuarenlv", "htkln", "nafvvkyfedev", "bo", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("ulbmoichdlp", response.iterator().next().path());
-        Assertions.assertEquals(1458552691352112238L, response.iterator().next().size());
-        Assertions.assertEquals("nt", response.iterator().next().parentPath());
+        Assertions.assertEquals("qxypokkhminq", response.iterator().next().path());
+        Assertions.assertEquals(6418388718617598308L, response.iterator().next().size());
+        Assertions.assertEquals("ngnbdxxew", response.iterator().next().parentPath());
     }
 }

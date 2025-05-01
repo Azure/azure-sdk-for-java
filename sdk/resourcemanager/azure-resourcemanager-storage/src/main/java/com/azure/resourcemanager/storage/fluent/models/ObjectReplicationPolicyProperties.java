@@ -11,6 +11,7 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.resourcemanager.storage.models.ObjectReplicationPolicyPropertiesMetrics;
 import com.azure.resourcemanager.storage.models.ObjectReplicationPolicyRule;
 import java.io.IOException;
 import java.time.OffsetDateTime;
@@ -45,6 +46,11 @@ public final class ObjectReplicationPolicyProperties implements JsonSerializable
      * The storage account object replication rules.
      */
     private List<ObjectReplicationPolicyRule> rules;
+
+    /*
+     * Optional. The object replication policy metrics feature options.
+     */
+    private ObjectReplicationPolicyPropertiesMetrics metrics;
 
     /**
      * Creates an instance of ObjectReplicationPolicyProperties class.
@@ -135,6 +141,26 @@ public final class ObjectReplicationPolicyProperties implements JsonSerializable
     }
 
     /**
+     * Get the metrics property: Optional. The object replication policy metrics feature options.
+     * 
+     * @return the metrics value.
+     */
+    public ObjectReplicationPolicyPropertiesMetrics metrics() {
+        return this.metrics;
+    }
+
+    /**
+     * Set the metrics property: Optional. The object replication policy metrics feature options.
+     * 
+     * @param metrics the metrics value to set.
+     * @return the ObjectReplicationPolicyProperties object itself.
+     */
+    public ObjectReplicationPolicyProperties withMetrics(ObjectReplicationPolicyPropertiesMetrics metrics) {
+        this.metrics = metrics;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -153,6 +179,9 @@ public final class ObjectReplicationPolicyProperties implements JsonSerializable
         if (rules() != null) {
             rules().forEach(e -> e.validate());
         }
+        if (metrics() != null) {
+            metrics().validate();
+        }
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ObjectReplicationPolicyProperties.class);
@@ -166,6 +195,7 @@ public final class ObjectReplicationPolicyProperties implements JsonSerializable
         jsonWriter.writeStringField("sourceAccount", this.sourceAccount);
         jsonWriter.writeStringField("destinationAccount", this.destinationAccount);
         jsonWriter.writeArrayField("rules", this.rules, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("metrics", this.metrics);
         return jsonWriter.writeEndObject();
     }
 
@@ -199,6 +229,9 @@ public final class ObjectReplicationPolicyProperties implements JsonSerializable
                     List<ObjectReplicationPolicyRule> rules
                         = reader.readArray(reader1 -> ObjectReplicationPolicyRule.fromJson(reader1));
                     deserializedObjectReplicationPolicyProperties.rules = rules;
+                } else if ("metrics".equals(fieldName)) {
+                    deserializedObjectReplicationPolicyProperties.metrics
+                        = ObjectReplicationPolicyPropertiesMetrics.fromJson(reader);
                 } else {
                     reader.skipChildren();
                 }

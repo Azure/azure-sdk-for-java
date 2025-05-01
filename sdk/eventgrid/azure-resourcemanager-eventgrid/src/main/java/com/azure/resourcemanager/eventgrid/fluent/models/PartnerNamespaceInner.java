@@ -30,7 +30,7 @@ public final class PartnerNamespaceInner extends Resource {
     private PartnerNamespaceProperties innerProperties;
 
     /*
-     * The system metadata relating to Partner Namespace resource.
+     * The system metadata relating to the Event Grid resource.
      */
     private SystemData systemData;
 
@@ -65,7 +65,7 @@ public final class PartnerNamespaceInner extends Resource {
     }
 
     /**
-     * Get the systemData property: The system metadata relating to Partner Namespace resource.
+     * Get the systemData property: The system metadata relating to the Event Grid resource.
      * 
      * @return the systemData value.
      */

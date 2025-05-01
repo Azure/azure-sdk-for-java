@@ -4,18 +4,19 @@
 package com.azure.maps.weather.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.models.GeoPolygon;
+import com.azure.core.models.GeoPosition;
+import com.azure.core.util.CoreUtils;
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.maps.weather.implementation.helpers.Utility;
 import com.azure.maps.weather.implementation.models.GeoJsonGeometry;
 import com.azure.maps.weather.implementation.models.LatLongPair;
 import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import com.azure.core.models.GeoPosition;
-import com.azure.core.models.GeoPolygon;
-import com.azure.maps.weather.implementation.helpers.Utility;
 
 /**
  * Forecast window for the storm.
@@ -54,7 +55,8 @@ public final class WeatherWindow implements JsonSerializable<WeatherWindow> {
     private String endStatus;
 
     /*
-     * Displayed when windowGeometry=true in request. GeoJSON object containing coordinates describing the window of movement during the specified timeframe.
+     * Displayed when windowGeometry=true in request. GeoJSON object containing coordinates describing the window of
+     * movement during the specified timeframe.
      */
     private GeoJsonGeometry geometry;
 
@@ -156,11 +158,11 @@ public final class WeatherWindow implements JsonSerializable<WeatherWindow> {
                 } else if ("right".equals(fieldName)) {
                     deserializedWeatherWindow.bottomRight = LatLongPair.fromJson(reader);
                 } else if ("beginDateTime".equals(fieldName)) {
-                    deserializedWeatherWindow.beginTimestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedWeatherWindow.beginTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("endDateTime".equals(fieldName)) {
-                    deserializedWeatherWindow.endTimestamp
-                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                    deserializedWeatherWindow.endTimestamp = reader
+                        .getNullable(nonNullReader -> CoreUtils.parseBestOffsetDateTime(nonNullReader.getString()));
                 } else if ("beginStatus".equals(fieldName)) {
                     deserializedWeatherWindow.beginStatus = reader.getString();
                 } else if ("endStatus".equals(fieldName)) {

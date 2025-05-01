@@ -15,29 +15,27 @@ public final class PolicyCollectionInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         PolicyCollectionInner model = BinaryData.fromString(
-            "{\"value\":[{\"properties\":{\"value\":\"plpvm\",\"format\":\"rawxml\"},\"id\":\"oewbid\",\"name\":\"vteo\",\"type\":\"xvgpiude\"},{\"properties\":{\"value\":\"fsxzecp\",\"format\":\"rawxml-link\"},\"id\":\"kufykhvu\",\"name\":\"xepmrut\",\"type\":\"nabaobnslujd\"},{\"properties\":{\"value\":\"tymkmvguihywart\",\"format\":\"rawxml-link\"},\"id\":\"hkixkykxdssj\",\"name\":\"emmucfxh\",\"type\":\"kkflrmymyincqlhr\"}],\"count\":4924256008902256933,\"nextLink\":\"miii\"}")
+            "{\"value\":[{\"properties\":{\"value\":\"bgatzu\",\"format\":\"xml\"},\"id\":\"xngre\",\"name\":\"wggahttzlswvaj\",\"type\":\"fu\"},{\"properties\":{\"value\":\"x\",\"format\":\"rawxml-link\"},\"id\":\"zasunwqrjzfrgq\",\"name\":\"aohcmbuocn\",\"type\":\"r\"},{\"properties\":{\"value\":\"mbpyryxamebly\",\"format\":\"xml-link\"},\"id\":\"kfkmrocxnehvsmt\",\"name\":\"dlfp\",\"type\":\"apucygvo\"},{\"properties\":{\"value\":\"yunssx\",\"format\":\"xml\"},\"id\":\"ieegjl\",\"name\":\"vvpa\",\"type\":\"eksgbuxantuygd\"}],\"count\":1523741680614591416,\"nextLink\":\"pirpiwrqof\"}")
             .toObject(PolicyCollectionInner.class);
-        Assertions.assertEquals("plpvm", model.value().get(0).value());
-        Assertions.assertEquals(PolicyContentFormat.RAWXML, model.value().get(0).format());
-        Assertions.assertEquals(4924256008902256933L, model.count());
-        Assertions.assertEquals("miii", model.nextLink());
+        Assertions.assertEquals("bgatzu", model.value().get(0).value());
+        Assertions.assertEquals(PolicyContentFormat.XML, model.value().get(0).format());
+        Assertions.assertEquals(1523741680614591416L, model.count());
+        Assertions.assertEquals("pirpiwrqof", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PolicyCollectionInner model
-            = new PolicyCollectionInner()
-                .withValue(
-                    Arrays.asList(new PolicyContractInner().withValue("plpvm").withFormat(PolicyContentFormat.RAWXML),
-                        new PolicyContractInner().withValue("fsxzecp").withFormat(PolicyContentFormat.RAWXML_LINK),
-                        new PolicyContractInner().withValue("tymkmvguihywart")
-                            .withFormat(PolicyContentFormat.RAWXML_LINK)))
-                .withCount(4924256008902256933L)
-                .withNextLink("miii");
+        PolicyCollectionInner model = new PolicyCollectionInner()
+            .withValue(Arrays.asList(new PolicyContractInner().withValue("bgatzu").withFormat(PolicyContentFormat.XML),
+                new PolicyContractInner().withValue("x").withFormat(PolicyContentFormat.RAWXML_LINK),
+                new PolicyContractInner().withValue("mbpyryxamebly").withFormat(PolicyContentFormat.XML_LINK),
+                new PolicyContractInner().withValue("yunssx").withFormat(PolicyContentFormat.XML)))
+            .withCount(1523741680614591416L)
+            .withNextLink("pirpiwrqof");
         model = BinaryData.fromObject(model).toObject(PolicyCollectionInner.class);
-        Assertions.assertEquals("plpvm", model.value().get(0).value());
-        Assertions.assertEquals(PolicyContentFormat.RAWXML, model.value().get(0).format());
-        Assertions.assertEquals(4924256008902256933L, model.count());
-        Assertions.assertEquals("miii", model.nextLink());
+        Assertions.assertEquals("bgatzu", model.value().get(0).value());
+        Assertions.assertEquals(PolicyContentFormat.XML, model.value().get(0).format());
+        Assertions.assertEquals(1523741680614591416L, model.count());
+        Assertions.assertEquals("pirpiwrqof", model.nextLink());
     }
 }

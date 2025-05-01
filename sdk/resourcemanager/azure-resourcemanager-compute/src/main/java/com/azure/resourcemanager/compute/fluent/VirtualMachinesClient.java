@@ -26,6 +26,7 @@ import com.azure.resourcemanager.compute.models.AttachDetachDataDisksRequest;
 import com.azure.resourcemanager.compute.models.ExpandTypeForListVMs;
 import com.azure.resourcemanager.compute.models.ExpandTypesForListVMs;
 import com.azure.resourcemanager.compute.models.InstanceViewTypes;
+import com.azure.resourcemanager.compute.models.MigrateVMToVirtualMachineScaleSetInput;
 import com.azure.resourcemanager.compute.models.RunCommandInput;
 import com.azure.resourcemanager.compute.models.StorageProfile;
 import com.azure.resourcemanager.compute.models.VirtualMachineCaptureParameters;
@@ -525,6 +526,13 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param forceDeletion Optional parameter to force delete virtual machines.
+     * NOTE: As of api-version 2024-11-01, we are rolling out a feature where if the forceDeletion parameter is
+     * unspecified OR not explicitly set to false, AND all of the VM's attached disks including the OS disk are marked
+     * with the delete option, then the VM will be force deleted. For more details on how to configure delete options
+     * for a VM's resources, see [Delete a VM and attached
+     * resources](https://learn.microsoft.com/en-us/azure/virtual-machines/delete). To avoid defaulting to force delete,
+     * ensure that the forceDeletion parameter is explicitly set to false. This feature is expected to rollout by end of
+     * March 2025.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -540,6 +548,13 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param forceDeletion Optional parameter to force delete virtual machines.
+     * NOTE: As of api-version 2024-11-01, we are rolling out a feature where if the forceDeletion parameter is
+     * unspecified OR not explicitly set to false, AND all of the VM's attached disks including the OS disk are marked
+     * with the delete option, then the VM will be force deleted. For more details on how to configure delete options
+     * for a VM's resources, see [Delete a VM and attached
+     * resources](https://learn.microsoft.com/en-us/azure/virtual-machines/delete). To avoid defaulting to force delete,
+     * ensure that the forceDeletion parameter is explicitly set to false. This feature is expected to rollout by end of
+     * March 2025.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -580,6 +595,13 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param forceDeletion Optional parameter to force delete virtual machines.
+     * NOTE: As of api-version 2024-11-01, we are rolling out a feature where if the forceDeletion parameter is
+     * unspecified OR not explicitly set to false, AND all of the VM's attached disks including the OS disk are marked
+     * with the delete option, then the VM will be force deleted. For more details on how to configure delete options
+     * for a VM's resources, see [Delete a VM and attached
+     * resources](https://learn.microsoft.com/en-us/azure/virtual-machines/delete). To avoid defaulting to force delete,
+     * ensure that the forceDeletion parameter is explicitly set to false. This feature is expected to rollout by end of
+     * March 2025.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -596,6 +618,13 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param forceDeletion Optional parameter to force delete virtual machines.
+     * NOTE: As of api-version 2024-11-01, we are rolling out a feature where if the forceDeletion parameter is
+     * unspecified OR not explicitly set to false, AND all of the VM's attached disks including the OS disk are marked
+     * with the delete option, then the VM will be force deleted. For more details on how to configure delete options
+     * for a VM's resources, see [Delete a VM and attached
+     * resources](https://learn.microsoft.com/en-us/azure/virtual-machines/delete). To avoid defaulting to force delete,
+     * ensure that the forceDeletion parameter is explicitly set to false. This feature is expected to rollout by end of
+     * March 2025.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -635,6 +664,13 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param forceDeletion Optional parameter to force delete virtual machines.
+     * NOTE: As of api-version 2024-11-01, we are rolling out a feature where if the forceDeletion parameter is
+     * unspecified OR not explicitly set to false, AND all of the VM's attached disks including the OS disk are marked
+     * with the delete option, then the VM will be force deleted. For more details on how to configure delete options
+     * for a VM's resources, see [Delete a VM and attached
+     * resources](https://learn.microsoft.com/en-us/azure/virtual-machines/delete). To avoid defaulting to force delete,
+     * ensure that the forceDeletion parameter is explicitly set to false. This feature is expected to rollout by end of
+     * March 2025.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -2422,6 +2458,133 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     @ServiceMethod(returns = ReturnType.SINGLE)
     StorageProfile attachDetachDataDisks(String resourceGroupName, String vmName,
         AttachDetachDataDisksRequest parameters, Context context);
+
+    /**
+     * Migrate a virtual machine from availability set to Flexible Virtual Machine Scale Set.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @param parameters Parameters supplied to the Migrate Virtual Machine operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Response<Flux<ByteBuffer>>> migrateToVMScaleSetWithResponseAsync(String resourceGroupName, String vmName,
+        MigrateVMToVirtualMachineScaleSetInput parameters);
+
+    /**
+     * Migrate a virtual machine from availability set to Flexible Virtual Machine Scale Set.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @param parameters Parameters supplied to the Migrate Virtual Machine operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginMigrateToVMScaleSetAsync(String resourceGroupName, String vmName,
+        MigrateVMToVirtualMachineScaleSetInput parameters);
+
+    /**
+     * Migrate a virtual machine from availability set to Flexible Virtual Machine Scale Set.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<Void>, Void> beginMigrateToVMScaleSetAsync(String resourceGroupName, String vmName);
+
+    /**
+     * Migrate a virtual machine from availability set to Flexible Virtual Machine Scale Set.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginMigrateToVMScaleSet(String resourceGroupName, String vmName);
+
+    /**
+     * Migrate a virtual machine from availability set to Flexible Virtual Machine Scale Set.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @param parameters Parameters supplied to the Migrate Virtual Machine operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<Void>, Void> beginMigrateToVMScaleSet(String resourceGroupName, String vmName,
+        MigrateVMToVirtualMachineScaleSetInput parameters, Context context);
+
+    /**
+     * Migrate a virtual machine from availability set to Flexible Virtual Machine Scale Set.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @param parameters Parameters supplied to the Migrate Virtual Machine operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> migrateToVMScaleSetAsync(String resourceGroupName, String vmName,
+        MigrateVMToVirtualMachineScaleSetInput parameters);
+
+    /**
+     * Migrate a virtual machine from availability set to Flexible Virtual Machine Scale Set.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<Void> migrateToVMScaleSetAsync(String resourceGroupName, String vmName);
+
+    /**
+     * Migrate a virtual machine from availability set to Flexible Virtual Machine Scale Set.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void migrateToVMScaleSet(String resourceGroupName, String vmName);
+
+    /**
+     * Migrate a virtual machine from availability set to Flexible Virtual Machine Scale Set.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @param parameters Parameters supplied to the Migrate Virtual Machine operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    void migrateToVMScaleSet(String resourceGroupName, String vmName, MigrateVMToVirtualMachineScaleSetInput parameters,
+        Context context);
 
     /**
      * Run command on the VM.

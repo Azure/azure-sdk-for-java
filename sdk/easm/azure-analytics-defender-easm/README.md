@@ -25,7 +25,7 @@ Various documentation is available to help you get started
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-analytics-defender-easm</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -107,4 +107,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 [assets_documentation]: https://learn.microsoft.com/azure/external-attack-surface-management/understanding-inventory-assets
 [discovery_documentation]: https://learn.microsoft.com/azure/external-attack-surface-management/what-is-discovery
 [discovery_groups_documentation]: https://learn.microsoft.com/azure/external-attack-surface-management/using-and-managing-discovery#discovery-groups
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Feasm%2Fazure-analytics-defender-easm%2FREADME.png)
+

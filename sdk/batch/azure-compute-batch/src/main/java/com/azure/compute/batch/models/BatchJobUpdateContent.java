@@ -75,6 +75,12 @@ public final class BatchJobUpdateContent implements JsonSerializable<BatchJobUpd
     @Generated
     private List<MetadataItem> metadata;
 
+    /*
+     * The network configuration for the Job.
+     */
+    @Generated
+    private BatchJobNetworkConfiguration networkConfiguration;
+
     /**
      * Creates an instance of BatchJobUpdateContent class.
      */
@@ -273,6 +279,28 @@ public final class BatchJobUpdateContent implements JsonSerializable<BatchJobUpd
     }
 
     /**
+     * Get the networkConfiguration property: The network configuration for the Job.
+     *
+     * @return the networkConfiguration value.
+     */
+    @Generated
+    public BatchJobNetworkConfiguration getNetworkConfiguration() {
+        return this.networkConfiguration;
+    }
+
+    /**
+     * Set the networkConfiguration property: The network configuration for the Job.
+     *
+     * @param networkConfiguration the networkConfiguration value to set.
+     * @return the BatchJobUpdateContent object itself.
+     */
+    @Generated
+    public BatchJobUpdateContent setNetworkConfiguration(BatchJobNetworkConfiguration networkConfiguration) {
+        this.networkConfiguration = networkConfiguration;
+        return this;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Generated
@@ -331,33 +359,5 @@ public final class BatchJobUpdateContent implements JsonSerializable<BatchJobUpd
             }
             return deserializedBatchJobUpdateContent;
         });
-    }
-
-    /*
-     * The network configuration for the Job.
-     */
-    @Generated
-    private BatchJobNetworkConfiguration networkConfiguration;
-
-    /**
-     * Get the networkConfiguration property: The network configuration for the Job.
-     *
-     * @return the networkConfiguration value.
-     */
-    @Generated
-    public BatchJobNetworkConfiguration getNetworkConfiguration() {
-        return this.networkConfiguration;
-    }
-
-    /**
-     * Set the networkConfiguration property: The network configuration for the Job.
-     *
-     * @param networkConfiguration the networkConfiguration value to set.
-     * @return the BatchJobUpdateContent object itself.
-     */
-    @Generated
-    public BatchJobUpdateContent setNetworkConfiguration(BatchJobNetworkConfiguration networkConfiguration) {
-        this.networkConfiguration = networkConfiguration;
-        return this;
     }
 }

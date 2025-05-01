@@ -11,7 +11,7 @@ public final class SkuPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SkuProperties model = BinaryData.fromString(
-            "{\"dataLocationToServiceLocationMap\":[{\"dataLocation\":\"dhxujznbmpo\",\"serviceLocation\":\"wpr\"},{\"dataLocation\":\"lve\",\"serviceLocation\":\"lupj\"},{\"dataLocation\":\"hfxobbcswsrtj\",\"serviceLocation\":\"plrbpbewtghf\"}],\"capacity\":{\"usable\":\"c\",\"maximum\":\"xzvlvqhjkbegib\"},\"costs\":[{\"meterId\":\"iebwwaloayqcgwrt\",\"meterType\":\"uzgwyzmhtx\",\"multiplier\":98.57752142749447},{\"meterId\":\"savjcbpwxqps\",\"meterType\":\"nftguvriuhpr\",\"multiplier\":74.66600066006839}],\"apiVersions\":[\"qtayri\",\"wroyqbexrmcq\",\"bycnojvkn\"],\"disabledReason\":\"None\",\"disabledReasonMessage\":\"sgzvahapjyzhpv\",\"requiredFeature\":\"zcjrvxdjzlmwlx\",\"countriesWithinCommerceBoundary\":[\"gfhzovawjvzunlut\"]}")
+            "{\"dataLocationToServiceLocationMap\":[{\"dataLocation\":\"fpl\",\"serviceLocation\":\"oxuscrpabgyepsbj\"}],\"capacity\":{\"usable\":\"qugxywpmueefjzwf\",\"maximum\":\"q\",\"individualSkuUsable\":\"ids\"},\"costs\":[{\"meterId\":\"obglaocqxtcc\",\"meterType\":\"yudxytlmoy\",\"multiplier\":80.88741588233587},{\"meterId\":\"u\",\"meterType\":\"pz\",\"multiplier\":85.11812605556538},{\"meterId\":\"zhlrqjb\",\"meterType\":\"kfrlhrxsbky\",\"multiplier\":86.14609996604706}],\"apiVersions\":[\"uzbpzkafku\"],\"disabledReason\":\"Country\",\"disabledReasonMessage\":\"nwbmeh\",\"requiredFeature\":\"eyvjusrtslhspkde\",\"countriesWithinCommerceBoundary\":[\"ofmxagkvtmelmqkr\",\"ahvljuaha\",\"uhcdhm\"]}")
             .toObject(SkuProperties.class);
     }
 

@@ -2202,7 +2202,7 @@ public final class EntityClient {
      * }
      * </pre>
      * 
-     * @param body Body parameter.
+     * @param body Multipart body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2213,8 +2213,8 @@ public final class EntityClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> importBusinessMetadataWithResponse(BinaryData body, RequestOptions requestOptions) {
-        // Protocol API requires serialization of parts with content-disposition and data, as operation
-        // 'importBusinessMetadata' is 'multipart/form-data'
+        // Operation 'importBusinessMetadata' is of content-type 'multipart/form-data'. Protocol API is not usable and
+        // hence not generated.
         return this.serviceClient.importBusinessMetadataWithResponse(body, requestOptions);
     }
 
@@ -3676,7 +3676,7 @@ public final class EntityClient {
     /**
      * Upload the file for creating Business Metadata in BULK.
      * 
-     * @param body Body parameter.
+     * @param body Multipart body.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.

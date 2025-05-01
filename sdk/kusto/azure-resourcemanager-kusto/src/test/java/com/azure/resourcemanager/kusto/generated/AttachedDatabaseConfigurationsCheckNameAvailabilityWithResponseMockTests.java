@@ -23,7 +23,7 @@ public final class AttachedDatabaseConfigurationsCheckNameAvailabilityWithRespon
     @Test
     public void testCheckNameAvailabilityWithResponse() throws Exception {
         String responseStr
-            = "{\"nameAvailable\":true,\"name\":\"xjbaqehgpdohzjq\",\"message\":\"ucoig\",\"reason\":\"Invalid\"}";
+            = "{\"nameAvailable\":true,\"name\":\"qqekewvnqvcdlgu\",\"message\":\"cmfdjwnlax\",\"reason\":\"Invalid\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -33,14 +33,14 @@ public final class AttachedDatabaseConfigurationsCheckNameAvailabilityWithRespon
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         CheckNameResult response = manager.attachedDatabaseConfigurations()
-            .checkNameAvailabilityWithResponse("ecjxe", "gtuhxuicbu",
-                new AttachedDatabaseConfigurationsCheckNameRequest().withName("wmrswnjlxuzrh"),
+            .checkNameAvailabilityWithResponse("nsharujtjiqxfzyj", "ttvwkpqh",
+                new AttachedDatabaseConfigurationsCheckNameRequest().withName("penuy"),
                 com.azure.core.util.Context.NONE)
             .getValue();
 
         Assertions.assertEquals(true, response.nameAvailable());
-        Assertions.assertEquals("xjbaqehgpdohzjq", response.name());
-        Assertions.assertEquals("ucoig", response.message());
+        Assertions.assertEquals("qqekewvnqvcdlgu", response.name());
+        Assertions.assertEquals("cmfdjwnlax", response.message());
         Assertions.assertEquals(Reason.INVALID, response.reason());
     }
 }

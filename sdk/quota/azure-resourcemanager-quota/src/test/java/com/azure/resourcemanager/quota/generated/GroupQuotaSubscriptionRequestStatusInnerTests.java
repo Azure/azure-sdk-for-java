@@ -14,19 +14,19 @@ public final class GroupQuotaSubscriptionRequestStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         GroupQuotaSubscriptionRequestStatusInner model = BinaryData.fromString(
-            "{\"properties\":{\"subscriptionId\":\"kzgcwrwcl\",\"requestSubmitTime\":\"2021-06-21T13:48:53Z\",\"provisioningState\":\"Canceled\"},\"id\":\"douskcqvkocrcjdk\",\"name\":\"tnhxbn\",\"type\":\"biksq\"}")
+            "{\"properties\":{\"subscriptionId\":\"hulsuuvmkjozkrwf\",\"requestSubmitTime\":\"2021-02-17T13:52:13Z\",\"provisioningState\":\"Succeeded\"},\"id\":\"pslwejdpvw\",\"name\":\"yoqpsoaccta\",\"type\":\"akl\"}")
             .toObject(GroupQuotaSubscriptionRequestStatusInner.class);
-        Assertions.assertEquals("kzgcwrwcl", model.properties().subscriptionId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-21T13:48:53Z"), model.properties().requestSubmitTime());
+        Assertions.assertEquals("hulsuuvmkjozkrwf", model.properties().subscriptionId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-17T13:52:13Z"), model.properties().requestSubmitTime());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         GroupQuotaSubscriptionRequestStatusInner model = new GroupQuotaSubscriptionRequestStatusInner()
-            .withProperties(new GroupQuotaSubscriptionRequestStatusProperties().withSubscriptionId("kzgcwrwcl")
-                .withRequestSubmitTime(OffsetDateTime.parse("2021-06-21T13:48:53Z")));
+            .withProperties(new GroupQuotaSubscriptionRequestStatusProperties().withSubscriptionId("hulsuuvmkjozkrwf")
+                .withRequestSubmitTime(OffsetDateTime.parse("2021-02-17T13:52:13Z")));
         model = BinaryData.fromObject(model).toObject(GroupQuotaSubscriptionRequestStatusInner.class);
-        Assertions.assertEquals("kzgcwrwcl", model.properties().subscriptionId());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-06-21T13:48:53Z"), model.properties().requestSubmitTime());
+        Assertions.assertEquals("hulsuuvmkjozkrwf", model.properties().subscriptionId());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-02-17T13:52:13Z"), model.properties().requestSubmitTime());
     }
 }

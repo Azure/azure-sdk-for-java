@@ -5,7 +5,6 @@ package com.azure.cosmos.benchmark;
 
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosException;
-import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
 import com.azure.cosmos.implementation.Database;
@@ -60,7 +59,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
     @Override
     protected void init() {
         // TODO: move read my writes to use v4 APIs
-        this.client =  CosmosBridgeInternal.getAsyncDocumentClient(cosmosClient);
+        this.client =  CosmosBridgeInternal.getAsyncDocumentClient(benchmarkWorkloadClient);
         Database database = DocDBUtils.getDatabase(client, configuration.getDatabaseId());
         this.collection = DocDBUtils.getCollection(client, database.getSelfLink(), configuration.getCollectionId());
         this.nameCollectionLink = String.format("dbs/%s/colls/%s", database.getId(), collection.getId());
@@ -194,12 +193,12 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
         String randomVal = UUID.randomUUID().toString();
         Document document = new Document();
         document.setId(idString);
-        document.set(partitionKey, idString, CosmosItemSerializer.DEFAULT_SERIALIZER);
-        document.set(QUERY_FIELD_NAME, randomVal, CosmosItemSerializer.DEFAULT_SERIALIZER);
-        document.set("dataField1", randomVal, CosmosItemSerializer.DEFAULT_SERIALIZER);
-        document.set("dataField2", randomVal, CosmosItemSerializer.DEFAULT_SERIALIZER);
-        document.set("dataField3", randomVal, CosmosItemSerializer.DEFAULT_SERIALIZER);
-        document.set("dataField4", randomVal, CosmosItemSerializer.DEFAULT_SERIALIZER);
+        document.set(partitionKey, idString);
+        document.set(QUERY_FIELD_NAME, randomVal);
+        document.set("dataField1", randomVal);
+        document.set("dataField2", randomVal);
+        document.set("dataField3", randomVal);
+        document.set("dataField4", randomVal);
 
         Integer key = i == null ? cacheKey() : i;
         return client.createDocument(getCollectionLink(), document, null, false)
@@ -283,7 +282,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
         options.setMaxDegreeOfParallelism(-1);
 
         QueryFeedOperationState state = new QueryFeedOperationState(
-            cosmosClient,
+                benchmarkWorkloadClient,
             "xPartitionQuery",
             configuration.getDatabaseId(),
             configuration.getCollectionId(),
@@ -314,7 +313,7 @@ class ReadMyWriteWorkflow extends AsyncBenchmark<Document> {
                                                                    d.getString(QUERY_FIELD_NAME)));
 
         QueryFeedOperationState state = new QueryFeedOperationState(
-            cosmosClient,
+                benchmarkWorkloadClient,
             "singlePartitionQuery",
             configuration.getDatabaseId(),
             configuration.getCollectionId(),

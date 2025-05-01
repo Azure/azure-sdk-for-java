@@ -51,7 +51,7 @@ public final class SapTableResourceDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private SapTableResourceDatasetTypeProperties innerTypeProperties() {
+    SapTableResourceDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

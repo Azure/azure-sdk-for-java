@@ -5,36 +5,20 @@
 package com.azure.resourcemanager.appcontainers.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.appcontainers.models.Level;
-import com.azure.resourcemanager.appcontainers.models.LoggerSetting;
 import com.azure.resourcemanager.appcontainers.models.RuntimeJava;
-import com.azure.resourcemanager.appcontainers.models.RuntimeJavaAgent;
-import com.azure.resourcemanager.appcontainers.models.RuntimeJavaAgentLogging;
-import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
 
 public final class RuntimeJavaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RuntimeJava model = BinaryData.fromString(
-            "{\"enableMetrics\":true,\"javaAgent\":{\"enabled\":false,\"logging\":{\"loggerSettings\":[{\"logger\":\"wm\",\"level\":\"info\"}]}}}")
-            .toObject(RuntimeJava.class);
-        Assertions.assertEquals(true, model.enableMetrics());
-        Assertions.assertEquals(false, model.javaAgent().enabled());
-        Assertions.assertEquals("wm", model.javaAgent().logging().loggerSettings().get(0).logger());
-        Assertions.assertEquals(Level.INFO, model.javaAgent().logging().loggerSettings().get(0).level());
+        RuntimeJava model = BinaryData.fromString("{\"enableMetrics\":false}").toObject(RuntimeJava.class);
+        Assertions.assertEquals(false, model.enableMetrics());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RuntimeJava model = new RuntimeJava().withEnableMetrics(true)
-            .withJavaAgent(new RuntimeJavaAgent().withEnabled(false)
-                .withLogging(new RuntimeJavaAgentLogging()
-                    .withLoggerSettings(Arrays.asList(new LoggerSetting().withLogger("wm").withLevel(Level.INFO)))));
+        RuntimeJava model = new RuntimeJava().withEnableMetrics(false);
         model = BinaryData.fromObject(model).toObject(RuntimeJava.class);
-        Assertions.assertEquals(true, model.enableMetrics());
-        Assertions.assertEquals(false, model.javaAgent().enabled());
-        Assertions.assertEquals("wm", model.javaAgent().logging().loggerSettings().get(0).logger());
-        Assertions.assertEquals(Level.INFO, model.javaAgent().logging().loggerSettings().get(0).level());
+        Assertions.assertEquals(false, model.enableMetrics());
     }
 }

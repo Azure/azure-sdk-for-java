@@ -29,6 +29,26 @@ public class VerticaLinkedService extends LinkedService {
     private Object connectionString;
 
     /*
+     * Server name for connection. Type: string.
+     */
+    private Object server;
+
+    /*
+     * The port for the connection. Type: integer.
+     */
+    private Object port;
+
+    /*
+     * Username for authentication. Type: string.
+     */
+    private Object uid;
+
+    /*
+     * Database name for connection. Type: string.
+     */
+    private Object database;
+
+    /*
      * The Azure key vault secret reference of password in connection string.
      */
     private AzureKeyVaultSecretReference pwd;
@@ -78,6 +98,86 @@ public class VerticaLinkedService extends LinkedService {
     }
 
     /**
+     * Get the server property: Server name for connection. Type: string.
+     * 
+     * @return the server value.
+     */
+    public Object getServer() {
+        return this.server;
+    }
+
+    /**
+     * Set the server property: Server name for connection. Type: string.
+     * 
+     * @param server the server value to set.
+     * @return the VerticaLinkedService object itself.
+     */
+    public VerticaLinkedService setServer(Object server) {
+        this.server = server;
+        return this;
+    }
+
+    /**
+     * Get the port property: The port for the connection. Type: integer.
+     * 
+     * @return the port value.
+     */
+    public Object getPort() {
+        return this.port;
+    }
+
+    /**
+     * Set the port property: The port for the connection. Type: integer.
+     * 
+     * @param port the port value to set.
+     * @return the VerticaLinkedService object itself.
+     */
+    public VerticaLinkedService setPort(Object port) {
+        this.port = port;
+        return this;
+    }
+
+    /**
+     * Get the uid property: Username for authentication. Type: string.
+     * 
+     * @return the uid value.
+     */
+    public Object getUid() {
+        return this.uid;
+    }
+
+    /**
+     * Set the uid property: Username for authentication. Type: string.
+     * 
+     * @param uid the uid value to set.
+     * @return the VerticaLinkedService object itself.
+     */
+    public VerticaLinkedService setUid(Object uid) {
+        this.uid = uid;
+        return this;
+    }
+
+    /**
+     * Get the database property: Database name for connection. Type: string.
+     * 
+     * @return the database value.
+     */
+    public Object getDatabase() {
+        return this.database;
+    }
+
+    /**
+     * Set the database property: Database name for connection. Type: string.
+     * 
+     * @param database the database value to set.
+     * @return the VerticaLinkedService object itself.
+     */
+    public VerticaLinkedService setDatabase(Object database) {
+        this.database = database;
+        return this;
+    }
+
+    /**
      * Get the pwd property: The Azure key vault secret reference of password in connection string.
      * 
      * @return the pwd value.
@@ -123,6 +223,15 @@ public class VerticaLinkedService extends LinkedService {
      * {@inheritDoc}
      */
     @Override
+    public VerticaLinkedService setVersion(String version) {
+        super.setVersion(version);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public VerticaLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
@@ -161,14 +270,25 @@ public class VerticaLinkedService extends LinkedService {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("version", getVersion());
         jsonWriter.writeJsonField("connectVia", getConnectVia());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeMapField("parameters", getParameters(), (writer, element) -> writer.writeJson(element));
         jsonWriter.writeArrayField("annotations", getAnnotations(), (writer, element) -> writer.writeUntyped(element));
         jsonWriter.writeStringField("type", this.type);
-        if (connectionString != null || pwd != null || encryptedCredential != null) {
+        if (connectionString != null
+            || server != null
+            || port != null
+            || uid != null
+            || database != null
+            || pwd != null
+            || encryptedCredential != null) {
             jsonWriter.writeStartObject("typeProperties");
             jsonWriter.writeUntypedField("connectionString", this.connectionString);
+            jsonWriter.writeUntypedField("server", this.server);
+            jsonWriter.writeUntypedField("port", this.port);
+            jsonWriter.writeUntypedField("uid", this.uid);
+            jsonWriter.writeUntypedField("database", this.database);
             jsonWriter.writeJsonField("pwd", this.pwd);
             jsonWriter.writeUntypedField("encryptedCredential", this.encryptedCredential);
             jsonWriter.writeEndObject();
@@ -197,7 +317,9 @@ public class VerticaLinkedService extends LinkedService {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("connectVia".equals(fieldName)) {
+                if ("version".equals(fieldName)) {
+                    deserializedVerticaLinkedService.setVersion(reader.getString());
+                } else if ("connectVia".equals(fieldName)) {
                     deserializedVerticaLinkedService.setConnectVia(IntegrationRuntimeReference.fromJson(reader));
                 } else if ("description".equals(fieldName)) {
                     deserializedVerticaLinkedService.setDescription(reader.getString());
@@ -217,6 +339,14 @@ public class VerticaLinkedService extends LinkedService {
 
                         if ("connectionString".equals(fieldName)) {
                             deserializedVerticaLinkedService.connectionString = reader.readUntyped();
+                        } else if ("server".equals(fieldName)) {
+                            deserializedVerticaLinkedService.server = reader.readUntyped();
+                        } else if ("port".equals(fieldName)) {
+                            deserializedVerticaLinkedService.port = reader.readUntyped();
+                        } else if ("uid".equals(fieldName)) {
+                            deserializedVerticaLinkedService.uid = reader.readUntyped();
+                        } else if ("database".equals(fieldName)) {
+                            deserializedVerticaLinkedService.database = reader.readUntyped();
                         } else if ("pwd".equals(fieldName)) {
                             deserializedVerticaLinkedService.pwd = AzureKeyVaultSecretReference.fromJson(reader);
                         } else if ("encryptedCredential".equals(fieldName)) {

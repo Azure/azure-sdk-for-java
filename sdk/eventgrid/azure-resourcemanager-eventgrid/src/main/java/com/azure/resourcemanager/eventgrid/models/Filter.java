@@ -14,8 +14,7 @@ import java.io.IOException;
 /**
  * This is the base type that represents a filter. To configure a filter, do not directly instantiate an object of this
  * class. Instead, instantiate
- * an object of a derived class such as BoolEqualsFilter, NumberInFilter, StringEqualsFilter etc depending on the type
- * of the key based on
+ * an object of a derived class such as BoolEqualsFilter, NumberInFilter etc depending on the type of the key based on
  * which you want to filter.
  */
 @Fluent

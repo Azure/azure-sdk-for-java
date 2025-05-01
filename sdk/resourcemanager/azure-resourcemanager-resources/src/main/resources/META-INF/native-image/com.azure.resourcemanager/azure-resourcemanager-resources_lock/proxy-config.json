@@ -1,1 +1,1 @@
-[ [ "com.azure.resourcemanager.resources.implementation.AuthorizationOperationsClientImpl$AuthorizationOperationsService" ], [ "com.azure.resourcemanager.resources.implementation.ManagementLocksClientImpl$ManagementLocksService" ] ]
+[["com.azure.resourcemanager.resources.implementation.AuthorizationOperationsClientImpl$AuthorizationOperationsService"],["com.azure.resourcemanager.resources.implementation.ManagementLocksClientImpl$ManagementLocksService"]]

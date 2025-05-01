@@ -51,7 +51,7 @@ public final class SharePointOnlineListResourceDataset extends Dataset {
      * 
      * @return the innerTypeProperties value.
      */
-    private SharePointOnlineListDatasetTypeProperties innerTypeProperties() {
+    SharePointOnlineListDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

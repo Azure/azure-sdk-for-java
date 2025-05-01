@@ -16,13 +16,13 @@
     <module>sdk/ai</module>
     <module>sdk/alertsmanagement</module>
     <module>sdk/anomalydetector</module>
-    <module>sdk/aot</module>
     <module>sdk/apicenter</module>
     <module>sdk/apimanagement</module>
     <module>sdk/appcomplianceautomation</module>
     <module>sdk/appconfiguration</module>
     <module>sdk/appcontainers</module>
     <module>sdk/applicationinsights</module>
+    <module>sdk/arizeaiobservabilityeval</module>
     <module>sdk/astro</module>
     <module>sdk/attestation</module>
     <module>sdk/automanage</module>
@@ -34,11 +34,11 @@
     <module>sdk/azurestackhci</module>
     <module>sdk/baremetalinfrastructure</module>
     <module>sdk/batch</module>
-    <module>sdk/batchai</module>
     <module>sdk/billing</module>
     <module>sdk/billingbenefits</module>
     <module>sdk/boms</module>
     <module>sdk/botservice</module>
+    <module>sdk/carbonoptimization</module>
     <module>sdk/changeanalysis</module>
     <module>sdk/chaos</module>
     <module>sdk/clientcore</module>
@@ -57,11 +57,13 @@
     <module>sdk/containerservicefleet</module>
     <module>sdk/contentsafety</module>
     <module>sdk/core</module>
+    <module>sdk/core-v2</module>
     <module>sdk/cosmos</module>
     <module>sdk/cosmosdbforpostgresql</module>
     <module>sdk/costmanagement</module>
     <module>sdk/customerinsights</module>
     <module>sdk/dashboard</module>
+    <module>sdk/databasewatcher</module>
     <module>sdk/databox</module>
     <module>sdk/databoxedge</module>
     <module>sdk/databricks</module>
@@ -73,6 +75,7 @@
     <module>sdk/dataprotection</module>
     <module>sdk/defendereasm</module>
     <module>sdk/delegatednetwork</module>
+    <module>sdk/dependencymap</module>
     <module>sdk/deploymentmanager</module>
     <module>sdk/desktopvirtualization</module>
     <module>sdk/devcenter</module>
@@ -86,6 +89,7 @@
     <module>sdk/digitaltwins</module>
     <module>sdk/dnsresolver</module>
     <module>sdk/documentintelligence</module>
+    <module>sdk/durabletask</module>
     <module>sdk/dynatrace</module>
     <module>sdk/easm</module>
     <module>sdk/edgeorder</module>
@@ -115,7 +119,9 @@
     <module>sdk/hybridkubernetes</module>
     <module>sdk/hybridnetwork</module>
     <module>sdk/identity</module>
+    <module>sdk/identity-v2</module>
     <module>sdk/imagebuilder</module>
+    <module>sdk/impactreporting</module>
     <module>sdk/informaticadatamanagement</module>
     <module>sdk/iotcentral</module>
     <module>sdk/iotfirmwaredefense</module>
@@ -125,13 +131,13 @@
     <module>sdk/kubernetesconfiguration</module>
     <module>sdk/kusto</module>
     <module>sdk/labservices</module>
+    <module>sdk/lambdatesthyperexecute</module>
     <module>sdk/largeinstance</module>
     <module>sdk/loadtesting</module>
     <module>sdk/loganalytics</module>
     <module>sdk/logic</module>
     <module>sdk/logz</module>
     <module>sdk/machinelearning</module>
-    <module>sdk/machinelearningservices</module>
     <module>sdk/maintenance</module>
     <module>sdk/managedapplications</module>
     <module>sdk/managednetworkfabric</module>
@@ -141,6 +147,7 @@
     <module>sdk/marketplaceordering</module>
     <module>sdk/mediaservices</module>
     <module>sdk/metricsadvisor</module>
+    <module>sdk/migration</module>
     <module>sdk/migrationdiscoverysap</module>
     <module>sdk/mixedreality</module>
     <module>sdk/mobilenetwork</module>
@@ -166,8 +173,10 @@
     <module>sdk/parents</module>
     <module>sdk/peering</module>
     <module>sdk/personalizer</module>
+    <module>sdk/pineconevectordb</module>
     <module>sdk/playwrighttesting</module>
     <module>sdk/policyinsights</module>
+    <module>sdk/portalservices</module>
     <module>sdk/postgresql</module>
     <module>sdk/postgresqlflexibleserver</module>
     <module>sdk/powerbidedicated</module>
@@ -213,7 +222,6 @@
     <module>sdk/storage</module>
     <module>sdk/storageactions</module>
     <module>sdk/storagecache</module>
-    <module>sdk/storageimportexport</module>
     <module>sdk/storagemover</module>
     <module>sdk/storagepool</module>
     <module>sdk/streamanalytics</module>
@@ -228,11 +236,11 @@
     <module>sdk/tools</module>
     <module>sdk/translation</module>
     <module>sdk/trustedsigning</module>
-    <module>sdk/videoanalyzer</module>
     <module>sdk/vision</module>
     <module>sdk/vmwarecloudsimple</module>
     <module>sdk/voiceservices</module>
     <module>sdk/webpubsub</module>
+    <module>sdk/weightsandbiases</module>
     <module>sdk/workloads</module>
     <module>sdk/workloadssapvirtualinstance</module>
   </modules>

@@ -23,6 +23,7 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.resourcemanager.workloadssapvirtualinstance.fluent.OperationsClient;
 import com.azure.resourcemanager.workloadssapvirtualinstance.fluent.SapApplicationServerInstancesClient;
 import com.azure.resourcemanager.workloadssapvirtualinstance.fluent.SapCentralServerInstancesClient;
 import com.azure.resourcemanager.workloadssapvirtualinstance.fluent.SapDatabaseInstancesClient;
@@ -127,6 +128,20 @@ public final class WorkloadsSapVirtualInstanceMgmtClientImpl implements Workload
     }
 
     /**
+     * The OperationsClient object to access its operations.
+     */
+    private final OperationsClient operations;
+
+    /**
+     * Gets the OperationsClient object to access its operations.
+     * 
+     * @return the OperationsClient object.
+     */
+    public OperationsClient getOperations() {
+        return this.operations;
+    }
+
+    /**
      * The SapVirtualInstancesClient object to access its operations.
      */
     private final SapVirtualInstancesClient sapVirtualInstances;
@@ -200,6 +215,7 @@ public final class WorkloadsSapVirtualInstanceMgmtClientImpl implements Workload
         this.endpoint = endpoint;
         this.subscriptionId = subscriptionId;
         this.apiVersion = "2024-09-01";
+        this.operations = new OperationsClientImpl(this);
         this.sapVirtualInstances = new SapVirtualInstancesClientImpl(this);
         this.sapCentralServerInstances = new SapCentralServerInstancesClientImpl(this);
         this.sapDatabaseInstances = new SapDatabaseInstancesClientImpl(this);

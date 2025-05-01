@@ -967,8 +967,8 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> getAudioTranscriptionAsResponseObjectWithResponse(String deploymentOrModelName,
         BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
-        // Protocol API requires serialization of parts with content-disposition and data, as operation
-        // 'getAudioTranscriptionAsResponseObject' is 'multipart/form-data'
+        // Operation 'getAudioTranscriptionAsResponseObject' is of content-type 'multipart/form-data'. Protocol API is
+        // not usable and hence not generated.
         return this.serviceClient.getAudioTranscriptionAsResponseObjectWithResponseAsync(deploymentOrModelName,
             audioTranscriptionOptions, requestOptions);
     }
@@ -1331,8 +1331,8 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> getAudioTranscriptionAsPlainTextWithResponse(String deploymentOrModelName,
         BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
-        // Protocol API requires serialization of parts with content-disposition and data, as operation
-        // 'getAudioTranscriptionAsPlainText' is 'multipart/form-data'
+        // Operation 'getAudioTranscriptionAsPlainText' is of content-type 'multipart/form-data'. Protocol API is not
+        // usable and hence not generated.
         return this.serviceClient.getAudioTranscriptionAsPlainTextWithResponseAsync(deploymentOrModelName,
             audioTranscriptionOptions, requestOptions);
     }
@@ -1383,8 +1383,8 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> getAudioTranslationAsResponseObjectWithResponse(String deploymentOrModelName,
         BinaryData audioTranslationOptions, RequestOptions requestOptions) {
-        // Protocol API requires serialization of parts with content-disposition and data, as operation
-        // 'getAudioTranslationAsResponseObject' is 'multipart/form-data'
+        // Operation 'getAudioTranslationAsResponseObject' is of content-type 'multipart/form-data'. Protocol API is not
+        // usable and hence not generated.
         return this.serviceClient.getAudioTranslationAsResponseObjectWithResponseAsync(deploymentOrModelName,
             audioTranslationOptions, requestOptions);
     }
@@ -1414,8 +1414,8 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> getAudioTranslationAsPlainTextWithResponse(String deploymentOrModelName,
         BinaryData audioTranslationOptions, RequestOptions requestOptions) {
-        // Protocol API requires serialization of parts with content-disposition and data, as operation
-        // 'getAudioTranslationAsPlainText' is 'multipart/form-data'
+        // Operation 'getAudioTranslationAsPlainText' is of content-type 'multipart/form-data'. Protocol API is not
+        // usable and hence not generated.
         return this.serviceClient.getAudioTranslationAsPlainTextWithResponseAsync(deploymentOrModelName,
             audioTranslationOptions, requestOptions);
     }
@@ -1633,7 +1633,10 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<AudioTranscription> getAudioTranscriptionAsResponseObject(String deploymentOrModelName,
         AudioTranscriptionOptions audioTranscriptionOptions) {
-        return getAudioTranscription(deploymentOrModelName, "filename", audioTranscriptionOptions);
+        String filename = CoreUtils.isNullOrEmpty(audioTranscriptionOptions.getFilename())
+            ? "filename"
+            : audioTranscriptionOptions.getFilename();
+        return getAudioTranscription(deploymentOrModelName, filename, audioTranscriptionOptions);
     }
 
     /**
@@ -1654,7 +1657,10 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<AudioTranslation> getAudioTranslationAsResponseObject(String deploymentOrModelName,
         AudioTranslationOptions audioTranslationOptions) {
-        return getAudioTranslation(deploymentOrModelName, "filename", audioTranslationOptions);
+        String filename = CoreUtils.isNullOrEmpty(audioTranslationOptions.getFilename())
+            ? "filename"
+            : audioTranslationOptions.getFilename();
+        return getAudioTranslation(deploymentOrModelName, filename, audioTranslationOptions);
     }
 
     /**
@@ -2326,34 +2332,6 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<OpenAIFile>> listFiles() {
         return listFiles(null);
-    }
-
-    /**
-     * Uploads a file for use by other operations.
-     *
-     * @param file The file data (not filename) to upload.
-     * @param purpose The intended purpose of the file.
-     * @param filename A filename to associate with the uploaded data.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an assistant that can call the model and use tools on successful completion of {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OpenAIFile> uploadFile(FileDetails file, FilePurpose purpose, String filename) {
-        RequestOptions requestOptions = new RequestOptions();
-        UploadFileRequest uploadFileRequestObj = new UploadFileRequest(file, purpose).setFilename(filename);
-        BinaryData uploadFileRequest = new MultipartFormDataHelper(requestOptions)
-            .serializeFileField("file", uploadFileRequestObj.getFile().getContent(),
-                uploadFileRequestObj.getFile().getContentType(), uploadFileRequestObj.getFile().getFilename())
-            .serializeTextField("purpose", Objects.toString(uploadFileRequestObj.getPurpose()))
-            .serializeTextField("filename", uploadFileRequestObj.getFilename())
-            .end()
-            .getRequestBody();
-        return uploadFileWithResponse(uploadFileRequest, requestOptions).flatMap(FluxUtil::toMono);
     }
 
     /**

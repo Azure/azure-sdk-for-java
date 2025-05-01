@@ -1,0 +1,58 @@
+# NOTE: Please refer to https://aka.ms/azsdk/engsys/ci-yaml before editing this file.
+
+trigger:
+  branches:
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/core-v2/
+      - sdk/parents/azure-client-sdk-parent-v2/
+
+pr:
+  branches:
+    include:
+      - main
+      - feature/*
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/core-v2/
+      - sdk/parents/azure-client-sdk-parent-v2/
+
+parameters:
+  - name: release_dependsonlivetests
+    displayName: 'Release depends on live tests'
+    type: boolean
+    default: true
+  - name: release_azurecore
+    displayName: 'azure-core'
+    type: boolean
+    default: true
+  - name: release_azurecoretest
+    displayName: 'azure-core-test'
+    type: boolean
+    default: true
+
+extends:
+  template: /eng/pipelines/templates/stages/archetype-sdk-client.yml
+  parameters:
+    ServiceDirectory: core-v2
+    TimeoutInMinutes: 90
+    ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
+    Artifacts:
+      - name: azure-core
+        groupId: com.azure.v2
+        safeName: azurecore
+        skipPublishDocMs: true
+        releaseInBatch: ${{ parameters.release_azurecore }}
+        triggeringPaths:
+        - /sdk/parents/azure-client-sdk-parent-v2
+      - name: azure-core-test
+        groupId: com.azure.v2
+        safeName: azurecoretest
+        skipPublishDocMs: true
+        releaseInBatch: ${{ parameters.release_azurecoretest }}

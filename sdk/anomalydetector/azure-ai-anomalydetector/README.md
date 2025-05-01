@@ -23,7 +23,7 @@ For more information about creating the resource or how to get the location and 
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-ai-anomalydetector</artifactId>
-  <version>3.0.0-beta.5</version>
+  <version>3.0.0-beta.6</version>
 </dependency>
 ```
 
@@ -61,7 +61,7 @@ with the Azure SDK, please include the `azure-identity` package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.14.2</version>
+    <version>1.15.3</version>
 </dependency>
 ```
 
@@ -241,4 +241,4 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [package]: https://central.sonatype.com/artifact/com.azure/azure-ai-anomalydetector
 [samples_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/anomalydetector/azure-ai-anomalydetector/src/samples/README.md
 [logging]: https://github.com/Azure/azure-sdk-for-java/wiki/Logging-in-Azure-SDK
-![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fanomalydetector%2Fazure-ai-anomalydetector%2FREADME.png)
+

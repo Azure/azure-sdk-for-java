@@ -13,17 +13,17 @@ public final class SnowflakeImportCopyCommandTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SnowflakeImportCopyCommand model = BinaryData.fromString(
-            "{\"type\":\"SnowflakeImportCopyCommand\",\"additionalCopyOptions\":{\"jozbdwf\":\"dataloxazywijbvqae\"},\"additionalFormatOptions\":{\"dletjiudcoktsgc\":\"datawliitaieledmiup\",\"grebecxuuzeuklu\":\"datapjlmsta\"},\"storageIntegration\":\"dataxejamychwwrv\",\"\":{\"nmgabfz\":\"dataxkttxvmbedvvmr\",\"hylzwzhlbp\":\"dataai\"}}")
+            "{\"type\":\"SnowflakeImportCopyCommand\",\"additionalCopyOptions\":{\"q\":\"datagpznbklhwutyuvu\",\"plnukdawgzhbwh\":\"datarfziubeflvktjbmc\",\"gxck\":\"datavonuhv\"},\"additionalFormatOptions\":{\"ocothsgxjc\":\"datao\"},\"storageIntegration\":\"datadajxebmliyrctf\",\"\":{\"nd\":\"datakukra\",\"dhjdwfnbiyxqr\":\"datahwdicntqsrhacjsb\",\"rqllugnxmbwdkz\":\"datauyffkayovljtrml\",\"pvpkvceiwcfshhc\":\"datawwbqukjithx\"}}")
             .toObject(SnowflakeImportCopyCommand.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SnowflakeImportCopyCommand model
-            = new SnowflakeImportCopyCommand().withAdditionalCopyOptions(mapOf("jozbdwf", "dataloxazywijbvqae"))
-                .withAdditionalFormatOptions(
-                    mapOf("dletjiudcoktsgc", "datawliitaieledmiup", "grebecxuuzeuklu", "datapjlmsta"))
-                .withStorageIntegration("dataxejamychwwrv");
+        SnowflakeImportCopyCommand model = new SnowflakeImportCopyCommand()
+            .withAdditionalCopyOptions(
+                mapOf("q", "datagpznbklhwutyuvu", "plnukdawgzhbwh", "datarfziubeflvktjbmc", "gxck", "datavonuhv"))
+            .withAdditionalFormatOptions(mapOf("ocothsgxjc", "datao"))
+            .withStorageIntegration("datadajxebmliyrctf");
         model = BinaryData.fromObject(model).toObject(SnowflakeImportCopyCommand.class);
     }
 

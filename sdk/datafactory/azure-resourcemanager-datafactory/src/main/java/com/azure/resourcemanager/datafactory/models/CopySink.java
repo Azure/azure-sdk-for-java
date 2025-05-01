@@ -288,6 +288,8 @@ public class CopySink implements JsonSerializable<CopySink> {
                     return OrcSink.fromJson(readerToUse.reset());
                 } else if ("RestSink".equals(discriminatorValue)) {
                     return RestSink.fromJson(readerToUse.reset());
+                } else if ("TeradataSink".equals(discriminatorValue)) {
+                    return TeradataSink.fromJson(readerToUse.reset());
                 } else if ("AzurePostgreSqlSink".equals(discriminatorValue)) {
                     return AzurePostgreSqlSink.fromJson(readerToUse.reset());
                 } else if ("AzureMySqlSink".equals(discriminatorValue)) {

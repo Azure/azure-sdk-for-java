@@ -36,8 +36,8 @@ class AzureEventHubsKafkaConfigurationTests {
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(AzureEventHubsKafkaOAuth2AutoConfiguration.class,
                 AzureEventHubsKafkaAutoConfiguration.class, AzureGlobalPropertiesAutoConfiguration.class,
-                AzureTokenCredentialAutoConfiguration.class, KafkaPropertiesConfiguration.class,
-                KafkaAutoConfiguration.class, AzureKafkaSpringCloudStreamConfiguration.class, KafkaBinderConfiguration.class));
+                AzureTokenCredentialAutoConfiguration.class, KafkaAutoConfiguration.class,
+                AzureKafkaSpringCloudStreamConfiguration.class, KafkaBinderConfiguration.class));
 
 
     @Test

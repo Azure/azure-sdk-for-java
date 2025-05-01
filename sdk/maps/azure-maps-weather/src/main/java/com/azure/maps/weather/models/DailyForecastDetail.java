@@ -17,7 +17,8 @@ import java.io.IOException;
 public final class DailyForecastDetail implements JsonSerializable<DailyForecastDetail> {
 
     /*
-     * Numeric value representing an image that displays the `iconPhrase`. Please refer to [Weather services in Azure Maps](/azure/azure-maps/weather-services-concepts#weather-icons) for details.
+     * Numeric value representing an image that displays the `iconPhrase`. Please refer to [Weather services in Azure
+     * Maps](/azure/azure-maps/weather-services-concepts#weather-icons) for details.
      */
     private IconCode iconCode;
 
@@ -32,12 +33,14 @@ public final class DailyForecastDetail implements JsonSerializable<DailyForecast
     private LocalSource localSource;
 
     /*
-     * Indicates the presence or absence of precipitation. True indicates the presence of precipitation, false indicates the absence of precipitation.
+     * Indicates the presence or absence of precipitation. True indicates the presence of precipitation, false indicates
+     * the absence of precipitation.
      */
     private Boolean hasPrecipitation;
 
     /*
-     * Specifies the type of precipitation ("Rain" "Snow" "Ice" or "Mix"). If dbz is zero, precipitationType is not present in the response.
+     * Specifies the type of precipitation ("Rain" "Snow" "Ice" or "Mix"). If dbz is zero, precipitationType is not
+     * present in the response.
      */
     private PrecipitationType precipitationType;
 
@@ -47,12 +50,16 @@ public final class DailyForecastDetail implements JsonSerializable<DailyForecast
     private String precipitationIntensity;
 
     /*
-     * Phrase description of the forecast in specified language. Azure Maps attempts to keep this phrase under 30 characters in length, but some languages/weather events may result in a longer phrase length, exceeding 30 characters.
+     * Phrase description of the forecast in specified language. Azure Maps attempts to keep this phrase under 30
+     * characters in length, but some languages/weather events may result in a longer phrase length, exceeding 30
+     * characters.
      */
     private String shortDescription;
 
     /*
-     * Phrase description of the forecast in specified language. Azure Maps attempts to keep this phrase under 100 characters in length, but some languages/weather events may result in a longer phrase length, exceeding 100 characters.
+     * Phrase description of the forecast in specified language. Azure Maps attempts to keep this phrase under 100
+     * characters in length, but some languages/weather events may result in a longer phrase length, exceeding 100
+     * characters.
      */
     private String longPhrase;
 
@@ -374,7 +381,7 @@ public final class DailyForecastDetail implements JsonSerializable<DailyForecast
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeNumberField("iconCode", this.iconCode == null ? null : this.iconCode.toInt());
+        jsonWriter.writeNumberField("iconCode", this.iconCode == null ? null : this.iconCode.getValue());
         jsonWriter.writeStringField("iconPhrase", this.iconPhrase);
         jsonWriter.writeJsonField("localSource", this.localSource);
         jsonWriter.writeBooleanField("hasPrecipitation", this.hasPrecipitation);
@@ -417,7 +424,7 @@ public final class DailyForecastDetail implements JsonSerializable<DailyForecast
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("iconCode".equals(fieldName)) {
-                    deserializedDailyForecastDetail.iconCode = IconCode.fromInt(reader.getInt());
+                    deserializedDailyForecastDetail.iconCode = IconCode.fromValue(reader.getInt());
                 } else if ("iconPhrase".equals(fieldName)) {
                     deserializedDailyForecastDetail.iconPhrase = reader.getString();
                 } else if ("localSource".equals(fieldName)) {

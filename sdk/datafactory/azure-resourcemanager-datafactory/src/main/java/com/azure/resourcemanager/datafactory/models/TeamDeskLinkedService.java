@@ -51,7 +51,7 @@ public final class TeamDeskLinkedService extends LinkedService {
      * 
      * @return the innerTypeProperties value.
      */
-    private TeamDeskLinkedServiceTypeProperties innerTypeProperties() {
+    TeamDeskLinkedServiceTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 

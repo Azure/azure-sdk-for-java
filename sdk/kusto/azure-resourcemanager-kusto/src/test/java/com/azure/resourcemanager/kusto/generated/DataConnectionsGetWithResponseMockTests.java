@@ -21,7 +21,7 @@ public final class DataConnectionsGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"kind\":\"DataConnection\",\"location\":\"hqxu\",\"id\":\"yvca\",\"name\":\"oyvivbsiz\",\"type\":\"sjsz\"}";
+            = "{\"kind\":\"DataConnection\",\"location\":\"xk\",\"id\":\"y\",\"name\":\"jjk\",\"type\":\"ajb\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
@@ -31,9 +31,9 @@ public final class DataConnectionsGetWithResponseMockTests {
                 new AzureProfile("", "", AzureEnvironment.AZURE));
 
         DataConnection response = manager.dataConnections()
-            .getWithResponse("yypsjoqc", "enky", "fq", "vsqxfxjelgcmpzqj", com.azure.core.util.Context.NONE)
+            .getWithResponse("hurql", "qffawey", "rkphyjdxr", "vjuqdbrxmrgchb", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("hqxu", response.location());
+        Assertions.assertEquals("xk", response.location());
     }
 }

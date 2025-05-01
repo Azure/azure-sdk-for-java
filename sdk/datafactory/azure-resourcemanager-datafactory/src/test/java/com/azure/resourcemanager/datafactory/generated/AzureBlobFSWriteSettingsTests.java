@@ -13,18 +13,17 @@ public final class AzureBlobFSWriteSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureBlobFSWriteSettings model = BinaryData.fromString(
-            "{\"type\":\"AzureBlobFSWriteSettings\",\"blockSizeInMB\":\"dataikedmou\",\"maxConcurrentConnections\":\"datauqo\",\"disableMetricsCollection\":\"dataic\",\"copyBehavior\":\"datayjszmleuqxhmrilw\",\"metadata\":[{\"name\":\"datasvpv\",\"value\":\"dataulxxznfxdqqzi\"},{\"name\":\"datagwqi\",\"value\":\"datadhas\"}],\"\":{\"tdmhr\":\"dataaexrzxvffqc\"}}")
+            "{\"type\":\"AzureBlobFSWriteSettings\",\"blockSizeInMB\":\"datauabqb\",\"maxConcurrentConnections\":\"datarb\",\"disableMetricsCollection\":\"datatszb\",\"copyBehavior\":\"dataxnjorvpcoxdlppu\",\"metadata\":[{\"name\":\"datanpclnmjkydh\",\"value\":\"datafivoz\"}],\"\":{\"x\":\"datarikwiucvvr\",\"ctrwrvnsc\":\"databjgozoelamerp\",\"jlgxrsnbtrooa\":\"dataacbrywqqeztlf\"}}")
             .toObject(AzureBlobFSWriteSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureBlobFSWriteSettings model = new AzureBlobFSWriteSettings().withMaxConcurrentConnections("datauqo")
-            .withDisableMetricsCollection("dataic")
-            .withCopyBehavior("datayjszmleuqxhmrilw")
-            .withMetadata(Arrays.asList(new MetadataItem().withName("datasvpv").withValue("dataulxxznfxdqqzi"),
-                new MetadataItem().withName("datagwqi").withValue("datadhas")))
-            .withBlockSizeInMB("dataikedmou");
+        AzureBlobFSWriteSettings model = new AzureBlobFSWriteSettings().withMaxConcurrentConnections("datarb")
+            .withDisableMetricsCollection("datatszb")
+            .withCopyBehavior("dataxnjorvpcoxdlppu")
+            .withMetadata(Arrays.asList(new MetadataItem().withName("datanpclnmjkydh").withValue("datafivoz")))
+            .withBlockSizeInMB("datauabqb");
         model = BinaryData.fromObject(model).toObject(AzureBlobFSWriteSettings.class);
     }
 }

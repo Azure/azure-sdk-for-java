@@ -11,19 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class InitialReplicationDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InitialReplicationDetails model = BinaryData
-            .fromString("{\"initialReplicationType\":\"pqbye\",\"initialReplicationProgressPercentage\":\"wy\"}")
+        InitialReplicationDetails model = BinaryData.fromString(
+            "{\"initialReplicationType\":\"kajlcyizy\",\"initialReplicationProgressPercentage\":\"cvxodkrvfsxxby\"}")
             .toObject(InitialReplicationDetails.class);
-        Assertions.assertEquals("pqbye", model.initialReplicationType());
-        Assertions.assertEquals("wy", model.initialReplicationProgressPercentage());
+        Assertions.assertEquals("kajlcyizy", model.initialReplicationType());
+        Assertions.assertEquals("cvxodkrvfsxxby", model.initialReplicationProgressPercentage());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InitialReplicationDetails model = new InitialReplicationDetails().withInitialReplicationType("pqbye")
-            .withInitialReplicationProgressPercentage("wy");
+        InitialReplicationDetails model = new InitialReplicationDetails().withInitialReplicationType("kajlcyizy")
+            .withInitialReplicationProgressPercentage("cvxodkrvfsxxby");
         model = BinaryData.fromObject(model).toObject(InitialReplicationDetails.class);
-        Assertions.assertEquals("pqbye", model.initialReplicationType());
-        Assertions.assertEquals("wy", model.initialReplicationProgressPercentage());
+        Assertions.assertEquals("kajlcyizy", model.initialReplicationType());
+        Assertions.assertEquals("cvxodkrvfsxxby", model.initialReplicationProgressPercentage());
     }
 }

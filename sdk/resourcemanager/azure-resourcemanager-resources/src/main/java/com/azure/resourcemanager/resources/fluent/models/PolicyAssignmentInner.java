@@ -46,9 +46,9 @@ public final class PolicyAssignmentInner extends ProxyResource {
     private SystemData systemData;
 
     /*
-     * Fully qualified resource Id for the resource.
+     * The type of the resource.
      */
-    private String id;
+    private String type;
 
     /*
      * The name of the resource.
@@ -56,9 +56,9 @@ public final class PolicyAssignmentInner extends ProxyResource {
     private String name;
 
     /*
-     * The type of the resource.
+     * Fully qualified resource Id for the resource.
      */
-    private String type;
+    private String id;
 
     /**
      * Creates an instance of PolicyAssignmentInner class.
@@ -125,13 +125,13 @@ public final class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Get the id property: Fully qualified resource Id for the resource.
+     * Get the type property: The type of the resource.
      * 
-     * @return the id value.
+     * @return the type value.
      */
     @Override
-    public String id() {
-        return this.id;
+    public String type() {
+        return this.type;
     }
 
     /**
@@ -145,13 +145,13 @@ public final class PolicyAssignmentInner extends ProxyResource {
     }
 
     /**
-     * Get the type property: The type of the resource.
+     * Get the id property: Fully qualified resource Id for the resource.
      * 
-     * @return the type value.
+     * @return the id value.
      */
     @Override
-    public String type() {
-        return this.type;
+    public String id() {
+        return this.id;
     }
 
     /**
@@ -198,6 +198,49 @@ public final class PolicyAssignmentInner extends ProxyResource {
         }
         this.innerProperties().withPolicyDefinitionId(policyDefinitionId);
         return this;
+    }
+
+    /**
+     * Get the definitionVersion property: The version of the policy definition to use.
+     * 
+     * @return the definitionVersion value.
+     */
+    public String definitionVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().definitionVersion();
+    }
+
+    /**
+     * Set the definitionVersion property: The version of the policy definition to use.
+     * 
+     * @param definitionVersion the definitionVersion value to set.
+     * @return the PolicyAssignmentInner object itself.
+     */
+    public PolicyAssignmentInner withDefinitionVersion(String definitionVersion) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PolicyAssignmentProperties();
+        }
+        this.innerProperties().withDefinitionVersion(definitionVersion);
+        return this;
+    }
+
+    /**
+     * Get the latestDefinitionVersion property: The latest version of the policy definition available. This is only
+     * present if requested via the $expand query parameter.
+     * 
+     * @return the latestDefinitionVersion value.
+     */
+    public String latestDefinitionVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().latestDefinitionVersion();
+    }
+
+    /**
+     * Get the effectiveDefinitionVersion property: The effective version of the policy definition in use. This is only
+     * present if requested via the $expand query parameter.
+     * 
+     * @return the effectiveDefinitionVersion value.
+     */
+    public String effectiveDefinitionVersion() {
+        return this.innerProperties() == null ? null : this.innerProperties().effectiveDefinitionVersion();
     }
 
     /**

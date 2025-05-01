@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.ContentTypeContract;
@@ -21,29 +21,29 @@ public final class ContentTypesCreateOrUpdateWithResponseMockTests {
     @Test
     public void testCreateOrUpdateWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"id\":\"yhenfsfyqncowmh\",\"name\":\"zfbywji\",\"description\":\"osladagwaakktbj\",\"schema\":\"datatztkajqhsnse\",\"version\":\"lislxyljzbkd\"},\"id\":\"lfjwxgvtkjctv\",\"name\":\"peawzzkvfccozv\",\"type\":\"xsp\"}";
+            = "{\"properties\":{\"id\":\"saqhvia\",\"name\":\"q\",\"description\":\"uhv\",\"schema\":\"datafznfgpbc\",\"version\":\"c\"},\"id\":\"ympdjieas\",\"name\":\"lkqcln\",\"type\":\"usrgno\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         ContentTypeContract response = manager.contentTypes()
-            .define("nrjocogwf")
-            .withExistingService("klmnjqzmqynhitr", "wqgqrbthbfpi")
-            .withIdPropertiesId("wzrqeia")
-            .withNamePropertiesName("pkhuvnlmdcnut")
-            .withDescription("xmi")
-            .withSchema("datanzbqvioynctfq")
-            .withVersion("vvwzprjaaaiaib")
-            .withIfMatch("v")
+            .define("moub")
+            .withExistingService("rfe", "zunbua")
+            .withIdPropertiesId("mi")
+            .withNamePropertiesName("z")
+            .withDescription("obvveq")
+            .withSchema("datayt")
+            .withVersion("gzdhzbjec")
+            .withIfMatch("sfqeaxdqel")
             .create();
 
-        Assertions.assertEquals("yhenfsfyqncowmh", response.idPropertiesId());
-        Assertions.assertEquals("zfbywji", response.namePropertiesName());
-        Assertions.assertEquals("osladagwaakktbj", response.description());
-        Assertions.assertEquals("lislxyljzbkd", response.version());
+        Assertions.assertEquals("saqhvia", response.idPropertiesId());
+        Assertions.assertEquals("q", response.namePropertiesName());
+        Assertions.assertEquals("uhv", response.description());
+        Assertions.assertEquals("c", response.version());
     }
 }

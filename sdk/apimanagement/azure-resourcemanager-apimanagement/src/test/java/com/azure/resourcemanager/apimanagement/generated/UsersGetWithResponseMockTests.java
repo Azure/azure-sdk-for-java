@@ -6,8 +6,8 @@ package com.azure.resourcemanager.apimanagement.generated;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
+import com.azure.core.models.AzureCloud;
 import com.azure.core.test.http.MockHttpResponse;
 import com.azure.resourcemanager.apimanagement.ApiManagementManager;
 import com.azure.resourcemanager.apimanagement.models.UserContract;
@@ -22,26 +22,26 @@ public final class UsersGetWithResponseMockTests {
     @Test
     public void testGetWithResponse() throws Exception {
         String responseStr
-            = "{\"properties\":{\"firstName\":\"mrwc\",\"lastName\":\"njcvew\",\"email\":\"jrnaktj\",\"registrationDate\":\"2021-12-05T19:47:47Z\",\"groups\":[{\"displayName\":\"ahh\",\"description\":\"jchhrrxmcztrqnua\",\"builtIn\":false,\"type\":\"external\",\"externalId\":\"brbdujpsh\"}],\"state\":\"deleted\",\"note\":\"vrycyulwzjor\",\"identities\":[{\"provider\":\"kkelesbjck\",\"id\":\"cybrlwd\"},{\"provider\":\"sdfslaektn\",\"id\":\"ylipvqpqumexnpoa\"}]},\"id\":\"ruywfhltwlzlm\",\"name\":\"iprlcgqewmnwyhq\",\"type\":\"ybmkmxusm\"}";
+            = "{\"properties\":{\"firstName\":\"wpmrlgjjqsxfptv\",\"lastName\":\"vrejkvc\",\"email\":\"qbrdwf\",\"registrationDate\":\"2021-11-25T18:20:15Z\",\"groups\":[{\"displayName\":\"c\",\"description\":\"faycbvgotbjnx\",\"builtIn\":false,\"type\":\"custom\",\"externalId\":\"npovflxluvms\"},{\"displayName\":\"disupn\",\"description\":\"huozdvokxuyh\",\"builtIn\":true,\"type\":\"system\",\"externalId\":\"bqeahgsibldxyaq\"}],\"state\":\"active\",\"note\":\"nzaxzfhhhgyxkgnr\",\"identities\":[{\"provider\":\"fdxauihnb\",\"id\":\"hkdwyehqnxuffgj\"}]},\"id\":\"nmin\",\"name\":\"vdkqigppdqsqs\",\"type\":\"p\"}";
 
         HttpClient httpClient
             = response -> Mono.just(new MockHttpResponse(response, 200, responseStr.getBytes(StandardCharsets.UTF_8)));
         ApiManagementManager manager = ApiManagementManager.configure()
             .withHttpClient(httpClient)
             .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                new AzureProfile("", "", AzureEnvironment.AZURE));
+                new AzureProfile("", "", AzureCloud.AZURE_PUBLIC_CLOUD));
 
         UserContract response = manager.users()
-            .getWithResponse("eolghgte", "tyxlsycckj", "qdtykcaocjuuxqnk", com.azure.core.util.Context.NONE)
+            .getWithResponse("zukbwypcvqfzvyo", "gerizflwlk", "vopqpfcdpy", com.azure.core.util.Context.NONE)
             .getValue();
 
-        Assertions.assertEquals("mrwc", response.firstName());
-        Assertions.assertEquals("njcvew", response.lastName());
-        Assertions.assertEquals("jrnaktj", response.email());
-        Assertions.assertEquals(OffsetDateTime.parse("2021-12-05T19:47:47Z"), response.registrationDate());
-        Assertions.assertEquals(UserState.DELETED, response.state());
-        Assertions.assertEquals("vrycyulwzjor", response.note());
-        Assertions.assertEquals("kkelesbjck", response.identities().get(0).provider());
-        Assertions.assertEquals("cybrlwd", response.identities().get(0).id());
+        Assertions.assertEquals("wpmrlgjjqsxfptv", response.firstName());
+        Assertions.assertEquals("vrejkvc", response.lastName());
+        Assertions.assertEquals("qbrdwf", response.email());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-11-25T18:20:15Z"), response.registrationDate());
+        Assertions.assertEquals(UserState.ACTIVE, response.state());
+        Assertions.assertEquals("nzaxzfhhhgyxkgnr", response.note());
+        Assertions.assertEquals("fdxauihnb", response.identities().get(0).provider());
+        Assertions.assertEquals("hkdwyehqnxuffgj", response.identities().get(0).id());
     }
 }

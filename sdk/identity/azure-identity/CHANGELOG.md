@@ -1,6 +1,6 @@
 # Release History
 
-## 1.16.0-beta.1 (Unreleased)
+## 1.16.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,57 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+- Marked `VisualStudioCodeCredential` and `VisualStudioCodeCredentialBuilder` as deprecated.[#44527](https://github.com/Azure/azure-sdk-for-java/issues/44527)
+
+## 1.16.0-beta.1 (2025-03-13)
+
+### Features Added
+- Added support to specify `subscription` ID or name on `AzureCliCredentialBuilder`. [#44123](https://github.com/Azure/azure-sdk-for-java/pull/44123)
+- Log the client, object, or resource ID of the user-assigned managed identity. [#44305](https://github.com/Azure/azure-sdk-for-java/pull/44305)
+
+### Other Changes
+
+ - Marked `UsernamePasswordCredential` and `UsernamePasswordCredentialBuilder` as deprecated. See https://aka.ms/azsdk/identity/mfa for details about MFA enforcement and migration guidance. [#44381](https://github.com/Azure/azure-sdk-for-java/pull/44381)  
+
+## 1.15.4 (2025-03-11)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.55.2` to version `1.55.3`.
+- Upgraded `azure-core-http-netty` from `1.15.10` to version `1.15.11`.
+- Upgraded `azure-json` from `1.4.0` to version `1.5.0`.
+- Upgraded `msal4j` from `1.19.0` to version `1.19.1`.
+
+## 1.15.3 (2025-02-20)
+
+### Other Changes
+
+## Dependency Updates
+
+- Upgraded `azure-core` from `1.55.1` to version `1.55.2`.
+- Upgraded `azure-core-http-netty` from `1.15.9` to version `1.15.10`.
+
+## 1.15.2 (2025-02-13)
+
+### Other Changes
+
+- Upgraded `azure-core` from `1.55.0` to version `1.55.1`.
+- Upgraded `azure-core-http-netty` from `1.15.8` to version `1.15.9`.
+
+## 1.15.1 (2025-02-07)
+
+### Bugs Fixed
+
+- Fixed an issue preventing scopes with underscores from working properly. [#44040](https://github.com/Azure/azure-sdk-for-java/pull/44040)
+
+### Other Changes
+
+- Upgraded `azure-core` from `1.54.1` to version `1.55.0`.
+- Upgraded `azure-core-http-netty` from `1.15.7` to version `1.15.8`.
+- Upgraded `msal4j` from `1.17.1` to version `1.19.0`.
 
 ## 1.15.0 (2025-01-10)
 

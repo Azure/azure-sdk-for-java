@@ -55,7 +55,7 @@ The package is not part of the `azure-sdk-bom` now, so it can only be included v
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity-extensions</artifactId>
-    <version>1.1.17</version> 
+    <version>1.3.0-beta.1</version> 
 </dependency>
 ```
 
@@ -257,22 +257,23 @@ Connection connection=DriverManager.getConnection(url,properties);
 
 ## JDBC Parameters
 
-| Parameter Key                          | Description|
-|----------------------------------------|---|
-| azure.clientId                         |Client ID to use when performing service principal authentication with Azure.|
-| azure.clientSecret                     |Client secret to use when performing service principal authentication with Azure.|
-| azure.clientCertificatePath            |Path of a PEM/PFX certificate file to use when performing service principal authentication with Azure.|
-| azure.clientCertificatePassword        |Password of the certificate file.|
-| azure.username                         |Username to use when performing username/password authentication with Azure.|
-| azure.password                         |Password to use when performing username/password authentication with Azure.|
-| azure.managedIdentityEnabled           |Whether to enable managed identity to authenticate with Azure.|
-| azure.authorityHost                    |The well known authority hosts for the Azure Public Cloud and sovereign clouds.|
-| azure.tenantId                         |Tenant ID for Azure resources.|
-| azure.claims                           |Claims for Azure resources.|
-| azure.scopes                           |Scopes for Azure resources.|
-| azure.accessTokenTimeoutInSeconds      |Max time to get an access token.|
-| azure.tokenCredentialProviderClassName |The canonical class name of a class that implements 'TokenCredentialProvider'.|
-| azure.tokenCredentialBeanName          |The given bean name of a TokenCredential bean in the Spring context.|
+| Parameter Key                          | Description                                                                                            |
+|----------------------------------------|--------------------------------------------------------------------------------------------------------|
+| azure.clientId                         | Client ID to use when performing service principal authentication with Azure.                          |
+| azure.clientSecret                     | Client secret to use when performing service principal authentication with Azure.                      |
+| azure.clientCertificatePath            | Path of a PEM/PFX certificate file to use when performing service principal authentication with Azure. |
+| azure.clientCertificatePassword        | Password of the certificate file.                                                                      |
+| azure.username                         | Username to use when performing username/password authentication with Azure.                           |
+| azure.password                         | Password to use when performing username/password authentication with Azure.                           |
+| azure.managedIdentityEnabled           | Whether to enable managed identity to authenticate with Azure.                                         |
+| azure.authorityHost                    | The well known authority hosts for the Azure Public Cloud and sovereign clouds.                        |
+| azure.tenantId                         | Tenant ID for Azure resources.                                                                         |
+| azure.claims                           | Claims for Azure resources.                                                                            |
+| azure.scopes                           | Scopes for Azure resources.                                                                            |
+| azure.accessTokenTimeoutInSeconds      | Max time to get an access token. The default value is `30` seconds.                                    |
+| azure.tokenCredentialProviderClassName | The canonical class name of a class that implements 'TokenCredentialProvider'.                         |
+| azure.tokenCredentialBeanName          | The given bean name of a TokenCredential bean in the Spring context.                                   |
+| azure.tokenCredentialCacheEnabled      | Whether to enable the token credential cache. Enabled by default.                                      |
 
 ## Troubleshooting
 

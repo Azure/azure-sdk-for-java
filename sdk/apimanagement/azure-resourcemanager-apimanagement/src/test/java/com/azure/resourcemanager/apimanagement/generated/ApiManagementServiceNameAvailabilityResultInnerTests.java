@@ -13,16 +13,16 @@ public final class ApiManagementServiceNameAvailabilityResultInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         ApiManagementServiceNameAvailabilityResultInner model
-            = BinaryData.fromString("{\"nameAvailable\":true,\"message\":\"ap\",\"reason\":\"Invalid\"}")
+            = BinaryData.fromString("{\"nameAvailable\":false,\"message\":\"xjn\",\"reason\":\"AlreadyExists\"}")
                 .toObject(ApiManagementServiceNameAvailabilityResultInner.class);
-        Assertions.assertEquals(NameAvailabilityReason.INVALID, model.reason());
+        Assertions.assertEquals(NameAvailabilityReason.ALREADY_EXISTS, model.reason());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ApiManagementServiceNameAvailabilityResultInner model
-            = new ApiManagementServiceNameAvailabilityResultInner().withReason(NameAvailabilityReason.INVALID);
+            = new ApiManagementServiceNameAvailabilityResultInner().withReason(NameAvailabilityReason.ALREADY_EXISTS);
         model = BinaryData.fromObject(model).toObject(ApiManagementServiceNameAvailabilityResultInner.class);
-        Assertions.assertEquals(NameAvailabilityReason.INVALID, model.reason());
+        Assertions.assertEquals(NameAvailabilityReason.ALREADY_EXISTS, model.reason());
     }
 }

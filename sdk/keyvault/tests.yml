@@ -7,7 +7,6 @@ extends:
     TestResourceDirectories:
       - keyvault/test-resources
     TimeoutInMinutes: 240
-    SupportedClouds: 'Public,UsGov,China'
     EnvVars:
       AZURE_LOG_LEVEL: 2
     CloudConfig:
@@ -15,12 +14,6 @@ extends:
         ${{ if not(contains(variables['Build.DefinitionName'], 'tests-weekly')) }}:
           MatrixFilters:
             - ArmTemplateParameters=^(?!.*enableHsm.*true)
-      UsGov:
-        MatrixFilters:
-          - ArmTemplateParameters=^(?!.*enableHsm.*true)
-      China:
-        MatrixFilters:
-          - ArmTemplateParameters=^(?!.*enableHsm.*true)
     MatrixConfigs:
       - Name: Key_Vault_live_test
         Path: sdk/keyvault/platform-matrix.json

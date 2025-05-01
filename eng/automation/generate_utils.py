@@ -20,6 +20,7 @@ from utils import update_service_files_for_new_lib
 from utils import update_root_pom
 from utils import update_version
 from utils import is_windows
+from utils import set_or_increase_version
 
 os.chdir(pwd)
 
@@ -333,6 +334,10 @@ def generate_typespec_project(
     repo_url: str = "",
     remove_before_regen: bool = False,
     group_id: str = None,
+    api_version: str = None,
+    generate_beta_sdk: bool = True,
+    version: str = None,  # SDK version
+    **kwargs,
 ):
 
     if not tsp_project:
@@ -363,7 +368,7 @@ def generate_typespec_project(
                 tsp_project,
             ]
         else:
-            # sdk automation
+            # sdk automation/self serve
             tsp_dir = os.path.join(spec_root, tsp_project) if spec_root else tsp_project
             tspconfig_valid = validate_tspconfig(tsp_dir)
             repo = remove_prefix(repo_url, "https://github.com/")
@@ -411,6 +416,15 @@ def generate_typespec_project(
                     # clear existing generated source code, and regenerate
                     drop_changes(sdk_root)
                     remove_generated_source_code(sdk_folder, f"{group_id}.{service}")
+                    _, current_version = set_or_increase_version(
+                        sdk_root, group_id, module, version=version, preview=generate_beta_sdk
+                    )
+                    tsp_cmd.append("--emitter-options")
+                    emitter_options = f"package-version={current_version}"
+                    # currently for self-serve, may also need it in regular generation
+                    if api_version:
+                        emitter_options += f";api-version={api_version}"
+                    tsp_cmd.append(emitter_options)
                     # regenerate
                     check_call(tsp_cmd, sdk_root)
                 succeeded = True
@@ -443,7 +457,7 @@ def check_call(cmd: List[str], work_dir: str, shell: bool = False):
 
 
 def drop_changes(work_dir: str):
-    check_call(["git", "checkout", "--", "."], work_dir)
+    check_call(["git", "reset", "--hard", "-q"], work_dir)
     check_call(["git", "clean", "-qf", "."], work_dir)
 
 

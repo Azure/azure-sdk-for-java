@@ -256,6 +256,29 @@ public final class VirtualMachineInner extends Resource {
     }
 
     /**
+     * Get the consoleExtendedLocation property: The extended location to use for creation of a VM console resource.
+     * 
+     * @return the consoleExtendedLocation value.
+     */
+    public ExtendedLocation consoleExtendedLocation() {
+        return this.innerProperties() == null ? null : this.innerProperties().consoleExtendedLocation();
+    }
+
+    /**
+     * Set the consoleExtendedLocation property: The extended location to use for creation of a VM console resource.
+     * 
+     * @param consoleExtendedLocation the consoleExtendedLocation value to set.
+     * @return the VirtualMachineInner object itself.
+     */
+    public VirtualMachineInner withConsoleExtendedLocation(ExtendedLocation consoleExtendedLocation) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualMachineProperties();
+        }
+        this.innerProperties().withConsoleExtendedLocation(consoleExtendedLocation);
+        return this;
+    }
+
+    /**
      * Get the cpuCores property: The number of CPU cores in the virtual machine.
      * 
      * @return the cpuCores value.

@@ -3,6 +3,7 @@
 
 package com.azure.ai.openai;
 
+import com.azure.ai.openai.models.AudioResponseData;
 import com.azure.ai.openai.models.AudioTaskLabel;
 import com.azure.ai.openai.models.AudioTranscriptionFormat;
 import com.azure.ai.openai.models.AudioTranscriptionTimestampGranularity;
@@ -32,6 +33,7 @@ import com.azure.ai.openai.models.CompletionsOptions;
 import com.azure.ai.openai.models.CompletionsUsage;
 import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.FileDeletionStatus;
+import com.azure.ai.openai.models.FileDetails;
 import com.azure.ai.openai.models.FilePurpose;
 import com.azure.ai.openai.models.FileState;
 import com.azure.ai.openai.models.FunctionCall;
@@ -100,11 +102,24 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
         getCompletionsRunner((deploymentId, prompt) -> {
             StepVerifier.create(client.getCompletionsStream(deploymentId, new CompletionsOptions(prompt)))
                 .recordWith(ArrayList::new)
-                .thenConsumeWhile(chatCompletions -> {
-                    assertCompletionsStream(chatCompletions);
-                    return true;
+                .thenConsumeWhile(completions -> true)
+                .consumeRecordedWith(messageList -> {
+                    assertTrue(messageList.size() > 1);
+
+                    Object[] result = messageList.stream().toArray();
+                    Completions[] completionsArray = Arrays.copyOf(result, result.length, Completions[].class);
+
+                    assertTrue(completionsArray.length > 1);
+                    // First element returns the prompt filter results (no output tokens are present)
+                    assertFalse(CoreUtils.isNullOrEmpty(completionsArray[0].getPromptFilterResults()));
+                    // Choices (output tokens) are present in all the elements in between
+                    for (int i = 1; i < completionsArray.length - 2; i++) {
+                        assertCompletionsStream(completionsArray[i]);
+                    }
+
+                    // Last element returns the completion tokens (no output tokens are present)
+                    assertNotNull(completionsArray[completionsArray.length - 1].getUsage());
                 })
-                .consumeRecordedWith(messageList -> assertTrue(messageList.size() > 1))
                 .verifyComplete();
         });
     }
@@ -226,6 +241,130 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                     assertChatCompletions(1, resultChatCompletions);
                 })
                 .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsTextPromptAudioResponse(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        getChatCompletionsWithTextPromptAudioResponse((deploymentId, options) -> {
+            StepVerifier.create(client.getChatCompletions(deploymentId, options)).assertNext(chatCompletions -> {
+                ChatChoice choice = chatCompletions.getChoices().get(0);
+                ChatResponseMessage message = choice.getMessage();
+
+                // Assert that the message has content
+                assertEquals(ChatRole.ASSISTANT, message.getRole());
+                AudioResponseData audioResponse = message.getAudio();
+                assertNotNull(audioResponse);
+                assertFalse(CoreUtils.isNullOrEmpty(audioResponse.getId()));
+                assertFalse(CoreUtils.isNullOrEmpty(audioResponse.getData()));
+                assertFalse(CoreUtils.isNullOrEmpty(audioResponse.getTranscript()));
+                assertNotNull(audioResponse.getExpiresAt());
+
+                // Assert finish reason
+                assertEquals(CompletionsFinishReason.STOPPED, choice.getFinishReason());
+                CompletionsUsage usage = chatCompletions.getUsage();
+
+                // assert that we only used audio tokens for the response
+                assertNotNull(usage);
+                assertNotNull(usage.getPromptTokensDetails());
+                assertNotNull(usage.getCompletionTokensDetails());
+
+                assertEquals(0, usage.getPromptTokensDetails().getAudioTokens());
+                assertTrue(usage.getCompletionTokensDetails().getAudioTokens() > 0);
+            }).verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsAudioPromptAudioResponse(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        getChatCompletionsWithAudioPromptAudioResponse((deploymentId, options) -> {
+            StepVerifier.create(client.getChatCompletions(deploymentId, options)).assertNext(chatCompletions -> {
+                ChatChoice choice = chatCompletions.getChoices().get(0);
+                ChatResponseMessage message = choice.getMessage();
+
+                // Assert that the message has content
+                assertEquals(ChatRole.ASSISTANT, message.getRole());
+                AudioResponseData audioResponse = message.getAudio();
+                assertNotNull(audioResponse);
+                assertFalse(CoreUtils.isNullOrEmpty(audioResponse.getId()));
+                assertFalse(CoreUtils.isNullOrEmpty(audioResponse.getData()));
+                assertFalse(CoreUtils.isNullOrEmpty(audioResponse.getTranscript()));
+                assertNotNull(audioResponse.getExpiresAt());
+
+                // Assert finish reason
+                assertEquals(CompletionsFinishReason.STOPPED, choice.getFinishReason());
+                CompletionsUsage usage = chatCompletions.getUsage();
+
+                // assert that we only used audio tokens for the response
+                assertNotNull(usage);
+                assertNotNull(usage.getPromptTokensDetails());
+                assertNotNull(usage.getCompletionTokensDetails());
+
+                assertTrue(usage.getPromptTokensDetails().getAudioTokens() > 0);
+                assertTrue(usage.getCompletionTokensDetails().getAudioTokens() > 0);
+            }).verifyComplete();
+        });
+    }
+
+    @Disabled("There is no instance supporting this feature yet")
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsReasoningEffortLow(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        getChatCompletionsWithReasoningEffortForAzure((deploymentId, options) -> {
+            StepVerifier.create(client.getChatCompletions(deploymentId, options)).assertNext(chatCompletions -> {
+                ChatChoice choice = chatCompletions.getChoices().get(0);
+                ChatResponseMessage message = choice.getMessage();
+
+                // Assert that the message has content
+                assertEquals(ChatRole.ASSISTANT, message.getRole());
+                assertFalse(CoreUtils.isNullOrEmpty(message.getContent()));
+
+                // Assert finish reason
+                assertEquals(CompletionsFinishReason.STOPPED, choice.getFinishReason());
+                CompletionsUsage usage = chatCompletions.getUsage();
+
+                // assert that we only used audio tokens for the response
+                assertNotNull(usage);
+                assertNotNull(usage.getPromptTokensDetails());
+                assertNotNull(usage.getCompletionTokensDetails());
+
+                assertTrue(usage.getCompletionTokensDetails().getReasoningTokens() > 0);
+            }).verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testGetChatCompletionsPrediction(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        getChatCompletionsWithPredictionForAzure((deploymentId, options) -> {
+            StepVerifier.create(client.getChatCompletions(deploymentId, options)).assertNext(chatCompletions -> {
+                ChatChoice choice = chatCompletions.getChoices().get(0);
+                ChatResponseMessage message = choice.getMessage();
+
+                // Assert that the message has content
+                assertEquals(ChatRole.ASSISTANT, message.getRole());
+                assertFalse(CoreUtils.isNullOrEmpty(message.getContent()));
+
+                // Assert finish reason
+                assertEquals(CompletionsFinishReason.STOPPED, choice.getFinishReason());
+                CompletionsUsage usage = chatCompletions.getUsage();
+
+                // assert that we only used audio tokens for the response
+                assertNotNull(usage);
+                assertNotNull(usage.getPromptTokensDetails());
+                assertNotNull(usage.getCompletionTokensDetails());
+
+                assertTrue(usage.getCompletionTokensDetails().getAcceptedPredictionTokens() > 0);
+                assertTrue(usage.getCompletionTokensDetails().getRejectedPredictionTokens() > 0);
+            }).verifyComplete();
         });
     }
 
@@ -567,13 +706,9 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
             CompletionsOptions completionsOptions = new CompletionsOptions(Arrays.asList(prompt));
             StepVerifier.create(client.getCompletionsStream(modelId, completionsOptions))
                 .recordWith(ArrayList::new)
-                .thenConsumeWhile(chatCompletions -> {
-                    assertCompletionsStream(chatCompletions);
-                    return true;
-                })
+                .thenConsumeWhile(chatCompletions -> true)
                 .consumeRecordedWith(messageList -> {
                     assertTrue(messageList.size() > 1);
-
                     int i = 0;
                     for (Iterator<Completions> it = messageList.iterator(); it.hasNext();) {
                         Completions completions = it.next();
@@ -581,19 +716,19 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
                             assertEquals(1, completions.getPromptFilterResults().size());
                             assertSafePromptContentFilterResults(completions.getPromptFilterResults().get(0));
                         } else if (i == messageList.size() - 1) {
-                            // The last stream message is empty with all the filters set to null
-                            assertEquals(1, completions.getChoices().size());
-                            Choice choice = completions.getChoices().get(0);
-                            assertEquals(CompletionsFinishReason.fromString("stop"), choice.getFinishReason());
-                            assertNotNull(choice.getText());
-                            // TODO (team): change in behaviour, this used to be uncommented
-                            //                            assertSafeChoiceContentFilterResults(choice.getContentFilterResults());
+                            // The last contains only the token usage
+                            assertEquals(0, completions.getChoices().size());
+                            assertEquals(
+                                completions.getUsage().getCompletionTokens() + completions.getUsage().getPromptTokens(),
+                                completions.getUsage().getTotalTokens());
                         } else {
                             // The rest of the intermediary messages have the text generation content filter set
                             assertNull(completions.getPromptFilterResults());
-                            assertNotNull(completions.getChoices().get(0));
-                            assertSafeChoiceContentFilterResults(
-                                completions.getChoices().get(0).getContentFilterResults());
+                            Choice choice = completions.getChoices().get(0);
+                            assertNotNull(choice);
+                            if (choice.getFinishReason() == null) {
+                                assertSafeChoiceContentFilterResults(choice.getContentFilterResults());
+                            }
                         }
                         i++;
                     }
@@ -1913,6 +2048,279 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
             })).assertNext(cancelledId -> {
                 assertNotNull(cancelledId);
             }).verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testUploadFileSuccess(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        FileDetails fileDetails = new FileDetails(BinaryData.fromBytes("sample-content".getBytes()), "test-file.txt");
+        FilePurpose purpose = FilePurpose.ASSISTANTS;
+
+        StepVerifier.create(client.uploadFile(fileDetails, purpose).flatMap(openAIFile -> {
+            assertNotNull(openAIFile.getId());
+            assertEquals("test-file.txt", openAIFile.getFilename());
+            return client.deleteFile(openAIFile.getId()).then();
+        })).verifyComplete();
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testUploadFileFailure(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+
+        FileDetails fileDetails = new FileDetails(BinaryData.fromBytes("sample-content".getBytes()), "test-file.txt");
+
+        StepVerifier.create(client.uploadFile(fileDetails, null)).verifyErrorSatisfies(error -> {
+            assertInstanceOf(HttpResponseException.class, error);
+            HttpResponseException httpResponseException = (HttpResponseException) error;
+            assertEquals(400, httpResponseException.getResponse().getStatusCode());
+            assertFalse(CoreUtils.isNullOrEmpty(httpResponseException.getMessage()));
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
+    public void testGetAudioTranslationAsResponseObjectSuccess(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+
+        getAudioTranslationRunner((deploymentName, translationOptions) -> {
+            translationOptions.setResponseFormat(AudioTranslationFormat.JSON);
+
+            StepVerifier.create(client.getAudioTranslationAsResponseObject(deploymentName, translationOptions))
+                .assertNext(translation -> {
+                    assertNotNull(translation);
+                    assertEquals("It's raining today.", translation.getText());
+                })
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
+    public void testGetAudioTranslationAsResponseObjectFailure(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+
+        getAudioTranslationRunner((deploymentName, translationOptions) -> {
+            translationOptions.setResponseFormat(AudioTranslationFormat.JSON);
+            translationOptions.setFilename(null);
+
+            StepVerifier.create(client.getAudioTranslationAsResponseObject(deploymentName, translationOptions))
+                .verifyErrorSatisfies(error -> {
+                    assertInstanceOf(HttpResponseException.class, error);
+                    HttpResponseException httpResponseException = (HttpResponseException) error;
+                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
+                    assertFalse(CoreUtils.isNullOrEmpty(httpResponseException.getMessage()));
+                });
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
+    public void testGetAudioTranscriptionAsResponseObjectSuccess(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+
+        getAudioTranscriptionRunner((deploymentName, transcriptionOptions) -> {
+            transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.JSON);
+
+            StepVerifier.create(client.getAudioTranscriptionAsResponseObject(deploymentName, transcriptionOptions))
+                .assertNext(transcription -> {
+                    assertNotNull(transcription);
+                    assertEquals(BATMAN_TRANSCRIPTION, transcription.getText());
+                })
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
+    public void testGetAudioTranscriptionAsResponseObjectFailure(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+
+        getAudioTranscriptionRunner((deploymentName, transcriptionOptions) -> {
+            transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.JSON);
+            transcriptionOptions.setFilename(null);
+
+            StepVerifier.create(client.getAudioTranscriptionAsResponseObject(deploymentName, transcriptionOptions))
+                .verifyErrorSatisfies(error -> {
+                    assertInstanceOf(HttpResponseException.class, error);
+                    HttpResponseException httpResponseException = (HttpResponseException) error;
+                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
+                    assertFalse(CoreUtils.isNullOrEmpty(httpResponseException.getMessage()));
+                });
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
+    public void testGetAudioTranslationTextWithResponseSuccess(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+
+        getAudioTranslationRunner((deploymentName, audioTranslationOptions) -> {
+            audioTranslationOptions.setResponseFormat(AudioTranslationFormat.TEXT);
+
+            StepVerifier
+                .create(client.getAudioTranslationTextWithResponse(deploymentName,
+                    audioTranslationOptions.getFilename(), audioTranslationOptions, new RequestOptions()))
+                .assertNext(translation -> {
+                    assertNotNull(translation);
+                    assertEquals("It's raining today.\n", translation.getValue());
+                })
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
+    public void testGetAudioTranslationTextWithResponseFailure(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+
+        getAudioTranslationRunner((deploymentName, audioTranslationOptions) -> {
+            audioTranslationOptions.setResponseFormat(AudioTranslationFormat.TEXT);
+            audioTranslationOptions.setFilename(null);
+
+            StepVerifier
+                .create(client.getAudioTranslationTextWithResponse(deploymentName, "test-file.txt",
+                    audioTranslationOptions, new RequestOptions()))
+                .verifyErrorSatisfies(error -> {
+                    assertInstanceOf(HttpResponseException.class, error);
+                    HttpResponseException httpResponseException = (HttpResponseException) error;
+                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
+                    assertFalse(CoreUtils.isNullOrEmpty(httpResponseException.getMessage()));
+                });
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
+    public void testGetAudioTranslationTextWithResponseWithTemperature(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+
+        getAudioTranslationRunner((deploymentName, audioTranslationOptions) -> {
+            audioTranslationOptions.setResponseFormat(AudioTranslationFormat.TEXT);
+            audioTranslationOptions.setTemperature(0.0);
+
+            StepVerifier
+                .create(client.getAudioTranslationTextWithResponse(deploymentName,
+                    audioTranslationOptions.getFilename(), audioTranslationOptions, new RequestOptions()))
+                .assertNext(translation -> {
+                    assertNotNull(translation);
+                    assertEquals("It's raining today.\n", translation.getValue());
+                })
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
+    public void testGetAudioTranscriptionTextWithResponseFailure(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+
+        getAudioTranscriptionRunner((deploymentName, transcriptionOptions) -> {
+            transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.TEXT);
+            transcriptionOptions.setFilename(null);
+            transcriptionOptions.setTemperature(0.0);
+
+            StepVerifier
+                .create(client.getAudioTranscriptionTextWithResponse(deploymentName, "test-file.txt",
+                    transcriptionOptions, new RequestOptions()))
+                .verifyErrorSatisfies(error -> {
+                    assertInstanceOf(HttpResponseException.class, error);
+                    HttpResponseException httpResponseException = (HttpResponseException) error;
+                    assertEquals(400, httpResponseException.getResponse().getStatusCode());
+                    assertFalse(CoreUtils.isNullOrEmpty(httpResponseException.getMessage()));
+                });
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
+    public void testGetAudioTranscriptionWithResponseSuccess(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+
+        getAudioTranscriptionRunner((deploymentName, transcriptionOptions) -> {
+            transcriptionOptions.setResponseFormat(AudioTranscriptionFormat.JSON);
+            transcriptionOptions.setTemperature(0.0);
+
+            StepVerifier
+                .create(client.getAudioTranscriptionWithResponse(deploymentName, transcriptionOptions.getFilename(),
+                    transcriptionOptions, new RequestOptions()))
+                .assertNext(
+                    transcription -> assertAudioTranscriptionSimpleJson(transcription.getValue(), BATMAN_TRANSCRIPTION))
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
+    public void testGetAudioTranslationWithResponseSuccess(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+
+        getAudioTranslationRunner((deploymentName, translationOptions) -> {
+            translationOptions.setResponseFormat(AudioTranslationFormat.JSON);
+            translationOptions.setTemperature(0.0);
+
+            StepVerifier
+                .create(client.getAudioTranslationWithResponse(deploymentName, translationOptions.getFilename(),
+                    translationOptions, new RequestOptions()))
+                .assertNext(
+                    translation -> assertAudioTranslationSimpleJson(translation.getValue(), "It's raining today."))
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
+    public void testGetAudioTranslationWithResponseWithTemperature(HttpClient httpClient,
+        OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+
+        getAudioTranslationRunner((deploymentName, audioTranslationOptions) -> {
+            audioTranslationOptions.setResponseFormat(AudioTranslationFormat.JSON);
+            audioTranslationOptions.setTemperature(1.0);
+
+            StepVerifier.create(client.getAudioTranslationWithResponse(deploymentName,
+                audioTranslationOptions.getFilename(), audioTranslationOptions, new RequestOptions()))
+                .assertNext(translation -> {
+                    assertNotNull(translation);
+                    assertEquals("It's raining today.", translation.getValue().getText());
+                })
+                .verifyComplete();
+        });
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    @RecordWithoutRequestBody
+    public void testListBatchesFailure(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+
+        StepVerifier.create(client.listBatches("40", 20)).verifyErrorSatisfies(error -> {
+            assertInstanceOf(HttpResponseException.class, error);
+            HttpResponseException httpResponseException = (HttpResponseException) error;
+            assertEquals(400, httpResponseException.getResponse().getStatusCode());
+            assertNotNull(httpResponseException.getMessage());
         });
     }
 }

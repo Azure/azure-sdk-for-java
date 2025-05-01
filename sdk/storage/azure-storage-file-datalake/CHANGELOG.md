@@ -1,14 +1,41 @@
 # Release History
 
-## 12.23.0-beta.1 (Unreleased)
+## 12.24.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added a new API `getSystemProperties` to `DataLakePathClient` to support the `getStatus` action for the
+ `Path Get Properties` operation.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.23.0 (2025-03-11)
+
+### Features Added
+- Added support for service version 2025-05-05.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-storage-blob` from `12.29.1` to version `12.30.0`.
+
+## 12.22.1 (2025-03-03)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-xml` from `1.1.0` to version `1.2.0`.
+- Upgraded `azure-storage-blob` from `12.29.0` to version `12.29.1`.
+- Upgraded `azure-core` from `1.54.0` to version `1.55.2`.
+- Upgraded `azure-core-http-netty` from `1.15.6` to version `1.15.10`.
+
+## 12.23.0-beta.1 (2025-02-11)
+
+### Features Added
+- Added support for service version 2025-05-05.
 
 ## 12.22.0 (2024-11-13)
 

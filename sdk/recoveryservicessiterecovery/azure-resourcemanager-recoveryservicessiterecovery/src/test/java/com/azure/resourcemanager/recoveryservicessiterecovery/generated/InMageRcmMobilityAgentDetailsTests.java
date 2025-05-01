@@ -11,7 +11,7 @@ public final class InMageRcmMobilityAgentDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         InMageRcmMobilityAgentDetails model = BinaryData.fromString(
-            "{\"version\":\"ielbqrv\",\"latestVersion\":\"qvknmpecqxgiq\",\"latestAgentReleaseDate\":\"ifubnsnstlpwqp\",\"driverVersion\":\"xjkhtupsv\",\"latestUpgradableVersionWithoutReboot\":\"uweuiy\",\"agentVersionExpiryDate\":\"2021-02-16T23:45:49Z\",\"driverVersionExpiryDate\":\"2021-01-05T18:40:56Z\",\"lastHeartbeatUtc\":\"2021-09-02T16:14:15Z\",\"reasonsBlockingUpgrade\":[\"DistroIsNotReported\"],\"isUpgradeable\":\"evyllznfhkqyt\"}")
+            "{\"version\":\"ozuumr\",\"latestVersion\":\"jqgacantnsyx\",\"latestAgentReleaseDate\":\"jmka\",\"driverVersion\":\"claz\",\"latestUpgradableVersionWithoutReboot\":\"mexvtemaspma\",\"agentVersionExpiryDate\":\"2021-08-29T22:44:36Z\",\"driverVersionExpiryDate\":\"2021-06-13T17:15:16Z\",\"lastHeartbeatUtc\":\"2021-04-02T04:34:49Z\",\"reasonsBlockingUpgrade\":[\"MissingUpgradePath\"],\"isUpgradeable\":\"wj\"}")
             .toObject(InMageRcmMobilityAgentDetails.class);
     }
 

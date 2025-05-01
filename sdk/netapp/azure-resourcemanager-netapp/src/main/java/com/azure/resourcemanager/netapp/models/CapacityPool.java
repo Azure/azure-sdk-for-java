@@ -107,14 +107,6 @@ public interface CapacityPool {
     Float utilizedThroughputMibps();
 
     /**
-     * Gets the customThroughputMibps property: Maximum throughput in MiB/s that can be achieved by this pool and this
-     * will be accepted as input only for manual qosType pool with Flexible service level.
-     * 
-     * @return the customThroughputMibps value.
-     */
-    Float customThroughputMibps();
-
-    /**
      * Gets the qosType property: The qos type of the pool.
      * 
      * @return the qosType value.
@@ -249,8 +241,8 @@ public interface CapacityPool {
          * The stage of the CapacityPool definition which contains all the minimum required properties for the resource
          * to be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithCustomThroughputMibps,
-            DefinitionStages.WithQosType, DefinitionStages.WithCoolAccess, DefinitionStages.WithEncryptionType {
+        interface WithCreate extends DefinitionStages.WithTags, DefinitionStages.WithQosType,
+            DefinitionStages.WithCoolAccess, DefinitionStages.WithEncryptionType {
             /**
              * Executes the create request.
              * 
@@ -278,21 +270,6 @@ public interface CapacityPool {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
-        }
-
-        /**
-         * The stage of the CapacityPool definition allowing to specify customThroughputMibps.
-         */
-        interface WithCustomThroughputMibps {
-            /**
-             * Specifies the customThroughputMibps property: Maximum throughput in MiB/s that can be achieved by this
-             * pool and this will be accepted as input only for manual qosType pool with Flexible service level.
-             * 
-             * @param customThroughputMibps Maximum throughput in MiB/s that can be achieved by this pool and this will
-             * be accepted as input only for manual qosType pool with Flexible service level.
-             * @return the next definition stage.
-             */
-            WithCreate withCustomThroughputMibps(Float customThroughputMibps);
         }
 
         /**
@@ -347,8 +324,8 @@ public interface CapacityPool {
     /**
      * The template for CapacityPool update.
      */
-    interface Update extends UpdateStages.WithTags, UpdateStages.WithSize, UpdateStages.WithQosType,
-        UpdateStages.WithCoolAccess, UpdateStages.WithCustomThroughputMibps {
+    interface Update
+        extends UpdateStages.WithTags, UpdateStages.WithSize, UpdateStages.WithQosType, UpdateStages.WithCoolAccess {
         /**
          * Executes the update request.
          * 
@@ -421,21 +398,6 @@ public interface CapacityPool {
              * @return the next definition stage.
              */
             Update withCoolAccess(Boolean coolAccess);
-        }
-
-        /**
-         * The stage of the CapacityPool update allowing to specify customThroughputMibps.
-         */
-        interface WithCustomThroughputMibps {
-            /**
-             * Specifies the customThroughputMibps property: Maximum throughput in MiB/s that can be achieved by this
-             * pool and this will be accepted as input only for manual qosType pool with Flexible service level.
-             * 
-             * @param customThroughputMibps Maximum throughput in MiB/s that can be achieved by this pool and this will
-             * be accepted as input only for manual qosType pool with Flexible service level.
-             * @return the next definition stage.
-             */
-            Update withCustomThroughputMibps(Float customThroughputMibps);
         }
     }
 

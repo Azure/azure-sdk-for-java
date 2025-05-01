@@ -13,18 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class CertManagerPrivateKeyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CertManagerPrivateKey model = BinaryData.fromString("{\"algorithm\":\"Rsa2048\",\"rotationPolicy\":\"Always\"}")
+        CertManagerPrivateKey model = BinaryData.fromString("{\"algorithm\":\"Ec384\",\"rotationPolicy\":\"Always\"}")
             .toObject(CertManagerPrivateKey.class);
-        Assertions.assertEquals(PrivateKeyAlgorithm.RSA2048, model.algorithm());
+        Assertions.assertEquals(PrivateKeyAlgorithm.EC384, model.algorithm());
         Assertions.assertEquals(PrivateKeyRotationPolicy.ALWAYS, model.rotationPolicy());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CertManagerPrivateKey model = new CertManagerPrivateKey().withAlgorithm(PrivateKeyAlgorithm.RSA2048)
+        CertManagerPrivateKey model = new CertManagerPrivateKey().withAlgorithm(PrivateKeyAlgorithm.EC384)
             .withRotationPolicy(PrivateKeyRotationPolicy.ALWAYS);
         model = BinaryData.fromObject(model).toObject(CertManagerPrivateKey.class);
-        Assertions.assertEquals(PrivateKeyAlgorithm.RSA2048, model.algorithm());
+        Assertions.assertEquals(PrivateKeyAlgorithm.EC384, model.algorithm());
         Assertions.assertEquals(PrivateKeyRotationPolicy.ALWAYS, model.rotationPolicy());
     }
 }

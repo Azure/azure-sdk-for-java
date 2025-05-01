@@ -148,7 +148,7 @@ public class EventHubBufferedPartitionProducerTest {
         when(client.send(any(EventDataBatch.class))).thenReturn(Mono.empty());
 
         final EventHubBufferedPartitionProducer producer = new EventHubBufferedPartitionProducer(client, PARTITION_ID,
-            options, DEFAULT_RETRY_OPTIONS, eventSink, eventQueue, null);
+            options, DEFAULT_RETRY_OPTIONS, eventSink, null);
 
         // Act & Assert
         StepVerifier.create(producer.enqueueEvent(event1))
@@ -198,7 +198,7 @@ public class EventHubBufferedPartitionProducerTest {
         when(client.send(any(EventDataBatch.class))).thenReturn(Mono.empty(), Mono.error(error));
 
         final EventHubBufferedPartitionProducer producer = new EventHubBufferedPartitionProducer(client, PARTITION_ID,
-            options, DEFAULT_RETRY_OPTIONS, eventSink, eventQueue, null);
+            options, DEFAULT_RETRY_OPTIONS, eventSink, null);
 
         // Act & Assert
         StepVerifier.create(Mono.when(producer.enqueueEvent(event1), producer.enqueueEvent(event2)))
@@ -268,7 +268,7 @@ public class EventHubBufferedPartitionProducerTest {
         });
 
         final EventHubBufferedPartitionProducer producer = new EventHubBufferedPartitionProducer(client, PARTITION_ID,
-            options, DEFAULT_RETRY_OPTIONS, eventSink, eventQueue, null);
+            options, DEFAULT_RETRY_OPTIONS, eventSink, null);
 
         // Act & Assert
         StepVerifier.create(Mono.when(producer.enqueueEvent(event1), producer.enqueueEvent(event2)))
@@ -343,7 +343,7 @@ public class EventHubBufferedPartitionProducerTest {
             .thenAnswer(invocation -> Mono.delay(options.getMaxWaitTime()).then());
 
         final EventHubBufferedPartitionProducer producer = new EventHubBufferedPartitionProducer(client, PARTITION_ID,
-            options, DEFAULT_RETRY_OPTIONS, eventSink, eventQueue, null);
+            options, DEFAULT_RETRY_OPTIONS, eventSink, null);
 
         // Act & Assert
         StepVerifier
@@ -353,10 +353,8 @@ public class EventHubBufferedPartitionProducerTest {
             .then(() -> {
                 // event1 was enqueued, event2 is in a batch, and event3 is currently in the queue waiting to be
                 // pushed downstream.
-                // batch1 (with event1) is being sent at the moment with the delay of options.getMaxWaitTime(), so the
-                // buffer doesn't drain so quickly.
                 final int bufferedEventCount = producer.getBufferedEventCount();
-                assertEquals(1, bufferedEventCount);
+                assertEquals(2, bufferedEventCount);
             })
             .expectComplete()
             .verify(DEFAULT_RETRY_OPTIONS.getTryTimeout());
@@ -414,7 +412,7 @@ public class EventHubBufferedPartitionProducerTest {
         when(client.send(any(EventDataBatch.class))).thenAnswer(invocation -> Mono.empty());
 
         final EventHubBufferedPartitionProducer producer = new EventHubBufferedPartitionProducer(client, PARTITION_ID,
-            options, DEFAULT_RETRY_OPTIONS, mockedEventSink, eventQueue, null);
+            options, DEFAULT_RETRY_OPTIONS, mockedEventSink, null);
 
         // Act & Assert
         StepVerifier.create(producer.enqueueEvent(event1))
@@ -459,8 +457,8 @@ public class EventHubBufferedPartitionProducerTest {
 
         final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setMaxRetries(2).setDelay(Duration.ofSeconds(2));
 
-        final EventHubBufferedPartitionProducer producer = new EventHubBufferedPartitionProducer(client, PARTITION_ID,
-            options, retryOptions, mockedEventSink, eventQueue, null);
+        final EventHubBufferedPartitionProducer producer
+            = new EventHubBufferedPartitionProducer(client, PARTITION_ID, options, retryOptions, mockedEventSink, null);
 
         // Act & Assert
         StepVerifier.create(producer.enqueueEvent(event1))

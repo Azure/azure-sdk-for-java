@@ -15,24 +15,24 @@ public final class NginxDeploymentScalingPropertiesAutoScaleSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         NginxDeploymentScalingPropertiesAutoScaleSettings model = BinaryData.fromString(
-            "{\"profiles\":[{\"name\":\"opjmcmatuokthfui\",\"capacity\":{\"min\":94424945,\"max\":1958511129}},{\"name\":\"dsfcpkvxodpuoz\",\"capacity\":{\"min\":1621494681,\"max\":2044584540}}]}")
+            "{\"profiles\":[{\"name\":\"mehhseyvjusrtsl\",\"capacity\":{\"min\":1593935423,\"max\":1948338560}},{\"name\":\"kdeemaofmxagkvtm\",\"capacity\":{\"min\":696697077,\"max\":2048736715}}]}")
             .toObject(NginxDeploymentScalingPropertiesAutoScaleSettings.class);
-        Assertions.assertEquals("opjmcmatuokthfui", model.profiles().get(0).name());
-        Assertions.assertEquals(94424945, model.profiles().get(0).capacity().min());
-        Assertions.assertEquals(1958511129, model.profiles().get(0).capacity().max());
+        Assertions.assertEquals("mehhseyvjusrtsl", model.profiles().get(0).name());
+        Assertions.assertEquals(1593935423, model.profiles().get(0).capacity().min());
+        Assertions.assertEquals(1948338560, model.profiles().get(0).capacity().max());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         NginxDeploymentScalingPropertiesAutoScaleSettings model
             = new NginxDeploymentScalingPropertiesAutoScaleSettings().withProfiles(Arrays.asList(
-                new ScaleProfile().withName("opjmcmatuokthfui")
-                    .withCapacity(new ScaleProfileCapacity().withMin(94424945).withMax(1958511129)),
-                new ScaleProfile().withName("dsfcpkvxodpuoz")
-                    .withCapacity(new ScaleProfileCapacity().withMin(1621494681).withMax(2044584540))));
+                new ScaleProfile().withName("mehhseyvjusrtsl")
+                    .withCapacity(new ScaleProfileCapacity().withMin(1593935423).withMax(1948338560)),
+                new ScaleProfile().withName("kdeemaofmxagkvtm")
+                    .withCapacity(new ScaleProfileCapacity().withMin(696697077).withMax(2048736715))));
         model = BinaryData.fromObject(model).toObject(NginxDeploymentScalingPropertiesAutoScaleSettings.class);
-        Assertions.assertEquals("opjmcmatuokthfui", model.profiles().get(0).name());
-        Assertions.assertEquals(94424945, model.profiles().get(0).capacity().min());
-        Assertions.assertEquals(1958511129, model.profiles().get(0).capacity().max());
+        Assertions.assertEquals("mehhseyvjusrtsl", model.profiles().get(0).name());
+        Assertions.assertEquals(1593935423, model.profiles().get(0).capacity().min());
+        Assertions.assertEquals(1948338560, model.profiles().get(0).capacity().max());
     }
 }
