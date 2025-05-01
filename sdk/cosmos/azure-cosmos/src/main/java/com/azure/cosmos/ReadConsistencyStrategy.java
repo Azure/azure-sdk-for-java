@@ -62,7 +62,6 @@ public enum ReadConsistencyStrategy {
 
     private final String overWireValue;
 
-
     ReadConsistencyStrategy(String overWireValue) {
         this.overWireValue = overWireValue;
     }

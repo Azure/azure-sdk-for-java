@@ -55,7 +55,6 @@ public interface IDocumentQueryClient {
      * @return
      */
     ConsistencyLevel getDesiredConsistencyLevelAsync();
-    ReadConsistencyStrategy getDesiredReadConsistencyStrategy();
 
     Mono<RxDocumentServiceResponse> executeQueryAsync(RxDocumentServiceRequest request);
 

@@ -302,7 +302,6 @@ public class RequestOptions implements OverridableRequestOptions {
         this.readConsistencyStrategy = readConsistencyStrategy;
     }
 
-
     /**
      * Gets the token for use with session consistency.
      *

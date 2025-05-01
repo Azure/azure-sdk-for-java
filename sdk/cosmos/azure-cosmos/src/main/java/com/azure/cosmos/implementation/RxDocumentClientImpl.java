@@ -939,7 +939,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return readConsistencyStrategy;
     }
 
-
     @Override
     public ClientTelemetry getClientTelemetry() {
         return this.clientTelemetry;
@@ -4281,12 +4280,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             public ConsistencyLevel getDesiredConsistencyLevelAsync() {
                 // TODO Auto-generated method stub
                 return RxDocumentClientImpl.this.consistencyLevel;
-            }
-
-            @Override
-            public ReadConsistencyStrategy getDesiredReadConsistencyStrategy() {
-                // TODO Auto-generated method stub
-                return RxDocumentClientImpl.this.readConsistencyStrategy;
             }
 
             @Override
