@@ -6,26 +6,47 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * Reference to a Variant containing the Variant name, configuration value, and possible status override.
+ * This class provides a way to reference variants in feature flag configurations and their associated values.
  */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class VariantReference {
 
+    /**
+     * The name of the variant reference.
+     */
     private String name;
 
+    /**
+     * The configuration value associated with this variant reference.
+     * This can be any type of object depending on the feature configuration.
+     */
     private Object configurationValue;
 
-    private String statusOverride;
-
     /**
-     * @return the name
+     * The status override that can be used to override the default status of a feature flag.
+     */
+    private String statusOverride;
+    
+    /**
+     * Creates a new instance of the VariantReference class.
+     */
+    public VariantReference() {
+    }
+    
+    /**
+     * Gets the name of this variant reference.
+     *
+     * @return the name of the variant reference
      */
     public String getName() {
         return name;
     }
 
     /**
-     * @param name the name to set
-     * @return VariantReference
+     * Sets the name of this variant reference.
+     *
+     * @param name the name to set for this variant reference
+     * @return the updated VariantReference instance for method chaining
      */
     public VariantReference setName(String name) {
         this.name = name;
@@ -33,31 +54,39 @@ public class VariantReference {
     }
 
     /**
-     * @return the configurationValue
+     * Gets the configuration value associated with this variant reference.
+     *
+     * @return the configuration value of this variant reference
      */
     public Object getConfigurationValue() {
         return configurationValue;
     }
 
     /**
-     * @param configurationValue the configurationValue to set
-     * @return VariantReference
+     * Sets the configuration value for this variant reference.
+     *
+     * @param configurationValue the configuration value to set for this variant reference
+     * @return the updated VariantReference instance for method chaining
      */
     public VariantReference setConfigurationValue(Object configurationValue) {
         this.configurationValue = configurationValue;
         return this;
     }
-
+    
     /**
-     * @return the statusOverride
+     * Gets the status override associated with this variant reference.
+     *
+     * @return the status override of this variant reference
      */
     public String getStatusOverride() {
         return statusOverride;
     }
 
     /**
-     * @param statusOverride the statusOverride to set
-     * @return VariantReference
+     * Sets the status override for this variant reference.
+     *
+     * @param statusOverride the status override to set for this variant reference
+     * @return the updated VariantReference instance for method chaining
      */
     public VariantReference setStatusOverride(String statusOverride) {
         this.statusOverride = statusOverride;

@@ -5,37 +5,68 @@ package com.azure.spring.cloud.feature.management.models;
 import java.util.List;
 
 /**
- * Group allocation of a variant. Contains a variant and a list of groups assigned to the variant.
+ * Group allocation of a variant for feature flag targeting. This class defines how specific
+ * user groups are assigned to a particular variant of a feature. It contains a reference
+ * to a variant name and a list of group identifiers that should receive this variant
+ * when the feature flag is evaluated.
  */
 public class GroupAllocation {
 
+    /**
+     * Creates a new instance of the GroupAllocation class.
+     */
+    public GroupAllocation() {
+    }
+
+    /**
+     * The name of the variant that will be assigned to the specified groups.
+     * This corresponds to a variant defined in the feature flag configuration.
+     */
     private String variant;
 
+    /**
+     * The list of group identifiers that should receive this variant.
+     * When a user belongs to any of these groups, they will be assigned
+     * this variant during feature flag evaluation.
+     */
     private List<String> groups;
 
     /**
-     * @return the variant
+     * Gets the name of the variant that is assigned to the specified groups.
+     * 
+     * @return the variant name for this group allocation
      */
     public String getVariant() {
         return variant;
     }
 
     /**
-     * @param variant the variant to set
+     * Sets the name of the variant that should be assigned to the specified groups.
+     * This should match a valid variant name defined in the feature flag configuration.
+     * 
+     * @param variant the variant name to assign to the groups
      */
     public void setVariant(String variant) {
         this.variant = variant;
     }
 
     /**
-     * @return the groups
+     * Gets the list of group identifiers that should receive this variant.
+     * When a user belongs to any of these groups, they will be assigned
+     * this variant during feature flag evaluation.
+     * 
+     * @return the list of group identifiers for this allocation
      */
     public List<String> getGroups() {
         return groups;
     }
 
     /**
-     * @param groups the groups to set
+     * Sets the list of group identifiers that should receive this variant.
+     * When a user belongs to any of these groups, they will be assigned
+     * this variant during feature flag evaluation.
+     * 
+     * @param groups the list of group identifiers to associate with this variant
      */
     public void setGroups(List<String> groups) {
         this.groups = groups;
