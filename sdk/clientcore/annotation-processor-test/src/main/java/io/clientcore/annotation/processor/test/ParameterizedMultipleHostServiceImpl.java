@@ -8,12 +8,14 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.implementation.utils.UriEscapers;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.annotation.processor.test.implementation.ParameterizedMultipleHostService;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
 import io.clientcore.core.utils.CoreUtils;
+import io.clientcore.core.utils.Base64Uri;
 import java.lang.reflect.ParameterizedType;
 import io.clientcore.core.serialization.SerializationFormat;
 
@@ -48,9 +50,9 @@ public class ParameterizedMultipleHostServiceImpl implements ParameterizedMultip
     @SuppressWarnings({ "unchecked", "cast" })
     @Override
     public HttpBinJSON get(String scheme, String hostPart1, String hostPart2) {
-        String url = scheme + "://" + hostPart1 + hostPart2 + "/get";
+        String uri = scheme + "://" + hostPart1 + hostPart2 + "/get";
         // Create the HTTP request
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url);
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();

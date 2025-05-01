@@ -9,17 +9,17 @@ import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.utils.UriEscapers;
 import io.clientcore.core.models.binarydata.BinaryData;
-import io.clientcore.annotation.processor.test.implementation.ParameterizedHostService;
+import io.clientcore.annotation.processor.test.implementation.HostEdgeCase1Service;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
 
 /**
- * Initializes a new instance of the ParameterizedHostServiceImpl type.
+ * Initializes a new instance of the HostEdgeCase1ServiceImpl type.
  */
-public class ParameterizedHostServiceImpl implements ParameterizedHostService {
+public class HostEdgeCase1ServiceImpl implements HostEdgeCase1Service {
 
-    private static final ClientLogger LOGGER = new ClientLogger(ParameterizedHostService.class);
+    private static final ClientLogger LOGGER = new ClientLogger(HostEdgeCase1Service.class);
 
     private final HttpPipeline httpPipeline;
 
@@ -27,25 +27,25 @@ public class ParameterizedHostServiceImpl implements ParameterizedHostService {
 
     private final XmlSerializer xmlSerializer;
 
-    private ParameterizedHostServiceImpl(HttpPipeline httpPipeline) {
+    private HostEdgeCase1ServiceImpl(HttpPipeline httpPipeline) {
         this.httpPipeline = httpPipeline;
         this.jsonSerializer = JsonSerializer.getInstance();
         this.xmlSerializer = XmlSerializer.getInstance();
     }
 
     /**
-     * Creates an instance of ParameterizedHostService that is capable of sending requests to the service.
+     * Creates an instance of HostEdgeCase1Service that is capable of sending requests to the service.
      * @param httpPipeline The HTTP pipeline to use for sending requests.
-     * @return An instance of `ParameterizedHostService`;
+     * @return An instance of `HostEdgeCase1Service`;
      */
-    public static ParameterizedHostService getNewInstance(HttpPipeline httpPipeline) {
-        return new ParameterizedHostServiceImpl(httpPipeline);
+    public static HostEdgeCase1Service getNewInstance(HttpPipeline httpPipeline) {
+        return new HostEdgeCase1ServiceImpl(httpPipeline);
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
     @Override
-    public byte[] getByteArray(String scheme, String host, int numberOfBytes) {
-        String uri = scheme + "://" + host + "/bytes/" + numberOfBytes;
+    public byte[] getByteArray(String url, int numberOfBytes) {
+        String uri = url + "/bytes/" + numberOfBytes;
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
         // Send the request through the httpPipeline

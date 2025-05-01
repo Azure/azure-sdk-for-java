@@ -8,14 +8,17 @@ import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
+import io.clientcore.core.implementation.utils.UriEscapers;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.annotation.processor.test.implementation.SimpleXmlSerializableService;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
-import io.clientcore.core.utils.CoreUtils;
-import java.lang.reflect.ParameterizedType;
 import io.clientcore.core.serialization.SerializationFormat;
+import io.clientcore.core.utils.CoreUtils;
+import io.clientcore.core.http.models.HttpHeader;
+import io.clientcore.core.utils.Base64Uri;
+import java.lang.reflect.ParameterizedType;
 
 /**
  * Initializes a new instance of the SimpleXmlSerializableServiceImpl type.
@@ -48,9 +51,9 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
     @SuppressWarnings({ "unchecked", "cast" })
     @Override
     public void sendApplicationXml(SimpleXmlSerializable simpleXmlSerializable) {
-        String url = "http://localhost/sendApplicationXml";
+        String uri = "http://localhost/sendApplicationXml";
         // Create the HTTP request
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri(url);
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri(uri);
         httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "application/xml");
         if (simpleXmlSerializable != null) {
             SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
@@ -73,9 +76,9 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
     @SuppressWarnings({ "unchecked", "cast" })
     @Override
     public void sendTextXml(SimpleXmlSerializable simpleXmlSerializable) {
-        String url = "http://localhost/sendTextXml";
+        String uri = "http://localhost/sendTextXml";
         // Create the HTTP request
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri(url);
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri(uri);
         httpRequest.getHeaders().set(HttpHeaderName.CONTENT_TYPE, "text/xml");
         if (simpleXmlSerializable != null) {
             SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
@@ -98,10 +101,12 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
     @SuppressWarnings({ "unchecked", "cast" })
     @Override
     public SimpleXmlSerializable getXml(String contentType) {
-        String url = "http://localhost/getXml";
+        String uri = "http://localhost/getXml";
         // Create the HTTP request
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url);
-        httpRequest.getHeaders().add(HttpHeaderName.CONTENT_TYPE, contentType);
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
+        if (contentType != null) {
+            httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.CONTENT_TYPE, contentType));
+        }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
@@ -126,10 +131,12 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
     @SuppressWarnings({ "unchecked", "cast" })
     @Override
     public SimpleXmlSerializable getInvalidXml(String contentType) {
-        String url = "http://localhost/getInvalidXml";
+        String uri = "http://localhost/getInvalidXml";
         // Create the HTTP request
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(url);
-        httpRequest.getHeaders().add(HttpHeaderName.CONTENT_TYPE, contentType);
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
+        if (contentType != null) {
+            httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.CONTENT_TYPE, contentType));
+        }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();

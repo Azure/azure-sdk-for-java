@@ -441,8 +441,7 @@ public final class CoreUtils {
             return host;  // No parameters to append
         }
 
-        StringBuilder urlBuilder = new StringBuilder(host);
-        boolean hasExistingQuery = host.contains("?");
+        UriBuilder uriBuilder = UriBuilder.parse(host);
 
         // Process each key-value pair in the queryParams map
         for (Map.Entry<String, Object> entry : queryParams.entrySet()) {
@@ -457,16 +456,14 @@ public final class CoreUtils {
             if (value instanceof List<?>) {
                 List<?> valueList = (List<?>) value;
                 for (Object item : valueList) {
-                    urlBuilder.append(hasExistingQuery ? "&" : "?").append(key).append("=").append(item.toString());
-                    hasExistingQuery = true; // Ensure subsequent parameters use '&'
+                    uriBuilder.addQueryParameter(key, String.valueOf(item));
                 }
             } else {
-                urlBuilder.append(hasExistingQuery ? "&" : "?").append(key).append("=").append(value.toString());
-                hasExistingQuery = true; // Ensure subsequent parameters use '&'
+                uriBuilder.addQueryParameter(key, String.valueOf(value));
             }
         }
 
-        return urlBuilder.toString();
+        return uriBuilder.toString();
     }
 
     /*
