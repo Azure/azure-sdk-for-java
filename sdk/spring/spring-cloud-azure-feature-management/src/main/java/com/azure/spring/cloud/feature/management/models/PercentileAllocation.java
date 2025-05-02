@@ -60,6 +60,7 @@ public class PercentileAllocation {
      * in the feature flag configuration.
      * 
      * @param variant the variant name to assign for this percentile range
+     * @return the updated PercentileAllocation instance for method chaining
      */
     public PercentileAllocation setVariant(String variant) {
         this.variant = variant;
@@ -84,6 +85,7 @@ public class PercentileAllocation {
      * and less than the 'to' value.
      * 
      * @param from the lower bound percentage value to set for this allocation
+     * @return the updated PercentileAllocation instance for method chaining
      */
     public PercentileAllocation setFrom(Double from) {
         this.from = from;
@@ -114,6 +116,7 @@ public class PercentileAllocation {
      * </p>
      * 
      * @param to the upper bound percentage value to set for this allocation
+     * @return the updated PercentileAllocation instance for method chaining
      */
     public PercentileAllocation setTo(Double to) {
         this.to = to;

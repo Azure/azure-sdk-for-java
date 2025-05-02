@@ -1,3 +1,5 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.telemetry;
 
 import static com.azure.spring.cloud.feature.management.telemetry.TelemetryConstants.APPLICATION_INSIGHTS_CUSTOM_EVENT_KEY;
@@ -103,8 +105,6 @@ public class LoggerTelemetryPublisherTest {
         LoggerTelemetryPublisher publisher = new LoggerTelemetryPublisher();
         publisher.publishTelemetry(evaluationEvent);
 
-        //assertEquals(1, listAppender.list.size());
-
         logEvent = listAppender.list.get(listAppender.list.size() - 1);
         Map<String, String> mdcMap = logEvent.getMDCPropertyMap();
 
@@ -128,9 +128,7 @@ public class LoggerTelemetryPublisherTest {
         LoggerTelemetryPublisher publisher = new LoggerTelemetryPublisher();
         publisher.publishTelemetry(evaluationEvent);
 
-        //assertEquals(1, listAppender.list.size());
-
-       logEvent = listAppender.list.get(listAppender.list.size() - 1);
+        logEvent = listAppender.list.get(listAppender.list.size() - 1);
         Map<String, String> mdcMap = logEvent.getMDCPropertyMap();
 
         assertEquals(EVENT_NAME, logEvent.getMessage());
@@ -183,8 +181,6 @@ public class LoggerTelemetryPublisherTest {
 
         LoggerTelemetryPublisher publisher = new LoggerTelemetryPublisher();
         publisher.publishTelemetry(evaluationEvent);
-
-        //assertEquals(1, listAppender.list.size());
 
         logEvent = listAppender.list.get(listAppender.list.size() - 1);
         Map<String, String> mdcMap = logEvent.getMDCPropertyMap();

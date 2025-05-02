@@ -1,6 +1,14 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
 package com.azure.spring.cloud.feature.management.telemetry;
 
-public class TelemetryConstants {
+/**
+ * This class contains constants used for telemetry events related to feature
+ * evaluations. These constants are used to define the structure and content of
+ * telemetry events, including event names, property names, and versioning
+ * information.
+ */
+public final class TelemetryConstants {
 
     static final String EVENT_NAME = "FeatureEvaluation";
 
@@ -22,4 +30,13 @@ public class TelemetryConstants {
 
     static final String APPLICATION_INSIGHTS_CUSTOM_EVENT_KEY = "microsoft.custom_event.name";
 
+    /**
+      * This class contains constants used for telemetry events related to feature
+      * evaluations. These constants are used to define the structure and content of
+      * telemetry events, including event names, property names, and versioning
+      * information.
+     */
+    private TelemetryConstants() {
+        // Private constructor to prevent instantiation 
+    }
 }

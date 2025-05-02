@@ -39,7 +39,15 @@ public class LoggerTelemetryPublisher implements TelemetryPublisher {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoggerTelemetryPublisher.class);
 
-    /*
+    /**
+     * The name of the custom event for telemetry logging. This is used to
+     * identify the type of event being logged in the telemetry system.
+     */
+    public LoggerTelemetryPublisher() {
+        // Private constructor to prevent instantiation
+    }
+
+    /**
      * Publishes telemetry events related to feature evaluations. It logs the
      * evaluation event using SLF4J, adding contextual information to the logs using
      * MDC.
@@ -83,8 +91,8 @@ public class LoggerTelemetryPublisher implements TelemetryPublisher {
                 eventProperties.put(VARIANT_ASSIGNMENT_PERCENTAGE, String.valueOf(feature.getAllocation().getPercentile().stream()
                     // Filter out null values and calculate the sum of the allocation percentages
                     // for the specific variant.
-                    .filter(percentile -> percentile.getVariant() != null && variant != null && 
-                            percentile.getVariant().equals(variant.getName()))
+                    .filter(percentile -> percentile.getVariant() != null && variant != null
+                        && percentile.getVariant().equals(variant.getName()))
                     .filter(allocation -> allocation.getTo() != null && allocation.getFrom() != null)
                     // Calculate the percentage of the variant allocation.
                     .mapToDouble(allocation -> allocation.getTo() - allocation.getFrom())
