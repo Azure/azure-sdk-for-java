@@ -5,7 +5,7 @@
 ### Features Added
 - Updated service API version to use API version 2023-10-31 by default.
 
-## 1.5.0-beta.1 (Unreleased)
+## 1.5.0-beta.1 (2025-05-01)
 
 ### Features Added
 
