@@ -4,12 +4,15 @@
 package io.clientcore.annotation.processor.utils;
 
 import com.github.javaparser.StaticJavaParser;
-import com.github.javaparser.ast.comments.LineComment;
+import com.github.javaparser.ast.expr.NameExpr;
+import com.github.javaparser.ast.expr.UnaryExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
-import com.github.javaparser.ast.stmt.ReturnStmt;
+import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.ast.stmt.Statement;
+import com.github.javaparser.ast.stmt.TryStmt;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.core.http.models.HttpMethod;
+import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.implementation.TypeUtil;
 import io.clientcore.core.models.binarydata.BinaryData;
 import io.clientcore.core.serialization.SerializationFormat;
@@ -40,50 +43,98 @@ public final class ResponseHandler {
      */
     public static void generateResponseHandling(BlockStmt body, TypeMirror returnType, HttpRequestContext method,
         boolean serializationFormatSet) {
-        if (isVoidReturnType(returnType)) {
-            closeResponse(body);
-            if (returnType.toString().equals("java.lang.Void")) {
-                body.addStatement(new ReturnStmt("null"));
-            }
-        } else {
-            handleRequestReturn(body, returnType, method, serializationFormatSet);
-        }
-    }
-
-    private static boolean isVoidReturnType(TypeMirror returnType) {
-        return returnType.getKind() == TypeKind.VOID || returnType.toString().equals("java.lang.Void");
-    }
-
-    private static void handleRequestReturn(BlockStmt body, TypeMirror returnType, HttpRequestContext method,
-        boolean serializationFormatSet) {
         java.lang.reflect.Type entityType = TypeConverter.getEntityType(returnType);
+
+        boolean usingTryWithResources = useTryWithResources(entityType, method);
+        if (usingTryWithResources) {
+            TryStmt statement = StaticJavaParser
+                .parseStatement("try (Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest)) {}")
+                .asTryStmt();
+            statement.setLineComment("\n Send the request through the httpPipeline");
+
+            body.addStatement(statement);
+            body = statement.getTryBlock();
+        } else {
+            Statement statement = StaticJavaParser
+                .parseStatement("Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);");
+            statement.setLineComment("\n Send the request through the httpPipeline");
+            body.addStatement(statement);
+        }
+
+        if (!method.getExpectedStatusCodes().isEmpty()) {
+            validateResponseStatus(body, method, usingTryWithResources);
+        }
+
+        handleRequestReturn(body, returnType, entityType, method, serializationFormatSet);
+    }
+
+    private static boolean useTryWithResources(java.lang.reflect.Type entityType, HttpRequestContext method) {
+        // Use try-with-resources, where the Response<BinaryData> is the resource, if one of the following are true:
+        // - Return type is a void type
+        // - The request used method HEAD and return type boolean
+        // - Return type is byte[], which will consume the entire network response eagerly
+        // - Return type isn't InputStream or BinaryData, both will need to have the network response remain open.
+        if (TypeUtil.isTypeOrSubTypeOf(entityType, InputStream.class)
+            || TypeUtil.isTypeOrSubTypeOf(entityType, BinaryData.class)) {
+            return false;
+        }
+
+        return entityType == Void.TYPE
+            || entityType == Void.class
+            || (method.getHttpMethod() == HttpMethod.HEAD && isBooleanType(entityType))
+            || TypeUtil.isTypeOrSubTypeOf(entityType, byte[].class);
+    }
+
+    private static void validateResponseStatus(BlockStmt body, HttpRequestContext method,
+        boolean usingTryWithResources) {
+        body.addStatement(StaticJavaParser.parseStatement("int responseCode = networkResponse.getStatusCode();"));
+        String expectedResponseCheck;
+        if (method.getExpectedStatusCodes().size() == 1) {
+            expectedResponseCheck = "responseCode == " + method.getExpectedStatusCodes().get(0) + ";";
+        } else {
+            String statusCodes = method.getExpectedStatusCodes()
+                .stream()
+                .map(code -> "responseCode == " + code)
+                .collect(Collectors.joining(" || "));
+            expectedResponseCheck = "(" + statusCodes + ");";
+        }
+        body.addStatement(StaticJavaParser.parseStatement("boolean expectedResponse = " + expectedResponseCheck));
+
+        body.tryAddImportToParentCompilationUnit(HttpResponseException.class);
+        BlockStmt ifBlock = new BlockStmt();
+        ifBlock.addStatement(
+            StaticJavaParser.parseStatement("String errorMessage = networkResponse.getValue().toString();"));
+        if (!usingTryWithResources) {
+            closeResponse(ifBlock);
+        }
+        ifBlock.addStatement(
+            StaticJavaParser.parseStatement("throw new HttpResponseException(errorMessage, networkResponse, null);"));
+        IfStmt ifStmt = new IfStmt()
+            .setCondition(new UnaryExpr(new NameExpr("expectedResponse"), UnaryExpr.Operator.LOGICAL_COMPLEMENT))
+            .setThenStmt(ifBlock);
+        body.addStatement(ifStmt);
+    }
+
+    private static void handleRequestReturn(BlockStmt body, TypeMirror returnType, java.lang.reflect.Type entityType,
+        HttpRequestContext method, boolean serializationFormatSet) {
         boolean returnIsResponse = TypeConverter.isResponseType(returnType);
 
         // TODO (alzimmer): Base64Uri needs to be handled. Determine how this will show up in code generation and then
         //  add support for it.
-        if (entityType == Void.TYPE || entityType == Void.class) {
-            // Return is void, Void, or Response<Void>, close the network response and return null as the value.
+        if (returnType.getKind() == TypeKind.VOID) {
             closeResponse(body);
+        } else if (entityType == Void.TYPE || entityType == Void.class) {
             addReturnStatement(body, returnIsResponse, "null");
         } else if (method.getHttpMethod() == HttpMethod.HEAD && isBooleanType(entityType)) {
             // HTTP method was either HEAD or the return is a boolean. Use the status code to determine response value.
-            // Always close the network response in this situation as we'll be throwing it away.
-            closeResponse(body);
             addReturnStatement(body, returnIsResponse, "expectedResponse");
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, byte[].class)) {
             // Return is a byte[]. Convert the network response body into a byte[].
             body.addStatement(StaticJavaParser.parseStatement("BinaryData responseBody = networkResponse.getValue();"));
-            body.addStatement(StaticJavaParser
-                .parseStatement("byte[] responseBodyBytes = responseBody != null ? responseBody.toBytes() : null;"));
-
-            // Always close the network response in this situation as converting to a byte[] will read the entire
-            // response. This should complete the connection, but let's be safe. This must be done after getting the
-            // byte[] though.
-            closeResponse(body, "Close the network response as the body should be consumed.");
 
             // Return responseBodyBytes as-is which will have the behavior of null -> null, empty -> empty, and
             // data -> data, which offers three unique states for knowing information about the network response shape.
-            addReturnStatement(body, returnIsResponse, "responseBodyBytes");
+            addReturnStatement(body, returnIsResponse, "responseBody != null ? responseBody.toBytes() : null");
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, InputStream.class)) {
             // Return type is an InputStream. Return the network response body as an InputStream.
             // DO NOT close the network response for this return as it will result in the InputStream either being
@@ -106,10 +157,6 @@ public final class ResponseHandler {
             // Initialize the variable that will be used in the return statement.
             body.addStatement(StaticJavaParser.parseStatement(typeCast + " deserializedResult;"));
             handleDeclaredTypeResponse(body, (DeclaredType) returnType, serializationFormatSet, typeCast);
-
-            // Deserialization will read the entire network response. Same idea as the byte[], reading the entire body
-            // should complete the connection, but let's be safe. And again, close after creating the return value.
-            closeResponse(body, "Close the network response as the body should be consumed.");
 
             addReturnStatement(body, returnIsResponse, "deserializedResult");
         }
@@ -217,6 +264,10 @@ public final class ResponseHandler {
         }
     }
 
+    private static void closeResponse(BlockStmt body) {
+        body.addStatement(StaticJavaParser.parseStatement("networkResponse.close();"));
+    }
+
     private static void addSerializationFormatResponseBodyStatements(BlockStmt body) {
         body.addStatement("if (jsonSerializer.supportsFormat(serializationFormat)) { "
             + "    deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType); "
@@ -225,20 +276,6 @@ public final class ResponseHandler {
             + "} else { " + "    throw new RuntimeException(new UnsupportedOperationException("
             + "        \"None of the provided serializers support the format: \" + serializationFormat + \".\")); "
             + "}");
-    }
-
-    private static void closeResponse(BlockStmt body) {
-        closeResponse(body, null);
-    }
-
-    private static void closeResponse(BlockStmt body, String optionalComment) {
-        Statement statement = StaticJavaParser.parseStatement("networkResponse.close();");
-        if (!CoreUtils.isNullOrEmpty(optionalComment)) {
-            // Prepend a space as the handling for line comments in JavaParser is '//<comment>', not '// <comment>'
-            // as we'd want.
-            statement.setComment(new LineComment(" " + optionalComment));
-        }
-        body.addStatement(statement);
     }
 
     private ResponseHandler() {

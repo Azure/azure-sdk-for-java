@@ -87,16 +87,15 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             httpRequest.setBody(BinaryData.fromBytes(request.array()));
         }
         // Send the request through the httpPipeline
-        Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        int responseCode = networkResponse.getStatusCode();
-        boolean expectedResponse = responseCode == 200;
-        if (!expectedResponse) {
-            String errorMessage = networkResponse.getValue().toString();
-            networkResponse.close();
-            throw new HttpResponseException(errorMessage, networkResponse, null);
+        try (Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest)) {
+            int responseCode = networkResponse.getStatusCode();
+            boolean expectedResponse = responseCode == 200;
+            if (!expectedResponse) {
+                String errorMessage = networkResponse.getValue().toString();
+                throw new HttpResponseException(errorMessage, networkResponse, null);
+            }
+            return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
-        networkResponse.close();
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
     }
 
     @SuppressWarnings("cast")
@@ -119,16 +118,15 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             }
         }
         // Send the request through the httpPipeline
-        Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        int responseCode = networkResponse.getStatusCode();
-        boolean expectedResponse = responseCode == 200;
-        if (!expectedResponse) {
-            String errorMessage = networkResponse.getValue().toString();
-            networkResponse.close();
-            throw new HttpResponseException(errorMessage, networkResponse, null);
+        try (Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest)) {
+            int responseCode = networkResponse.getStatusCode();
+            boolean expectedResponse = responseCode == 200;
+            if (!expectedResponse) {
+                String errorMessage = networkResponse.getValue().toString();
+                throw new HttpResponseException(errorMessage, networkResponse, null);
+            }
+            return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
-        networkResponse.close();
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
     }
 
     @SuppressWarnings("cast")
@@ -138,16 +136,15 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
         // Send the request through the httpPipeline
-        Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        int responseCode = networkResponse.getStatusCode();
-        boolean expectedResponse = responseCode == 200;
-        if (!expectedResponse) {
-            String errorMessage = networkResponse.getValue().toString();
-            networkResponse.close();
-            throw new HttpResponseException(errorMessage, networkResponse, null);
+        try (Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest)) {
+            int responseCode = networkResponse.getStatusCode();
+            boolean expectedResponse = responseCode == 200;
+            if (!expectedResponse) {
+                String errorMessage = networkResponse.getValue().toString();
+                throw new HttpResponseException(errorMessage, networkResponse, null);
+            }
+            return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
-        networkResponse.close();
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
     }
 
     @SuppressWarnings("cast")
@@ -157,16 +154,15 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(requestUri);
         // Send the request through the httpPipeline
-        Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        int responseCode = networkResponse.getStatusCode();
-        boolean expectedResponse = responseCode == 200;
-        if (!expectedResponse) {
-            String errorMessage = networkResponse.getValue().toString();
-            networkResponse.close();
-            throw new HttpResponseException(errorMessage, networkResponse, null);
+        try (Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest)) {
+            int responseCode = networkResponse.getStatusCode();
+            boolean expectedResponse = responseCode == 200;
+            if (!expectedResponse) {
+                String errorMessage = networkResponse.getValue().toString();
+                throw new HttpResponseException(errorMessage, networkResponse, null);
+            }
+            return null;
         }
-        networkResponse.close();
-        return null;
     }
 
     @SuppressWarnings("cast")
@@ -201,8 +197,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 
@@ -233,8 +227,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 
@@ -265,8 +257,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 
@@ -302,8 +292,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 
@@ -334,8 +322,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 
@@ -372,8 +358,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 
@@ -410,8 +394,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 
@@ -422,19 +404,16 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(requestUri);
         // Send the request through the httpPipeline
-        Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        int responseCode = networkResponse.getStatusCode();
-        boolean expectedResponse = responseCode == 200;
-        if (!expectedResponse) {
-            String errorMessage = networkResponse.getValue().toString();
-            networkResponse.close();
-            throw new HttpResponseException(errorMessage, networkResponse, null);
+        try (Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest)) {
+            int responseCode = networkResponse.getStatusCode();
+            boolean expectedResponse = responseCode == 200;
+            if (!expectedResponse) {
+                String errorMessage = networkResponse.getValue().toString();
+                throw new HttpResponseException(errorMessage, networkResponse, null);
+            }
+            BinaryData responseBody = networkResponse.getValue();
+            return responseBody != null ? responseBody.toBytes() : null;
         }
-        BinaryData responseBody = networkResponse.getValue();
-        byte[] responseBodyBytes = responseBody != null ? responseBody.toBytes() : null;
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
-        return responseBodyBytes;
     }
 
     @SuppressWarnings("cast")
@@ -480,8 +459,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -510,8 +487,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -540,8 +515,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -570,8 +543,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -605,8 +576,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -639,8 +608,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -674,8 +641,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -701,8 +666,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -728,8 +691,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -755,8 +716,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -783,8 +742,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -811,8 +768,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -846,8 +801,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 
@@ -874,8 +827,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -908,8 +859,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 
@@ -935,8 +884,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -962,8 +909,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -989,8 +934,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -1016,8 +959,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -1054,8 +995,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -1090,8 +1029,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -1124,8 +1061,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -1158,8 +1093,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -1193,8 +1126,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -1227,8 +1158,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -1260,8 +1189,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -1293,8 +1220,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -1305,16 +1230,15 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(requestUri);
         // Send the request through the httpPipeline
-        Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        int responseCode = networkResponse.getStatusCode();
-        boolean expectedResponse = responseCode == 200;
-        if (!expectedResponse) {
-            String errorMessage = networkResponse.getValue().toString();
-            networkResponse.close();
-            throw new HttpResponseException(errorMessage, networkResponse, null);
+        try (Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest)) {
+            int responseCode = networkResponse.getStatusCode();
+            boolean expectedResponse = responseCode == 200;
+            if (!expectedResponse) {
+                String errorMessage = networkResponse.getValue().toString();
+                throw new HttpResponseException(errorMessage, networkResponse, null);
+            }
+            return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
-        networkResponse.close();
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
     }
 
     @SuppressWarnings("cast")
@@ -1346,8 +1270,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 
@@ -1376,19 +1298,16 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(requestUri);
         // Send the request through the httpPipeline
-        Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        int responseCode = networkResponse.getStatusCode();
-        boolean expectedResponse = responseCode == 200;
-        if (!expectedResponse) {
-            String errorMessage = networkResponse.getValue().toString();
-            networkResponse.close();
-            throw new HttpResponseException(errorMessage, networkResponse, null);
+        try (Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest)) {
+            int responseCode = networkResponse.getStatusCode();
+            boolean expectedResponse = responseCode == 200;
+            if (!expectedResponse) {
+                String errorMessage = networkResponse.getValue().toString();
+                throw new HttpResponseException(errorMessage, networkResponse, null);
+            }
+            BinaryData responseBody = networkResponse.getValue();
+            return responseBody != null ? responseBody.toBytes() : null;
         }
-        BinaryData responseBody = networkResponse.getValue();
-        byte[] responseBodyBytes = responseBody != null ? responseBody.toBytes() : null;
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
-        return responseBodyBytes;
     }
 
     @SuppressWarnings("cast")
@@ -1425,8 +1344,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 
@@ -1451,8 +1368,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -1481,16 +1396,15 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.HEAD).setUri(requestUri);
         // Send the request through the httpPipeline
-        Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        int responseCode = networkResponse.getStatusCode();
-        boolean expectedResponse = responseCode == 200;
-        if (!expectedResponse) {
-            String errorMessage = networkResponse.getValue().toString();
-            networkResponse.close();
-            throw new HttpResponseException(errorMessage, networkResponse, null);
+        try (Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest)) {
+            int responseCode = networkResponse.getStatusCode();
+            boolean expectedResponse = responseCode == 200;
+            if (!expectedResponse) {
+                String errorMessage = networkResponse.getValue().toString();
+                throw new HttpResponseException(errorMessage, networkResponse, null);
+            }
+            return null;
         }
-        networkResponse.close();
-        return null;
     }
 
     @SuppressWarnings("cast")
@@ -1500,16 +1414,15 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.HEAD).setUri(requestUri);
         // Send the request through the httpPipeline
-        Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        int responseCode = networkResponse.getStatusCode();
-        boolean expectedResponse = responseCode == 200;
-        if (!expectedResponse) {
-            String errorMessage = networkResponse.getValue().toString();
-            networkResponse.close();
-            throw new HttpResponseException(errorMessage, networkResponse, null);
+        try (Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest)) {
+            int responseCode = networkResponse.getStatusCode();
+            boolean expectedResponse = responseCode == 200;
+            if (!expectedResponse) {
+                String errorMessage = networkResponse.getValue().toString();
+                throw new HttpResponseException(errorMessage, networkResponse, null);
+            }
+            return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
-        networkResponse.close();
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
     }
 
     @SuppressWarnings("cast")
@@ -1519,16 +1432,15 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.HEAD).setUri(requestUri);
         // Send the request through the httpPipeline
-        Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        int responseCode = networkResponse.getStatusCode();
-        boolean expectedResponse = responseCode == 200;
-        if (!expectedResponse) {
-            String errorMessage = networkResponse.getValue().toString();
-            networkResponse.close();
-            throw new HttpResponseException(errorMessage, networkResponse, null);
+        try (Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest)) {
+            int responseCode = networkResponse.getStatusCode();
+            boolean expectedResponse = responseCode == 200;
+            if (!expectedResponse) {
+                String errorMessage = networkResponse.getValue().toString();
+                throw new HttpResponseException(errorMessage, networkResponse, null);
+            }
+            return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
         }
-        networkResponse.close();
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
     }
 
     @SuppressWarnings("cast")
@@ -1538,16 +1450,15 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.HEAD).setUri(requestUri);
         // Send the request through the httpPipeline
-        Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        int responseCode = networkResponse.getStatusCode();
-        boolean expectedResponse = responseCode == 200;
-        if (!expectedResponse) {
-            String errorMessage = networkResponse.getValue().toString();
-            networkResponse.close();
-            throw new HttpResponseException(errorMessage, networkResponse, null);
+        try (Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest)) {
+            int responseCode = networkResponse.getStatusCode();
+            boolean expectedResponse = responseCode == 200;
+            if (!expectedResponse) {
+                String errorMessage = networkResponse.getValue().toString();
+                throw new HttpResponseException(errorMessage, networkResponse, null);
+            }
+            return expectedResponse;
         }
-        networkResponse.close();
-        return expectedResponse;
     }
 
     @SuppressWarnings("cast")
@@ -1599,8 +1510,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -1634,8 +1543,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -1668,8 +1575,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -1702,8 +1607,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -1736,8 +1639,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -1770,8 +1671,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -1804,8 +1703,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -1838,8 +1735,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -1874,8 +1769,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -1908,8 +1801,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -1940,8 +1831,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -1974,8 +1863,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 

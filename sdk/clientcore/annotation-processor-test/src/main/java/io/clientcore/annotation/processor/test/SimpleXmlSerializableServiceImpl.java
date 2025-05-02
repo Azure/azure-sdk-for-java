@@ -130,8 +130,6 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 
@@ -163,8 +161,6 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
         return deserializedResult;
     }
 }
