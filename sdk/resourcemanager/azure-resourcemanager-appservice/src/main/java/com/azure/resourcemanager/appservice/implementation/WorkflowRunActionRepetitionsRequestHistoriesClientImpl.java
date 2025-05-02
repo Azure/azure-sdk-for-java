@@ -25,6 +25,7 @@ import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.fluent.WorkflowRunActionRepetitionsRequestHistoriesClient;
 import com.azure.resourcemanager.appservice.fluent.models.RequestHistoryInner;
 import com.azure.resourcemanager.appservice.models.RequestHistoryListResult;
@@ -76,10 +77,33 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
             @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs/{runName}/actions/{actionName}/repetitions/{repetitionName}/requestHistories")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<RequestHistoryListResult> listSync(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("workflowName") String workflowName, @PathParam("runName") String runName,
+            @PathParam("actionName") String actionName, @PathParam("repetitionName") String repetitionName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs/{runName}/actions/{actionName}/repetitions/{repetitionName}/requestHistories/{requestHistoryName}")
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RequestHistoryInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @PathParam("workflowName") String workflowName, @PathParam("runName") String runName,
+            @PathParam("actionName") String actionName, @PathParam("repetitionName") String repetitionName,
+            @PathParam("requestHistoryName") String requestHistoryName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Web/sites/{name}/hostruntime/runtime/webhooks/workflow/api/management/workflows/{workflowName}/runs/{runName}/actions/{actionName}/repetitions/{repetitionName}/requestHistories/{requestHistoryName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<RequestHistoryInner> getSync(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
             @PathParam("workflowName") String workflowName, @PathParam("runName") String runName,
@@ -94,6 +118,13 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
         Mono<Response<RequestHistoryListResult>> listNext(
             @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
             @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Response<RequestHistoryListResult> listNextSync(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -160,61 +191,6 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
      * @param runName The workflow run name.
      * @param actionName The workflow action name.
      * @param repetitionName The workflow repetition.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow request histories along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RequestHistoryInner>> listSinglePageAsync(String resourceGroupName, String name,
-        String workflowName, String runName, String actionName, String repetitionName, Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (workflowName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workflowName is required and cannot be null."));
-        }
-        if (runName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter runName is required and cannot be null."));
-        }
-        if (actionName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter actionName is required and cannot be null."));
-        }
-        if (repetitionName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter repetitionName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service
-            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name, workflowName,
-                runName, actionName, repetitionName, this.client.getApiVersion(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
-    }
-
-    /**
-     * List a workflow run repetition request history.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @param actionName The workflow action name.
-     * @param repetitionName The workflow repetition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -237,17 +213,112 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
      * @param runName The workflow run name.
      * @param actionName The workflow action name.
      * @param repetitionName The workflow repetition.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of workflow request histories along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<RequestHistoryInner> listSinglePage(String resourceGroupName, String name,
+        String workflowName, String runName, String actionName, String repetitionName) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (workflowName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter workflowName is required and cannot be null."));
+        }
+        if (runName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter runName is required and cannot be null."));
+        }
+        if (actionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter actionName is required and cannot be null."));
+        }
+        if (repetitionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter repetitionName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<RequestHistoryListResult> res
+            = service.listSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name,
+                workflowName, runName, actionName, repetitionName, this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * List a workflow run repetition request history.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Site name.
+     * @param workflowName The workflow name.
+     * @param runName The workflow run name.
+     * @param actionName The workflow action name.
+     * @param repetitionName The workflow repetition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow request histories as paginated response with {@link PagedFlux}.
+     * @return the list of workflow request histories along with {@link PagedResponse}.
      */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RequestHistoryInner> listAsync(String resourceGroupName, String name, String workflowName,
-        String runName, String actionName, String repetitionName, Context context) {
-        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, name, workflowName, runName, actionName,
-            repetitionName, context), nextLink -> listNextSinglePageAsync(nextLink, context));
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<RequestHistoryInner> listSinglePage(String resourceGroupName, String name,
+        String workflowName, String runName, String actionName, String repetitionName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (workflowName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter workflowName is required and cannot be null."));
+        }
+        if (runName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter runName is required and cannot be null."));
+        }
+        if (actionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter actionName is required and cannot be null."));
+        }
+        if (repetitionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter repetitionName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<RequestHistoryListResult> res
+            = service.listSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name,
+                workflowName, runName, actionName, repetitionName, this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
 
     /**
@@ -268,7 +339,8 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
     public PagedIterable<RequestHistoryInner> list(String resourceGroupName, String name, String workflowName,
         String runName, String actionName, String repetitionName) {
         return new PagedIterable<>(
-            listAsync(resourceGroupName, name, workflowName, runName, actionName, repetitionName));
+            () -> listSinglePage(resourceGroupName, name, workflowName, runName, actionName, repetitionName),
+            nextLink -> listNextSinglePage(nextLink));
     }
 
     /**
@@ -290,7 +362,8 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
     public PagedIterable<RequestHistoryInner> list(String resourceGroupName, String name, String workflowName,
         String runName, String actionName, String repetitionName, Context context) {
         return new PagedIterable<>(
-            listAsync(resourceGroupName, name, workflowName, runName, actionName, repetitionName, context));
+            () -> listSinglePage(resourceGroupName, name, workflowName, runName, actionName, repetitionName, context),
+            nextLink -> listNextSinglePage(nextLink, context));
     }
 
     /**
@@ -361,65 +434,6 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
      * @param actionName The workflow action name.
      * @param repetitionName The workflow repetition.
      * @param requestHistoryName The request history name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a workflow run repetition request history along with {@link Response} on successful completion of
-     * {@link Mono}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RequestHistoryInner>> getWithResponseAsync(String resourceGroupName, String name,
-        String workflowName, String runName, String actionName, String repetitionName, String requestHistoryName,
-        Context context) {
-        if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
-        }
-        if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException(
-                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
-        }
-        if (resourceGroupName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
-        }
-        if (name == null) {
-            return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
-        }
-        if (workflowName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter workflowName is required and cannot be null."));
-        }
-        if (runName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter runName is required and cannot be null."));
-        }
-        if (actionName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter actionName is required and cannot be null."));
-        }
-        if (repetitionName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter repetitionName is required and cannot be null."));
-        }
-        if (requestHistoryName == null) {
-            return Mono
-                .error(new IllegalArgumentException("Parameter requestHistoryName is required and cannot be null."));
-        }
-        final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name,
-            workflowName, runName, actionName, repetitionName, requestHistoryName, this.client.getApiVersion(), accept,
-            context);
-    }
-
-    /**
-     * Gets a workflow run repetition request history.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Site name.
-     * @param workflowName The workflow name.
-     * @param runName The workflow run name.
-     * @param actionName The workflow action name.
-     * @param repetitionName The workflow repetition.
-     * @param requestHistoryName The request history name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -451,8 +465,47 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<RequestHistoryInner> getWithResponse(String resourceGroupName, String name, String workflowName,
         String runName, String actionName, String repetitionName, String requestHistoryName, Context context) {
-        return getWithResponseAsync(resourceGroupName, name, workflowName, runName, actionName, repetitionName,
-            requestHistoryName, context).block();
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (name == null) {
+            throw LOGGER.atError().log(new IllegalArgumentException("Parameter name is required and cannot be null."));
+        }
+        if (workflowName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter workflowName is required and cannot be null."));
+        }
+        if (runName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter runName is required and cannot be null."));
+        }
+        if (actionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter actionName is required and cannot be null."));
+        }
+        if (repetitionName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter repetitionName is required and cannot be null."));
+        }
+        if (requestHistoryName == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter requestHistoryName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return service.getSync(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, name,
+            workflowName, runName, actionName, repetitionName, requestHistoryName, this.client.getApiVersion(), accept,
+            context);
     }
 
     /**
@@ -507,26 +560,57 @@ public final class WorkflowRunActionRepetitionsRequestHistoriesClientImpl
      * Get the next page of items.
      * 
      * @param nextLink The URL to get the next list of items.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of workflow request histories along with {@link PagedResponse}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private PagedResponse<RequestHistoryInner> listNextSinglePage(String nextLink) {
+        if (nextLink == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        Response<RequestHistoryListResult> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of workflow request histories along with {@link PagedResponse} on successful completion of
-     * {@link Mono}.
+     * @return the list of workflow request histories along with {@link PagedResponse}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RequestHistoryInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private PagedResponse<RequestHistoryInner> listNextSinglePage(String nextLink, Context context) {
         if (nextLink == null) {
-            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(
-                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            throw LOGGER.atError()
+                .log(new IllegalArgumentException(
+                    "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
-                res.getValue().value(), res.getValue().nextLink(), null));
+        Response<RequestHistoryListResult> res
+            = service.listNextSync(nextLink, this.client.getEndpoint(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(),
+            res.getValue().nextLink(), null);
     }
+
+    private static final ClientLogger LOGGER
+        = new ClientLogger(WorkflowRunActionRepetitionsRequestHistoriesClientImpl.class);
 }
