@@ -5,6 +5,8 @@ This package contains a Java SDK for Azure Communication Call Automation Service
 [Source code][source] | [Package (Maven)][package] | [API reference documentation][api_documentation]
 | [Product documentation][product_docs]
 
+JRS-Testing only change will not be checked in
+
 ## Getting started
 
 ### Prerequisites
