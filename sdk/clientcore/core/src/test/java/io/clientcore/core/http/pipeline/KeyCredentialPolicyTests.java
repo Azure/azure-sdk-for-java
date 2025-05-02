@@ -35,13 +35,10 @@ public class KeyCredentialPolicyTests {
     public void validateSchemes(String url, boolean shouldPass) {
         KeyCredential credential = new KeyCredential("fakeKeyPlaceholder");
         KeyCredentialPolicy policy = new KeyCredentialPolicy(HttpHeaderName.AUTHORIZATION.toString(), credential, null);
-        HttpPipelinePolicy mockReturnPolicy = (HttpRequest request, HttpPipelineNextPolicy next) -> new Response<>(request, 200, null, BinaryData.empty());
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-                .addPolicy(policy)
-                .addPolicy(mockReturnPolicy)
-                .build();
-        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET)
-            .setUri(url);
+        HttpPipelinePolicy mockReturnPolicy = (HttpRequest request,
+            HttpPipelineNextPolicy next) -> new Response<>(request, 200, null, BinaryData.empty());
+        HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(policy).addPolicy(mockReturnPolicy).build();
+        HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(url);
         try {
             pipeline.send(request);
         } catch (IllegalStateException e) {
@@ -64,8 +61,6 @@ public class KeyCredentialPolicyTests {
     }
 
     private static Stream<Arguments> validateSchemesSupplier() {
-        return Stream.of(
-                Arguments.of("http://localhost", false),
-                Arguments.of("https://localhost", true));
+        return Stream.of(Arguments.of("http://localhost", false), Arguments.of("https://localhost", true));
     }
 }
