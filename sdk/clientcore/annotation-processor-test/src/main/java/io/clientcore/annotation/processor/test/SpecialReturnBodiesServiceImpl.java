@@ -43,7 +43,7 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         return new SpecialReturnBodiesServiceImpl(httpPipeline);
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public BinaryData getBinaryData(String url) {
         String uri = url + "/bytes";
@@ -59,7 +59,7 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         return networkResponse.getValue();
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public Response<BinaryData> getBinaryDataWithResponse(String url) {
         String uri = url + "/bytes";
@@ -75,7 +75,7 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         return networkResponse;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public byte[] getByteArray(String url) {
         String uri = url + "/bytes";
@@ -90,11 +90,12 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         }
         BinaryData responseBody = networkResponse.getValue();
         byte[] responseBodyBytes = responseBody != null ? responseBody.toBytes() : null;
+        // Close the network response as the body should be consumed.
         networkResponse.close();
         return (responseBodyBytes != null && responseBodyBytes.length == 0) ? null : responseBodyBytes;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public Response<byte[]> getByteArrayWithResponse(String url) {
         String uri = url + "/bytes";
@@ -109,11 +110,12 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         }
         BinaryData responseBody = networkResponse.getValue();
         byte[] responseBodyBytes = responseBody != null ? responseBody.toBytes() : null;
+        // Close the network response as the body should be consumed.
         networkResponse.close();
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), (responseBodyBytes != null && responseBodyBytes.length == 0) ? null : responseBodyBytes);
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public InputStream getInputStream(String url) {
         String uri = url + "/bytes";
@@ -129,7 +131,7 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         return networkResponse.getValue().toStream();
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public Response<InputStream> getInputStreamWithResponse(String url) {
         String uri = url + "/bytes";

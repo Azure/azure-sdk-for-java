@@ -4,8 +4,10 @@
 package io.clientcore.annotation.processor.utils;
 
 import com.github.javaparser.StaticJavaParser;
+import com.github.javaparser.ast.comments.LineComment;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.ReturnStmt;
+import com.github.javaparser.ast.stmt.Statement;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.implementation.TypeUtil;
@@ -77,7 +79,7 @@ public final class ResponseHandler {
             // Always close the network response in this situation as converting to a byte[] will read the entire
             // response. This should complete the connection, but let's be safe. This must be done after getting the
             // byte[] though.
-            closeResponse(body);
+            closeResponse(body, "Close the network response as the body should be consumed.");
 
             // TODO (alzimmer): Should a zero length body return null or byte[0]?
             addReturnStatement(body, returnIsResponse,
@@ -107,7 +109,7 @@ public final class ResponseHandler {
 
             // Deserialization will read the entire network response. Same idea as the byte[], reading the entire body
             // should complete the connection, but let's be safe. And again, close after creating the return value.
-            closeResponse(body);
+            closeResponse(body, "Close the network response as the body should be consumed.");
 
             addReturnStatement(body, returnIsResponse, "deserializedResult");
         }
@@ -226,7 +228,17 @@ public final class ResponseHandler {
     }
 
     private static void closeResponse(BlockStmt body) {
-        body.addStatement(StaticJavaParser.parseStatement("networkResponse.close();"));
+        closeResponse(body, null);
+    }
+
+    private static void closeResponse(BlockStmt body, String optionalComment) {
+        Statement statement = StaticJavaParser.parseStatement("networkResponse.close();");
+        if (!CoreUtils.isNullOrEmpty(optionalComment)) {
+            // Prepend a space as the handling for line comments in JavaParser is '//<comment>', not '// <comment>'
+            // as we'd want.
+            statement.setComment(new LineComment(" " + optionalComment));
+        }
+        body.addStatement(statement);
     }
 
     private ResponseHandler() {

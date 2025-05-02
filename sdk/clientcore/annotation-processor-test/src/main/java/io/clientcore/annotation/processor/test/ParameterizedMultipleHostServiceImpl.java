@@ -46,7 +46,7 @@ public class ParameterizedMultipleHostServiceImpl implements ParameterizedMultip
         return new ParameterizedMultipleHostServiceImpl(httpPipeline);
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON get(String scheme, String hostPart1, String hostPart2) {
         String uri = scheme + "://" + hostPart1 + hostPart2 + "/get";
@@ -69,6 +69,7 @@ public class ParameterizedMultipleHostServiceImpl implements ParameterizedMultip
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
         return deserializedResult;
     }

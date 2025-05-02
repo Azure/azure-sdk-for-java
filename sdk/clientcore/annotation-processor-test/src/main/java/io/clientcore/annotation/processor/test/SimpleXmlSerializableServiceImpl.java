@@ -47,7 +47,7 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         return new SimpleXmlSerializableServiceImpl(httpPipeline);
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public void sendApplicationXml(SimpleXmlSerializable simpleXmlSerializable) {
         String uri = "http://localhost/sendApplicationXml";
@@ -72,7 +72,7 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         networkResponse.close();
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public void sendTextXml(SimpleXmlSerializable simpleXmlSerializable) {
         String uri = "http://localhost/sendTextXml";
@@ -97,7 +97,7 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         networkResponse.close();
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public SimpleXmlSerializable getXml(String contentType) {
         String uri = "http://localhost/getXml";
@@ -123,11 +123,12 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
         return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public SimpleXmlSerializable getInvalidXml(String contentType) {
         String uri = "http://localhost/getInvalidXml";
@@ -153,6 +154,7 @@ public class SimpleXmlSerializableServiceImpl implements SimpleXmlSerializableSe
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
         return deserializedResult;
     }

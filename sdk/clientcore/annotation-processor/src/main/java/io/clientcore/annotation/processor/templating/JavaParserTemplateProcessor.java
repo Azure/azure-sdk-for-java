@@ -13,7 +13,6 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.comments.LineComment;
-import com.github.javaparser.ast.expr.ArrayInitializerExpr;
 import com.github.javaparser.ast.expr.Name;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
@@ -214,12 +213,10 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
     // Helper methods
     private void configureInternalMethod(MethodDeclaration internalMethod, HttpRequestContext method,
         ProcessingEnvironment processingEnv) {
-        // TODO (alzimmer): For now throw @SuppressWarnings({"unchecked", "cast"}) on generated methods while we
+        // TODO (alzimmer): For now throw @SuppressWarnings("cast") on generated methods while we
         //  improve / fix the generated code to no longer need it.
         internalMethod.setName(method.getMethodName())
-            .addAnnotation(new SingleMemberAnnotationExpr(new Name("SuppressWarnings"),
-                new ArrayInitializerExpr(
-                    new NodeList<>(new StringLiteralExpr("unchecked"), new StringLiteralExpr("cast")))))
+            .addAnnotation(new SingleMemberAnnotationExpr(new Name("SuppressWarnings"), new StringLiteralExpr("cast")))
             .addMarkerAnnotation(Override.class)
             .setType(TypeConverter.getAstType(method.getMethodReturnType()));
 
