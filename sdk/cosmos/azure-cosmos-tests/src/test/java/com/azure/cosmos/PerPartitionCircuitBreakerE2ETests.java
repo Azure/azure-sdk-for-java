@@ -3484,10 +3484,10 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
                 faultyFeedRangeEpkImpl.v = (FeedRangeEpkImpl) operationInvocationParamsWrapper.faultyFeedRange;
 
-                collectionCache.resolveByNameAsync(null, containerAccessor.getLinkWithoutTrailingSlash(container), null)
+                collectionCache.resolveByNameAsync(null, containerAccessor.getLinkWithoutTrailingSlash(container), null, null)
                     .flatMap(collection -> {
                         faultyDocumentCollection.v = collection;
-                        return partitionKeyRangeCache.tryGetOverlappingRangesAsync(null, collection.getResourceId(), faultyFeedRangeEpkImpl.v.getRange(), true, null);
+                        return partitionKeyRangeCache.tryGetOverlappingRangesAsync(null, collection.getResourceId(), faultyFeedRangeEpkImpl.v.getRange(), true, null, null);
                     })
                     .flatMap(listValueHolder -> {
                         faultyPartitionKeyRanges.v = listValueHolder.v;
@@ -3497,10 +3497,10 @@ public class PerPartitionCircuitBreakerE2ETests extends FaultInjectionTestBase {
 
                 faultyFeedRangePartitionKeyImpl.v = (FeedRangePartitionKeyImpl) operationInvocationParamsWrapper.faultyFeedRange;
 
-                collectionCache.resolveByNameAsync(null, containerAccessor.getLinkWithoutTrailingSlash(container), null)
+                collectionCache.resolveByNameAsync(null, containerAccessor.getLinkWithoutTrailingSlash(container), null, null)
                     .flatMap(collection -> {
                         faultyDocumentCollection.v = collection;
-                        return partitionKeyRangeCache.tryGetOverlappingRangesAsync(null, collection.getResourceId(), faultyFeedRangePartitionKeyImpl.v.getEffectiveRange(collection.getPartitionKey()), true, null);
+                        return partitionKeyRangeCache.tryGetOverlappingRangesAsync(null, collection.getResourceId(), faultyFeedRangePartitionKeyImpl.v.getEffectiveRange(collection.getPartitionKey()), true, null, null);
                     })
                     .flatMap(listValueHolder -> {
                         faultyPartitionKeyRanges.v = listValueHolder.v;

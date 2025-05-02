@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.feedranges;
 
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.JsonSerializable;
@@ -79,7 +80,8 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
     protected abstract Mono<Range<String>> getEffectiveRange(
         IRoutingMapProvider routingMapProvider,
         MetadataDiagnosticsContext metadataDiagnosticsCtx,
-        Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono);
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono,
+        CosmosDiagnosticsContext diagnosticsContext);
 
     public static Range<String> normalizeRange(Range<String> range) {
         if (range.isMinInclusive() && !range.isMaxInclusive()) {
@@ -108,9 +110,9 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
     public Mono<Range<String>> getNormalizedEffectiveRange(
         IRoutingMapProvider routingMapProvider,
         MetadataDiagnosticsContext metadataDiagnosticsCtx,
-        Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono
-    ) {
-        return this.getEffectiveRange(routingMapProvider, metadataDiagnosticsCtx, collectionResolutionMono)
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono,
+        CosmosDiagnosticsContext diagnosticsContext) {
+        return this.getEffectiveRange(routingMapProvider, metadataDiagnosticsCtx, collectionResolutionMono, diagnosticsContext)
                    .map(FeedRangeInternal::normalizeRange);
     }
 
@@ -205,7 +207,8 @@ public abstract class FeedRangeInternal extends JsonSerializable implements Feed
             this.getNormalizedEffectiveRange(
                 routingMapProvider,
                 metadataDiagnosticsCtx,
-                collectionResolutionMono),
+                collectionResolutionMono,
+                null),
             collectionResolutionMono)
                    .map(tuple -> {
 

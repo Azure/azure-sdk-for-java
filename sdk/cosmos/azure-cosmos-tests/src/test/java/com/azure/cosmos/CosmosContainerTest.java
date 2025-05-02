@@ -852,8 +852,10 @@ public class CosmosContainerTest extends TestSuiteBase {
                     clientWrapper.getCollectionCache().resolveByNameAsync(
                         null,
                         container.asyncContainer.getLink(),
+                        null,
                         null
-                    ).block()))).block();
+                    ).block())),
+                null).block();
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)

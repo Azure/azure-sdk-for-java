@@ -4,12 +4,19 @@
 package com.azure.cosmos.implementation.feedranges;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
+import com.azure.cosmos.implementation.OperationType;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
@@ -57,7 +64,8 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
     public Mono<Range<String>> getEffectiveRange(
         IRoutingMapProvider routingMapProvider,
         MetadataDiagnosticsContext metadataDiagnosticsCtx,
-        Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono) {
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono,
+        CosmosDiagnosticsContext diagnosticsContext) {
 
         checkNotNull(
             collectionResolutionMono,
@@ -124,13 +132,23 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
                     this.partitionKey,
                     collection.getPartitionKey());
 
+                CosmosDiagnosticsContext cosmosDiagnosticsContext
+                    = Utils.generateDiagnosticsContextForInternalStateCapture(
+                    request.getDiagnosticsClientContext(),
+                    ResourceType.PartitionKeyRange,
+                    ConsistencyLevel.STRONG,
+                    ConnectionMode.GATEWAY,
+                    OperationType.Read,
+                    null);
+
                 return routingMapProvider
                     .tryGetOverlappingRangesAsync(
                         metadataDiagnosticsCtx,
                         containerRid,
                         Range.getPointRange(effectivePartitionKey),
                         false,
-                        null)
+                        null,
+                        cosmosDiagnosticsContext)
                     .flatMap(pkRangeHolder -> {
                         ArrayList<String> rangeList = new ArrayList<>(1);
 
@@ -162,8 +180,18 @@ public final class FeedRangePartitionKeyImpl extends FeedRangeInternal {
         MetadataDiagnosticsContext metadataDiagnosticsCtx =
             BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics);
 
+
+        DiagnosticsClientContext diagnosticsClientContext
+            = request.getDiagnosticsClientContext();
+
+        CosmosDiagnostics cosmosDiagnostics
+            = (diagnosticsClientContext != null) ? diagnosticsClientContext.getMostRecentlyCreatedDiagnostics() : null;
+
+        CosmosDiagnosticsContext diagnosticsContext
+            = (cosmosDiagnostics != null) ? cosmosDiagnostics.getDiagnosticsContext() : null;
+
         return this
-            .getNormalizedEffectiveRange(routingMapProvider, metadataDiagnosticsCtx, collectionResolutionMono)
+            .getNormalizedEffectiveRange(routingMapProvider, metadataDiagnosticsCtx, collectionResolutionMono, diagnosticsContext)
             .map(effectiveRange -> {
                 request.setEffectiveRange(effectiveRange);
                 request.setHasFeedRangeFilteringBeenApplied(true);

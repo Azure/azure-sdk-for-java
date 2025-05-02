@@ -421,6 +421,7 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                 .resolveByRidAsync(
                     null,
                     createdContainer.read().getProperties().getResourceId(),
+                    null,
                     null)
                 .block();
 
@@ -428,7 +429,8 @@ public class CosmosContainerChangeFeedTest extends TestSuiteBase {
                 .getNormalizedEffectiveRange(
                     client.asyncClient().getContextClient().getPartitionKeyRangeCache(),
                     null,
-                    Mono.just(documentCollection))
+                    Mono.just(documentCollection),
+                    null)
                 .block();
 
             assertThat(effectiveRange).isNotNull();

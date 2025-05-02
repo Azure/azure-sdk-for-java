@@ -474,7 +474,7 @@ public class CosmosAsyncContainer {
                     clientWrapper
                         .getCollectionCache()
                         .resolveByNameAsync(
-                            null, this.getLinkWithoutTrailingSlash(), null)
+                            null, this.getLinkWithoutTrailingSlash(), null, null)
                         .flatMap(collection -> {
                             if (collection == null) {
                                 throw new IllegalStateException("Collection cannot be null");
@@ -1167,7 +1167,8 @@ public class CosmosAsyncContainer {
                 .resolveByNameAsync(
                     null,
                     this.getLinkWithoutTrailingSlash(),
-                    null)
+                    null,
+                    state.getDiagnosticsContextSnapshot())
                 .flatMapMany(
                     collection -> {
                         if (collection == null) {
@@ -2654,7 +2655,7 @@ public class CosmosAsyncContainer {
             .flatMap(normalizedRange -> {
                 return clientWrapper
                     .getCollectionCache()
-                    .resolveByNameAsync(null, this.getLinkWithoutTrailingSlash(), null)
+                    .resolveByNameAsync(null, this.getLinkWithoutTrailingSlash(), null, null)
                     .flatMap(collection -> {
                         return clientWrapper
                             .getPartitionKeyRangeCache()
@@ -2663,8 +2664,8 @@ public class CosmosAsyncContainer {
                                 collection.getResourceId(),
                                 normalizedRange,
                                 forceRefresh,
-                                null
-                            );
+                                null,
+                                null);
                     });
             })
             .map(pkRangesValueHolder -> {
@@ -2693,7 +2694,7 @@ public class CosmosAsyncContainer {
         final AsyncDocumentClient clientWrapper = this.database.getDocClientWrapper();
         Mono<Utils.ValueHolder<DocumentCollection>> getCollectionObservable = clientWrapper
             .getCollectionCache()
-            .resolveByNameAsync(null, this.getLinkWithoutTrailingSlash(), null)
+            .resolveByNameAsync(null, this.getLinkWithoutTrailingSlash(), null, null)
             .map(collection -> Utils.ValueHolder.initialize(collection));
 
         return FeedRangeInternal
@@ -2712,7 +2713,7 @@ public class CosmosAsyncContainer {
         final AsyncDocumentClient clientWrapper = this.database.getDocClientWrapper();
         Mono<Utils.ValueHolder<DocumentCollection>> getCollectionObservable = clientWrapper
             .getCollectionCache()
-            .resolveByNameAsync(null, this.getLinkWithoutTrailingSlash(), null)
+            .resolveByNameAsync(null, this.getLinkWithoutTrailingSlash(), null, null)
             .map(collection -> Utils.ValueHolder.initialize(collection));
 
         return FeedRangeInternal
@@ -2720,7 +2721,8 @@ public class CosmosAsyncContainer {
             .getNormalizedEffectiveRange(
                 clientWrapper.getPartitionKeyRangeCache(),
                 null,
-                getCollectionObservable);
+                getCollectionObservable,
+                null);
     }
 
     Mono<Boolean> checkFeedRangeOverlapping(FeedRange feedRange1, FeedRange feedRange2) {

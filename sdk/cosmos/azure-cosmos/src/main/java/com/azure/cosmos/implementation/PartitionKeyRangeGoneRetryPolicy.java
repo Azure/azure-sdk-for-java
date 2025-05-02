@@ -3,6 +3,10 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.caches.IPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
@@ -70,17 +74,38 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
             if (this.requestOptionProperties != null) {
                 request.properties = this.requestOptionProperties;
             }
+
+            CosmosDiagnosticsContext cosmosDiagnosticsContextForInternalStateCaptureForCollection
+                = Utils.generateDiagnosticsContextForInternalStateCapture(
+                clientException,
+                ResourceType.PartitionKeyRange,
+                ConsistencyLevel.STRONG,
+                ConnectionMode.GATEWAY,
+                OperationType.Read,
+                null);
+
             Mono<Utils.ValueHolder<DocumentCollection>> collectionObs = this.collectionCache.resolveCollectionAsync(
                 BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics),
-                request);
+                request,
+                cosmosDiagnosticsContextForInternalStateCaptureForCollection);
 
             return collectionObs.flatMap(collectionValueHolder -> {
+
+                CosmosDiagnosticsContext cosmosDiagnosticsContextForInternalStateCapture
+                    = Utils.generateDiagnosticsContextForInternalStateCapture(
+                    clientException,
+                    ResourceType.PartitionKeyRange,
+                    ConsistencyLevel.STRONG,
+                    ConnectionMode.GATEWAY,
+                    OperationType.Read,
+                    null);
 
                 Mono<Utils.ValueHolder<CollectionRoutingMap>> routingMapObs = this.partitionKeyRangeCache.tryLookupAsync(
                     BridgeInternal.getMetaDataDiagnosticContext(this.request.requestContext.cosmosDiagnostics),
                     collectionValueHolder.v.getResourceId(),
                     null,
-                    request.properties);
+                    request.properties,
+                    cosmosDiagnosticsContextForInternalStateCapture);
 
                 Mono<Utils.ValueHolder<CollectionRoutingMap>> refreshedRoutingMapObs = routingMapObs.flatMap(routingMapValueHolder -> {
                     if (routingMapValueHolder.v != null) {
@@ -89,7 +114,8 @@ public class PartitionKeyRangeGoneRetryPolicy extends DocumentClientRetryPolicy 
                             null,
                             collectionValueHolder.v.getResourceId(),
                             routingMapValueHolder.v,
-                            request.properties);
+                            request.properties,
+                            cosmosDiagnosticsContextForInternalStateCapture);
                     } else {
                         return Mono.just(new Utils.ValueHolder<>(null));
                     }

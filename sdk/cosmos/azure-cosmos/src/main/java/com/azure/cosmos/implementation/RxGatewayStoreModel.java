@@ -3,8 +3,11 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosContainerProactiveInitConfig;
+import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
@@ -374,6 +377,10 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
     private Mono<RxDocumentServiceResponse> toDocumentServiceResponse(Mono<HttpResponse> httpResponseMono,
                                                                       RxDocumentServiceRequest request,
                                                                       HttpRequest httpRequest) {
+
+        if (request.getResourceType() == ResourceType.PartitionKeyRange) {
+            logger.info("PartitionKeyRange request");
+        }
 
         return httpResponseMono.flatMap(httpResponse -> {
 
@@ -763,10 +770,21 @@ public class RxGatewayStoreModel implements RxStoreModel, HttpTransportSerialize
                         }
                         return Mono.empty();
                     }
+
+                    CosmosDiagnosticsContext cosmosDiagnosticsContextForInternalStateCapture
+                        = Utils.generateDiagnosticsContextForInternalStateCapture(
+                        request.getDiagnosticsClientContext(),
+                        ResourceType.PartitionKeyRange,
+                        ConsistencyLevel.STRONG,
+                        ConnectionMode.GATEWAY,
+                        OperationType.Read,
+                        null);
+
                     return partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
                         collectionValueHolder.v.getResourceId(),
                         null,
-                        null).flatMap(collectionRoutingMapValueHolder -> {
+                        null,
+                        cosmosDiagnosticsContextForInternalStateCapture).flatMap(collectionRoutingMapValueHolder -> {
                         if (collectionRoutingMapValueHolder == null || collectionRoutingMapValueHolder.v == null) {
                             //Apply the ambient session.
                             String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);

@@ -75,7 +75,7 @@ private[cosmos] object SparkBridgeInternal {
 
     clientWrapper
       .getCollectionCache()
-      .resolveByNameAsync(null, link, null, obsoleteValue)
+      .resolveByNameAsync(null, link, null, obsoleteValue, null)
       .block()
   }
 
@@ -84,7 +84,7 @@ private[cosmos] object SparkBridgeInternal {
       .getDatabase
       .getDocClientWrapper
       .getCollectionCache
-      .resolveByNameAsync(null, container.getLinkWithoutTrailingSlash, null)
+      .resolveByNameAsync(null, container.getLinkWithoutTrailingSlash, null, null)
       .block()
 
     if (documentCollectionHolder != null) {

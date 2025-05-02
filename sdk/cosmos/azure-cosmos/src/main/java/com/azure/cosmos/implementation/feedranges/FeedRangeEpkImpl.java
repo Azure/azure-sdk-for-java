@@ -4,7 +4,12 @@
 package com.azure.cosmos.implementation.feedranges;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.implementation.Constants;
+import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants;
@@ -12,8 +17,10 @@ import com.azure.cosmos.implementation.IRoutingMapProvider;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.MetadataDiagnosticsContext;
 import com.azure.cosmos.implementation.NotFoundException;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.PartitionKeyRange;
 import com.azure.cosmos.implementation.ReadFeedKeyType;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RxDocumentServiceRequest;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
@@ -74,7 +81,8 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
     public Mono<Range<String>> getEffectiveRange(
         IRoutingMapProvider routingMapProvider,
         MetadataDiagnosticsContext metadataDiagnosticsCtx,
-        Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono) {
+        Mono<Utils.ValueHolder<DocumentCollection>> collectionResolutionMono,
+        CosmosDiagnosticsContext diagnosticsContext) {
 
         return Mono.just(this.range);
     }
@@ -108,13 +116,23 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
 
                 final String containerRid = collection.getResourceId();
 
+                CosmosDiagnosticsContext cosmosDiagnosticsContextForInternalStateCapture
+                    = Utils.generateDiagnosticsContextForInternalStateCapture(
+                    request.getDiagnosticsClientContext(),
+                    ResourceType.PartitionKeyRange,
+                    ConsistencyLevel.STRONG,
+                    ConnectionMode.GATEWAY,
+                    OperationType.Read,
+                    null);
+
                 return routingMapProvider
                     .tryGetOverlappingRangesAsync(
                         metadataDiagnosticsCtx,
                         containerRid,
                         this.range,
                         false,
-                        null)
+                        null,
+                        cosmosDiagnosticsContextForInternalStateCapture)
                     .flatMap(pkRangeHolder -> {
                         final ArrayList<String> rangeList = new ArrayList<>();
 
@@ -160,13 +178,23 @@ public final class FeedRangeEpkImpl extends FeedRangeInternal {
                 final String containerRid = collection.getResourceId();
                 request.setEffectiveRange(this.range);
 
+                CosmosDiagnosticsContext cosmosDiagnosticsContextForInternalStateTracking
+                    = Utils.generateDiagnosticsContextForInternalStateCapture(
+                    request.getDiagnosticsClientContext(),
+                    ResourceType.PartitionKeyRange,
+                    ConsistencyLevel.STRONG,
+                    ConnectionMode.GATEWAY,
+                    OperationType.Read,
+                    null);
+
                 return routingMapProvider
                     .tryGetOverlappingRangesAsync(
                         metadataDiagnosticsCtx,
                         containerRid,
                         this.range,
                         false,
-                        null)
+                        null,
+                        cosmosDiagnosticsContextForInternalStateTracking)
                     .flatMap(pkRangeHolder -> {
                         if (pkRangeHolder == null) {
                             return Mono.error(new NotFoundException(

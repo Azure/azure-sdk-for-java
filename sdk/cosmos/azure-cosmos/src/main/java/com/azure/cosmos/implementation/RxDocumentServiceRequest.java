@@ -1127,6 +1127,10 @@ public class RxDocumentServiceRequest implements Cloneable {
         return this.clientContext.createDiagnostics();
     }
 
+    public DiagnosticsClientContext getDiagnosticsClientContext() {
+        return this.clientContext;
+    }
+
     /**
      * Getter for property 'addressRefresh'.
      *

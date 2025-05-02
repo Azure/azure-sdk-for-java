@@ -2,6 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
+import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStateV1;
@@ -217,15 +221,34 @@ class ChangeFeedQueryImpl<T> {
         if (
             globalPartitionEndpointManagerForPerPartitionCircuitBreaker.isPerPartitionLevelCircuitBreakingApplicable(request)
                 || globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverApplicable(request)) {
+
+            CosmosDiagnosticsContext cosmosDiagnosticsContextForInternalStateCaptureForCollection
+                = Utils.generateDiagnosticsContextForInternalStateCapture(
+                request.getDiagnosticsClientContext(),
+                ResourceType.DocumentCollection,
+                ConsistencyLevel.STRONG,
+                ConnectionMode.GATEWAY,
+                OperationType.Read,
+                changeFeedRequestOptionsAccessor.getImpl(this.options));
+
             return Mono.just(request)
                 .flatMap(req -> client.populateHeadersAsync(req, RequestVerb.GET))
-                .flatMap(req -> client.getCollectionCache().resolveCollectionAsync(null, req)
+                .flatMap(req -> client.getCollectionCache().resolveCollectionAsync(null, req, cosmosDiagnosticsContextForInternalStateCaptureForCollection)
                     .flatMap(documentCollectionValueHolder -> {
 
                         checkNotNull(documentCollectionValueHolder, "Argument 'documentCollectionValueHolder' cannot be null!");
                         checkNotNull(documentCollectionValueHolder.v, "Argument 'documentCollectionValueHolder.v' cannot be null!");
 
-                        return client.getPartitionKeyRangeCache().tryLookupAsync(null, documentCollectionValueHolder.v.getResourceId(), null, null)
+                        CosmosDiagnosticsContext cosmosDiagnosticsContextForInternalStateCapture
+                            = Utils.generateDiagnosticsContextForInternalStateCapture(
+                            request.getDiagnosticsClientContext(),
+                            ResourceType.PartitionKeyRange,
+                            ConsistencyLevel.STRONG,
+                            ConnectionMode.GATEWAY,
+                            OperationType.Read,
+                            changeFeedRequestOptionsAccessor.getImpl(this.options));
+
+                        return client.getPartitionKeyRangeCache().tryLookupAsync(null, documentCollectionValueHolder.v.getResourceId(), null, null, cosmosDiagnosticsContextForInternalStateCapture)
                             .flatMap(collectionRoutingMapValueHolder -> {
 
                                 checkNotNull(collectionRoutingMapValueHolder, "Argument 'collectionRoutingMapValueHolder' cannot be null!");

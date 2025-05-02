@@ -173,7 +173,7 @@ public class GlobalAddressResolverTest {
         partitionKeyRanges.add(range);
 
         Mockito
-                .when(collectionCache.resolveByNameAsync(null, documentCollection.getSelfLink(), null))
+                .when(collectionCache.resolveByNameAsync(null, documentCollection.getSelfLink(), null, null))
                 .thenReturn(Mono.just(documentCollection));
 
         Mockito
@@ -182,7 +182,8 @@ public class GlobalAddressResolverTest {
                         documentCollection.getResourceId(),
                         PartitionKeyInternalHelper.FullRange,
                         true,
-                        null))
+                        null,
+                    null))
                 .thenReturn(Mono.just(new Utils.ValueHolder<>(partitionKeyRanges)));
 
         // Set up GatewayAddressCache.openConnectionAndInitCaches behavior
@@ -220,7 +221,7 @@ public class GlobalAddressResolverTest {
 
         Mockito
                 .verify(collectionCache, Mockito.times(1))
-                .resolveByNameAsync(null, documentCollection.getSelfLink(), null);
+                .resolveByNameAsync(null, documentCollection.getSelfLink(), null, null);
         Mockito
                 .verify(routingMapProvider, Mockito.times(1))
                 .tryGetOverlappingRangesAsync(
@@ -228,7 +229,8 @@ public class GlobalAddressResolverTest {
                         documentCollection.getResourceId(),
                         PartitionKeyInternalHelper.FullRange,
                         true,
-                        null);
+                        null,
+                    null);
         Mockito
                 .verify(gatewayAddressCache, Mockito.times(1))
                 .resolveAddressesAndInitCaches(Mockito.anyString(), Mockito.any(DocumentCollection.class), Mockito.any());

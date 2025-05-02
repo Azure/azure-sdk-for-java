@@ -308,6 +308,10 @@ public class ImplementationBridgeHelpers {
             void setCollectionRid(CosmosQueryRequestOptions options, String collectionRid);
 
             String getCollectionRid(CosmosQueryRequestOptions options);
+
+            void enableRegionReorderingForAuxiliaryRequests(CosmosQueryRequestOptions cosmosQueryRequestOptions, boolean enableRegionReorderingForAuxiliaryRequests);
+
+            boolean isRegionReorderingForAuxiliaryRequestsEnabled(CosmosQueryRequestOptions options);
         }
     }
 
@@ -1473,7 +1477,7 @@ public class ImplementationBridgeHelpers {
             }
         }
 
-        public static CosmosDiagnosticsThresholdsAccessor getCosmosAsyncClientAccessor() {
+        public static CosmosDiagnosticsThresholdsAccessor getCosmosDiagnosticsThresholdsAccessor() {
             if (!cosmosDiagnosticsThresholdsClassLoaded.get()) {
                 logger.debug("Initializing CosmosDiagnosticsThresholds...");
                 initializeAllAccessors();
@@ -1493,6 +1497,7 @@ public class ImplementationBridgeHelpers {
             float getRequestChargeThreshold(CosmosDiagnosticsThresholds thresholds);
             int getPayloadSizeThreshold(CosmosDiagnosticsThresholds thresholds);
             boolean isFailureCondition(CosmosDiagnosticsThresholds thresholds, int statusCode, int subStatusCode);
+            CosmosDiagnosticsThresholds getDefaultDiagnosticsThresholds();
         }
     }
 

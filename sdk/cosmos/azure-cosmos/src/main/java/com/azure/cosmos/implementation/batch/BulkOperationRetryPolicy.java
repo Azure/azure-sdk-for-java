@@ -4,12 +4,19 @@
 package com.azure.cosmos.implementation.batch;
 
 import com.azure.cosmos.BridgeInternal;
+import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosDiagnostics;
+import com.azure.cosmos.CosmosDiagnosticsContext;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.CosmosBulkExecutionOptionsImpl;
 import com.azure.cosmos.implementation.GoneException;
 import com.azure.cosmos.implementation.HttpConstants.StatusCodes;
 import com.azure.cosmos.implementation.HttpConstants.SubStatusCodes;
 import com.azure.cosmos.implementation.IRetryPolicy;
+import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceThrottleRetryPolicy;
+import com.azure.cosmos.implementation.ResourceType;
 import com.azure.cosmos.implementation.RetryContext;
 import com.azure.cosmos.implementation.ShouldRetryResult;
 import com.azure.cosmos.implementation.Utils;
@@ -83,7 +90,7 @@ final class BulkOperationRetryPolicy implements IRetryPolicy {
         return this.resourceThrottleRetryPolicy.getRetryContext();
     }
 
-    Mono<Boolean> shouldRetryForGone(int statusCode, int subStatusCode, ItemBulkOperation<?, ?> itemOperation, CosmosException exception) {
+    Mono<Boolean> shouldRetryForGone(int statusCode, int subStatusCode, ItemBulkOperation<?, ?> itemOperation, CosmosException exception, CosmosBulkExecutionOptionsImpl cosmosBulkExecutionOptions) {
         if (statusCode == StatusCodes.GONE) {
             if (exception instanceof GoneException && isWriteOnly(itemOperation) &&
                 BridgeInternal.hasSendingRequestStarted(exception) &&
@@ -100,15 +107,26 @@ final class BulkOperationRetryPolicy implements IRetryPolicy {
             if ((subStatusCode == SubStatusCodes.PARTITION_KEY_RANGE_GONE ||
                      subStatusCode == SubStatusCodes.COMPLETING_SPLIT_OR_MERGE ||
                      subStatusCode == SubStatusCodes.COMPLETING_PARTITION_MIGRATION)) {
+
+                CosmosDiagnosticsContext cosmosDiagnosticsContextForInternalStateCapture
+                    = Utils.generateDiagnosticsContextForInternalStateCapture(
+                    exception,
+                    ResourceType.DocumentCollection,
+                    ConsistencyLevel.STRONG,
+                    ConnectionMode.GATEWAY,
+                    OperationType.Read,
+                    cosmosBulkExecutionOptions);
+
                 return collectionCache
-                       .resolveByNameAsync(null, collectionLink, null)
+                       .resolveByNameAsync(null, collectionLink, null, cosmosDiagnosticsContextForInternalStateCapture)
                        .flatMap(collection -> this.partitionKeyRangeCache
                                                   .tryGetOverlappingRangesAsync(null /*metaDataDiagnosticsContext*/,
                                                                                 collection.getResourceId(),
                                                                                 FeedRangeEpkImpl.forFullRange()
                                                                                     .getRange(),
                                                                                 true,
-                                                                                null /*properties*/)
+                                                                                null /*properties*/,
+                                                                                cosmosDiagnosticsContextForInternalStateCapture)
                                                   .then(Mono.just(true)));
             }
 

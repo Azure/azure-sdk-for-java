@@ -263,6 +263,7 @@ public class FeedRangeTest {
                 any(),
                 eq(range),
                 anyBoolean(),
+                any(),
                 any()))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(pkRanges)));
 
@@ -305,6 +306,7 @@ public class FeedRangeTest {
                 any(),
                 eq(range),
                 anyBoolean(),
+                any(),
                 any()))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(pkRanges)));
 
@@ -347,7 +349,8 @@ public class FeedRangeTest {
                 FeedRangeEpk.getNormalizedEffectiveRange(
                     routingMapProviderMock,
                     null,
-                    Mono.just(Utils.ValueHolder.initialize(collection))))
+                    Mono.just(Utils.ValueHolder.initialize(collection)),
+                    null))
             .recordWith(ArrayList::new)
             .expectNextCount(1)
             .consumeRecordedWith(r -> {
@@ -378,6 +381,7 @@ public class FeedRangeTest {
                 any(),
                 eq(range),
                 anyBoolean(),
+                any(),
                 any()))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(pkRanges)));
 
@@ -409,6 +413,7 @@ public class FeedRangeTest {
                 any(),
                 eq(range),
                 eq(false),
+                any(),
                 any());
     }
 
@@ -466,6 +471,7 @@ public class FeedRangeTest {
                 any(),
                 eq(partitionKeyRange.getId()),
                 anyBoolean(),
+                any(),
                 any()))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(partitionKeyRange)));
 
@@ -499,6 +505,7 @@ public class FeedRangeTest {
                 any(),
                 eq(partitionKeyRange.getId()),
                 anyBoolean(),
+                any(),
                 any()))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(partitionKeyRange)));
 
@@ -507,7 +514,8 @@ public class FeedRangeTest {
                 feedRangePartitionKeyRange.getNormalizedEffectiveRange(
                     routingMapProviderMock,
                     BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
-                    Mono.just(Utils.ValueHolder.initialize(collection))))
+                    Mono.just(Utils.ValueHolder.initialize(collection)),
+                    null))
             .recordWith(ArrayList::new)
             .expectNextCount(1)
             .consumeRecordedWith(r -> {
@@ -528,6 +536,7 @@ public class FeedRangeTest {
                 null,
                 partitionKeyRange.getId(),
                 false,
+                null,
                 null);
     }
 
@@ -552,6 +561,7 @@ public class FeedRangeTest {
                 any(),
                 eq(partitionKeyRange.getId()),
                 anyBoolean(),
+                any(),
                 any()))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(null)))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(null)));
@@ -561,7 +571,8 @@ public class FeedRangeTest {
                 feedRangePartitionKeyRange.getNormalizedEffectiveRange(
                     routingMapProviderMock,
                     BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
-                    Mono.just(Utils.ValueHolder.initialize(collection))))
+                    Mono.just(Utils.ValueHolder.initialize(collection)),
+                    null))
             .recordWith(ArrayList::new)
             .expectErrorSatisfies((e) -> {
                 assertThat(e).isInstanceOf(PartitionKeyRangeGoneException.class);
@@ -593,6 +604,7 @@ public class FeedRangeTest {
                 any(),
                 eq(partitionKeyRange.getId()),
                 anyBoolean(),
+                any(),
                 any()))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(null)))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(partitionKeyRange)));
@@ -602,7 +614,8 @@ public class FeedRangeTest {
                 feedRangePartitionKeyRange.getNormalizedEffectiveRange(
                     routingMapProviderMock,
                     BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
-                    Mono.just(Utils.ValueHolder.initialize(collection))))
+                    Mono.just(Utils.ValueHolder.initialize(collection)),
+                    null))
             .recordWith(ArrayList::new)
             .expectNextCount(1)
             .consumeRecordedWith(r -> {
@@ -623,6 +636,7 @@ public class FeedRangeTest {
                 any(),
                 eq(partitionKeyRange.getId()),
                 anyBoolean(),
+                any(),
                 any());
     }
 
@@ -728,7 +742,8 @@ public class FeedRangeTest {
                 feedRangePartitionKey.getNormalizedEffectiveRange(
                     routingMapProviderMock,
                     null,
-                    Mono.just(new Utils.ValueHolder<>(collection))))
+                    Mono.just(new Utils.ValueHolder<>(collection)),
+                    null))
             .recordWith(ArrayList::new)
             .expectNextCount(1)
             .consumeRecordedWith(r -> {
@@ -786,6 +801,7 @@ public class FeedRangeTest {
                 any(),
                 any(),
                 anyBoolean(),
+                any(),
                 any()))
             .thenReturn(Mono.just(Utils.ValueHolder.initialize(pkRanges)));
 
