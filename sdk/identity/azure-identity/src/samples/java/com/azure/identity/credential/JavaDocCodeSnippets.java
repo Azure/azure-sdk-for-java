@@ -72,9 +72,6 @@ public final class JavaDocCodeSnippets {
     private String clientSecret = System.getenv("AZURE_CLIENT_SECRET");
     private String serviceConnectionId = System.getenv("SERVICE_CONNECTION_ID");
 
-    private String fakeUsernamePlaceholder = "fakeUsernamePlaceholder";
-    private String fakePasswordPlaceholder = "fakePasswordPlaceholder";
-
     /**
      * Method to insert code snippets for {@link ClientSecretCredential}
      */
@@ -150,14 +147,11 @@ public final class JavaDocCodeSnippets {
      */
     public void chainedTokenCredentialCodeSnippets() {
         // BEGIN: com.azure.identity.credential.chainedtokencredential.construct
-        TokenCredential usernamePasswordCredential = new UsernamePasswordCredentialBuilder().clientId(clientId)
-            .username(fakeUsernamePlaceholder)
-            .password(fakePasswordPlaceholder)
-            .build();
+        TokenCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder().build();
         TokenCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder().clientId(clientId)
-            .port(8765)
+            .redirectUrl("https://localhost:8765")
             .build();
-        TokenCredential credential = new ChainedTokenCredentialBuilder().addLast(usernamePasswordCredential)
+        TokenCredential credential = new ChainedTokenCredentialBuilder().addLast(managedIdentityCredential)
             .addLast(interactiveBrowserCredential)
             .build();
         // END: com.azure.identity.credential.chainedtokencredential.construct

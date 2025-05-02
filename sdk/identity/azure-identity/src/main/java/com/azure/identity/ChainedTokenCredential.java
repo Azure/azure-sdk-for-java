@@ -34,14 +34,11 @@ import java.util.stream.Collectors;
  *
  * <!-- src_embed com.azure.identity.credential.chainedtokencredential.construct -->
  * <pre>
- * TokenCredential usernamePasswordCredential = new UsernamePasswordCredentialBuilder&#40;&#41;.clientId&#40;clientId&#41;
- *     .username&#40;fakeUsernamePlaceholder&#41;
- *     .password&#40;fakePasswordPlaceholder&#41;
- *     .build&#40;&#41;;
+ * TokenCredential managedIdentityCredential = new ManagedIdentityCredentialBuilder&#40;&#41;.build&#40;&#41;;
  * TokenCredential interactiveBrowserCredential = new InteractiveBrowserCredentialBuilder&#40;&#41;.clientId&#40;clientId&#41;
- *     .port&#40;8765&#41;
+ *     .redirectUrl&#40;&quot;https:&#47;&#47;localhost:8765&quot;&#41;
  *     .build&#40;&#41;;
- * TokenCredential credential = new ChainedTokenCredentialBuilder&#40;&#41;.addLast&#40;usernamePasswordCredential&#41;
+ * TokenCredential credential = new ChainedTokenCredentialBuilder&#40;&#41;.addLast&#40;managedIdentityCredential&#41;
  *     .addLast&#40;interactiveBrowserCredential&#41;
  *     .build&#40;&#41;;
  * </pre>
