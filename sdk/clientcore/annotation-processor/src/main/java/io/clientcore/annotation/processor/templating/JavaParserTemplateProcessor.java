@@ -15,8 +15,10 @@ import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.comments.LineComment;
 import com.github.javaparser.ast.expr.ArrayInitializerExpr;
 import com.github.javaparser.ast.expr.Name;
+import com.github.javaparser.ast.expr.NameExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
+import com.github.javaparser.ast.expr.UnaryExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
 import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.ast.stmt.Statement;
@@ -30,6 +32,7 @@ import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpMethod;
 import io.clientcore.core.http.models.HttpRequest;
+import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.Response;
 import io.clientcore.core.http.pipeline.HttpPipeline;
 import io.clientcore.core.implementation.utils.UriEscapers;
@@ -560,8 +563,16 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         }
         body.addStatement(StaticJavaParser.parseStatement("boolean expectedResponse = " + expectedResponseCheck));
 
-        body.tryAddImportToParentCompilationUnit(RuntimeException.class);
-        body.addStatement(StaticJavaParser.parseStatement("if (!expectedResponse) {"
-            + " throw new RuntimeException(\"Unexpected response code: \" + responseCode); }"));
+        body.tryAddImportToParentCompilationUnit(HttpResponseException.class);
+        BlockStmt ifBlock = new BlockStmt();
+        ifBlock.addStatement(
+            StaticJavaParser.parseStatement("String errorMessage = networkResponse.getValue().toString();"));
+        ifBlock.addStatement(StaticJavaParser.parseStatement("networkResponse.close();"));
+        ifBlock.addStatement(
+            StaticJavaParser.parseStatement("throw new HttpResponseException(errorMessage, networkResponse, null);"));
+        IfStmt ifStmt = new IfStmt()
+            .setCondition(new UnaryExpr(new NameExpr("expectedResponse"), UnaryExpr.Operator.LOGICAL_COMPLEMENT))
+            .setThenStmt(ifBlock);
+        body.addStatement(ifStmt);
     }
 }
