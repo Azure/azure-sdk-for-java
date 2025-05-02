@@ -19,11 +19,8 @@ recipeList:
   # Page
   # --------------------------------------------------------------------
 
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.http.rest.Page
-      newFullyQualifiedTypeName: com.azure.v2.core.http.rest.Page
 
-  # TODO: Migrate Methods and Fields
+  # TODO: API Removed. Triage replacement
 
   # --------------------------------------------------------------------
   # PagedFlux
@@ -43,7 +40,17 @@ recipeList:
 
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.azure.core.http.rest.PagedIterable
-      newFullyQualifiedTypeName: com.azure.v2.core.http.rest.PagedIterable
+      newFullyQualifiedTypeName: io.clientcore.core.http.paging.PagedIterable
+
+  # TODO: Migrate Methods and Fields
+
+  # --------------------------------------------------------------------
+  # PagedResponse
+  # --------------------------------------------------------------------
+
+  - org.openrewrite.java.ChangeType:
+      oldFullyQualifiedTypeName: com.azure.core.http.rest.PagedResponse
+      newFullyQualifiedTypeName: io.clientcore.core.http.paging.PagedResponse
 
   # TODO: Migrate Methods and Fields
 
@@ -51,11 +58,7 @@ recipeList:
   # PagedResponseBase
   # --------------------------------------------------------------------
 
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.http.rest.PagedResponseBase
-      newFullyQualifiedTypeName: com.azure.v2.core.http.rest.PagedResponseBase
-
-  # TODO: Migrate Methods and Fields
+  # TODO: API Removed. Triage replacement
 
   # --------------------------------------------------------------------
   # RequestOptions
@@ -83,11 +86,7 @@ recipeList:
   # ResponseBase
   # --------------------------------------------------------------------
 
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.http.rest.ResponseBase
-      newFullyQualifiedTypeName: com.azure.v2.core.http.rest.ResponseBase
-
-  # TODO: Migrate Methods and Fields
+  # TODO: API Removed. Triage replacement
 
   # --------------------------------------------------------------------
   # RestProxy

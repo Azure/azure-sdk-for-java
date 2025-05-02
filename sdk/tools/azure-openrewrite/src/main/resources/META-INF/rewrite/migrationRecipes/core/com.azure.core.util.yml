@@ -87,31 +87,19 @@ recipeList:
   # ConfigurationBuilder
   # --------------------------------------------------------------------
 
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.util.ConfigurationBuilder
-      newFullyQualifiedTypeName: io.clientcore.core.utils.configuration.ConfigurationBuilder
-
-      # TODO: Migrate Methods and Fields
+  # TODO: API Removed. Triage replacement
 
   # --------------------------------------------------------------------
   # ConfigurationProperty
   # --------------------------------------------------------------------
 
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.util.ConfigurationProperty
-      newFullyQualifiedTypeName: io.clientcore.core.utils.configuration.ConfigurationProperty
-
-      # TODO: Migrate Methods and Fields
+  # TODO: API Removed. Triage replacement
 
   # --------------------------------------------------------------------
   # ConfigurationPropertyBuilder
   # --------------------------------------------------------------------
 
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.util.ConfigurationPropertyBuilder
-      newFullyQualifiedTypeName: io.clientcore.core.utils.configuration.ConfigurationPropertyBuilder
-
-      # TODO: Migrate Methods and Fields
+  # TODO: API Removed. Triage replacement
 
   # --------------------------------------------------------------------
   # ConfigurationSource
@@ -217,11 +205,7 @@ recipeList:
   # IterableStream
   # --------------------------------------------------------------------
 
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.util.IterableStream
-      newFullyQualifiedTypeName: io.clientcore.core.utils.IterableStream
-
-      # TODO: Migrate Methods and Fields
+  # TODO: API Removed. Triage replacement
 
   # --------------------------------------------------------------------
   # LibraryTelemetryOptions
@@ -677,7 +661,7 @@ recipeList:
 
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.azure.core.util.serializer.JsonSerializer
-      newFullyQualifiedTypeName: io.clientcore.core.implementation.utils.JsonSerializer
+      newFullyQualifiedTypeName: io.clientcore.core.serialization.json.JsonSerializer
 
       # TODO: Migrate Methods and Fields
 

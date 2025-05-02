@@ -24,7 +24,7 @@ recipeList:
 
     - org.openrewrite.java.ChangeType:
         oldFullyQualifiedTypeName: com.azure.core.models.CloudEvent
-        newFullyQualifiedTypeName: com.azure.v2.core.models.CloudEvent
+        newFullyQualifiedTypeName: io.clientcore.core.models.CloudEvent
 
         # TODO: Migrate Methods and Fields
 
@@ -34,7 +34,7 @@ recipeList:
 
     - org.openrewrite.java.ChangeType:
         oldFullyQualifiedTypeName: com.azure.core.models.CloudEventDataFormat
-        newFullyQualifiedTypeName: com.azure.v2.core.models.CloudEventDataFormat
+        newFullyQualifiedTypeName: io.clientcore.core.models.CloudEventDataFormat
 
         # TODO: Migrate Methods and Fields
 

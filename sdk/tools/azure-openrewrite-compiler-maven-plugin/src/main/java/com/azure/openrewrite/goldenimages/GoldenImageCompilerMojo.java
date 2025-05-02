@@ -65,7 +65,7 @@ public class GoldenImageCompilerMojo extends AbstractMojo {
                     continue;
                 }
 
-                File previousProfileDir = getPreviousProfileDir(folder, profile);
+                File previousProfileDir = getBaseProfileDir(folder, profile);
                 if (previousProfileDir != null && previousProfileDir.exists()) {
                     if (hasChanges(profileDir, previousProfileDir)) {
                         compileJavaFilesWithProfile(profileDir, profile);
@@ -92,7 +92,7 @@ public class GoldenImageCompilerMojo extends AbstractMojo {
         }
     }
 
-    private File getPreviousProfileDir(File folder, String profile) {
+    private File getBaseProfileDir(File folder, String profile) {
         int profileVersion;
         try {
             profileVersion = Integer.parseInt(profile.substring(1));
@@ -110,11 +110,11 @@ public class GoldenImageCompilerMojo extends AbstractMojo {
 
         String before = Files.readAllLines(file1.toPath())
             .stream()
-            .reduce("", (a, b) -> a + b + "\n");
+            .collect(Collectors.joining("\n"));
 
         String after = Files.readAllLines(file2.toPath())
             .stream()
-            .reduce("", (a, b) -> a + b + "\n");
+            .collect(Collectors.joining("\n"));
 
         return before.equals(after);
     }
@@ -123,24 +123,28 @@ public class GoldenImageCompilerMojo extends AbstractMojo {
         getLog().info("Comparing files in " + profileDir.getAbsolutePath() + " with " + previousProfileDir.getAbsolutePath());
 
         try (Stream<Path> profilePaths = Files.walk(profileDir.toPath())) {
-            List<Path> profileFiles = profilePaths
-                .filter(Files::isRegularFile)
-                .filter(path -> path.toString().endsWith(".java"))
-                .collect(Collectors.toList());
+            return profilePaths
+                       .filter(Files::isRegularFile)
+                       .filter(path -> path.toString().endsWith(".java"))
+                       .anyMatch(profileFile -> {
+                           Path relativePath = profileDir.toPath().relativize(profileFile);
+                           Path previousFile = previousProfileDir.toPath().resolve(relativePath);
 
-            for (Path profileFile : profileFiles) {
-                Path relativePath = profileDir.toPath().relativize(profileFile);
-                Path previousFile = previousProfileDir.toPath().resolve(relativePath);
+                           try {
+                               if (!Files.exists(previousFile) || !hasEqualFileContents(profileFile.toFile(), previousFile.toFile())) {
+                                   getLog().info("Changes detected in " + profileFile.toString());
+                                   return true;
+                               }
+                           } catch (IOException e) {
+                               throw new RuntimeException(e);
+                           }
+                            getLog().info("No changes detected in " + profileFile.toString());
+                            return false;
+                       });
 
-                if (!Files.exists(previousFile) || !hasEqualFileContents(profileFile.toFile(), previousFile.toFile())) {
-                    return true;
-                }
-            }
         } catch (IOException e) {
             throw new MojoExecutionException("Failed to compare files in " + profileDir.getAbsolutePath() + " and " + previousProfileDir.getAbsolutePath(), e);
         }
-
-        return false;
     }
 
     private void compileJavaFilesWithProfile(File dir, String profile) throws MojoExecutionException {
@@ -159,7 +163,7 @@ public class GoldenImageCompilerMojo extends AbstractMojo {
                 .collect(Collectors.toList());
 
             if (javaFiles.isEmpty()) {
-                getLog().warn("No Java files found in " + dir.getAbsolutePath());
+                getLog().info("No Java files found in " + dir.getAbsolutePath());
                 return;
             }
 
