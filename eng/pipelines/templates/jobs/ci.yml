@@ -368,51 +368,51 @@ jobs:
             Write-Host "##vso[task.setvariable variable=PRServiceDirectories;]$changedServicesString"
           displayName: Set PRServiceDirectories to ServiceDirectory parameter
 
-  #     - template: /eng/common/pipelines/templates/steps/verify-samples.yml
-  #       parameters:
-  #         ServiceDirectories: $(PRServiceDirectories)
+      - template: /eng/common/pipelines/templates/steps/verify-samples.yml
+        parameters:
+          ServiceDirectories: $(PRServiceDirectories)
 
-  #     # Use BasePathLength of 38 instead of the default 49 as some released files fail when the number is higher.
-  #     - template: /eng/common/pipelines/templates/steps/verify-path-length.yml
-  #       parameters:
-  #         SourceDirectory: $(Build.SourcesDirectory)
-  #         BasePathLength: 38
+      # Use BasePathLength of 38 instead of the default 49 as some released files fail when the number is higher.
+      - template: /eng/common/pipelines/templates/steps/verify-path-length.yml
+        parameters:
+          SourceDirectory: $(Build.SourcesDirectory)
+          BasePathLength: 38
 
-  #     - ${{if ne(parameters.SDKType, 'data')}}:
-  #       - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
-  #         - template: /eng/common/pipelines/templates/steps/verify-changelogs.yml
-  #           parameters:
-  #             PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo
-  #       - ${{ else }}:
-  #         - ${{ each artifact in parameters.Artifacts }}:
-  #           - ${{if ne(artifact.skipVerifyChangelog, 'true')}}:
-  #             - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
-  #               parameters:
-  #                 PackageName: ${{artifact.name}}
-  #                 ServiceName: ${{parameters.ServiceDirectory}}
-  #                 ForRelease: false
+      - ${{if ne(parameters.SDKType, 'data')}}:
+        - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
+          - template: /eng/common/pipelines/templates/steps/verify-changelogs.yml
+            parameters:
+              PackagePropertiesFolder: $(Build.ArtifactStagingDirectory)/PackageInfo
+        - ${{ else }}:
+          - ${{ each artifact in parameters.Artifacts }}:
+            - ${{if ne(artifact.skipVerifyChangelog, 'true')}}:
+              - template: /eng/common/pipelines/templates/steps/verify-changelog.yml
+                parameters:
+                  PackageName: ${{artifact.name}}
+                  ServiceName: ${{parameters.ServiceDirectory}}
+                  ForRelease: false
 
-  #     # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
-  #     # reports. This means it is available as part of that, but also so that this is not documented in the project report.
-  #     - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-  #       parameters:
-  #         JdkVersion: ${{ parameters.JavaBuildVersion }}
+      # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
+      # reports. This means it is available as part of that, but also so that this is not documented in the project report.
+      - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
+        parameters:
+          JdkVersion: ${{ parameters.JavaBuildVersion }}
 
-  #     - task: PowerShell@2
-  #       displayName: Verify Code Generation for Pull Request
-  #       inputs:
-  #         pwsh: true
-  #         filePath: $(Build.SourcesDirectory)/eng/scripts/Compare-CurrentToCodegeneration.ps1
-  #         arguments: >
-  #           -ServiceDirectories '$(PRServiceDirectories)'
+      - task: PowerShell@2
+        displayName: Verify Code Generation for Pull Request
+        inputs:
+          pwsh: true
+          filePath: $(Build.SourcesDirectory)/eng/scripts/Compare-CurrentToCodegeneration.ps1
+          arguments: >
+            -ServiceDirectories '$(PRServiceDirectories)'
 
-  #     - task: PowerShell@2
-  #       displayName: Verify TypeSpec Code Generation
-  #       inputs:
-  #         pwsh: true
-  #         filePath: $(Build.SourcesDirectory)/eng/scripts/TypeSpec-Compare-CurrentToCodegeneration.ps1
-  #         arguments: >
-  #           -ServiceDirectories '$(PRServiceDirectories)'
+      - task: PowerShell@2
+        displayName: Verify TypeSpec Code Generation
+        inputs:
+          pwsh: true
+          filePath: $(Build.SourcesDirectory)/eng/scripts/TypeSpec-Compare-CurrentToCodegeneration.ps1
+          arguments: >
+            -ServiceDirectories '$(PRServiceDirectories)'
 
   #     - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
   #       parameters:
