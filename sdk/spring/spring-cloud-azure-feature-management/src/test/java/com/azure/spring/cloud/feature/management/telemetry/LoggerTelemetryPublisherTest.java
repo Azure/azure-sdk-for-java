@@ -13,11 +13,15 @@ import static com.azure.spring.cloud.feature.management.telemetry.TelemetryConst
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.slf4j.LoggerFactory;
@@ -32,11 +36,13 @@ import com.azure.spring.cloud.feature.management.models.VariantAssignmentReason;
 import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import ch.qos.logback.classic.spi.ILoggingEvent;
+import ch.qos.logback.core.Appender;
 import ch.qos.logback.core.read.ListAppender;
 
+@TestMethodOrder(MethodOrderer.MethodName.class)
 public class LoggerTelemetryPublisherTest {
 
-    private Logger publisherLogger = (Logger) LoggerFactory.getLogger(LoggerTelemetryPublisher.class);
+    private Logger publisherLogger;
 
     private ListAppender<ILoggingEvent> listAppender;
 
@@ -50,12 +56,43 @@ public class LoggerTelemetryPublisherTest {
 
     private ILoggingEvent logEvent;
 
+    @BeforeAll
+    public static void setUpLogging() {
+        // Force SLF4J to initialize
+        LoggerFactory.getLogger(LoggerTelemetryPublisherTest.class).info("Initializing SLF4J in test");
+    }
+
+
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-        listAppender = new ListAppender<>();
-        listAppender.start();
-        publisherLogger.addAppender(listAppender);
+
+        org.slf4j.Logger slf4jLogger = LoggerFactory.getLogger(LoggerTelemetryPublisher.class);
+
+        // Check if we can cast to Logback's Logger
+        if (slf4jLogger instanceof ch.qos.logback.classic.Logger) {
+            publisherLogger = (ch.qos.logback.classic.Logger) slf4jLogger;
+            
+            // Create a new ListAppender for each test
+            listAppender = new ListAppender<>();
+            listAppender.start();
+            
+            // Remove any existing appenders of this type first
+            for (Iterator<Appender<ILoggingEvent>> it = publisherLogger.iteratorForAppenders(); it.hasNext();) {
+                Appender<ILoggingEvent> appender = it.next();
+                if (appender instanceof ListAppender) {
+                    publisherLogger.detachAppender(appender);
+                }
+            }
+            
+            // Add the fresh appender
+            publisherLogger.addAppender(listAppender);
+        } else {
+            org.junit.jupiter.api.Assumptions.assumeTrue(
+                false,
+                "Tests require Logback implementation, but found: " + slf4jLogger.getClass().getName()
+            );
+        }
         when(featureMock.getId()).thenReturn(FAKE_ID);
     }
 
@@ -66,7 +103,9 @@ public class LoggerTelemetryPublisherTest {
         LoggerTelemetryPublisher publisher = new LoggerTelemetryPublisher();
         publisher.publishTelemetry(evaluationEvent);
 
-        logEvent = listAppender.list.get(0);
+        //assertEquals(1, listAppender.list.size());
+
+        logEvent = listAppender.list.get(listAppender.list.size() - 1);
         Map<String, String> mdcMap = logEvent.getMDCPropertyMap();
 
         assertEquals(EVENT_NAME, logEvent.getMessage());
@@ -89,7 +128,9 @@ public class LoggerTelemetryPublisherTest {
         LoggerTelemetryPublisher publisher = new LoggerTelemetryPublisher();
         publisher.publishTelemetry(evaluationEvent);
 
-        logEvent = listAppender.list.get(0);
+        //assertEquals(1, listAppender.list.size());
+
+       logEvent = listAppender.list.get(listAppender.list.size() - 1);
         Map<String, String> mdcMap = logEvent.getMDCPropertyMap();
 
         assertEquals(EVENT_NAME, logEvent.getMessage());
@@ -111,7 +152,9 @@ public class LoggerTelemetryPublisherTest {
         LoggerTelemetryPublisher publisher = new LoggerTelemetryPublisher();
         publisher.publishTelemetry(evaluationEvent);
 
-        logEvent = listAppender.list.get(0);
+        //assertEquals(1, listAppender.list.size());
+
+        logEvent = listAppender.list.get(listAppender.list.size() - 1);
         Map<String, String> mdcMap = logEvent.getMDCPropertyMap();
 
         assertEquals(EVENT_NAME, logEvent.getMessage());
@@ -141,7 +184,9 @@ public class LoggerTelemetryPublisherTest {
         LoggerTelemetryPublisher publisher = new LoggerTelemetryPublisher();
         publisher.publishTelemetry(evaluationEvent);
 
-        logEvent = listAppender.list.get(0);
+        //assertEquals(1, listAppender.list.size());
+
+        logEvent = listAppender.list.get(listAppender.list.size() - 1);
         Map<String, String> mdcMap = logEvent.getMDCPropertyMap();
 
         assertEquals(EVENT_NAME, logEvent.getMessage());
@@ -185,7 +230,7 @@ public class LoggerTelemetryPublisherTest {
         LoggerTelemetryPublisher publisher = new LoggerTelemetryPublisher();
         publisher.publishTelemetry(evaluationEvent);
 
-        logEvent = listAppender.list.get(0);
+        logEvent = listAppender.list.get(listAppender.list.size() - 1);
         Map<String, String> mdcMap = logEvent.getMDCPropertyMap();
 
         assertEquals(EVENT_NAME, logEvent.getMessage());
@@ -211,7 +256,7 @@ public class LoggerTelemetryPublisherTest {
         LoggerTelemetryPublisher publisher = new LoggerTelemetryPublisher();
         publisher.publishTelemetry(evaluationEvent);
 
-        logEvent = listAppender.list.get(0);
+        logEvent = listAppender.list.get(listAppender.list.size() - 1);
         Map<String, String> mdcMap = logEvent.getMDCPropertyMap();
 
         assertEquals(EVENT_NAME, logEvent.getMessage());

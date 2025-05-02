@@ -223,9 +223,9 @@ class FeatureFlagClient {
         }
 
         allocationId.append(percentileAllocations.stream()
-            .map(pa -> pa.get("from") + "," +
-                Base64.getEncoder().encodeToString(pa.get("variant").asText().getBytes(StandardCharsets.UTF_8)) + "," +
-                pa.get("to"))
+            .map(pa -> pa.get("from") + ","
+                + Base64.getEncoder().encodeToString(pa.get("variant").asText().getBytes(StandardCharsets.UTF_8)) + ","
+                + pa.get("to"))
             .collect(Collectors.joining(";")));
 
         if (allocatedVariants.isEmpty() && (allocation.get("seed") == null)) {

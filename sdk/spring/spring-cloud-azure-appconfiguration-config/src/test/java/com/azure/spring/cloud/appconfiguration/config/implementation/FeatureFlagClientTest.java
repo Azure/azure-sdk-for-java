@@ -217,7 +217,7 @@ public class FeatureFlagClientTest {
             ".appconfig.featureflag/", "TestFeature", flagValue, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE, TEST_E_TAG);
 
         Feature feature = FeatureFlagClient.createFeature(featureFlag, TEST_ENDPOINT);
-        assertEquals("wGzzPy4qGy92SHnMtSvY",feature.getTelemetry().getMetadata().get("AllocationId"));
+        assertEquals("wGzzPy4qGy92SHnMtSvY", feature.getTelemetry().getMetadata().get("AllocationId"));
     }
 
     @Test
