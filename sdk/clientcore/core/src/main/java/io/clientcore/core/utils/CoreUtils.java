@@ -510,10 +510,11 @@ public final class CoreUtils {
      * @param data The BinaryData to decode.
      * @param serializer The serializer to use.
      * @param returnType The type of the ParameterizedType return value.
+     * @param <T> The decoded value type.
      * @return The decoded value.
      * @throws CoreException If the deserialization fails.
      */
-    public static Object decodeNetworkResponse(BinaryData data, ObjectSerializer serializer,
+    public static <T> T decodeNetworkResponse(BinaryData data, ObjectSerializer serializer,
         ParameterizedType returnType) {
         if (data == null) {
             return null;

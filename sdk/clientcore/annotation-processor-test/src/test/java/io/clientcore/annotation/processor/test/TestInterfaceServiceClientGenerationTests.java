@@ -997,7 +997,7 @@ public class TestInterfaceServiceClientGenerationTests {
         final byte[] result = createService(ParameterizedHostService.class)
             .getByteArray(getRequestScheme(), "localhost:" + getPort(), 0);
 
-        assertNull(result);
+        assertEquals(0, result.length);
     }
 
     private static final HttpHeaderName HEADER_A = HttpHeaderName.fromString("A");

@@ -43,7 +43,7 @@ public class HostEdgeCase1ServiceImpl implements HostEdgeCase1Service {
         return new HostEdgeCase1ServiceImpl(httpPipeline);
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public byte[] getByteArray(String url, int numberOfBytes) {
         String uri = url + "/bytes/" + numberOfBytes;
@@ -60,6 +60,8 @@ public class HostEdgeCase1ServiceImpl implements HostEdgeCase1Service {
         }
         BinaryData responseBody = networkResponse.getValue();
         byte[] responseBodyBytes = responseBody != null ? responseBody.toBytes() : null;
-        return responseBodyBytes != null ? (responseBodyBytes.length == 0 ? null : responseBodyBytes) : null;
+        // Close the network response as the body should be consumed.
+        networkResponse.close();
+        return responseBodyBytes;
     }
 }

@@ -43,7 +43,7 @@ public class ParameterizedHostServiceImpl implements ParameterizedHostService {
         return new ParameterizedHostServiceImpl(httpPipeline);
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public byte[] getByteArray(String scheme, String host, int numberOfBytes) {
         String uri = scheme + "://" + host + "/bytes/" + numberOfBytes;
@@ -60,6 +60,8 @@ public class ParameterizedHostServiceImpl implements ParameterizedHostService {
         }
         BinaryData responseBody = networkResponse.getValue();
         byte[] responseBodyBytes = responseBody != null ? responseBody.toBytes() : null;
-        return responseBodyBytes != null ? (responseBodyBytes.length == 0 ? null : responseBodyBytes) : null;
+        // Close the network response as the body should be consumed.
+        networkResponse.close();
+        return responseBodyBytes;
     }
 }

@@ -27,7 +27,6 @@ import io.clientcore.core.serialization.SerializationFormat;
 import io.clientcore.core.utils.CoreUtils;
 import io.clientcore.core.http.models.HttpResponseException;
 import java.util.LinkedHashMap;
-import io.clientcore.core.utils.Base64Uri;
 import java.lang.reflect.ParameterizedType;
 import java.util.stream.Collectors;
 import java.util.Arrays;
@@ -72,7 +71,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         return new TestInterfaceClientServiceImpl(httpPipeline);
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public Response<Void> testMethod(String uri, ByteBuffer request, String contentType, Long contentLength) {
         String requestUri = uri + "/" + "my/uri/path";
@@ -100,7 +99,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public Response<Void> testMethod(String uri, BinaryData data, String contentType, Long contentLength) {
         String requestUri = uri + "/" + "my/uri/path";
@@ -132,7 +131,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public Response<Void> testListNext(String nextLink) {
         String uri = nextLink;
@@ -151,7 +150,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public Void testMethodReturnsVoid(String uri) {
         String requestUri = uri + "/" + "my/uri/path";
@@ -170,7 +169,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         return null;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public Response<Foo> getFoo(String key, String label, String syncToken) {
         String uri = "kv/" + UriEscapers.PATH_ESCAPER.escape(key);
@@ -192,20 +191,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
+        Foo deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, Foo.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), (Foo) result);
+        // Close the network response as the body should be consumed.
+        networkResponse.close();
+        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public Response<FooListResult> listFooListResult(String uri, RequestContext requestContext) {
         String requestUri = uri + "/" + "foos";
@@ -222,20 +223,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
+        FooListResult deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, FooListResult.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), (FooListResult) result);
+        // Close the network response as the body should be consumed.
+        networkResponse.close();
+        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public Response<FooListResult> listNextFooListResult(String nextLink, RequestContext requestContext) {
         String uri = nextLink;
@@ -252,20 +255,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
+        FooListResult deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, FooListResult.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), (FooListResult) result);
+        // Close the network response as the body should be consumed.
+        networkResponse.close();
+        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public Response<List<Foo>> listFoo(String uri, List<String> tags, List<String> tags2, RequestContext requestContext) {
         String requestUri = uri + "/" + "foos";
@@ -287,20 +292,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
+        List<Foo> deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(List.class, Foo.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), (List<Foo>) result);
+        // Close the network response as the body should be consumed.
+        networkResponse.close();
+        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public Response<List<Foo>> listNextFoo(String nextLink, RequestContext requestContext) {
         String uri = nextLink;
@@ -317,20 +324,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
+        List<Foo> deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(List.class, Foo.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), (List<Foo>) result);
+        // Close the network response as the body should be consumed.
+        networkResponse.close();
+        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public Response<HttpBinJSON> putResponse(String uri, int putBody, RequestContext requestContext) {
         String requestUri = uri + "/" + "put";
@@ -354,19 +363,21 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
+        HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, HttpBinJSON.class);
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), (HttpBinJSON) result);
+        // Close the network response as the body should be consumed.
+        networkResponse.close();
+        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public Response<HttpBinJSON> postStreamResponse(String uri, int putBody, RequestContext requestContext) {
         String requestUri = uri + "/" + "stream";
@@ -390,19 +401,21 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
+        HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, HttpBinJSON.class);
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), (HttpBinJSON) result);
+        // Close the network response as the body should be consumed.
+        networkResponse.close();
+        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public byte[] getByteArray(String uri) {
         String requestUri = uri + "/" + "bytes/100";
@@ -419,10 +432,12 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         BinaryData responseBody = networkResponse.getValue();
         byte[] responseBodyBytes = responseBody != null ? responseBody.toBytes() : null;
-        return responseBodyBytes != null ? (responseBodyBytes.length == 0 ? null : responseBodyBytes) : null;
+        // Close the network response as the body should be consumed.
+        networkResponse.close();
+        return responseBodyBytes;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public void getNothing(String uri) {
         String requestUri = uri + "/" + "bytes/100";
@@ -440,7 +455,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         networkResponse.close();
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON getAnything(String uri) {
         String requestUri = uri + "/" + "anything";
@@ -455,21 +470,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON getAnythingWithPlus(String uri) {
         String requestUri = uri + "/" + "anything/with+plus";
@@ -484,21 +500,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON getAnythingWithPathParam(String uri, String pathParam) {
         String requestUri = uri + "/" + "anything/" + UriEscapers.PATH_ESCAPER.escape(pathParam);
@@ -513,21 +530,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON getAnythingWithEncodedPathParam(String uri, String pathParam) {
         String requestUri = uri + "/" + "anything/" + pathParam;
@@ -542,21 +560,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON getAnything(String uri, String a, int b) {
         String requestUri = uri + "/" + "anything";
@@ -576,21 +595,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON getAnythingWithHeaderParam(String uri, String a, int b) {
         String requestUri = uri + "/" + "anything";
@@ -609,21 +629,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON getAnythingWithEncoded(String uri, String a, int b) {
         String requestUri = uri + "/" + "anything";
@@ -643,21 +664,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON putWithNoContentTypeAndStringBody(String uri, String body) {
         String requestUri = uri + "/" + "put";
@@ -669,21 +691,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON putWithNoContentTypeAndByteArrayBody(String uri, byte[] body) {
         String requestUri = uri + "/" + "put";
@@ -695,21 +718,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON putWithHeaderApplicationJsonContentTypeAndStringBody(String uri, String body) {
         String requestUri = uri + "/" + "put";
@@ -721,21 +745,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON putWithHeaderApplicationJsonContentTypeAndByteArrayBody(String uri, byte[] body) {
         String requestUri = uri + "/" + "put";
@@ -748,21 +773,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(String uri, String body) {
         String requestUri = uri + "/" + "put";
@@ -775,21 +801,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public Response<HttpBinJSON> putWithHeaderApplicationOctetStreamContentTypeAndStringBody(String uri, String body) {
         String requestUri = uri + "/" + "put";
@@ -809,20 +836,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
+        HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), (HttpBinJSON) result);
+        // Close the network response as the body should be consumed.
+        networkResponse.close();
+        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(String uri, byte[] body) {
         String requestUri = uri + "/" + "put";
@@ -835,21 +864,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public Response<HttpBinJSON> putWithBodyParamApplicationJsonContentTypeAndStringBody(String uri, String body) {
         String requestUri = uri + "/" + "put";
@@ -868,20 +898,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
+        HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), (HttpBinJSON) result);
+        // Close the network response as the body should be consumed.
+        networkResponse.close();
+        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON putWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBody(String uri, String body) {
         String requestUri = uri + "/" + "put";
@@ -893,21 +925,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(String uri, byte[] body) {
         String requestUri = uri + "/" + "put";
@@ -919,21 +952,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON putWithBodyParamApplicationOctetStreamContentTypeAndStringBody(String uri, String body) {
         String requestUri = uri + "/" + "put";
@@ -945,21 +979,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON putWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBody(String uri, byte[] body) {
         String requestUri = uri + "/" + "put";
@@ -971,21 +1006,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON put(String uri, int putBody, RequestContext requestContext) {
         String requestUri = uri + "/" + "put";
@@ -1009,20 +1045,21 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON get1(String uri, String queryParam) {
         String requestUri = uri + "/" + "anything";
@@ -1043,21 +1080,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON get2(String uri, String queryParam) {
         String requestUri = uri + "/" + "anything";
@@ -1076,21 +1114,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON get3(String uri, String queryParam) {
         String requestUri = uri + "/" + "anything";
@@ -1109,21 +1148,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON get4(String uri) {
         String requestUri = uri + "/" + "anything";
@@ -1143,21 +1183,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON get5(String uri) {
         String requestUri = uri + "/" + "anything";
@@ -1176,21 +1217,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON get6(String uri) {
         String requestUri = uri + "/" + "anything";
@@ -1208,21 +1250,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON get7(String uri) {
         String requestUri = uri + "/" + "anything";
@@ -1240,21 +1283,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public Response<Void> getVoidResponse(String uri) {
         String requestUri = uri + "/" + "bytes/100";
@@ -1273,7 +1317,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public Response<HttpBinJSON> putBody(String uri, String body) {
         String requestUri = uri + "/" + "put";
@@ -1292,20 +1336,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
+        HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), (HttpBinJSON) result);
+        // Close the network response as the body should be consumed.
+        networkResponse.close();
+        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public Response<InputStream> getBytes(String uri) {
         String requestUri = uri + "/" + "bytes/1024";
@@ -1320,20 +1366,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, InputStream.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
-        if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
-        } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
-        } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
-        }
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), (InputStream) result);
+        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), networkResponse.getValue().toStream());
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public byte[] getBytes100(String uri) {
         String requestUri = uri + "/" + "bytes/100";
@@ -1350,10 +1386,12 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         BinaryData responseBody = networkResponse.getValue();
         byte[] responseBodyBytes = responseBody != null ? responseBody.toBytes() : null;
-        return responseBodyBytes != null ? (responseBodyBytes.length == 0 ? null : responseBodyBytes) : null;
+        // Close the network response as the body should be consumed.
+        networkResponse.close();
+        return responseBodyBytes;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public Response<HttpBinJSON> put(String host, BinaryData content, long contentLength) {
         String uri = host + "/" + "put";
@@ -1377,20 +1415,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
+        HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), (HttpBinJSON) result);
+        // Close the network response as the body should be consumed.
+        networkResponse.close();
+        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON put(String uri, Map<String, String> headerCollection) {
         String requestUri = uri + "/" + "put";
@@ -1401,21 +1441,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public void headvoid(String uri) {
         String requestUri = uri + "/" + "voideagerreadoom";
@@ -1433,7 +1474,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         networkResponse.close();
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public Void headVoid(String uri) {
         String requestUri = uri + "/" + "voideagerreadoom";
@@ -1452,7 +1493,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         return null;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public Response<Void> headResponseVoid(String uri) {
         String requestUri = uri + "/" + "voideagerreadoom";
@@ -1471,7 +1512,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public Response<Void> head(String uri) {
         String requestUri = uri + "/" + "anything";
@@ -1490,7 +1531,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public boolean headBoolean(String uri) {
         String requestUri = uri + "/" + "anything";
@@ -1509,7 +1550,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         return expectedResponse;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public void voidHead(String uri) {
         String requestUri = uri + "/" + "anything";
@@ -1527,7 +1568,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         networkResponse.close();
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON put(String uri, int putBody) {
         String requestUri = uri + "/" + "put";
@@ -1549,20 +1590,21 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON putBodyAndContentLength(String uri, ByteBuffer body, long contentLength) {
         String requestUri = uri + "/" + "put";
@@ -1582,21 +1624,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON putWithUnexpectedResponse(String uri, String putBody) {
         String requestUri = uri + "/" + "put";
@@ -1615,21 +1658,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON putWithUnexpectedResponseAndExceptionType(String uri, String putBody) {
         String requestUri = uri + "/" + "put";
@@ -1648,21 +1692,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON putWithUnexpectedResponseAndDeterminedExceptionType(String uri, String putBody) {
         String requestUri = uri + "/" + "put";
@@ -1681,21 +1726,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON putWithUnexpectedResponseAndFallthroughExceptionType(String uri, String putBody) {
         String requestUri = uri + "/" + "put";
@@ -1714,21 +1760,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON putWithUnexpectedResponseAndNoFallthroughExceptionType(String uri, String putBody) {
         String requestUri = uri + "/" + "put";
@@ -1747,21 +1794,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON post(String uri, String postBody) {
         String requestUri = uri + "/" + "post";
@@ -1780,21 +1828,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON delete(String uri, boolean bodyBoolean) {
         String requestUri = uri + "/" + "delete";
@@ -1816,20 +1865,21 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON patch(String uri, String bodyString) {
         String requestUri = uri + "/" + "patch";
@@ -1848,21 +1898,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON get(String uri) {
         String requestUri = uri + "/" + "anything";
@@ -1879,21 +1930,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public HttpBinJSON putByteArray(String uri, byte[] bytes) {
         String requestUri = uri + "/" + "put";
@@ -1912,21 +1964,22 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
+        // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public void getStatus200(String uri) {
         String requestUri = uri + "/" + "status/200";
@@ -1937,7 +1990,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         networkResponse.close();
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public void getStatus200WithExpectedResponse200(String uri) {
         String requestUri = uri + "/" + "status/200";
@@ -1955,7 +2008,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         networkResponse.close();
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public void getStatus300(String uri) {
         String requestUri = uri + "/" + "status/300";
@@ -1966,7 +2019,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         networkResponse.close();
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public void getStatus300WithExpectedResponse300(String uri) {
         String requestUri = uri + "/" + "status/300";
@@ -1984,7 +2037,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         networkResponse.close();
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public void getStatus400(String uri) {
         String requestUri = uri + "/" + "status/400";
@@ -1995,7 +2048,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         networkResponse.close();
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public void getStatus400WithExpectedResponse400(String uri) {
         String requestUri = uri + "/" + "status/400";
@@ -2013,7 +2066,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         networkResponse.close();
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public void getStatus500(String uri) {
         String requestUri = uri + "/" + "status/500";
@@ -2024,7 +2077,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         networkResponse.close();
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public void getStatus500WithExpectedResponse500(String uri) {
         String requestUri = uri + "/" + "status/500";
@@ -2042,7 +2095,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         networkResponse.close();
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public Response<BinaryData> put(String uri, BinaryData putBody, ServerSentEventListener serverSentEventListener) {
         String requestUri = uri + "/" + "serversentevent";
@@ -2065,20 +2118,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, BinaryData.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
-        if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
-        } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
-        } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
-        }
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), (BinaryData) result);
+        return networkResponse;
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public BinaryData get(String uri, ServerSentEventListener serverSentEventListener) {
         String requestUri = uri + "/" + "serversentevent";
@@ -2093,21 +2136,10 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.models.binarydata.BinaryData.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
-        if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
-        } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
-        } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
-        }
-        networkResponse.close();
-        return (io.clientcore.core.models.binarydata.BinaryData) result;
+        return networkResponse.getValue();
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public Response<BinaryData> post(String uri, BinaryData postBody, ServerSentEventListener serverSentEventListener, RequestContext requestOptions) {
         String requestUri = uri + "/" + "serversentevent";
@@ -2130,16 +2162,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
             networkResponse.close();
             throw new HttpResponseException(errorMessage, networkResponse, null);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, BinaryData.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
-        if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
-        } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
-        } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
-        }
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), (BinaryData) result);
+        return networkResponse;
     }
 }
