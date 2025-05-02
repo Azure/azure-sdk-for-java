@@ -37,6 +37,18 @@ import java.util.Arrays;
  */
 public class TestInterfaceClientServiceImpl implements TestInterfaceClientService {
 
+    private static final HttpHeaderName A = HttpHeaderName.fromString("a");
+
+    private static final HttpHeaderName ABC = HttpHeaderName.fromString("ABC");
+
+    private static final HttpHeaderName B = HttpHeaderName.fromString("b");
+
+    private static final HttpHeaderName MYHEADER = HttpHeaderName.fromString("MyHeader");
+
+    private static final HttpHeaderName MYOTHERHEADER = HttpHeaderName.fromString("MyOtherHeader");
+
+    private static final HttpHeaderName SYNC_TOKEN = HttpHeaderName.fromString("Sync-Token");
+
     private static final ClientLogger LOGGER = new ClientLogger(TestInterfaceClientService.class);
 
     private final HttpPipeline httpPipeline;
@@ -169,7 +181,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
         if (syncToken != null) {
-            httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.fromString("Sync-Token"), syncToken));
+            httpRequest.getHeaders().add(new HttpHeader(SYNC_TOKEN, syncToken));
         }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
@@ -585,9 +597,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(requestUri);
         if (a != null) {
-            httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.fromString("a"), a));
+            httpRequest.getHeaders().add(new HttpHeader(A, a));
         }
-        httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.fromString("b"), String.valueOf(b)));
+        httpRequest.getHeaders().add(new HttpHeader(B, String.valueOf(b)));
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
@@ -1385,7 +1397,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri(requestUri);
         if (headerCollection != null) {
-            httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.fromString("ABC"), String.valueOf(headerCollection)));
+            httpRequest.getHeaders().add(new HttpHeader(ABC, String.valueOf(headerCollection)));
         }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
@@ -1856,8 +1868,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         String requestUri = uri + "/" + "anything";
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(requestUri);
-        httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.fromString("MyHeader"), "MyHeaderValue"));
-        httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.fromString("MyOtherHeader"), Arrays.asList("My", "Header", "Value")));
+        httpRequest.getHeaders().add(new HttpHeader(MYHEADER, "MyHeaderValue"));
+        httpRequest.getHeaders().add(new HttpHeader(MYOTHERHEADER, Arrays.asList("My", "Header", "Value")));
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();

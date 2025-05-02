@@ -48,6 +48,7 @@ import javax.tools.Diagnostic;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -55,6 +56,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import static io.clientcore.annotation.processor.utils.ResponseHandler.generateResponseHandling;
@@ -95,6 +97,7 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
     }
 
     private final CompilationUnit compilationUnit = new CompilationUnit();
+    private final Map<String, String> httpHeaderNameConstantsToAdd = new TreeMap<>(String::compareToIgnoreCase);
     private ClassOrInterfaceDeclaration classBuilder;
 
     @Override
@@ -150,6 +153,19 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                 configureInternalMethod(classBuilder.addMethod(method.getMethodName(), Modifier.Keyword.PUBLIC), method,
                     processingEnv);
             }
+        }
+
+        List<FieldDeclaration> headerConstants = new ArrayList<>();
+        for (Map.Entry<String, String> e : httpHeaderNameConstantsToAdd.entrySet()) {
+            headerConstants.add(new FieldDeclaration()
+                .setModifiers(Modifier.Keyword.PRIVATE, Modifier.Keyword.STATIC, Modifier.Keyword.FINAL)
+                .addVariable(new VariableDeclarator().setType("HttpHeaderName")
+                    .setName(e.getKey())
+                    .setInitializer("HttpHeaderName.fromString(\"" + e.getValue() + "\")")));
+        }
+
+        if (!headerConstants.isEmpty()) {
+            classBuilder.getMembers().addAll(0, headerConstants);
         }
     }
 
@@ -512,9 +528,11 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                     .append(valueExpression)
                     .append("));");
             } else {
-                addHeader.append("httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.fromString(\"")
-                    .append(headerKey)
-                    .append("\"), ")
+                String headerNameConstant = headerKey.replace('-', '_').toUpperCase(Locale.US);
+                httpHeaderNameConstantsToAdd.put(headerNameConstant, headerKey);
+                addHeader.append("httpRequest.getHeaders().add(new HttpHeader(")
+                    .append(headerNameConstant)
+                    .append(", ")
                     .append(valueExpression)
                     .append("));");
             }
