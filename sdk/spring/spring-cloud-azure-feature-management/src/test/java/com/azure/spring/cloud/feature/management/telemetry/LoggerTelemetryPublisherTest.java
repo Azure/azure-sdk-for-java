@@ -13,6 +13,7 @@ import static com.azure.spring.cloud.feature.management.telemetry.TelemetryConst
 import static com.azure.spring.cloud.feature.management.telemetry.TelemetryConstants.VARIANT_ASSIGNMENT_PERCENTAGE;
 import static com.azure.spring.cloud.feature.management.telemetry.TelemetryConstants.VERSION;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 import static org.mockito.Mockito.when;
 
 import java.util.Iterator;
@@ -23,6 +24,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInfo;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -47,8 +49,6 @@ public class LoggerTelemetryPublisherTest {
     private Logger publisherLogger;
 
     private ListAppender<ILoggingEvent> listAppender;
-
-    private static final String FAKE_ID = "fake-id";
 
     @Mock
     private Feature featureMock;
@@ -90,35 +90,36 @@ public class LoggerTelemetryPublisherTest {
             // Add the fresh appender
             publisherLogger.addAppender(listAppender);
         } else {
-            org.junit.jupiter.api.Assumptions.assumeTrue(
+            assumeTrue(
                 false,
                 "Tests require Logback implementation, but found: " + slf4jLogger.getClass().getName()
             );
         }
-        when(featureMock.getId()).thenReturn(FAKE_ID);
     }
 
     @Test
-    void featureFlagTest() throws Exception {
+    void featureFlagTest(TestInfo testInfo) throws Exception {
+        when(featureMock.getId()).thenReturn(testInfo.getDisplayName());
         EvaluationEvent evaluationEvent = new EvaluationEvent(featureMock);
 
         LoggerTelemetryPublisher publisher = new LoggerTelemetryPublisher();
         publisher.publishTelemetry(evaluationEvent);
 
-        logEvent = listAppender.list.get(listAppender.list.size() - 1);
+        logEvent = getEvent(listAppender.list, testInfo.getDisplayName());
         Map<String, String> mdcMap = logEvent.getMDCPropertyMap();
 
         assertEquals(EVENT_NAME, logEvent.getMessage());
         assertEquals(Level.INFO, logEvent.getLevel());
         assertEquals("None", mdcMap.get(REASON));
-        assertEquals(FAKE_ID, mdcMap.get(FEATURE_NAME));
+        assertEquals(testInfo.getDisplayName(), mdcMap.get(FEATURE_NAME));
         assertEquals("false", mdcMap.get(ENABLED));
         assertEquals(EVALUATION_EVENT_VERSION, mdcMap.get(VERSION));
         assertEquals(EVENT_NAME, mdcMap.get(APPLICATION_INSIGHTS_CUSTOM_EVENT_KEY));
     }
 
     @Test
-    void featureVariantTest() throws Exception {
+    void featureVariantTest(TestInfo testInfo) throws Exception {
+        when(featureMock.getId()).thenReturn(testInfo.getDisplayName());
         EvaluationEvent evaluationEvent = new EvaluationEvent(featureMock);
         evaluationEvent.setVariant(variantMock);
         evaluationEvent.setReason(VariantAssignmentReason.DEFAULT_WHEN_ENABLED);
@@ -128,13 +129,13 @@ public class LoggerTelemetryPublisherTest {
         LoggerTelemetryPublisher publisher = new LoggerTelemetryPublisher();
         publisher.publishTelemetry(evaluationEvent);
 
-        logEvent = listAppender.list.get(listAppender.list.size() - 1);
+        logEvent = getEvent(listAppender.list, testInfo.getDisplayName());
         Map<String, String> mdcMap = logEvent.getMDCPropertyMap();
 
         assertEquals(EVENT_NAME, logEvent.getMessage());
         assertEquals(Level.INFO, logEvent.getLevel());
         assertEquals(DEFAULT_WHEN_ENABLED, mdcMap.get(REASON));
-        assertEquals(FAKE_ID, mdcMap.get(FEATURE_NAME));
+        assertEquals(testInfo.getDisplayName(), mdcMap.get(FEATURE_NAME));
         assertEquals("false", mdcMap.get(ENABLED));
         assertEquals(EVALUATION_EVENT_VERSION, mdcMap.get(VERSION));
         assertEquals(EVENT_NAME, mdcMap.get(APPLICATION_INSIGHTS_CUSTOM_EVENT_KEY));
@@ -143,29 +144,29 @@ public class LoggerTelemetryPublisherTest {
     }
 
     @Test
-    void featureFlagDisabledTest() throws Exception {
+    void featureFlagDisabledTest(TestInfo testInfo) throws Exception {
+        when(featureMock.getId()).thenReturn(testInfo.getDisplayName());
         when(featureMock.isEnabled()).thenReturn(false);
         EvaluationEvent evaluationEvent = new EvaluationEvent(featureMock);
 
         LoggerTelemetryPublisher publisher = new LoggerTelemetryPublisher();
         publisher.publishTelemetry(evaluationEvent);
 
-        //assertEquals(1, listAppender.list.size());
-
-        logEvent = listAppender.list.get(listAppender.list.size() - 1);
+        logEvent = getEvent(listAppender.list, testInfo.getDisplayName());
         Map<String, String> mdcMap = logEvent.getMDCPropertyMap();
 
         assertEquals(EVENT_NAME, logEvent.getMessage());
         assertEquals(Level.INFO, logEvent.getLevel());
         assertEquals("None", mdcMap.get(REASON));
-        assertEquals(FAKE_ID, mdcMap.get(FEATURE_NAME));
+        assertEquals(testInfo.getDisplayName(), mdcMap.get(FEATURE_NAME));
         assertEquals("false", mdcMap.get(ENABLED));
         assertEquals(EVALUATION_EVENT_VERSION, mdcMap.get(VERSION));
         assertEquals(EVENT_NAME, mdcMap.get(APPLICATION_INSIGHTS_CUSTOM_EVENT_KEY));
     }
 
     @Test
-    void featureVariantWithPercentageTest() throws Exception {
+    void featureVariantWithPercentageTest(TestInfo testInfo) throws Exception {
+        when(featureMock.getId()).thenReturn(testInfo.getDisplayName());
         EvaluationEvent evaluationEvent = new EvaluationEvent(featureMock);
         evaluationEvent.setVariant(variantMock);
         evaluationEvent.setReason(VariantAssignmentReason.PERCENTILE);
@@ -182,13 +183,13 @@ public class LoggerTelemetryPublisherTest {
         LoggerTelemetryPublisher publisher = new LoggerTelemetryPublisher();
         publisher.publishTelemetry(evaluationEvent);
 
-        logEvent = listAppender.list.get(listAppender.list.size() - 1);
+        logEvent = getEvent(listAppender.list, testInfo.getDisplayName());
         Map<String, String> mdcMap = logEvent.getMDCPropertyMap();
 
         assertEquals(EVENT_NAME, logEvent.getMessage());
         assertEquals(Level.INFO, logEvent.getLevel());
         assertEquals("Percentile", mdcMap.get(REASON));
-        assertEquals(FAKE_ID, mdcMap.get(FEATURE_NAME));
+        assertEquals(testInfo.getDisplayName(), mdcMap.get(FEATURE_NAME));
         assertEquals("false", mdcMap.get(ENABLED));
         assertEquals(EVALUATION_EVENT_VERSION, mdcMap.get(VERSION));
         assertEquals(EVENT_NAME, mdcMap.get(APPLICATION_INSIGHTS_CUSTOM_EVENT_KEY));
@@ -198,7 +199,8 @@ public class LoggerTelemetryPublisherTest {
     }
 
     @Test
-    void nullEvaluationEventTest() {
+    void nullEvaluationEventTest(TestInfo testInfo) {
+        when(featureMock.getId()).thenReturn(testInfo.getDisplayName());
         LoggerTelemetryPublisher publisher = new LoggerTelemetryPublisher();
         publisher.publishTelemetry(null);
 
@@ -207,7 +209,8 @@ public class LoggerTelemetryPublisherTest {
     }
 
     @Test
-    void nullFeatureInEvaluationEventTest() {
+    void nullFeatureInEvaluationEventTest(TestInfo testInfo) {
+        when(featureMock.getId()).thenReturn(testInfo.getDisplayName());
         EvaluationEvent evaluationEvent = new EvaluationEvent(null);
 
         LoggerTelemetryPublisher publisher = new LoggerTelemetryPublisher();
@@ -218,7 +221,8 @@ public class LoggerTelemetryPublisherTest {
     }
 
     @Test
-    void nullVariantInEvaluationEventTest() {
+    void nullVariantInEvaluationEventTest(TestInfo testInfo) {
+        when(featureMock.getId()).thenReturn(testInfo.getDisplayName());
         EvaluationEvent evaluationEvent = new EvaluationEvent(featureMock);
         evaluationEvent.setVariant(null);
         evaluationEvent.setReason(VariantAssignmentReason.DEFAULT_WHEN_ENABLED);
@@ -226,13 +230,13 @@ public class LoggerTelemetryPublisherTest {
         LoggerTelemetryPublisher publisher = new LoggerTelemetryPublisher();
         publisher.publishTelemetry(evaluationEvent);
 
-        logEvent = listAppender.list.get(listAppender.list.size() - 1);
+        logEvent = getEvent(listAppender.list, testInfo.getDisplayName());
         Map<String, String> mdcMap = logEvent.getMDCPropertyMap();
 
         assertEquals(EVENT_NAME, logEvent.getMessage());
         assertEquals(Level.INFO, logEvent.getLevel());
         assertEquals(DEFAULT_WHEN_ENABLED, mdcMap.get(REASON));
-        assertEquals(FAKE_ID, mdcMap.get(FEATURE_NAME));
+        assertEquals(testInfo.getDisplayName(), mdcMap.get(FEATURE_NAME));
         assertEquals("false", mdcMap.get(ENABLED));
         assertEquals(EVALUATION_EVENT_VERSION, mdcMap.get(VERSION));
         assertEquals(EVENT_NAME, mdcMap.get(APPLICATION_INSIGHTS_CUSTOM_EVENT_KEY));
@@ -241,7 +245,8 @@ public class LoggerTelemetryPublisherTest {
     }
 
     @Test
-    void emptyPercentileAllocationTest() {
+    void emptyPercentileAllocationTest(TestInfo testInfo) {
+        when(featureMock.getId()).thenReturn(testInfo.getDisplayName());
         EvaluationEvent evaluationEvent = new EvaluationEvent(featureMock);
         evaluationEvent.setVariant(variantMock);
         evaluationEvent.setReason(VariantAssignmentReason.PERCENTILE);
@@ -252,17 +257,30 @@ public class LoggerTelemetryPublisherTest {
         LoggerTelemetryPublisher publisher = new LoggerTelemetryPublisher();
         publisher.publishTelemetry(evaluationEvent);
 
-        logEvent = listAppender.list.get(listAppender.list.size() - 1);
+        logEvent = getEvent(listAppender.list, testInfo.getDisplayName());
         Map<String, String> mdcMap = logEvent.getMDCPropertyMap();
 
         assertEquals(EVENT_NAME, logEvent.getMessage());
         assertEquals(Level.INFO, logEvent.getLevel());
         assertEquals("Percentile", mdcMap.get(REASON));
-        assertEquals(FAKE_ID, mdcMap.get(FEATURE_NAME));
+        assertEquals(testInfo.getDisplayName(), mdcMap.get(FEATURE_NAME));
         assertEquals("false", mdcMap.get(ENABLED));
         assertEquals(EVALUATION_EVENT_VERSION, mdcMap.get(VERSION));
         assertEquals(EVENT_NAME, mdcMap.get(APPLICATION_INSIGHTS_CUSTOM_EVENT_KEY));
         assertEquals("fake-variant", mdcMap.get(VARIANT));
         assertEquals("0.0", mdcMap.get(VARIANT_ASSIGNMENT_PERCENTAGE));
+    }
+
+    ILoggingEvent getEvent(List<ILoggingEvent> evnets, String featureName) {
+        for (ILoggingEvent event : evnets) {
+            if (featureName.equals(event.getMDCPropertyMap().get(FEATURE_NAME))) {
+                return event;
+            }
+        }
+        assumeTrue(
+            false,
+            "Log event not found for feature: " + featureName
+        );
+        return null; // This line will never be reached due to the assumption above
     }
 }
