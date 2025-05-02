@@ -100,7 +100,7 @@ public final class CosmosChangeFeedRequestOptions {
 
     /**
      * Sets the read consistency strategy required for the request. This allows specifying the effective consistency
-     * strategy for read/query operations and even request stronger consistency (`LOCAL_COMMITTED` for example) for
+     * strategy for read/query and change feed operations and even request stronger consistency (`LOCAL_COMMITTED` for example) for
      * accounts with lower default consistency level
      * NOTE: If the read consistency strategy set on a request level here is `SESSION` and the default consistency
      * level specified when constructing the CosmosClient instance via CosmosClientBuilder.consistencyLevel
