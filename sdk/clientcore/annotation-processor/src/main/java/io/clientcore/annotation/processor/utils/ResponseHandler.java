@@ -81,9 +81,9 @@ public final class ResponseHandler {
             // byte[] though.
             closeResponse(body, "Close the network response as the body should be consumed.");
 
-            // TODO (alzimmer): Should a zero length body return null or byte[0]?
-            addReturnStatement(body, returnIsResponse,
-                "(responseBodyBytes != null && responseBodyBytes.length == 0) ? null : responseBodyBytes");
+            // Return responseBodyBytes as-is which will have the behavior of null -> null, empty -> empty, and
+            // data -> data, which offers three unique states for knowing information about the network response shape.
+            addReturnStatement(body, returnIsResponse, "responseBodyBytes");
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, InputStream.class)) {
             // Return type is an InputStream. Return the network response body as an InputStream.
             // DO NOT close the network response for this return as it will result in the InputStream either being

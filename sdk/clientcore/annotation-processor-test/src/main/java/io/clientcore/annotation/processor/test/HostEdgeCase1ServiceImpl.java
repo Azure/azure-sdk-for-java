@@ -59,6 +59,6 @@ public class HostEdgeCase1ServiceImpl implements HostEdgeCase1Service {
         byte[] responseBodyBytes = responseBody != null ? responseBody.toBytes() : null;
         // Close the network response as the body should be consumed.
         networkResponse.close();
-        return (responseBodyBytes != null && responseBodyBytes.length == 0) ? null : responseBodyBytes;
+        return responseBodyBytes;
     }
 }
