@@ -16,6 +16,10 @@ import java.util.Map;
  * The requested read consistency strategy can be chosen independent of the consistency level
  * provisioned for the database account.
  * <p>
+ * The ReadConsistencyStrategy setting will override whatever ConsistencyLevel is chosen
+ * in RequestOptions, CosmosClient or the default consistency level for an account unless
+ * ReadConsistencyStrategy `DEFAULT` is used.
+ * <p>
  * NOTE: The ReadConsistencyStrategy is currently only working when using direct mode
  */
 @Beta(value = Beta.SinceVersion.V4_69_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
@@ -46,9 +50,10 @@ public enum ReadConsistencyStrategy {
     LATEST_COMMITTED("LatestCommitted"),
 
     /**
-     * Will do a quorum read followed by GCLSN barrier requests if needed.
+     * Will read the latest version - since replication with global strong consistency is synchronous
+     * this read consistency strategy ensures that the latest successfully written version across regions is returned.
      *
-     * NOTE: Only supported for single-master accounts Strong consistency enabled.
+     * NOTE: Only supported for single-master accounts with Strong consistency enabled as default consistency.
      */
     GLOBAL_STRONG("GlobalStrong");
 
