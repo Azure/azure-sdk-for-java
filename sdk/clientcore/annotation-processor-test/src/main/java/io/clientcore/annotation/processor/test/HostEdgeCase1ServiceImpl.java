@@ -57,6 +57,7 @@ public class HostEdgeCase1ServiceImpl implements HostEdgeCase1Service {
         }
         BinaryData responseBody = networkResponse.getValue();
         byte[] responseBodyBytes = responseBody != null ? responseBody.toBytes() : null;
-        return responseBodyBytes != null ? (responseBodyBytes.length == 0 ? null : responseBodyBytes) : null;
+        networkResponse.close();
+        return (responseBodyBytes != null && responseBodyBytes.length == 0) ? null : responseBodyBytes;
     }
 }

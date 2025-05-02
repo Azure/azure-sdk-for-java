@@ -26,7 +26,6 @@ import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.serialization.SerializationFormat;
 import io.clientcore.core.utils.CoreUtils;
 import java.util.LinkedHashMap;
-import io.clientcore.core.utils.Base64Uri;
 import java.lang.reflect.ParameterizedType;
 import java.util.stream.Collectors;
 import java.util.Arrays;
@@ -169,17 +168,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
+        Foo deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, Foo.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), (Foo) result);
+        networkResponse.close();
+        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -197,17 +197,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
+        FooListResult deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, FooListResult.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), (FooListResult) result);
+        networkResponse.close();
+        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -225,17 +226,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
+        FooListResult deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, FooListResult.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), (FooListResult) result);
+        networkResponse.close();
+        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -258,17 +260,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
+        List<Foo> deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(List.class, Foo.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), (List<Foo>) result);
+        networkResponse.close();
+        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -286,17 +289,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
+        List<Foo> deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(List.class, Foo.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), (List<Foo>) result);
+        networkResponse.close();
+        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -321,16 +325,17 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
+        HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, HttpBinJSON.class);
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), (HttpBinJSON) result);
+        networkResponse.close();
+        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -355,16 +360,17 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
+        HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, HttpBinJSON.class);
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), (HttpBinJSON) result);
+        networkResponse.close();
+        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -382,7 +388,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         BinaryData responseBody = networkResponse.getValue();
         byte[] responseBodyBytes = responseBody != null ? responseBody.toBytes() : null;
-        return responseBodyBytes != null ? (responseBodyBytes.length == 0 ? null : responseBodyBytes) : null;
+        networkResponse.close();
+        return (responseBodyBytes != null && responseBodyBytes.length == 0) ? null : responseBodyBytes;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -414,18 +421,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -441,18 +448,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -468,18 +475,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -495,18 +502,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -527,18 +534,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -558,18 +565,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -590,18 +597,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -616,18 +623,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -642,18 +649,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -668,18 +675,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -695,18 +702,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -722,18 +729,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -754,17 +761,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
+        HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), (HttpBinJSON) result);
+        networkResponse.close();
+        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -780,18 +788,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -811,17 +819,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
+        HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), (HttpBinJSON) result);
+        networkResponse.close();
+        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -836,18 +845,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -862,18 +871,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -888,18 +897,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -914,18 +923,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -950,17 +959,17 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -982,18 +991,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -1013,18 +1022,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -1044,18 +1053,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -1076,18 +1085,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -1107,18 +1116,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -1137,18 +1146,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -1167,18 +1176,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -1215,17 +1224,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
+        HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), (HttpBinJSON) result);
+        networkResponse.close();
+        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -1241,17 +1251,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, InputStream.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
-        if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
-        } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
-        } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
-        }
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), (InputStream) result);
+        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), networkResponse.getValue().toStream());
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -1269,7 +1269,8 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         BinaryData responseBody = networkResponse.getValue();
         byte[] responseBodyBytes = responseBody != null ? responseBody.toBytes() : null;
-        return responseBodyBytes != null ? (responseBodyBytes.length == 0 ? null : responseBodyBytes) : null;
+        networkResponse.close();
+        return (responseBodyBytes != null && responseBodyBytes.length == 0) ? null : responseBodyBytes;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -1294,17 +1295,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
+        HttpBinJSON deserializedResult;
         ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), (HttpBinJSON) result);
+        networkResponse.close();
+        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), deserializedResult);
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -1318,18 +1320,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -1452,17 +1454,17 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -1483,18 +1485,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -1514,18 +1516,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -1545,18 +1547,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -1576,18 +1578,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -1607,18 +1609,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -1638,18 +1640,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -1669,18 +1671,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -1703,17 +1705,17 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -1733,18 +1735,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -1762,18 +1764,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -1793,18 +1795,18 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
+        HttpBinJSON deserializedResult;
+        ParameterizedType returnType = CoreUtils.createParameterizedType(HttpBinJSON.class);
         SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
         if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
         } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
+            deserializedResult = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
         } else {
             throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
         }
         networkResponse.close();
-        return (io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON) result;
+        return deserializedResult;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -1936,17 +1938,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, BinaryData.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
-        if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
-        } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
-        } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
-        }
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), (BinaryData) result);
+        return networkResponse;
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -1962,18 +1954,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.models.binarydata.BinaryData.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
-        if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
-        } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
-        } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
-        }
-        networkResponse.close();
-        return (io.clientcore.core.models.binarydata.BinaryData) result;
+        return networkResponse.getValue();
     }
 
     @SuppressWarnings({ "unchecked", "cast" })
@@ -1997,16 +1978,6 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         if (!expectedResponse) {
             throw new RuntimeException("Unexpected response code: " + responseCode);
         }
-        Object result = null;
-        ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, BinaryData.class);
-        SerializationFormat serializationFormat = CoreUtils.serializationFormatFromContentType(httpRequest.getHeaders());
-        if (jsonSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), jsonSerializer, returnType);
-        } else if (xmlSerializer.supportsFormat(serializationFormat)) {
-            result = CoreUtils.decodeNetworkResponse(networkResponse.getValue(), xmlSerializer, returnType);
-        } else {
-            throw new RuntimeException(new UnsupportedOperationException("None of the provided serializers support the format: " + serializationFormat + "."));
-        }
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), (BinaryData) result);
+        return networkResponse;
     }
 }
