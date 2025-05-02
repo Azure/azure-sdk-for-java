@@ -11,7 +11,7 @@
 ### Other Changes
 
 - Marked `VisualStudioCodeCredential` and `VisualStudioCodeCredentialBuilder` as deprecated.[#44527](https://github.com/Azure/azure-sdk-for-java/issues/44527)
-- Added deprecation message to `EnvironmentCredential` when a username/password is used.
+- Added deprecation message to `EnvironmentCredential` when a username/password is used. [#45185](https://github.com/Azure/azure-sdk-for-java/pull/45185) 
 
 ## 1.16.0-beta.1 (2025-03-13)
 
