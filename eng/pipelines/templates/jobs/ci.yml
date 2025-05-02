@@ -369,7 +369,7 @@ jobs:
 
             Write-Host "changedServicesString='$changedServicesString'"
             Write-Host "##vso[task.setvariable variable=PRServiceDirectories;]$changedServicesString"
-          displayName: Set PRServiceDirectories from PR diff
+          displayName: Set PRServiceDirectories from PackageInfo files
       - ${{ else }}:
         # For non-Pull Request runs always use the service directory indicated in the ci*.yml that triggered the build.
         # This will result in all libraries managed by the YAML file to be validated. For example, if
