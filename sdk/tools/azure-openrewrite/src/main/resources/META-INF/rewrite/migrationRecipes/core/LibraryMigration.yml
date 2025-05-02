@@ -6,10 +6,9 @@
 type: specs.openrewrite.org/v1beta/recipe
 name: com.azure.openrewrite.migration.core
 displayName: Migrate from azure-core to next generation stack
-description: This recipe migrates the Azure Storage Core library to the next generation stack.
+description: This recipe migrates the Azure Core library to the next generation stack.
 recipeList:
 
-  - com.azure.openrewrite.recipe.azure.core.cryptography
   - com.azure.openrewrite.recipe.azure.core.credential
   - com.azure.openrewrite.recipe.azure.core.exception
   - com.azure.openrewrite.recipe.azure.core.http.policy

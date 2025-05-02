@@ -13,11 +13,7 @@ recipeList:
   # AddDatePolicy
   # --------------------------------------------------------------------
 
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.http.policy.AddDatePolicy
-      newFullyQualifiedTypeName: com.azure.v2.core.http.policy.AddDatePolicy
-
-  # TODO: Migrate Methods and Fields
+  # TODO: API Removed. Triage replacement
 
   # --------------------------------------------------------------------
   # AddHeadersFromContextPolicy
@@ -31,7 +27,7 @@ recipeList:
 
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.azure.core.http.policy.AddHeadersPolicy
-      newFullyQualifiedTypeName: com.azure.v2.core.http.policy.AddHeadersPolicy
+      newFullyQualifiedTypeName: io.clientcore.core.http.pipeline.AddHeadersPolicy
 
   # TODO: Migrate Methods and Fields
 
@@ -45,11 +41,7 @@ recipeList:
   # AzureKeyCredentialPolicy
   # --------------------------------------------------------------------
 
-  - org.openrewrite.java.ChangeType:
-      oldFullyQualifiedTypeName: com.azure.core.http.policy.AzureKeyCredentialPolicy
-      newFullyQualifiedTypeName: com.azure.v2.core.http.policy.AzureKeyCredentialPolicy
-
-  # TODO: Migrate Methods and Fields
+  # TODO: API Removed. Triage replacement
 
   # --------------------------------------------------------------------
   # AzureSasCredentialPolicy
@@ -57,7 +49,7 @@ recipeList:
 
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.azure.core.http.policy.AzureSasCredentialPolicy
-      newFullyQualifiedTypeName: com.azure.v2.core.http.policy.AzureSasCredentialPolicy
+      newFullyQualifiedTypeName: com.azure.v2.core.http.pipeline.AzureSasCredentialPolicy
 
   # TODO: Migrate Methods and Fields
 
@@ -67,7 +59,7 @@ recipeList:
 
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.azure.core.http.policy.BearerTokenAuthenticationPolicy
-      newFullyQualifiedTypeName: com.azure.v2.core.http.policy.BearerTokenAuthenticationPolicy
+      newFullyQualifiedTypeName: com.azure.v2.core.http.pipeline.BearerTokenAuthenticationPolicy
 
   # TODO: Migrate Methods and Fields
 
@@ -217,7 +209,7 @@ recipeList:
 
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.azure.core.http.policy.RequestIdPolicy
-      newFullyQualifiedTypeName: com.azure.v2.core.http.policy.RequestIdPolicy
+      newFullyQualifiedTypeName: io.clientcore.core.http.pipeline.RequestIdPolicy
 
   # TODO: Migrate Methods and Fields
 
@@ -257,7 +249,7 @@ recipeList:
 
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.azure.core.http.policy.UserAgentPolicy
-      newFullyQualifiedTypeName: com.azure.v2.core.http.policy.UserAgentPolicy
+      newFullyQualifiedTypeName: io.clientcore.core.http.pipeline.UserAgentPolicy
 
   # TODO: Migrate Methods and Fields
 

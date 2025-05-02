@@ -39,7 +39,7 @@ recipeList:
 
   - org.openrewrite.java.ChangeType:
       oldFullyQualifiedTypeName: com.azure.core.exception.HttpResponseException
-      newFullyQualifiedTypeName: io.clientcore.core.http.exceptions.HttpResponseException
+      newFullyQualifiedTypeName: io.clientcore.core.http.models.HttpResponseException
 
   # TODO: Migrate Methods and Fields
 
