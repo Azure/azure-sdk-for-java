@@ -10,6 +10,7 @@ import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.http.ProxyOptions;
+import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.SharedExecutorService;
 import com.azure.identity.CredentialUnavailableException;
@@ -928,7 +929,7 @@ public class IdentityClient extends IdentityClientBase {
         }
         HttpRequest request = new HttpRequest(HttpMethod.GET, url);
 
-        return getPipeline().send(request)
+        return getPipeline().send(request, new Context("azure-response-timeout", Duration.ofSeconds(1)))
             .onErrorMap(t -> new CredentialUnavailableException("ManagedIdentityCredential authentication unavailable. "
                 + "Connection to IMDS endpoint cannot be established, " + t.getMessage() + ".", t))
             .flatMap(response -> Mono.just(true));
