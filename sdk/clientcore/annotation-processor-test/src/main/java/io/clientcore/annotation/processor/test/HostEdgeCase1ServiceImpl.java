@@ -13,6 +13,7 @@ import io.clientcore.annotation.processor.test.implementation.HostEdgeCase1Servi
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
+import io.clientcore.core.http.models.HttpResponseException;
 
 /**
  * Initializes a new instance of the HostEdgeCase1ServiceImpl type.
@@ -53,7 +54,9 @@ public class HostEdgeCase1ServiceImpl implements HostEdgeCase1Service {
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         BinaryData responseBody = networkResponse.getValue();
         byte[] responseBodyBytes = responseBody != null ? responseBody.toBytes() : null;

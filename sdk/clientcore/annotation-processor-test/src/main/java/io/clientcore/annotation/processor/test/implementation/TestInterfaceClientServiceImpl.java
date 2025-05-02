@@ -25,6 +25,7 @@ import io.clientcore.core.serialization.xml.XmlSerializer;
 import io.clientcore.core.http.models.HttpHeader;
 import io.clientcore.core.serialization.SerializationFormat;
 import io.clientcore.core.utils.CoreUtils;
+import io.clientcore.core.http.models.HttpResponseException;
 import java.util.LinkedHashMap;
 import io.clientcore.core.utils.Base64Uri;
 import java.lang.reflect.ParameterizedType;
@@ -35,6 +36,18 @@ import java.util.Arrays;
  * Initializes a new instance of the TestInterfaceClientServiceImpl type.
  */
 public class TestInterfaceClientServiceImpl implements TestInterfaceClientService {
+
+    private static final HttpHeaderName A = HttpHeaderName.fromString("a");
+
+    private static final HttpHeaderName ABC = HttpHeaderName.fromString("ABC");
+
+    private static final HttpHeaderName B = HttpHeaderName.fromString("b");
+
+    private static final HttpHeaderName MYHEADER = HttpHeaderName.fromString("MyHeader");
+
+    private static final HttpHeaderName MYOTHERHEADER = HttpHeaderName.fromString("MyOtherHeader");
+
+    private static final HttpHeaderName SYNC_TOKEN = HttpHeaderName.fromString("Sync-Token");
 
     private static final ClientLogger LOGGER = new ClientLogger(TestInterfaceClientService.class);
 
@@ -79,7 +92,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         networkResponse.close();
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
@@ -109,7 +124,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         networkResponse.close();
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
@@ -126,7 +143,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         networkResponse.close();
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
@@ -143,7 +162,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         networkResponse.close();
         return null;
@@ -160,14 +181,16 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
         if (syncToken != null) {
-            httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.fromString("Sync-Token"), syncToken));
+            httpRequest.getHeaders().add(new HttpHeader(SYNC_TOKEN, syncToken));
         }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, Foo.class);
@@ -195,7 +218,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, FooListResult.class);
@@ -223,7 +248,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, FooListResult.class);
@@ -256,7 +283,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(List.class, Foo.class);
@@ -284,7 +313,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(List.class, Foo.class);
@@ -319,7 +350,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, HttpBinJSON.class);
@@ -353,7 +386,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, HttpBinJSON.class);
@@ -378,7 +413,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         BinaryData responseBody = networkResponse.getValue();
         byte[] responseBodyBytes = responseBody != null ? responseBody.toBytes() : null;
@@ -396,7 +433,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         networkResponse.close();
     }
@@ -412,7 +451,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
@@ -439,7 +480,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
@@ -466,7 +509,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
@@ -493,7 +538,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
@@ -525,7 +572,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
@@ -548,15 +597,17 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(requestUri);
         if (a != null) {
-            httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.fromString("a"), a));
+            httpRequest.getHeaders().add(new HttpHeader(A, a));
         }
-        httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.fromString("b"), String.valueOf(b)));
+        httpRequest.getHeaders().add(new HttpHeader(B, String.valueOf(b)));
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
@@ -588,7 +639,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
@@ -752,7 +805,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, HttpBinJSON.class);
@@ -809,7 +864,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, HttpBinJSON.class);
@@ -948,7 +1005,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
@@ -980,7 +1039,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
@@ -1011,7 +1072,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
@@ -1042,7 +1105,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
@@ -1074,7 +1139,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
@@ -1105,7 +1172,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
@@ -1135,7 +1204,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
@@ -1165,7 +1236,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
@@ -1192,7 +1265,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         networkResponse.close();
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
@@ -1213,7 +1288,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, HttpBinJSON.class);
@@ -1239,7 +1316,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 400;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, InputStream.class);
@@ -1265,7 +1344,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         BinaryData responseBody = networkResponse.getValue();
         byte[] responseBodyBytes = responseBody != null ? responseBody.toBytes() : null;
@@ -1292,7 +1373,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, HttpBinJSON.class);
@@ -1314,7 +1397,7 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.PUT).setUri(requestUri);
         if (headerCollection != null) {
-            httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.fromString("ABC"), String.valueOf(headerCollection)));
+            httpRequest.getHeaders().add(new HttpHeader(ABC, String.valueOf(headerCollection)));
         }
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
@@ -1343,7 +1426,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         networkResponse.close();
     }
@@ -1359,7 +1444,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         networkResponse.close();
         return null;
@@ -1376,7 +1463,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         networkResponse.close();
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
@@ -1393,7 +1482,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         networkResponse.close();
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), null);
@@ -1410,7 +1501,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         networkResponse.close();
         return expectedResponse;
@@ -1427,7 +1520,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         networkResponse.close();
     }
@@ -1450,7 +1545,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
@@ -1481,7 +1578,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
@@ -1512,7 +1611,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 201;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
@@ -1543,7 +1644,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 201;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
@@ -1574,7 +1677,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 201;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
@@ -1605,7 +1710,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 201;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
@@ -1636,7 +1743,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 201;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
@@ -1667,7 +1776,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
@@ -1701,7 +1812,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
@@ -1731,7 +1844,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
@@ -1753,14 +1868,16 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         String requestUri = uri + "/" + "anything";
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(requestUri);
-        httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.fromString("MyHeader"), "MyHeaderValue"));
-        httpRequest.getHeaders().add(new HttpHeader(HttpHeaderName.fromString("MyOtherHeader"), Arrays.asList("My", "Header", "Value")));
+        httpRequest.getHeaders().add(new HttpHeader(MYHEADER, "MyHeaderValue"));
+        httpRequest.getHeaders().add(new HttpHeader(MYOTHERHEADER, Arrays.asList("My", "Header", "Value")));
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
@@ -1791,7 +1908,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.annotation.processor.test.implementation.models.HttpBinJSON.class);
@@ -1829,7 +1948,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         networkResponse.close();
     }
@@ -1856,7 +1977,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 300;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         networkResponse.close();
     }
@@ -1883,7 +2006,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 400;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         networkResponse.close();
     }
@@ -1910,7 +2035,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 500;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         networkResponse.close();
     }
@@ -1934,7 +2061,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, BinaryData.class);
@@ -1960,7 +2089,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(io.clientcore.core.models.binarydata.BinaryData.class);
@@ -1995,7 +2126,9 @@ public class TestInterfaceClientServiceImpl implements TestInterfaceClientServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         Object result = null;
         ParameterizedType returnType = CoreUtils.createParameterizedType(Response.class, BinaryData.class);
