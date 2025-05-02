@@ -3,8 +3,6 @@
 The client-core annotation processor for introducing compile-time code generation for libraries based on client core
 >Note: This project is for experimentation and exploring new ideas that may or may not make it into a supported GA release.
 
-JRS-Testing only change will not be checked in
-
 ## Usage
 
 1. Add the below plugin configuration to your `pom.xml`:
