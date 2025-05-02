@@ -4,6 +4,7 @@
 package io.clientcore.core.http.pipeline;
 
 import io.clientcore.core.credentials.KeyCredential;
+import io.clientcore.core.http.client.HttpClient;
 import io.clientcore.core.http.models.HttpHeaderName;
 import io.clientcore.core.http.models.HttpHeaders;
 import io.clientcore.core.http.models.HttpMethod;
@@ -37,7 +38,11 @@ public class KeyCredentialPolicyTests {
         KeyCredentialPolicy policy = new KeyCredentialPolicy(HttpHeaderName.AUTHORIZATION.toString(), credential, null);
         HttpPipelinePolicy mockReturnPolicy = (HttpRequest request,
             HttpPipelineNextPolicy next) -> new Response<>(request, 200, null, BinaryData.empty());
-        HttpPipeline pipeline = new HttpPipelineBuilder().addPolicy(policy).addPolicy(mockReturnPolicy).build();
+        HttpClient client = (request) -> {
+            return new Response<>(request, 200, null, BinaryData.empty());
+        };
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().addPolicy(policy).addPolicy(mockReturnPolicy).httpClient(client).build();
         HttpRequest request = new HttpRequest().setMethod(HttpMethod.GET).setUri(url);
         try {
             pipeline.send(request);
