@@ -346,18 +346,34 @@ jobs:
           CheckLinkGuidance: $true
 
       - ${{ if and(eq(variables['Build.Reason'], 'PullRequest'), eq(parameters.ServiceDirectory, 'auto')) }}:
-        # NOTE: The PRServiceDirectories string is used in the two Code Generation steps below
+        # For Pull Request pipelines scan all /sdk/<service>/<library> directories that were modified.
+        # This will scope code generation validation to the libraries that were modified. For example, if
+        # /sdk/storage/azure-storage-blob was modified but none of the other Storage libraries were only validating
+        # azure-storage-blob's code generation will properly validate the PR.
         - pwsh: |
             $diffJson = Get-Content '$(Build.ArtifactStagingDirectory)/diff/diff.json' -Raw
             $diff = ConvertFrom-Json $diffJson
+
             $changedServicesString = ''
-            if ($diff.ChangedServices) {
-                $changedServicesString = $diff.ChangedServices -join ","
+            if ($diff.ChangedFiles) {
+              $servicesToScan = @()
+              foreach ($changedFile in $diff.ChangedFiles) {
+                if ($changedFile -match 'sdk/(.*?)/(.*?)/.*?') {
+                  $servicesToScan += $Matches[1] + '/' + $Matches[2]
+                }
+              }
+
+              $servicesToScan = $servicesToScan | Sort-Object -Unique
+              $changedServicesString = $servicesToScan -join ","
             }
+
             Write-Host "changedServicesString='$changedServicesString'"
             Write-Host "##vso[task.setvariable variable=PRServiceDirectories;]$changedServicesString"
           displayName: Set PRServiceDirectories from PR diff
       - ${{ else }}:
+        # For non-Pull Request runs always use the service directory indicated in the ci*.yml that triggered the build.
+        # This will result in all libraries managed by the YAML file to be validated. For example, if
+        # /sdk/storage/ci.yml was ran all Storage libraries will be validated, which is the proper validation.
         - pwsh: |
             $changedServicesString='${{ parameters.ServiceDirectory }}'
             Write-Host "changedServicesString='$changedServicesString'"
@@ -395,12 +411,12 @@ jobs:
           JdkVersion: ${{ parameters.JavaBuildVersion }}
 
       - task: PowerShell@2
-        displayName: Verify Code Generation for Pull Request
+        displayName: Verify Swagger Code Generation
         inputs:
           pwsh: true
           filePath: $(Build.SourcesDirectory)/eng/scripts/Compare-CurrentToCodegeneration.ps1
           arguments: >
-            -ServiceDirectories '$(PRServiceDirectories)'
+            -ScanDirectories '$(PRServiceDirectories)'
 
       - task: PowerShell@2
         displayName: Verify TypeSpec Code Generation
@@ -408,7 +424,7 @@ jobs:
           pwsh: true
           filePath: $(Build.SourcesDirectory)/eng/scripts/TypeSpec-Compare-CurrentToCodegeneration.ps1
           arguments: >
-            -ServiceDirectories '$(PRServiceDirectories)'
+            -ScanDirectories '$(PRServiceDirectories)'
 
       - template: /eng/pipelines/templates/steps/run-and-validate-linting.yml
         parameters:
