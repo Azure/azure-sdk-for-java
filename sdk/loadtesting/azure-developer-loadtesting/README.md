@@ -44,7 +44,7 @@ By default, Azure Active Directory token authentication depends on correct confi
 
 In addition, Azure subscription ID can be configured via environment variable `AZURE_SUBSCRIPTION_ID`.
 
-With above configuration, `azure` client can be authenticated by following code:
+With above configuration, clients can be authenticated by following code:
 
 ```java java-readme-sample-auth
 // ensure the user, service principal or managed identity used has Loadtesting Contributor role for the resource
@@ -85,13 +85,13 @@ The top-level clients have two sub-clients
 
 - `LoadTestAdministration`
 
-- `TestRun`
+- `LoadTestRun`
 
 These sub-clients are used for managing and using different components of the service.
 
 ### Load Test Administration Client
 
-The `LoadTestAdministration` sub-clients is used to administer and configure the load tests, app components and metrics.
+The `LoadTestAdministration` sub-clients is used to administer and configure the load tests, test profiles, app components and metrics.
 
 #### Test
 
@@ -109,9 +109,9 @@ During a load test, Azure Load Testing collects metrics about the test execution
 
 2. Server-side metrics are available for Azure-hosted applications and provide information about your Azure application components. Metrics can be for the number of database reads, the type of HTTP responses, or container resource consumption.
 
-### Test Run Client
+### Load Test Run Client
 
-The `TestRun` sub-clients is used to start and stop test runs corresponding to a load test. A test run represents one execution of a load test. It collects the logs associated with running the Apache JMeter script, the load test YAML configuration, the list of app components to monitor, and the results of the test.
+The `LoadTestRun` sub-clients is used to start and stop test runs corresponding to a load test. A test run represents one execution of a load test. It collects the logs associated with running the Apache JMeter script, the load test YAML configuration, the list of app components to monitor, and the results of the test.
 
 ### Data-Plane Endpoint
 
@@ -121,11 +121,11 @@ Data-plane of Azure Load Testing resources is addressable using the following UR
 
 The first GUID `00000000-0000-0000-0000-000000000000` is the unique identifier used for accessing the Azure Load Testing resource. This is followed by  `aaa` which is the Azure region of the resource.
 
-The data-plane endpoint is obtained from Control Plane APIs.
+The data-plane endpoint is obtained from Control Plane APIs. To obtain the data-plane endpoint for your resource, follow [this documentation][data_plane_uri].
 
-**Example:** `1234abcd-12ab-12ab-12ab-123456abcdef.eus.cnt-prod.loadtesting.azure.com`
+**Example:** `1234abcd-12ab-12ab-12ab-123456abcdef.eastus.cnt-prod.loadtesting.azure.com`
 
-In the above example, `eus` represents the Azure region `East US`.
+In the above example, `eastus` represents the Azure region `East US`.
 
 ## Examples
 
@@ -325,6 +325,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 <!-- LINKS -->
 [source_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtesting/azure-developer-loadtesting/src
 [sample_code]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/loadtesting/azure-developer-loadtesting/src/samples
+[data_plane_uri]: https://learn.microsoft.com/rest/api/loadtesting/data-plane-uri
 [api_reference_doc]: https://learn.microsoft.com/rest/api/loadtesting/
 [product_documentation]: https://azure.microsoft.com/services/load-testing/
 [jdk]: https://learn.microsoft.com/java/azure/jdk/
