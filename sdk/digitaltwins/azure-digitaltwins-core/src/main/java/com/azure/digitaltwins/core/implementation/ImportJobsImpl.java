@@ -84,9 +84,9 @@ public final class ImportJobsImpl {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<ImportJobCollection>> list(@HostParam("$host") String host,
-                                                 @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
-                                                 @HeaderParam("max-items-per-page") Integer maxItemsPerPage, @QueryParam("api-version") String apiVersion,
-                                                 @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
+            @HeaderParam("max-items-per-page") Integer maxItemsPerPage, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         /**
          * Adds a new import job.
@@ -105,9 +105,9 @@ public final class ImportJobsImpl {
         @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<ImportJob>> add(@HostParam("$host") String host, @HeaderParam("traceparent") String traceparent,
-                                      @HeaderParam("tracestate") String tracestate, @PathParam("id") String id,
-                                      @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ImportJob importJob,
-                                      @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("tracestate") String tracestate, @PathParam("id") String id,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") ImportJob importJob,
+            @HeaderParam("Accept") String accept, Context context);
 
         /**
          * Gets an import job by ID.
@@ -125,9 +125,9 @@ public final class ImportJobsImpl {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<ImportJob>> getById(@HostParam("$host") String host,
-                                          @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
-                                          @PathParam("id") String id, @QueryParam("api-version") String apiVersion,
-                                          @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
+            @PathParam("id") String id, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         /**
          * Deletes an import job by ID.
@@ -145,8 +145,8 @@ public final class ImportJobsImpl {
         @ExpectedResponses({ 204 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<Void>> delete(@HostParam("$host") String host, @HeaderParam("traceparent") String traceparent,
-                                    @HeaderParam("tracestate") String tracestate, @PathParam("id") String id,
-                                    @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("tracestate") String tracestate, @PathParam("id") String id,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         /**
          * Cancels an import job by ID.
@@ -164,9 +164,9 @@ public final class ImportJobsImpl {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<ImportJob>> cancel(@HostParam("$host") String host,
-                                         @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
-                                         @PathParam("id") String id, @QueryParam("api-version") String apiVersion,
-                                         @HeaderParam("Accept") String accept, Context context);
+            @HeaderParam("traceparent") String traceparent, @HeaderParam("tracestate") String tracestate,
+            @PathParam("id") String id, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         /**
          * Lists the next set of import jobs using a nextLink URL.
@@ -184,9 +184,9 @@ public final class ImportJobsImpl {
         @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorResponseException.class)
         Mono<Response<ImportJobCollection>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
-                                                     @HostParam("$host") String host, @HeaderParam("traceparent") String traceparent,
-                                                     @HeaderParam("tracestate") String tracestate, @HeaderParam("max-items-per-page") Integer maxItemsPerPage,
-                                                     @HeaderParam("Accept") String accept, Context context);
+            @HostParam("$host") String host, @HeaderParam("traceparent") String traceparent,
+            @HeaderParam("tracestate") String tracestate, @HeaderParam("max-items-per-page") Integer maxItemsPerPage,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
@@ -204,7 +204,7 @@ public final class ImportJobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ImportJob>> listSinglePageAsync(ImportJobsListOptions importJobsListOptions,
-                                                              Context context) {
+        Context context) {
         final String accept = "application/json";
         String traceparentInternal = null;
         if (importJobsListOptions != null) {
@@ -265,7 +265,7 @@ public final class ImportJobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ImportJob>> addWithResponseAsync(String id, ImportJob importJob,
-                                                          ImportJobsAddOptions importJobsAddOptions) {
+        ImportJobsAddOptions importJobsAddOptions) {
         return FluxUtil.withContext(context -> addWithResponseAsync(id, importJob, importJobsAddOptions, context));
     }
 
@@ -289,7 +289,7 @@ public final class ImportJobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ImportJob>> addWithResponseAsync(String id, ImportJob importJob,
-                                                          ImportJobsAddOptions importJobsAddOptions, Context context) {
+        ImportJobsAddOptions importJobsAddOptions, Context context) {
         final String accept = "application/json";
         String traceparentInternal = null;
         if (importJobsAddOptions != null) {
@@ -348,7 +348,7 @@ public final class ImportJobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ImportJob> addAsync(String id, ImportJob importJob, ImportJobsAddOptions importJobsAddOptions,
-                                    Context context) {
+        Context context) {
         return addWithResponseAsync(id, importJob, importJobsAddOptions, context)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
@@ -370,7 +370,7 @@ public final class ImportJobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ImportJob>> getByIdWithResponseAsync(String id,
-                                                              ImportJobsGetByIdOptions importJobsGetByIdOptions) {
+        ImportJobsGetByIdOptions importJobsGetByIdOptions) {
         return FluxUtil.withContext(context -> getByIdWithResponseAsync(id, importJobsGetByIdOptions, context));
     }
 
@@ -392,7 +392,7 @@ public final class ImportJobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ImportJob>> getByIdWithResponseAsync(String id,
-                                                              ImportJobsGetByIdOptions importJobsGetByIdOptions, Context context) {
+        ImportJobsGetByIdOptions importJobsGetByIdOptions, Context context) {
         final String accept = "application/json";
         String traceparentInternal = null;
         if (importJobsGetByIdOptions != null) {
@@ -488,7 +488,7 @@ public final class ImportJobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String id, ImportJobsDeleteOptions importJobsDeleteOptions,
-                                                        Context context) {
+        Context context) {
         final String accept = "application/json";
         String traceparentInternal = null;
         if (importJobsDeleteOptions != null) {
@@ -564,7 +564,7 @@ public final class ImportJobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ImportJob>> cancelWithResponseAsync(String id,
-                                                             ImportJobsCancelOptions importJobsCancelOptions) {
+        ImportJobsCancelOptions importJobsCancelOptions) {
         return FluxUtil.withContext(context -> cancelWithResponseAsync(id, importJobsCancelOptions, context));
     }
 
@@ -588,7 +588,7 @@ public final class ImportJobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ImportJob>> cancelWithResponseAsync(String id, ImportJobsCancelOptions importJobsCancelOptions,
-                                                             Context context) {
+        Context context) {
         final String accept = "application/json";
         String traceparentInternal = null;
         if (importJobsCancelOptions != null) {
@@ -664,7 +664,7 @@ public final class ImportJobsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<ImportJob>> listNextSinglePageAsync(String nextLink,
-                                                                  ImportJobsListOptions importJobsListOptions, Context context) {
+        ImportJobsListOptions importJobsListOptions, Context context) {
         final String accept = "application/json";
         String traceparentInternal = null;
         if (importJobsListOptions != null) {
