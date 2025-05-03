@@ -402,11 +402,6 @@ jobs:
           arguments: >
             -ServiceDirectories '$(PRServiceDirectories)'
 
-      - task: NodeTool@0
-        inputs:
-          versionSpec: 20.x
-        displayName: Use Node.js 20.x
-
       - task: PowerShell@2
         displayName: Verify TypeSpec Code Generation
         inputs:
