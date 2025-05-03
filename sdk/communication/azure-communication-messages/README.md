@@ -1,6 +1,8 @@
 # Azure Messages client library for Java
 This package contains a Java SDK for Azure Communication Messages Services.
 
+touch for test
+
 ## Documentation
 
 Various documentation is available to help you get started
