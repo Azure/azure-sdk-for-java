@@ -80,6 +80,10 @@ Once you perform [the authentication set up that suits you best][default_azure_c
 **your-key-vault-endpoint** with the URL for your key vault, you can create the `CertificateClient`:
 
 ```java readme-sample-createCertificateClient
+CertificateClient certificateClient = new CertificateClientBuilder()
+    .endpoint("<your-key-vault-url>")
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
 ```
 
 ## Key concepts
@@ -113,30 +117,68 @@ Create a certificate to be stored in the key vault.
 exists then a new version of the certificate is created.
 
 ```java readme-sample-createCertificate
+// TODO (vcolin7): Uncomment once LROs are available in clientcore.
+Poller<CertificateOperation, KeyVaultCertificateWithPolicy> certificatePoller = null;
+    //certificateClient.beginCreateCertificate("certificateName", CertificatePolicy.getDefault());
+certificatePoller.waitUntil(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED);
+KeyVaultCertificate certificate = certificatePoller.getFinalResult();
+System.out.printf("Certificate created with name \"%s\"%n", certificate.getName());
 ```
 
 ### Retrieve a certificate
 Retrieve a previously stored certificate by calling `getCertificate` or `getCertificateVersion`.
 
 ```java readme-sample-retrieveCertificate
+KeyVaultCertificateWithPolicy certificate = certificateClient.getCertificate("<certificate-name>");
+System.out.printf("Received certificate with name \"%s\", version %s and secret id %s%n",
+    certificate.getProperties().getName(), certificate.getProperties().getVersion(), certificate.getSecretId());
 ```
 
 ### Update an existing certificate
 Update an existing certificate by calling `updateCertificateProperties`.
 
 ```java readme-sample-updateCertificate
+// Get the certificate to update.
+KeyVaultCertificate certificate = certificateClient.getCertificate("<certificate-name>");
+// Update certificate enabled status.
+certificate.getProperties().setEnabled(false);
+KeyVaultCertificate updatedCertificate = certificateClient.updateCertificateProperties(certificate.getProperties());
+System.out.printf("Updated certificate with name \"%s\" and enabled status \"%s\"%n",
+    updatedCertificate.getProperties().getName(), updatedCertificate.getProperties().isEnabled());
 ```
 
 ### Delete a certificate
 Delete an existing certificate by calling `beginDeleteCertificate`.
 
 ```java readme-sample-deleteCertificate
+// TODO (vcolin7): Uncomment once LROs are available in clientcore.
+Poller<DeletedCertificate, Void> deleteCertificatePoller = null;
+    //certificateClient.beginDeleteCertificate("<certificate-name>");
+
+// Deleted certificate is accessible as soon as polling beings.
+PollResponse<DeletedCertificate> pollResponse = deleteCertificatePoller.poll();
+
+// Deletion date only works for a SoftDelete-enabled Key Vault.
+System.out.printf("Deleted certificate with name \"%s\" and recovery id %s", pollResponse.getValue().getName(),
+    pollResponse.getValue().getRecoveryId());
+
+// Certificate is being deleted on server.
+deleteCertificatePoller.waitForCompletion();
 ```
 
 ### List certificates
 List the certificates in the key vault by calling `listPropertiesOfCertificates`.
 
 ```java readme-sample-listCertificates
+// List operations don't return the certificates with their full information. So, for each returned certificate we call
+// getCertificate to get the certificate with all its properties excluding the policy.
+for (CertificateProperties certificateProperties : certificateClient.listPropertiesOfCertificates()) {
+    // TODO (vcolin7): Uncomment once LROs are available in clientcore.
+    KeyVaultCertificate certificateWithAllProperties = null;
+        //certificateClient.getCertificateVersion(certificateProperties.getName(), certificateProperties.getVersion());
+    System.out.printf("Received certificate with name \"%s\" and secret id %s",
+        certificateWithAllProperties.getProperties().getName(), certificateWithAllProperties.getSecretId());
+}
 ```
 
 ## Troubleshooting
@@ -148,6 +190,11 @@ error is returned, indicating the resource was not found. In the following snipp
 catching the exception and displaying additional information about the error.
 
 ```java readme-sample-troubleshooting
+try {
+    certificateClient.getCertificate("<deleted-certificate-name>");
+} catch (HttpResponseException e) {
+    System.out.println(e.getMessage());
+}
 ```
 
 ### Default HTTP client

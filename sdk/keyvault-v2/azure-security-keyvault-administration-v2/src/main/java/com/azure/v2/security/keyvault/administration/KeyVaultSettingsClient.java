@@ -45,6 +45,12 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  * <p>The following code sample demonstrates the creation of a {@link KeyVaultSettingsClient}, using the
  * {@link KeyVaultSettingsClientBuilder} to configure it.</p>
  * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.instantiation -->
+ * <pre>
+ * KeyVaultSettingsClient keyVaultSettingsClient = new KeyVaultSettingsClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;&lt;your-managed-hsm-url&gt;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
  * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.instantiation -->
  *
  * <br/>
@@ -57,6 +63,14 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  * <p>The following code sample demonstrates how to back up an entire collection of keys using, using the
  * {@link KeyVaultSettingsClient#getSettings()} API.</p>
  * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.getSettings -->
+ * <pre>
+ * KeyVaultGetSettingsResult getSettingsResult = keyVaultSettingsClient.getSettings&#40;&#41;;
+ * List&lt;KeyVaultSetting&gt; settings = getSettingsResult.getSettings&#40;&#41;;
+ *
+ * settings.forEach&#40;setting -&gt;
+ *     System.out.printf&#40;&quot;Retrieved setting with name '%s' and value %s'.%n&quot;, setting.getName&#40;&#41;,
+ *         setting.asBoolean&#40;&#41;&#41;&#41;;
+ * </pre>
  * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.getSettings -->
  *
  * <br/>
@@ -69,6 +83,11 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  * <p>The following code sample demonstrates how to restore an entire collection of keys from a backup, using the
  * {@link KeyVaultSettingsClient#getSetting(String)} API.</p>
  * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.getSetting#String -->
+ * <pre>
+ * KeyVaultSetting setting = keyVaultSettingsClient.getSetting&#40;&quot;&lt;setting-name&gt;&quot;&#41;;
+ *
+ * System.out.printf&#40;&quot;Retrieved setting '%s' with value '%s'.%n&quot;, setting.getName&#40;&#41;, setting.asBoolean&#40;&#41;&#41;;
+ * </pre>
  * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.getSetting#String -->
  *
  * <br/>
@@ -81,6 +100,12 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  * <p>The following code sample demonstrates how to update a specific setting, using the
  * {@link KeyVaultSettingsClient#updateSetting(KeyVaultSetting)} API.</p>
  * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.updateSetting#KeyVaultSetting -->
+ * <pre>
+ * KeyVaultSetting settingToUpdate = new KeyVaultSetting&#40;&quot;&lt;setting-name&gt;&quot;, true&#41;;
+ * KeyVaultSetting updatedSetting = keyVaultSettingsClient.updateSetting&#40;settingToUpdate&#41;;
+ *
+ * System.out.printf&#40;&quot;Updated setting '%s' to '%s'.%n&quot;, updatedSetting.getName&#40;&#41;, updatedSetting.asBoolean&#40;&#41;&#41;;
+ * </pre>
  * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.updateSetting#KeyVaultSetting -->
  *
  * @see com.azure.v2.security.keyvault.administration
@@ -107,6 +132,12 @@ public final class KeyVaultSettingsClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Updates a given setting and prints out its details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.updateSetting#KeyVaultSetting -->
+     * <pre>
+     * KeyVaultSetting settingToUpdate = new KeyVaultSetting&#40;&quot;&lt;setting-name&gt;&quot;, true&#41;;
+     * KeyVaultSetting updatedSetting = keyVaultSettingsClient.updateSetting&#40;settingToUpdate&#41;;
+     *
+     * System.out.printf&#40;&quot;Updated setting '%s' to '%s'.%n&quot;, updatedSetting.getName&#40;&#41;, updatedSetting.asBoolean&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.updateSetting#KeyVaultSetting -->
      *
      * @param setting The setting to update.
@@ -141,6 +172,18 @@ public final class KeyVaultSettingsClient {
      * <p>Updates a given setting. Prints out the details of the response returned by the service and the updated
      * setting.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.updateSettingWithResponse#KeyVaultSetting-RequestContext -->
+     * <pre>
+     * KeyVaultSetting settingToUpdate = new KeyVaultSetting&#40;&quot;&lt;setting-name&gt;&quot;, true&#41;;
+     * RequestContext requestContext = RequestContext.builder&#40;&#41;
+     *     .putMetadata&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * Response&lt;KeyVaultSetting&gt; response =
+     *     keyVaultSettingsClient.updateSettingWithResponse&#40;settingToUpdate, requestContext&#41;;
+     *
+     * System.out.printf&#40;&quot;Response successful with status code: %d. Updated setting '%s' to '%s'.%n&quot;,
+     *     response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.asBoolean&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.updateSettingWithResponse#KeyVaultSetting-RequestContext -->
      *
      * @param setting The setting to update.
@@ -178,6 +221,11 @@ public final class KeyVaultSettingsClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Retrieves a specific setting and prints out its details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.getSetting#String -->
+     * <pre>
+     * KeyVaultSetting setting = keyVaultSettingsClient.getSetting&#40;&quot;&lt;setting-name&gt;&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Retrieved setting '%s' with value '%s'.%n&quot;, setting.getName&#40;&#41;, setting.asBoolean&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.getSetting#String -->
      *
      * @param name The name of setting to retrieve.
@@ -191,8 +239,8 @@ public final class KeyVaultSettingsClient {
     public KeyVaultSetting getSetting(String name) {
         try {
             if (isNullOrEmpty(name)) {
-                throw new IllegalArgumentException(
-                    String.format(KeyVaultAdministrationUtil.CANNOT_BE_NULL_OR_EMPTY, "'name'"));
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    String.format(KeyVaultAdministrationUtil.CANNOT_BE_NULL_OR_EMPTY, "'name'")));
             }
 
             return transformToKeyVaultSetting(clientImpl.getSetting(name));
@@ -208,6 +256,17 @@ public final class KeyVaultSettingsClient {
      * <p>Retrieves a specific setting. Prints out the details of the response returned by the service and the retrieved
      * setting.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.getSettingWithResponse#String-RequestContext -->
+     * <pre>
+     * RequestContext requestContext = RequestContext.builder&#40;&#41;
+     *     .putMetadata&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * Response&lt;KeyVaultSetting&gt; response =
+     *     keyVaultSettingsClient.getSettingWithResponse&#40;&quot;&lt;setting-name&gt;&quot;, requestContext&#41;;
+     *
+     * System.out.printf&#40;&quot;Response successful with status code: %d. Retrieved setting '%s' with value '%s'.%n&quot;,
+     *     response.getStatusCode&#40;&#41;, response.getValue&#40;&#41;.getName&#40;&#41;, response.getValue&#40;&#41;.asBoolean&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.getSettingWithResponse#String-RequestContext -->
      *
      * @param name The name of setting to retrieve.
@@ -222,8 +281,8 @@ public final class KeyVaultSettingsClient {
     public Response<KeyVaultSetting> getSettingWithResponse(String name, RequestContext requestContext) {
         try {
             if (isNullOrEmpty(name)) {
-                throw new IllegalArgumentException(
-                    String.format(KeyVaultAdministrationUtil.CANNOT_BE_NULL_OR_EMPTY, "'name'"));
+                throw LOGGER.logThrowableAsError(new IllegalArgumentException(
+                    String.format(KeyVaultAdministrationUtil.CANNOT_BE_NULL_OR_EMPTY, "'name'")));
             }
 
             Response<Setting> response = clientImpl.getSettingWithResponse(name, requestContext);
@@ -241,6 +300,14 @@ public final class KeyVaultSettingsClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Retrieves all the settings for an account and prints out each one's details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.getSettings -->
+     * <pre>
+     * KeyVaultGetSettingsResult getSettingsResult = keyVaultSettingsClient.getSettings&#40;&#41;;
+     * List&lt;KeyVaultSetting&gt; settings = getSettingsResult.getSettings&#40;&#41;;
+     *
+     * settings.forEach&#40;setting -&gt;
+     *     System.out.printf&#40;&quot;Retrieved setting with name '%s' and value %s'.%n&quot;, setting.getName&#40;&#41;,
+     *         setting.asBoolean&#40;&#41;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.getSettings -->
      *
      * @return A result object containing a list of the account's settings.
@@ -268,8 +335,17 @@ public final class KeyVaultSettingsClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Retrieves all the settings for an account and prints out each one's details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.getSettings -->
+     * <pre>
+     * KeyVaultGetSettingsResult getSettingsResult = keyVaultSettingsClient.getSettings&#40;&#41;;
+     * List&lt;KeyVaultSetting&gt; settings = getSettingsResult.getSettings&#40;&#41;;
+     *
+     * settings.forEach&#40;setting -&gt;
+     *     System.out.printf&#40;&quot;Retrieved setting with name '%s' and value %s'.%n&quot;, setting.getName&#40;&#41;,
+     *         setting.asBoolean&#40;&#41;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.getSettings -->
      *
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      * @return A result object containing a list of the account's settings.
      *
      * @throws IllegalArgumentException If a setting type in the list is not supported by this client.

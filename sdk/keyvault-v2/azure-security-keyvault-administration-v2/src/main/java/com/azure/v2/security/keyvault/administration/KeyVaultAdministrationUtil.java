@@ -69,8 +69,8 @@ class KeyVaultAdministrationUtil {
         Response<BinaryData> httpResponse = httpResponseException.getResponse();
 
         if (httpResponse.getStatusCode() == statusCode) {
-            return new Response<>(httpResponse.getRequest(), httpResponse.getStatusCode(),
-                httpResponse.getHeaders(), null);
+            return new Response<>(httpResponse.getRequest(), httpResponse.getStatusCode(), httpResponse.getHeaders(),
+                null);
         }
 
         throw logger.logThrowableAsError(httpResponseException);
@@ -105,19 +105,18 @@ class KeyVaultAdministrationUtil {
         if (options.getPermissions() != null) {
             permissions = options.getPermissions()
                 .stream()
-                .map(keyVaultPermission -> new Permission()
-                    .setActions(keyVaultPermission.getActions())
+                .map(keyVaultPermission -> new Permission().setActions(keyVaultPermission.getActions())
                     .setNotActions(keyVaultPermission.getNotActions())
                     .setDataActions(keyVaultPermission.getDataActions())
                     .setNotDataActions(keyVaultPermission.getNotDataActions()))
                 .collect(Collectors.toList());
         }
 
-        RoleDefinitionProperties roleDefinitionProperties = new RoleDefinitionProperties()
-            .setRoleName(options.getRoleDefinitionName())
-            .setAssignableScopes(options.getAssignableScopes())
-            .setDescription(options.getDescription())
-            .setPermissions(permissions);
+        RoleDefinitionProperties roleDefinitionProperties
+            = new RoleDefinitionProperties().setRoleName(options.getRoleDefinitionName())
+                .setAssignableScopes(options.getAssignableScopes())
+                .setDescription(options.getDescription())
+                .setPermissions(permissions);
 
         return new RoleDefinitionCreateParameters(roleDefinitionProperties);
     }

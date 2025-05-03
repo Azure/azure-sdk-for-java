@@ -16,8 +16,8 @@ import io.clientcore.core.http.models.HttpResponseException;
 import io.clientcore.core.http.models.RequestContext;
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
@@ -47,12 +47,12 @@ public final class CryptographyUtils {
         }
 
         try {
-            URL url = new URL(keyId);
-            String[] tokens = url.getPath().split("/");
-            String vaultUrl = url.getProtocol() + "://" + url.getHost();
+            URI uri = new URI(keyId);
+            String[] tokens = uri.getPath().split("/");
+            String vaultUrl = uri.getScheme() + "://" + uri.getHost();
 
-            if (url.getPort() != -1) {
-                vaultUrl += ":" + url.getPort();
+            if (uri.getPort() != -1) {
+                vaultUrl += ":" + uri.getPort();
             }
 
             String keyCollection = (tokens.length >= 2 ? tokens[1] : null);
@@ -60,15 +60,15 @@ public final class CryptographyUtils {
             String keyVersion = (tokens.length >= 4 ? tokens[3] : null);
 
             if (isNullOrEmpty(vaultUrl)) {
-                throw logger.logThrowableAsError(
-                    new IllegalArgumentException("Key endpoint in key identifier is invalid."));
+                throw logger
+                    .logThrowableAsError(new IllegalArgumentException("Key endpoint in key identifier is invalid."));
             } else if (isNullOrEmpty(keyName)) {
-                throw logger.logThrowableAsError(
-                    new IllegalArgumentException("Key name in key identifier is invalid."));
+                throw logger
+                    .logThrowableAsError(new IllegalArgumentException("Key name in key identifier is invalid."));
             }
 
             return Arrays.asList(vaultUrl, keyCollection, keyName, keyVersion);
-        } catch (MalformedURLException e) {
+        } catch (URISyntaxException e) {
             throw logger.logThrowableAsError(new IllegalArgumentException("The key identifier is malformed.", e));
         }
     }
@@ -120,9 +120,8 @@ public final class CryptographyUtils {
         if (!jsonWebKey.getKeyOps().contains(keyOperation)) {
             String keyOperationName = keyOperation == null ? null : keyOperation.toString().toLowerCase(Locale.ROOT);
 
-            throw new UnsupportedOperationException(
-                String.format("The %s operation is not allowed for key with id: %s", keyOperationName,
-                    jsonWebKey.getId()));
+            throw new UnsupportedOperationException(String.format("The %s operation is not allowed for key with id: %s",
+                keyOperationName, jsonWebKey.getId()));
         }
     }
 
@@ -131,7 +130,8 @@ public final class CryptographyUtils {
             int statusCode = ((HttpResponseException) e).getResponse().getStatusCode();
 
             // Not a retryable error code.
-            return statusCode != 501 && statusCode != 505
+            return statusCode != 501
+                && statusCode != 505
                 && (statusCode >= 500 || statusCode == 408 || statusCode == 429);
         } else {
             // Not a service-related transient error.

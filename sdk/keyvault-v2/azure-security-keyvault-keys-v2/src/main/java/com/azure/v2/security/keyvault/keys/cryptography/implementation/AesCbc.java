@@ -36,9 +36,8 @@ abstract class AesCbc extends SymmetricEncryptionAlgorithm {
 
     @Override
     public ICryptoTransform createEncryptor(byte[] key, byte[] iv, byte[] additionalAuthenticatedData,
-        byte[] authenticationTag, Provider provider)
-        throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
-        InvalidAlgorithmParameterException {
+        byte[] authenticationTag, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException,
+        NoSuchPaddingException, InvalidAlgorithmParameterException {
 
         if (key == null || key.length < keySizeInBytes) {
             throw new InvalidKeyException("Key must be at least " + keySize + " bits in length.");
@@ -57,9 +56,8 @@ abstract class AesCbc extends SymmetricEncryptionAlgorithm {
 
     @Override
     public ICryptoTransform createDecryptor(byte[] key, byte[] iv, byte[] additionalAuthenticatedData,
-        byte[] authenticationTag, Provider provider)
-        throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
-        InvalidAlgorithmParameterException {
+        byte[] authenticationTag, Provider provider) throws InvalidKeyException, NoSuchAlgorithmException,
+        NoSuchPaddingException, InvalidAlgorithmParameterException {
 
         if (key == null || key.length < keySizeInBytes) {
             throw new InvalidKeyException("Key must be at least " + keySize + " bits in length.");
@@ -71,9 +69,8 @@ abstract class AesCbc extends SymmetricEncryptionAlgorithm {
     static class AesCbcEncryptor implements ICryptoTransform {
         private final Cipher cipher;
 
-        AesCbcEncryptor(byte[] key, byte[] iv, Provider provider)
-            throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
-            InvalidAlgorithmParameterException {
+        AesCbcEncryptor(byte[] key, byte[] iv, Provider provider) throws NoSuchAlgorithmException,
+            NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 
             // Create the cipher using the Provider if specified
             if (provider == null) {
@@ -94,9 +91,8 @@ abstract class AesCbc extends SymmetricEncryptionAlgorithm {
     static class AesCbcDecryptor implements ICryptoTransform {
         private final Cipher cipher;
 
-        AesCbcDecryptor(byte[] key, byte[] iv, Provider provider)
-            throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException,
-            InvalidAlgorithmParameterException {
+        AesCbcDecryptor(byte[] key, byte[] iv, Provider provider) throws NoSuchAlgorithmException,
+            NoSuchPaddingException, InvalidKeyException, InvalidAlgorithmParameterException {
 
             // Create the cipher using the Provider if specified
             if (provider == null) {

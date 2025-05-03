@@ -27,8 +27,8 @@ public final class KeyVaultSetting {
      */
     public KeyVaultSetting(String name, boolean value) {
         if (CoreUtils.isNullOrEmpty(name)) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalArgumentException("The 'name' parameter cannot be null or empty"));
+            throw LOGGER
+                .logThrowableAsError(new IllegalArgumentException("The 'name' parameter cannot be null or empty"));
         }
 
         this.name = name;

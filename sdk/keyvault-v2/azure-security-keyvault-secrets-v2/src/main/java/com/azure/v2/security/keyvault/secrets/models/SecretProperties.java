@@ -173,7 +173,7 @@ public class SecretProperties implements JsonSerializable<SecretProperties> {
 
     /**
      * Get the recovery level of the secret.
-
+    
      * @return the recoveryLevel of the secret.
      */
     public String getRecoveryLevel() {

@@ -183,6 +183,7 @@ public final class CertificateOperation implements JsonSerializable<CertificateO
      */
     public static CertificateOperation fromJson(JsonReader jsonReader) throws IOException {
         return new CertificateOperation(
-            com.azure.v2.security.keyvault.certificates.implementation.models.CertificateOperation.fromJson(jsonReader));
+            com.azure.v2.security.keyvault.certificates.implementation.models.CertificateOperation
+                .fromJson(jsonReader));
     }
 }
