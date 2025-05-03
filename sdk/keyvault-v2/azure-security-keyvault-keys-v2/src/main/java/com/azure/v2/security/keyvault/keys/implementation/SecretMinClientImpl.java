@@ -93,8 +93,8 @@ public final class SecretMinClientImpl {
     public interface SecretMinClientService {
         static SecretMinClientService getNewInstance(HttpPipeline pipeline) {
             try {
-                Class<?> clazz =
-                    Class.forName("com.azure.v2.security.keyvault.keys.implementation.SecretMinClientServiceImpl");
+                Class<?> clazz
+                    = Class.forName("com.azure.v2.security.keyvault.keys.implementation.SecretMinClientServiceImpl");
 
                 return (SecretMinClientService) clazz.getMethod("getNewInstance", HttpPipeline.class)
                     .invoke(null, pipeline);
@@ -145,8 +145,8 @@ public final class SecretMinClientImpl {
 
         final String accept = "application/json";
 
-        return service.getSecret(this.getEndpoint(), this.getServiceVersion(), secretName,
-            secretVersion, accept, requestContext);
+        return service.getSecret(this.getEndpoint(), this.getServiceVersion(), secretName, secretVersion, accept,
+            requestContext);
     }
 
     /**
@@ -171,7 +171,7 @@ public final class SecretMinClientImpl {
         final String contentType = "application/json";
         final String accept = "application/json";
 
-        return service.setSecret(this.getEndpoint(), this.getServiceVersion(), secretName, contentType,
-            accept, parameters, requestContext);
+        return service.setSecret(this.getEndpoint(), this.getServiceVersion(), secretName, contentType, accept,
+            parameters, requestContext);
     }
 }

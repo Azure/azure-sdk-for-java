@@ -82,6 +82,10 @@ Once you perform [the authentication set up that suits you best][default_azure_c
 `KeyVaultAccessControlClient`:
 
 ```java readme-sample-createAccessControlClient
+KeyVaultAccessControlClient keyVaultAccessControlClient = new KeyVaultAccessControlClientBuilder()
+    .endpoint("<your-managed-hsm-url>")
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
 ```
 
 #### Create a backup client
@@ -89,6 +93,10 @@ Once you perform [the authentication set up that suits you best][default_azure_c
 **your-managed-hsm-endpoint** with the URL for your key vault or managed HSM, you can create the `KeyVaultBackupClient`:
 
 ```java readme-sample-createBackupClient
+KeyVaultBackupClient keyVaultBackupClient = new KeyVaultBackupClientBuilder()
+    .endpoint("<your-managed-hsm-url>")
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
 ```
 
 #### Create a settings client
@@ -97,6 +105,10 @@ Once you perform [the authentication set up that suits you best][default_azure_c
 `KeyVaultSettingsClient`:
 
 ```java readme-sample-createBackupClient
+KeyVaultBackupClient keyVaultBackupClient = new KeyVaultBackupClientBuilder()
+    .endpoint("<your-managed-hsm-url>")
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
 ```
 
 ## Key concepts
@@ -158,6 +170,11 @@ including:
 List the role definitions in the key vault or managed HSM by calling `listRoleDefinitions()`.
 
 ```java readme-sample-listRoleDefinitions
+PagedIterable<KeyVaultRoleDefinition> roleDefinitions =
+    keyVaultAccessControlClient.listRoleDefinitions(KeyVaultRoleScope.GLOBAL);
+
+roleDefinitions.forEach(roleDefinition ->
+    System.out.printf("Retrieved role definition with name '%s'.%n", roleDefinition.getName()));
 ```
 
 ##### Create or update a role definition
@@ -165,6 +182,10 @@ Create or update a role definition. The following example shows how to create a 
 generated name.
 
 ```java readme-sample-setRoleDefinition
+KeyVaultRoleDefinition roleDefinition = keyVaultAccessControlClient.setRoleDefinition(KeyVaultRoleScope.GLOBAL);
+
+System.out.printf("Created role definition with randomly generated name '%s' and role name '%s'.%n",
+    roleDefinition.getName(), roleDefinition.getRoleName());
 ```
 
 ##### Retrieve a role definition
@@ -172,18 +193,34 @@ Get an existing role definition. To do this, the scope and 'name' property from 
 required.
 
 ```java readme-sample-getRoleDefinition
+String roleDefinitionName = "<role-definition-name>";
+KeyVaultRoleDefinition roleDefinition =
+    keyVaultAccessControlClient.getRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName);
+
+System.out.printf("Retrieved role definition with name '%s' and role name '%s'.%n", roleDefinition.getName(),
+    roleDefinition.getRoleName());
 ```
 
 ##### Delete a role definition
 Delete a role definition. To do this, the scope and 'name' property from an existing role definition are required.
 
 ```java readme-sample-deleteRoleDefinition
+String roleDefinitionName = "<role-definition-name>";
+
+keyVaultAccessControlClient.deleteRoleDefinition(KeyVaultRoleScope.GLOBAL, roleDefinitionName);
+
+System.out.printf("Deleted role definition with name '%s'.%n", roleDefinitionName);
 ```
 
 ##### List role assignments
 List the role assignments in the key vault or managed HSM by calling `listRoleAssignments()`.
 
 ```java readme-sample-listRoleAssignments
+PagedIterable<KeyVaultRoleAssignment> roleAssignments =
+    keyVaultAccessControlClient.listRoleAssignments(KeyVaultRoleScope.GLOBAL);
+
+roleAssignments.forEach(roleAssignment ->
+    System.out.printf("Retrieved role assignment with name '%s'.%n", roleAssignment.getName()));
 ```
 
 ##### Create a role assignment
@@ -201,18 +238,36 @@ az ad signed-in-user show --query objectId
 ```
 
 ```java readme-sample-createRoleAssignment
+String roleDefinitionId = "<role-definition-id>";
+String servicePrincipalId = "<service-principal-id>";
+KeyVaultRoleAssignment roleAssignment =
+    keyVaultAccessControlClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, roleDefinitionId,
+        servicePrincipalId);
+
+System.out.printf("Created role assignment with randomly generated name '%s' for principal with id '%s'.%n",
+    roleAssignment.getName(), roleAssignment.getProperties().getPrincipalId());
 ```
 
 ##### Retrieve a role assignment
 Get an existing role assignment. To do this, the 'name' property from an existing role assignment is required.
 
 ```java readme-sample-getRoleAssignment
+String roleAssignmentName = "<role-assignment-name>";
+KeyVaultRoleAssignment roleAssignment =
+    keyVaultAccessControlClient.getRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignmentName);
+
+System.out.printf("Retrieved role assignment with name '%s'.%n", roleAssignment.getName());
 ```
 ##### Delete a role assignment
 To remove a role assignment from a service principal, the role assignment must be deleted. To do this, the 'name'
 property from an existing role assignment is required.
 
 ```java readme-sample-deleteRoleAssignment
+String roleAssignmentName = "<role-assignment-name>";
+
+keyVaultAccessControlClient.deleteRoleAssignment(KeyVaultRoleScope.GLOBAL, roleAssignmentName);
+
+System.out.printf("Deleted role assignment with name '%s'.%n", roleAssignmentName);
 ```
 
 ## Backup and restore operations
@@ -227,18 +282,78 @@ The following sections provide several code snippets covering some of the most c
 Back up an entire collection of keys using `beginBackup()`.
 
 ```java readme-sample-beginBackup
+String blobStorageUrl = "https://myaccount.blob.core.windows.net/myContainer";
+String sasToken = "<sas-token>";
+
+// TODO (vcolin7): Uncomment once LROs are available in clientcore.
+Poller<KeyVaultBackupOperation, String> backupPoller = null;
+    //keyVaultBackupClient.beginBackup(blobStorageUrl, sasToken);
+PollResponse<KeyVaultBackupOperation> pollResponse = backupPoller.poll();
+
+System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus());
+
+PollResponse<KeyVaultBackupOperation> finalPollResponse = backupPoller.waitForCompletion();
+
+if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+    String folderUrl = backupPoller.getFinalResult();
+
+    System.out.printf("Backup completed. The storage location of this backup is: %s.%n", folderUrl);
+} else {
+    KeyVaultBackupOperation operation = backupPoller.poll().getValue();
+
+    System.out.printf("Backup failed with error: %s.%n", operation.getError().getMessage());
+}
 ```
 
 ##### Restore a collection of keys
 Restore an entire collection of keys from a backup using `beginRestore()`.
 
 ```java readme-sample-beginRestore
+String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
+String sasToken = "<sas-token>";
+
+// TODO (vcolin7): Uncomment once LROs are available in clientcore.
+Poller<KeyVaultRestoreOperation, KeyVaultRestoreResult> restorePoller = null;
+    //keyVaultBackupClient.beginRestore(folderUrl, sasToken);
+PollResponse<KeyVaultRestoreOperation> pollResponse = restorePoller.poll();
+
+System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus());
+
+PollResponse<KeyVaultRestoreOperation> finalPollResponse = restorePoller.waitForCompletion();
+
+if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+    System.out.printf("Backup restored successfully.%n");
+} else {
+    KeyVaultRestoreOperation operation = restorePoller.poll().getValue();
+
+    System.out.printf("Restore failed with error: %s.%n", operation.getError().getMessage());
+}
 ```
 
 ##### Selectively restore a key
 Restore a specific key from a backup using `beginSelectiveRestore()`.
 
 ```java readme-sample-beginSelectiveKeyRestore
+String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
+String sasToken = "<sas-token>";
+String keyName = "myKey";
+
+// TODO (vcolin7): Uncomment once LROs are available in clientcore.
+Poller<KeyVaultSelectiveKeyRestoreOperation, KeyVaultSelectiveKeyRestoreResult> restorePoller = null;
+    //keyVaultBackupClient.beginSelectiveKeyRestore(folderUrl, sasToken, keyName);
+PollResponse<KeyVaultSelectiveKeyRestoreOperation> pollResponse = restorePoller.poll();
+
+System.out.printf("The current status of the operation is: %s.%n", pollResponse.getStatus());
+
+PollResponse<KeyVaultSelectiveKeyRestoreOperation> finalPollResponse = restorePoller.waitForCompletion();
+
+if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COMPLETED) {
+    System.out.printf("Key restored successfully.%n");
+} else {
+    KeyVaultSelectiveKeyRestoreOperation operation = restorePoller.poll().getValue();
+
+    System.out.printf("Key restore failed with error: %s.%n", operation.getError().getMessage());
+}
 ```
 
 ## Settings operations
@@ -253,18 +368,33 @@ The following sections provide several code snippets covering some of the most c
 List all the settings for an Azure Key Vault or Managed HSM account.
 
 ```java readme-sample-getSettings
+KeyVaultGetSettingsResult getSettingsResult = keyVaultSettingsClient.getSettings();
+
+for (KeyVaultSetting setting : getSettingsResult.getSettings()) {
+    System.out.printf("Retrieved setting '%s' with value '%s'.%n", setting.getName(), setting.asBoolean());
+}
 ```
 
 ##### Retrieve a specific setting
 Retrieve a specific setting.
 
 ```java readme-sample-getSetting
+String settingName = "<setting-to-get>";
+KeyVaultSetting setting = keyVaultSettingsClient.getSetting(settingName);
+
+System.out.printf("Retrieved setting '%s' with value '%s'.%n", setting.getName(),
+    setting.asBoolean());
 ```
 
 ##### Update a specific setting
 Update a specific setting.
 
 ```java readme-sample-updateSetting
+String settingName = "<setting-to-update>";
+KeyVaultSetting settingToUpdate = new KeyVaultSetting(settingName, true);
+KeyVaultSetting updatedSetting = keyVaultSettingsClient.updateSetting(settingToUpdate);
+
+System.out.printf("Updated setting '%s' to '%s'.%n", updatedSetting.getName(), updatedSetting.asBoolean());
 ```
 
 ## Troubleshooting
@@ -276,6 +406,11 @@ is returned, indicating the resource was not found. In the following snippet, th
 catching the exception and displaying additional information about the error.
 
 ```java readme-sample-troubleshooting
+try {
+    keyVaultAccessControlClient.getRoleAssignment(KeyVaultRoleScope.GLOBAL, "<role-assginment-name>");
+} catch (HttpResponseException e) {
+    System.out.println(e.getMessage());
+}
 ```
 
 ### Default HTTP client

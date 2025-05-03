@@ -5,7 +5,6 @@ package com.azure.v2.security.keyvault.certificates;
 
 import com.azure.v2.core.http.polling.LongRunningOperationStatus;
 import com.azure.v2.core.http.polling.PollResponse;
-import com.azure.v2.core.http.polling.Poller;
 import com.azure.v2.core.http.polling.PollingContext;
 import com.azure.v2.security.keyvault.certificates.implementation.CertificateClientImpl;
 import com.azure.v2.security.keyvault.certificates.implementation.CertificateIssuerHelper;
@@ -95,6 +94,14 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  * <p>The following code sample demonstrates the creation of a {@link CertificateClient}, using the
  * {@link CertificateClientBuilder} to configure it.</p>
  * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.instantiation -->
+ * <pre>
+ * CertificateClient certificateClient = new CertificateClientBuilder&#40;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .endpoint&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
+ *     .httpInstrumentationOptions&#40;new HttpInstrumentationOptions&#40;&#41;
+ *         .setHttpLogLevel&#40;HttpInstrumentationOptions.HttpLogLevel.BODY_AND_HEADERS&#41;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
  * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.instantiation  -->
  *
  * <br/>
@@ -107,6 +114,18 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  * <p>The following code sample demonstrates how to create a certificate in the key vault, using the
  * {/@link CertificateClient#beginCreateCertificate(String, CertificatePolicy)} API.</p>
  * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy -->
+ * <pre>
+ * CertificatePolicy certPolicy = new CertificatePolicy&#40;&quot;Self&quot;, &quot;CN=SelfSignedJavaPkcs12&quot;&#41;;
+ *
+ * Poller&lt;CertificateOperation, KeyVaultCertificateWithPolicy&gt; certPoller = null;
+ *     &#47;&#47;certificateClient.beginCreateCertificate&#40;&quot;certificateName&quot;, certPolicy&#41;;
+ *
+ * certPoller.waitUntil&#40;LongRunningOperationStatus.SUCCESSFULLY_COMPLETED&#41;;
+ *
+ * KeyVaultCertificate cert = certPoller.getFinalResult&#40;&#41;;
+ *
+ * System.out.printf&#40;&quot;Certificate created with name %s%n&quot;, cert.getName&#40;&#41;&#41;;
+ * </pre>
  * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy -->
  *
  * <br/>
@@ -119,6 +138,11 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  * <p>The following code sample demonstrates how to retrieve a certificate from the key vault, using the
  * {@link CertificateClient#getCertificate(String)} API.</p>
  * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.getCertificatePolicy#String -->
+ * <pre>
+ * CertificatePolicy policy = certificateClient.getCertificatePolicy&#40;&quot;certificateName&quot;&#41;;
+ *
+ * System.out.printf&#40;&quot;Received policy with subject name %s%n&quot;, policy.getSubject&#40;&#41;&#41;;
+ * </pre>
  * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.getCertificatePolicy#String -->
  *
  * <br/>
@@ -131,13 +155,25 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  * <p>The following code sample demonstrates how to delete a certificate from the key vault, using the
  * {/@link CertificateClient#beginDeleteCertificate(String)} API.</p>
  * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.beginDeleteCertificate#String -->
+ * <pre>
+ * Poller&lt;DeletedCertificate, Void&gt; deleteCertPoller = null;
+ *     &#47;&#47;certificateClient.beginDeleteCertificate&#40;&quot;certificateName&quot;&#41;;
+ *
+ * &#47;&#47; Deleted Certificate is accessible as soon as polling beings.
+ * PollResponse&lt;DeletedCertificate&gt; deleteCertPollResponse = deleteCertPoller.poll&#40;&#41;;
+ *
+ * System.out.printf&#40;&quot;Deleted certificate with name %s and recovery id %s%n&quot;,
+ *     deleteCertPollResponse.getValue&#40;&#41;.getName&#40;&#41;, deleteCertPollResponse.getValue&#40;&#41;.getRecoveryId&#40;&#41;&#41;;
+ * deleteCertPoller.waitForCompletion&#40;&#41;;
+ * </pre>
  * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.beginDeleteCertificate#String -->
  *
  * @see com.azure.v2.security.keyvault.certificates
  * @see CertificateClientBuilder
  */
 @ServiceClient(
-    builder = CertificateClientBuilder.class, serviceInterfaces = CertificateClientImpl.CertificateClientService.class)
+    builder = CertificateClientBuilder.class,
+    serviceInterfaces = CertificateClientImpl.CertificateClientService.class)
 public final class CertificateClient {
     private static final ClientLogger LOGGER = new ClientLogger(CertificateClient.class);
 
@@ -162,6 +198,18 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Creates a new certificate in the key vault and prints out its details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy -->
+     * <pre>
+     * CertificatePolicy certPolicy = new CertificatePolicy&#40;&quot;Self&quot;, &quot;CN=SelfSignedJavaPkcs12&quot;&#41;;
+     *
+     * Poller&lt;CertificateOperation, KeyVaultCertificateWithPolicy&gt; certPoller = null;
+     *     &#47;&#47;certificateClient.beginCreateCertificate&#40;&quot;certificateName&quot;, certPolicy&#41;;
+     *
+     * certPoller.waitUntil&#40;LongRunningOperationStatus.SUCCESSFULLY_COMPLETED&#41;;
+     *
+     * KeyVaultCertificate cert = certPoller.getFinalResult&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Certificate created with name %s%n&quot;, cert.getName&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy -->
      *
      * @param name The name of the certificate to create. It is required and cannot be {@code null} or empty.
@@ -174,7 +222,7 @@ public final class CertificateClient {
     /*@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String name,
         CertificatePolicy policy) {
-
+    
         return beginCreateCertificate(name, policy, true, null);
     }*/
 
@@ -188,6 +236,20 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Creates a new certificate in the key vault and prints out its details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map -->
+     * <pre>
+     * CertificatePolicy policy = new CertificatePolicy&#40;&quot;Self&quot;,
+     *     &quot;CN=SelfSignedJavaPkcs12&quot;&#41;;
+     * Map&lt;String, String&gt; tags = new HashMap&lt;&gt;&#40;&#41;;
+     *
+     * Poller&lt;CertificateOperation, KeyVaultCertificateWithPolicy&gt; certificateSyncPoller = null;
+     *     &#47;&#47;certificateClient.beginCreateCertificate&#40;&quot;certificateName&quot;, policy, true, tags&#41;;
+     *
+     * certificateSyncPoller.waitUntil&#40;LongRunningOperationStatus.SUCCESSFULLY_COMPLETED&#41;;
+     *
+     * KeyVaultCertificate createdCertificate = certificateSyncPoller.getFinalResult&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Certificate created with name %s%n&quot;, createdCertificate.getName&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.beginCreateCertificate#String-CertificatePolicy-Boolean-Map -->
      *
      * @param name The name of the certificate to create. It is required and cannot be {@code null} or empty.
@@ -203,12 +265,12 @@ public final class CertificateClient {
     /*@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<CertificateOperation, KeyVaultCertificateWithPolicy> beginCreateCertificate(String name,
         CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
-
+    
+        if (isNullOrEmpty(name)) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+        }
+    
         try {
-            if (isNullOrEmpty(name)) {
-                throw new IllegalArgumentException("'name' cannot be null or empty.");
-            }
-
             return Poller.createPoller(Duration.ofSeconds(1),
                 pollingContext -> createCertificateActivation(name, policy, isEnabled, tags),
                 pollingContext -> certificatePollOperation(name),
@@ -222,9 +284,8 @@ public final class CertificateClient {
     private PollResponse<CertificateOperation> createCertificateActivation(String certificateName,
         CertificatePolicy policy, Boolean isEnabled, Map<String, String> tags) {
 
-        CertificateCreateParameters certificateCreateParameters =
-            new CertificateCreateParameters()
-                .setCertificatePolicy(getImplCertificatePolicy(policy))
+        CertificateCreateParameters certificateCreateParameters
+            = new CertificateCreateParameters().setCertificatePolicy(getImplCertificatePolicy(policy))
                 .setCertificateAttributes(new CertificateAttributes().setEnabled(isEnabled))
                 .setTags(tags);
 
@@ -233,8 +294,8 @@ public final class CertificateClient {
     }
 
     private PollResponse<CertificateOperation> certificatePollOperation(String certificateName) {
-        CertificateOperation certificateOperation =
-            CertificateOperationHelper.createCertificateOperation(clientImpl.getCertificateOperation(certificateName));
+        CertificateOperation certificateOperation = CertificateOperationHelper
+            .createCertificateOperation(clientImpl.getCertificateOperation(certificateName));
 
         return new PollResponse<>(mapStatus(certificateOperation.getStatus()), certificateOperation);
     }
@@ -271,6 +332,13 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Gets the latest version of the certificate in the key vault and prints out its details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.getCertificate#String -->
+     * <pre>
+     * KeyVaultCertificateWithPolicy certificate = certificateClient.getCertificate&#40;&quot;certificateName&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Received certificate with name %s and version %s and secret id %s%n&quot;,
+     *     certificate.getProperties&#40;&#41;.getName&#40;&#41;,
+     *     certificate.getProperties&#40;&#41;.getVersion&#40;&#41;, certificate.getSecretId&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.getCertificate#String -->
      *
      * @param name The name of the certificate to retrieve. It is required and cannot be {@code null} or empty.
@@ -281,11 +349,11 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultCertificateWithPolicy getCertificate(String name) {
-        try {
-            if (isNullOrEmpty(name)) {
-                throw new IllegalArgumentException("'name' cannot be null or empty.");
-            }
+        if (isNullOrEmpty(name)) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+        }
 
+        try {
             return createCertificateWithPolicy(clientImpl.getCertificate(name, ""));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -298,8 +366,16 @@ public final class CertificateClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Gets a specific version of the certificate in the key vault and prints out its details.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.getCertificateVersion#String-String -->
-     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.getCertificateVersion#String-String -->
+     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.getCertificate#String-String -->
+     * <pre>
+     * KeyVaultCertificateWithPolicy returnedCertificate =
+     *     certificateClient.getCertificate&#40;&quot;certificateName&quot;, &quot;certificateVersion&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Received certificate with name %s and version %s and secret id %s%n&quot;,
+     *     returnedCertificate.getProperties&#40;&#41;.getName&#40;&#41;, returnedCertificate.getProperties&#40;&#41;.getVersion&#40;&#41;,
+     *     returnedCertificate.getSecretId&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.getCertificate#String-String -->
      *
      * @param name The name of the certificate to retrieve. It is required and cannot be {@code null} or empty.
      * @param version The version of the certificate to retrieve. If this is an empty string or {@code null}, this call
@@ -313,11 +389,11 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultCertificateWithPolicy getCertificate(String name, String version) {
-        try {
-            if (isNullOrEmpty(name)) {
-                throw new IllegalArgumentException("'name' cannot be null or empty.");
-            }
+        if (isNullOrEmpty(name)) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+        }
 
+        try {
             return createCertificateWithPolicy(clientImpl.getCertificate(name, version));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -332,6 +408,20 @@ public final class CertificateClient {
      * <p>Gets a specific version of a certificate in the key vault. Prints out details of the response returned by the
      * service and the certificate.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.getCertificateWithResponse#String-RequestContext -->
+     * <pre>
+     * RequestContext requestContext = RequestContext.builder&#40;&#41;
+     *     .putMetadata&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * &#47;&#47; Passing a null or empty version retrieves the latest certificate version.
+     * Response&lt;KeyVaultCertificateWithPolicy&gt; certificateWithResponse =
+     *     certificateClient.getCertificateWithResponse&#40;&quot;certificateName&quot;, null, requestContext&#41;;
+     * KeyVaultCertificateWithPolicy certificate = certificateWithResponse.getValue&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Received certificate with name %s and version %s and secret id %s%n&quot;,
+     *     certificate.getProperties&#40;&#41;.getName&#40;&#41;, certificate.getProperties&#40;&#41;.getVersion&#40;&#41;,
+     *     certificate.getSecretId&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.getCertificateWithResponse#String-RequestContext -->
      *
      * @param name The name of the certificate to retrieve. It is required and cannot be {@code null} or empty.
@@ -347,11 +437,11 @@ public final class CertificateClient {
     public Response<KeyVaultCertificateWithPolicy> getCertificateWithResponse(String name, String version,
         RequestContext requestContext) {
 
-        try {
-            if (isNullOrEmpty(name)) {
-                throw new IllegalArgumentException("'name' cannot be null or empty.");
-            }
+        if (isNullOrEmpty(name)) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+        }
 
+        try {
             return mapResponse(clientImpl.getCertificateWithResponse(name, version, requestContext),
                 KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy);
         } catch (RuntimeException e) {
@@ -371,6 +461,17 @@ public final class CertificateClient {
      * <p>Gets latest version of a certificate and updates its tags and enabled status in the key vault, then prints out
      * the updated certificate's details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.updateCertificateProperties#CertificateProperties -->
+     * <pre>
+     * KeyVaultCertificateWithPolicy certificate = certificateClient.getCertificate&#40;&quot;certificateName&quot;&#41;;
+     *
+     * &#47;&#47; Update certificate enabled status
+     * certificate.getProperties&#40;&#41;.setEnabled&#40;false&#41;;
+     *
+     * KeyVaultCertificate updatedCertificate = certificateClient.updateCertificateProperties&#40;certificate.getProperties&#40;&#41;&#41;;
+     *
+     * System.out.printf&#40;&quot;Updated Certificate with name %s and enabled status %s%n&quot;,
+     *     updatedCertificate.getProperties&#40;&#41;.getName&#40;&#41;, updatedCertificate.getProperties&#40;&#41;.isEnabled&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.updateCertificateProperties#CertificateProperties -->
      *
      * @param certificateProperties The certificate properties to update.
@@ -383,25 +484,27 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultCertificate updateCertificateProperties(CertificateProperties certificateProperties) {
+        if (certificateProperties == null) {
+            throw LOGGER.logThrowableAsError(new NullPointerException("'certificateProperties' cannot be null."));
+        }
+
+        if (isNullOrEmpty(certificateProperties.getName())) {
+            throw LOGGER.logThrowableAsError(
+                new IllegalArgumentException("'certificateProperties.getName()' cannot be null or empty."));
+        }
+
         try {
-            Objects.requireNonNull(certificateProperties, "'certificateProperties' cannot be null.");
+            CertificateAttributes certificateAttributes
+                = new CertificateAttributes().setEnabled(certificateProperties.isEnabled())
+                    .setExpires(certificateProperties.getExpiresOn())
+                    .setNotBefore(certificateProperties.getNotBefore());
 
-            if (isNullOrEmpty(certificateProperties.getName())) {
-                throw new IllegalArgumentException("'certificateProperties.getName()' cannot be null or empty.");
-            }
+            CertificateUpdateParameters certificateUpdateParameters
+                = new CertificateUpdateParameters().setCertificateAttributes(certificateAttributes)
+                    .setTags(certificateProperties.getTags());
 
-            CertificateAttributes certificateAttributes = new CertificateAttributes()
-                .setEnabled(certificateProperties.isEnabled())
-                .setExpires(certificateProperties.getExpiresOn())
-                .setNotBefore(certificateProperties.getNotBefore());
-
-            CertificateUpdateParameters certificateUpdateParameters = new CertificateUpdateParameters()
-                .setCertificateAttributes(certificateAttributes)
-                .setTags(certificateProperties.getTags());
-
-            return createCertificateWithPolicy(
-                clientImpl.updateCertificate(certificateProperties.getName(), certificateProperties.getVersion(),
-                    certificateUpdateParameters));
+            return createCertificateWithPolicy(clientImpl.updateCertificate(certificateProperties.getName(),
+                certificateProperties.getVersion(), certificateUpdateParameters));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -419,6 +522,24 @@ public final class CertificateClient {
      * <p>Gets latest version of a certificate and updates its tags and enabled status in the key vault, then prints out
      * the updated certificate's details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.updateCertificatePropertiesWithResponse#CertificateProperties-RequestContext -->
+     * <pre>
+     * KeyVaultCertificateWithPolicy certificateToUpdate = certificateClient.getCertificate&#40;&quot;certificateName&quot;&#41;;
+     *
+     * &#47;&#47; Update certificate enabled status
+     * certificateToUpdate.getProperties&#40;&#41;.setEnabled&#40;false&#41;;
+     *
+     * RequestContext requestContext = RequestContext.builder&#40;&#41;
+     *     .putMetadata&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * Response&lt;KeyVaultCertificate&gt; updatedCertificateResponse =
+     *     certificateClient.updateCertificatePropertiesWithResponse&#40;certificateToUpdate.getProperties&#40;&#41;,
+     *         requestContext&#41;;
+     *
+     * System.out.printf&#40;&quot;Updated Certificate with name %s and enabled status %s%n&quot;,
+     *     updatedCertificateResponse.getValue&#40;&#41;.getProperties&#40;&#41;.getName&#40;&#41;,
+     *     updatedCertificateResponse.getValue&#40;&#41;.getProperties&#40;&#41;.isEnabled&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.updateCertificatePropertiesWithResponse#CertificateProperties-RequestContext -->
      *
      * @param certificateProperties The certificate properties to update.
@@ -434,24 +555,28 @@ public final class CertificateClient {
     public Response<KeyVaultCertificate> updateCertificatePropertiesWithResponse(
         CertificateProperties certificateProperties, RequestContext requestContext) {
 
+        if (certificateProperties == null) {
+            throw LOGGER.logThrowableAsError(new NullPointerException("'certificateProperties' cannot be null."));
+        }
+
+        if (isNullOrEmpty(certificateProperties.getName())) {
+            throw LOGGER.logThrowableAsError(
+                new IllegalArgumentException("'certificateProperties.getName()' cannot be null or empty."));
+        }
+
         try {
-            Objects.requireNonNull(certificateProperties,"'certificateProperties' cannot be null.");
+            CertificateAttributes certificateAttributes
+                = new CertificateAttributes().setEnabled(certificateProperties.isEnabled())
+                    .setExpires(certificateProperties.getExpiresOn())
+                    .setNotBefore(certificateProperties.getNotBefore());
 
-            if (isNullOrEmpty(certificateProperties.getName())) {
-                throw new IllegalArgumentException("'certificateProperties.getName()' cannot be null or empty.");
-            }
+            CertificateUpdateParameters certificateUpdateParameters
+                = new CertificateUpdateParameters().setCertificateAttributes(certificateAttributes)
+                    .setTags(certificateProperties.getTags());
 
-            CertificateAttributes certificateAttributes = new CertificateAttributes()
-                .setEnabled(certificateProperties.isEnabled())
-                .setExpires(certificateProperties.getExpiresOn())
-                .setNotBefore(certificateProperties.getNotBefore());
-
-            CertificateUpdateParameters certificateUpdateParameters = new CertificateUpdateParameters()
-                .setCertificateAttributes(certificateAttributes)
-                .setTags(certificateProperties.getTags());
-
-            return mapResponse(clientImpl.updateCertificateWithResponse(certificateProperties.getName(), certificateProperties.getVersion(),
-                    certificateUpdateParameters, requestContext),
+            return mapResponse(
+                clientImpl.updateCertificateWithResponse(certificateProperties.getName(),
+                    certificateProperties.getVersion(), certificateUpdateParameters, requestContext),
                 KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -467,6 +592,17 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Deletes a certificate from the key vault and prints out its recovery id.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.beginDeleteCertificate#String -->
+     * <pre>
+     * Poller&lt;DeletedCertificate, Void&gt; deleteCertPoller = null;
+     *     &#47;&#47;certificateClient.beginDeleteCertificate&#40;&quot;certificateName&quot;&#41;;
+     *
+     * &#47;&#47; Deleted Certificate is accessible as soon as polling beings.
+     * PollResponse&lt;DeletedCertificate&gt; deleteCertPollResponse = deleteCertPoller.poll&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Deleted certificate with name %s and recovery id %s%n&quot;,
+     *     deleteCertPollResponse.getValue&#40;&#41;.getName&#40;&#41;, deleteCertPollResponse.getValue&#40;&#41;.getRecoveryId&#40;&#41;&#41;;
+     * deleteCertPoller.waitForCompletion&#40;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.beginDeleteCertificate#String -->
      *
      * @param name The name of the certificate to be deleted.
@@ -477,11 +613,11 @@ public final class CertificateClient {
     // TODO (vcolin7): Uncomment when creating a Poller is supported in azure-core-v2.
     /*@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<DeletedCertificate, Void> beginDeleteCertificate(String name) {
+        if (isNullOrEmpty(name)) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+        }
+    
         try {
-            if (isNullOrEmpty(name)) {
-                throw new IllegalArgumentException("'name' cannot be null or empty.");
-            }
-
             return Poller.createPoller(Duration.ofSeconds(1),
                 pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                     createDeletedCertificate(clientImpl.deleteCertificate(name))),
@@ -526,6 +662,12 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Gets a deleted certificate from the key vault enabled for soft-delete and prints out its details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.getDeletedCertificate#String -->
+     * <pre>
+     * DeletedCertificate deletedCertificate = certificateClient.getDeletedCertificate&#40;&quot;certificateName&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Deleted certificate with name %s and recovery id %s%n&quot;, deletedCertificate.getName&#40;&#41;,
+     *     deletedCertificate.getRecoveryId&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.getDeletedCertificate#String -->
      *
      * @param name The name of the deleted certificate to retrieve. It is required and cannot be {@code null} or empty.
@@ -536,11 +678,11 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DeletedCertificate getDeletedCertificate(String name) {
-        try {
-            if (isNullOrEmpty(name)) {
-                throw new IllegalArgumentException("'name' cannot be null or empty.");
-            }
+        if (isNullOrEmpty(name)) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+        }
 
+        try {
             return createDeletedCertificate(clientImpl.getDeletedCertificate(name));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -555,6 +697,18 @@ public final class CertificateClient {
      * <p>Gets a deleted certificate from the key vault enabled for soft-delete. Prints details of the response returned
      * by the service and the deleted certificate.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.getDeletedCertificateWithResponse#String-RequestContext -->
+     * <pre>
+     * RequestContext requestContext = RequestContext.builder&#40;&#41;
+     *     .putMetadata&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * Response&lt;DeletedCertificate&gt; deletedCertificateWithResponse =
+     *     certificateClient.getDeletedCertificateWithResponse&#40;&quot;certificateName&quot;, requestContext&#41;;
+     *
+     * System.out.printf&#40;&quot;Deleted certificate with name %s and recovery id %s%n&quot;,
+     *     deletedCertificateWithResponse.getValue&#40;&#41;.getName&#40;&#41;,
+     *     deletedCertificateWithResponse.getValue&#40;&#41;.getRecoveryId&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.getDeletedCertificateWithResponse#String-RequestContext -->
      *
      * @param name The name of the deleted certificate to retrieve. It is required and cannot be {@code null} or empty.
@@ -566,11 +720,11 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<DeletedCertificate> getDeletedCertificateWithResponse(String name, RequestContext requestContext) {
-        try {
-            if (isNullOrEmpty(name)) {
-                throw new IllegalArgumentException("'name' cannot be null or empty.");
-            }
+        if (isNullOrEmpty(name)) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+        }
 
+        try {
             return mapResponse(clientImpl.getDeletedCertificateWithResponse(name, requestContext),
                 DeletedCertificateHelper::createDeletedCertificate);
         } catch (RuntimeException e) {
@@ -585,6 +739,9 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Purges a deleted certificate from a key vault enabled for soft-delete.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.purgeDeletedCertificate#String -->
+     * <pre>
+     * certificateClient.purgeDeletedCertificate&#40;&quot;certificateName&quot;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.purgeDeletedCertificate#String -->
      *
      * @param name The name of the deleted certificate to purge. It is required and cannot be {@code null} or empty.
@@ -594,11 +751,11 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void purgeDeletedCertificate(String name) {
-        try {
-            if (isNullOrEmpty(name)) {
-                throw new IllegalArgumentException("'name' cannot be null or empty.");
-            }
+        if (isNullOrEmpty(name)) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+        }
 
+        try {
             clientImpl.purgeDeletedCertificate(name);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -613,6 +770,16 @@ public final class CertificateClient {
      * <p>Purges a deleted certificate from a key vault enabled for soft-delete and prints out details of the response
      * returned by the service.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.purgeDeletedCertificateWithResponse#String-RequestContext -->
+     * <pre>
+     * RequestContext requestContext = RequestContext.builder&#40;&#41;
+     *     .putMetadata&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * Response&lt;Void&gt; purgeResponse =
+     *     certificateClient.purgeDeletedCertificateWithResponse&#40;&quot;certificateName&quot;, requestContext&#41;;
+     *
+     * System.out.printf&#40;&quot;Purged Deleted certificate with status %d%n&quot;, purgeResponse.getStatusCode&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.purgeDeletedCertificateWithResponse#String-RequestContext -->
      *
      * @param name The name of the deleted certificate to purge. It is required and cannot be {@code null} or empty.
@@ -624,11 +791,11 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> purgeDeletedCertificateWithResponse(String name, RequestContext requestContext) {
-        try {
-            if (isNullOrEmpty(name)) {
-                throw new IllegalArgumentException("'name' cannot be null or empty.");
-            }
+        if (isNullOrEmpty(name)) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+        }
 
+        try {
             return clientImpl.purgeDeletedCertificateWithResponse(name, requestContext);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -642,6 +809,19 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Recovers a deleted certificate from a key vault enabled for soft-delete and prints out its details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.beginRecoverDeletedCertificate#String -->
+     * <pre>
+     * Poller&lt;KeyVaultCertificateWithPolicy, Void&gt; recoverDeletedCertPoller = null;
+     *     &#47;&#47;certificateClient.beginRecoverDeletedCertificate&#40;&quot;deletedCertificateName&quot;&#41;;
+     *
+     * &#47;&#47; Recovered certificate is accessible as soon as polling beings
+     * PollResponse&lt;KeyVaultCertificateWithPolicy&gt; recoverDeletedCertPollResponse = recoverDeletedCertPoller.poll&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot; Recovered Deleted certificate with name %s and id %s%n&quot;,
+     *     recoverDeletedCertPollResponse.getValue&#40;&#41;.getProperties&#40;&#41;.getName&#40;&#41;,
+     *     recoverDeletedCertPollResponse.getValue&#40;&#41;.getProperties&#40;&#41;.getId&#40;&#41;&#41;;
+     *
+     * recoverDeletedCertPoller.waitForCompletion&#40;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.beginRecoverDeletedCertificate#String -->
      *
      * @param name The name of the deleted certificate to recover. It is required and cannot be {@code null} or empty.
@@ -652,11 +832,11 @@ public final class CertificateClient {
     // TODO (vcolin7): Uncomment when creating a Poller is supported in azure-core-v2.
     /*@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<KeyVaultCertificateWithPolicy, Void> beginRecoverDeletedCertificate(String name) {
+        if (isNullOrEmpty(name)) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+        }
+    
         try {
-            if (isNullOrEmpty(name)) {
-                throw new IllegalArgumentException("'name' cannot be null or empty.");
-            }
-
             return Poller.createPoller(Duration.ofSeconds(1),
                 pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED,
                     createCertificateWithPolicy(clientImpl.recoverDeletedCertificate(name))),
@@ -701,6 +881,11 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Backs up a certificate from the key vault and prints out the length of the certificate's backup blob.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.backupCertificate#String -->
+     * <pre>
+     * byte[] certificateBackup = certificateClient.backupCertificate&#40;&quot;certificateName&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Backed up certificate with back up blob length %d%n&quot;, certificateBackup.length&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.backupCertificate#String -->
      *
      * @param name The name of the certificate to back up.
@@ -711,11 +896,11 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public byte[] backupCertificate(String name) {
-        try {
-            if (isNullOrEmpty(name)) {
-                throw new IllegalArgumentException("'name' cannot be null or empty.");
-            }
+        if (isNullOrEmpty(name)) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+        }
 
+        try {
             return clientImpl.backupCertificate(name).getValue();
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -730,6 +915,17 @@ public final class CertificateClient {
      * <p>Backs up a certificate from the key vault. Prints out details of the response returned by the service and the
      * length of the certificate's backup blob.
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.backupCertificateWithResponse#String-RequestContext -->
+     * <pre>
+     * RequestContext requestContext = RequestContext.builder&#40;&#41;
+     *     .putMetadata&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * Response&lt;byte[]&gt; certificateBackupWithResponse =
+     *     certificateClient.backupCertificateWithResponse&#40;&quot;certificateName&quot;, requestContext&#41;;
+     *
+     * System.out.printf&#40;&quot;Backed up certificate with back up blob length %d%n&quot;,
+     *     certificateBackupWithResponse.getValue&#40;&#41;.length&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.backupCertificateWithResponse#String-RequestContext -->
      *
      * @param name The name of the certificate to back up.
@@ -741,11 +937,11 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<byte[]> backupCertificateWithResponse(String name, RequestContext requestContext) {
-        try {
-            if (isNullOrEmpty(name)) {
-                throw new IllegalArgumentException("'name' cannot be null or empty.");
-            }
+        if (isNullOrEmpty(name)) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+        }
 
+        try {
             return mapResponse(clientImpl.backupCertificateWithResponse(name, requestContext),
                 BackupCertificateResult::getValue);
         } catch (RuntimeException e) {
@@ -759,8 +955,16 @@ public final class CertificateClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Restores a certificate in the key vault from a backup and prints out its details.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.restoreCertificate#byte -->
-     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.restoreCertificate#byte -->
+     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.restoreCertificateBackup#byte -->
+     * <pre>
+     * byte[] certificateBackupBlob = &#123;&#125;;
+     *
+     * KeyVaultCertificate certificate = certificateClient.restoreCertificateBackup&#40;certificateBackupBlob&#41;;
+     *
+     * System.out.printf&#40;&quot; Restored certificate with name %s and id %s%n&quot;,
+     *     certificate.getProperties&#40;&#41;.getName&#40;&#41;, certificate.getProperties&#40;&#41;.getId&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.restoreCertificateBackup#byte -->
      *
      * @param backup The backup blob associated with the certificate.
      * @return The restored certificate.
@@ -783,8 +987,21 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Restores a certificate in the key vault from a backup. Prints our details of the response returned by the
      * service and the restored certificate.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.restoreCertificateWithResponse#byte-RequestContext -->
-     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.restoreCertificateWithResponse#byte-RequestContext -->
+     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.restoreCertificateBackupWithResponse#byte-RequestContext -->
+     * <pre>
+     * byte[] certificateBackupBlobArray = &#123;&#125;;
+     * RequestContext requestContext = RequestContext.builder&#40;&#41;
+     *     .putMetadata&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * Response&lt;KeyVaultCertificateWithPolicy&gt; certificateResponse =
+     *     certificateClient.restoreCertificateBackupWithResponse&#40;certificateBackupBlobArray, requestContext&#41;;
+     *
+     * System.out.printf&#40;&quot; Restored certificate with name %s and id %s%n&quot;,
+     *     certificateResponse.getValue&#40;&#41;.getProperties&#40;&#41;.getName&#40;&#41;,
+     *     certificateResponse.getValue&#40;&#41;.getProperties&#40;&#41;.getId&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.restoreCertificateBackupWithResponse#byte-RequestContext -->
      *
      * @param backup The backup blob associated with the certificate.
      * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
@@ -814,6 +1031,16 @@ public final class CertificateClient {
      * <p>Lists the certificates in the key vault and gets each one's latest version and their policies by looping
      * though the properties objects and calling {@link CertificateClient#getCertificate(String)}.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfCertificates -->
+     * <pre>
+     * certificateClient.listPropertiesOfCertificates&#40;&#41;.forEach&#40;certificateProperties -&gt; &#123;
+     *     KeyVaultCertificateWithPolicy certificateWithAllProperties =
+     *         certificateClient.getCertificate&#40;certificateProperties.getName&#40;&#41;, certificateProperties.getVersion&#40;&#41;&#41;;
+     *
+     *     System.out.printf&#40;&quot;Received certificate with name '%s' and secret id '%s'%n&quot;,
+     *         certificateWithAllProperties.getProperties&#40;&#41;.getName&#40;&#41;,
+     *         certificateWithAllProperties.getSecretId&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfCertificates -->
      *
      * <p><strong>Iterate through certificates by page</strong></p>
@@ -821,6 +1048,18 @@ public final class CertificateClient {
      * policies by looping though the properties objects and calling {@link CertificateClient#getCertificate(String)}.
      * </p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfCertificates.iterableByPage -->
+     * <pre>
+     * certificateClient.listPropertiesOfCertificates&#40;&#41;.iterableByPage&#40;&#41;.forEach&#40;pagedResponse -&gt; &#123;
+     *     pagedResponse.getValue&#40;&#41;.forEach&#40;certificateProperties -&gt; &#123;
+     *         KeyVaultCertificateWithPolicy certificateWithAllProperties =
+     *             certificateClient.getCertificate&#40;certificateProperties.getName&#40;&#41;, certificateProperties.getVersion&#40;&#41;&#41;;
+     *
+     *         System.out.printf&#40;&quot;Received certificate with name '%s' and secret id '%s'%n&quot;,
+     *             certificateWithAllProperties.getProperties&#40;&#41;.getName&#40;&#41;,
+     *             certificateWithAllProperties.getSecretId&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * &#125;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfCertificates.iterableByPage -->
      *
      * @return A {@link PagedIterable} of properties objects of all the certificates in the vault. A properties object
@@ -840,6 +1079,20 @@ public final class CertificateClient {
      * <p>Lists the certificates in the key vault and gets each one's latest version and their policies by looping
      * though the properties objects and calling {@link CertificateClient#getCertificate(String)}.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfCertificates#boolean-RequestContext -->
+     * <pre>
+     * RequestContext requestContext = RequestContext.builder&#40;&#41;
+     *     .putMetadata&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * certificateClient.listPropertiesOfCertificates&#40;true, requestContext&#41;.forEach&#40;certificateProperties -&gt; &#123;
+     *     KeyVaultCertificateWithPolicy certificateWithAllProperties =
+     *         certificateClient.getCertificate&#40;certificateProperties.getName&#40;&#41;, certificateProperties.getVersion&#40;&#41;&#41;;
+     *
+     *     System.out.printf&#40;&quot;Received certificate with name '%s' and secret id '%s'%n&quot;,
+     *         certificateWithAllProperties.getProperties&#40;&#41;.getName&#40;&#41;,
+     *         certificateWithAllProperties.getSecretId&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfCertificates#RequestContext -->
      *
      * <p><strong>Iterate through certificates by page</strong></p>
@@ -847,6 +1100,22 @@ public final class CertificateClient {
      * policies by looping though the properties objects and calling {@link CertificateClient#getCertificate(String)}.
      * </p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfCertificates.iterableByPage#boolean-RequestContext -->
+     * <pre>
+     * RequestContext reqContext = RequestContext.builder&#40;&#41;
+     *     .putMetadata&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * certificateClient.listPropertiesOfCertificates&#40;true, reqContext&#41;.iterableByPage&#40;&#41;.forEach&#40;pagedResponse -&gt; &#123;
+     *     pagedResponse.getValue&#40;&#41;.forEach&#40;certificateProperties -&gt; &#123;
+     *         KeyVaultCertificateWithPolicy certificateWithAllProperties =
+     *             certificateClient.getCertificate&#40;certificateProperties.getName&#40;&#41;, certificateProperties.getVersion&#40;&#41;&#41;;
+     *
+     *         System.out.printf&#40;&quot;Received certificate with name '%s' and secret id '%s'%n&quot;,
+     *             certificateWithAllProperties.getProperties&#40;&#41;.getName&#40;&#41;,
+     *             certificateWithAllProperties.getSecretId&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * &#125;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfCertificates.iterableByPage#boolean-RequestContext -->
      *
      * @param includePending Indicate if pending certificates should be included in the results.
@@ -875,12 +1144,24 @@ public final class CertificateClient {
      * <p>Lists the deleted certificates in a key vault enabled for soft-delete and prints out each one's recovery id.
      * </p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listDeletedCertificates -->
+     * <pre>
+     * certificateClient.listDeletedCertificates&#40;&#41;.forEach&#40;deletedCertificate -&gt; &#123;
+     *     System.out.printf&#40;&quot;Deleted certificate's recovery Id %s%n&quot;, deletedCertificate.getRecoveryId&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listDeletedCertificates -->
      *
      * <p><strong>Iterate through deleted certificates by page</strong></p>
      * <p>Iterates through the deleted certificates by page in the key vault by page and prints out each one's recovery
      * id.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listDeletedCertificates.iterableByPage -->
+     * <pre>
+     * certificateClient.listDeletedCertificates&#40;&#41;.iterableByPage&#40;&#41;.forEach&#40;pagedResponse -&gt; &#123;
+     *     pagedResponse.getValue&#40;&#41;.forEach&#40;deletedCertificate -&gt; &#123;
+     *         System.out.printf&#40;&quot;Deleted certificate's recovery Id %s%n&quot;, deletedCertificate.getRecoveryId&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * &#125;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listDeletedCertificates.iterableByPage -->
      *
      * @return A {@link PagedIterable} of the deleted certificates in the vault.
@@ -897,14 +1178,34 @@ public final class CertificateClient {
      * <p><strong>Iterate through deleted certificates</strong></p>
      * <p>Lists the deleted certificates in a key vault enabled for soft-delete and prints out each one's recovery id.
      * </p>
-     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listDeletedCertificates#RequestContext -->
-     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listDeletedCertificates#RequestContext -->
+     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listDeletedCertificates#boolean-RequestContext -->
+     * <pre>
+     * RequestContext requestContext = RequestContext.builder&#40;&#41;
+     *     .putMetadata&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * certificateClient.listDeletedCertificates&#40;true, requestContext&#41;.forEach&#40;deletedCertificate -&gt; &#123;
+     *     System.out.printf&#40;&quot;Deleted certificate's recovery Id %s%n&quot;, deletedCertificate.getRecoveryId&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listDeletedCertificates#boolean-RequestContext -->
      *
      * <p><strong>Iterate through deleted certificates by page</strong></p>
      * <p>Iterates through the deleted certificates by page in the key vault by page and prints out each one's recovery
      * id.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listDeletedCertificates.iterableByPage#RequestContext -->
-     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listDeletedCertificates.iterableByPage#RequestContext -->
+     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listDeletedCertificates.iterableByPage#boolean-RequestContext -->
+     * <pre>
+     * RequestContext reqContext = RequestContext.builder&#40;&#41;
+     *     .putMetadata&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * certificateClient.listDeletedCertificates&#40;true, reqContext&#41;.iterableByPage&#40;&#41;.forEach&#40;pagedResponse -&gt; &#123;
+     *     pagedResponse.getValue&#40;&#41;.forEach&#40;deletedCertificate -&gt; &#123;
+     *         System.out.printf&#40;&quot;Deleted certificate's recovery Id %s%n&quot;, deletedCertificate.getRecoveryId&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listDeletedCertificates.iterableByPage#boolean-RequestContext -->
      *
      * @param includePending Indicate if pending certificates should be included in the results.
      * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
@@ -932,6 +1233,16 @@ public final class CertificateClient {
      * <p>Lists the versions of a certificate in the key vault and gets each one's latest version and their policies by
      * looping though the properties objects and calling {@link CertificateClient#getCertificate(String)}.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfCertificateVersions#String -->
+     * <pre>
+     * certificateClient.listPropertiesOfCertificateVersions&#40;&quot;certificateName&quot;&#41;.forEach&#40;certificateProperties -&gt; &#123;
+     *     KeyVaultCertificateWithPolicy certificateWithAllProperties =
+     *         certificateClient.getCertificate&#40;certificateProperties.getName&#40;&#41;, certificateProperties.getVersion&#40;&#41;&#41;;
+     *
+     *     System.out.printf&#40;&quot;Received certificate's version with name %s, version %s and secret id %s%n&quot;,
+     *         certificateWithAllProperties.getProperties&#40;&#41;.getName&#40;&#41;,
+     *         certificateWithAllProperties.getProperties&#40;&#41;.getVersion&#40;&#41;, certificateWithAllProperties.getSecretId&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfCertificateVersions#String -->
      *
      * <p><strong>Iterate through certificates versions by page</strong></p>
@@ -939,6 +1250,19 @@ public final class CertificateClient {
      * their policies by looping though the properties objects and calling
      * {@link CertificateClient#getCertificate(String)}.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfCertificateVersions.iterableByPage#String -->
+     * <pre>
+     * certificateClient.listPropertiesOfCertificateVersions&#40;&quot;certificateName&quot;&#41;.iterableByPage&#40;&#41;.forEach&#40;
+     *     pagedResponse -&gt; &#123;
+     *         pagedResponse.getValue&#40;&#41;.forEach&#40;certificateProperties -&gt; &#123;
+     *             KeyVaultCertificateWithPolicy certificateWithAllProperties =
+     *                 certificateClient.getCertificate&#40;certificateProperties.getName&#40;&#41;, certificateProperties.getVersion&#40;&#41;&#41;;
+     *
+     *             System.out.printf&#40;&quot;Received certificate's version with name %s, version %s and secret id %s%n&quot;,
+     *                 certificateWithAllProperties.getProperties&#40;&#41;.getName&#40;&#41;,
+     *                 certificateWithAllProperties.getProperties&#40;&#41;.getVersion&#40;&#41;, certificateWithAllProperties.getSecretId&#40;&#41;&#41;;
+     *         &#125;&#41;;
+     *     &#125;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfCertificateVersions.iterableByPage#String -->
      *
      * @param name The name of the certificate. It is required and cannot be {@code null} or empty.
@@ -962,6 +1286,21 @@ public final class CertificateClient {
      * <p>Lists the versions of a certificate in the key vault and gets each one's latest version and their policies by
      * looping though the properties objects and calling {@link CertificateClient#getCertificate(String)}.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfCertificateVersions#String-RequestContext -->
+     * <pre>
+     * RequestContext requestContext = RequestContext.builder&#40;&#41;
+     *     .putMetadata&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * certificateClient.listPropertiesOfCertificateVersions&#40;&quot;certificateName&quot;, requestContext&#41;.forEach&#40;
+     *     certificateProperties -&gt; &#123;
+     *         KeyVaultCertificateWithPolicy certificateWithAllProperties =
+     *             certificateClient.getCertificate&#40;certificateProperties.getName&#40;&#41;, certificateProperties.getVersion&#40;&#41;&#41;;
+     *
+     *         System.out.printf&#40;&quot;Received certificate's version with name %s, version %s and secret id %s%n&quot;,
+     *             certificateWithAllProperties.getProperties&#40;&#41;.getName&#40;&#41;,
+     *             certificateWithAllProperties.getProperties&#40;&#41;.getVersion&#40;&#41;, certificateWithAllProperties.getSecretId&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfCertificateVersions#String-RequestContext -->
      *
      * <p><strong>Iterate through certificates versions by page</strong></p>
@@ -969,6 +1308,23 @@ public final class CertificateClient {
      * their policies by looping though the properties objects and calling
      * {@link CertificateClient#getCertificate(String)}.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfCertificateVersions.iterableByPage#String-RequestContext -->
+     * <pre>
+     * RequestContext reqContext = RequestContext.builder&#40;&#41;
+     *     .putMetadata&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * certificateClient.listPropertiesOfCertificateVersions&#40;&quot;certificateName&quot;, reqContext&#41;.iterableByPage&#40;&#41;
+     *     .forEach&#40;pagedResponse -&gt; &#123;
+     *         pagedResponse.getValue&#40;&#41;.forEach&#40;certificateProperties -&gt; &#123;
+     *             KeyVaultCertificateWithPolicy certificateWithAllProperties =
+     *                 certificateClient.getCertificate&#40;certificateProperties.getName&#40;&#41;, certificateProperties.getVersion&#40;&#41;&#41;;
+     *
+     *             System.out.printf&#40;&quot;Received certificate's version with name %s, version %s and secret id %s%n&quot;,
+     *                 certificateWithAllProperties.getProperties&#40;&#41;.getName&#40;&#41;,
+     *                 certificateWithAllProperties.getProperties&#40;&#41;.getVersion&#40;&#41;, certificateWithAllProperties.getSecretId&#40;&#41;&#41;;
+     *         &#125;&#41;;
+     *     &#125;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfCertificateVersions.iterableByPage#String-RequestContext -->
      *
      * @param name The name of the certificate. It is required and cannot be {@code null} or empty.
@@ -999,6 +1355,11 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Gets the policy of a certificate in the key vault and prints out its details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.getCertificatePolicy#String -->
+     * <pre>
+     * CertificatePolicy policy = certificateClient.getCertificatePolicy&#40;&quot;certificateName&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Received policy with subject name %s%n&quot;, policy.getSubject&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.getCertificatePolicy#String -->
      *
      * @param certificateName The name of the certificate whose policy is to be retrieved. It is required and cannot be
@@ -1012,11 +1373,12 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificatePolicy getCertificatePolicy(String certificateName) {
-        try {
-            if (isNullOrEmpty(certificateName)) {
-                throw new IllegalArgumentException("'certificateName' cannot be null or empty.");
-            }
+        if (isNullOrEmpty(certificateName)) {
+            throw LOGGER
+                .logThrowableAsError(new IllegalArgumentException("'certificateName' cannot be null or empty."));
+        }
 
+        try {
             return createCertificatePolicy(clientImpl.getCertificatePolicy(certificateName));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -1031,6 +1393,17 @@ public final class CertificateClient {
      * <p>Gets the policy of a certificate in the key vault. Prints out details of the response returned by the service
      * and the requested certificate policy.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.getCertificatePolicyWithResponse#String -->
+     * <pre>
+     * RequestContext requestContext = RequestContext.builder&#40;&#41;
+     *     .putMetadata&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * Response&lt;CertificatePolicy&gt; returnedPolicyWithResponse =
+     *     certificateClient.getCertificatePolicyWithResponse&#40;&quot;certificateName&quot;, requestContext&#41;;
+     *
+     * System.out.printf&#40;&quot;Received policy with subject name %s%n&quot;,
+     *     returnedPolicyWithResponse.getValue&#40;&#41;.getSubject&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.getCertificatePolicyWithResponse#String -->
      *
      * @param certificateName The name of the certificate whose policy is to be retrieved. It is required and cannot be
@@ -1047,11 +1420,12 @@ public final class CertificateClient {
     public Response<CertificatePolicy> getCertificatePolicyWithResponse(String certificateName,
         RequestContext requestContext) {
 
-        try {
-            if (isNullOrEmpty(certificateName)) {
-                throw new IllegalArgumentException("'certificateName' cannot be null or empty.");
-            }
+        if (isNullOrEmpty(certificateName)) {
+            throw LOGGER
+                .logThrowableAsError(new IllegalArgumentException("'certificateName' cannot be null or empty."));
+        }
 
+        try {
             return mapResponse(clientImpl.getCertificatePolicyWithResponse(certificateName, requestContext),
                 CertificatePolicyHelper::createCertificatePolicy);
         } catch (RuntimeException e) {
@@ -1067,6 +1441,18 @@ public final class CertificateClient {
      * <p>Gets the certificate policy and updates its properties in the key vault, then prints out the updated policy's
      * details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.updateCertificatePolicy#String -->
+     * <pre>
+     * CertificatePolicy certificatePolicy = certificateClient.getCertificatePolicy&#40;&quot;certificateName&quot;&#41;;
+     *
+     * &#47;&#47;Update the certificate policy cert transparency property.
+     * certificatePolicy.setCertificateTransparent&#40;true&#41;;
+     *
+     * CertificatePolicy updatedCertPolicy =
+     *     certificateClient.updateCertificatePolicy&#40;&quot;certificateName&quot;, certificatePolicy&#41;;
+     *
+     * System.out.printf&#40;&quot;Updated Certificate Policy transparency status %s%n&quot;,
+     *     updatedCertPolicy.isCertificateTransparent&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.updateCertificatePolicy#String -->
      *
      * @param certificateName The name of the certificate whose policy is to be updated. It is required and cannot be
@@ -1082,11 +1468,12 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificatePolicy updateCertificatePolicy(String certificateName, CertificatePolicy policy) {
-        try {
-            if (isNullOrEmpty(certificateName)) {
-                throw new IllegalArgumentException("'certificateName' cannot be null or empty.");
-            }
+        if (isNullOrEmpty(certificateName)) {
+            throw LOGGER
+                .logThrowableAsError(new IllegalArgumentException("'certificateName' cannot be null or empty."));
+        }
 
+        try {
             Objects.requireNonNull(policy, "'policy' cannot be null.");
 
             return createCertificatePolicy(
@@ -1104,6 +1491,23 @@ public final class CertificateClient {
      * <p>Gets the certificate policy and updates its properties in the key vault. Prints out details of the response
      * returned by the service and the updated policy.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.updateCertificatePolicyWithResponse#String -->
+     * <pre>
+     * CertificatePolicy certificatePolicyToUpdate = certificateClient.getCertificatePolicy&#40;&quot;certificateName&quot;&#41;;
+     *
+     * &#47;&#47;Update the certificate policy cert transparency property.
+     * certificatePolicyToUpdate.setCertificateTransparent&#40;true&#41;;
+     *
+     * RequestContext requestContext = RequestContext.builder&#40;&#41;
+     *     .putMetadata&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * Response&lt;CertificatePolicy&gt; updatedCertPolicyWithResponse =
+     *     certificateClient.updateCertificatePolicyWithResponse&#40;&quot;certificateName&quot;,
+     *         certificatePolicyToUpdate, requestContext&#41;;
+     *
+     * System.out.printf&#40;&quot;Updated Certificate Policy transparency status %s%n&quot;, updatedCertPolicyWithResponse
+     *     .getValue&#40;&#41;.isCertificateTransparent&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.updateCertificatePolicyWithResponse#String -->
      *
      * @param certificateName The name of the certificate whose policy is to be updated. It is required and cannot be
@@ -1122,16 +1526,16 @@ public final class CertificateClient {
     public Response<CertificatePolicy> updateCertificatePolicyWithResponse(String certificateName,
         CertificatePolicy policy, RequestContext requestContext) {
 
-        try {
-            if (isNullOrEmpty(certificateName)) {
-                throw new IllegalArgumentException("'certificateName' cannot be null or empty.");
-            }
+        if (isNullOrEmpty(certificateName)) {
+            throw LOGGER
+                .logThrowableAsError(new IllegalArgumentException("'certificateName' cannot be null or empty."));
+        }
 
+        try {
             Objects.requireNonNull(policy, "'policy' cannot be null.");
 
-            return mapResponse(
-                clientImpl.updateCertificatePolicyWithResponse(certificateName, getImplCertificatePolicy(policy),
-                    requestContext), CertificatePolicyHelper::createCertificatePolicy);
+            return mapResponse(clientImpl.updateCertificatePolicyWithResponse(certificateName,
+                getImplCertificatePolicy(policy), requestContext), CertificatePolicyHelper::createCertificatePolicy);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1144,6 +1548,17 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Creates a new certificate issuer in the key vault and prints out the created issuer's details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.createIssuer#CertificateIssuer -->
+     * <pre>
+     * CertificateIssuer issuerToCreate = new CertificateIssuer&#40;&quot;myissuer&quot;, &quot;myProvider&quot;&#41;
+     *     .setAccountId&#40;&quot;testAccount&quot;&#41;
+     *     .setAdministratorContacts&#40;Collections.singletonList&#40;new AdministratorContact&#40;&#41;.setFirstName&#40;&quot;test&quot;&#41;
+     *         .setLastName&#40;&quot;name&quot;&#41;.setEmail&#40;&quot;test&#64;example.com&quot;&#41;&#41;&#41;;
+     *
+     * CertificateIssuer returnedIssuer = certificateClient.createIssuer&#40;issuerToCreate&#41;;
+     *
+     * System.out.printf&#40;&quot;Created Issuer with name %s provider %s%n&quot;, returnedIssuer.getName&#40;&#41;,
+     *     returnedIssuer.getProvider&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.createIssuer#CertificateIssuer -->
      *
      * @param issuer The configuration of the certificate issuer to be created. It is required and cannot be
@@ -1160,8 +1575,8 @@ public final class CertificateClient {
             Objects.requireNonNull(issuer, "'issuer' cannot be null.");
 
             IssuerBundle issuerBundle = getIssuerBundle(issuer);
-            CertificateIssuerSetParameters certificateIssuerSetParameters =
-                new CertificateIssuerSetParameters(issuerBundle.getProvider())
+            CertificateIssuerSetParameters certificateIssuerSetParameters
+                = new CertificateIssuerSetParameters(issuerBundle.getProvider())
                     .setOrganizationDetails(issuerBundle.getOrganizationDetails())
                     .setCredentials(issuerBundle.getCredentials())
                     .setAttributes(issuerBundle.getAttributes());
@@ -1181,10 +1596,28 @@ public final class CertificateClient {
      * <p>Creates a new certificate issuer in the key vault. Prints out details of the response returned by the
      * service and the created issuer.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.createIssuerWithResponse#CertificateIssuer-RequestContext -->
+     * <pre>
+     * CertificateIssuer issuer = new CertificateIssuer&#40;&quot;issuerName&quot;, &quot;myProvider&quot;&#41;
+     *     .setAccountId&#40;&quot;testAccount&quot;&#41;
+     *     .setAdministratorContacts&#40;Collections.singletonList&#40;
+     *         new AdministratorContact&#40;&#41;
+     *             .setFirstName&#40;&quot;test&quot;&#41;
+     *             .setLastName&#40;&quot;name&quot;&#41;
+     *             .setEmail&#40;&quot;test&#64;example.com&quot;&#41;&#41;&#41;;
+     * RequestContext requestContext = RequestContext.builder&#40;&#41;
+     *     .putMetadata&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * Response&lt;CertificateIssuer&gt; issuerResponse = certificateClient.createIssuerWithResponse&#40;issuer, requestContext&#41;;
+     *
+     * System.out.printf&#40;&quot;Created Issuer with name %s provider %s%n&quot;, issuerResponse.getValue&#40;&#41;.getName&#40;&#41;,
+     *     issuerResponse.getValue&#40;&#41;.getProvider&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.createIssuerWithResponse#CertificateIssuer-RequestContext -->
      *
      * @param issuer The configuration of the certificate issuer to be created. It is required and cannot be
      * {@code null}.
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      * @return A response object whose {@link Response#getValue()} contains the created certificate issuer.
      *
      * @throws HttpResponseException If a certificate with the given {@code certificateName} doesn't exist in the key
@@ -1199,15 +1632,14 @@ public final class CertificateClient {
             Objects.requireNonNull(issuer, "'issuer' cannot be null.");
 
             IssuerBundle issuerBundle = getIssuerBundle(issuer);
-            CertificateIssuerSetParameters certificateIssuerSetParameters =
-                new CertificateIssuerSetParameters(issuerBundle.getProvider())
+            CertificateIssuerSetParameters certificateIssuerSetParameters
+                = new CertificateIssuerSetParameters(issuerBundle.getProvider())
                     .setOrganizationDetails(issuerBundle.getOrganizationDetails())
                     .setCredentials(issuerBundle.getCredentials())
                     .setAttributes(issuerBundle.getAttributes());
 
-            return mapResponse(
-                clientImpl.setCertificateIssuerWithResponse(issuer.getName(), certificateIssuerSetParameters,
-                    requestContext), CertificateIssuerHelper::createCertificateIssuer);
+            return mapResponse(clientImpl.setCertificateIssuerWithResponse(issuer.getName(),
+                certificateIssuerSetParameters, requestContext), CertificateIssuerHelper::createCertificateIssuer);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1220,6 +1652,12 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Gets a specific certificate issuer in the key vault and prints out its details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.getIssuer#String -->
+     * <pre>
+     * CertificateIssuer returnedIssuer = certificateClient.getIssuer&#40;&quot;issuerName&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Retrieved issuer with name %s and provider %s%n&quot;, returnedIssuer.getName&#40;&#41;,
+     *     returnedIssuer.getProvider&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.getIssuer#String -->
      *
      * @param name The name of the certificate issuer to retrieve. It is required and cannot be {@code null} or empty.
@@ -1231,11 +1669,11 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateIssuer getIssuer(String name) {
-        try {
-            if (isNullOrEmpty(name)) {
-                throw new IllegalArgumentException("'name' cannot be null or empty.");
-            }
+        if (isNullOrEmpty(name)) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+        }
 
+        try {
             return createCertificateIssuer(clientImpl.getCertificateIssuer(name));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -1250,6 +1688,17 @@ public final class CertificateClient {
      * <p>Gets a specific certificate issuer in the key vault. Prints out details of the response returned by the
      * service and the requested certificate issuer.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.getIssuerWithResponse#String-RequestContext -->
+     * <pre>
+     * RequestContext requestContext = RequestContext.builder&#40;&#41;
+     *     .putMetadata&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * Response&lt;CertificateIssuer&gt; issuerResponse =
+     *     certificateClient.getIssuerWithResponse&#40;&quot;issuerName&quot;, requestContext&#41;;
+     *
+     * System.out.printf&#40;&quot;Retrieved issuer with name %s and provider %s%n&quot;, issuerResponse.getValue&#40;&#41;.getName&#40;&#41;,
+     *     issuerResponse.getValue&#40;&#41;.getProvider&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.getIssuer#String-RequestContext -->
      *
      * @param name The name of the certificate issuer to retrieve. It is required and cannot be {@code null} or empty.
@@ -1262,11 +1711,11 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateIssuer> getIssuerWithResponse(String name, RequestContext requestContext) {
-        try {
-            if (isNullOrEmpty(name)) {
-                throw new IllegalArgumentException("'name' cannot be null or empty.");
-            }
+        if (isNullOrEmpty(name)) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+        }
 
+        try {
             return mapResponse(clientImpl.getCertificateIssuerWithResponse(name, requestContext),
                 CertificateIssuerHelper::createCertificateIssuer);
         } catch (RuntimeException e) {
@@ -1281,6 +1730,12 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Deletes the certificate issuer in the key vault and prints out its details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.deleteIssuer#String -->
+     * <pre>
+     * CertificateIssuer deletedIssuer = certificateClient.deleteIssuer&#40;&quot;issuerName&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Deleted certificate issuer with name %s and provider id %s%n&quot;, deletedIssuer.getName&#40;&#41;,
+     *     deletedIssuer.getProvider&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.deleteIssuer#String -->
      *
      * @param name The name of the certificate issuer to be deleted. It is required and cannot be {@code null} or empty.
@@ -1292,11 +1747,11 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateIssuer deleteIssuer(String name) {
-        try {
-            if (isNullOrEmpty(name)) {
-                throw new IllegalArgumentException("'name' cannot be null or empty.");
-            }
+        if (isNullOrEmpty(name)) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+        }
 
+        try {
             return createCertificateIssuer(clientImpl.deleteCertificateIssuer(name));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -1311,9 +1766,16 @@ public final class CertificateClient {
      * <p>Deletes the certificate issuer in the key vault. Prints out details of the response returned by the
      * service and the deleted certificate issuer.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.deleteIssuer#String -->
+     * <pre>
+     * CertificateIssuer deletedIssuer = certificateClient.deleteIssuer&#40;&quot;issuerName&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Deleted certificate issuer with name %s and provider id %s%n&quot;, deletedIssuer.getName&#40;&#41;,
+     *     deletedIssuer.getProvider&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.deleteIssuer#String -->
      *
      * @param name The name of the certificate issuer to be deleted. It is required and cannot be {@code null} or empty.
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      * @return The deleted certificate issuer.
      *
      * @throws HttpResponseException If a certificate issuer with the given {@code name} doesn't exist in the key
@@ -1322,11 +1784,11 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<CertificateIssuer> deleteIssuerWithResponse(String name, RequestContext requestContext) {
-        try {
-            if (isNullOrEmpty(name)) {
-                throw new IllegalArgumentException("'name' cannot be null or empty.");
-            }
+        if (isNullOrEmpty(name)) {
+            throw LOGGER.logThrowableAsError(new IllegalArgumentException("'name' cannot be null or empty."));
+        }
 
+        try {
             return mapResponse(clientImpl.deleteCertificateIssuerWithResponse(name, requestContext),
                 CertificateIssuerHelper::createCertificateIssuer);
         } catch (RuntimeException e) {
@@ -1342,12 +1804,30 @@ public final class CertificateClient {
      * <p>><strong>Iterate through certificate issuers</strong></p>
      * <p>Lists the certificate issuers in the key vault and prints out each issuer's name and provider.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfIssuers -->
+     * <pre>
+     * certificateClient.listPropertiesOfIssuers&#40;&#41;.forEach&#40;issuer -&gt; &#123;
+     *     CertificateIssuer retrievedIssuer = certificateClient.getIssuer&#40;issuer.getName&#40;&#41;&#41;;
+     *
+     *     System.out.printf&#40;&quot;Received issuer with name %s and provider %s%n&quot;, retrievedIssuer.getName&#40;&#41;,
+     *         retrievedIssuer.getProvider&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfIssuers -->
      *
      * <p><strong>Iterate through certificate issuers by page</strong></p>
      * <p>Iterates through the certificate issuers in the key vault by page and prints out each issuer's name and
      * provider.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfIssuers.iterableByPage -->
+     * <pre>
+     * certificateClient.listPropertiesOfIssuers&#40;&#41;.iterableByPage&#40;&#41;.forEach&#40;pagedResponse -&gt; &#123;
+     *     pagedResponse.getValue&#40;&#41;.forEach&#40;issuer -&gt; &#123;
+     *         CertificateIssuer retrievedIssuer = certificateClient.getIssuer&#40;issuer.getName&#40;&#41;&#41;;
+     *
+     *         System.out.printf&#40;&quot;Received issuer with name %s and provider %s%n&quot;, retrievedIssuer.getName&#40;&#41;,
+     *             retrievedIssuer.getProvider&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * &#125;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfIssuers.iterableByPage -->
      *
      * @return A {@link PagedIterable} of properties objects of all the certificate issuers in the vault. A properties
@@ -1367,12 +1847,38 @@ public final class CertificateClient {
      * <p>Lists the certificate issuers in the key vault and gets their details by looping though the properties objects
      * and calling {@link CertificateClient#getIssuer(String)}.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfIssuers#RequestContext -->
+     * <pre>
+     * RequestContext requestContext = RequestContext.builder&#40;&#41;
+     *     .putMetadata&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * certificateClient.listPropertiesOfIssuers&#40;requestContext&#41;.forEach&#40;issuer -&gt; &#123;
+     *     CertificateIssuer retrievedIssuer = certificateClient.getIssuer&#40;issuer.getName&#40;&#41;&#41;;
+     *
+     *     System.out.printf&#40;&quot;Received issuer with name %s and provider %s%n&quot;, retrievedIssuer.getName&#40;&#41;,
+     *         retrievedIssuer.getProvider&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfIssuers#RequestContext -->
      *
      * <p><strong>Iterate through certificate issuers by page</strong></p>
      * <p>Iterates through the certificate issuers in the key vault by page and gets their details by looping though the
      * properties objects and calling {@link CertificateClient#getIssuer(String)}.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfIssuers.iterableByPage#RequestContext -->
+     * <pre>
+     * RequestContext reqContext = RequestContext.builder&#40;&#41;
+     *     .putMetadata&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * certificateClient.listPropertiesOfIssuers&#40;reqContext&#41;.iterableByPage&#40;&#41;.forEach&#40;pagedResponse -&gt; &#123;
+     *     pagedResponse.getValue&#40;&#41;.forEach&#40;issuer -&gt; &#123;
+     *         CertificateIssuer retrievedIssuer = certificateClient.getIssuer&#40;issuer.getName&#40;&#41;&#41;;
+     *
+     *         System.out.printf&#40;&quot;Received issuer with name %s and provider %s%n&quot;, retrievedIssuer.getName&#40;&#41;,
+     *             retrievedIssuer.getProvider&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * &#125;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listPropertiesOfIssuers.iterableByPage#RequestContext -->
      *
      * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
@@ -1398,6 +1904,16 @@ public final class CertificateClient {
      * <p>Gets the latest version of a certificate issuer and updates it in the key vault, then prints out the updated
      * issuer's details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.updateIssuer#CertificateIssuer -->
+     * <pre>
+     * CertificateIssuer returnedIssuer = certificateClient.getIssuer&#40;&quot;issuerName&quot;&#41;;
+     *
+     * returnedIssuer.setAccountId&#40;&quot;newAccountId&quot;&#41;;
+     *
+     * CertificateIssuer updatedIssuer = certificateClient.updateIssuer&#40;returnedIssuer&#41;;
+     *
+     * System.out.printf&#40;&quot;Updated issuer with name %s, provider %s and account Id %s%n&quot;, updatedIssuer.getName&#40;&#41;,
+     *     updatedIssuer.getProvider&#40;&#41;, updatedIssuer.getAccountId&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.updateIssuer#CertificateIssuer -->
      *
      * @param issuer The issuer with updated properties.
@@ -1410,17 +1926,19 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateIssuer updateIssuer(CertificateIssuer issuer) {
+        if (issuer == null) {
+            throw LOGGER.logThrowableAsError(new NullPointerException("'issuer' cannot be null."));
+        }
+
+        if (isNullOrEmpty(issuer.getName())) {
+            throw LOGGER
+                .logThrowableAsError(new IllegalArgumentException("'issuer.getName()' cannot be null or empty."));
+        }
+
         try {
-            Objects.requireNonNull(issuer, "'issuer' cannot be null.");
-
-            if (isNullOrEmpty(issuer.getName())) {
-                throw new IllegalArgumentException("'issuer.getName()' cannot be null or empty.");
-            }
-
             IssuerBundle issuerBundle = getIssuerBundle(issuer);
-            CertificateIssuerUpdateParameters certificateIssuerUpdateParameters =
-                new CertificateIssuerUpdateParameters()
-                    .setProvider(issuerBundle.getProvider())
+            CertificateIssuerUpdateParameters certificateIssuerUpdateParameters
+                = new CertificateIssuerUpdateParameters().setProvider(issuerBundle.getProvider())
                     .setOrganizationDetails(issuerBundle.getOrganizationDetails())
                     .setCredentials(issuerBundle.getCredentials())
                     .setAttributes(issuerBundle.getAttributes());
@@ -1439,8 +1957,25 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Gets the latest version of a certificate issuer and updates it in the key vault. Prints out details of the
      * response returned by the service and the updated issuer.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.updateIssuer#CertificateIssuer-RequestContext -->
-     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.updateIssuer#CertificateIssuer-RequestContext -->
+     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.updateIssuerWithResponse#CertificateIssuer-RequestContext -->
+     * <pre>
+     * CertificateIssuer issuer = certificateClient.getIssuer&#40;&quot;issuerName&quot;&#41;;
+     *
+     * issuer.setAccountId&#40;&quot;newAccountId&quot;&#41;;
+     *
+     * RequestContext requestContext = RequestContext.builder&#40;&#41;
+     *     .putMetadata&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * Response&lt;CertificateIssuer&gt; updatedIssuerWithResponse =
+     *     certificateClient.updateIssuerWithResponse&#40;issuer, requestContext&#41;;
+     *
+     * System.out.printf&#40;&quot;Updated issuer with name %s, provider %s and account Id %s%n&quot;,
+     *     updatedIssuerWithResponse.getValue&#40;&#41;.getName&#40;&#41;,
+     *     updatedIssuerWithResponse.getValue&#40;&#41;.getProvider&#40;&#41;,
+     *     updatedIssuerWithResponse.getValue&#40;&#41;.getAccountId&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.updateIssuerWithResponse#CertificateIssuer-RequestContext -->
      *
      * @param issuer The issuer with updated properties.
      * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
@@ -1455,24 +1990,25 @@ public final class CertificateClient {
     public Response<CertificateIssuer> updateIssuerWithResponse(CertificateIssuer issuer,
         RequestContext requestContext) {
 
+        if (issuer == null) {
+            throw LOGGER.logThrowableAsError(new NullPointerException("'issuer' cannot be null."));
+        }
+
+        if (isNullOrEmpty(issuer.getName())) {
+            throw LOGGER
+                .logThrowableAsError(new IllegalArgumentException("'issuer.getName()' cannot be null or empty."));
+        }
+
         try {
-            Objects.requireNonNull(issuer, "'issuer' cannot be null.");
-
-            if (isNullOrEmpty(issuer.getName())) {
-                throw new IllegalArgumentException("'issuer.getName()' cannot be null or empty.");
-            }
-
             IssuerBundle issuerBundle = getIssuerBundle(issuer);
-            CertificateIssuerUpdateParameters certificateIssuerUpdateParameters =
-                new CertificateIssuerUpdateParameters()
-                    .setProvider(issuerBundle.getProvider())
+            CertificateIssuerUpdateParameters certificateIssuerUpdateParameters
+                = new CertificateIssuerUpdateParameters().setProvider(issuerBundle.getProvider())
                     .setOrganizationDetails(issuerBundle.getOrganizationDetails())
                     .setCredentials(issuerBundle.getCredentials())
                     .setAttributes(issuerBundle.getAttributes());
 
-            return mapResponse(
-                clientImpl.updateCertificateIssuerWithResponse(issuer.getName(), certificateIssuerUpdateParameters,
-                    requestContext), CertificateIssuerHelper::createCertificateIssuer);
+            return mapResponse(clientImpl.updateCertificateIssuerWithResponse(issuer.getName(),
+                certificateIssuerUpdateParameters, requestContext), CertificateIssuerHelper::createCertificateIssuer);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1488,6 +2024,14 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Sets certificate contacts in the key vault and prints out each one's details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.setContacts#List -->
+     * <pre>
+     * CertificateContact contactToAdd = new CertificateContact&#40;&#41;.setName&#40;&quot;user&quot;&#41;.setEmail&#40;&quot;useremail&#64;example.com&quot;&#41;;
+     *
+     * certificateClient.setContacts&#40;Collections.singletonList&#40;contactToAdd&#41;&#41;.forEach&#40;contact -&gt; &#123;
+     *     System.out.printf&#40;&quot;Added contact with name %s and email %s to key vault%n&quot;, contact.getName&#40;&#41;,
+     *         contact.getEmail&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.setContacts#List -->
      *
      * @param contacts The list of contacts to set on the vault.
@@ -1510,6 +2054,17 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Sets certificate contacts in the key vault and prints out each one's details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.setContacts#List-RequestContext -->
+     * <pre>
+     * CertificateContact sampleContact = new CertificateContact&#40;&#41;.setName&#40;&quot;user&quot;&#41;.setEmail&#40;&quot;useremail&#64;example.com&quot;&#41;;
+     * RequestContext requestContext = RequestContext.builder&#40;&#41;
+     *     .putMetadata&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * certificateClient.setContacts&#40;Collections.singletonList&#40;sampleContact&#41;, requestContext&#41;.forEach&#40;contact -&gt; &#123;
+     *     System.out.printf&#40;&quot;Added contact with name %s and email %s to key vault%n&quot;, contact.getName&#40;&#41;,
+     *         contact.getEmail&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.setContacts#List-RequestContext -->
      *
      * @param contacts The list of contacts to set on the vault.
@@ -1523,9 +2078,8 @@ public final class CertificateClient {
         RequestContext requestContext) {
 
         try {
-            return new PagedIterable<>((pagingOptions) -> mapContactsToPagedResponse(
-                clientImpl.setCertificateContactsWithResponse(new Contacts().setContactList(contacts),
-                    requestContext)));
+            return new PagedIterable<>((pagingOptions) -> mapContactsToPagedResponse(clientImpl
+                .setCertificateContactsWithResponse(new Contacts().setContactList(contacts), requestContext)));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1538,6 +2092,12 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Lists the certificate contacts in the key vault and prints out each one's details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listContacts -->
+     * <pre>
+     * for &#40;CertificateContact contact : certificateClient.listContacts&#40;&#41;&#41; &#123;
+     *     System.out.printf&#40;&quot;Added contact with name %s and email %s to key vault%n&quot;, contact.getName&#40;&#41;,
+     *         contact.getEmail&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listContacts -->
      *
      * @return A {@link PagedIterable} containing all the certificate contacts in the vault.
@@ -1554,6 +2114,16 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Lists the certificate contacts in the key vault and prints out each one's details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.listContacts#RequestContext -->
+     * <pre>
+     * RequestContext requestContext = RequestContext.builder&#40;&#41;
+     *     .putMetadata&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * for &#40;CertificateContact contact : certificateClient.listContacts&#40;requestContext&#41;&#41; &#123;
+     *     System.out.printf&#40;&quot;Added contact with name %s and email %s to key vault%n&quot;, contact.getName&#40;&#41;,
+     *         contact.getEmail&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.listContacts#RequestContext -->
      *
      * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
@@ -1576,6 +2146,12 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Deletes the certificate contacts in the key vault and prints out each one's details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.deleteContacts -->
+     * <pre>
+     * for &#40;CertificateContact contact : certificateClient.deleteContacts&#40;&#41;&#41; &#123;
+     *     System.out.printf&#40;&quot;Deleted contact with name %s and email %s from key vault%n&quot;, contact.getName&#40;&#41;,
+     *         contact.getEmail&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.deleteContacts -->
      *
      * @return A {@link PagedIterable} containing the freshly deleted certificate contacts.
@@ -1591,9 +2167,20 @@ public final class CertificateClient {
      *
      * <p><strong>Code Sample</strong></p>
      * <p>Deletes the certificate contacts in the key vault and prints out each one's details.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.deleteContacts-RequestContext -->
-     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.deleteContacts-RequestContext -->
+     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.deleteContacts#RequestContext -->
+     * <pre>
+     * RequestContext requestContext = RequestContext.builder&#40;&#41;
+     *     .putMetadata&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
+     *     .build&#40;&#41;;
      *
+     * for &#40;CertificateContact contact : certificateClient.deleteContacts&#40;requestContext&#41;&#41; &#123;
+     *     System.out.printf&#40;&quot;Deleted contact with name %s and email %s from key vault%n&quot;, contact.getName&#40;&#41;,
+     *         contact.getEmail&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.deleteContacts#RequestContext -->
+     *
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      * @return A {@link PagedIterable} containing the freshly deleted certificate contacts.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -1613,6 +2200,16 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Gets a pending certificate operation and prints out its status.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.getCertificateOperation#String -->
+     * <pre>
+     * Poller&lt;CertificateOperation, KeyVaultCertificateWithPolicy&gt; getCertPoller = null;
+     *     &#47;&#47;certificateClient.getCertificateOperation&#40;&quot;certificateName&quot;&#41;;
+     *
+     * getCertPoller.waitUntil&#40;LongRunningOperationStatus.SUCCESSFULLY_COMPLETED&#41;;
+     *
+     * KeyVaultCertificate cert = getCertPoller.getFinalResult&#40;&#41;;
+     *
+     * System.out.printf&#40;&quot;Certificate created with name %s%n&quot;, cert.getName&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.getCertificateOperation#String -->
      *
      * @param certificateName The name of the certificate the operation pertains to. It is required and cannot be
@@ -1626,11 +2223,12 @@ public final class CertificateClient {
     // TODO (vcolin7): Uncomment when creating a Poller is supported in azure-core-v2.
     /*@ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public Poller<CertificateOperation, KeyVaultCertificateWithPolicy> getCertificateOperation(String certificateName) {
-        try {
-            if (isNullOrEmpty(certificateName)) {
-                throw new IllegalArgumentException("'certificateName' cannot be null or empty.");
-            }
-
+        if (isNullOrEmpty(certificateName)) {
+            throw LOGGER.logThrowableAsError(
+                new IllegalArgumentException("'certificateName' cannot be null or empty."));
+        }
+    
+        try {    
             return Poller.createPoller(Duration.ofSeconds(1),
                 pollingContext -> new PollResponse<>(LongRunningOperationStatus.NOT_STARTED, null),
                 pollingContext -> certificatePollOperation(certificateName),
@@ -1649,6 +2247,12 @@ public final class CertificateClient {
      * <p>Triggers certificate creation and then deletes the certificate creation operation in the key vault. Prints out
      * the deleted certificate operation details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.deleteCertificateOperation#String -->
+     * <pre>
+     * CertificateOperation deletedCertificateOperation =
+     *     certificateClient.deleteCertificateOperation&#40;&quot;certificateName&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Deleted Certificate Operation's last status %s%n&quot;, deletedCertificateOperation.getStatus&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.deleteCertificateOperation#String -->
      *
      * @param certificateName The name of the certificate. It is required and cannot be {@code null} or empty.
@@ -1660,11 +2264,12 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateOperation deleteCertificateOperation(String certificateName) {
-        try {
-            if (isNullOrEmpty(certificateName)) {
-                throw new IllegalArgumentException("'certificateName' cannot be null or empty.");
-            }
+        if (isNullOrEmpty(certificateName)) {
+            throw LOGGER
+                .logThrowableAsError(new IllegalArgumentException("'certificateName' cannot be null or empty."));
+        }
 
+        try {
             return createCertificateOperation(clientImpl.deleteCertificateOperation(certificateName));
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
@@ -1679,6 +2284,12 @@ public final class CertificateClient {
      * <p>Triggers certificate creation and then deletes the certificate creation operation in the key vault. Prints out
      * the deleted certificate operation details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.deleteCertificateOperation#String -->
+     * <pre>
+     * CertificateOperation deletedCertificateOperation =
+     *     certificateClient.deleteCertificateOperation&#40;&quot;certificateName&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Deleted Certificate Operation's last status %s%n&quot;, deletedCertificateOperation.getStatus&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.deleteCertificateOperation#String -->
      *
      * @param certificateName The name of the certificate the operation pertains to. It is required and cannot be
@@ -1694,11 +2305,12 @@ public final class CertificateClient {
     public Response<CertificateOperation> deleteCertificateOperationWithResponse(String certificateName,
         RequestContext requestContext) {
 
-        try {
-            if (isNullOrEmpty(certificateName)) {
-                throw new IllegalArgumentException("'certificateName' cannot be null or empty.");
-            }
+        if (isNullOrEmpty(certificateName)) {
+            throw LOGGER
+                .logThrowableAsError(new IllegalArgumentException("'certificateName' cannot be null or empty."));
+        }
 
+        try {
             return mapResponse(clientImpl.deleteCertificateOperationWithResponse(certificateName, requestContext),
                 CertificateOperationHelper::createCertificateOperation);
         } catch (RuntimeException e) {
@@ -1714,6 +2326,12 @@ public final class CertificateClient {
      * <p>Triggers certificate creation and then cancels the creation operation in the key vault. Prints out the
      * cancelled certificate operation details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.cancelCertificateOperation#String -->
+     * <pre>
+     * CertificateOperation certificateOperation =
+     *     certificateClient.cancelCertificateOperation&#40;&quot;certificateName&quot;&#41;;
+     *
+     * System.out.printf&#40;&quot;Certificate Operation status %s%n&quot;, certificateOperation.getStatus&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.cancelCertificateOperation#String -->
      *
      * @param certificateName The name of the certificate the operation pertains to. It is required and cannot be
@@ -1726,11 +2344,12 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CertificateOperation cancelCertificateOperation(String certificateName) {
-        try {
-            if (isNullOrEmpty(certificateName)) {
-                throw new IllegalArgumentException("'certificateName' cannot be null or empty.");
-            }
+        if (isNullOrEmpty(certificateName)) {
+            throw LOGGER
+                .logThrowableAsError(new IllegalArgumentException("'certificateName' cannot be null or empty."));
+        }
 
+        try {
             return createCertificateOperation(
                 clientImpl.updateCertificateOperation(certificateName, new CertificateOperationUpdateParameter(true)));
         } catch (RuntimeException e) {
@@ -1745,11 +2364,22 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Triggers certificate creation and then cancels the creation operation in the key vault. Prints out the
      * cancelled certificate operation details.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.cancelCertificateOperation#String-RequestContext -->
-     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.cancelCertificateOperation#String-RequestContext -->
+     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.cancelCertificateOperationWithResponse#String-RequestContext -->
+     * <pre>
+     * RequestContext requestContext = RequestContext.builder&#40;&#41;
+     *     .putMetadata&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * Response&lt;CertificateOperation&gt; certificateOperationWithResponse =
+     *     certificateClient.cancelCertificateOperationWithResponse&#40;&quot;certificateName&quot;, requestContext&#41;;
+     *
+     * System.out.printf&#40;&quot;Certificate Operation status %s%n&quot;, certificateOperationWithResponse.getValue&#40;&#41;.getStatus&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.cancelCertificateOperationWithResponse#String-RequestContext -->
      *
      * @param certificateName The name of the certificate the operation pertains to. It is required and cannot be
      * {@code null} or empty.
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      * @return A response object whose {@link Response#getValue()} contains the cancelled certificate operation.
      *
      * @throws HttpResponseException If a certificate operation for a certificate with the given {@code name} doesn't
@@ -1761,7 +2391,8 @@ public final class CertificateClient {
         RequestContext requestContext) {
 
         try {
-            return mapResponse(clientImpl.updateCertificateOperationWithResponse(certificateName,
+            return mapResponse(
+                clientImpl.updateCertificateOperationWithResponse(certificateName,
                     new CertificateOperationUpdateParameter(true), requestContext),
                 CertificateOperationHelper::createCertificateOperation);
         } catch (RuntimeException e) {
@@ -1780,6 +2411,17 @@ public final class CertificateClient {
      * <p>Merges a certificate with a kay pair available in the service and prints out the merged certificate's details.
      * </p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.mergeCertificate#MergeCertificateOptions -->
+     * <pre>
+     * List&lt;byte[]&gt; x509CertificatesToMerge = new ArrayList&lt;&gt;&#40;&#41;;
+     * MergeCertificateOptions config =
+     *     new MergeCertificateOptions&#40;&quot;certificateName&quot;, x509CertificatesToMerge&#41;
+     *         .setEnabled&#40;false&#41;;
+     *
+     * KeyVaultCertificate mergedCertificate = certificateClient.mergeCertificate&#40;config&#41;;
+     *
+     * System.out.printf&#40;&quot;Received Certificate with name %s and key id %s%n&quot;,
+     *     mergedCertificate.getProperties&#40;&#41;.getName&#40;&#41;, mergedCertificate.getKeyId&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.mergeCertificate#MergeCertificateOptions -->
      *
      * @param mergeCertificateOptions The merge certificate configuration holding the x509 certificates to merge.
@@ -1794,8 +2436,8 @@ public final class CertificateClient {
         try {
             Objects.requireNonNull(mergeCertificateOptions, "'mergeCertificateOptions' cannot be null.");
 
-            CertificateMergeParameters certificateMergeParameters =
-                new CertificateMergeParameters(mergeCertificateOptions.getX509Certificates())
+            CertificateMergeParameters certificateMergeParameters
+                = new CertificateMergeParameters(mergeCertificateOptions.getX509Certificates())
                     .setTags(mergeCertificateOptions.getTags())
                     .setCertificateAttributes(
                         new CertificateAttributes().setEnabled(mergeCertificateOptions.isEnabled()));
@@ -1817,10 +2459,27 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Merges a certificate with a kay pair available in the service. Prints out details of the response returned by
      * the service and the merged certificate.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.mergeCertificate#MergeCertificateOptions-RequestContext -->
-     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.mergeCertificate#MergeCertificateOptions-RequestContext -->
+     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.mergeCertificateWithResponse#MergeCertificateOptions-RequestContext -->
+     * <pre>
+     * List&lt;byte[]&gt; x509CertsToMerge = new ArrayList&lt;&gt;&#40;&#41;;
+     * MergeCertificateOptions mergeConfig =
+     *     new MergeCertificateOptions&#40;&quot;certificateName&quot;, x509CertsToMerge&#41;
+     *         .setEnabled&#40;false&#41;;
+     * RequestContext requestContext = RequestContext.builder&#40;&#41;
+     *     .putMetadata&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * Response&lt;KeyVaultCertificateWithPolicy&gt; mergedCertificateWithResponse =
+     *     certificateClient.mergeCertificateWithResponse&#40;mergeConfig, requestContext&#41;;
+     *
+     * System.out.printf&#40;&quot;Received Certificate with name %s and key id %s%n&quot;,
+     *     mergedCertificateWithResponse.getValue&#40;&#41;.getProperties&#40;&#41;.getName&#40;&#41;,
+     *     mergedCertificateWithResponse.getValue&#40;&#41;.getKeyId&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.mergeCertificateWithResponse#MergeCertificateOptions-RequestContext -->
      *
      * @param mergeCertificateOptions The merge certificate configuration holding the x509 certificates to merge.
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      * @return A response object whose {@link Response#getValue()} contains the merged certificate.
      *
      * @throws HttpResponseException If the provided {@code mergeCertificateOptions} are malformed.
@@ -1828,25 +2487,28 @@ public final class CertificateClient {
      * @throws NullPointerException If {@code mergeCertificateOptions} is {@code null}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<KeyVaultCertificateWithPolicy> mergeCertificateWithResponse(
-        MergeCertificateOptions mergeCertificateOptions, RequestContext requestContext) {
+    public Response<KeyVaultCertificateWithPolicy>
+        mergeCertificateWithResponse(MergeCertificateOptions mergeCertificateOptions, RequestContext requestContext) {
+
+        if (mergeCertificateOptions == null) {
+            throw LOGGER.logThrowableAsError(new NullPointerException("'mergeCertificateOptions' cannot be null."));
+        }
+
+        if (isNullOrEmpty(mergeCertificateOptions.getName())) {
+            throw LOGGER.logThrowableAsError(
+                new IllegalArgumentException("'mergeCertificateOptions.getName()' cannot be null or empty."));
+        }
 
         try {
-            Objects.requireNonNull(mergeCertificateOptions, "'mergeCertificateOptions' cannot be null.");
-
-            if (isNullOrEmpty(mergeCertificateOptions.getName())) {
-                throw new IllegalArgumentException("'mergeCertificateOptions.getName()' cannot be null or empty.");
-            }
-
-            CertificateMergeParameters certificateMergeParameters =
-                new CertificateMergeParameters(mergeCertificateOptions.getX509Certificates())
+            CertificateMergeParameters certificateMergeParameters
+                = new CertificateMergeParameters(mergeCertificateOptions.getX509Certificates())
                     .setTags(mergeCertificateOptions.getTags())
                     .setCertificateAttributes(
                         new CertificateAttributes().setEnabled(mergeCertificateOptions.isEnabled()));
 
-            return mapResponse(
-                clientImpl.mergeCertificateWithResponse(mergeCertificateOptions.getName(), certificateMergeParameters,
-                    requestContext), KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy);
+            return mapResponse(clientImpl.mergeCertificateWithResponse(mergeCertificateOptions.getName(),
+                certificateMergeParameters, requestContext),
+                KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy);
         } catch (RuntimeException e) {
             throw LOGGER.logThrowableAsError(e);
         }
@@ -1863,6 +2525,16 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Imports a certificate into the key vault and prints out its details.</p>
      * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.importCertificate#ImportCertificateOptions -->
+     * <pre>
+     * byte[] certificateToImport = new byte[100];
+     * ImportCertificateOptions config =
+     *     new ImportCertificateOptions&#40;&quot;certificateName&quot;, certificateToImport&#41;.setEnabled&#40;false&#41;;
+     *
+     * KeyVaultCertificate importedCertificate = certificateClient.importCertificate&#40;config&#41;;
+     *
+     * System.out.printf&#40;&quot;Received Certificate with name %s and key id %s%n&quot;,
+     *     importedCertificate.getProperties&#40;&#41;.getName&#40;&#41;, importedCertificate.getKeyId&#40;&#41;&#41;;
+     * </pre>
      * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.importCertificate#ImportCertificateOptions -->
      *
      * @param importCertificateOptions The details of the certificate to import to the key vault. It is required and
@@ -1876,18 +2548,21 @@ public final class CertificateClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public KeyVaultCertificateWithPolicy importCertificate(ImportCertificateOptions importCertificateOptions) {
+        if (importCertificateOptions == null) {
+            throw LOGGER.logThrowableAsError(new NullPointerException("'importCertificateOptions' cannot be null."));
+        }
+
+        if (isNullOrEmpty(importCertificateOptions.getName())) {
+            throw LOGGER.logThrowableAsError(
+                new IllegalArgumentException("'importCertificateOptions.getName()' cannot be null or empty."));
+        }
+
         try {
-            Objects.requireNonNull(importCertificateOptions, "'importCertificateOptions' cannot be null.");
+            com.azure.v2.security.keyvault.certificates.implementation.models.CertificatePolicy implPolicy
+                = getImplCertificatePolicy(importCertificateOptions.getPolicy());
 
-            if (isNullOrEmpty(importCertificateOptions.getName())) {
-                throw new IllegalArgumentException("'importCertificateOptions.getName()' cannot be null or empty.");
-            }
-
-            com.azure.v2.security.keyvault.certificates.implementation.models.CertificatePolicy implPolicy =
-                getImplCertificatePolicy(importCertificateOptions.getPolicy());
-
-            CertificateImportParameters certificateImportParameters =
-                new CertificateImportParameters(transformCertificateForImport(importCertificateOptions))
+            CertificateImportParameters certificateImportParameters
+                = new CertificateImportParameters(transformCertificateForImport(importCertificateOptions))
                     .setPassword(importCertificateOptions.getPassword())
                     .setCertificatePolicy(implPolicy)
                     .setTags(importCertificateOptions.getTags())
@@ -1912,11 +2587,27 @@ public final class CertificateClient {
      * <p><strong>Code Sample</strong></p>
      * <p>Imports a certificate into the key vault. Prints out details of the response returned by the service and the
      * imported certificate.</p>
-     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.importCertificate#ImportCertificateOptions -->
-     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.importCertificate#ImportCertificateOptions -->
+     * <!-- src_embed com.azure.v2.security.keyvault.certificates.CertificateClient.importCertificateWithResponse#ImportCertificateOptions-RequestContext -->
+     * <pre>
+     * byte[] certToImport = new byte[100];
+     * ImportCertificateOptions importCertificateOptions =
+     *     new ImportCertificateOptions&#40;&quot;certificateName&quot;, certToImport&#41;.setEnabled&#40;false&#41;;
+     * RequestContext requestContext = RequestContext.builder&#40;&#41;
+     *     .putMetadata&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
+     *     .build&#40;&#41;;
+     *
+     * Response&lt;KeyVaultCertificateWithPolicy&gt; importedCertificateWithResponse =
+     *     certificateClient.importCertificateWithResponse&#40;importCertificateOptions, requestContext&#41;;
+     *
+     * System.out.printf&#40;&quot;Received Certificate with name %s and key id %s%n&quot;,
+     *     importedCertificateWithResponse.getValue&#40;&#41;.getProperties&#40;&#41;.getName&#40;&#41;,
+     *     importedCertificateWithResponse.getValue&#40;&#41;.getKeyId&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.v2.security.keyvault.certificates.CertificateClient.importCertificateWithResponse#ImportCertificateOptions-RequestContext -->
      *
      * @param importCertificateOptions The details of the certificate to import to the key vault. It is required and
      * cannot be {@code null}.
+     * @param requestContext Additional information that is passed through the HTTP pipeline during the service call.
      * @return A response object whose {@link Response#getValue()} contains the imported certificate.
      *
      * @throws HttpResponseException If the provided {@code importCertificateOptions} are malformed.
@@ -1928,25 +2619,29 @@ public final class CertificateClient {
     public Response<KeyVaultCertificateWithPolicy> importCertificateWithResponse(
         ImportCertificateOptions importCertificateOptions, RequestContext requestContext) {
 
+        if (importCertificateOptions == null) {
+            throw LOGGER.logThrowableAsError(new NullPointerException("'importCertificateOptions' cannot be null."));
+        }
+
+        if (isNullOrEmpty(importCertificateOptions.getName())) {
+            throw LOGGER.logThrowableAsError(
+                new IllegalArgumentException("'importCertificateOptions.getName()' cannot be null or empty."));
+        }
+
         try {
-            Objects.requireNonNull(importCertificateOptions, "'importCertificateOptions' cannot be null.");
+            com.azure.v2.security.keyvault.certificates.implementation.models.CertificatePolicy implPolicy
+                = getImplCertificatePolicy(importCertificateOptions.getPolicy());
 
-            if (isNullOrEmpty(importCertificateOptions.getName())) {
-                throw new IllegalArgumentException("'importCertificateOptions.getName()' cannot be null or empty.");
-            }
-
-            com.azure.v2.security.keyvault.certificates.implementation.models.CertificatePolicy implPolicy =
-                getImplCertificatePolicy(importCertificateOptions.getPolicy());
-
-            CertificateImportParameters certificateImportParameters =
-                new CertificateImportParameters(transformCertificateForImport(importCertificateOptions))
+            CertificateImportParameters certificateImportParameters
+                = new CertificateImportParameters(transformCertificateForImport(importCertificateOptions))
                     .setPassword(importCertificateOptions.getPassword())
                     .setCertificatePolicy(implPolicy)
                     .setTags(importCertificateOptions.getTags())
                     .setCertificateAttributes(
                         new CertificateAttributes().setEnabled(importCertificateOptions.isEnabled()));
 
-            return mapResponse(clientImpl.importCertificateWithResponse(importCertificateOptions.getName(),
+            return mapResponse(
+                clientImpl.importCertificateWithResponse(importCertificateOptions.getName(),
                     certificateImportParameters, requestContext),
                 KeyVaultCertificateWithPolicyHelper::createCertificateWithPolicy);
         } catch (RuntimeException e) {

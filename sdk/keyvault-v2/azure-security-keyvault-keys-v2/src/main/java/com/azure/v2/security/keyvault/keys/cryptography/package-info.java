@@ -48,6 +48,12 @@
  * {@link com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient}, using the
  * {@link com.azure.v2.security.keyvault.keys.cryptography.CryptographyClientBuilder} to configure it.</p>
  * <!-- src_embed com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.instantiation -->
+ * <pre>
+ * CryptographyClient cryptographyClient = new CryptographyClientBuilder&#40;&#41;
+ *     .keyIdentifier&#40;&quot;&lt;your-key-id-from-keyvault&gt;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
  * <!-- end com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.instantiation -->
  *
  * <br>
@@ -60,6 +66,15 @@
  * <p>The following code sample demonstrates how to encrypt data using the
  * {@link com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient#encrypt(com.azure.v2.security.keyvault.keys.cryptography.models.EncryptionAlgorithm, byte[])} API.</p>
  * <!-- src_embed com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte -->
+ * <pre>
+ * byte[] plaintext = new byte[100];
+ * new Random&#40;0x1234567L&#41;.nextBytes&#40;plaintext&#41;;
+ *
+ * EncryptResult encryptResult = cryptographyClient.encrypt&#40;EncryptionAlgorithm.RSA_OAEP, plaintext&#41;;
+ *
+ * System.out.printf&#40;&quot;Received encrypted content of length: %d, with algorithm: %s.%n&quot;,
+ *     encryptResult.getCipherText&#40;&#41;.length, encryptResult.getAlgorithm&#40;&#41;&#41;;
+ * </pre>
  * <!-- end com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte -->
  *
  * <br>
@@ -73,6 +88,14 @@
  * {@link com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient#decrypt(com.azure.v2.security.keyvault.keys.cryptography.models.EncryptionAlgorithm, byte[])}
  * API.</p>
  * <!-- src_embed com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte -->
+ * <pre>
+ * byte[] ciphertext = new byte[100];
+ * new Random&#40;0x1234567L&#41;.nextBytes&#40;ciphertext&#41;;
+ *
+ * DecryptResult decryptResult = cryptographyClient.decrypt&#40;EncryptionAlgorithm.RSA_OAEP, ciphertext&#41;;
+ *
+ * System.out.printf&#40;&quot;Received decrypted content of length: %d.%n&quot;, decryptResult.getPlainText&#40;&#41;.length&#41;;
+ * </pre>
  * <!-- end com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte -->
  *
  * @see com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient

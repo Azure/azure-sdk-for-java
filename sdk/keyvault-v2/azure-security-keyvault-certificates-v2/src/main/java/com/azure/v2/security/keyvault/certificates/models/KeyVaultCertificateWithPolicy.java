@@ -76,6 +76,7 @@ public class KeyVaultCertificateWithPolicy extends KeyVaultCertificate {
         return this;
     }
 
+    @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         return jsonWriter.writeStartObject()
             .writeBinaryField("cer", getCer())

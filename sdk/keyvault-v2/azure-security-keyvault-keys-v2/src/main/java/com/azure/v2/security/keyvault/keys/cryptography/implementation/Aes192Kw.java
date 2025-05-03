@@ -20,9 +20,8 @@ class Aes192Kw extends AesKw {
     }
 
     @Override
-    public ICryptoTransform createEncryptor(byte[] key, byte[] iv, Provider provider)
-        throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
-        InvalidAlgorithmParameterException {
+    public ICryptoTransform createEncryptor(byte[] key, byte[] iv, Provider provider) throws InvalidKeyException,
+        NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
 
         CryptographyUtils.validate(key, KEY_SIZE_IN_BYTES);
 
@@ -30,9 +29,8 @@ class Aes192Kw extends AesKw {
     }
 
     @Override
-    public ICryptoTransform createDecryptor(byte[] key, byte[] iv, Provider provider)
-        throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException,
-        InvalidAlgorithmParameterException {
+    public ICryptoTransform createDecryptor(byte[] key, byte[] iv, Provider provider) throws InvalidKeyException,
+        NoSuchAlgorithmException, NoSuchPaddingException, InvalidAlgorithmParameterException {
 
         CryptographyUtils.validate(key, KEY_SIZE_IN_BYTES);
 

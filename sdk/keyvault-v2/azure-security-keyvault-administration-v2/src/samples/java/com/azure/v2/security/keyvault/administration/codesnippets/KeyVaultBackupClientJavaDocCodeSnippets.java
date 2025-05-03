@@ -14,6 +14,10 @@ import com.azure.v2.security.keyvault.administration.models.KeyVaultRestoreResul
 import com.azure.v2.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreOperation;
 import com.azure.v2.security.keyvault.administration.models.KeyVaultSelectiveKeyRestoreResult;
 
+import io.clientcore.core.http.client.HttpClient;
+import io.clientcore.core.http.pipeline.HttpInstrumentationOptions;
+import io.clientcore.core.http.pipeline.HttpInstrumentationOptions.HttpLogLevel;
+
 /**
  * This class contains code samples for generating javadocs through doclets for {@link KeyVaultBackupClient}.
  */
@@ -30,6 +34,24 @@ public class KeyVaultBackupClientJavaDocCodeSnippets {
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
         // END: com.azure.v2.security.keyvault.administration.KeyVaultBackupClient.instantiation
+
+        return keyVaultBackupClient;
+    }
+
+    /**
+     * Generates code sample for creating a {@link KeyVaultBackupClient} using a custom {@link HttpClient}.
+     *
+     * @return An instance of {@link KeyVaultBackupClient}.
+     */
+    public KeyVaultBackupClient createClientWithHttpClient() {
+        // BEGIN: com.azure.v2.security.keyvault.administration.KeyVaultBackupClient.instantiation.withHttpClient
+        KeyVaultBackupClient keyVaultBackupClient = new KeyVaultBackupClientBuilder()
+            .endpoint("<your-managed-hsm-url>")
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .httpInstrumentationOptions(new HttpInstrumentationOptions().setHttpLogLevel(HttpLogLevel.BODY_AND_HEADERS))
+            .httpClient(HttpClient.getSharedInstance())
+            .buildClient();
+        // END: com.azure.v2.security.keyvault.administration.KeyVaultBackupClient.instantiation.withHttpClient
 
         return keyVaultBackupClient;
     }

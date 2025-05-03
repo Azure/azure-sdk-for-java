@@ -19,8 +19,8 @@ import java.io.IOException;
 //@Fluent
 public final class KeyRotationLifetimeAction implements JsonSerializable<KeyRotationLifetimeAction> {
     static {
-        KeyRotationLifetimeActionHelper.setAccessor(
-            new KeyRotationLifetimeActionHelper.KeyRotationLifetimeActionAccessor() {
+        KeyRotationLifetimeActionHelper
+            .setAccessor(new KeyRotationLifetimeActionHelper.KeyRotationLifetimeActionAccessor() {
                 @Override
                 public KeyRotationLifetimeAction createLifetimeAction(LifetimeActionsTrigger trigger,
                     LifetimeActionsType actionsType) {

@@ -21,7 +21,8 @@ public final class KeyVaultAdministrationException extends HttpResponseException
      * @param response The HTTP response.
      * @param value The deserialized response value.
      */
-    public KeyVaultAdministrationException(String message, Response<BinaryData> response, KeyVaultAdministrationError value) {
+    public KeyVaultAdministrationException(String message, Response<BinaryData> response,
+        KeyVaultAdministrationError value) {
         super(message, response, value);
     }
 

@@ -16,7 +16,6 @@ import com.azure.v2.security.keyvault.keys.models.KeyRotationPolicy;
 import com.azure.v2.security.keyvault.keys.models.KeyVaultKey;
 import io.clientcore.core.models.binarydata.BinaryData;
 
-import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -97,8 +96,8 @@ public final class KeyVaultKeysModelsUtils {
         return deletedKey;
     }
 
-    private static JsonWebKey mapJsonWebKeyFromImpl(
-        com.azure.v2.security.keyvault.keys.implementation.models.JsonWebKey impl) {
+    private static JsonWebKey
+        mapJsonWebKeyFromImpl(com.azure.v2.security.keyvault.keys.implementation.models.JsonWebKey impl) {
 
         if (impl == null) {
             return null;
@@ -206,21 +205,21 @@ public final class KeyVaultKeysModelsUtils {
         }
     }
 
-    public static com.azure.v2.security.keyvault.keys.implementation.models.KeyReleasePolicy mapKeyReleasePolicy(
-        KeyReleasePolicy policy) {
+    public static com.azure.v2.security.keyvault.keys.implementation.models.KeyReleasePolicy
+        mapKeyReleasePolicy(KeyReleasePolicy policy) {
 
         if (policy == null) {
             return null;
         }
 
-        return new com.azure.v2.security.keyvault.keys.implementation.models.KeyReleasePolicy().setContentType(
-                policy.getContentType())
+        return new com.azure.v2.security.keyvault.keys.implementation.models.KeyReleasePolicy()
+            .setContentType(policy.getContentType())
             .setImmutable(policy.isImmutable())
             .setEncodedPolicy(policy.getEncodedPolicy().toBytes());
     }
 
-    private static KeyReleasePolicy mapKeyReleasePolicyImpl(
-        com.azure.v2.security.keyvault.keys.implementation.models.KeyReleasePolicy impl) {
+    private static KeyReleasePolicy
+        mapKeyReleasePolicyImpl(com.azure.v2.security.keyvault.keys.implementation.models.KeyReleasePolicy impl) {
         if (impl == null) {
             return null;
         }
@@ -229,14 +228,14 @@ public final class KeyVaultKeysModelsUtils {
             .setImmutable(impl.isImmutable());
     }
 
-    public static KeyRotationPolicy mapKeyRotationPolicyImpl(
-        com.azure.v2.security.keyvault.keys.implementation.models.KeyRotationPolicy impl) {
+    public static KeyRotationPolicy
+        mapKeyRotationPolicyImpl(com.azure.v2.security.keyvault.keys.implementation.models.KeyRotationPolicy impl) {
 
         return (impl == null) ? null : KeyRotationPolicyHelper.createPolicy(impl);
     }
 
-    public static com.azure.v2.security.keyvault.keys.implementation.models.KeyRotationPolicy mapKeyRotationPolicy(
-        KeyRotationPolicy policy) {
+    public static com.azure.v2.security.keyvault.keys.implementation.models.KeyRotationPolicy
+        mapKeyRotationPolicy(KeyRotationPolicy policy) {
 
         if (policy == null) {
             return null;

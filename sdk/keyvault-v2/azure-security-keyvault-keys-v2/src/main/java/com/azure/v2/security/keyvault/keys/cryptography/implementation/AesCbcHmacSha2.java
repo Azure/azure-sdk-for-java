@@ -254,21 +254,21 @@ abstract class AesCbcHmacSha2 extends SymmetricEncryptionAlgorithm {
         private final U second;
         private final V third;
 
-        public Triplet(T first, U second, V third) {
+        Triplet(T first, U second, V third) {
             this.first = first;
             this.second = second;
             this.third = third;
         }
 
-        public T getFirst() {
+        T getFirst() {
             return first;
         }
 
-        public U getSecond() {
+        U getSecond() {
             return second;
         }
 
-        public V getThird() {
+        V getThird() {
             return third;
         }
     }

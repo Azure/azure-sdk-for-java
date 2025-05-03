@@ -15,8 +15,8 @@ public final class CertificatePolicyHelper {
             getPolicy(CertificatePolicy policy);
     }
 
-    public static CertificatePolicy
-        createCertificatePolicy(com.azure.v2.security.keyvault.certificates.implementation.models.CertificatePolicy impl) {
+    public static CertificatePolicy createCertificatePolicy(
+        com.azure.v2.security.keyvault.certificates.implementation.models.CertificatePolicy impl) {
         if (accessor == null) {
             new CertificatePolicy("", "");
         }
