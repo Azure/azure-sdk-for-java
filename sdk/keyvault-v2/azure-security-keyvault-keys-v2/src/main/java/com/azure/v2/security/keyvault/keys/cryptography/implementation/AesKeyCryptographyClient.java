@@ -191,8 +191,9 @@ class AesKeyCryptographyClient extends LocalKeyCryptographyClient {
 
         Objects.requireNonNull(iv, "'iv' cannot be null in local decryption operations.");
 
-        byte[] plaintext = symmetricEncryptionAlgorithm.createDecryptor(aesKey, iv, additionalAuthenticatedData,
-            authenticationTag).doFinal(ciphertext);
+        byte[] plaintext
+            = symmetricEncryptionAlgorithm.createDecryptor(aesKey, iv, additionalAuthenticatedData, authenticationTag)
+                .doFinal(ciphertext);
 
         return new DecryptResult(plaintext, algorithm, jsonWebKey.getId());
     }

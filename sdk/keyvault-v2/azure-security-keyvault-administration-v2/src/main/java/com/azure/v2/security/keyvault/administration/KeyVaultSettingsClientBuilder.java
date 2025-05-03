@@ -43,20 +43,34 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  * <p>The minimal configuration options required by {@link KeyVaultSettingsClientBuilder} to build a
  * {@link KeyVaultSettingsClient} are an {@link String endpoint} and {@link TokenCredential credential}.</p>
  * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.instantiation -->
+ * <pre>
+ * KeyVaultSettingsClient keyVaultSettingsClient = new KeyVaultSettingsClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;&lt;your-managed-hsm-url&gt;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
  * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.instantiation -->
  *
  * <p>The {@link HttpInstrumentationOptions.HttpLogLevel log level}, multiple custom {@link HttpPipelinePolicy policies}
  * and custom {@link HttpClient HTTP client} can be optionally configured in the {@link KeyVaultSettingsClientBuilder}.
  * </p>
  * <!-- src_embed com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.instantiation.withHttpClient -->
+ * <pre>
+ * KeyVaultSettingsClient keyVaultSettingsClient = new KeyVaultSettingsClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;&lt;your-managed-hsm-url&gt;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .httpInstrumentationOptions&#40;new HttpInstrumentationOptions&#40;&#41;.setHttpLogLevel&#40;HttpLogLevel.BODY_AND_HEADERS&#41;&#41;
+ *     .httpClient&#40;HttpClient.getSharedInstance&#40;&#41;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
  * <!-- end com.azure.v2.security.keyvault.administration.KeyVaultSettingsClient.instantiation.withHttpClient -->
  *
  * @see KeyVaultSettingsClient
  */
-@ServiceClientBuilder(serviceClients =  KeyVaultSettingsClient.class )
-public final class KeyVaultSettingsClientBuilder implements ConfigurationTrait<KeyVaultSettingsClientBuilder>,
-    EndpointTrait<KeyVaultSettingsClientBuilder>, TokenCredentialTrait<KeyVaultSettingsClientBuilder>,
-    HttpTrait<KeyVaultSettingsClientBuilder> {
+@ServiceClientBuilder(serviceClients = KeyVaultSettingsClient.class)
+public final class KeyVaultSettingsClientBuilder
+    implements ConfigurationTrait<KeyVaultSettingsClientBuilder>, EndpointTrait<KeyVaultSettingsClientBuilder>,
+    TokenCredentialTrait<KeyVaultSettingsClientBuilder>, HttpTrait<KeyVaultSettingsClientBuilder> {
 
     // This is the properties file name.
     private static final ClientLogger LOGGER = new ClientLogger(KeyVaultSettingsClientBuilder.class);
@@ -102,9 +116,8 @@ public final class KeyVaultSettingsClientBuilder implements ConfigurationTrait<K
      * provided.
      */
     public KeyVaultSettingsClient buildClient() {
-        Configuration configuration = this.configuration == null
-            ? Configuration.getGlobalConfiguration()
-            : this.configuration;
+        Configuration configuration
+            = this.configuration == null ? Configuration.getGlobalConfiguration() : this.configuration;
 
         String endpoint = getEndpoint(configuration);
 
@@ -115,25 +128,23 @@ public final class KeyVaultSettingsClientBuilder implements ConfigurationTrait<K
                     + " 'AZURE_KEYVAULT_ENDPOINT'."));
         }
 
-        KeyVaultAdministrationServiceVersion version = this.version == null
-            ? KeyVaultAdministrationServiceVersion.getLatest()
-            : this.version;
+        KeyVaultAdministrationServiceVersion version
+            = this.version == null ? KeyVaultAdministrationServiceVersion.getLatest() : this.version;
 
         if (credential == null) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException(
-                "A credential object is required. You can set one by using the"
+            throw LOGGER.logThrowableAsError(
+                new IllegalStateException("A credential object is required. You can set one by using the"
                     + " KeyVaultSettingsClientBuilder.credential() method."));
         }
 
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        Configuration buildConfiguration = configuration == null
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
-        UserAgentOptions userAgentOptions = new UserAgentOptions()
-            .setApplicationId(buildConfiguration.get("application.id"))
-            .setSdkName(CLIENT_NAME)
-            .setSdkVersion(CLIENT_VERSION);
+        Configuration buildConfiguration
+            = configuration == null ? Configuration.getGlobalConfiguration() : configuration;
+        UserAgentOptions userAgentOptions
+            = new UserAgentOptions().setApplicationId(buildConfiguration.get("application.id"))
+                .setSdkName(CLIENT_NAME)
+                .setSdkVersion(CLIENT_VERSION);
 
         policies.add(new UserAgentPolicy(userAgentOptions));
         policies.add(redirectOptions == null ? new HttpRedirectPolicy() : new HttpRedirectPolicy(redirectOptions));
@@ -141,9 +152,8 @@ public final class KeyVaultSettingsClientBuilder implements ConfigurationTrait<K
         policies.addAll(pipelinePolicies);
         policies.add(new KeyVaultCredentialPolicy(credential, disableChallengeResourceVerification));
 
-        HttpInstrumentationOptions instrumentationOptions = this.instrumentationOptions == null
-            ? new HttpInstrumentationOptions()
-            : this.instrumentationOptions;
+        HttpInstrumentationOptions instrumentationOptions
+            = this.instrumentationOptions == null ? new HttpInstrumentationOptions() : this.instrumentationOptions;
 
         policies.add(new HttpInstrumentationPolicy(instrumentationOptions));
 
@@ -178,8 +188,8 @@ public final class KeyVaultSettingsClientBuilder implements ConfigurationTrait<K
             URI uri = new URI(endpoint);
             this.endpoint = uri.toString();
         } catch (URISyntaxException e) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalArgumentException("The Azure Key Vault endpoint is malformed.", e));
+            throw LOGGER
+                .logThrowableAsError(new IllegalArgumentException("The Azure Key Vault endpoint is malformed.", e));
         }
 
         return this;

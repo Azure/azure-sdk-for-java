@@ -80,7 +80,8 @@ public final class CertificatePolicy implements JsonSerializable<CertificatePoli
                 .setSubjectAlternativeNames(subjectAlternativeNames));
     }
 
-    private CertificatePolicy(com.azure.v2.security.keyvault.certificates.implementation.models.CertificatePolicy impl) {
+    private CertificatePolicy(
+        com.azure.v2.security.keyvault.certificates.implementation.models.CertificatePolicy impl) {
         this.impl = impl;
     }
 

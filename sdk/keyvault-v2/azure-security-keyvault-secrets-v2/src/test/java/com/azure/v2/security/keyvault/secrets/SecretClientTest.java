@@ -14,11 +14,10 @@ public class SecretClientTest {
      */
     @Test
     public void setSecret() {
-        SecretClient secretClient = new SecretClientBuilder()
-            .endpoint(System.getenv("AZURE_KEYVAULT_ENDPOINT"))
+        SecretClient secretClient = new SecretClientBuilder().endpoint(System.getenv("AZURE_KEYVAULT_ENDPOINT"))
             .credential(new DefaultAzureCredentialBuilder().additionallyAllowedTenants("*").build())
-            .httpInstrumentationOptions(new HttpInstrumentationOptions().setHttpLogLevel(
-                HttpInstrumentationOptions.HttpLogLevel.BODY_AND_HEADERS))
+            .httpInstrumentationOptions(new HttpInstrumentationOptions()
+                .setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.BODY_AND_HEADERS))
             .buildClient();
 
         KeyVaultSecret keyVaultSecret = secretClient.setSecret("manualTestSecret1", "manualTestValue1");

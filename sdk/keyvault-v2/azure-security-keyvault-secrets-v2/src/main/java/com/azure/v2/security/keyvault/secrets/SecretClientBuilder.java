@@ -51,21 +51,35 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  * <p>The minimal configuration options required by {@link SecretClientBuilder} to build a {@link SecretClient} are an
  * {@link String endpoint} and {@link TokenCredential credential}.</p>
  *
- * <!-- src_embed com.v2.azure.security.keyvault.SecretClient.instantiation -->
- * <!-- end com.azure.v2.security.keyvault.SecretClient.instantiation -->
+ * <!-- src_embed com.azure.v2.security.keyvault.secrets.SecretClient.instantiation -->
+ * <pre>
+ * SecretClient secretClient = new SecretClientBuilder&#40;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .endpoint&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.v2.security.keyvault.secrets.SecretClient.instantiation -->
  *
  * <p>The {@link HttpInstrumentationOptions.HttpLogLevel log level}, multiple custom {@link HttpPipelinePolicy policies}
  * and custom {@link HttpClient HTTP client} can be optionally configured in the {@link SecretClientBuilder}.</p>
  *
  * <!-- src_embed com.azure.v2.security.keyvault.secrets.SecretClient.instantiation.withHttpClient -->
+ * <pre>
+ * SecretClient secretClient = new SecretClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;&lt;your-key-vault-url&gt;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .httpInstrumentationOptions&#40;new HttpInstrumentationOptions&#40;&#41;
+ *         .setHttpLogLevel&#40;HttpInstrumentationOptions.HttpLogLevel.BODY_AND_HEADERS&#41;&#41;
+ *     .httpClient&#40;HttpClient.getSharedInstance&#40;&#41;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
  * <!-- end com.azure.v2.security.keyvault.secrets.SecretClient.instantiation.withHttpClient -->
  *
  * @see SecretClient
  */
 @ServiceClientBuilder(serviceClients = SecretClient.class)
-public final class SecretClientBuilder
-    implements ConfigurationTrait<SecretClientBuilder>, EndpointTrait<SecretClientBuilder>,
-    HttpTrait<SecretClientBuilder>, TokenCredentialTrait<SecretClientBuilder> {
+public final class SecretClientBuilder implements ConfigurationTrait<SecretClientBuilder>,
+    EndpointTrait<SecretClientBuilder>, HttpTrait<SecretClientBuilder>, TokenCredentialTrait<SecretClientBuilder> {
 
     private static final ClientLogger LOGGER = new ClientLogger(SecretClientBuilder.class);
     // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
@@ -113,9 +127,8 @@ public final class SecretClientBuilder
     }
 
     private SecretClientImpl buildImplClient() {
-        Configuration configuration = this.configuration == null
-            ? Configuration.getGlobalConfiguration()
-            : this.configuration;
+        Configuration configuration
+            = this.configuration == null ? Configuration.getGlobalConfiguration() : this.configuration;
 
         String endpoint = getEndpoint(configuration);
 
@@ -134,13 +147,12 @@ public final class SecretClientBuilder
 
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        Configuration buildConfiguration = configuration == null
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
-        UserAgentOptions userAgentOptions = new UserAgentOptions()
-            .setApplicationId(buildConfiguration.get("application.id"))
-            .setSdkName(CLIENT_NAME)
-            .setSdkVersion(CLIENT_VERSION);
+        Configuration buildConfiguration
+            = configuration == null ? Configuration.getGlobalConfiguration() : configuration;
+        UserAgentOptions userAgentOptions
+            = new UserAgentOptions().setApplicationId(buildConfiguration.get("application.id"))
+                .setSdkName(CLIENT_NAME)
+                .setSdkVersion(CLIENT_VERSION);
 
         policies.add(new UserAgentPolicy(userAgentOptions));
         policies.add(redirectOptions == null ? new HttpRedirectPolicy() : new HttpRedirectPolicy(redirectOptions));
@@ -148,9 +160,8 @@ public final class SecretClientBuilder
         policies.addAll(pipelinePolicies);
         policies.add(new KeyVaultCredentialPolicy(credential, disableChallengeResourceVerification));
 
-        HttpInstrumentationOptions instrumentationOptions = this.instrumentationOptions == null
-            ? new HttpInstrumentationOptions()
-            : this.instrumentationOptions;
+        HttpInstrumentationOptions instrumentationOptions
+            = this.instrumentationOptions == null ? new HttpInstrumentationOptions() : this.instrumentationOptions;
 
         policies.add(new HttpInstrumentationPolicy(instrumentationOptions));
 
@@ -186,8 +197,8 @@ public final class SecretClientBuilder
             URI uri = new URI(endpoint);
             this.endpoint = uri.toString();
         } catch (URISyntaxException e) {
-            throw LOGGER.logThrowableAsError(
-                new IllegalArgumentException("The Azure Key Vault endpoint is malformed.", e));
+            throw LOGGER
+                .logThrowableAsError(new IllegalArgumentException("The Azure Key Vault endpoint is malformed.", e));
         }
 
         return this;

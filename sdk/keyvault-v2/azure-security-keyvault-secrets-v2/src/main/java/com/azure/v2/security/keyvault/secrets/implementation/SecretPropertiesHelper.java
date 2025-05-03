@@ -6,7 +6,7 @@ import com.azure.v2.security.keyvault.secrets.models.SecretProperties;
 
 import java.time.OffsetDateTime;
 
-public class SecretPropertiesHelper {
+public final class SecretPropertiesHelper {
     private static SecretPropertiesAccessor accessor;
 
     public interface SecretPropertiesAccessor {

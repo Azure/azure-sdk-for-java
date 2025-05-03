@@ -12,11 +12,8 @@ import io.clientcore.core.serialization.json.JsonWriter;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.math.BigInteger;
-import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
@@ -420,7 +417,7 @@ public class JsonWebKey implements JsonSerializable<JsonWebKey> {
         try (ByteArrayOutputStream baos = new ByteArrayOutputStream();
             JsonWriter writer = new JsonProviders.createWriter(baos)) {
             this.toJson(writer).flush();
-
+    
             return baos.toString(StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new IllegalStateException(e));
@@ -1116,7 +1113,7 @@ public class JsonWebKey implements JsonSerializable<JsonWebKey> {
             return "secp256r1";
         } else if (curveName == KeyCurveName.P_384) {
             return "secp384r1";
-        } else if (curveName == KeyCurveName.P_512) {
+        } else if (curveName == KeyCurveName.P_521) {
             return "secp521r1";
         } else if (curveName == KeyCurveName.P_256K) {
             return "secp256k1";
@@ -1125,8 +1122,8 @@ public class JsonWebKey implements JsonSerializable<JsonWebKey> {
         }
     }
 
-    private static final List<KeyCurveName> KNOWN_CURVE_NAMES =
-        Arrays.asList(KeyCurveName.P_256, KeyCurveName.P_384, KeyCurveName.P_512, KeyCurveName.P_256K);
+    private static final List<KeyCurveName> KNOWN_CURVE_NAMES
+        = Arrays.asList(KeyCurveName.P_256, KeyCurveName.P_384, KeyCurveName.P_521, KeyCurveName.P_256K);
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {

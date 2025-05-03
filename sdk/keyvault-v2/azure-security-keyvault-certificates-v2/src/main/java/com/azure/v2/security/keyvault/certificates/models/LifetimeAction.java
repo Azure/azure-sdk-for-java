@@ -26,8 +26,8 @@ public final class LifetimeAction implements JsonSerializable<LifetimeAction> {
      * @param action The action type of this LifetimeAction.
      */
     public LifetimeAction(CertificatePolicyAction action) {
-        this.impl
-            = new com.azure.v2.security.keyvault.certificates.implementation.models.LifetimeAction().setAction(new Action()
+        this.impl = new com.azure.v2.security.keyvault.certificates.implementation.models.LifetimeAction()
+            .setAction(new Action()
                 .setActionType(com.azure.v2.security.keyvault.certificates.implementation.models.CertificatePolicyAction
                     .fromString(action.toString())));
     }

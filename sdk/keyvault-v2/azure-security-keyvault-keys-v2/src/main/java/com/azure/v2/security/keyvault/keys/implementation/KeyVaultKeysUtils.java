@@ -44,10 +44,13 @@ public final class KeyVaultKeysUtils {
     public static CryptographyClientBuilder getCryptographyClientBuilder(String keyName, String keyVersion,
         String endpoint, HttpPipeline httpPipeline, String serviceVersion) {
 
-        return new CryptographyClientBuilder()
-            .keyIdentifier(generateKeyId(keyName, keyVersion, endpoint))
-            .httpPipeline(httpPipeline)
-            .serviceVersion(CryptographyServiceVersion.valueOf(serviceVersion));
+        CryptographyClientBuilder builder
+            = new CryptographyClientBuilder().keyIdentifier(generateKeyId(keyName, keyVersion, endpoint))
+                .serviceVersion(CryptographyServiceVersion.valueOf(serviceVersion));
+
+        httpPipeline.getPolicies().forEach(policy -> builder.addHttpPipelinePolicy(policy));
+
+        return builder;
     }
 
     /**

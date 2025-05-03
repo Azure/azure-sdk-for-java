@@ -47,10 +47,21 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  * an {@code Azure Key Vault key identifier}.</p>
  *
  * <!-- src_embed com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.instantiation -->
+ * <pre>
+ * CryptographyClient cryptographyClient = new CryptographyClientBuilder&#40;&#41;
+ *     .keyIdentifier&#40;&quot;&lt;your-key-id-from-keyvault&gt;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
  * <!-- end com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.instantiation -->
  *
- * <!-- src_embed com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.withJsonWebKey.instantiation -->
- * <!-- end com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.withJsonWebKey.instantiation -->
+ * <!-- src_embed com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.instantiation.withJsonWebKey -->
+ * <pre>
+ * CryptographyClient cryptographyClient = new CryptographyClientBuilder&#40;&#41;
+ *     .jsonWebKey&#40;myJsonWebKey&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.instantiation.withJsonWebKey -->
  *
  * <p>When a {@link CryptographyClient} gets created using a {@code Azure Key Vault key identifier}, the first time a
  * cryptographic operation is attempted, the client will attempt to retrieve the key material from the service, cache
@@ -67,8 +78,17 @@ import static io.clientcore.core.utils.CoreUtils.isNullOrEmpty;
  * <p>The {@link HttpInstrumentationOptions.HttpLogLevel log level}, multiple custom {@link HttpPipelinePolicy policies}
  * and custom {@link HttpClient HTTP client} can be optionally configured in the {@link CryptographyClientBuilder}.</p>
  *
- * <!-- src_embed com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.withHttpClient.instantiation -->
- * <!-- end com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.withHttpClient.instantiation -->
+ * <!-- src_embed com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.instantiation.withHttpClient -->
+ * <pre>
+ * CryptographyClient cryptographyClient = new CryptographyClientBuilder&#40;&#41;
+ *     .keyIdentifier&#40;&quot;&lt;your-key-id-from-keyvault&gt;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .httpInstrumentationOptions&#40;new HttpInstrumentationOptions&#40;&#41;
+ *         .setHttpLogLevel&#40;HttpInstrumentationOptions.HttpLogLevel.BODY_AND_HEADERS&#41;&#41;
+ *     .httpClient&#40;HttpClient.getSharedInstance&#40;&#41;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.instantiation.withHttpClient -->
  *
  * @see CryptographyClient
  */
@@ -89,7 +109,6 @@ public final class CryptographyClientBuilder implements ConfigurationTrait<Crypt
         CLIENT_NAME = properties.getOrDefault("name", "UnknownName");
         CLIENT_VERSION = properties.getOrDefault("version", "UnknownVersion");
     }
-
 
     private final List<HttpPipelinePolicy> pipelinePolicies;
 
@@ -142,25 +161,22 @@ public final class CryptographyClientBuilder implements ConfigurationTrait<Crypt
                     + " JSON Web Key is not provided."));
         }
 
-        CryptographyServiceVersion serviceVersion = version != null
-            ? version
-            : CryptographyServiceVersion.getLatest();
+        CryptographyServiceVersion serviceVersion = version != null ? version : CryptographyServiceVersion.getLatest();
 
         if (credential == null) {
-            throw LOGGER.logThrowableAsError(new IllegalStateException(
-                "A credential object is required. You can set one by using the"
+            throw LOGGER.logThrowableAsError(
+                new IllegalStateException("A credential object is required. You can set one by using the"
                     + " CryptographyClientBuilder.credential() method."));
         }
 
         // Closest to API goes first, closest to wire goes last.
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        Configuration buildConfiguration = configuration == null
-            ? Configuration.getGlobalConfiguration()
-            : configuration;
-        UserAgentOptions userAgentOptions = new UserAgentOptions()
-            .setApplicationId(buildConfiguration.get("application.id"))
-            .setSdkName(CLIENT_NAME)
-            .setSdkVersion(CLIENT_VERSION);
+        Configuration buildConfiguration
+            = configuration == null ? Configuration.getGlobalConfiguration() : configuration;
+        UserAgentOptions userAgentOptions
+            = new UserAgentOptions().setApplicationId(buildConfiguration.get("application.id"))
+                .setSdkName(CLIENT_NAME)
+                .setSdkVersion(CLIENT_VERSION);
 
         policies.add(new UserAgentPolicy(userAgentOptions));
         policies.add(redirectOptions == null ? new HttpRedirectPolicy() : new HttpRedirectPolicy(redirectOptions));
@@ -168,9 +184,8 @@ public final class CryptographyClientBuilder implements ConfigurationTrait<Crypt
         policies.addAll(pipelinePolicies);
         policies.add(new KeyVaultCredentialPolicy(credential, disableChallengeResourceVerification));
 
-        HttpInstrumentationOptions instrumentationOptions = this.instrumentationOptions == null
-            ? new HttpInstrumentationOptions()
-            : this.instrumentationOptions;
+        HttpInstrumentationOptions instrumentationOptions
+            = this.instrumentationOptions == null ? new HttpInstrumentationOptions() : this.instrumentationOptions;
 
         policies.add(new HttpInstrumentationPolicy(instrumentationOptions));
 

@@ -19,15 +19,15 @@ public final class KeyRotationPolicy {
     static {
         KeyRotationPolicyHelper.setAccessor(new KeyRotationPolicyHelper.KeyRotationPolicyAccessor() {
             @Override
-            public KeyRotationPolicy createPolicy(
-                com.azure.v2.security.keyvault.keys.implementation.models.KeyRotationPolicy impl) {
+            public KeyRotationPolicy
+                createPolicy(com.azure.v2.security.keyvault.keys.implementation.models.KeyRotationPolicy impl) {
 
                 return new KeyRotationPolicy(impl);
             }
 
             @Override
-            public com.azure.v2.security.keyvault.keys.implementation.models.KeyRotationPolicy getImpl(
-                KeyRotationPolicy policy) {
+            public com.azure.v2.security.keyvault.keys.implementation.models.KeyRotationPolicy
+                getImpl(KeyRotationPolicy policy) {
 
                 return policy.impl;
             }
@@ -72,8 +72,8 @@ public final class KeyRotationPolicy {
             List<KeyRotationLifetimeAction> mappedActions = new ArrayList<>(impl.getLifetimeActions().size());
 
             for (LifetimeActions action : impl.getLifetimeActions()) {
-                KeyRotationLifetimeAction mappedAction = KeyRotationLifetimeActionHelper.createLifetimeAction(
-                    action.getTrigger(), action.getAction());
+                KeyRotationLifetimeAction mappedAction
+                    = KeyRotationLifetimeActionHelper.createLifetimeAction(action.getTrigger(), action.getAction());
 
                 mappedActions.add(mappedAction);
             }

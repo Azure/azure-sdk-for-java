@@ -54,11 +54,11 @@ public final class CryptographyClientJavaDocCodeSnippets {
     public CryptographyClient createClientWithJsonWebKey() {
         JsonWebKey myJsonWebKey = new JsonWebKey();
 
-        // BEGIN: com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.withJsonWebKey.instantiation
+        // BEGIN: com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.instantiation.withJsonWebKey
         CryptographyClient cryptographyClient = new CryptographyClientBuilder()
             .jsonWebKey(myJsonWebKey)
             .buildClient();
-        // END: com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.withJsonWebKey.instantiation
+        // END: com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.instantiation.withJsonWebKey
 
         return cryptographyClient;
     }
@@ -69,7 +69,7 @@ public final class CryptographyClientJavaDocCodeSnippets {
      * @return An instance of {@link CryptographyClient}.
      */
     public CryptographyClient createClientWithHttpClient() {
-        // BEGIN: com.azure.security.keyvault.keys.cryptography.CryptographyClient.withHttpClient.instantiation
+        // BEGIN: com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.instantiation.withHttpClient
         CryptographyClient cryptographyClient = new CryptographyClientBuilder()
             .keyIdentifier("<your-key-id-from-keyvault>")
             .credential(new DefaultAzureCredentialBuilder().build())
@@ -77,7 +77,7 @@ public final class CryptographyClientJavaDocCodeSnippets {
                 .setHttpLogLevel(HttpInstrumentationOptions.HttpLogLevel.BODY_AND_HEADERS))
             .httpClient(HttpClient.getSharedInstance())
             .buildClient();
-        // END: com.azure.security.keyvault.keys.cryptography.CryptographyClient.withHttpClient.instantiation
+        // END: com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.instantiation.withHttpClient
 
         return cryptographyClient;
     }
@@ -85,7 +85,7 @@ public final class CryptographyClientJavaDocCodeSnippets {
     /**
      * Generates a code sample for using {@link CryptographyClient#getKey()}.
      */
-    public void getKeySnippets() {
+    public void getKey() {
         CryptographyClient cryptographyClient = createClient();
 
         // BEGIN: com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.getKey
@@ -98,7 +98,7 @@ public final class CryptographyClientJavaDocCodeSnippets {
     /**
      * Generates a code sample for using {@link CryptographyClient#getKeyWithResponse(RequestContext)}.
      */
-    public void getKeyWithResponseSnippets() {
+    public void getKeyWithResponse() {
         CryptographyClient cryptographyClient = createClient();
 
         // BEGIN: com.azure.v2.security.keyvault.keys.cryptography.CryptographyClient.getKeyWithResponse#RequestContext

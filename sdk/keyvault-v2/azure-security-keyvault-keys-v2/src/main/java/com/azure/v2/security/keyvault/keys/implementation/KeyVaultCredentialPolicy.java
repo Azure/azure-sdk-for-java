@@ -47,6 +47,8 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
      * Creates a {@link KeyVaultCredentialPolicy}.
      *
      * @param credential The token credential to authenticate the request.
+     * @param disableChallengeResourceVerification A boolean indicating whether to disable the challenge resource
+     * verification.
      */
     public KeyVaultCredentialPolicy(TokenCredential credential, boolean disableChallengeResourceVerification) {
         super(credential);
@@ -91,11 +93,11 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
      * @return A boolean indicating if the challenge is a bearer challenge or not.
      */
     private static boolean isBearerChallenge(String authenticateHeader, String authChallengePrefix) {
-        return (!isNullOrEmpty(authenticateHeader) && authenticateHeader.toLowerCase(Locale.ROOT)
-            .startsWith(authChallengePrefix.toLowerCase(Locale.ROOT)));
+        return (!isNullOrEmpty(authenticateHeader)
+            && authenticateHeader.toLowerCase(Locale.ROOT).startsWith(authChallengePrefix.toLowerCase(Locale.ROOT)));
     }
 
-    public Map<String, Object> authorizeRequestInternal(HttpRequest request) {
+    private Map<String, Object> authorizeRequestInternal(HttpRequest request) {
         RequestContext requestContext = request.getContext();
 
         // If this policy doesn't have challenge parameters cached try to get it from the static challenge cache.
@@ -136,7 +138,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         return null;
     }
 
-    public boolean authorizeRequestOnChallengeInternal(HttpRequest request, Response<?> response,
+    private boolean authorizeRequestOnChallengeInternal(HttpRequest request, Response<?> response,
         Map<String, Object> bodyCache) {
 
         if (bodyCache != null) {
@@ -150,8 +152,8 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         }
 
         String authority = getRequestAuthority(request);
-        Map<String, String> challengeAttributes = extractChallengeAttributes(
-            response.getHeaders().getValue(WWW_AUTHENTICATE), BEARER_TOKEN_PREFIX);
+        Map<String, String> challengeAttributes
+            = extractChallengeAttributes(response.getHeaders().getValue(WWW_AUTHENTICATE), BEARER_TOKEN_PREFIX);
         String scope = challengeAttributes.get("resource");
 
         if (scope != null) {
@@ -173,7 +175,8 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                         "The challenge resource '%s' does not match the requested domain. If you wish to disable "
                             + "this check for your client, pass 'true' to the SecretClientBuilder"
                             + ".disableChallengeResourceVerification() method when building it. See "
-                            + "https://aka.ms/azsdk/blog/vault-uri for more information.", scope)));
+                            + "https://aka.ms/azsdk/blog/vault-uri for more information.",
+                        scope)));
                 }
             }
 
@@ -246,13 +249,19 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
 
         if (authorizeRequestOnChallengeInternal(request, response, bodyCache)) {
             // The body needs to be closed or read to the end to release the connection.
-            response.close();
+            try {
+                response.close();
+            } catch (IOException e) {
+                throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+            }
 
             HttpPipelineNextPolicy nextPolicy = next.copy();
             Response<BinaryData> newResponse = next.process();
             String authHeader = newResponse.getHeaders().getValue(WWW_AUTHENTICATE);
 
-            if (newResponse.getStatusCode() == 401 && authHeader != null && isClaimsPresent(newResponse)
+            if (newResponse.getStatusCode() == 401
+                && authHeader != null
+                && isClaimsPresent(newResponse)
                 && !isClaimsPresent(response)) {
 
                 return handleChallenge(request, newResponse, nextPolicy, bodyCache);
@@ -265,8 +274,8 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
     }
 
     private boolean isClaimsPresent(Response<?> httpResponse) {
-        Map<String, String> challengeAttributes = extractChallengeAttributes(
-            httpResponse.getHeaders().getValue(WWW_AUTHENTICATE), BEARER_TOKEN_PREFIX);
+        Map<String, String> challengeAttributes
+            = extractChallengeAttributes(httpResponse.getHeaders().getValue(WWW_AUTHENTICATE), BEARER_TOKEN_PREFIX);
 
         String error = challengeAttributes.get("error");
 
@@ -293,7 +302,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         /**
          * Get the {@code authorization} or {@code authorization_uri} parameter from the challenge response.
          */
-        public URI getAuthorizationUri() {
+        URI getAuthorizationUri() {
             return authorizationUri;
         }
 
@@ -301,18 +310,21 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
          * Get the {@code resource} or {@code scope} parameter from the challenge response. This should end with
          * "/.default".
          */
-        public String[] getScopes() {
+        String[] getScopes() {
             return scopes;
         }
 
         /**
          * Get the tenant ID from {@code authorizationUri}.
          */
-        public String getTenantId() {
+        String getTenantId() {
             return tenantId;
         }
     }
 
+    /**
+     * Clears the challenge cache.
+     */
     public static void clearCache() {
         CHALLENGE_CACHE.clear();
     }

@@ -20,10 +20,11 @@ import java.util.function.Function;
 /**
  * The type of the action.
  */
-public final class CertificatePolicyAction implements ExpandableEnum<String>, JsonSerializable<CertificatePolicyAction> {
+public final class CertificatePolicyAction
+    implements ExpandableEnum<String>, JsonSerializable<CertificatePolicyAction> {
     private static final Map<String, CertificatePolicyAction> VALUES = new ConcurrentHashMap<>();
     private static final Function<String, CertificatePolicyAction> NEW_INSTANCE = CertificatePolicyAction::new;
-    
+
     /**
      * Static value EmailContacts for CertificatePolicyAction.
      */

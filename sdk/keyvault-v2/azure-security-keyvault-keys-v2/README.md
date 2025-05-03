@@ -84,6 +84,10 @@ Once you perform [the authentication set up that suits you best][default_azure_c
 **your-key-vault-endpoint** with the URL for your key vault or managed HSM, you can create the `KeyClient`:
 
 ```java readme-sample-createKeyClient
+KeyClient keyClient = new KeyClientBuilder()
+    .endpoint("<your-key-vault-url>")
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
 ```
 
 #### Create cryptography client
@@ -91,6 +95,11 @@ Once you perform [the `DefaultAzureCredential` set up that suits you best][defau
 **your-key-vault-endpoint** with the URL for your key vault or managed HSM, you can create the `CryptographyClient`:
 
 ```java readme-sample-createCryptographyClient
+// Create client with key identifier from Key Vault.
+CryptographyClient cryptoClient = new CryptographyClientBuilder()
+    .keyIdentifier("<your-key-id-from-key-vault>")
+    .credential(new DefaultAzureCredentialBuilder().build())
+    .buildClient();
 ```
 
 ## Key concepts
@@ -131,42 +140,97 @@ Create a key to be stored in the key vault.
 key is created.
 
 ```java readme-sample-createKey
+KeyVaultKey rsaKey = keyClient.createRsaKey(new CreateRsaKeyOptions("CloudRsaKey")
+    .setExpiresOn(OffsetDateTime.now().plusYears(1))
+    .setKeySize(2048));
+System.out.printf("Key created with name \"%s\" and id %s%n", rsaKey.getName(), rsaKey.getId());
+
+KeyVaultKey ecKey = keyClient.createEcKey(new CreateEcKeyOptions("CloudEcKey")
+    .setCurveName(KeyCurveName.P_256)
+    .setExpiresOn(OffsetDateTime.now().plusYears(1)));
+System.out.printf("Key created with name \"%s\" and id %s%n", ecKey.getName(), ecKey.getId());
 ```
 
 #### Retrieve a key
 Retrieve a previously stored key by calling `getKey`.
 
 ```java readme-sample-retrieveKey
+KeyVaultKey key = keyClient.getKey("<key-name>");
+System.out.printf("A key was returned with name \"%s\" and id %s%n", key.getName(), key.getId());
 ```
 
 #### Update an existing key
 Update an existing key by calling `updateKeyProperties`.
 
 ```java readme-sample-updateKey
+// Get the key to update.
+KeyVaultKey key = keyClient.getKey("<key-name>");
+
+// Update the expiry time of the key.
+key.getProperties().setExpiresOn(OffsetDateTime.now().plusDays(30));
+
+KeyVaultKey updatedKey = keyClient.updateKeyProperties(key.getProperties(),
+    Arrays.asList(KeyOperation.ENCRYPT, KeyOperation.DECRYPT));
+
+System.out.printf("Key's updated expiry time: %s%n", updatedKey.getProperties().getExpiresOn());
 ```
 
 #### Delete a key
 Delete an existing key by calling `beginDeleteKey`.
 
 ```java readme-sample-deleteKey
+// TODO (vcolin7): Uncomment once LROs are available in clientcore.
+Poller<DeletedKey, Void> deletedKeyPoller = null;
+    //keyClient.beginDeleteKey("<key-name>");
+
+PollResponse<DeletedKey> deletedKeyPollResponse = deletedKeyPoller.poll();
+
+// Deleted key is accessible as soon as polling begins.
+DeletedKey deletedKey = deletedKeyPollResponse.getValue();
+// Deletion date only works for a soft-delete enabled key vault.
+System.out.printf("Deletion date: %s%n", deletedKey.getDeletedOn());
+
+// The key is being deleted on the server.
+deletedKeyPoller.waitForCompletion();
 ```
 
 #### List keys
 List the keys in the key vault by calling `listPropertiesOfKeys`.
 
 ```java readme-sample-listKeys
+// List operations don't return the keys with key material information. So, for each returned key we call getKey to
+// get the key with its key material information.
+for (KeyProperties keyProperties : keyClient.listPropertiesOfKeys()) {
+    KeyVaultKey keyWithMaterial = keyClient.getKey(keyProperties.getName(), keyProperties.getVersion());
+    System.out.printf("Received key with name \"%s\" and type \"%s\"%n", keyWithMaterial.getName(),
+        keyWithMaterial.getKey().getKeyType());
+}
 ```
 
 #### Encrypt
 Encrypt plain text by calling `encrypt`.
 
 ```java readme-sample-encrypt
+byte[] plaintext = new byte[100];
+new SecureRandom(SEED).nextBytes(plaintext);
+
+// Let's encrypt a simple plain text of size 100 bytes.
+EncryptResult encryptionResult = cryptoClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plaintext);
+System.out.printf("Returned ciphertext size is %d bytes with algorithm \"%s\"%n",
+    encryptionResult.getCipherText().length, encryptionResult.getAlgorithm());
 ```
 
 #### Decrypt
 Decrypt encrypted content by calling `decrypt`.
 
 ```java readme-sample-decrypt
+byte[] plaintext = new byte[100];
+new SecureRandom(SEED).nextBytes(plaintext);
+EncryptResult encryptionResult = cryptoClient.encrypt(EncryptionAlgorithm.RSA_OAEP, plaintext);
+
+//Let's decrypt the encrypted result.
+DecryptResult decryptionResult = cryptoClient.decrypt(EncryptionAlgorithm.RSA_OAEP, encryptionResult.getCipherText());
+System.out.printf("Returned plaintext size is %d bytes%n", decryptionResult.getPlainText().length);
 ```
 
 ## Troubleshooting
@@ -178,6 +242,11 @@ is returned, indicating the resource was not found. In the following snippet, th
 catching the exception and displaying additional information about the error.
 
 ```java readme-sample-troubleshooting
+try {
+    keyClient.getKey("<deleted-key-name>");
+} catch (HttpResponseException e) {
+    System.out.println(e.getMessage());
+}
 ```
 
 ### Default HTTP client
