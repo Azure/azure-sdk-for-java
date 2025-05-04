@@ -117,6 +117,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.NoSuchElementException;
+import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -552,9 +553,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.userAgentContainer = new UserAgentContainer();
 
             String userAgentSuffix = this.connectionPolicy.getUserAgentSuffix();
-            if (userAgentSuffix != null && userAgentSuffix.length() > 0) {
-                userAgentContainer.setSuffix(userAgentSuffix);
-            }
 
             this.httpClientInterceptor = null;
             this.reactorHttpClient = httpClient();
@@ -564,10 +562,21 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
 
+            // Accumulate cross-region availability client-side opt-ins for additional context in user agent.
+            Set<UserAgentFeatureFlags> userAgentFeatureFlags = new HashSet<>();
+
             this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker
                 = new GlobalPartitionEndpointManagerForPerPartitionCircuitBreaker(this.globalEndpointManager);
             this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover
                 = new GlobalPartitionEndpointManagerForPerPartitionAutomaticFailover(this.globalEndpointManager, isPerPartitionAutomaticFailoverEnabled);
+
+            if (this.globalPartitionEndpointManagerForPerPartitionAutomaticFailover.isPerPartitionAutomaticFailoverEnabled()) {
+                userAgentFeatureFlags.add(UserAgentFeatureFlags.PerPartitionAutomaticFailover);
+            }
+
+            if (this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.getCircuitBreakerConfig().isPartitionLevelCircuitBreakerEnabled()) {
+                userAgentFeatureFlags.add(UserAgentFeatureFlags.PerPartitionCircuitBreaker);
+            }
 
             this.globalPartitionEndpointManagerForPerPartitionCircuitBreaker.init();
             this.cachedCosmosAsyncClientSnapshot = new AtomicReference<>();
@@ -585,6 +594,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.queryPlanCache = new ConcurrentHashMap<>();
             this.apiType = apiType;
             this.clientTelemetryConfig = clientTelemetryConfig;
+
+            RxDocumentClientImpl.addUserAgentSuffix(userAgentContainer, userAgentSuffix, userAgentFeatureFlags);
         } catch (RuntimeException e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
@@ -1338,6 +1349,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 }
                 return throwable;
             });
+    }
+
+    private static void addUserAgentSuffix(UserAgentContainer userAgentContainer, String userAgentSuffix, Set<UserAgentFeatureFlags> userAgentFeatureFlags) {
+        if (userAgentSuffix != null && !userAgentSuffix.isEmpty()) {
+            userAgentContainer.setSuffix(userAgentSuffix);
+        }
+
+        userAgentContainer.setFeatureEnabledFlagsAsSuffix(userAgentFeatureFlags);
     }
 
     @Override

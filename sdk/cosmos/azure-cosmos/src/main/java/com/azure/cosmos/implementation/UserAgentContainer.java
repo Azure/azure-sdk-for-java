@@ -3,10 +3,9 @@
 
 package com.azure.cosmos.implementation;
 
-import java.net.IDN;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
 import java.text.Normalizer;
+import java.util.Collection;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 /**
@@ -35,6 +34,21 @@ public class UserAgentContainer {
 
     public String getSuffix() {
         return this.suffix;
+    }
+
+    public void setFeatureEnabledFlagsAsSuffix(Set<UserAgentFeatureFlags> userAgentFeatureFlags) {
+        if (userAgentFeatureFlags == null || userAgentFeatureFlags.isEmpty()) {
+            return;
+        }
+
+        this.userAgent = this.userAgent.concat("|F");
+        int value = 0;
+
+        for (UserAgentFeatureFlags userAgentFeatureFlag : userAgentFeatureFlags) {
+            value += userAgentFeatureFlag.getValue();
+        }
+
+        this.userAgent = this.userAgent.concat(String.valueOf(value));
     }
 
     public void setSuffix(String suffix) {
