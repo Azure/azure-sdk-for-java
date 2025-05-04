@@ -4,7 +4,6 @@
 package com.azure.cosmos.implementation;
 
 import java.text.Normalizer;
-import java.util.Collection;
 import java.util.Set;
 import java.util.regex.Pattern;
 
