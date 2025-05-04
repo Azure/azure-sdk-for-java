@@ -25,6 +25,7 @@ public class UserAgentContainerTest {
     public Object[][] userAgentSuffixFeatureEnablementFlags() {
         return new Object[][]{
             {Arrays.asList(UserAgentFeatureFlags.PerPartitionAutomaticFailover, UserAgentFeatureFlags.PerPartitionCircuitBreaker), "|F3"},
+            {Arrays.asList(UserAgentFeatureFlags.PerPartitionCircuitBreaker, UserAgentFeatureFlags.PerPartitionAutomaticFailover), "|F3"},
             {Arrays.asList(UserAgentFeatureFlags.PerPartitionAutomaticFailover), "|F1"},
             {Arrays.asList(UserAgentFeatureFlags.PerPartitionCircuitBreaker), "|F2"},
             {new ArrayList<>(), ""},
