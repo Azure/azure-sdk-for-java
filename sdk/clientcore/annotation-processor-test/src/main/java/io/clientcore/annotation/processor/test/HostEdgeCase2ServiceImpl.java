@@ -13,6 +13,7 @@ import io.clientcore.annotation.processor.test.implementation.HostEdgeCase2Servi
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
+import io.clientcore.core.http.models.HttpResponseException;
 
 /**
  * Initializes a new instance of the HostEdgeCase2ServiceImpl type.
@@ -42,7 +43,7 @@ public class HostEdgeCase2ServiceImpl implements HostEdgeCase2Service {
         return new HostEdgeCase2ServiceImpl(httpPipeline);
     }
 
-    @SuppressWarnings({ "unchecked", "cast" })
+    @SuppressWarnings("cast")
     @Override
     public byte[] getByteArray(String uri, int numberOfBytes) {
         String requestUri = uri + "/bytes/" + numberOfBytes;
@@ -53,10 +54,14 @@ public class HostEdgeCase2ServiceImpl implements HostEdgeCase2Service {
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         BinaryData responseBody = networkResponse.getValue();
         byte[] responseBodyBytes = responseBody != null ? responseBody.toBytes() : null;
-        return responseBodyBytes != null ? (responseBodyBytes.length == 0 ? null : responseBodyBytes) : null;
+        // Close the network response as the body should be consumed.
+        networkResponse.close();
+        return responseBodyBytes;
     }
 }
