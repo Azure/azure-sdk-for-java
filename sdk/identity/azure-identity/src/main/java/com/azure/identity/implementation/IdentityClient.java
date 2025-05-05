@@ -558,7 +558,8 @@ public class IdentityClient extends IdentityClientBase {
                 if (options.isChained() && t instanceof MsalJsonParsingException) {
                     return new CredentialUnavailableException("Managed Identity authentication is not available.", t);
                 }
-                return new ClientAuthenticationException("Managed Identity authentication is not available.", null, t);
+                return new ClientAuthenticationException("Managed Identity authentication failed, see inner exception"
+                + " for more information.", null, t);
             })
             .map(MsalToken::new);
     }
