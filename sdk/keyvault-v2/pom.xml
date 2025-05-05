@@ -9,9 +9,9 @@
   <version>1.0.0</version>  <!-- Need not change for every release-->
 
   <modules>
-    <module>azure-security-keyvault-administration-v2</module>
-    <module>azure-security-keyvault-certificates-v2</module>
-    <module>azure-security-keyvault-keys-v2</module>
-    <module>azure-security-keyvault-secrets-v2</module>
+    <module>azure-security-keyvault-administration</module>
+    <module>azure-security-keyvault-certificates</module>
+    <module>azure-security-keyvault-keys</module>
+    <module>azure-security-keyvault-secrets</module>
   </modules>
 </project>

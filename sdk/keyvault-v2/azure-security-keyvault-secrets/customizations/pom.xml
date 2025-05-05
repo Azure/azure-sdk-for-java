@@ -11,11 +11,11 @@
     <relativePath>../../../parents/azure-code-customization-parent</relativePath>
   </parent>
 
-  <name>Microsoft Azure Security Key Vault Keys code generation customization</name>
-  <description>This package contains code generation customization for Microsoft Azure Security Key Vault Keys</description>
+  <name>Microsoft Azure Security Key Vault Secrets code generation customization</name>
+  <description>This package contains code generation customization for Microsoft Azure Security Key Vault Secrets</description>
 
-  <groupId>com.azure.tools</groupId>
-  <artifactId>azure-security-keyvault-certificates-v2-autorest-customization</artifactId>
+  <groupId>com.azure.v2.tools</groupId>
+  <artifactId>azure-security-keyvault-secrets-autorest-customization</artifactId>
   <version>1.0.0-beta.1</version>
   <packaging>jar</packaging>
 </project>
