@@ -45,7 +45,7 @@ public class ManagedIdentityCredentialTest {
 
     @Test
     public void testImdsProbeTimeout() {
-        HttpClient client = TestUtils.getMockHttpClient(Duration.ofSeconds(2), getMockResponse(200, "token"), getMockResponse(200, "token"));
+        HttpClient client = TestUtils.getMockHttpClient(Duration.ofSeconds(2), getMockResponse(200, "token"));
 
         String endpoint = "http://localhost";
         String secret = "secret";

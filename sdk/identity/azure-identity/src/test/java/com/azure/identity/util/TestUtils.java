@@ -153,7 +153,7 @@ public final class TestUtils {
     /**
      * Creates a mock {@link HttpClient} which simply returns the provided responses in order.
      * @param responses The responses to return.
-     * @param delay If specified, throw a {@code InterruptedException} after the specified delay.
+     * @param delay If specified, throw a {@code RuntimeException} after the specified delay.
      * @return A mock HttpClient that returns the provided responses.
      */
     public static HttpClient getMockHttpClient(Duration delay, HttpResponse... responses) {
@@ -165,8 +165,9 @@ public final class TestUtils {
                 if (delay != null) {
                     try {
                         Thread.sleep(delay.toMillis());
+                        throw new InterruptedException("Simulated delay");
                     } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
+                        return Mono.error(e);
                     }
                 }
                 if (index >= responses.length) {
