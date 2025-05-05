@@ -47,8 +47,6 @@ import com.azure.identity.ManagedIdentityCredential;
 import com.azure.identity.ManagedIdentityCredentialBuilder;
 import com.azure.identity.OnBehalfOfCredential;
 import com.azure.identity.OnBehalfOfCredentialBuilder;
-import com.azure.identity.UsernamePasswordCredential;
-import com.azure.identity.UsernamePasswordCredentialBuilder;
 import com.azure.identity.WorkloadIdentityCredential;
 import com.azure.identity.WorkloadIdentityCredentialBuilder;
 import reactor.core.publisher.Mono;
@@ -230,16 +228,6 @@ public final class JavaDocCodeSnippets {
         // BEGIN: com.azure.identity.credential.devicecodecredential.construct
         TokenCredential deviceCodeCredential = new DeviceCodeCredentialBuilder().build();
         // END: com.azure.identity.credential.devicecodecredential.construct
-    }
-
-    /**
-     * Method to insert code snippets for {@link UsernamePasswordCredential}
-     */
-    public void usernamePasswordCredentialsCodeSnippets() {
-        // BEGIN: com.azure.identity.credential.usernamepasswordcredential.construct
-        TokenCredential usernamePasswordCredential = new UsernamePasswordCredentialBuilder().clientId(
-            "<your app client ID>").username("<your username>").password("<your password>").build();
-        // END: com.azure.identity.credential.usernamepasswordcredential.construct
     }
 
     /**
