@@ -290,7 +290,7 @@ public class TestProxyUtils {
 
     private static String createCustomMatcherRequestBody(CustomMatcher customMatcher) {
         return String.format(
-            "{\"ignoredHeaders\":\"%s\",\"excludedHeaders\":\"Accept, Accept-Encoding, Connect, %s\",\"compareBodies\":%s,\"ignoredQueryParameters\":\"%s\",\"ignoreQueryOrdering\":%s}",
+            "{\"ignoredHeaders\":\"%s\",\"excludedHeaders\":\"Accept, Accept-Encoding, Connect, Connection, %s\",\"compareBodies\":%s,\"ignoredQueryParameters\":\"%s\",\"ignoreQueryOrdering\":%s}",
             getCommaSeperatedString(customMatcher.getHeadersKeyOnlyMatch()),
             getCommaSeperatedString(customMatcher.getExcludedHeaders()), customMatcher.isComparingBodies(),
             getCommaSeperatedString(customMatcher.getIgnoredQueryParameters()), customMatcher.isQueryOrderingIgnored());
