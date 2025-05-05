@@ -155,6 +155,7 @@ public final class ManagedIdentityCredential implements TokenCredential {
         }
 
         // Not having a managedIdentityId at this point means it is a system-assigned managed identity.
+        // Check a couple cases that are not supported for user-assigned managed identity.
         if (!CoreUtils.isNullOrEmpty(managedIdentityId)) {
             ManagedIdentitySourceType managedIdentitySourceType = ManagedIdentityApplication.getManagedIdentitySource();
             if (ManagedIdentitySourceType.CLOUD_SHELL.equals(managedIdentitySourceType)
@@ -166,6 +167,15 @@ public final class ManagedIdentityCredential implements TokenCredential {
                         + (identityClientOptions.isChained()
                             ? "DefaultAzureCredentialBuilder."
                             : "ManagedIdentityCredentialBuilder."))));
+
+            }
+
+            if (ManagedIdentitySourceType.SERVICE_FABRIC.equals(managedIdentitySourceType)) {
+                return Mono.error(LoggingUtil.logCredentialUnavailableException(LOGGER, identityClientOptions,
+                    new CredentialUnavailableException("Specifying a clientId or resourceId is not supported by the"
+                        + " Service Fabric managed identity environment. The managed identity configuration is"
+                        + " determined by the Service Fabric cluster resource configuration. See"
+                        + " https://aka.ms/servicefabricmi for more information.")));
             }
 
             LOGGER.info("User-assigned Managed Identity ID: " + getClientId());
