@@ -293,7 +293,7 @@ cosmos_org.testcontainers:testcontainers;1.19.5
 cosmos_org.testcontainers:kafka;1.19.5
 cosmos_org.sourcelab:kafka-connect-client;4.0.4
 cosmos_io.confluent:kafka-avro-serializer;7.6.0
-cosmos_org.apache.avro:avro;1.11.3
+cosmos_org.apache.avro:avro;1.11.4
 # Maven Tools for Cosmos Kafka connector only
 
 # sdk\mediaservices\microsoft-azure-media\pom.xml which hasn't been released for 2 years
