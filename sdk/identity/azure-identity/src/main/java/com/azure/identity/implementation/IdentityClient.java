@@ -558,8 +558,8 @@ public class IdentityClient extends IdentityClientBase {
                 if (options.isChained() && t instanceof MsalJsonParsingException) {
                     return new CredentialUnavailableException("Managed Identity authentication is not available.", t);
                 }
-                return new ClientAuthenticationException("Managed Identity authentication failed, see inner exception"
-                + " for more information.", null, t);
+                return new ClientAuthenticationException(
+                    "Managed Identity authentication failed, see inner exception" + " for more information.", null, t);
             })
             .map(MsalToken::new);
     }
@@ -931,8 +931,8 @@ public class IdentityClient extends IdentityClientBase {
                 connection.connect();
             } catch (Exception e) {
                 throw LoggingUtil.logCredentialUnavailableException(LOGGER, options,
-                        new CredentialUnavailableException("ManagedIdentityCredential authentication unavailable. "
-                                + "Connection to IMDS endpoint cannot be established, " + e.getMessage() + ".", e));
+                    new CredentialUnavailableException("ManagedIdentityCredential authentication unavailable. "
+                        + "Connection to IMDS endpoint cannot be established, " + e.getMessage() + ".", e));
             } finally {
                 if (connection != null) {
                     connection.disconnect();

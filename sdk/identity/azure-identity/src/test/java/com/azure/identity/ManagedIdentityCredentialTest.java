@@ -42,7 +42,6 @@ public class ManagedIdentityCredentialTest {
         assertEquals("foo", credential.getClientId());
     }
 
-
     @ParameterizedTest
     @ValueSource(booleans = { true, false })
     public void testInvalidJsonResponse(boolean isChained) {
