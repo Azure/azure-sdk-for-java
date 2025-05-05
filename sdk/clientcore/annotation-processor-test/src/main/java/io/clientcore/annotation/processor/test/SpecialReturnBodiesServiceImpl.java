@@ -14,6 +14,7 @@ import io.clientcore.annotation.processor.test.implementation.SpecialReturnBodie
 import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
+import io.clientcore.core.http.models.HttpResponseException;
 
 /**
  * Initializes a new instance of the SpecialReturnBodiesServiceImpl type.
@@ -54,7 +55,9 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         return networkResponse.getValue();
     }
@@ -70,7 +73,9 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         return networkResponse;
     }
@@ -82,17 +87,16 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
         // Send the request through the httpPipeline
-        Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        int responseCode = networkResponse.getStatusCode();
-        boolean expectedResponse = responseCode == 200;
-        if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+        try (Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest)) {
+            int responseCode = networkResponse.getStatusCode();
+            boolean expectedResponse = responseCode == 200;
+            if (!expectedResponse) {
+                String errorMessage = networkResponse.getValue().toString();
+                throw new HttpResponseException(errorMessage, networkResponse, null);
+            }
+            BinaryData responseBody = networkResponse.getValue();
+            return responseBody != null ? responseBody.toBytes() : null;
         }
-        BinaryData responseBody = networkResponse.getValue();
-        byte[] responseBodyBytes = responseBody != null ? responseBody.toBytes() : null;
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
-        return responseBodyBytes;
     }
 
     @SuppressWarnings("cast")
@@ -102,17 +106,16 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         // Create the HTTP request
         HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri);
         // Send the request through the httpPipeline
-        Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
-        int responseCode = networkResponse.getStatusCode();
-        boolean expectedResponse = responseCode == 200;
-        if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+        try (Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest)) {
+            int responseCode = networkResponse.getStatusCode();
+            boolean expectedResponse = responseCode == 200;
+            if (!expectedResponse) {
+                String errorMessage = networkResponse.getValue().toString();
+                throw new HttpResponseException(errorMessage, networkResponse, null);
+            }
+            BinaryData responseBody = networkResponse.getValue();
+            return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), responseBody != null ? responseBody.toBytes() : null);
         }
-        BinaryData responseBody = networkResponse.getValue();
-        byte[] responseBodyBytes = responseBody != null ? responseBody.toBytes() : null;
-        // Close the network response as the body should be consumed.
-        networkResponse.close();
-        return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), responseBodyBytes);
     }
 
     @SuppressWarnings("cast")
@@ -126,7 +129,9 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         return networkResponse.getValue().toStream();
     }
@@ -142,7 +147,9 @@ public class SpecialReturnBodiesServiceImpl implements SpecialReturnBodiesServic
         int responseCode = networkResponse.getStatusCode();
         boolean expectedResponse = responseCode == 200;
         if (!expectedResponse) {
-            throw new RuntimeException("Unexpected response code: " + responseCode);
+            String errorMessage = networkResponse.getValue().toString();
+            networkResponse.close();
+            throw new HttpResponseException(errorMessage, networkResponse, null);
         }
         return new Response<>(networkResponse.getRequest(), responseCode, networkResponse.getHeaders(), networkResponse.getValue().toStream());
     }

@@ -4,6 +4,7 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.exception.UnexpectedLengthException;
+import com.azure.core.http.HttpAuthorization;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.rest.Response;
@@ -12,10 +13,13 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobContainerClient;
+import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.implementation.models.BlockBlobsPutBlobFromUrlHeaders;
+import com.azure.storage.blob.models.FileShareTokenIntent;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobCopySourceTagsMode;
@@ -38,6 +42,7 @@ import com.azure.storage.blob.options.BlobUploadFromUrlOptions;
 import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
 import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
+import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobSasPermission;
@@ -1728,5 +1733,77 @@ public class BlockBlobApiTests extends BlobTestBase {
                 .buildBlockBlobClient();
 
         assertTrue(aadBlob.exists());
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
+    @Test
+    @LiveOnly
+    public void stageBlockFromUriSourceBearerTokenFilesSource() throws IOException {
+        BlobServiceClient blobServiceClient = getOAuthServiceClient();
+        BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(generateContainerName());
+        containerClient.create();
+
+        byte[] data = getRandomByteArray(Constants.KB);
+
+        // Create destination block blob
+        BlockBlobClient destBlob = containerClient.getBlobClient(generateBlobName()).getBlockBlobClient();
+
+        // Set up source URL with bearer token
+        String shareName = generateContainerName();
+        String sourceUrl = createFileAndDirectoryWithoutFileShareDependency(data, shareName);
+
+        String blockId = getBlockID();
+
+        BlockBlobStageBlockFromUrlOptions stageBlockFromUrlOptions
+            = new BlockBlobStageBlockFromUrlOptions(blockId, sourceUrl);
+        stageBlockFromUrlOptions.setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
+        stageBlockFromUrlOptions.setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()));
+
+        // Stage block from URL with bearer token
+        destBlob.stageBlockFromUrlWithResponse(stageBlockFromUrlOptions, null, Context.NONE);
+
+        // Commit the staged block
+        destBlob.commitBlockList(Collections.singletonList(blockId));
+
+        // Validate data was staged and committed correctly
+        ByteArrayOutputStream downloadedData = new ByteArrayOutputStream();
+        destBlob.downloadStream(downloadedData);
+        TestUtils.assertArraysEqual(data, downloadedData.toByteArray());
+
+        //cleanup
+        deleteFileShareWithoutDependency(shareName);
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
+    @Test
+    @LiveOnly
+    public void uploadFromUriAsyncSourceBearerTokenFilesSource() throws IOException {
+        BlobServiceClient blobServiceClient = getOAuthServiceClient();
+        BlobContainerClient containerClient = blobServiceClient.getBlobContainerClient(generateContainerName());
+        containerClient.create();
+
+        byte[] data = getRandomByteArray(Constants.KB);
+
+        // Set up destination block blob
+        BlockBlobClient destBlob = containerClient.getBlobClient(generateBlobName()).getBlockBlobClient();
+
+        // Set up source URL with bearer token
+        String shareName = generateContainerName();
+        String sourceUrl = createFileAndDirectoryWithoutFileShareDependency(data, shareName);
+
+        BlobUploadFromUrlOptions options = new BlobUploadFromUrlOptions(sourceUrl);
+        options.setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
+        options.setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()));
+
+        // upload block from URL with bearer token
+        destBlob.uploadFromUrlWithResponse(options, null, Context.NONE);
+
+        // Validate data was appended correctly
+        ByteArrayOutputStream downloadedData = new ByteArrayOutputStream();
+        destBlob.downloadStream(downloadedData);
+        TestUtils.assertArraysEqual(data, downloadedData.toByteArray());
+
+        //cleanup
+        deleteFileShareWithoutDependency(shareName);
     }
 }

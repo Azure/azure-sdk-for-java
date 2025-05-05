@@ -4,6 +4,7 @@
 package com.azure.storage.blob.specialized;
 
 import com.azure.core.exception.UnexpectedLengthException;
+import com.azure.core.http.HttpAuthorization;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
@@ -19,11 +20,14 @@ import com.azure.core.util.ProgressListener;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
+import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.blob.BlobServiceVersion;
 import com.azure.storage.blob.BlobTestBase;
 import com.azure.storage.blob.BlobUrlParts;
 import com.azure.storage.blob.ProgressReceiver;
+import com.azure.storage.blob.models.FileShareTokenIntent;
 import com.azure.storage.blob.models.AccessTier;
 import com.azure.storage.blob.models.BlobAudience;
 import com.azure.storage.blob.models.BlobCopySourceTagsMode;
@@ -47,6 +51,7 @@ import com.azure.storage.blob.options.BlobUploadFromUrlOptions;
 import com.azure.storage.blob.options.BlockBlobCommitBlockListOptions;
 import com.azure.storage.blob.options.BlockBlobListBlocksOptions;
 import com.azure.storage.blob.options.BlockBlobSimpleUploadOptions;
+import com.azure.storage.blob.options.BlockBlobStageBlockFromUrlOptions;
 import com.azure.storage.blob.options.BlockBlobStageBlockOptions;
 import com.azure.storage.blob.sas.BlobContainerSasPermission;
 import com.azure.storage.blob.sas.BlobSasPermission;
@@ -2694,4 +2699,72 @@ public class BlockBlobAsyncApiTests extends BlobTestBase {
 
         StepVerifier.create(aadBlob.exists()).expectNext(true).verifyComplete();
     }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
+    @Test
+    @LiveOnly
+    public void stageBlockFromUriSourceBearerTokenFilesSource() throws IOException {
+        BlobServiceAsyncClient blobServiceAsyncClient = getOAuthServiceAsyncClient();
+        BlobContainerAsyncClient containerAsyncClient
+            = blobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
+
+        byte[] data = getRandomByteArray(Constants.KB);
+
+        // Set up source URL with bearer token
+        String shareName = generateContainerName();
+        String sourceUrl = createFileAndDirectoryWithoutFileShareDependency(data, shareName);
+
+        BlockBlobAsyncClient destBlob
+            = containerAsyncClient.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+
+        String blockId = getBlockID();
+
+        BlockBlobStageBlockFromUrlOptions options = new BlockBlobStageBlockFromUrlOptions(blockId, sourceUrl);
+        options.setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
+        options.setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()));
+
+        StepVerifier
+            .create(containerAsyncClient.create()
+                .then(destBlob.stageBlockFromUrlWithResponse(options))
+                .then(destBlob.commitBlockList(Collections.singletonList(blockId)))
+                .then(FluxUtil.collectBytesInByteBufferStream(destBlob.downloadStream())))
+            .assertNext(downloadedData -> TestUtils.assertArraysEqual(data, downloadedData))
+            .verifyComplete();
+
+        //cleanup
+        deleteFileShareWithoutDependency(shareName);
+    }
+
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2025-07-05")
+    @Test
+    @LiveOnly
+    public void uploadFromUriAsyncSourceBearerTokenFilesSource() throws IOException {
+        BlobServiceAsyncClient blobServiceAsyncClient = getOAuthServiceAsyncClient();
+        BlobContainerAsyncClient containerAsyncClient
+            = blobServiceAsyncClient.getBlobContainerAsyncClient(generateContainerName());
+
+        byte[] data = getRandomByteArray(Constants.KB);
+
+        // Set up source URL with bearer token
+        String shareName = generateContainerName();
+        String sourceUrl = createFileAndDirectoryWithoutFileShareDependency(data, shareName);
+
+        BlockBlobAsyncClient destBlob
+            = containerAsyncClient.getBlobAsyncClient(generateBlobName()).getBlockBlobAsyncClient();
+
+        BlobUploadFromUrlOptions options = new BlobUploadFromUrlOptions(sourceUrl);
+        options.setSourceShareTokenIntent(FileShareTokenIntent.BACKUP);
+        options.setSourceAuthorization(new HttpAuthorization("Bearer", getAuthToken()));
+
+        StepVerifier
+            .create(containerAsyncClient.create()
+                .then(destBlob.uploadFromUrlWithResponse(options, null))
+                .then(FluxUtil.collectBytesInByteBufferStream(destBlob.downloadStream())))
+            .assertNext(downloadedData -> TestUtils.assertArraysEqual(data, downloadedData))
+            .verifyComplete();
+
+        //cleanup
+        deleteFileShareWithoutDependency(shareName);
+    }
+
 }
