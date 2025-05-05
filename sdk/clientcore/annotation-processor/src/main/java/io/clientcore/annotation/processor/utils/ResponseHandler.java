@@ -70,17 +70,16 @@ public final class ResponseHandler {
 
     private static boolean useTryWithResources(java.lang.reflect.Type entityType, HttpRequestContext method) {
         // Use try-with-resources, where the Response<BinaryData> is the resource, if one of the following are true:
-        // - Return type is a void type
-        // - The request used method HEAD and return type boolean
-        // - Return type is byte[], which will consume the entire network response eagerly
+        // - Return type is a Void.class, exclude void.class as that will be handled separately.
+        // - The request used method HEAD and return type boolean.
+        // - Return type is byte[], which will consume the entire network response eagerly.
         // - Return type isn't InputStream or BinaryData, both will need to have the network response remain open.
         if (TypeUtil.isTypeOrSubTypeOf(entityType, InputStream.class)
             || TypeUtil.isTypeOrSubTypeOf(entityType, BinaryData.class)) {
             return false;
         }
 
-        return entityType == Void.TYPE
-            || entityType == Void.class
+        return entityType == Void.class
             || (method.getHttpMethod() == HttpMethod.HEAD && isBooleanType(entityType))
             || TypeUtil.isTypeOrSubTypeOf(entityType, byte[].class);
     }
@@ -122,8 +121,14 @@ public final class ResponseHandler {
         // TODO (alzimmer): Base64Uri needs to be handled. Determine how this will show up in code generation and then
         //  add support for it.
         if (returnType.getKind() == TypeKind.VOID) {
+            // This handles the case where the API returns 'void' itself. This will result in code such as
+            // "networkResponse.close()" as 'void' return doesn't use try-with-resources as the compiler will complain
+            // about an empty try block.
             closeResponse(body);
         } else if (entityType == Void.TYPE || entityType == Void.class) {
+            // This handles the case where the API returns 'Response<Void>' or 'Void'. Unlike 'void' itself this will
+            // use try-with-resources as "return null;" will be in the try-with-resources block and the compiler won't
+            // complain about an empty try block.
             addReturnStatement(body, returnIsResponse, "null");
         } else if (method.getHttpMethod() == HttpMethod.HEAD && isBooleanType(entityType)) {
             // HTTP method was either HEAD or the return is a boolean. Use the status code to determine response value.
@@ -132,8 +137,9 @@ public final class ResponseHandler {
             // Return is a byte[]. Convert the network response body into a byte[].
             body.addStatement(StaticJavaParser.parseStatement("BinaryData responseBody = networkResponse.getValue();"));
 
-            // Return responseBodyBytes as-is which will have the behavior of null -> null, empty -> empty, and
-            // data -> data, which offers three unique states for knowing information about the network response shape.
+            // Return responseBody.toBytes(), or null if it was null, as-is which will have the behavior of
+            // null -> null, empty -> empty, and data -> data, which offers three unique states for knowing information
+            // about the network response shape, as nullness != emptiness.
             addReturnStatement(body, returnIsResponse, "responseBody != null ? responseBody.toBytes() : null");
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, InputStream.class)) {
             // Return type is an InputStream. Return the network response body as an InputStream.
