@@ -46,9 +46,8 @@ public class HostEdgeCase2ServiceImpl implements HostEdgeCase2Service {
     @SuppressWarnings("cast")
     @Override
     public byte[] getByteArray(String uri, int numberOfBytes) {
-        String requestUri = uri + "/bytes/" + numberOfBytes;
-        // Create the HTTP request
-        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(requestUri);
+        // Create the HttpRequest.
+        HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod.GET).setUri(uri + "/bytes/" + numberOfBytes);
         // Send the request through the httpPipeline
         Response<BinaryData> networkResponse = this.httpPipeline.send(httpRequest);
         int responseCode = networkResponse.getStatusCode();

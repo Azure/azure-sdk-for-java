@@ -13,12 +13,19 @@ import com.github.javaparser.ast.body.MethodDeclaration;
 import com.github.javaparser.ast.body.Parameter;
 import com.github.javaparser.ast.body.VariableDeclarator;
 import com.github.javaparser.ast.comments.LineComment;
+import com.github.javaparser.ast.expr.BinaryExpr;
+import com.github.javaparser.ast.expr.Expression;
+import com.github.javaparser.ast.expr.MethodCallExpr;
 import com.github.javaparser.ast.expr.Name;
 import com.github.javaparser.ast.expr.NameExpr;
+import com.github.javaparser.ast.expr.NullLiteralExpr;
+import com.github.javaparser.ast.expr.ObjectCreationExpr;
 import com.github.javaparser.ast.expr.SingleMemberAnnotationExpr;
 import com.github.javaparser.ast.expr.StringLiteralExpr;
 import com.github.javaparser.ast.expr.UnaryExpr;
+import com.github.javaparser.ast.expr.VariableDeclarationExpr;
 import com.github.javaparser.ast.stmt.BlockStmt;
+import com.github.javaparser.ast.stmt.ExpressionStmt;
 import com.github.javaparser.ast.stmt.IfStmt;
 import com.github.javaparser.ast.stmt.Statement;
 import io.clientcore.annotation.processor.models.HttpRequestContext;
@@ -39,6 +46,7 @@ import io.clientcore.core.instrumentation.logging.ClientLogger;
 import io.clientcore.core.serialization.json.JsonSerializer;
 import io.clientcore.core.serialization.xml.XmlSerializer;
 import io.clientcore.core.utils.CoreUtils;
+import io.clientcore.core.utils.UriBuilder;
 
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.type.TypeKind;
@@ -47,10 +55,10 @@ import javax.tools.Diagnostic;
 import java.io.IOException;
 import java.io.Writer;
 import java.lang.reflect.Field;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -311,25 +319,32 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
         body.tryAddImportToParentCompilationUnit(HttpRequest.class);
         body.tryAddImportToParentCompilationUnit(HttpMethod.class);
 
-        createUri(body, method);
-        appendQueryParams(body, method);
+        // Add a statement that initializes the HttpRequest and sets the HTTP method.
+        // But don't add it to the body BlockStmt yet, let setHttpRequestUri do that as it may chain setting the URI
+        // or require code between this instantiation and setting the URI.
+        VariableDeclarator variableDeclarator = new VariableDeclarator().setType(HttpRequest.class)
+            .setName("httpRequest")
+            .setInitializer(new MethodCallExpr(new ObjectCreationExpr().setType(HttpRequest.class), "setMethod")
+                .addArgument(new NameExpr("HttpMethod." + method.getHttpMethod())));
+        Expression createHttpRequest = new VariableDeclarationExpr(variableDeclarator);
+        createHttpRequest.setLineComment(" Create the HttpRequest.");
 
-        Statement statement
-            = StaticJavaParser.parseStatement("HttpRequest httpRequest = new HttpRequest().setMethod(HttpMethod."
-                + method.getHttpMethod() + ").setUri(" + method.getUriParameterName() + ");");
+        // Then create the HttpRequest URI. This will handle calling 'setUri' on the HttpRequest and adding
+        // createHttpRequest to the body BlockStmt.
+        setHttpRequestUri(body, createHttpRequest, method);
 
-        statement.setLineComment("\n Create the HTTP request");
-        body.addStatement(statement);
         addHeadersToRequest(body, method);
     }
 
     /**
-     * Creates the basic {@code String} URI.
+     * Sets the {@link URI} on the {@link HttpRequest} creation {@link Expression} passed to this method.
      *
      * @param body Where the method is being generated.
+     * @param createHttpRequest The {@link Expression} that initializes the {@link HttpRequest} and sets the HTTP
+     * method.
      * @param method Reflective information about the method being generated.
      */
-    void createUri(BlockStmt body, HttpRequestContext method) {
+    void setHttpRequestUri(BlockStmt body, Expression createHttpRequest, HttpRequestContext method) {
         String variableName = method.getUriParameterName();
 
         // In rare cases an interface could be created without a 'host' value in 'ServiceInterface'.
@@ -343,54 +358,70 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                 .collect(Collectors.joining(" + "));
 
             if (CoreUtils.isNullOrEmpty(concatenatedHostParams)) {
-                urlStatement = method.getHost() + ";";
+                urlStatement = method.getHost();
             } else {
-                urlStatement = concatenatedHostParams + " + \"/\" + " + method.getHost() + ";";
+                urlStatement = concatenatedHostParams + " + \"/\" + " + method.getHost();
             }
         } else {
-            urlStatement = method.getHost() + ";";
+            urlStatement = method.getHost();
         }
 
-        body.addStatement(StaticJavaParser.parseStatement("String " + variableName + " = " + urlStatement));
-    }
-
-    private void appendQueryParams(BlockStmt body, HttpRequestContext method) {
+        // If the method doesn't have query parameters to set, inline the call to HttpRequest.setUri and return.
         if (method.getQueryParams().isEmpty()) {
+            // The 'createHttpRequest' expression is the scope for the method call expression being added.
+            // This will result in 'HttpRequest request = new HttpRequest().setMethod(method).setUri(urlStatement);'
+            body.addStatement(
+                new ExpressionStmt(new MethodCallExpr(createHttpRequest, "setUri").addArgument(urlStatement)));
+
+            // Return now to reduce the indentation on the complex path, making the code easier to read.
             return;
         }
 
-        Statement queryParamMapDeclaration
-            = StaticJavaParser.parseStatement("LinkedHashMap<String, Object> queryParamMap = new LinkedHashMap<>();");
-        queryParamMapDeclaration.setLineComment("\n Append non-null query parameters");
-        body.addStatement(queryParamMapDeclaration);
-        body.tryAddImportToParentCompilationUnit(LinkedHashMap.class);
+        // Create the UriBuilder that will be used to create the HttpRequest URI.
+        body.tryAddImportToParentCompilationUnit(UriBuilder.class);
+        Statement uriBuilderParse = StaticJavaParser
+            .parseStatement("UriBuilder " + variableName + " = UriBuilder.parse(" + urlStatement + ");");
+        uriBuilderParse.setLineComment(" Append the query parameters.");
+        body.addStatement(uriBuilderParse);
 
-        method.getQueryParams().forEach((key, queryParameter) -> {
+        boolean importUriEscapers = false;
+        boolean importCollectors = false;
+        boolean importArrays = false;
+        for (Map.Entry<String, HttpRequestContext.QueryParameter> kvp : method.getQueryParams().entrySet()) {
+            String key = kvp.getKey();
+            HttpRequestContext.QueryParameter queryParameter = kvp.getValue();
+
             if (CoreUtils.isNullOrEmpty(key)) {
                 // Skip null or empty keys
-                return;
+                continue;
             }
 
             List<String> values = queryParameter.getValues();
+            if (values.isEmpty()) {
+                // Skip empty values.
+                continue;
+            }
+
             boolean shouldEncode = queryParameter.shouldEncode();
 
-            if (values.isEmpty()) {
-                // If there are no values, put null
-                body.addStatement("queryParamMap.put(\"" + key + "\", null);");
-            } else if (values.size() == 1) {
+            if (values.size() == 1) {
                 String valueExpr = values.get(0);
                 boolean isParam = method.getParameters().stream().anyMatch(p -> p.getName().equals(valueExpr));
                 String valueCode;
                 String keyExpr = isParam ? "UriEscapers.QUERY_ESCAPER.escape(\"" + key + "\")" : "\"" + key + "\"";
 
                 if (isParam && queryParameter.isMultiple()) {
-                    body.tryAddImportToParentCompilationUnit(UriEscapers.class);
-                    body.tryAddImportToParentCompilationUnit(Collectors.class);
-                    // List<String> parameter
-                    valueCode = "(" + valueExpr + " != null ? " + valueExpr
-                        + ".stream().map(UriEscapers.QUERY_ESCAPER::escape).collect(Collectors.toList()) : null)";
+                    importUriEscapers = true;
+                    importCollectors = true;
 
-                    body.addStatement("queryParamMap.put(" + keyExpr + ", " + valueCode + ");");
+                    // List<String> parameter
+                    valueCode
+                        = valueExpr + ".stream().map(UriEscapers.QUERY_ESCAPER::escape).collect(Collectors.toList())";
+                    IfStmt ifStmt = new IfStmt().setCondition(
+                        new BinaryExpr(new NameExpr(valueExpr), new NullLiteralExpr(), BinaryExpr.Operator.NOT_EQUALS));
+                    ifStmt.setThenStmt(new BlockStmt()
+                        .addStatement(variableName + ".addQueryParameterValues(" + keyExpr + ", " + valueCode + ");"));
+                    body.addStatement(ifStmt);
                 } else if (isParam) {
                     // Single parameter
                     Optional<HttpRequestContext.MethodParameter> paramOpt = method.getParameters()
@@ -400,22 +431,23 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                     boolean isValueTypeString
                         = paramOpt.isPresent() && "String".equals(paramOpt.get().getShortTypeName());
                     if (shouldEncode && isValueTypeString) {
-                        body.tryAddImportToParentCompilationUnit(UriEscapers.class);
+                        importUriEscapers = true;
                         valueCode = "UriEscapers.QUERY_ESCAPER.escape(" + valueExpr + ")";
-                        body.addStatement("queryParamMap.put(" + keyExpr + ", " + valueCode + ");");
+                        body.addStatement(variableName + ".addQueryParameter(" + keyExpr + ", " + valueCode + ");");
                     } else {
                         // Non-string param: do NOT encode, just use as is
                         valueCode = valueExpr;
-                        body.addStatement("queryParamMap.put(" + keyExpr + ", " + valueCode + ");");
+                        body.addStatement(
+                            variableName + ".addQueryParameter(" + keyExpr + ", String.valueOf(" + valueCode + "));");
                     }
                 } else {
                     // Static/literal value: do NOT escape key or value
                     // If the value is an empty string, treat as "", if null, treat as null
                     if (valueExpr == null) {
-                        body.addStatement("queryParamMap.put(\"" + key + "\", null);");
+                        body.addStatement(variableName + ".addQueryParameter(\"" + key + "\", null);");
                     } else {
                         valueCode = "\"" + valueExpr.replace("\"", "\\\"") + "\"";
-                        body.addStatement("queryParamMap.put(\"" + key + "\", " + valueCode + ");");
+                        body.addStatement(variableName + ".addQueryParameter(\"" + key + "\", " + valueCode + ");");
                     }
                 }
             } else {
@@ -425,29 +457,37 @@ public class JavaParserTemplateProcessor implements TemplateProcessor {
                     .allMatch(v -> method.getParameters().stream().anyMatch(p -> p.getName().equals(v)));
                 String keyExpr = isParam ? "UriEscapers.QUERY_ESCAPER.escape(\"" + key + "\")" : "\"" + key + "\"";
 
-                if (!joinedValues.trim().isEmpty()) {
-                    body.tryAddImportToParentCompilationUnit(Arrays.class);
-                    if (shouldEncode && isParam) {
-                        body.tryAddImportToParentCompilationUnit(UriEscapers.class);
-                        body.addStatement("queryParamMap.put(" + keyExpr + ", Arrays.asList(" + joinedValues + ")"
+                if (joinedValues.trim().isEmpty()) {
+                    // If joinedValues is empty, skip it.
+                    continue;
+                }
+
+                importArrays = true;
+                if (shouldEncode && isParam) {
+                    importUriEscapers = true;
+                    body.addStatement(
+                        variableName + ".addQueryParameterValues(" + keyExpr + ", Arrays.asList(" + joinedValues + ")"
                             + ".stream().map(UriEscapers.QUERY_ESCAPER::escape).collect(Collectors.toList()));");
-                    } else {
-                        // For static query params, do NOT escape key or value
-                        body.addStatement("queryParamMap.put(" + keyExpr + ", Arrays.asList(" + joinedValues + "));");
-                    }
                 } else {
-                    // if joinedValues is empty, put null
-                    body.addStatement("queryParamMap.put(\"" + key + "\", null);");
+                    // For static query params, do NOT escape key or value
+                    body.addStatement(variableName + ".addQueryParameterValues(" + keyExpr + ", Arrays.asList("
+                        + joinedValues + "));");
                 }
             }
-        });
+        }
 
-        // Append query parameters to the URL
-        body.tryAddImportToParentCompilationUnit(CoreUtils.class);
+        if (importArrays) {
+            body.tryAddImportToParentCompilationUnit(Arrays.class);
+        }
+        if (importCollectors) {
+            body.tryAddImportToParentCompilationUnit(Collectors.class);
+        }
+        if (importUriEscapers) {
+            body.tryAddImportToParentCompilationUnit(UriEscapers.class);
+        }
 
-        // CoreUtils.appendQueryParams never returns null, update the URI with query parameters.
-        body.addStatement(method.getUriParameterName() + " = CoreUtils.appendQueryParams("
-            + method.getUriParameterName() + ", queryParamMap);");
+        body.addStatement(new ExpressionStmt(
+            new MethodCallExpr(createHttpRequest, "setUri").addArgument(variableName + ".toString()")));
     }
 
     /**
